@@ -1,0 +1,206 @@
+{% extends 'page.html' %}
+
+{% block page %}
+{% comment %} <h1 class="text-3xl text-green-800"> Hello World! </h1> {% endcomment %}
+    <main class="mx-8">
+        <div class="relative flex flex-col">
+            <h2 class="text-title text-5xl font-extrabold text-center mt-16 ">Take your trading skills to the next level with our cutting-edge tools that turn complex technical analysis into practical insights</h2>
+            {% comment %} <h2 class="text-text text-4xl font-bold text-center mt-20 absolute left-0 top-0 " id="letter-text"></h2> {% endcomment %}
+            {% comment %} <script type="text/javascript">
+                function printLetterByLetter(destination, message, speed){
+                    var i = 0;
+                    var interval = setInterval(function(){
+                        document.getElementById(destination).innerHTML += message.charAt(i);
+                        i++;
+                        if (i > message.length){
+                            clearInterval(interval);
+                        }
+                    }, speed);
+                }
+                
+                printLetterByLetter("letter-text", "Take your trading skills to the next level with our cutting-edge tools that turn complex technical analysis into practical insights", 30);
+            </script> {% endcomment %}
+        </div>
+        <h2 class="text-text text-xl font-bold text-center mt-6">Experience the power yourself with a risk-free trial for 7 days</h2>
+        <div class="flex flex-col w-full">
+            <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3  dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+        </div>
+
+        <div class="mx-auto w-full h-96 mt-12">
+            
+            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+            <lottie-player class="h-full w-full" src="https://assets1.lottiefiles.com/packages/lf20_rMIWDc0fSB.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+            
+        </div>
+    </main>
+
+    <section class="mx-auto w-full my-8">
+        <h2 class="text-text text-3xl font-bold text-center mt-12">Why choising</h2>
+        <h2 class="text-7xl mt-1 font-extrabold uppercase text-center bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">strategies</h2>
+        
+        <div class="mt-8 flex flex-col">
+            <div class="bg-gradient-to-t to-background from-secondary from-0% to-80% rounded-xl p-8 w-7/12 flex items-center justify-around">
+                <h3 class="text-text text-2xl max-w-[50%] font-bold">We offer high value and secure products </h3>
+                <div class="mx-auto h-52 mt-3">
+            
+                    <lottie-player class="h-full w-full" src="https://assets3.lottiefiles.com/packages/lf20_bqUlAq.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+                    
+                </div>
+            </div>
+
+            <div class="mt-12 bg-gradient-to-t to-background from-primary from-0% to-80%  rounded-xl p-8 w-7/12 flex items-center justify-around ml-auto">
+                <h3 class="text-text text-2xl max-w-[50%] font-bold">Backtestable strategies that allows you to see and optimize your trading strategy to get the best results.</h3>
+                <div class="mx-auto h-52 mt-3">
+            
+                    <lottie-player class="h-full w-full" src="https://assets8.lottiefiles.com/packages/lf20_fUq9u8VGIo.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+                    
+                </div>
+            </div>
+
+            <div class="mt-12 bg-gradient-to-t to-background from-secondary from-0% to-80%  rounded-xl p-8 w-7/12 flex items-center justify-around">
+                <h3 class="text-text text-2xl max-w-[50%] font-bold">Backtestable strategies that allows you to see and optimize your trading strategy to get the best results.</h3>
+                <div class="mx-auto h-52 mt-3">
+            
+                    <lottie-player class="h-full w-full" src="https://assets9.lottiefiles.com/packages/lf20_wcmbykjs.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+                    
+                </div>
+            </div>
+
+            <div class="mt-12 bg-gradient-to-t to-background from-primary from-0% to-80%  rounded-xl p-8 w-7/12 flex items-center justify-around ml-auto">
+                <h3 class="text-text text-2xl max-w-[50%] font-bold">Backtestable strategies that allows you to see and optimize your trading strategy to get the best results.</h3>
+                <div class="mx-auto h-52 mt-3">
+            
+                    <lottie-player class="h-full w-full" src="https://assets10.lottiefiles.com/packages/lf20_b7gcjqhx.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mx-auto w-full mt-24 mb-10">
+        <h2 class="text-text text-3xl font-bold text-center mt-12">Check out some of our strategies</h2>
+
+        <div class="slider cursor-pointer relative overflow-hidden mt-12 w-full h-[26rem] rounded-xl">
+            <div class="cards pointer-events-none flex gap-6 absolute top-0 left-0 bottom-0 overflow-x-scroll">
+                <div class="w-[30rem] p-4 bg-gradient-to-r from-purple-900 to-purple-800 rounded-xl">
+                    <img class="rounded-xl" src="https://static.tradingview.com/static/bundles/app-view.cb6d45c43bcf89257771.png" />
+                    <h3 class="text-center  dark:text-title text-text-light text-xl font-bold py-3">Title of the strategy</h3>
+                    <p class=" dark:text-text text-text-light text-sm text-center line-clamp-3">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose</p>
+                </div>
+                <div class="w-[30rem] p-4 bg-gradient-to-r from-purple-800 to-purple-700 rounded-xl">
+                    <img class="rounded-xl" src="https://static.tradingview.com/static/bundles/app-view.cb6d45c43bcf89257771.png" />
+                    <h3 class="text-center text-title text-xl font-bold py-3">Title of the strategy</h3>
+                    <p class="text-text text-sm text-center line-clamp-3">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose</p>
+                </div>
+                <div class="w-[30rem] p-4 bg-gradient-to-r from-purple-700 to-purple-600 rounded-xl">
+                    <img class="rounded-xl" src="https://static.tradingview.com/static/bundles/app-view.cb6d45c43bcf89257771.png" />
+                    <h3 class="text-center text-title text-xl font-bold py-3">Title of the strategy</h3>
+                    <p class="text-text text-sm text-center line-clamp-3">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose</p>
+                </div>
+                <div class="w-[30rem] p-4 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl">
+                    <img class="rounded-xl" src="https://static.tradingview.com/static/bundles/app-view.cb6d45c43bcf89257771.png" />
+                    <h3 class="text-center text-title text-xl font-bold py-3">Title of the strategy</h3>
+                    <p class="text-text text-sm text-center line-clamp-3">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose</p>
+                </div>
+               
+                <div class="w-[30rem] p-4 rounded-xl h-full flex flex-col">
+                     <h3 class="text-center text-title text-xl font-bold my-auto items-center justify-center">Discover more</h3>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            const slider = document.querySelector('.slider')
+            const cards = document.querySelector('.cards')
+            let isPressed = false;
+            let cursorX;
+
+            slider.addEventListener("mousedown", (e) => {
+                isPressed = true;
+                cursorX = e.offsetX - cards.offsetLeft;
+            });
+            slider.addEventListener("mousemove", (e) => {
+                if (!isPressed) return;
+                e.preventDefault();
+                cards.style.left = `${e.offsetX - cursorX}px`;
+                boundSlides();
+              });
+             window.addEventListener("mouseup", () => {
+                isPressed = false;
+            });
+            function boundSlides() {
+                const containerRect = slider.getBoundingClientRect();
+                const cardsRect = cards.getBoundingClientRect();
+              
+                if (parseInt(cards.style.left) > 0) {
+                  cards.style.left = 0;
+                } else if (cardsRect.right < containerRect.right) {
+                  cards.style.left = `-${cardsRect.width - containerRect.width}px`;
+                }
+              } 
+        </script>
+    </section>
+
+    <section class="mx-auto w-full mt-24 mb-10">
+        <h2 class="text-text text-3xl font-bold text-center mt-12">How to get started</h2>
+
+        <div class="w-full flex flex-col mt-14">
+            <ul class="mx-auto text-text w-9/12">
+                <li class="text-center p-4 my-2 rounded-xl border-2 border-secondary w-8/12">
+                    <h3 class="font-bold">Sign up and create an account</h3>
+                </li>
+                <li class="text-center p-4 my-2 rounded-xl border-2 border-secondary w-8/12 ml-auto mt-12">
+                    <h3 class="">Choose a perfect plan for you</h3>
+                </li>
+                <li class="text-center p-4 my-2 rounded-xl border-2 border-secondary w-8/12 mr-auto mt-12">
+                    <h3 class="">Add your tradingview username</h3>
+                </li>
+                <li class="text-center p-4 my-2 rounded-xl border-2 border-secondary w-8/12 ml-auto mt-12">
+                    <h3 class="">You're ready to go</h3>
+                </li>
+
+            </ul>
+        </div>
+
+    </section>
+
+    <section class="mx-auto w-full mt-24 mb-16">
+        <h2 class="text-text text-3xl font-bold text-center mt-12">Choose your plan</h2>
+
+        <div class="mt-14 w-flex flex items-center justify-center gap-8">
+            <div class="text-center p-4 bg-primary rounded-xl w-3/12">
+                <h3 class="text-text font-bold bg-background py-4 rounded-xl">MONTHLY</h3>
+                <div class="mt-10">
+                    <h3 class=" dark:text-text text-text-light text-5xl font-bold ">$99</h3>
+                    <h3 class=" dark:text-text text-text-light text-xl mt-2">all-inclusive</h3>
+                </div>
+                <div class="mt-10 mb-2">
+                    <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+                </div>
+            </div>
+            <div class="text-center p-4 bg-primary rounded-xl w-3/12">
+                <h3 class="text-text font-bold bg-background py-4 rounded-xl">QUARTERLY</h3>
+                <div class="mt-10">
+                    <h3 class=" dark:text-text text-text-light text-5xl font-bold ">$345</h3>
+                    <h3 class=" dark:text-text text-text-light text-xl mt-2">all-inclusive</h3>
+                </div>
+                <div class="mt-10 mb-2">
+                    <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+                </div>
+            </div>
+            <div class="text-center p-4 bg-primary rounded-xl w-3/12">
+                <h3 class="text-text font-bold bg-background py-4 rounded-xl">YEARLY</h3>
+                <div class="mt-10">
+                    <h3 class=" dark:text-text text-text-light text-5xl font-bold ">$898</h3>
+                    <h3 class=" dark:text-text text-text-light text-xl mt-2">all-inclusive</h3>
+                </div>
+                <div class="mt-10 mb-2">
+                    <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock page %}
+

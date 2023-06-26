@@ -1,0 +1,44 @@
+{% extends 'page.html' %}
+
+{% block page %}
+
+    <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Choose your plan and unlock access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
+
+    <main class="mt-8 mb-16">
+
+        <div class="mt-14 w-flex flex items-center justify-center gap-8">
+            <div class="text-center p-4 bg-primary rounded-xl w-3/12">
+                <h3 class="text-text font-bold bg-background py-4 rounded-xl">MONTHLY</h3>
+                <div class="mt-10">
+                    <h3 class=" dark:text-text text-text-light text-5xl font-bold ">$99</h3>
+                    <h3 class=" dark:text-text text-text-light text-xl mt-2">all-inclusive</h3>
+                </div>
+                <div class="mt-10 mb-2">
+                    <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+                </div>
+            </div>
+            <div class="text-center p-4 bg-primary rounded-xl w-3/12">
+                <h3 class="text-text font-bold bg-background py-4 rounded-xl">QUARTERLY</h3>
+                <div class="mt-10">
+                    <h3 class=" dark:text-text text-text-light text-5xl font-bold ">$345</h3>
+                    <h3 class=" dark:text-text text-text-light text-xl mt-2">all-inclusive</h3>
+                </div>
+                <div class="mt-10 mb-2">
+                    <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+                </div>
+            </div>
+            <div class="text-center p-4 bg-primary rounded-xl w-3/12">
+                <h3 class="text-text font-bold bg-background py-4 rounded-xl">YEARLY</h3>
+                <div class="mt-10">
+                    <h3 class=" dark:text-text text-text-light text-5xl font-bold ">$898</h3>
+                    <h3 class=" dark:text-text text-text-light text-xl mt-2">all-inclusive</h3>
+                </div>
+                <div class="mt-10 mb-2">
+                    <a href="{% url 'register' %}" class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl ">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+{% endblock page %}
