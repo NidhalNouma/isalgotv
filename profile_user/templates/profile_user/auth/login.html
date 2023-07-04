@@ -1,0 +1,126 @@
+{% extends 'page.html' %} {% block page %} {% load socialaccount %}
+
+<main class="my-auto mx-auto max-w-xl w-[27rem]">
+  <div class="text-title text-xl">
+    <h3 class="text-center">Log in to your</h3>
+    <h3 class="text-center">SStrategy Account</h3>
+  </div>
+
+  <div class="mt-8">
+    <a
+      href="{% provider_login_url 'google' %}"
+      class="justify-center w-full dark:text-text text-text-light bg-primary focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+    >
+      <svg
+        class="w-4 h-4 mr-2 -ml-1"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fab"
+        data-icon="google"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 488 512"
+      >
+        <path
+          fill="currentColor"
+          d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+        ></path>
+      </svg>
+      Sign in with Google
+    </a>
+
+    <div class="inline-flex items-center justify-center w-full">
+      <hr class="w-64 h-px my-8 bg-text border-0" />
+      <span
+        class="absolute px-3 font-medium text-text -translate-x-1/2 left-1/2 bg-background"
+        >or</span
+      >
+    </div>
+
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <label
+        for="email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Your Email</label
+      >
+      <div class="relative mb-6">
+        <div
+          class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+        >
+          <svg
+            aria-hidden="true"
+            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+            ></path>
+            <path
+              d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          type="text"
+          name="email"
+          id="email"
+          class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="name@company.com"
+        />
+      </div>
+      <label
+        for="password"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Password</label
+      >
+      <div class="relative mb-2">
+        <div
+          class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+        >
+          <svg
+            aria-hidden="true"
+            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          name="password"
+          type="password"
+          id="password"
+          class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="****************"
+        />
+      </div>
+
+      <a
+        href="{% url 'reset_password' %}"
+        class="mb-3 text-secondary text-sm font-bold"
+        >Forget password?</a
+      >
+      <button
+        type="submit"
+        class="mt-4 justify-center w-full dark:text-text text-text-light bg-primary focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+      >
+        Sign in
+      </button>
+    </form>
+
+    <div class="">
+      <span class="text-text text-xs">Don't have an account? </span>
+      <a href="{% url 'register' %}" class="text-secondary text-sm font-bold"
+        >Sign up</a
+      >
+    </div>
+  </div>
+</main>
+
+{% endblock page %}

@@ -1,0 +1,72 @@
+<div class="text-center p-4 bg-primaryi rounded-xl w-full border-2 border-text">
+  <h3 class="text-text text-2xl font-extrabold bg-background py-4 rounded-xl">
+    {{title}}
+  </h3>
+  <div class="mt-10">
+    <h3 class="text-text text-5xl font-bold">${{price}}</h3>
+    <h3 class="text-text text-xl mt-2">all-inclusive</h3>
+  </div>
+  <div class="mt-10 mb-2">
+    {% if user.is_authenticated %}
+    <button
+      data-modal-target="staticModal-{{title}}"
+      data-modal-toggle="staticModal-{{title}}"
+      class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+    >
+      Select
+    </button>
+    {% else %}
+    <a
+      href="{% url 'register' %}"
+      class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+      >Sign up</a
+    >
+    {% endif %}
+  </div>
+</div>
+
+<!-- Main modal -->
+<div
+  id="staticModal-{{title}}"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+>
+  <div class="relative w-full max-w-2xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-background rounded-lg shadow">
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600"
+      >
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          Subscribe to the {{title}} plan
+        </h3>
+        <button
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="staticModal-{{title}}"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <!-- Profits -->
+      <div class="max-w-md p-6 m-8 mx-auto mt-1">
+        {% include "include/pay_form.html" %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,12 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import index
+from .views import index, redirect_social, redirect_admin_login, redirect_admin_logout
 
 
 urlpatterns = [
+    path('accounts/social/signup/', redirect_social, name="redirect_social"),
+    path('admin/login/', redirect_admin_login, name="redirect_admin_login"),
+    path('admin/logout/', redirect_admin_logout, name="redirect_admin_logout"),
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('p/', include('profile_user.urls')),
     path('st/', include('strategies.urls')) 
 ]

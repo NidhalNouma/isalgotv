@@ -1,0 +1,35 @@
+<div
+  class="absolute top-0 left-0 hideMe max-h-[70vh] overflow-hidden pointer-events-none"
+>
+  <lottie-player
+    class="h-full w-full"
+    src="https://assets10.lottiefiles.com/packages/lf20_URdfaeLv3R.json"
+    background="transparent"
+    speed="1"
+    loop
+    autoplay
+  ></lottie-player>
+</div>
+<div
+  class="absolute top-0 right-0 hideMe max-h-[70vh] overflow-hidden pointer-events-none"
+>
+  <lottie-player
+    class="h-full w-full"
+    src="https://assets10.lottiefiles.com/packages/lf20_URdfaeLv3R.json"
+    background="transparent"
+    speed="1"
+    loop
+    autoPlay
+  ></lottie-player>
+</div>
+
+<script type="text/javascript">
+  function hideQueryParameters() {
+    var newUrl = window.location.pathname; // Get the current URL without the query parameters
+    history.replaceState({}, document.title, newUrl); // Replace the URL without query parameters
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    hideQueryParameters();
+  });
+</script>

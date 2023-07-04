@@ -35,3 +35,13 @@ html {
         @apply absolute text-title border-r-2 border-title top-[-100%] left-0 w-0 h-[100%] overflow-hidden animate-animate
     }
 }
+
+
+.hideMe {
+  animation: cssAnimation 6s forwards;
+}
+@keyframes cssAnimation {
+  0%   {opacity: 1;}
+  90%  {opacity: 1;}
+  100% {opacity: 0;}
+}

@@ -14,4 +14,4 @@ class User_Profile(models.Model):
     customer_id = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.user.id
+        return self.user.username
