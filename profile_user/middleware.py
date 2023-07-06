@@ -1,10 +1,13 @@
 from .models import User_Profile
 import environ
+import datetime
 env = environ.Env()
 
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
-# print(stripe.api_key)
+
+from django.conf import settings
+PRICE_LIST = settings.PRICE_LIST
 
 def check_user_and_stripe_middleware(get_response):
     # One-time configuration and initialization.
@@ -16,6 +19,16 @@ def check_user_and_stripe_middleware(get_response):
 
         current_user = request.user
 
+        user_profile = None
+        subscription = None
+        subscription_period_end = None
+        subscription_active = None
+        subscription_status = None
+        subscription_price_id = None
+        subscription_plan = None
+
+
+
         if current_user.is_authenticated:
             try: 
                 user_profile = User_Profile.objects.get(user=current_user)
@@ -26,29 +39,37 @@ def check_user_and_stripe_middleware(get_response):
                 customer = stripe.Customer.create(
                         email=current_user.email,
                         name=current_user.username,
-                        # shipping={
-                        #     "address": {
-                        #     "city": "Brothers",
-                        #     "country": "US",
-                        #     "line1": "27 Fredrick Ave",
-                        #     "postal_code": "97712",
-                        #     "state": "CA",
-                        #     },
-                        #     "name": "{{CUSTOMER_NAME}}",
-                        # },
-                        # address={
-                        #     "city": "Brothers",
-                        #     "country": "US",
-                        #     "line1": "27 Fredrick Ave",
-                        #     "postal_code": "97712",
-                        #     "state": "CA",
-                        # },
                     )
                 # print(customer)
                 if customer.id:
-                    user_profile = User_Profile.objects.filter(user=current_user).update(customer_id=customer.id)
+                    user_profile = User_Profile.objects.get(user=current_user)
+                    user_profile.customer_id = customer.id
+                    user_profile.save()
 
             request.user_profile = user_profile
+
+            if user_profile.subscription_id:
+                subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
+
+                end_timestamp = subscription.current_period_end * 1000
+                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
+                subscription_period_end = end_time
+                subscription_active = subscription.plan.active
+                subscription_status = subscription.status
+                subscription_price_id = subscription.plan.id
+                for key, val in PRICE_LIST.items():  
+                    if val == subscription_price_id: 
+                        subscription_plan = key
+
+        
+        request.user_profile = user_profile
+        request.subscription = subscription
+        request.subscription_period_end = subscription_period_end
+        request.subscription_active = subscription_active
+        request.subscription_status = subscription_status
+        request.subscription_price_id = subscription_price_id
+        request.subscription_plan = subscription_plan
+
         
         response = get_response(request)
 

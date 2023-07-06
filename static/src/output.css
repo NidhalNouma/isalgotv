@@ -1279,6 +1279,14 @@ input:checked + .toggle-bg {
   margin-top: auto;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .line-clamp-3 {
   overflow: hidden;
   display: -webkit-box;
@@ -1591,6 +1599,10 @@ input:checked + .toggle-bg {
   cursor: pointer;
 }
 
+.cursor-none {
+  cursor: none;
+}
+
 .resize {
   resize: both;
 }
@@ -1835,6 +1847,11 @@ input:checked + .toggle-bg {
 .border-green-300 {
   --tw-border-opacity: 1;
   border-color: rgb(132 225 188 / var(--tw-border-opacity));
+}
+
+.border-title {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--color-title) / var(--tw-border-opacity));
 }
 
 .bg-accent {
@@ -2109,6 +2126,11 @@ input:checked + .toggle-bg {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .pl-10 {

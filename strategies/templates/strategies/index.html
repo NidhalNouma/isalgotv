@@ -3,7 +3,11 @@
 
 {% block page %}
 
+    {% if subscription %}
+    <h1 class="mt-8 text-left text-6xl text-title font-extrabold">Strategies</h1>
+    {% else %}
     <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
+    {% endif %}
 
     <main class="mt-8 mb-16 grid md:grid-cols-2 grid-col-1 gap-4">
 

@@ -7,15 +7,51 @@
     <h3 class="text-text text-xl mt-2">all-inclusive</h3>
   </div>
   <div class="mt-10 mb-2">
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated %} {% if subscription %} 
+    {%if subscription_plan == title %}
+    {% if subscription_status == 'canceled' %}
     <button
+      onclick="mountStripeElement('{{title}}')"
+      data-modal-target="staticModal-{{title}}"
+      data-modal-toggle="staticModal-{{title}}"
+      class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+    >
+      Renew
+    </button>
+    {% else %}
+    <button
+      data-modal-target="staticModal-{{title}}"
+      data-modal-toggle="staticModal-{{title}}"
+      class="pointer-events-none bg-transparentl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+    >
+      Cuurent plan
+    </button>
+    {% endif %}
+    
+
+    {% else %}
+    <button
+      onclick="mountStripeElement('{{title}}')"
+      data-modal-target="staticModal-{{title}}"
+      data-modal-toggle="staticModal-{{title}}"
+      class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+    >
+    {% if subscription_plan == 'MONTHLY' %} Upgrade
+    {% elif subscription_plan == 'YEARLY' %} Downgrade
+    {% elif title == 'MONTHLY' %} Downgrade
+    {% else %} Upgrade
+    {% endif %}
+    </button>
+    {%endif%} {% else %}
+    <button
+      onclick="mountStripeElement('{{title}}')"
       data-modal-target="staticModal-{{title}}"
       data-modal-toggle="staticModal-{{title}}"
       class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
     >
       Select
     </button>
-    {% else %}
+    {% endif %} {% else %}
     <a
       href="{% url 'register' %}"
       class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
@@ -44,6 +80,7 @@
           Subscribe to the {{title}} plan
         </h3>
         <button
+          onclick="unmountStripeElement()"
           type="button"
           class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
           data-modal-hide="staticModal-{{title}}"
@@ -65,7 +102,7 @@
       <!-- Modal body -->
       <!-- Profits -->
       <div class="max-w-md p-6 m-8 mx-auto mt-1">
-        {% include "include/pay_form.html" %}
+        {% include "include/pay_form_stripe.html" %}
       </div>
     </div>
   </div>

@@ -189,3 +189,11 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# Prices
+
+PRICE_LIST = {
+    'MONTHLY': env('STRIPE_PRICE_MN_ID'),
+    'QUARTERLY': env('STRIPE_PRICE_6MN_ID'),
+    'YEARLY': env('STRIPE_PRICE_Y_ID'),
+}

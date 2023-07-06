@@ -5,8 +5,15 @@ from .models import *
 # Create your views here.
 
 def get_strategies(request):
+
+    subscription = request.subscription
+    subscription_period_end = request.subscription_period_end
+    subscription_plan = request.subscription_plan
+    subscription_status = request.subscription_status
+
     strategies = Strategy.objects.all()
-    return render(request, 'index.html', {'strategies': strategies})
+    context =  {'strategies': strategies, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
+    return render(request, 'index.html', context)
 
 def get_strategy(request, id):
     strategy = {}
