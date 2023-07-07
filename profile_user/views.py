@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
+from django_htmx.http import trigger_client_event
 
 from .models import User_Profile
 from .forms import User_ProfileForm, PaymentCardForm
@@ -50,8 +51,8 @@ def home(request):
             congrate = True
             step = 2
     
-    request.GET = request.GET.copy()
-    request.GET.clear()
+    # request.GET = request.GET.copy()
+    # request.GET.clear()
 
     context = {'user_profile': user_profile, "congrate": congrate, 'step':step }
     return render(request,'home.html', context)
@@ -73,6 +74,22 @@ def membership(request):
     
     # print(request.user_profile)
     return render(request, 'membership.html', context)
+
+
+@login_required(login_url='login')
+def settings_page(request):
+    user_profile = request.user_profile
+    subscription = request.subscription
+    subscription_period_end = request.subscription_period_end
+    subscription_plan = request.subscription_plan
+    subscription_status = request.subscription_status
+
+    context = {'user_profile': user_profile,
+              'subscription': subscription,
+              'subscription_plan': subscription_plan,
+              'subscription_period_end': subscription_period_end,
+              'subscription_status': subscription_status}
+    return render(request, 'settings.html', context)
 
 def register(request):
     if request.user.is_authenticated:
@@ -131,14 +148,35 @@ def get_profile(request):
     
 
 @require_http_methods([ "POST"])
+def update_user_password(request):
+    if request.user.is_authenticated:
+        form = PasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return render(request, 'include/settings/password.html', {'msg': 'Password updated succesfully!'})
+
+        # password = request.POST.get('password', '')
+        # new_password = request.POST.get('new_password', '')
+        # confirm_new_password = request.POST.get('confirm_new_password', '') 
+
+        return render(request, 'include/settings/password.html', {'error': form.errors})
+
+@require_http_methods([ "POST"])
 def edit_tradingview_username(request):
+
+    page = request.GET.get('pg','')
     if request.user.is_authenticated:
         profile_user = User_Profile.objects.get(user=request.user)
 
         profile_user.tradingview_username = request.POST.get('tradingview_username')
         profile_user.save()
-        return HttpResponseClientRedirect(reverse('home'))
-
+        if not page:
+            return HttpResponseClientRedirect(reverse('home'))
+        else:
+            response = render(request, 'include/settings/tradingview.html', {'user_profile': profile_user, 'msg': 'Username updated succesfully!'})
+            return trigger_client_event(response, 'hide-animate')
 
 
 @require_http_methods([ "POST"])
