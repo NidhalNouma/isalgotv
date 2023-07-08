@@ -13,17 +13,118 @@
     {% if subscription_status == 'canceled' %}
     <p class="mt-2 text-left text-title text-base">
       Your subscription was canceled, end on
-      <span class="text-title"
-        >{{ subscription_period_end|date:'M d yy' }}</span
+      <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span>
+    </p>
+    <p class="mt-4 text-right text-text text-sm">
+      Click
+      <a
+        href="{% url 'membership' %}"
+        class="cursor-pointer underline font-semibold"
+        >here</a
       >
+      to renew
     </p>
     {% else %}
     <p class="mt-2 text-left text-title text-base">
       Your subscription renew on
-      <span class="text-title"
-        >{{ subscription_period_end|date:'M d yy' }}</span
-      >
+      <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span>
     </p>
+
+    <p class="mt-4 text-right text-text text-xs">
+      Click
+      <span
+        data-modal-target="staticModal-cancel"
+        data-modal-toggle="staticModal-cancel"
+        class="cursor-pointer underline font-semibold"
+        >here</span
+      >
+      to cancel
+    </p>
+
+    <!-- Main modal -->
+    <div
+      id="staticModal-cancel"
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-background rounded-lg shadow">
+          <!-- Modal header -->
+          <div
+            class="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Cancel membership
+            </h3>
+            <button
+              onclick=""
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="staticModal-cancel"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <form
+            hx-post="{% url 'membership-cancel' %}"
+            hx-target="#setting-membership"
+            class="max-w-md p-6 m-8 mx-auto mt-1"
+          >
+            {% csrf_token %}
+            <div
+              class="flex items-center px-4 py-2 mb-0 text-sm text-yellow-800 rounded-lg bg-transparent dark:text-yellow-300"
+              role="alert"
+            >
+              <svg
+                class="flex-shrink-0 inline w-4 h-4 mr-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+                />
+              </svg>
+              <span class="sr-only">Info</span>
+              <div>
+                By canceling your membership you'll no longer have access to our
+                products after the current period end.
+              </div>
+            </div>
+            <div class="mt-4 flex items-center justify-around">
+              <button
+                data-modal-hide="staticModal-cancel"
+                type="submit"
+                class="text-text font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="font-semibold justify-center max-w-xs dark:text-text text-text-light bg-primary focus:ring-4 focus:outline-none rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+              >
+                Return
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     {% endif %}
   </div>
   {% else %}

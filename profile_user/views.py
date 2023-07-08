@@ -13,6 +13,7 @@ from .models import User_Profile
 from .forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect
 
+import datetime
 import environ
 env = environ.Env()
 
@@ -72,7 +73,6 @@ def membership(request):
               'subscription_period_end': subscription_period_end,
               'subscription_status': subscription_status}
     
-    # print(request.user_profile)
     return render(request, 'membership.html', context)
 
 
@@ -178,91 +178,6 @@ def edit_tradingview_username(request):
             response = render(request, 'include/settings/tradingview.html', {'user_profile': profile_user, 'msg': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')
 
-
-@require_http_methods([ "POST"])
-def create_subscription(request):
-    if request.method == 'POST':
-        # return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
-
-        plan_id = request.GET.get('plan','')
-        price_id = PRICE_LIST.get(plan_id, '')
-
-        if not price_id:
-            context = {"error": 'No plan has been specified, please refresh the page and try again.'}
-            return render(request, 'include/pay_form.html', context)
-
-        data = request.POST
-
-        card_name = data['cardName']
-        card_number = data['cardNumber'].replace(" ", "")
-        card_exp_year = data['cardExpYear']
-        card_exp_month = data['cardExpMonth']
-        card_cvc = data['cardCVC']
-
-        form = PaymentCardForm({
-            'card_name': card_name ,
-             'card_number': card_number, 
-             'card_exp_year': card_exp_year, 
-             'card_exp_month': card_exp_month, 
-             'card_cvc': card_cvc
-             })
-        
-        payment_method = None
-
-        if form.is_valid():
-            try:
-                payment_method = stripe.PaymentMethod.create(
-                    type="card",
-                    card={
-                        "number": card_number,
-                        "exp_month": int(card_exp_month),
-                        "exp_year": int(card_exp_year),
-                        "cvc": card_cvc,
-                        # 'card': {'token': "tok_visa"},
-                    },
-                )
-            except Exception as e:
-                context = {"error": 'Adding payment method '+str(e), 'title': plan_id}
-                return render(request, 'include/pay_form.html', context)
-        else:
-            context = {"error": str(e), 'title': plan_id}
-            return render(request, 'include/pay_form.html', context)
-
-        
-        print(payment_method)
-        profile_user = User_Profile.objects.get(user=request.user)
-        customer_id = profile_user.customer_id
-
-        try:
-            stripe.PaymentMethod.attach(
-                payment_method.id,
-                customer=customer_id,
-            )
-        except Exception as e:
-            context = {"error": 'Attached payment to customer '+str(e), 'title': plan_id}
-            return render(request, 'include/pay_form.html', context)
-        try:
-            # Create the subscription. Note we're expanding the Subscription's
-            # latest invoice and that invoice's payment_intent
-            # so we can pass it to the front end to confirm the payment
-            subscription = stripe.Subscription.create(
-                customer=customer_id,
-                items=[{
-                    'price': price_id,
-                }],
-                payment_behavior='default_incomplete',
-                payment_settings={'save_default_payment_method': 'on_subscription'},
-                expand=['latest_invoice.payment_intent'],
-            )
-
-            User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
-            # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
-            return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
-
-        except Exception as e:
-            context = {"error": str(e), 'title': plan_id}
-            return render(request, 'include/pay_form.html', context)
-
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
     if request.method == 'POST':
@@ -321,3 +236,37 @@ def create_subscription_stripeform(request):
         except Exception as e:
             context["error"] = "Creating subscription "  +str(e)
             return render(request, 'include/pay_form_stripe.html', context)
+
+@require_http_methods([ "POST"])
+def cancel_subscription(request):
+    if request.method == 'POST':
+        subscription = request.subscription
+        subscription_period_end = request.subscription_period_end
+        subscription_plan = request.subscription_plan
+        subscription_status = request.subscription_status
+        context = { 'subscription_status': subscription_status, 
+                'subscription_period_end': subscription_period_end, 
+                'subscription_plan':subscription_plan, 
+                'subscription': subscription, 
+                'error': "" } 
+        if subscription.id:
+            try:
+                # cancel_subscription = stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
+                cancel_subscription = stripe.Subscription.delete(subscription.id)
+                context['subscription'] = cancel_subscription
+                context['subscription_status'] = cancel_subscription.status
+
+                end_timestamp = cancel_subscription.current_period_end * 1000
+                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
+                context['subscription_period_end'] = end_time
+
+                return render(request, 'include/settings/membership.html', context)
+            except Exception as e:
+                pass
+
+        context['error'] = 'error occured while trying to cancel subscription.'
+
+        return render(request, 'include/settings/membership.html', context)
+    
+
+

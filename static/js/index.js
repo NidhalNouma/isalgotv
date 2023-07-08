@@ -25,14 +25,14 @@ function validateNumberInput(input, maxLength) {
   input.value = formattedValue.trim();
 }
 
-let stripe, cardElement;
+let stripe, cardElement, elements;
 
 function mountStripeElement(id) {
   if (!stripe) {
     stripe = Stripe(
       "pk_test_51NQMS2J5gHo8PE1NkuozkIhIpTZ04rH9zWLHdqqFwSTTPG3ciGfylBLolIdsaYnddawM6sN55JmoTuJCNjEQO4ST00JFXmLBeR"
     );
-    const elements = stripe.elements();
+    elements = stripe.elements();
     cardElement = elements.create("card", {
       hidePostalCode: true,
       style: {
@@ -56,8 +56,9 @@ function mountStripeElement(id) {
   cardElement.mount("#card-element-" + id);
 }
 
-function unmountStripeElement() {
+function unmountStripeElement(title) {
   cardElement.unmount();
+  closeLoader(title);
 }
 
 async function onPayFormStripeSubmit(title) {

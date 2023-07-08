@@ -1,4 +1,4 @@
-<div class="text-center p-4 bg-primaryi rounded-xl w-full border-2 border-text">
+<div class="text-center py-4 px-12 bg-primaryi rounded-xl w-full border-2 border-text">
   <h3 class="text-text text-2xl font-extrabold bg-background py-4 rounded-xl">
     {{title}}
   </h3>
@@ -14,7 +14,7 @@
       onclick="mountStripeElement('{{title}}')"
       data-modal-target="staticModal-{{title}}"
       data-modal-toggle="staticModal-{{title}}"
-      class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+      class="w-full cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
     >
       Renew
     </button>
@@ -34,7 +34,7 @@
       onclick="mountStripeElement('{{title}}')"
       data-modal-target="staticModal-{{title}}"
       data-modal-toggle="staticModal-{{title}}"
-      class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+      class="w-full cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
     >
     {% if subscription_plan == 'MONTHLY' %} Upgrade
     {% elif subscription_plan == 'YEARLY' %} Downgrade
@@ -47,14 +47,14 @@
       onclick="mountStripeElement('{{title}}')"
       data-modal-target="staticModal-{{title}}"
       data-modal-toggle="staticModal-{{title}}"
-      class="cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+      class="w-full cursor-pointer bg-secondary hover:bg-gradient-to-bl mx-auto mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
     >
       Select
     </button>
     {% endif %} {% else %}
     <a
       href="{% url 'register' %}"
-      class="bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
+      class="w-full bg-gradient-to-br from-primary to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light bg-primary-light dark:bg-primary-dark text-2xl font-bold px-12 py-3 rounded-xl"
       >Sign up</a
     >
     {% endif %}
@@ -80,7 +80,7 @@
           Subscribe to the {{title}} plan
         </h3>
         <button
-          onclick="unmountStripeElement()"
+          onclick="unmountStripeElement('{{title}}')"
           type="button"
           class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
           data-modal-hide="staticModal-{{title}}"

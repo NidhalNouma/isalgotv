@@ -6,6 +6,7 @@ urlpatterns = [
     path('', home, name="home"),
     path('membership/', membership, name="membership"),
     path('membership/create', create_subscription_stripeform, name="membership-create"),
+    path('membership/cancel', cancel_subscription, name="membership-cancel"),
     path('profile/', get_profile, name='profile'),
     path('profile/update/tradingview_username', edit_tradingview_username, name='update-tradingview-username'),
     path('settings/', settings_page, name='settings'),
