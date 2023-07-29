@@ -13,7 +13,7 @@ def get_strategies(request):
 
     strategies = Strategy.objects.all()
     context =  {'strategies': strategies, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
-    return render(request, 'index.html', context)
+    return render(request, 'strategies.html', context)
 
 def get_strategy(request, id):
     strategy = {}

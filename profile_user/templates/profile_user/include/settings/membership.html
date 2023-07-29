@@ -129,13 +129,27 @@
   </div>
   {% else %}
   <div class="">
-    <h6 class="text-text">
-      Looks like you're not subscribing to any of our plans.
-    </h6>
-    <a
-      href="{% url 'membership' %}"
-      class="mt-4 justify-center w-full dark:text-text text-text-light bg-primary focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+    <div
+      class="flex items-center px-4 py-2 mb-0 text-sm text-yellow-800 rounded-lg bg-transparent dark:text-yellow-300"
+      role="alert"
     >
+      <svg
+        class="flex-shrink-0 inline w-4 h-4 mr-3"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+        />
+      </svg>
+      <span class="sr-only">Info</span>
+      <h6 class="text-sm">
+        Looks like you're not subscribing to any of our plans.
+      </h6>
+    </div>
+    <a href="{% url 'membership' %}" class="btn-primary mt-4 mb-2 w-full">
       Membership
     </a>
   </div>

@@ -30,14 +30,16 @@ def home(request):
     step = 1
     user_profile = False
 
-    if request.user_profile:
-        user_profile = request.user_profile
-        
-        if user_profile.tradingview_username:
-            step = 3
-
     if request.subscription == None:
         step = 1
+    else:
+        if request.subscription_active == True:
+            step = 2
+        if request.user_profile:
+            user_profile = request.user_profile
+            
+            if user_profile.tradingview_username:
+                step = 3
     
     print('t ', request.subscription)
     print('r ', request.subscription_period_end)

@@ -79,6 +79,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / "templates", 
                  BASE_DIR / "etradingview/templates",
+                 BASE_DIR / "etradingview/templates/etradingview",
                  BASE_DIR / "profile_user/templates/profile_user",
                  BASE_DIR / "strategies/templates/strategies"],
         'APP_DIRS': True,

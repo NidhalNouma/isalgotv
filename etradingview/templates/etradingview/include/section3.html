@@ -1,0 +1,14 @@
+<li
+  class="relative flex items-center p-4 py-8 rounded-xl border-0 border-secondary"
+>
+  <span
+    class="w-10 min-w-[3rem] aspect-square bg-title rounded-full text-background font-semibold text-xl flex items-center justify-center mx-2"
+    >{{no}}</span
+  >
+  <h3 class="font-bold">{{text}}</h3>
+  {% if no != "1" %}
+  <div
+    class="absolute p-1 h-[50%] -z-10 top-[-25%] left-[2.8rem] rounded-full bg-title blur-"
+  ></div>
+  {% endif %}
+</li>

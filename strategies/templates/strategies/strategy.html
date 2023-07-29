@@ -3,9 +3,7 @@
 <div class="mt-8 flex justify-between">
   <h1 class="text-left text-2xl text-title font-bold">Strategy name</h1>
   {% if not subscription %}
-  <a
-    href="{% url 'membership' %}"
-    class="bg-accent text-black text-sm font-bold px-8 py-2 rounded-lg"
+  <a href="{% url 'membership' %}" class="btn-accent font-semibold"
     >Get access</a
   >
   {% endif %}
