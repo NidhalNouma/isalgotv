@@ -24,7 +24,9 @@
   <body class="bg-background flex flex-col min-h-screen overflow-x-hidden">
     {% include 'navbar.html' %}
 
-    <div class="container mx-auto mt-4 grow flex flex-col px-6 relative">
+    <div
+      class="container mx-auto mt-4 grow flex flex-col px-6 relative overflow-x-clip sm:overflow-x-visible"
+    >
       {% block page %} {% endblock page %}
     </div>
 
