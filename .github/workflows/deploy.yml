@@ -11,5 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: cp ~/.env ./etradingiew
-      - run: docker build --tag isalgo .
-      - run: docker run --publish 80:8000 isalgo
+      - run: sudo docker build --tag isalgo .
+      - run: sudo docker run --publish 80:8000 isalgo
