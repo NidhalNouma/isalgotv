@@ -37,6 +37,7 @@ ALLOWED_HOSTS = [
     "isalgo.com",
     "www.isalgo.com",
     env("IP_URL"),
+    '*',
 ]
 
 
