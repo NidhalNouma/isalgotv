@@ -31,14 +31,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    "isalgo.com",
-    "www.isalgo.com",
-    env("IP_URL"),
-    '*',
-]
+ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -82,11 +78,11 @@ ROOT_URLCONF = 'etradingview.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates", 
-                 BASE_DIR / "etradingview/templates",
-                 BASE_DIR / "etradingview/templates/etradingview",
-                 BASE_DIR / "profile_user/templates/profile_user",
-                 BASE_DIR / "strategies/templates/strategies"],
+        'DIRS': [ "templates", 
+                 BASE_DIR / "templates",
+                 BASE_DIR / "templates/etradingview",
+                 "profile_user/templates/profile_user",
+                 "strategies/templates/strategies"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -148,7 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = ["static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -157,7 +153,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Composer settings for tailwind css
 
-COMPRESS_ROOT = BASE_DIR / 'static'
+COMPRESS_ROOT = 'static'
 
 COMPRESS_ENABLED = True
 

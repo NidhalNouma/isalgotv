@@ -1,9 +1,9 @@
 {% extends 'page.html' %} {% block page %} 
 <div class="absolute top-[-12rem] aspect-square w-[36%] bg-primary/50  blur-[80px] rounded-full -z-10"></div>
 <div class="absolute top-[0%] right-[0%] aspect-square w-[36%] bg-secondary/50  blur-[150px] -z-10 rounded-full"></div>
-<main class="mx-8 ">
-  <div class="relative flex flex-col">
-    <h2 class="text-title text-5xl font-extrabold text-center mt-16 leading-[4rem]">
+<main class="relative mx-4 md:mx-8 min-h-[85vh] flex flex-col items-center">
+  <div class="relative mt-auto">
+    <h2 class="text-title text-5xl font-extrabold text-center mt-8 md:mt-16 leading-[4rem]">
       Elevate your trading prowess with our advanced <br/><span class="bg-yellow-200 dark:text-background">trading strategies</span> 
     </h2>
     <h2 class="text-text text-xl font-extrabold text-center mt-8">
@@ -14,7 +14,7 @@
       Experience the power yourself
     </h2>
   </div>
-  <div class="flex flex-col w-full mt-4">
+  <div class="flex flex-col w-full mt-4 mb-auto">
     <a
       href="{% url 'register' %}"
       class="btn-primary-landing"
@@ -22,7 +22,7 @@
     >
   </div>
 
-  <div class="mx-auto w-full h-96 mt-12">
+  <div class="mx-auto w-full h-96 mt-auto hiddeni sm:block sm:static absolute top-[25%] -z-10 blur-sm sm:blur-0 contrast-[0.25]	sm:contrast-100">
     <lottie-player
       class="h-full w-full"
       src="https://assets1.lottiefiles.com/packages/lf20_rMIWDc0fSB.json"
@@ -56,7 +56,7 @@
   </h2>
 
   <div class="w-full mt-14 relative">
-    <ul class="relative mx-auto text-text max-w-4xl w-10/12 p-6" id="get-start-list">
+    <ul class="relative mx-auto text-text max-w-2xl p-0 sm:p-6" id="get-start-list">
       {% include "include/section3.html" with no="1" text="Join us today to sign up and create your account hassle-free" %}
       {% include "include/section3.html" with no="2" text="Select the ideal plan that suits your specific needs and trading goals" %}
       {% include "include/section3.html" with no="3" text="Share your TradingView username with us, and we'll ensure you get full access to our comprehensive suite of products" %}
