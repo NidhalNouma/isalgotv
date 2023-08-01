@@ -21,10 +21,15 @@ jobs:
           echo "STRIPE_PRICE_MN_ID=${{ secrets.STRIPE_PRICE_MN_ID }}" >> .env
           echo "STRIPE_PRICE_6MN_ID=${{ secrets.STRIPE_PRICE_6MN_ID }}" >> .env
           echo "STRIPE_PRICE_Y_ID=${{ secrets.STRIPE_PRICE_Y_ID }}" >> .env
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> .env
+          echo "DATABASE_PASS=${{ secrets.DATABASE_PASS }}" >> .env
 
       - run: mv .env ./etradingview/settings
       - run: sudo docker rmi --force $(docker images -q 'isalgo' | uniq) || echo "No isalgo image founddd"
       - run: sudo docker stop isalgo_run || echo "No isalgo run container founddd to stop"
       - run: sudo docker rm isalgo_run || echo "No isalgo run container founddd to remove"
       - run: sudo docker build --progress=plain --no-cache --tag isalgo .
-      - run: sudo ocker run -e "DJANGO_SETTINGS_MODULE=etradingview.settings.prod" -d --name isalgo_run --publish 3000:8000 isalgo
+      - run: sudo docker run -e "DJANGO_SETTINGS_MODULE=etradingview.settings.prod" -d --name isalgo_run --publish 80:8000 isalgo
+      - run: rm ./etradingview/settings/.env
