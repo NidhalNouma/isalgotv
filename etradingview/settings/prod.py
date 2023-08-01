@@ -12,6 +12,8 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com','https://*.127.0.0.1','http://*.isalgo.com','http://*.127.0.0.1']
+
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
