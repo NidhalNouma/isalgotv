@@ -106,7 +106,7 @@ def register(request):
             user.email = user.username
             user.save()
             User_Profile.objects.create(user = user)
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
         else:
             print(form.errors)
@@ -128,12 +128,13 @@ def login_user(request):
 
         try:
             user = User.object.get(username = email)
+            print(user)
         except:
             messages.error(request, "User does not exist!")
 
         user = authenticate(request, username = email, password = password)
         if user is not None:
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
         else:
             messages.error(request, "Email or Password does not exist!")
