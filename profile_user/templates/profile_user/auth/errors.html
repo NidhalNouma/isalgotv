@@ -1,0 +1,27 @@
+{% if messages %}
+<div
+  class="flex p-4 mb-0 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-900 dark:text-red-200"
+  role="alert"
+>
+  <div>
+    <ul class="font-medium">
+      {% for message in messages %}
+      <li class="">{{ message }}</li>
+      {% endfor %} {% if form.errors %} {% for field in form %}
+      {% if field.errors %}
+      <li class="">
+        {% if field.errors.as_text == "* This field is required." %}
+        {%if field.label == "Username" %}
+        Email
+        {% else %}
+        {{field.label}} 
+        {% endif %}
+        {% endif %}
+        {{ field.errors.as_text }}
+      </li>
+      {%endif%}
+      {% endfor %} {% endif %}
+    </ul>
+  </div>
+</div>
+{% endif %}

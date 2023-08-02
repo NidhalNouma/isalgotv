@@ -96,6 +96,8 @@ def settings_page(request):
 def register(request):
     if request.user.is_authenticated:
         return redirect('home')
+    
+    form = UserCreationForm()
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST) 
@@ -109,10 +111,9 @@ def register(request):
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
         else:
-            print(form.errors)
             messages.error(request, "An error occurred while registering")
 
-    return render(request,'auth/register.html', {'form': UserCreationForm()})
+    return render(request,'auth/register.html', {'form': form})
 
 def logout_user(request):
     logout(request)
@@ -127,19 +128,18 @@ def login_user(request):
         password = request.POST.get('password')
 
         try:
-            user = User.object.get(username = email)
-            print(user)
-        except:
+            user = User.objects.get(username = email)
+        except Exception as e:
             messages.error(request, "User does not exist!")
+            return render(request, 'auth/login.html')
 
         user = authenticate(request, username = email, password = password)
         if user is not None:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
         else:
-            messages.error(request, "Email or Password does not exist!")
+            messages.error(request, "Email or Password incorrect!")
 
-    
     return render(request, 'auth/login.html')
 
 def get_profile(request):
@@ -164,7 +164,7 @@ def update_user_password(request):
         # new_password = request.POST.get('new_password', '')
         # confirm_new_password = request.POST.get('confirm_new_password', '') 
 
-        return render(request, 'include/settings/password.html', {'error': form.errors})
+        return render(request, 'include/settings/password.html', {'form': form})
 
 @require_http_methods([ "POST"])
 def edit_tradingview_username(request):

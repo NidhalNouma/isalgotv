@@ -28,8 +28,8 @@ jobs:
 
       - run: mv .env ./etradingview/settings
       - run: sudo docker rmi --force $(docker images -q 'isalgo' | uniq) || echo "No isalgo image founddd"
+      - run: sudo docker build --progress=plain --no-cache --tag isalgo .
       - run: sudo docker stop isalgo_run || echo "No isalgo run container founddd to stop"
       - run: sudo docker rm isalgo_run || echo "No isalgo run container founddd to remove"
-      - run: sudo docker build --progress=plain --no-cache --tag isalgo .
       - run: sudo docker run -d --name isalgo_run --publish 80:8000 isalgo
       - run: rm ./etradingview/settings/.env

@@ -50,6 +50,14 @@
     .wellcome-before {
       @apply absolute text-title border-r-2 border-title top-[-100%] left-0 w-0 h-[100%] overflow-hidden animate-animate;
     }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
 }
 
 
