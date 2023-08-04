@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', # for Google OAuth
+    'ckeditor',
 
     "django_htmx",
 ]
@@ -202,4 +203,14 @@ PRICE_LIST = {
     'MONTHLY': env('STRIPE_PRICE_MN_ID'),
     'QUARTERLY': env('STRIPE_PRICE_6MN_ID'),
     'YEARLY': env('STRIPE_PRICE_Y_ID'),
+}
+
+# CKEDITOR Text Editor
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
 }
