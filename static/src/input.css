@@ -32,7 +32,7 @@
       font-family: 'Arvo', serif;
     }
     
-    p, span, input, select, textarea, button, p, h4, h5, a {
+    p, span, input, select, textarea, button, p, h4, h5, h6, a {
       font-family: 'Kanit', sans-serif;
     }
   }

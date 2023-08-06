@@ -889,7 +889,7 @@ html, h1 span, h2 span, h3 span, h4 span, h5 span{
   font-family: 'Arvo', serif;
 }
 
-p, span, input, select, textarea, button, p, h4, h5, a {
+p, span, input, select, textarea, button, p, h4, h5, h6, a {
   font-family: 'Kanit', sans-serif;
 }
 
@@ -1334,9 +1334,19 @@ p, span, input, select, textarea, button, p, h4, h5, a {
   margin-bottom: 4rem;
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .my-8 {
@@ -1600,10 +1610,6 @@ p, span, input, select, textarea, button, p, h4, h5, a {
   width: 83.333333%;
 }
 
-.w-11\/12 {
-  width: 91.666667%;
-}
-
 .w-24 {
   width: 6rem;
 }
@@ -1660,6 +1666,11 @@ p, span, input, select, textarea, button, p, h4, h5, a {
   width: 36%;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-full {
   width: 100%;
 }
@@ -1686,10 +1697,6 @@ p, span, input, select, textarea, button, p, h4, h5, a {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.max-w-screen-xl {
-  max-width: 1280px;
 }
 
 .max-w-xl {
@@ -1925,6 +1932,10 @@ p, span, input, select, textarea, button, p, h4, h5, a {
 
 .whitespace-pre-line {
   white-space: pre-line;
+}
+
+.break-all {
+  word-break: break-all;
 }
 
 .rounded-full {
@@ -2232,6 +2243,16 @@ p, span, input, select, textarea, button, p, h4, h5, a {
   padding-right: 2rem;
 }
 
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -2439,6 +2460,14 @@ p, span, input, select, textarea, button, p, h4, h5, a {
   color: hsl(var(--color-text-light) / var(--tw-text-opacity));
 }
 
+.text-text\/50 {
+  color: hsl(var(--color-text) / 0.5);
+}
+
+.text-text\/70 {
+  color: hsl(var(--color-text) / 0.7);
+}
+
 .text-title {
   --tw-text-opacity: 1;
   color: hsl(var(--color-title) / var(--tw-text-opacity));
@@ -2456,6 +2485,14 @@ p, span, input, select, textarea, button, p, h4, h5, a {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
+}
+
+.text-title\/70 {
+  color: hsl(var(--color-title) / 0.7);
+}
+
+.text-title\/50 {
+  color: hsl(var(--color-title) / 0.5);
 }
 
 .underline {
@@ -2862,6 +2899,11 @@ p, span, input, select, textarea, button, p, h4, h5, a {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+:is(.dark .hover\:dark\:text-background):hover {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-background) / var(--tw-text-opacity));
+}
+
 :is(.dark .dark\:focus\:border-blue-500:focus) {
   --tw-border-opacity: 1;
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
@@ -3026,10 +3068,5 @@ p, span, input, select, textarea, button, p, h4, h5, a {
 
   .md\:p-0 {
     padding: 0px;
-  }
-
-  .md\:px-16 {
-    padding-left: 4rem;
-    padding-right: 4rem;
   }
 }

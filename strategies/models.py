@@ -1,51 +1,13 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
+from profile_user.models import User_Profile
 
 from ckeditor.fields import RichTextField
 
 # Create your models here.
 
-class StrategyImages(models.Model):
-    name = models.CharField(max_length=100)
-    img = models.ImageField(upload_to='strategies_images/')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-class StrategyComments(models.Model):
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    imagees = models.ManyToManyField(StrategyImages)
-    description = models.TextField()
-
-class StrategyResults(models.Model):
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    imagees = models.ManyToManyField(StrategyImages)
-    settings = models.JSONField(default=dict)
-    description = models.TextField()
-
-
-    TIME_FRAME = [
-        ("S", "Seconds"),
-        ("M", "Minutes"),
-        ("H", "Hours"),
-        ("W", "Weeks"),
-        ("Mn", "Months"),
-        ("R", "Range"),
-    ]
-
-    test_start_at = models.DateTimeField()
-    test_end_at = models.DateTimeField()
-    time_frame_int = models.IntegerField(default=1)
-    time_frame = models.CharField(max_length=2, choices=TIME_FRAME, default="M")
-
-    pair = models.CharField(max_length=100)
-    net_profit = models.DecimalField(decimal_places=2, max_digits=2)
-    net_profit_percentage = models.DecimalField(decimal_places=2, max_digits=2)
-    max_drawdown = models.DecimalField(decimal_places=2, max_digits=2)
-    max_drawdown_percentage = models.DecimalField(decimal_places=2, max_digits=2)
-    profit_factor = models.DecimalField(decimal_places=5, max_digits=5)
-    profitable_percentage = models.DecimalField(decimal_places=2, max_digits=2)
-    total_trade = models.IntegerField()
 
 class Strategy(models.Model):
     TYPE = [
@@ -62,14 +24,57 @@ class Strategy(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     tradingview_ID = models.CharField(max_length=100)
     tradingview_url = models.URLField(blank=True)
-    imagees = models.ManyToManyField(StrategyImages)
-    results = models.ManyToManyField(StrategyResults)
     video_url = models.URLField(blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     settings = models.JSONField(default=dict)
     settings_types = models.JSONField(default=dict)
     
-
     def __str__(self):
         return self.name
     
+class StrategyComments(models.Model):
+    created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField()
+    strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
+
+class StrategyResults(models.Model):
+    strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
+    created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    settings = models.JSONField(default=dict)
+    description = models.TextField()
+    votes = models.IntegerField(default=0)
+
+    TIME_FRAME = [
+        ("S", "Seconds"),
+        ("M", "Minutes"),
+        ("H", "Hours"),
+        ("W", "Weeks"),
+        ("Mn", "Months"),
+        ("R", "Range"),
+    ]
+
+    test_start_at = models.DateTimeField()
+    test_end_at = models.DateTimeField()
+    time_frame_int = models.IntegerField(default=1)
+    time_frame = models.CharField(max_length=2, choices=TIME_FRAME, default="M")
+
+    pair = models.CharField(max_length=100)
+    net_profit = models.DecimalField(decimal_places=2, max_digits=10)
+    net_profit_percentage = models.DecimalField(decimal_places=2, max_digits=10)
+    max_drawdown = models.DecimalField(decimal_places=2, max_digits=10)
+    max_drawdown_percentage = models.DecimalField(decimal_places=2, max_digits=10)
+    profit_factor = models.DecimalField(decimal_places=5, max_digits=12)
+    profitable_percentage = models.DecimalField(decimal_places=2, max_digits=10)
+    total_trade = models.IntegerField()
+    
+
+class StrategyImages(models.Model):
+    name = models.CharField(max_length=100)
+    img = models.ImageField(upload_to='strategies_images/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')

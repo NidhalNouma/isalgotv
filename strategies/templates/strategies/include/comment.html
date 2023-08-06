@@ -1,0 +1,16 @@
+<div
+  class="my-3 bg-background brightness-125 rounded-xl flex flex-col p-2 w-fit max-w-full"
+>
+  <p class="text-text/70 text-sm whitespace-nowrapi break-all">
+    {{comment.description}}
+  </p>
+  {% comment %} <span class="">By @{{}}</span> {% endcomment %}
+  <div class="mt-2 flex items-center justify-between">
+    <span class="text-text/50 text-xs"
+      >By <span class="font-bold">@{{ comment.created_at}}</span></span
+    >
+    <span class="ml-auto text-text/50 text-xs"
+      >{{ comment.created_at|timesince }}</span
+    >
+  </div>
+</div>
