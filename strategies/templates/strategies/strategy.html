@@ -10,7 +10,7 @@
 </div>
 
 <main class="mt-8 mb-16 md:flex block justify-between">
-  <section class="w-8/12">
+  <section class="w-full sm:w-8/12">
     <div class="">
       <img
         class="max-w-full max-h-72 mx-auto"
@@ -23,11 +23,15 @@
 
     <section class="my-6">
       <div class="w-full py-3">
-        <button id="settingsBtn" class="text-sm text-text dark:text-background bg-secondary rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background" >Results</button>
-        <button id="commentsBtn" class="text-sm text-text bg-background rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background">Comments</button>
+        <button id="settingsBtn" class="text-sm text-text dark:text-background bg-secondary rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background">{{ strategy.strategyresults_set.all|length }} Results</button>
+        <button id="commentsBtn" class="text-sm text-text bg-background rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background">{{ strategy.strategycomments_set.all|length }} Comments</button>
       </div>
 
       <div class="" id="commentsDiv">
+        <div class="">
+          <button class="text-secondary text-sm font-semibold underlinei">Add a comment</button>
+          {% include "include/text_input.html" with comment=comment %} 
+        </div>
         {% for comment in comments %}
         {% include "include/comment.html" with comment=comment %} 
         {% empty %}
@@ -35,6 +39,9 @@
         {% endfor %}
       </div>
       <div class="" id="settingsDiv">
+        <div class="">
+          <button class="text-secondary text-sm font-semibold underlinei">Add a result</button>
+        </div>
         {% for result in results %}
         {% include "include/result.html" with result=result %} 
         {% empty %}

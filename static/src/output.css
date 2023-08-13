@@ -889,7 +889,7 @@ html, h1 span, h2 span, h3 span, h4 span, h5 span{
   font-family: 'Arvo', serif;
 }
 
-p, span, input, select, textarea, button, p, h4, h5, h6, a {
+p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   font-family: 'Kanit', sans-serif;
 }
 
@@ -1411,6 +1411,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
   margin-left: 0.25rem;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .ml-4 {
   margin-left: 1rem;
 }
@@ -1642,10 +1646,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
   width: 2rem;
 }
 
-.w-8\/12 {
-  width: 66.666667%;
-}
-
 .w-9 {
   width: 2.25rem;
 }
@@ -1764,6 +1764,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
 
 .rotate-180 {
   --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.rotate-90 {
+  --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2125,6 +2130,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
   background-color: rgb(252 233 106 / var(--tw-bg-opacity));
 }
 
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2168,6 +2178,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
   fill: hsl(var(--color-text) / 1);
 }
 
+.fill-text\/50 {
+  fill: hsl(var(--color-text) / 0.5);
+}
+
 .fill-title {
   fill: hsl(var(--color-title) / 1);
 }
@@ -2206,6 +2220,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
 
 .p-8 {
   padding: 2rem;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .px-12 {
@@ -2473,6 +2492,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
   color: hsl(var(--color-title) / var(--tw-text-opacity));
 }
 
+.text-title\/50 {
+  color: hsl(var(--color-title) / 0.5);
+}
+
 .text-transparent {
   color: transparent;
 }
@@ -2485,14 +2508,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
-}
-
-.text-title\/70 {
-  color: hsl(var(--color-title) / 0.7);
-}
-
-.text-title\/50 {
-  color: hsl(var(--color-title) / 0.5);
 }
 
 .underline {
@@ -2560,6 +2575,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
 
 .brightness-125 {
   --tw-brightness: brightness(1.25);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.brightness-150 {
+  --tw-brightness: brightness(1.5);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -2665,6 +2685,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-blue-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(225 239 254 / var(--tw-bg-opacity));
 }
 
 .hover\:font-medium:hover {
@@ -2938,6 +2963,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a {
 
   .sm\:w-11 {
     width: 2.75rem;
+  }
+
+  .sm\:w-8\/12 {
+    width: 66.666667%;
   }
 
   .sm\:space-x-8 > :not([hidden]) ~ :not([hidden]) {

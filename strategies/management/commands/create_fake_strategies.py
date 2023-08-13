@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 from faker import Faker
 from django.contrib.auth.models import User
-from strategies.models import Strategy, StrategyImages, StrategyResults, StrategyComments
+from strategies.models import Strategy, StrategyImages, StrategyResults, StrategyComments, Replies
+from profile_user.models import User_Profile
 from django.utils import timezone
 from decimal import Decimal
 from django.contrib.contenttypes.models import ContentType
@@ -57,11 +58,23 @@ class Command(BaseCommand):
     def create_random_comments(self, fake, strategy):
         # Create random comments for the strategy
         for _ in range(fake.random_int(0, 5)):
-            StrategyComments.objects.create(
-                created_by=User.objects.first(),
+            comment = StrategyComments.objects.create(
+                    created_by=User_Profile.objects.first(),
+                    created_at=timezone.now(),
+                    description=fake.paragraph(),
+                    strategy=strategy,
+                )
+            self.create_random_replies(fake, comment)
+
+    def create_random_replies(self, fake, comment):
+        # Create random replies for the comment
+        for _ in range(fake.random_int(0, 3)):
+            reply = Replies.objects.create(
+                created_by=User_Profile.objects.first(),
                 created_at=timezone.now(),
                 description=fake.paragraph(),
-                strategy=strategy,
+                content_type=ContentType.objects.get_for_model(comment),
+                object_id=comment.id,
             )
 
     def create_random_results(self, fake, strategy):
@@ -69,25 +82,26 @@ class Command(BaseCommand):
         for _ in range(fake.random_int(1, 5)):
             test_start_at = timezone.make_aware(fake.date_time_this_decade())
             test_end_at = test_start_at + timezone.timedelta(days=fake.random_int(1, 365))
-            StrategyResults.objects.create(
-                strategy=strategy,
-                created_by=User.objects.first(),
-                created_at=timezone.now(),
-                settings={},
-                description=fake.paragraph(),
-                test_start_at=test_start_at,
-                test_end_at=test_end_at,
-                time_frame_int=fake.random_int(1, 10),
-                time_frame=random.choice([x[0] for x in StrategyResults.TIME_FRAME]),
-                pair=f"Pair-{fake.random_int(1, 100)}",
-                net_profit=fake.pyfloat(positive=True, max_value=100),
-                net_profit_percentage=fake.pyfloat(positive=True, max_value=100),
-                max_drawdown=fake.pyfloat(positive=True, max_value=100),
-                max_drawdown_percentage=fake.pyfloat(positive=True, max_value=100),
-                profit_factor=fake.pyfloat(positive=True, max_value=10),
-                profitable_percentage=fake.pyfloat(positive=True, max_value=100),
-                total_trade=fake.random_int(1, 100),
-            )
+            result = StrategyResults.objects.create(
+                    strategy=strategy,
+                    created_by=User_Profile.objects.first(),
+                    created_at=timezone.now(),
+                    settings={},
+                    description=fake.paragraph(),
+                    test_start_at=test_start_at,
+                    test_end_at=test_end_at,
+                    time_frame_int=fake.random_int(1, 10),
+                    time_frame=random.choice([x[0] for x in StrategyResults.TIME_FRAME]),
+                    pair=f"Pair-{fake.random_int(1, 100)}",
+                    net_profit=fake.pyfloat(positive=True, max_value=100),
+                    net_profit_percentage=fake.pyfloat(positive=True, max_value=100),
+                    max_drawdown=fake.pyfloat(positive=True, max_value=100),
+                    max_drawdown_percentage=fake.pyfloat(positive=True, max_value=100),
+                    profit_factor=fake.pyfloat(positive=True, max_value=10),
+                    profitable_percentage=fake.pyfloat(positive=True, max_value=100),
+                    total_trade=fake.random_int(1, 100),
+                )
+            self.create_random_replies(fake, result)
 
     def create_random_images(self, fake, strategy):
         # Create random images for the strategy

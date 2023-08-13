@@ -1,4 +1,4 @@
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
@@ -8,6 +8,16 @@ from ckeditor.fields import RichTextField
 
 # Create your models here.
 
+
+
+class StrategyImages(models.Model):
+    name = models.CharField(max_length=100)
+    img = models.ImageField(upload_to='strategies_images/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
 class Strategy(models.Model):
     TYPE = [
@@ -28,15 +38,34 @@ class Strategy(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     settings = models.JSONField(default=dict)
     settings_types = models.JSONField(default=dict)
+
+    images = GenericRelation(StrategyImages) 
     
     def __str__(self):
         return self.name
+
+
+class Replies(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+    description = models.TextField()
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    images = GenericRelation(StrategyImages) 
+    replies = GenericRelation('self') 
+
     
 class StrategyComments(models.Model):
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
     strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
+
+    images = GenericRelation(StrategyImages) 
+    replies = GenericRelation(Replies) 
 
 class StrategyResults(models.Model):
     strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
@@ -68,13 +97,7 @@ class StrategyResults(models.Model):
     profit_factor = models.DecimalField(decimal_places=5, max_digits=12)
     profitable_percentage = models.DecimalField(decimal_places=2, max_digits=10)
     total_trade = models.IntegerField()
+
+    images = GenericRelation(StrategyImages) 
+    replies = GenericRelation(Replies) 
     
-
-class StrategyImages(models.Model):
-    name = models.CharField(max_length=100)
-    img = models.ImageField(upload_to='strategies_images/')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')

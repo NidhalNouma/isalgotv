@@ -21,7 +21,14 @@
             </div>
 
             <div class="w-1/2">
-                <img class="w-10/12 h-32 mx-auto" src="{% static 'images/chart_nobg.png' %}" />
+                {% with first_image=strategy.images.first %}
+                    {% if first_image %}
+                        <img src="{{ first_image.img.url }}" alt="{{ first_image.name }}">
+                    {% else %}
+                        <p>No images available.</p>
+                    {% endif %}
+                {% endwith %}
+                {% comment %} <img class="w-10/12 h-32 mx-auto" src="{% static 'images/chart_nobg.png' %}" /> {% endcomment %}
             </div>
         </div>
 
