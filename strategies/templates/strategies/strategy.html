@@ -28,25 +28,10 @@
       </div>
 
       <div class="" id="commentsDiv">
-        <div class="">
-          <button class="text-secondary text-sm font-semibold underlinei">Add a comment</button>
-          {% include "include/text_input.html" with comment=comment %} 
-        </div>
-        {% for comment in comments %}
-        {% include "include/comment.html" with comment=comment %} 
-        {% empty %}
-        <p class="text-text text-sm">No comments yet.</p>
-        {% endfor %}
+        {% include "include/comments.html" %} 
       </div>
       <div class="" id="settingsDiv">
-        <div class="">
-          <button class="text-secondary text-sm font-semibold underlinei">Add a result</button>
-        </div>
-        {% for result in results %}
-        {% include "include/result.html" with result=result %} 
-        {% empty %}
-        <p class="text-text text-sm">No results yet.</p>
-        {% endfor %}
+        {% include "include/results.html" %} 
       </div>
 
       <script type="text/javascript">

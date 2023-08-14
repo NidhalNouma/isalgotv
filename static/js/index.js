@@ -104,3 +104,44 @@ function hideAll_hideMe() {
 }
 
 hideAll_hideMe();
+
+// Show/Hide replies
+
+function toggleReplies(id) {
+  const replies = document.getElementById("replies-" + id);
+  const upArrow = document.getElementById("up-arrow-replies-" + id);
+  const dnArrow = document.getElementById("down-arrow-replies-" + id);
+  if (replies.classList.contains("hidden")) {
+    replies.classList.remove("hidden");
+    upArrow.classList.remove("hidden");
+    dnArrow.classList.add("hidden");
+  } else {
+    replies.classList.add("hidden");
+    dnArrow.classList.remove("hidden");
+    upArrow.classList.add("hidden");
+  }
+}
+
+function toggleForm(btnId, formId, textFocus = true) {
+  const btn = document.getElementById(btnId);
+  const form = document.getElementById(formId);
+  if (form.classList.contains("hidden")) {
+    form.classList.remove("hidden");
+    btn.classList.add("hidden");
+
+    if (textFocus) {
+      let firstTextField = form.querySelector("textarea");
+      if (firstTextField) {
+        firstTextField.focus();
+      }
+    }
+  } else {
+    form.classList.add("hidden");
+    btn.classList.remove("hidden");
+  }
+}
+
+function showSelectImgs(id) {
+  const input = document.getElementById(id);
+  input.click();
+}

@@ -1,6 +1,16 @@
 <div
   class="my-3 bg-background brightness-125 rounded-xl flex flex-col p-2 w-full max-w-full"
 >
+
+<div class="mb-2 flex items-center justify-between">
+  <span class="text-text/50 text-xs"
+    >By <span class="font-bold">@{{ result.created_at}}</span></span
+  >
+  <span class="ml-auto text-text/50 text-xs"
+    >{{ result.created_at|timesince }}</span
+  >
+</div>
+
   <p class="text-text/70 text-sm whitespace-nowrapi break-all mb-2">
     {{result.description}}
   </p>
@@ -33,14 +43,6 @@
     </h6>
   </div>
 
-  <div class="mt-2 flex items-center justify-between">
-    <span class="text-text/50 text-xs"
-      >By <span class="font-bold">@{{ result.created_at}}</span></span
-    >
-    <span class="ml-auto text-text/50 text-xs"
-      >{{ result.created_at|timesince }}</span
-    >
-  </div>
 
   <div class="flex items-center justify-between mt-3">
     <div class="flex items-center justify-between">

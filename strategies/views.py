@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch, OuterRef, Subquery
 from django.http import Http404
+from django.views.decorators.http import require_http_methods
 
+from django_htmx.http import trigger_client_event, HttpResponseClientRedirect
+
+from .forms import StrategyCommentForm
 from .models import *
 
 def get_strategies(request):
@@ -57,3 +61,40 @@ def new_result(request):
 
 def new_comment(request):
     pass
+
+
+@require_http_methods([ "POST"])
+def add_comment(request, id):
+    strategy = Strategy.objects.get(pk=id)
+
+    if request.method == 'POST':
+        form_data = {
+            'description': request.POST.get('description'),
+            # Add other form fields here
+        }
+        form = StrategyCommentForm(form_data, request.FILES)  # Allow file uploads
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.strategy = strategy
+            comment.created_by = request.user.user_profile
+            comment.save()
+
+            # Save images
+            for image in request.FILES.getlist('images'):
+                StrategyImages.objects.create(
+                    name=image.name,
+                    img=image,
+                    content_object=comment,
+                )
+
+            # Trigger an HTMX update to fetch the new comment
+            comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
+                'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
+            )
+            context = {'comments': comments, 'strategy': strategy}
+            return render(request, 'include/comments.html', context=context)
+        else:
+            print(form.errors)
+            form = StrategyCommentForm()
+
+    # return render(request, 'add_comment.html', {'form': form, 'strategy': strategy})

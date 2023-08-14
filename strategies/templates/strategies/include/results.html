@@ -1,0 +1,9 @@
+
+<div class="">
+    <button class="text-secondary text-sm font-semibold underlinei">Add a result</button>
+  </div>
+  {% for result in results reversed %}
+  {% include "include/result.html" with result=result %} 
+  {% empty %}
+  <p class="text-text text-sm">No results yet.</p>
+  {% endfor %}

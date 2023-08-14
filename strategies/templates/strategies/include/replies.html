@@ -1,0 +1,14 @@
+{% for reply in replies reversed %}
+<div class="py-1 px-2 my-2 bg-background brightness-110 rounded-lg">
+  <div class="mb-1.5 flex items-center justify-between">
+    <span class="text-text/50 text-xs"
+      >By <span class="font-bold">@{{ reply.created_at}}</span></span
+    >
+    <span class="ml-auto text-text/50 text-xs"
+      >{{ reply.created_at|timesince }}</span
+    >
+  </div>
+
+  <p class="text-text/70 text-xs">{{reply.description}}</p>
+</div>
+{% endfor %}

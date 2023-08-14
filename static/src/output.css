@@ -1334,6 +1334,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   margin-bottom: 4rem;
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .my-3 {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
@@ -1369,6 +1374,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .mb-1 {
   margin-bottom: 0.25rem;
+}
+
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
 }
 
 .mb-10 {
@@ -1421,6 +1430,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .ml-auto {
   margin-left: auto;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
 }
 
 .mr-2 {
@@ -1582,6 +1595,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   height: 1px;
 }
 
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
 .max-h-72 {
   max-height: 18rem;
 }
@@ -1612,6 +1630,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .w-10\/12 {
   width: 83.333333%;
+}
+
+.w-11\/12 {
+  width: 91.666667%;
 }
 
 .w-24 {
@@ -1842,6 +1864,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   align-items: center;
 }
 
+.items-stretch {
+  align-items: stretch;
+}
+
 .justify-start {
   justify-content: flex-start;
 }
@@ -1907,6 +1933,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 .divide-background > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: hsl(var(--color-background) / var(--tw-divide-opacity));
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+.self-stretch {
+  align-self: stretch;
 }
 
 .overflow-hidden {
@@ -2130,11 +2164,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   background-color: rgb(252 233 106 / var(--tw-bg-opacity));
 }
 
-.bg-gray-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-}
-
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2180,6 +2209,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .fill-text\/50 {
   fill: hsl(var(--color-text) / 0.5);
+}
+
+.fill-text\/80 {
+  fill: hsl(var(--color-text) / 0.8);
 }
 
 .fill-title {
@@ -2487,6 +2520,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   color: hsl(var(--color-text) / 0.7);
 }
 
+.text-text\/80 {
+  color: hsl(var(--color-text) / 0.8);
+}
+
 .text-title {
   --tw-text-opacity: 1;
   color: hsl(var(--color-title) / var(--tw-text-opacity));
@@ -2573,13 +2610,28 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.brightness-100 {
+  --tw-brightness: brightness(1);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .brightness-125 {
   --tw-brightness: brightness(1.25);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.brightness-200 {
+  --tw-brightness: brightness(2);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .brightness-150 {
   --tw-brightness: brightness(1.5);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.brightness-110 {
+  --tw-brightness: brightness(1.1);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -2685,11 +2737,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-blue-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(225 239 254 / var(--tw-bg-opacity));
 }
 
 .hover\:font-medium:hover {
