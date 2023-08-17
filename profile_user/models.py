@@ -15,3 +15,8 @@ class User_Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_tradingview_username(self):
+        if self.tradingview_username:
+            return self.tradingview_username
+        return self.user.username

@@ -6,4 +6,5 @@ urlpatterns = [
     path('all/', get_strategies, name='strategies'),
     path('<int:id>/', get_strategy, name='strategy'),
     path('<int:id>/add_comment', add_comment, name='submit_comment'),
+    path('<int:id>/add_comment_reply', add_comment_reply, name='submit_comment_reply'),
 ]

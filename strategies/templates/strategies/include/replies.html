@@ -1,14 +1,20 @@
 {% for reply in replies reversed %}
-<div class="py-1 px-2 my-2 bg-background brightness-110 rounded-lg">
-  <div class="mb-1.5 flex items-center justify-between">
-    <span class="text-text/50 text-xs"
-      >By <span class="font-bold">@{{ reply.created_at}}</span></span
+<div class="relative py-1 px-2 my-2 bg-background brightness-110 rounded-lg">
+  <p class="text-text/70 text-xs whitespace-pre-line break-all">
+    {{reply.description}}
+  </p>
+
+  {% include "include/images.html" with images=reply.images.all %}
+
+  <div class="mt-2 mb-2 flex items-center">
+    <span class="text-text/70 text-xs"
+      ><span class="font-bold"
+        >@{{ comment.created_by.get_tradingview_username}}</span
+      ></span
     >
-    <span class="ml-auto text-text/50 text-xs"
-      >{{ reply.created_at|timesince }}</span
+    <span class="ml-4 text-text/50 text-xs"
+      >{{ reply.created_at|timesince }} ago</span
     >
   </div>
-
-  <p class="text-text/70 text-xs">{{reply.description}}</p>
 </div>
 {% endfor %}

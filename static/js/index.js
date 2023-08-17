@@ -145,3 +145,71 @@ function showSelectImgs(id) {
   const input = document.getElementById(id);
   input.click();
 }
+
+function showModalImages(images, imgId, id = "modal-images") {
+  // console.log(images);
+  const modal = document.getElementById(id);
+  modal.classList.remove("hidden");
+
+  let currentIndex = 0;
+
+  const showImage = (index) => {
+    const carouselItems = carouselContainer.querySelectorAll(
+      "[data-carousel-item]"
+    );
+    carouselItems.forEach((item, i) => {
+      item.style.display = i === index ? "block" : "none";
+    });
+
+    currentIndex = index;
+  };
+
+  document
+    .getElementById("prev-button-carousel")
+    .addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    });
+
+  document
+    .getElementById("next-button-carousel")
+    .addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    });
+
+  const carouselControl = document.getElementById("controls-carousel");
+  const carouselContainer = document.getElementById("images-carousel");
+  while (carouselContainer.firstChild) {
+    carouselContainer.removeChild(carouselContainer.firstChild);
+  }
+
+  images.forEach((img, index) => {
+    console.log(img);
+    const imgElement = document.createElement("img");
+    imgElement.src = img.imageUrl;
+    imgElement.classList.add(
+      "object-scale-down",
+      "absolute",
+      "max-w-[95%]",
+      "max-h-[99%]",
+      "aspect-auto",
+      "block",
+      "-translate-x-1/2",
+      "-translate-y-1/2",
+      "top-1/2",
+      "left-1/2"
+    );
+
+    const carouselItem = document.createElement("div");
+    carouselItem.classList.add("hidden", "duration-700", "ease-in-out");
+    carouselItem.setAttribute("data-carousel-item", "");
+    carouselItem.appendChild(imgElement);
+
+    carouselContainer.appendChild(carouselItem);
+
+    if (img.id == imgId) {
+      showImage(index);
+    }
+  });
+}

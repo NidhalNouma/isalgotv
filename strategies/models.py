@@ -3,16 +3,23 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
 from profile_user.models import User_Profile
+from django.core.validators import MinLengthValidator
 
 from ckeditor.fields import RichTextField
 
 # Create your models here.
 
-
-
 class StrategyImages(models.Model):
+    def photo_path(instance, filename):
+        content_type_name = instance.content_type.model
+        object_id = instance.object_id
+        instance_id = instance.id
+        path = f'{content_type_name}/{object_id}/{instance_id}/{filename}'
+
+        return path
+
     name = models.CharField(max_length=100)
-    img = models.ImageField(upload_to='strategies_images/')
+    img = models.ImageField(upload_to= photo_path)
     created_at = models.DateTimeField(auto_now_add=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
@@ -48,7 +55,9 @@ class Strategy(models.Model):
 class Replies(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.TextField(validators=[
+            MinLengthValidator(100, 'Comment must contain at least 100 characters')
+            ])
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
     object_id = models.PositiveIntegerField()
@@ -61,7 +70,9 @@ class Replies(models.Model):
 class StrategyComments(models.Model):
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    description = models.TextField()
+    description = models.TextField(validators=[
+            MinLengthValidator(300, 'Comment must contain at least 300 characters')
+            ])
     strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
 
     images = GenericRelation(StrategyImages) 

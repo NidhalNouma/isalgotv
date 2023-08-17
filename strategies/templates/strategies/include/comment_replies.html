@@ -1,0 +1,46 @@
+<div class="flex items-center w-full mt-1">
+  {% with reply_count=comment.replies.all|length %} {% if reply_count >= 1 %}
+  <span
+    onclick='toggleReplies("{{comment.id}}")'
+    class="mr-4 text-text/80 text-xs font-semibold cursor-pointer flex items-center"
+  >
+    <svg
+      class="h-4 w-4 fill-text/80 mr-1 hidden"
+      id="up-arrow-replies-{{ comment.id }}"
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M256 217.9L383 345c9.4 9.4 24.6 9.4 33.9 0 9.4-9.4 9.3-24.6 0-34L273 167c-9.1-9.1-23.7-9.3-33.1-.7L95 310.9c-4.7 4.7-7 10.9-7 17s2.3 12.3 7 17c9.4 9.4 24.6 9.4 33.9 0l127.1-127z"
+      ></path>
+    </svg>
+    <svg
+      id="down-arrow-replies-{{ comment.id }}"
+      class="h-4 w-4 fill-text/80 mr-1"
+      stroke-width="0"
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"
+      ></path>
+    </svg>
+    {% if reply_count == 1 %} {{ reply_count }} Reply {% elif reply_count > 1%}
+    {{ reply_count }} Replies {% endif %}
+  </span>
+  {% endif %} {% endwith %}
+
+  <button
+    id="add-comment-reply-{{comment.id}}"
+    onclick='toggleForm("add-comment-reply-{{comment.id}}", "add-comment-form-reply-{{comment.id}}")'
+    class="text-text text-xs font-semibold cursor-pointer"
+  >
+    Reply
+  </button>
+</div>
+
+{% include "include/add_reply.html" %}
+
+<div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ comment.id }}">
+  {% include "include/replies.html" with replies=comment.replies.all %}
+</div>

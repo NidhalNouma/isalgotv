@@ -20,50 +20,55 @@
 
     <p class="text-text whitespace-pre-line">{{ strategy.content | safe }}</p>
 
-
     <section class="my-6">
       <div class="w-full py-3">
-        <button id="settingsBtn" class="text-sm text-text dark:text-background bg-secondary rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background">{{ strategy.strategyresults_set.all|length }} Results</button>
-        <button id="commentsBtn" class="text-sm text-text bg-background rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background">{{ strategy.strategycomments_set.all|length }} Comments</button>
+        <button
+          id="settingsBtn"
+          class="text-sm text-text dark:text-background bg-secondary rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background"
+        >
+          {{ strategy.strategyresults_set.all|length }} Results
+        </button>
+        <button
+          id="commentsBtn"
+          class="text-sm text-text bg-background rounded-xl border-2 border-secondary px-3 py-0.5 hover:bg-secondary hover:dark:text-background"
+        >
+          {{ strategy.strategycomments_set.all|length }} Ideas
+        </button>
       </div>
 
-      <div class="" id="commentsDiv">
-        {% include "include/comments.html" %} 
-      </div>
-      <div class="" id="settingsDiv">
-        {% include "include/results.html" %} 
-      </div>
+      <div class="" id="commentsDiv">{% include "include/comments.html" %}</div>
+      <div class="" id="settingsDiv">{% include "include/results.html" %}</div>
 
       <script type="text/javascript">
-        const showCommentsBtn = document.getElementById('commentsBtn');
-        const showSettingsBtn = document.getElementById('settingsBtn');
-        const commentsDiv = document.getElementById('commentsDiv');
-        const settingsDiv = document.getElementById('settingsDiv');
+        const showCommentsBtn = document.getElementById("commentsBtn");
+        const showSettingsBtn = document.getElementById("settingsBtn");
+        const commentsDiv = document.getElementById("commentsDiv");
+        const settingsDiv = document.getElementById("settingsDiv");
 
         // By default, show the settings div and hide the comments div
-        settingsDiv.style.display = 'block';
-        commentsDiv.style.display = 'none';
+        settingsDiv.style.display = "block";
+        commentsDiv.style.display = "none";
 
         // Add event listeners to the buttons
-        showCommentsBtn.addEventListener('click', () => {
-            // Show the comments div and hide the settings div
-            commentsDiv.style.display = 'block';
-            settingsDiv.style.display = 'none';
-            showCommentsBtn.classList.add('bg-secondary')
-            showCommentsBtn.classList.add('dark:text-background')
-            showSettingsBtn.classList.remove('bg-secondary')
-            showSettingsBtn.classList.remove('dark:text-background')
+        showCommentsBtn.addEventListener("click", () => {
+          // Show the comments div and hide the settings div
+          commentsDiv.style.display = "block";
+          settingsDiv.style.display = "none";
+          showCommentsBtn.classList.add("bg-secondary");
+          showCommentsBtn.classList.add("dark:text-background");
+          showSettingsBtn.classList.remove("bg-secondary");
+          showSettingsBtn.classList.remove("dark:text-background");
         });
 
-        showSettingsBtn.addEventListener('click', () => {
-            // Show the settings div and hide the comments div
-            settingsDiv.style.display = 'block';
-            commentsDiv.style.display = 'none';
+        showSettingsBtn.addEventListener("click", () => {
+          // Show the settings div and hide the comments div
+          settingsDiv.style.display = "block";
+          commentsDiv.style.display = "none";
 
-            showCommentsBtn.classList.remove('bg-secondary')
-            showCommentsBtn.classList.remove('dark:text-background')
-            showSettingsBtn.classList.add('bg-secondary')
-            showSettingsBtn.classList.add('dark:text-background')
+          showCommentsBtn.classList.remove("bg-secondary");
+          showCommentsBtn.classList.remove("dark:text-background");
+          showSettingsBtn.classList.add("bg-secondary");
+          showSettingsBtn.classList.add("dark:text-background");
         });
       </script>
     </section>
@@ -105,6 +110,8 @@
     </div>
     {% endfor %}
   </section>
+
+  {% include "include/modal_images_main.html" %}
 </main>
 
 <!-- Main modal -->

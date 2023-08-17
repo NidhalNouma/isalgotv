@@ -1,0 +1,9 @@
+{% if errors %}
+<ul
+  class="mt-1 py-1 px-1 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900 dark:text-red-200"
+>
+  {% for field_errors in errors.values %} {% for error in field_errors %}
+  <li>{{ error }}</li>
+  {% endfor %} {% endfor %}
+</ul>
+{% endif %}
