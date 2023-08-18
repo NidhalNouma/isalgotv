@@ -75,6 +75,9 @@ class StrategyComments(models.Model):
             ])
     strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
 
+    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
+    dislike = models.ManyToManyField(User, related_name='comment_dislikes', blank=True)
+
     images = GenericRelation(StrategyImages) 
     replies = GenericRelation(Replies) 
 
@@ -84,7 +87,9 @@ class StrategyResults(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     settings = models.JSONField(default=dict)
     description = models.TextField()
-    votes = models.IntegerField(default=0)
+
+    positive_votes = models.ManyToManyField(User, related_name='positive_votes', blank=True)
+    negative_votes = models.ManyToManyField(User, related_name='negative_votes', blank=True)
 
     TIME_FRAME = [
         ("S", "Seconds"),

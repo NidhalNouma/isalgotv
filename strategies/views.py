@@ -126,3 +126,42 @@ def add_comment_reply(request, id):
             response = render(request, "include/errors.html", context=context)
             return retarget(response, "#add-comment-reply-form-errors-"+str(id))
 
+def result_vote(request, result_id, vote_type):
+    result = get_object_or_404(StrategyResults, pk=result_id)
+
+    if request.user:
+        if vote_type == 'positive':
+            if request.user in result.positive_votes.all():
+                result.positive_votes.remove(request.user)
+            else:
+                result.positive_votes.add(request.user)
+                result.negative_votes.remove(request.user)
+        elif vote_type == 'negative':
+            if request.user in result.negative_votes.all():
+                result.negative_votes.remove(request.user)
+            else:
+                result.negative_votes.add(request.user)
+                result.positive_votes.remove(request.user)
+
+    context = {'result': result}
+    return render(request, 'include/result_votes.html', context=context)
+
+def comment_like(request, comment_id, like_type):
+    comment = get_object_or_404(StrategyComments, pk=comment_id)
+
+    if request.user:
+        if like_type == 'positive':
+            if request.user in comment.likes.all():
+                comment.likes.remove(request.user)
+            else:
+                comment.likes.add(request.user)
+                comment.dislike.remove(request.user)
+        elif like_type == 'negative':
+            if request.user in comment.dislike.all():
+                comment.dislike.remove(request.user)
+            else:
+                comment.dislike.add(request.user)
+                comment.likes.remove(request.user)
+
+    context = {'comment': comment}
+    return render(request, 'include/comment_likes.html', context=context)
