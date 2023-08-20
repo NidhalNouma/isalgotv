@@ -1,12 +1,25 @@
 <div class="flex items-center w-full mt-1">
+  <div class="flex items-center mr-3" id="comment-likes-{{comment.id}}">
+    {% include "include/comment_likes.html" with comment=comment %}
+  </div>
+
+  <button
+    id="add-reply-{{comment.id}}-comment"
+    onclick='toggleForm("add-reply-{{comment.id}}-comment", "add-form-reply-{{comment.id}}-comment")'
+    class=" text-text text-xs font-semibold cursor-pointer"
+  >
+    Reply
+  </button>
+</div>
+
   {% with reply_count=comment.replies.all|length %} {% if reply_count >= 1 %}
   <span
-    onclick='toggleReplies("{{comment.id}}")'
-    class="mr-4 text-text/80 text-xs font-semibold cursor-pointer flex items-center"
+    onclick='toggleReplies("{{comment.id}}-comment-list")'
+    class="mt-2 mr-4 text-text/80 text-xs font-semibold cursor-pointer flex items-center"
   >
     <svg
       class="h-4 w-4 fill-text/80 mr-1 hidden"
-      id="up-arrow-replies-{{ comment.id }}"
+      id="up-arrow-replies-{{ comment.id }}-comment-list"
       viewBox="0 0 512 512"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -15,7 +28,7 @@
       ></path>
     </svg>
     <svg
-      id="down-arrow-replies-{{ comment.id }}"
+      id="down-arrow-replies-{{ comment.id }}-comment-list"
       class="h-4 w-4 fill-text/80 mr-1"
       stroke-width="0"
       viewBox="0 0 512 512"
@@ -30,17 +43,8 @@
   </span>
   {% endif %} {% endwith %}
 
-  <button
-    id="add-comment-reply-{{comment.id}}"
-    onclick='toggleForm("add-comment-reply-{{comment.id}}", "add-comment-form-reply-{{comment.id}}")'
-    class="text-text text-xs font-semibold cursor-pointer"
-  >
-    Reply
-  </button>
-</div>
+  {% include "include/add_reply.html" with name="comment" id=comment.id url='submit_comment_reply' %}
 
-{% include "include/add_reply.html" %}
-
-<div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ comment.id }}">
+<div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ result.id }}-comment-list">
   {% include "include/replies.html" with replies=comment.replies.all %}
 </div>

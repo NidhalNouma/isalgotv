@@ -1,0 +1,52 @@
+<div class="flex items-center w-full mt-1">
+    <div class="flex items-center mr-3" id="result-votes-{{result.id}}">
+        {% include "include/result_votes.html" with result=result %}
+    </div>
+  
+    <button
+      id="add-reply-{{result.id}}-result-list"
+      onclick='toggleForm("add-reply-{{result.id}}-result", "add-form-reply-{{result.id}}-result")'
+      class=" text-text text-xs font-semibold cursor-pointer"
+    >
+      Reply
+    </button>
+  </div>
+  
+    {% with reply_count=result.replies.all|length %} {% if reply_count >= 1 %}
+    <span
+      onclick='toggleReplies("{{result.id}}-result-list")'
+      class="mt-2 mr-4 text-text/80 text-xs font-semibold cursor-pointer flex items-center"
+    >
+      <svg
+        class="h-4 w-4 fill-text/80 mr-1 hidden"
+        id="up-arrow-replies-{{ result.id }}-result-list"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 217.9L383 345c9.4 9.4 24.6 9.4 33.9 0 9.4-9.4 9.3-24.6 0-34L273 167c-9.1-9.1-23.7-9.3-33.1-.7L95 310.9c-4.7 4.7-7 10.9-7 17s2.3 12.3 7 17c9.4 9.4 24.6 9.4 33.9 0l127.1-127z"
+        ></path>
+      </svg>
+      <svg
+        id="down-arrow-replies-{{ result.id }}-result-list"
+        class="h-4 w-4 fill-text/80 mr-1"
+        stroke-width="0"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"
+        ></path>
+      </svg>
+      {% if reply_count == 1 %} {{ reply_count }} Reply {% elif reply_count > 1%}
+      {{ reply_count }} Replies {% endif %}
+    </span>
+    {% endif %} {% endwith %}
+  
+  
+  {% include "include/add_reply.html" with name="result" id=result.id url='submit_result_reply' %}
+  
+  <div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ result.id }}-result-list">
+    {% include "include/replies.html" with replies=result.replies.all %}
+  </div>
+  

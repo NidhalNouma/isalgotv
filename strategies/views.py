@@ -124,7 +124,41 @@ def add_comment_reply(request, id):
         else:
             context = {'errors': form.errors}
             response = render(request, "include/errors.html", context=context)
-            return retarget(response, "#add-comment-reply-form-errors-"+str(id))
+            return retarget(response, "#reply-form-errors-"+str(id)+"-comment")
+
+@require_http_methods([ "POST"])
+def add_result_reply(request, id):
+    result = StrategyResults.objects.get(pk=id)
+
+    if request.method == 'POST':
+        form_data = {
+            'description': request.POST.get('description'),
+            # Add other form fields here
+        }
+        form = RepliesForm(form_data, request.FILES)  # Allow file uploads
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.content_object = result
+            reply.created_by = request.user.user_profile
+            reply.save()
+
+            # Save images with modified name and URL
+            for index, image in enumerate(request.FILES.getlist('images')):
+                image_name = f'{result.id}_{reply.id}_{index}_{image.name}'  
+                StrategyImages.objects.create(
+                    name=image_name,
+                    img=image,
+                    content_object=reply,
+                )
+
+            # Trigger an HTMX update to fetch the new comment
+            replies = result.replies.select_related('created_by').prefetch_related('images')
+            context = {'result': result, 'replies': replies}
+            return render(request, 'include/result_replies.html', context=context)
+        else:
+            context = {'errors': form.errors}
+            response = render(request, "include/errors.html", context=context)
+            return retarget(response, "#reply-form-errors-"+str(id)+"-result")
 
 def result_vote(request, result_id, vote_type):
     result = get_object_or_404(StrategyResults, pk=result_id)

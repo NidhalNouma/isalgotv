@@ -1,8 +1,8 @@
 <form
   class="hidden mt-2 w-11/12 ml-auto"
-  id="add-comment-form-reply-{{comment.id}}"
-  hx-post="{% url 'submit_comment_reply' comment.id %}"
-  hx-target="#comment-replies-{{comment.id}}"
+  id="add-form-reply-{{id}}-{{name}}"
+  hx-post="{% url url id %}"
+  hx-target="#replies-{{id}}-{{name}}"
   enctype="multipart/form-data"
 >
   {% csrf_token %}
@@ -11,7 +11,7 @@
     <div class="self-stretch flex flex-col">
       <button
         type="button"
-        onclick='toggleForm("add-comment-reply-{{comment.id}}", "add-comment-form-reply-{{comment.id}}")'
+        onclick='toggleForm("add-reply-{{id}}-{{name}}", "add-form-reply-{{id}}-{{name}}")'
         class="mb-auto inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
       >
         <svg
@@ -30,7 +30,7 @@
         </svg>
       </button>
       <input
-        id="add-reply-imgs-{{comment.id}}"
+        id="add-reply-imgs-{{id}}-{{name}}"
         class="hidden"
         type="file"
         accept="image/*"
@@ -38,7 +38,7 @@
         multiple
       />
       <button
-        onclick='showSelectImgs("add-reply-imgs-{{comment.id}}")'
+        onclick='showSelectImgs("add-reply-imgs-{{id}}-{{name}}")'
         type="button"
         class="mt-auto inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
       >
@@ -96,5 +96,5 @@
     </button>
   </div>
 
-  <div id="add-comment-reply-form-errors-{{comment.id}}"></div>
+  <div id="reply-form-errors-{{id}}-{{name}}"></div>
 </form>

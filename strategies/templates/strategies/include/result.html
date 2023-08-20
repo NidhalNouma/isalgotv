@@ -1,15 +1,14 @@
 <div
   class="my-3 bg-background brightness-125 rounded-xl flex flex-col p-2 w-full max-w-full"
 >
-
-<div class="mb-0 flex items-center justify-between">
-  <span class="text-text/50 text-xs"
-    ><span class="font-bold">@{{ result.created_at}}</span></span
-  >
-  <span class="ml-auto text-text/50 text-xs"
-    >{{ result.created_at|timesince }}</span
-  >
-</div>
+  <div class="mb-0 flex items-center justify-between">
+    <span class="text-text/50 text-xs"
+      ><span class="font-bold">@{{ result.created_at}}</span></span
+    >
+    <span class="ml-auto text-text/50 text-xs"
+      >{{ result.created_at|timesince }}</span
+    >
+  </div>
 
   <p class="text-text/70 text-sm whitespace-pre-line pb-2 break-all">
     {{result.description}}
@@ -43,15 +42,7 @@
     </h6>
   </div>
 
-
-  <div class="flex items-center justify-between mt-3">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center" id="result-votes-{{result.id}}">
-      {% include "include/result_votes.html" with result=result %}
-      </div>
-      <div class="ml-2">
-        <span class="text-text text-xs font-semibold cursor-pointer">Reply<span>
-      </div>
-    </div>
+  <div id="replies-{{ result.id }}-result" class="">
+    {% include "include/result_replies.html" %}
   </div>
 </div>
