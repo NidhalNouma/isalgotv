@@ -38,6 +38,23 @@ class Command(BaseCommand):
     def create_random_strategy(self, fake):
         # Create a random strategy
         random_name = fake.catch_phrase()
+
+        custom_json_data = {
+            "objects": [
+                {
+                    "name": fake.word(),
+                    "type": random.choice(["integer", "string", "boolean"]),
+                    "default_value": fake.word(),
+                },
+                {
+                    "name": fake.word(),
+                    "type": random.choice(["integer", "string", "boolean"]),
+                    "default_value": fake.word(),
+                },
+                # Add more objects as needed
+            ]
+        }
+
         strategy = Strategy.objects.create(
             type=random.choice([x[0] for x in Strategy.TYPE]),
             version="1.0",
@@ -50,8 +67,7 @@ class Command(BaseCommand):
             tradingview_url=f"https://tradingview.com/{slugify(random_name)}",
             video_url=f"https://youtube.com/{slugify(random_name)}",
             created_by=User.objects.first(),
-            settings={},
-            settings_types={},
+            settings=custom_json_data,
         )
         return strategy
 
@@ -86,7 +102,7 @@ class Command(BaseCommand):
                     strategy=strategy,
                     created_by=User_Profile.objects.first(),
                     created_at=timezone.now(),
-                    settings={},
+                    settings=strategy.settings,
                     description=fake.paragraph(),
                     test_start_at=test_start_at,
                     test_end_at=test_end_at,

@@ -93,6 +93,13 @@ def add_comment(request, id):
             return retarget(response, "#add-comment-form-errors")
 
 @require_http_methods([ "POST"])
+def add_result(request, id):
+    strategy = Strategy.objects.get(pk=id)
+
+    if request.method == 'POST':
+        pass
+
+@require_http_methods([ "POST"])
 def add_comment_reply(request, id):
     comment = StrategyComments.objects.get(pk=id)
 

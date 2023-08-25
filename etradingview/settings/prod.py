@@ -4,7 +4,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-# DEBUG = False
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
@@ -18,19 +18,19 @@ CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com','https://*.127.0.0.1','http://*.i
 # CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME':  env('DATABASE_NAME'),
-        'USER':  env('DATABASE_USER'),
-        'PASSWORD':  env('DATABASE_PASS'),
-        'HOST':  env('DATABASE_HOST'),
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME':  env('DATABASE_NAME'),
+#         'USER':  env('DATABASE_USER'),
+#         'PASSWORD':  env('DATABASE_PASS'),
+#         'HOST':  env('DATABASE_HOST'),
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'sql_mode': 'traditional',
+#         }
+#     }
+# }
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')

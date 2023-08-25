@@ -53,6 +53,10 @@
   .btn-accent {
     @apply dark:text-background text-title bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex  justify-center items-center;
   }
+
+  .btn-text {
+    @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex  justify-center items-center;
+  }
 }
 
 
@@ -68,6 +72,10 @@
     .no-scrollbar {
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
+    }
+
+    [modal-backdrop] {
+      @apply bg-background bg-opacity-60
     }
 }
 

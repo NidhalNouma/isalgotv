@@ -45,6 +45,6 @@
 
   {% include "include/add_reply.html" with name="comment" id=comment.id url='submit_comment_reply' %}
 
-<div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ result.id }}-comment-list">
+<div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ comment.id }}-comment-list">
   {% include "include/replies.html" with replies=comment.replies.all %}
 </div>

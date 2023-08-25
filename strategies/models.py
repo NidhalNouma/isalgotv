@@ -6,8 +6,41 @@ from profile_user.models import User_Profile
 from django.core.validators import MinLengthValidator
 
 from ckeditor.fields import RichTextField
+import jsonschema
+from django.core.exceptions import ValidationError
 
 # Create your models here.
+def settings_validator_json(value):
+    schema = {
+        "type": "object",
+        "properties": {
+            "objects": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "type": {"type": "string"},
+                        "default_value": {"type": "string"} ,
+                        "options": {"type": "array"},
+                    },
+                    "required": ["name", "type", "default_value"],
+                },
+            }
+        },
+        "required": ["objects"],
+    }
+
+    try:
+        jsonschema.validate(value, schema)
+    except jsonschema.ValidationError:
+        raise ValidationError('Invalid JSON data.')
+
+class SettingsJSONField(models.JSONField):
+    def __init__(self, *args, **kwargs):
+        kwargs['validators'] = [settings_validator_json]
+        super().__init__(*args, **kwargs)
+
 
 class StrategyImages(models.Model):
     def photo_path(instance, filename):
@@ -43,8 +76,7 @@ class Strategy(models.Model):
     tradingview_url = models.URLField(blank=True)
     video_url = models.URLField(blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    settings = models.JSONField(default=dict)
-    settings_types = models.JSONField(default=dict)
+    settings = SettingsJSONField()
 
     images = GenericRelation(StrategyImages) 
     
@@ -85,7 +117,7 @@ class StrategyResults(models.Model):
     strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, blank=True)
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    settings = models.JSONField(default=dict)
+    settings =  SettingsJSONField()
     description = models.TextField()
 
     positive_votes = models.ManyToManyField(User, related_name='positive_votes', blank=True)
