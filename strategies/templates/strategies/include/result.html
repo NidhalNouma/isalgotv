@@ -1,45 +1,74 @@
 <div
-  class="my-3 bg-background brightness-125 rounded-xl flex flex-col p-2 w-full max-w-full"
+  class="mb-2 py-2 bg-background brightness-125i rounded-xl flex flex-col w-full max-w-full"
 >
-  <div class="mb-0 flex items-center justify-between">
-    <span class="text-text/50 text-xs"
-      ><span class="font-bold">@{{ result.created_at}}</span></span
+  <div class="flex mb-1 items-center">
+    <span class="text-background bg-text px-1.5 rounded-full text-sm mr-2"
+      >{{result.pair}}</span
     >
-    <span class="ml-auto text-text/50 text-xs"
-      >{{ result.created_at|timesince }}</span
-    >
+    <div class="text-xs flex items-center mb-1">
+      <h6 class="text-title/80 font-semibold">{{result.test_start_at}}</h6>
+      <svg
+        stroke-width="0"
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 fill-text/60 stroke-text/50 mx-2"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+        ></path>
+      </svg>
+      <h6 class="text-title/80 font-semibold">{{result.test_end_at}}</h6>
+    </div>
+  </div>
+  <div class="text-sm font-medium flex mb-1 text-text/70">
+    <h6 class="text-green-400 mr-2">
+      <span class="text-sm text-text/70">Profit</span>
+      {{result.net_profit}} USD
+      <span class="text-xs">{{result.net_profit_percentage}}%</span>
+    </h6>
+    <h6 class="text-red-400">
+      <span class="text-sm text-text/70">Drawdown</span>
+      {{result.max_drawdown}} USD
+      <span class="text-xs">{{result.max_drawdown_percentage}}%</span>
+    </h6>
   </div>
 
-  <p class="text-text/70 text-sm whitespace-pre-line pb-2 break-all">
-    {{result.description}}
-  </p>
-  <div class="text-sm">
-    <h6 class="text-title/50">
-      <span class="text-sm text-text/50">First trade open at:</span>
-      {{result.test_start_at}}
-    </h6>
-    <h6 class="text-title/50">
-      <span class="text-sm text-text/50">Last trade close at:</span>
-      {{result.test_end_at}}
-    </h6>
+  <div class="">
+    <button
+      data-modal-target="result-modal-{{result.id}}"
+      data-modal-toggle="result-modal-{{result.id}}"
+      class="bg-primary dark:text-text text-text-light text-xs font-normal px-1.5 rounded flex items-center"
+    >
+      Settings and Result
+      <svg
+        stroke-width="0"
+        viewBox="0 0 16 16"
+        class="w-2 h-2 fill-current stroke-current ml-1"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z"
+        ></path>
+      </svg>
+    </button>
+    {%include "include/result_and_settings_modal.html"%}
   </div>
-  <div class="text-sm font-semibold grid grid-cols-2 mt-2 text-text/70">
-    <h6 class="text-green-400">
-      {{result.net_profit}}%
-      <span class="text-sm text-text/70">Net profit</span>
-    </h6>
-    <h6 class="text-green-400">
-      {{result.net_profit_percentage}}%
-      <span class="text-sm text-text/70">Percent Profitable</span>
-    </h6>
-    <h6 class="text-green-400">
-      {{result.profit_factor}}
-      <span class="text-sm text-text/70">Profit factor</span>
-    </h6>
-    <h6 class="text-green-400">
-      {{result.max_drawdown_percentage}}%
-      <span class="text-sm text-text/70">Max Drawdown</span>
-    </h6>
+
+  <p class="text-text/70 text-sm pb-0 break-all">
+    {{result.description|linebreaksbr}}
+  </p>
+
+  <div class="mb-0.5 mt-2 flex items-center">
+    <span class="text-text/50 text-xs"
+      ><span class="font-bold"
+        >@{{ result.created_by.get_tradingview_username}}</span
+      ></span
+    >
+    <span class="ml-4 text-text/50 text-xs"
+      >{{ result.created_at|timesince }} ago</span
+    >
   </div>
 
   <div id="replies-{{ result.id }}-result" class="">

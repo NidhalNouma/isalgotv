@@ -883,6 +883,9 @@ input:checked + .toggle-bg {
   --color-text: 0 0% 80%;
   --color-text-light: 0 0% 80%;
   --color-title: 0 0% 100%;
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
 }
 
 html, h1 span, h2 span, h3 span, h4 span, h5 span{
@@ -1391,11 +1394,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   margin-bottom: 0.5rem;
 }
 
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -1422,6 +1420,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .mb-0 {
   margin-bottom: 0px;
+}
+
+.mb-0\.5 {
+  margin-bottom: 0.125rem;
 }
 
 .mb-1 {
@@ -1544,6 +1546,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   margin-top: auto;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .line-clamp-3 {
   overflow: hidden;
   display: -webkit-box;
@@ -1660,6 +1666,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   height: 1px;
 }
 
+.h-3 {
+  height: 0.75rem;
+}
+
+.h-2 {
+  height: 0.5rem;
+}
+
 .max-h-72 {
   max-height: 18rem;
 }
@@ -1759,6 +1773,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .w-full {
   width: 100%;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.w-2 {
+  width: 0.5rem;
 }
 
 .min-w-\[2\.5rem\] {
@@ -1909,6 +1931,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   list-style-type: none;
 }
 
+.break-before-right {
+  -moz-column-break-before: right;
+       break-before: right;
+}
+
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -2042,8 +2069,24 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   white-space: nowrap;
 }
 
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.whitespace-pre {
+  white-space: pre;
+}
+
 .whitespace-pre-line {
   white-space: pre-line;
+}
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
+.whitespace-break-spaces {
+  white-space: break-spaces;
 }
 
 .break-all {
@@ -2064,6 +2107,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
 }
 
 .rounded-l-lg {
@@ -2103,6 +2150,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .border-b-0 {
   border-bottom-width: 0px;
+}
+
+.\!border-red-500 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(240 82 82 / var(--tw-border-opacity)) !important;
 }
 
 .border-blue-600 {
@@ -2296,12 +2348,32 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   fill: hsl(var(--color-text) / 0.5);
 }
 
+.fill-text\/60 {
+  fill: hsl(var(--color-text) / 0.6);
+}
+
 .fill-text\/80 {
   fill: hsl(var(--color-text) / 0.8);
 }
 
 .fill-title {
   fill: hsl(var(--color-title) / 1);
+}
+
+.fill-current {
+  fill: currentColor;
+}
+
+.stroke-title {
+  stroke: hsl(var(--color-title) / 1);
+}
+
+.stroke-text\/50 {
+  stroke: hsl(var(--color-text) / 0.5);
+}
+
+.stroke-current {
+  stroke: currentColor;
 }
 
 .object-scale-down {
@@ -2343,6 +2415,26 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .p-8 {
   padding: 2rem;
+}
+
+.p-0\.5 {
+  padding: 0.125rem;
+}
+
+.p-\[0\.25rem\] {
+  padding: 0.25rem;
+}
+
+.p-\[0\.1rem\] {
+  padding: 0.1rem;
+}
+
+.p-\[0\.2rem\] {
+  padding: 0.2rem;
+}
+
+.p-\[0\.15rem\] {
+  padding: 0.15rem;
 }
 
 .px-0 {
@@ -2428,6 +2520,15 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
+
+.pb-0 {
+  padding-bottom: 0px;
 }
 
 .pb-2 {
@@ -2534,6 +2635,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .uppercase {
@@ -2644,6 +2749,19 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
+}
+
+.text-title\/90 {
+  color: hsl(var(--color-title) / 0.9);
+}
+
+.text-title\/80 {
+  color: hsl(var(--color-title) / 0.8);
+}
+
+.text-red-400 {
+  --tw-text-opacity: 1;
+  color: rgb(249 128 128 / var(--tw-text-opacity));
 }
 
 .underline {

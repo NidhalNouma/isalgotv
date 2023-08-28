@@ -1,7 +1,7 @@
 <div class="my-0.5 w-fit max-w-full">
   <div class="border-b-0 border-text/50 flex flex-col pb-2">
     <p class="text-text/80 text-sm whitespace-pre-line break-all">
-      {{comment.description}}
+      {{comment.description|linebreaksbr}}
     </p>
     {% include "include/images.html" with images=comment.images.all %}
 

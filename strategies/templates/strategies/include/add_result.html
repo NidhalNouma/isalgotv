@@ -2,19 +2,29 @@
   <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
-    data-modal-target="add-result-modal-result"
-    data-modal-toggle="add-result-modal-result"
+    data-modal-target="add-result-modal"
+    data-modal-toggle="add-result-modal"
   >
-    Add a result
+    Share your result
   </button>
   <form
     class="flex flex-col"
     id="add-result-form"
     hx-post="{% url 'submit_result' strategy.id %}"
-    hx-target="#resultsDiv"
+    hx-target="#settingsDiv"
     enctype="multipart/form-data"
+    hx-wait="swap"
   >
     {% csrf_token %}
+    <button
+      class="hidden btn-text my-4 w-fit"
+      id="add-result-form-open-result"
+      data-modal-target="add-result-modal-result"
+      data-modal-toggle="add-result-modal-result"
+      type="button"
+    >
+      result
+    </button>
     <button
       id="add-result-form-open-setting"
       data-modal-target="add-result-modal"
@@ -48,7 +58,27 @@
         >
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4">
-            <h3 class="text-xl font-semibold text-title">Result</h3>
+            <h3 class="text-xl font-semibold text-title flex items-center">
+              <button
+                type="button"
+                class="mr-2"
+                onclick='nextResultStep("add-result-modal-close-result-btn", "add-result-btn")'
+              >
+                <svg
+                  class="w-5 h-5 text-title fill-title stroke-title"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="48"
+                    d="M244 400L100 256l144-144M120 256h292"
+                  ></path>
+                </svg></button
+              >Result
+            </h3>
             <button
               id="add-result-modal-close-result-btn"
               type="button"
@@ -86,115 +116,180 @@
             <div class="grid gap-6 mb-6 md:grid-cols-2">
               <div>
                 <label
-                  for="first_name"
+                  for="pair"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Pair</label
                 >
                 <input
                   type="text"
                   id="pair"
+                  name="pair"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="US30"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="last_name"
+                  for="total_trades"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Total trades</label
                 >
                 <input
                   type="number"
                   id="total_trades"
+                  name="total_trades"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="40"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="company"
+                  for="net_profit"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Net profit</label
                 >
                 <input
                   type="number"
                   id="net_profit"
+                  name="net_profit"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="500"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="phone"
+                  for="net_profit_percentage"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Net profit percentage</label
                 >
                 <input
                   type="number"
                   id="net_profit_percentage"
+                  name="net_profit_percentage"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="50%"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="website"
+                  for="max_dd"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Max Drawdown</label
                 >
                 <input
                   type="number"
                   id="max_dd"
+                  name="max_dd"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="20"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="visitors"
+                  for="max_dd_percentage"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Max Drawdown percentage</label
                 >
                 <input
                   type="number"
                   id="max_dd_percentage"
+                  name="max_dd_percentage"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="0.4%"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="website"
+                  for="profit_factor"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Profit factor</label
                 >
                 <input
                   type="number"
                   id="profit_factor"
+                  name="profit_factor"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="3.8"
-                  required
                 />
               </div>
               <div>
                 <label
-                  for="visitors"
+                  for="profitable_percentage"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Profitable percentage</label
                 >
                 <input
                   type="number"
                   id="profitable_percentage"
+                  name="profitable_percentage"
                   class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="12%"
-                  required
                 />
+              </div>
+              <div>
+                <label
+                  for="start_at"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Test start at</label
+                >
+                <input
+                  type="datetime-local"
+                  id="start_at"
+                  name="start_at"
+                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder=""
+                />
+              </div>
+              <div>
+                <label
+                  for="end_at"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Test end at</label
+                >
+                <input
+                  type="datetime-local"
+                  id="end_at"
+                  name="end_at"
+                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder=""
+                />
+              </div>
+              <div>
+                <label
+                  for="time_frame"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Timeframe</label
+                >
+                <input
+                  type="number"
+                  id="time_frame"
+                  name="time_frame"
+                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="1"
+                  min="1"
+                  step="1"
+                />
+              </div>
+              <div>
+                <label
+                  for="time_frame_period"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Timeframe period</label
+                >
+                <select
+                  type="select"
+                  id="time_frame_period"
+                  name="time_frame_period"
+                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option value="S">Seconds</option>
+                  <option value="M">Minutes</option>
+                  <option value="H">Hours</option>
+                  <option value="D">Days</option>
+                  <option value="W">Weeks</option>
+                  <option value="Mn">Months</option>
+                  <option value="Y">Years</option>
+                </select>
               </div>
             </div>
 
@@ -205,7 +300,7 @@
             ></div>
 
             <button
-              onclick='nextResultStep("add-result-modal-close-result-btn", "add-result-form-open-setting")'
+              onclick='nextResultStep("add-result-modal-close-result-btn", "add-result-form-open-post", "add-result-modal-result")'
               class="btn-text mb-4 w-fit mx-auto"
               type="button"
             >
@@ -230,7 +325,29 @@
         >
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4">
-            <h3 class="text-xl font-semibold text-title">Settings</h3>
+            <h3 class="text-xl font-semibold text-title flex items-center">
+              {% comment %}
+              <button
+                type="button"
+                class="mr-2"
+                onclick='nextResultStep("add-result-modal-close-btn", "add-result-btn")'
+              >
+                <svg
+                  class="w-5 h-5 text-title fill-title stroke-title"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="48"
+                    d="M244 400L100 256l144-144M120 256h292"
+                  ></path>
+                </svg>
+              </button>
+              {% endcomment %}Settings
+            </h3>
             <button
               id="add-result-modal-close-btn"
               type="button"
@@ -319,9 +436,9 @@
           ></div>
 
           <button
+            type="button"
             onclick="validateSettings()"
             class="btn-text mb-4 w-fit mx-auto"
-            type="button"
           >
             Next
           </button>
@@ -343,7 +460,27 @@
         >
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4">
-            <h3 class="text-xl font-semibold text-title">Post</h3>
+            <h3 class="text-xl font-semibold text-title flex items-center">
+              <button
+                type="button"
+                class="mr-2"
+                onclick='nextResultStep("add-result-modal-close-btn-post", "add-result-form-open-result")'
+              >
+                <svg
+                  class="w-5 h-5 text-title fill-title stroke-title"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="48"
+                    d="M244 400L100 256l144-144M120 256h292"
+                  ></path>
+                </svg></button
+              >Post
+            </h3>
             <button
               id="add-result-modal-close-btn-post"
               type="button"
@@ -438,12 +575,41 @@
             role="alert"
           ></div>
 
+          <div id="add-result-form-errors" class="my-2 mx-4"></div>
+
           <button
             onclick="post()"
             class="btn-secondary mb-4 w-fit mx-auto"
-            type="button"
+            type="submit"
+            id="btn-result-post"
           >
             Post
+          </button>
+
+          <button
+            id="spinner-result-post"
+            disabled
+            type="button"
+            class="mb-4 w-fit mx-auto hidden bg-background text-text"
+          >
+            <svg
+              aria-hidden="true"
+              role="status"
+              class="inline w-4 h-4 mr-3 text-sm text-text animate-spin"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                class="fill-text/60"
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentColor"
+              />
+            </svg>
+            Posting...
           </button>
         </div>
       </div>
@@ -452,12 +618,34 @@
 </div>
 
 <script>
-  function nextResultStep(closeId, openId) {
-    const closeForm = document.getElementById(closeId);
-    const openForm = document.getElementById(openId);
+  function validateForm(formId) {
+    const inputs = document.querySelectorAll("#" + formId + " input");
+    let isValid = true;
 
-    closeForm.click();
-    openForm.click();
+    inputs.forEach((input) => {
+      if (input.value.trim() === "") {
+        isValid = false;
+        input.classList.add("!border-red-500"); // Add red border for invalid inputs
+      } else {
+        input.classList.remove("!border-red-500");
+      }
+    });
+
+    if (!isValid) {
+      //alert("Please fill out all required fields.");
+    }
+
+    return isValid;
+  }
+
+  function nextResultStep(closeId, openId, formId) {
+    if (validateForm(formId)) {
+      const closeForm = document.getElementById(closeId);
+      const openForm = document.getElementById(openId);
+
+      closeForm.click();
+      openForm.click();
+    }
   }
 
   function validateSettings() {
@@ -491,13 +679,16 @@
       }
     }
 
-    const openForm = document.getElementById("add-result-form-open-post");
+    //const openForm = document.getElementById("add-result-form-open-post");
+    const openForm = document.getElementById("add-result-form-open-result");
     closeform.click();
     openForm.click();
-    return true; // Allow form submission
+    return true;
   }
 
-  function post() {
+  async function post() {
+    openLoader("", "-result-post");
+
     const form = document.getElementById("add-result-modal-post");
     const closeform = document.getElementById(
       "add-result-modal-close-btn-post"
@@ -509,7 +700,41 @@
     errorMessageDiv.textContent = "";
     errorMessageDiv.classList.add("hidden");
 
-    closeform.click();
-    return true; // Allow form submission
+    const mainForm = document.getElementById("add-result-form");
+    //mainForm.dispatchEvent(new Event("submit-result"));
+
+    await new Promise((resolve) => {
+      mainForm.addEventListener(
+        "htmx:afterSwap",
+        () => {
+          resolve();
+        },
+        { once: true }
+      );
+    });
+
+    console.log("Form submission completed!");
+
+    //closeform.click();
+    closeLoader("", "-result-post");
+    return true;
+  }
+
+  function clearResultForm() {
+    closeLoader("", "-result-post");
+    const closeForm = document.getElementById(
+      "add-result-modal-close-btn-post"
+    );
+    closeForm.click();
+    let form = document.getElementById("add-result-form");
+    let inputs = form.getElementsByTagName("input");
+
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i].type === "text" || inputs[i].type === "number") {
+        inputs[i].value = "";
+      } else if (inputs[i].type === "checkbox") {
+        inputs[i].checked = false;
+      }
+    }
   }
 </script>

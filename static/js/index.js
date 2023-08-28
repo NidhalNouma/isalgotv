@@ -8,6 +8,13 @@ function openLoader(title, id = "-pay-submit-") {
 function closeLoader(title, id = "-pay-submit-") {
   document.getElementById("spinner" + id + title).style.display = "none";
   document.getElementById("btn" + id + title).style.display = "block";
+
+  if (document.getElementById("error" + id + title))
+    document.getElementById("error" + id + title).style.display = "none";
+}
+function closeLoader(title, id = "-pay-submit-") {
+  document.getElementById("spinner" + id + title).style.display = "none";
+  document.getElementById("btn" + id + title).style.display = "block";
 }
 
 function validateNumberInput(input, maxLength) {
@@ -213,3 +220,13 @@ function showModalImages(images, imgId, id = "modal-images") {
     }
   });
 }
+
+htmx.on("htmx:afterRequest", (evt) => {
+  // console.log(evt);
+
+  if (evt?.detail?.target.id === "settingsDiv") {
+    clearResultForm();
+  }
+  // check which element triggered the htmx request. If it's the one you want call the function you need
+  //you have to add htmx: before the event ex: 'htmx:afterRequest'
+});

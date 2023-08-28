@@ -5,8 +5,9 @@ from django.views.decorators.http import require_http_methods
 
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
-from .forms import StrategyCommentForm, RepliesForm
+from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
+import json
 
 def get_strategies(request):
     subscription = request.subscription
@@ -97,7 +98,67 @@ def add_result(request, id):
     strategy = Strategy.objects.get(pk=id)
 
     if request.method == 'POST':
-        pass
+
+
+        settings_data = {}
+        for key, value_list in request.POST.items():
+            if key.startswith('settings_'):
+                setting_name = key[len('settings_'):]
+                settings_data[setting_name] = value_list[0:] 
+
+        settings = strategy.settings
+
+        for setting in settings['objects']:
+            setting_name = setting['name']
+            if setting_name in settings_data:
+                setting['default_value'] = settings_data[setting_name]
+
+        form_data = {
+            'description': request.POST.get('description'),
+            'pair': request.POST.get('pair'),
+            'total_trade': request.POST.get('total_trades'),
+            'net_profit': request.POST.get('net_profit'),
+            'net_profit_percentage': request.POST.get('net_profit_percentage'),
+            'max_drawdown': request.POST.get('max_dd'),
+            'max_drawdown_percentage': request.POST.get('max_dd_percentage'),
+            'profit_factor': request.POST.get('profit_factor'),
+            'profitable_percentage': request.POST.get('profitable_percentage'),
+            'test_start_at': request.POST.get('start_at'),
+            'test_end_at': request.POST.get('end_at'),
+            'time_frame_int': request.POST.get('time_frame'),
+            'time_frame': request.POST.get('time_frame_period'),
+            'settings': settings,
+        }
+        print(request.POST)
+        form = StrategyResultForm(form_data, request.FILES)  # Allow file uploads
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.strategy = strategy
+            result.created_by = request.user.user_profile
+            result.save()
+
+
+            # Save images with modified name and URL
+            for index, image in enumerate(request.FILES.getlist('images')):
+                image_name = f'{result.id}_{index}_{image.name}'  
+                StrategyImages.objects.create(
+                    name=image_name,
+                    img=image,
+                    content_object=result,
+                )
+
+            # Trigger an HTMX update to fetch the new comment
+            results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
+                'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
+            )
+            context = {'results': results, 'strategy': strategy}
+            response = render(request, 'include/results.html', context=context)
+            return response
+        else:
+            print(form.errors)
+            context = {'errors': form.errors}
+            response = render(request, "include/errors.html", context=context)
+            return retarget(response, "#add-result-form-errors")
 
 @require_http_methods([ "POST"])
 def add_comment_reply(request, id):

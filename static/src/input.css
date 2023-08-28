@@ -26,6 +26,12 @@
       --color-text: 0 0% 80%;
       --color-text-light: 0 0% 80%;
       --color-title: 0 0% 100%;
+
+
+
+      ::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+      }
     }
 
     html, h1 span, h2 span, h3 span, h4 span, h5 span{
@@ -78,7 +84,6 @@
       @apply bg-background bg-opacity-60
     }
 }
-
 
 .hideMe {
   animation: cssAnimation 6s forwards;
