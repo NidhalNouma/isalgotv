@@ -1,6 +1,11 @@
 from .base import *
 import environ
-# Initialise environment variables
+import mimetypes
+
+mimetypes.add_type("text/html", ".html", True)
+mimetypes.add_type("text/css", ".css", True)
+mimetypes.add_type("text/js", ".js", True)
+
 env = environ.Env()
 environ.Env.read_env()
 
