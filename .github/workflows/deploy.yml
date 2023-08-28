@@ -30,7 +30,7 @@ jobs:
           echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
 
       - run: mv .env ./etradingview/settings
-      - run: sudo docker rmi --force $(docker images -q 'isalgo' | uniq) || echo "No isalgo image founddd"
+      - run: sudo docker rmi --force $(sudo docker images -q 'isalgo' | uniq) || echo "No isalgo image founddd"
       - run: sudo docker build --progress=plain --no-cache --tag isalgo .
       - run: sudo docker stop isalgo_run || echo "No isalgo run container founddd to stop"
       - run: sudo docker rm isalgo_run || echo "No isalgo run container founddd to remove"

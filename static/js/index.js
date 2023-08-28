@@ -1,3 +1,32 @@
+function swapDivBtn(id1, id2) {
+  const btn1 = document.getElementById(id1 + "-btn");
+  const btn2 = document.getElementById(id2 + "-btn");
+  const div1 = document.getElementById(id1);
+  const div2 = document.getElementById(id2);
+
+  const btnClass1 = btn1.classList.toString(); // Convert class list to string
+  const btnClass2 = btn2.classList.toString(); // Convert class list to string
+
+  btnClass1.split(" ").forEach((className) => {
+    btn1.classList.remove(className);
+  });
+
+  btnClass2.split(" ").forEach((className) => {
+    btn2.classList.remove(className);
+  });
+
+  btnClass1.split(" ").forEach((className) => {
+    btn2.classList.add(className);
+  });
+
+  btnClass2.split(" ").forEach((className) => {
+    btn1.classList.add(className);
+  });
+
+  div1.classList.add("hidden");
+  div2.classList.remove("hidden");
+}
+
 function openLoader(title, id = "-pay-submit-") {
   document.getElementById("spinner" + id + title).style.display = "block";
   document.getElementById("btn" + id + title).style.display = "none";

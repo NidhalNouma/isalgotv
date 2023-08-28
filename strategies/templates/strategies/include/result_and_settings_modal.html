@@ -6,33 +6,35 @@
   aria-hidden="true"
   class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
 >
-  <div class="relative w-full max-w-2xl max-h-full">
+  <div class="relative w-full max-w-lg max-h-full">
     <!-- Modal content -->
     <div class="relative bg-background rounded-lg shadow">
       <!-- Modal header -->
       <div
         class="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600"
       >
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-          PAIR_NAME
-        </h3>
+        <h3 class="text-xl font-semibold text-text">{{result.pair}}</h3>
         <ul
           class="font-semibold ml-4 flex flex-wrap items-center text-sm text-center text-text"
         >
           <li class="mr-2">
-            <a
-              href="#"
-              class="inline-block px-2 py-1 text-text-light dark:text-text bg-primary rounded-lg active"
+            <button
+              id="r-{{result.id}}-result-btn"
+              class="inline-block px-2 py-1 rounded-lg text-text-light dark:text-text bg-primary"
               aria-current="page"
-              >Result</a
+              onclick='swapDivBtn("r-{{result.id}}-settings", "r-{{result.id}}-result")'
             >
+              Result
+            </button>
           </li>
           <li class="mr-2">
-            <a
-              href="#"
+            <button
+              onclick='swapDivBtn("r-{{result.id}}-result", "r-{{result.id}}-settings")'
+              id="r-{{result.id}}-settings-btn"
               class="inline-block px-2 py-1 rounded-lg hover:text-text-light text-text hover:bg-primary"
-              >Settings</a
             >
+              Settings
+            </button>
           </li>
         </ul>
         <button
@@ -56,54 +58,58 @@
       </div>
       <!-- Modal body -->
       <!-- Profits -->
-      <div class="p-6 space-y-6">
-        <div class="text-base font-bold">
-          <h6 class="text-title">
-            <span class="text-sm text-text">First trade open at:</span> 20:20
-            Jun 2 2022
+      <div id="r-{{result.id}}-result" class="p-6 space-y-6">
+        <div class="text-sm font-medium">
+          <h6 class="text-title mb-2">
+            {{result.total_trade}}
+            <span class="text-xs text-text"> Trades</span>
           </h6>
           <h6 class="text-title">
-            <span class="text-sm text-text">Last trade close at:</span> 20:20
-            Oct 10 2022
+            <span class="text-xs text-text">First trade open at:</span>
+            {{result.test_start_at}}
+          </h6>
+          <h6 class="text-title">
+            <span class="text-xs text-text">Last trade close at:</span>
+            {{result.test_end_at}}
           </h6>
         </div>
-        <div class="text-base font-bold grid grid-cols-2">
+        <div class="text-sm font-medium grid grid-cols-2 gap-1">
           <h6 class="text-green-400">
-            90% <span class="text-sm text-text">Net profit</span>
+            <span class="text-xs text-text">Profit:</span>
+            {{result.net_profit}} USD
+            <span class="text-xs text-text"
+              >{{result.net_profit_percentage}}%</span
+            >
           </h6>
           <h6 class="text-green-400">
-            51.2% <span class="text-sm text-text">Percent Profitable</span>
+            <span class="text-xs text-text">Profit factor:</span>
+            <span class="text-xs text-title">{{result.profit_factor}}</span>
+          </h6>
+          <h6 class="text-red-400">
+            <span class="text-xs text-text">Drawdown:</span>
+            {{result.max_drawdown}} USD
+            <span class="text-xs text-text"
+              >{{result.max_drawdown_percentage}}%</span
+            >
           </h6>
           <h6 class="text-green-400">
-            0.44 <span class="text-sm text-text">Profit factor</span>
-          </h6>
-          <h6 class="text-green-400">
-            0.62% <span class="text-sm text-text">Max Drawdown</span>
+            <span class="text-xs text-text">Profitable percentage:</span>
+            <span class="text-xs text-title"
+              >{{result.profitable_percentage}}%</span
+            >
           </h6>
         </div>
       </div>
       <!-- Settings -->
-      <div class="p-6 space-y-6">
-        <div class="text-base font-bold grid grid-cols-2">
-          <h6 class="text-title">
-            <span class="text-sm text-text">Volume: </span>0.1
-          </h6>
-          <h6 class="text-title">
-            <span class="text-sm text-text">Take profit: </span>230
-          </h6>
-          <h6 class="text-title">
-            <span class="text-sm text-text">Sttop loss: </span>230
-          </h6>
-          <h6 class="text-title">
-            <span class="text-sm text-text">Trailing stop: </span>50
-          </h6>
-          <h6 class="text-title">
-            <span class="text-sm text-text">BreakEven: </span>50
-          </h6>
-          <h6 class="text-title">
-            <span class="text-sm text-text">Parciel close: </span>50
-          </h6>
+      <div id="r-{{result.id}}-settings" class="hidden p-6 space-y-3">
+        {% for setting in result.settings.objects %}
+        <div class="flex">
+          <label class="block text-sm font-medium text-title mr-2"
+            >{{ setting.name }}:</label
+          >
+          <span class="text-sm text-text">{{ setting.default_value }} </span>
         </div>
+        {% endfor %}
       </div>
     </div>
   </div>
