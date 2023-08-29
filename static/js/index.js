@@ -259,3 +259,29 @@ htmx.on("htmx:afterRequest", (evt) => {
   // check which element triggered the htmx request. If it's the one you want call the function you need
   //you have to add htmx: before the event ex: 'htmx:afterRequest'
 });
+
+function scrollToResult(resultId) {
+  const resultElement = document.getElementById(`result-${resultId}`);
+
+  if (resultElement) {
+    // Calculate the scroll position to center the element
+    const windowHeight = window.innerHeight;
+    const elementTop = resultElement.getBoundingClientRect().top;
+    const offset = elementTop - windowHeight / 2;
+
+    // Scroll to the element
+    window.scrollTo({
+      top: window.scrollY + offset,
+      behavior: "smooth",
+    });
+
+    // Add a highlight class
+    resultElement.classList.add("brightness-125");
+
+    // Remove the highlight after a certain time (e.g., 3 seconds)
+    setTimeout(() => {
+      resultElement.style.backgroundColor = "transparent";
+      resultElement.classList.remove("brightness-125");
+    }, 3000);
+  }
+}

@@ -7,7 +7,8 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
-import json
+
+from django.db.models.functions import Random
 
 def get_strategies(request):
     subscription = request.subscription
@@ -51,10 +52,12 @@ def get_strategy(request, id):
         results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
+        
+        random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
     except Strategy.DoesNotExist:
         raise Http404("The object does not exist.")
     
-    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
+    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': random_results, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
     return render(request, 'strategy.html', context)
 
 @require_http_methods([ "POST"])

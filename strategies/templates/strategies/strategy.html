@@ -75,45 +75,31 @@
           showSettingsBtn.classList.add("bg-secondary");
           showSettingsBtn.classList.add("dark:text-background");
         });
+
+
       </script>
     </section>
   </section>
 
-  <section class="w-3/12 hidden">
-    {% comment %}
-    <h2 class="text-text text-sm font-semibold mb-2">Results</h2>
-    {% endcomment %} {% for i in '01234'|make_list %}
-    <div class="rounded-xl py-2 px-4 border-2 border-transparent mb-3">
-      <h5 class="text-title text-xs font-bold">PAIR_NAME</h5>
-      <div class="text-sm font-bold mt-2">
-        <h6 class="text-green-400">
-          90% <span class="text-xs text-text">Net profit</span>
-        </h6>
-        <h6 class="text-green-400">
-          51.2% <span class="text-xs text-text">Percent Profitable</span>
-        </h6>
-        <h6 class="text-green-400">
-          0.44 <span class="text-xs text-text">Profit factor</span>
-        </h6>
-        <h6 class="text-green-400">
-          0.62% <span class="text-xs text-text">Max Drawdown</span>
-        </h6>
-      </div>
-
-      <div class="text-xs pt-3 flex items-center justify-between">
-        <button
-          data-modal-target="staticModal"
-          data-modal-toggle="staticModal"
-          class="text-text hover:bg-secondary bg-background rounded-xl font-semibold px-2 border-2 border-secondary"
-        >
-          View
-        </button>
-      </div>
-    </div>
+  <section class="w-3/12 hidden md:block">
+    {% for result in random_results %} 
+    {% include "include/quick_result.html" with result=result %}
     {% endfor %}
   </section>
 
   {% include "include/modal_images_main.html" %}
 </main>
+
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const resultParam = urlParams.get("result");
+    
+    if (resultParam) {
+      scrollToResult(resultParam);
+    }
+  });
+</script>
 
 {% endblock page %}

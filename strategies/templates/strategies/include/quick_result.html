@@ -1,0 +1,61 @@
+<div class="w-full mb-3 p-2">
+  <div class="flex items-center">
+    <span
+      class="text-background bg-text px-1.5 rounded-full text-sm font-medium mr-2 whitespace-nowrap"
+      >{{result.pair}}</span
+    >
+    <a class="grow" href="{% url 'strategy' id=result.strategy.id %}">
+      <h6 class="text-xs text-title underline truncate">
+        {{result.strategy.name}}
+      </h6>
+    </a>
+  </div>
+
+  <div class="text-xs font-medium my-2 text-text/70">
+    <h6 class="text-green-400/90 flex items-center">
+      <svg
+        class="w-4 h-4 fill-current stroke-current mr-1.5"
+        stroke-width="0"
+        viewBox="0 0 256 256"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M236,208a12,12,0,0,1-12,12H32a12,12,0,0,1-12-12V48a12,12,0,0,1,24,0v99l43.51-43.52a12,12,0,0,1,17,0L128,127l43-43H160a12,12,0,0,1,0-24h40a12,12,0,0,1,12,12v40a12,12,0,0,1-24,0V101l-51.51,51.52a12,12,0,0,1-17,0L96,129,44,181v15H224A12,12,0,0,1,236,208Z"
+        ></path>
+      </svg>
+      {{result.net_profit}} USD
+      <span class="text-xs ml-1">{{result.net_profit_percentage}}%</span>
+    </h6>
+    <h6 class="text-red-400/90 flex items-center">
+      <svg
+        class="w-4 h-4 fill-current stroke-current mr-1.5"
+        stroke-width="0"
+        viewBox="0 0 256 256"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M236,208a12,12,0,0,1-12,12H32a12,12,0,0,1-12-12V48a12,12,0,0,1,24,0V59l52,52,23.51-23.52a12,12,0,0,1,17,0L188,139V128a12,12,0,0,1,24,0v40q0,.6-.06,1.2c0,.16-.05.33-.07.49s-.06.45-.1.67-.09.38-.14.56-.09.39-.15.58l-.19.54c-.07.19-.13.38-.21.56s-.15.34-.23.5-.17.38-.27.57-.18.3-.27.45-.21.38-.33.56-.24.32-.36.47-.22.32-.34.47-.46.53-.71.78l-.08.1-.1.08c-.25.25-.51.48-.78.71l-.46.34c-.16.12-.32.25-.48.36s-.37.22-.55.33-.3.19-.46.27-.37.18-.56.27-.33.16-.51.23l-.54.21-.57.19a4.92,4.92,0,0,1-.55.14l-.58.15-.64.09-.53.08A11.51,11.51,0,0,1,200,180H160a12,12,0,0,1,0-24h11l-43-43-23.51,23.52a12,12,0,0,1-17,0L44,93V196H224A12,12,0,0,1,236,208Z"
+        ></path>
+      </svg>
+      {{result.max_drawdown}} USD
+      <span class="text-xs ml-1">{{result.max_drawdown_percentage}}%</span>
+    </h6>
+  </div>
+
+  <a
+    href="{% url 'strategy' id=result.strategy.id %}?result={{result.id}}"
+    class="w-fit flex items-center px-1 bg-secondary text-xs rounded font-medium text-text dark:text-background"
+  >
+    Check and vote
+    <svg
+      class="w-4 h-4 stroke-current fill-current"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+      ></path>
+    </svg>
+  </a>
+</div>

@@ -1,15 +1,10 @@
 from .base import *
 import environ
-import mimetypes
-
-mimetypes.add_type("text/html", ".html", True)
-mimetypes.add_type("text/css", ".css", True)
-mimetypes.add_type("text/js", ".js", True)
 
 env = environ.Env()
 environ.Env.read_env()
 
-DEBUG = False
+# DEBUG = False
 
 ALLOWED_HOSTS = [
     '0.0.0.0',

@@ -1,5 +1,6 @@
 <div
-  class="mb-2 py-2 bg-background brightness-125i rounded-xl flex flex-col w-full max-w-full"
+  id="result-{{result.id}}"
+  class="mb-2 py-2 bg-background transition ease-in-out duration-1000 rounded-xl flex flex-col w-full max-w-full"
 >
   <div class="flex mb-1 items-center">
     <span class="text-background bg-text px-1.5 rounded-full text-sm mr-2"
@@ -59,6 +60,7 @@
   <p class="text-text/70 text-sm pb-0 break-all">
     {{result.description|linebreaksbr}}
   </p>
+  {% include "include/images.html" with images=result.images.all %}
 
   <div class="mb-0.5 mt-2 flex items-center">
     <span class="text-text/50 text-xs"
