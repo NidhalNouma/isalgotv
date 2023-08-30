@@ -325,29 +325,7 @@
         >
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4">
-            <h3 class="text-xl font-semibold text-title flex items-center">
-              {% comment %}
-              <button
-                type="button"
-                class="mr-2"
-                onclick='nextResultStep("add-result-modal-close-btn", "add-result-btn")'
-              >
-                <svg
-                  class="w-5 h-5 text-title fill-title stroke-title"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="48"
-                    d="M244 400L100 256l144-144M120 256h292"
-                  ></path>
-                </svg>
-              </button>
-              {% endcomment %}Settings
-            </h3>
+            <h3 class="text-xl font-semibold text-title flex items-center">Settings</h3>
             <button
               id="add-result-modal-close-btn"
               type="button"
@@ -369,7 +347,7 @@
             </button>
           </div>
           <!-- Modal body -->
-          <div class="h-full w-full my-auto px-4">
+          <div class="h-full w-full my-auto px-4 flex flex-col">
             <div
               class="rounded-lg bg-text text-background flex flex-col mt-0 mb-4"
             >
@@ -414,7 +392,6 @@
                 name="settings_{{ setting.name }}"
                 id="id_settings_{{ setting.name }}"
                 placeholder="{{ setting.default_value }}"
-                required
               />
               {% else %}
               <input
@@ -424,9 +401,10 @@
                 id="id_settings_{{ setting.name }}"
                 placeholder="{{ setting.default_value }}"
                 required
-              />
+              /> 
+              {% endif %}
             </div>
-            {% endif %} {% endfor %}
+            {% endfor %}
           </div>
 
           <div
@@ -438,7 +416,7 @@
           <button
             type="button"
             onclick="validateSettings()"
-            class="btn-text mb-4 w-fit mx-auto"
+            class="btn-text mb-4 w-fit mx-auto "
           >
             Next
           </button>
@@ -663,10 +641,6 @@
       if (input.type === "checkbox") {
         // If it's a checkbox input, check if it's checked
         if (!input.checked) {
-          errorMessageDiv.textContent =
-            "Please select " + input.id.replace("id_settings_", "");
-          errorMessageDiv.classList.remove("hidden");
-          return false;
         }
       } else {
         // For other input types, check if the value is empty

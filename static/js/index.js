@@ -277,11 +277,16 @@ function scrollToResult(resultId) {
 
     // Add a highlight class
     resultElement.classList.add("brightness-125");
+    resultElement.classList.add("transition");
+    resultElement.classList.add("ease-in-out");
+    resultElement.classList.add("duration-1000");
 
     // Remove the highlight after a certain time (e.g., 3 seconds)
     setTimeout(() => {
-      resultElement.style.backgroundColor = "transparent";
       resultElement.classList.remove("brightness-125");
+      // resultElement.classList.remove("transition");
+      // resultElement.classList.remove("ease-in-out");
+      // resultElement.classList.remove("duration-1000");
     }, 3000);
   }
 }
