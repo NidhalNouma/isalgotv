@@ -9,26 +9,33 @@
     <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
     {% endif %}
 
-    <main class="mt-8 mb-16 grid md:grid-cols-2 grid-col-1 gap-4">
+    <main class="mt-8 mb-16 grid md:grid-cols-4 sm:grid-cols-2 griid-cols-1 gap-4">
 
         {% for strategy in strategies %}
 
-        <div class="flex items-center justify-around mt-4">
-            <div class="w-3/6">
-                <h3 class="text-title text-2xl font-bold truncate">{{ strategy.name }}</h3>
-                <p class="text-text line-clamp-3 text-sm">{{ strategy.description }}</p>
-                <a href="{% url 'strategy' id=strategy.id %}" class="text-sm text-secondary underline">Read more</a>
-            </div>
+        <div class="flex flex-col items-center">
 
-            <div class="w-1/2">
+            <div class="w-full">
                 {% with first_image=strategy.images.first %}
                     {% if first_image %}
-                        <img src="{{ first_image.img.url }}" alt="{{ first_image.name }}">
+                    <a href="{% url 'strategy' id=strategy.id %}">
+                        <img
+                        class="max-w-full max-h-72 mx-auto"
+                        src="{% static 'images/chart_nobg.png' %}"
+                        />
+                    </a>  
                     {% else %}
                         <p>No images available.</p>
                     {% endif %}
                 {% endwith %}
-                {% comment %} <img class="w-10/12 h-32 mx-auto" src="{% static 'images/chart_nobg.png' %}" /> {% endcomment %}
+            </div>
+
+            <div class="w-full">
+                <a href="{% url 'strategy' id=strategy.id %}">
+                    <h3 class="text-title text-xl font-bold line-clamp-2">{{ strategy.name }}</h3>
+                </a>
+                <p class="text-text line-clamp-3 text-sm">{{ strategy.description }}</p>
+                <a href="{% url 'strategy' id=strategy.id %}" class="text-sm text-secondary underline">Read more</a>
             </div>
         </div>
 

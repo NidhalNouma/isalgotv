@@ -3,6 +3,7 @@
         {% include "include/result_votes.html" with result=result %}
     </div>
   
+    {% if user.is_authenticated and subscription %}
     <button
       id="add-reply-{{result.id}}-result-list"
       onclick='toggleForm("add-reply-{{result.id}}-result", "add-form-reply-{{result.id}}-result")'
@@ -10,6 +11,22 @@
     >
       Reply
     </button>
+    {% elif user.is_authenticated and not subscription %}
+    <button
+      class="text-text text-xs font-semibold cursor-pointer"
+      data-modal-target="upgrade-modal"
+      data-modal-toggle="upgrade-modal"
+    >
+    Reply
+    </button>
+    {% else %}
+    <a
+      class="text-text text-xs font-semibold cursor-pointer"
+      href="{% url 'login' %}"
+    >
+      Reply
+    </a>
+    {% endif %}
   </div>
   
     {% with reply_count=result.replies.all|length %} {% if reply_count >= 1 %}

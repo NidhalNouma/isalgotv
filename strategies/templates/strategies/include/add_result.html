@@ -1,4 +1,5 @@
 <div class="">
+  {% if user.is_authenticated and subscription %}
   <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
@@ -7,6 +8,22 @@
   >
     Share your result
   </button>
+  {% elif user.is_authenticated and not subscription %}
+  <button
+    class="text-secondary text-sm font-semibold underlinei"
+    data-modal-target="upgrade-modal"
+    data-modal-toggle="upgrade-modal"
+  >
+    Share your result
+  </button>
+  {% else %}
+  <a
+    class="text-secondary text-sm font-semibold underlinei"
+    href="{% url 'login' %}"
+  >
+    Share your result
+  </a>
+  {% endif %}
   <form
     class="flex flex-col"
     id="add-result-form"
@@ -325,7 +342,9 @@
         >
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4">
-            <h3 class="text-xl font-semibold text-title flex items-center">Settings</h3>
+            <h3 class="text-xl font-semibold text-title flex items-center">
+              Settings
+            </h3>
             <button
               id="add-result-modal-close-btn"
               type="button"
@@ -401,7 +420,7 @@
                 id="id_settings_{{ setting.name }}"
                 placeholder="{{ setting.default_value }}"
                 required
-              /> 
+              />
               {% endif %}
             </div>
             {% endfor %}
@@ -416,7 +435,7 @@
           <button
             type="button"
             onclick="validateSettings()"
-            class="btn-text mb-4 w-fit mx-auto "
+            class="btn-text mb-4 w-fit mx-auto"
           >
             Next
           </button>

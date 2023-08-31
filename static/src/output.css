@@ -1321,6 +1321,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   top: 25%;
 }
 
+.right-2 {
+  right: 0.5rem;
+}
+
+.right-2\.5 {
+  right: 0.625rem;
+}
+
+.top-3 {
+  top: 0.75rem;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -1550,11 +1562,26 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   margin-top: auto;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
+.ml-1\.5 {
+  margin-left: 0.375rem;
+}
+
 .line-clamp-3 {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .block {
@@ -1789,6 +1816,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .w-full {
   width: 100%;
+}
+
+.w-12 {
+  width: 3rem;
 }
 
 .min-w-\[2\.5rem\] {
@@ -2203,6 +2234,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   border-color: hsl(var(--color-text) / 0.5);
 }
 
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
+
 .bg-accent {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-accent) / var(--tw-bg-opacity));
@@ -2294,6 +2330,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   background-color: rgb(252 233 106 / var(--tw-bg-opacity));
 }
 
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(224 36 36 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2367,6 +2408,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .stroke-title {
   stroke: hsl(var(--color-title) / 1);
+}
+
+.stroke-text {
+  stroke: hsl(var(--color-text) / 1);
+}
+
+.stroke-text\/80 {
+  stroke: hsl(var(--color-text) / 0.8);
 }
 
 .object-scale-down {
@@ -2872,6 +2921,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   -webkit-line-clamp: 3;
 }
 
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -2941,6 +2997,15 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-red-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(155 28 28 / var(--tw-bg-opacity));
+}
+
+.hover\:fill-text:hover {
+  fill: hsl(var(--color-text) / 1);
+}
+
 .hover\:font-medium:hover {
   font-weight: 500;
 }
@@ -2978,9 +3043,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   opacity: 1;
 }
 
+.focus\:z-10:focus {
+  z-index: 10;
+}
+
 .focus\:border-blue-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
+}
+
+.focus\:fill-text:focus {
+  fill: hsl(var(--color-text) / 1);
 }
 
 .focus\:outline-none:focus {
@@ -3026,6 +3099,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
 }
 
+.focus\:ring-red-300:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(248 180 180 / var(--tw-ring-opacity));
+}
+
 .group:focus .group-focus\:outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -3058,6 +3136,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 :is(.dark .dark\:border-transparent) {
   border-color: transparent;
+}
+
+:is(.dark .dark\:border-gray-500) {
+  --tw-border-opacity: 1;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
 }
 
 :is(.dark .dark\:bg-blue-600) {
@@ -3142,6 +3225,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   color: rgb(250 202 21 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:text-gray-200) {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+:is(.dark .dark\:text-gray-300) {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
@@ -3202,6 +3295,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   --tw-ring-color: rgb(75 85 99 / var(--tw-ring-opacity));
 }
 
+:is(.dark .dark\:focus\:ring-red-800:focus) {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(155 28 28 / var(--tw-ring-opacity));
+}
+
 @media (min-width: 640px) {
   .sm\:static {
     position: static;
@@ -3225,6 +3323,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
   .sm\:w-8\/12 {
     width: 66.666667%;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .sm\:space-x-8 > :not([hidden]) ~ :not([hidden]) {
@@ -3342,6 +3444,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .md\:flex-row {
