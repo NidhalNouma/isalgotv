@@ -102,7 +102,7 @@
       profile to copy your username and past it <br />
       inside the field.
     </p>
-    <div class="mt-6 w-full flex items-center justify-between gap-8">
+    <div class="mt-6 w-full flex flex-col sm:flex-row items-center justify-center gap-8">
       <form hx-post="{% url 'update-tradingview-username' %}" class="mb-2 pt-3">
         {% csrf_token %}
         <label
@@ -139,7 +139,7 @@
         <button
           type="submit"
           id=""
-          class="block w-[160px] max-w-xs mx-auto btn-secondary"
+          class="block max-w-full w-full mx-auto btn-secondary"
         >
           Submit
         </button>

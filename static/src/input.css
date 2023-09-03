@@ -22,7 +22,7 @@
       --color-secondary: 178 40% 52%;
       --color-accent: 229 76% 72%;
       /* --color-accent: 8 78% 68%; */
-      --color-background: 188 16% 10%;
+      --color-background: 188 25% 10%;
       --color-text: 0 0% 80%;
       --color-text-light: 0 0% 80%;
       --color-title: 0 0% 100%;
@@ -45,7 +45,7 @@
 
 @layer components {
   .btn-primary-landing{
-    @apply shadow-md shadow-primary/70 bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-title text-text-light text-2xl font-bold px-16 py-3 rounded-md whitespace-nowrap;
+    @apply bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:bg-gradient-to-bl mx-auto mb-6 mt-3 dark:text-text text-text-light text-xl font-medium px-16 py-1.5 rounded-md whitespace-nowrap;
   }
 
   .btn-primary {
@@ -81,7 +81,7 @@
     }
 
     [modal-backdrop] {
-      @apply bg-background bg-opacity-60
+      @apply bg-background/80 brightness-110 bg-opacity-80
     }
 }
 
@@ -92,4 +92,16 @@
   0%   {opacity: 1;}
   90%  {opacity: 1;}
   100% {opacity: 0;}
+}
+.move-animation {
+  transition: transform 4s ease-in-out; /* Adjust duration as needed */
+}
+
+/* Apply the class to the divs initially */
+#home-blur-1.move-animation,
+#home-blur-2.move-animation,
+#home-blur-3.move-animation,
+#home-blur-4.move-animation {
+  transform-origin: center;
+  transform: translate(0, 0) scale(1);
 }

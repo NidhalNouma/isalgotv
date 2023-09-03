@@ -1,14 +1,16 @@
 <div
-  class="mt-12 relative rounded-xl p-4 sm:p-8 w-full md:w-9/12 flex items-center justify-around {{class}}"
+  class="mt-12 mb-8 relative rounded-xl p-4 sm:p-8 w-full md:w-9/12 flex items-center justify-around {{class}}"
 >
+  {% comment %}
   <div
     class="-z-10 absolute top-0 bottom-0 left-0 w-full bg-gradient-to-t to-background from-{{color}} ifrom-primary blur-[600px]"
   ></div>
+  {% endcomment %}
   <div class="max-w-[100%] md:max-w-[65%]">
-    <h3 class="text-title text-2xl font-bold">{{h1}}</h3>
-    <h3 class="text-text text-lg mt-4 font-semibold">{{h2}}</h3>
+    <h3 class="text-title text-3xl font-semibold">{{h1}}</h3>
+    <h6 class="text-text text-xl mt-2 font-medium">{{h2}}</h6>
   </div>
-  <div class="mx-auto h-52 mt-3 hidden md:block">
+  <div class="mx-auto h-64 mt-3 hidden md:block">
     <lottie-player
       class="h-full w-full"
       src="{{lottie_src}}"
