@@ -25,6 +25,28 @@ def get_strategies(request):
     context =  {'strategies': strategies, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
     return render(request, 'strategies.html', context)
 
+def get_results(request):
+    subscription = request.subscription
+    subscription_period_end = request.subscription_period_end
+    subscription_plan = request.subscription_plan
+    subscription_status = request.subscription_status
+
+    pair_name = request.GET.get('pair')
+
+    unique_pairs = StrategyResults.objects.values_list('pair', flat=True).distinct()
+    unique_pairs_list = unique_pairs
+
+
+    if pair_name:
+        results = StrategyResults.objects.filter(pair=pair_name).order_by('-profit_factor')
+    else:
+        results = StrategyResults.objects.all().order_by('-profit_factor')
+    
+    # print(strategies)
+
+    context =  {'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
+    return render(request, 'results.html', context)
+
 def get_strategy(request, id):
     strategy = {}
     comments = {}

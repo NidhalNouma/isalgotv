@@ -174,8 +174,8 @@
         </li>
         <li>
           <a
-            href="#"
-            class="block text-sm py-2 pl-3 pr-4 text-text/80 hover:text-title hover:font-medium"
+            href="{% url 'results' %}"
+            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %} text-text {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium"
             aria-current="page"
             >Results</a
           >

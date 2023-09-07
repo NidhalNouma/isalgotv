@@ -1327,6 +1327,22 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   top: 12rem;
 }
 
+.top-32 {
+  top: 8rem;
+}
+
+.top-12 {
+  top: 3rem;
+}
+
+.top-16 {
+  top: 4rem;
+}
+
+.top-14 {
+  top: 3.5rem;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -1557,6 +1573,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   margin-top: 0.5rem;
 }
 
+.mt-20 {
+  margin-top: 5rem;
+}
+
 .mt-24 {
   margin-top: 6rem;
 }
@@ -1579,14 +1599,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .mt-auto {
   margin-top: auto;
-}
-
-.mt-28 {
-  margin-top: 7rem;
-}
-
-.mt-20 {
-  margin-top: 5rem;
 }
 
 .line-clamp-2 {
@@ -2006,6 +2018,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   list-style-type: none;
 }
 
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -2330,6 +2346,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   background-color: hsl(var(--color-text-light) / var(--tw-bg-opacity));
 }
 
+.bg-text\/60 {
+  background-color: hsl(var(--color-text) / 0.6);
+}
+
 .bg-title\/80 {
   background-color: hsl(var(--color-title) / 0.8);
 }
@@ -2432,10 +2452,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .stroke-title {
   stroke: hsl(var(--color-title) / 1);
-}
-
-.stroke-text {
-  stroke: hsl(var(--color-text) / 1);
 }
 
 .stroke-2 {
@@ -2997,6 +3013,21 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   transform: translate(0, 0) scale(1);
 }
 
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -3025,6 +3056,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 .hover\:bg-secondary:hover {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-secondary) / var(--tw-bg-opacity));
+}
+
+.hover\:bg-text:hover {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
 }
 
 .hover\:bg-white:hover {
@@ -3302,6 +3338,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 }
 
 @media (min-width: 640px) {
+  .sm\:top-16 {
+    top: 4rem;
+  }
+
   .sm\:ml-8 {
     margin-left: 2rem;
   }
@@ -3336,6 +3376,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .sm\:flex-row {
