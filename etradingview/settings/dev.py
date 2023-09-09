@@ -3,7 +3,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # DATABASES = {
 #     'default': {
