@@ -16,7 +16,7 @@
       data-modal-toggle="staticModal-{{title}}"
       class="w-full btn-secondary mx-auto mt-3"
     >
-      Renew
+      Renew &#8634;
     </button>
     {% else %}
     <button
@@ -76,15 +76,15 @@
     <div class="relative bg-background rounded-lg shadow">
       <!-- Modal header -->
       <div
-        class="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600"
+        class="flex items-center justify-between p-4 rounded-t"
       >
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <h3 class="text-xl font-semibold text-title">
           Subscribe to the {{title}} plan
         </h3>
         <button
           onclick="unmountStripeElement('{{title}}')"
           type="button"
-          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          class="text-title/70 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
           data-modal-hide="staticModal-{{title}}"
         >
           <svg

@@ -5,6 +5,9 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', home, name="home"),
     path('membership/', membership, name="membership"),
+    path('membership/payment_method/create', create_payment_method, name="payment_method-create"),
+    path('membership/payment_method/delete', delete_payment_method, name="payment_method-delete"),
+    path('membership/payment_method/set_default', setdefault_payment_method, name="payment_method-set-default"),
     path('membership/create', create_subscription_stripeform, name="membership-create"),
     path('membership/cancel', cancel_subscription, name="membership-cancel"),
     path('profile/', get_profile, name='profile'),

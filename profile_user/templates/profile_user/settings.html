@@ -6,14 +6,19 @@
 
 <main class="mt-8 mb-16 flex gap-8 w-full">
   <div class="w-full max-w-xl mx-auto">
+    <div
+      id="tv-setting"
+      hx-on="hide-animate: setTimeout(function(){hideAll_hideMe();}, 1000);"
+    >
+      {% include 'include/settings/tradingview.html' %}
+    </div>
     <div id="setting-membership">
       {% include 'include/settings/membership.html' %}
     </div>
-    <div id="tv-setting" hx-on="hide-animate: setTimeout(function(){hideAll_hideMe();}, 1000);">
-    {% include 'include/settings/tradingview.html' %} 
-    </div>
-    {% include 'include/settings/password.html' %}
+      {% include 'include/settings/payment_methods.html' %}
+      {% include 'include/settings/password.html' %}
   </div>
 </main>
+
 
 {% endblock page %}

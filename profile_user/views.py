@@ -11,7 +11,7 @@ from django_htmx.http import trigger_client_event
 
 from .models import User_Profile
 from .forms import User_ProfileForm, PaymentCardForm
-from django_htmx.http import HttpResponseClientRedirect
+from django_htmx.http import HttpResponseClientRedirect, retarget
 
 import datetime
 import environ
@@ -67,13 +67,17 @@ def membership(request):
     subscription_period_end = request.subscription_period_end
     subscription_plan = request.subscription_plan
     subscription_status = request.subscription_status
+    payment_methods = request.payment_methods
+    stripe_customer = request.stripe_customer
 
     context = {'user_profile': user_profile,
               "payment_form": payment_form,
               'subscription': subscription,
               'subscription_plan': subscription_plan,
               'subscription_period_end': subscription_period_end,
-              'subscription_status': subscription_status}
+              'subscription_status': subscription_status,
+              'payment_methods': payment_methods,
+              'stripe_customer': stripe_customer}
     
     return render(request, 'membership.html', context)
 
@@ -85,12 +89,16 @@ def settings_page(request):
     subscription_period_end = request.subscription_period_end
     subscription_plan = request.subscription_plan
     subscription_status = request.subscription_status
+    payment_methods = request.payment_methods
+    stripe_customer = request.stripe_customer
 
     context = {'user_profile': user_profile,
               'subscription': subscription,
               'subscription_plan': subscription_plan,
               'subscription_period_end': subscription_period_end,
-              'subscription_status': subscription_status}
+              'subscription_status': subscription_status,
+              "payment_methods": payment_methods,
+              'stripe_customer': stripe_customer}
     return render(request, 'settings.html', context)
 
 def register(request):
@@ -181,18 +189,114 @@ def edit_tradingview_username(request):
             response = render(request, 'include/settings/tradingview.html', {'user_profile': profile_user, 'msg': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')
 
+
+@require_http_methods([ "POST"])
+def create_payment_method(request):
+    if request.method == 'POST':
+        data = request.POST
+        
+        context = {"error": '', 'payment_methods' : None, 'stripe_customer': request.stripe_customer}
+        payment_method = data['pm_id']
+
+        if not payment_method:
+            context["error"] = 'No payment method has been detected.'
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-payment_methods")
+
+        profile_user = User_Profile.objects.get(user=request.user)
+        customer_id = profile_user.customer_id
+
+        try:
+            stripe.PaymentMethod.attach(
+                payment_method,
+                customer=customer_id,
+            )
+            
+            context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
+
+            response = render(request, 'include/payment_methods.html', context)
+            return retarget(response, "#setting-payment_methods")
+            # stripe.Customer.modify(
+            #     customer_id,
+            #     invoice_settings={
+            #         'default_payment_method': payment_method
+            #     }
+            # )
+        except Exception as e:
+            context["error"] = 'Attached payment to customer '+str(e)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-payment_methods")
+
+
+@require_http_methods([ "POST"])
+def delete_payment_method(request):
+    if request.method == 'POST':
+        data = request.POST
+        
+        context = {"error": '', 'payment_methods' : None, 'stripe_customer': request.stripe_customer}
+        payment_method = data['pm_id']
+
+        if not payment_method:
+            context["error"] = 'No payment method has been detected.'
+
+        profile_user = User_Profile.objects.get(user=request.user)
+        customer_id = profile_user.customer_id
+
+        try:
+            
+            stripe.PaymentMethod.detach(payment_method)
+            context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
+
+            response = render(request, 'include/payment_methods.html', context)
+            return retarget(response, "#setting-payment_methods")
+        
+        except Exception as e:
+            context["error"] = 'Attached payment to customer '+str(e)
+
+@require_http_methods([ "POST"])
+def setdefault_payment_method(request):
+    if request.method == 'POST':
+        data = request.POST
+        
+        context = {"error": '', 'payment_methods' : request.payment_methods, 'stripe_customer': request.stripe_customer}
+        payment_method = data['pm_id']
+
+        if not payment_method:
+            context["error"] = 'No payment method has been detected.'
+
+        profile_user = User_Profile.objects.get(user=request.user)
+        customer_id = profile_user.customer_id
+
+        try:
+            customer = stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        'default_payment_method': payment_method
+                    }
+                )            
+            context["stripe_customer"] = customer
+
+            response = render(request, 'include/payment_methods.html', context)
+            return retarget(response, "#setting-payment_methods")
+        
+        except Exception as e:
+            context["error"] = 'Attached payment to customer '+str(e)
+
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
     if request.method == 'POST':
 
         plan_id = request.GET.get('plan','')
         price_id = PRICE_LIST.get(plan_id, '')
+        # csrf_token = request.POST.get('csrfmiddlewaretoken')
 
-        context = {"error": '', 'title': plan_id}
+        context = {"error": '', 'title': plan_id, 'user_profile': request.user_profile, 'payment_methods': request.payment_methods, 'stripe_customer': request.stripe_customer}
 
         if not price_id:
             context["error"] = 'No plan has been specified, please refresh the page and try again.'
-            return render(request, 'include/pay_form_stripe.html', context)
+            # return render(request, 'include/pay_form_stripe.html', context)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
 
         data = request.POST
         
@@ -200,11 +304,10 @@ def create_subscription_stripeform(request):
 
         if not payment_method:
             context["error"] = 'No payment method has been detected.'
-            return render(request, 'include/pay_form_stripe.html', context)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
 
-        
-        print(payment_method)
-        profile_user = User_Profile.objects.get(user=request.user)
+        profile_user = request.user_profile
         customer_id = profile_user.customer_id
 
         try:
@@ -220,17 +323,21 @@ def create_subscription_stripeform(request):
             )
         except Exception as e:
             context["error"] = 'Attached payment to customer '+str(e)
-            return render(request, 'include/pay_form_stripe.html', context)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
         try:
-            # Create the subscription. Note we're expanding the Subscription's
-            # latest invoice and that invoice's payment_intent
-            # so we can pass it to the front end to confirm the payment
+
+            if len(profile_user.subscription_id) > 0:
+                cancel_subscription = stripe.Subscription.delete(profile_user.subscription_id)
+                print("Old subscription has been canceled ... ")
+
             subscription = stripe.Subscription.create(
                 customer=customer_id,
                 items=[{
                     'price': price_id,
                 }],
             )
+            print("New subscription has been created ...")
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
             # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
@@ -238,7 +345,8 @@ def create_subscription_stripeform(request):
 
         except Exception as e:
             context["error"] = "Creating subscription "  +str(e)
-            return render(request, 'include/pay_form_stripe.html', context)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
 
 @require_http_methods([ "POST"])
 def cancel_subscription(request):

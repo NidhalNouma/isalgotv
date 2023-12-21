@@ -1425,6 +1425,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   margin-bottom: auto;
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .-ml-1 {
   margin-left: -0.25rem;
 }
@@ -1495,6 +1500,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .ml-2 {
   margin-left: 0.5rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
 }
 
 .ml-4 {
@@ -1583,6 +1592,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .mt-auto {
   margin-top: auto;
+}
+
+.mb-7 {
+  margin-bottom: 1.75rem;
 }
 
 .line-clamp-2 {
@@ -2133,6 +2146,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   border-color: hsl(var(--color-background) / var(--tw-divide-opacity));
 }
 
+.divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(243 244 246 / var(--tw-divide-opacity));
+}
+
 .self-stretch {
   align-self: stretch;
 }
@@ -2169,6 +2187,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem;
 }
 
 .rounded-full {
@@ -2365,6 +2387,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   background-color: hsl(var(--color-text) / 0.6);
 }
 
+.bg-title {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--color-title) / var(--tw-bg-opacity));
+}
+
 .bg-title\/80 {
   background-color: hsl(var(--color-title) / 0.8);
 }
@@ -2380,6 +2407,22 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .bg-white\/50 {
   background-color: rgb(255 255 255 / 0.5);
+}
+
+.bg-background\/20 {
+  background-color: hsl(var(--color-background) / 0.2);
+}
+
+.bg-title\/40 {
+  background-color: hsl(var(--color-title) / 0.4);
+}
+
+.bg-title\/20 {
+  background-color: hsl(var(--color-title) / 0.2);
+}
+
+.bg-title\/90 {
+  background-color: hsl(var(--color-title) / 0.9);
 }
 
 .bg-opacity-50 {
@@ -2415,6 +2458,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 .bg-clip-text {
   -webkit-background-clip: text;
           background-clip: text;
+}
+
+.fill-background {
+  fill: hsl(var(--color-background) / 1);
 }
 
 .fill-current {
@@ -2520,6 +2567,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 
 .p-8 {
   padding: 2rem;
+}
+
+.p-0\.5 {
+  padding: 0.125rem;
 }
 
 .px-0 {
@@ -2859,6 +2910,20 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   color: rgb(114 59 19 / var(--tw-text-opacity));
 }
 
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(240 82 82 / var(--tw-text-opacity));
+}
+
+.text-title\/70 {
+  color: hsl(var(--color-title) / 0.7);
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -3061,6 +3126,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
+.hover\:bg-background\/80:hover {
+  background-color: hsl(var(--color-background) / 0.8);
+}
+
 .hover\:bg-blue-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(30 66 159 / var(--tw-bg-opacity));
@@ -3091,9 +3160,29 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
 }
 
+.hover\:bg-title\/80:hover {
+  background-color: hsl(var(--color-title) / 0.8);
+}
+
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-background\/50:hover {
+  background-color: hsl(var(--color-background) / 0.5);
+}
+
+.hover\:bg-background\/20:hover {
+  background-color: hsl(var(--color-background) / 0.2);
+}
+
+.hover\:bg-accent\/20:hover {
+  background-color: hsl(var(--color-accent) / 0.2);
+}
+
+.hover\:bg-title\/20:hover {
+  background-color: hsl(var(--color-title) / 0.2);
 }
 
 .hover\:fill-text:hover {
@@ -3189,9 +3278,19 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
 }
 
+.focus\:ring-gray-50:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(249 250 251 / var(--tw-ring-opacity));
+}
+
 .group:focus .group-focus\:outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+:is(.dark .dark\:divide-gray-600) > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(75 85 99 / var(--tw-divide-opacity));
 }
 
 :is(.dark .dark\:border-blue-500) {
@@ -3305,6 +3404,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
   color: rgb(250 202 21 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:text-gray-200) {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
@@ -3328,6 +3432,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
 :is(.dark .dark\:hover\:bg-gray-800:hover) {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+
+:is(.dark .dark\:hover\:bg-gray-700:hover) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 
 :is(.dark .dark\:hover\:text-blue-500:hover) {

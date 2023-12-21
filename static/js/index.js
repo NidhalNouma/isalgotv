@@ -45,6 +45,10 @@ function closeLoader(title, id = "-pay-submit-") {
   document.getElementById("spinner" + id + title).style.display = "none";
   document.getElementById("btn" + id + title).style.display = "block";
 }
+function changeHidden(id1, id2) {
+  document.getElementById(id1)?.classList?.remove("hidden");
+  document.getElementById(id2)?.classList?.add("hidden");
+}
 
 function validateNumberInput(input, maxLength) {
   let value = input.value.replace(/\D/g, "").slice(0, maxLength);
@@ -97,33 +101,50 @@ function unmountStripeElement(title) {
   closeLoader(title);
 }
 
+function paymentMethodSelected(pmId, inputId) {
+  const pmValue = document.getElementById(inputId);
+
+  document
+    .getElementById("span-" + pmValue.value + "-" + inputId)
+    ?.classList?.add("hidden");
+  document
+    .getElementById("span-" + pmId + "-" + inputId)
+    ?.classList?.remove("hidden");
+
+  pmValue.value = pmId;
+}
+
 async function onPayFormStripeSubmit(title) {
   openLoader(title);
   const nameInput = document.getElementById("cardName-" + title);
 
-  const result = await stripe.createPaymentMethod({
-    elements,
-    params: {
-      billing_details: {
-        name: nameInput.value,
+  const pmValue = document.getElementById("pm-" + title);
+
+  if (pmValue.value.length === 0) {
+    const result = await stripe.createPaymentMethod({
+      elements,
+      params: {
+        billing_details: {
+          name: nameInput.value,
+        },
       },
-    },
-  });
-  if (result.error) {
-    console.log(`Payment failed: ${result.error.message}`);
-    closeLoader(title);
-    return false;
-  } else {
-    console.log(result);
+    });
+    if (result.error) {
+      console.log(`Payment failed: ${result.error.message}`);
+      closeLoader(title);
+      return false;
+    } else {
+      console.log(result);
 
-    document.getElementById("pm-" + title).value = result.paymentMethod.id;
-
-    let form = document.getElementById("form-pay-" + title);
-    form.dispatchEvent(new Event("submit"));
-
-    // closeLoader(title);
-    return true;
+      pmValue.value = result.paymentMethod.id;
+    }
   }
+
+  let form = document.getElementById("form-pay-" + title);
+  form.dispatchEvent(new Event("submit"));
+
+  // closeLoader(title);
+  return true;
 }
 
 //Hide css element after fadeout
@@ -251,10 +272,25 @@ function showModalImages(images, imgId, id = "modal-images") {
 }
 
 htmx.on("htmx:afterRequest", (evt) => {
-  // console.log(evt);
-
   if (evt?.detail?.target.id === "settingsDiv") {
     clearResultForm();
+  }
+
+  if (evt?.detail?.target.id.includes("form-pay-")) {
+    const title = evt?.detail?.target.id.replace("form-pay-", "");
+    mountStripeElement(title);
+  }
+
+  if (evt?.detail?.target.id.includes("stripe-error-")) {
+    const title = evt?.detail?.target.id.replace("stripe-error-", "");
+    closeLoader(title);
+  }
+
+  if (evt?.detail?.target.id === "setting-payment_methods") {
+    const closeForm = document.getElementById(
+      "add-payment_methods-close-form-btn"
+    );
+    closeForm.click();
   }
   // check which element triggered the htmx request. If it's the one you want call the function you need
   //you have to add htmx: before the event ex: 'htmx:afterRequest'
