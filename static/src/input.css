@@ -38,7 +38,7 @@
       font-family: 'Arvo', serif;
     }
     
-    p, span, input, select, textarea, button, p, h4, h5, h6, a , label{
+    p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
       font-family: 'Kanit', sans-serif;
     }
   }
@@ -62,6 +62,14 @@
 
   .btn-text {
     @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex  justify-center items-center;
+  }
+
+  .input-text{
+    @apply bg-transparent border border-text/40 px-2.5 py-2 text-text text-base rounded-md focus:ring-accent  placeholder:text-text/20
+  }
+
+  .input-checkbox{
+    @apply text-accent bg-background border-title/40 rounded
   }
 }
 

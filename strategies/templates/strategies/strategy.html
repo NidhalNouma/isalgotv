@@ -99,9 +99,27 @@
     {% for result in random_results %} {% include "include/quick_result.html" with result=result %} {% endfor %}
   </section>
 
-  {% include "include/modal_images_main.html" %} {% include "include/upgrade_modal.html" %}
+  {% include "include/modal_images_main.html" %} 
+  {% if user.is_authenticated and not subscription %}
+  {% include "include/upgrade_modal.html" %}
+  {% endif %}
   <button class="fixed bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 text-xs text-background bg-text backdrop-brightness-100 rounded hidden items-center" id="backToTopBtn" type="button"><svg class="w-3.5 h-3.5 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"></path></svg> Back to top</button>
 </main>
+
+<!-- <div
+  id="result-modal-data"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+>
+<button
+type="button"
+class="hidden"
+data-modal-hide="result-modal-data"
+id="btn-result-modal-data-hide"
+></button>
+</div> -->
 
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", function () {

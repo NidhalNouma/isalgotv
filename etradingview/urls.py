@@ -29,4 +29,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('p/', include('profile_user.urls')),
     path('st/', include('strategies.urls')) ,
+    path('docs/', include('docs.urls')),
 ]

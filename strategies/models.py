@@ -11,24 +11,27 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 def settings_validator_json(value):
-    schema = {
+    schema =  {
         "type": "object",
-        "properties": {
-            "objects": {
+        "patternProperties": {
+            "^[\w\s]+$": {  # Allow any word characters (including spaces)
                 "type": "array",
                 "items": {
-                    "type": "object",
-                    "properties": {
-                        "name": {"type": "string"},
-                        "type": {"type": "string"},
-                        "default_value": {"type": "string"} ,
-                        "options": {"type": "array"},
-                    },
-                    "required": ["name", "type", "default_value"],
-                },
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "display_name": {"type": "string"},
+                            "type": {"type": "string"},
+                            "default_value": {"type": "string"},
+                            "options": {"type": "array"},
+                        },
+                        "required": ["name", "type", "default_value"],
+                    }
+                }
             }
         },
-        "required": ["objects"],
     }
 
     try:
@@ -124,27 +127,70 @@ class StrategyResults(models.Model):
     negative_votes = models.ManyToManyField(User, related_name='negative_votes', blank=True)
 
     TIME_FRAME = [
-        ("S", "Seconds"),
-        ("M", "Minutes"),
-        ("H", "Hours"),
-        ("W", "Weeks"),
-        ("Mn", "Months"),
-        ("R", "Range"),
+        ("seconds", "Seconds"),
+        ("minutes", "Minutes"),
+        ("hours", "Hours"),
+        ("weeks", "Weeks"),
+        ("months", "Months"),
+        ("years", "Years"),
+        ("range", "Range"),
     ]
 
     test_start_at = models.DateTimeField()
     test_end_at = models.DateTimeField()
     time_frame_int = models.IntegerField(default=1)
-    time_frame = models.CharField(max_length=2, choices=TIME_FRAME, default="M")
+    time_frame = models.CharField(max_length=8, choices=TIME_FRAME, default="minutes")
 
-    pair = models.CharField(max_length=100)
-    net_profit = models.DecimalField(decimal_places=2, max_digits=10)
-    net_profit_percentage = models.DecimalField(decimal_places=2, max_digits=10)
-    max_drawdown = models.DecimalField(decimal_places=2, max_digits=10)
-    max_drawdown_percentage = models.DecimalField(decimal_places=2, max_digits=10)
-    profit_factor = models.DecimalField(decimal_places=5, max_digits=12)
-    profitable_percentage = models.DecimalField(decimal_places=2, max_digits=10)
-    total_trade = models.IntegerField()
+    pair = models.CharField(max_length=100, default='')
+    broker = models.CharField(max_length=100, default='')
+    initial_capital = models.CharField(max_length=100, default='')
+
+    net_profit = models.DecimalField(decimal_places=3, max_digits=10, default=0)
+    net_profit_long = models.DecimalField(decimal_places=3, max_digits=10, default=0)
+    net_profit_short = models.DecimalField(decimal_places=3, max_digits=10, default=0)
+
+    net_profit_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    net_profit_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    net_profit_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    gross_profit = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_profit_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_profit_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    gross_profit_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_profit_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_profit_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    gross_loss = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_loss_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_loss_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    gross_loss_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_loss_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    gross_loss_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    max_drawdown = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    max_drawdown_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    profit_factor = models.DecimalField(decimal_places=5, max_digits=12, default=0)
+    profit_factor_long = models.DecimalField(decimal_places=5, max_digits=12, default=0)
+    profit_factor_short = models.DecimalField(decimal_places=5, max_digits=12, default=0)
+
+    profitable_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    profitable_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    profitable_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+
+    total_trade = models.IntegerField(default=0)
+    total_trade_long = models.IntegerField(default=0)
+    total_trade_short = models.IntegerField(default=0)
+
+    winning_total_trade = models.IntegerField(default=0)
+    winning_total_trade_long = models.IntegerField(default=0)
+    winning_total_trade_short = models.IntegerField(default=0)
+
+    losing_total_trade = models.IntegerField(default=0)
+    losing_total_trade_long = models.IntegerField(default=0)
+    losing_total_trade_short = models.IntegerField(default=0)
 
     images = GenericRelation(StrategyImages) 
     replies = GenericRelation(Replies) 

@@ -64,11 +64,12 @@ def check_user_and_stripe_middleware(get_response):
                         subscription_plan = key
             if user_profile.customer_id:
                 payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id)
+                payment_methods = payment_methods.data
             
             stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
-            request.stripe_customer = stripe_customer
 
         
+        request.stripe_customer = stripe_customer
         request.user_profile = user_profile
         request.subscription = subscription
         request.subscription_period_end = subscription_period_end
@@ -76,7 +77,7 @@ def check_user_and_stripe_middleware(get_response):
         request.subscription_status = subscription_status
         request.subscription_price_id = subscription_price_id
         request.subscription_plan = subscription_plan
-        request.payment_methods = payment_methods.data
+        request.payment_methods = payment_methods
 
         
         response = get_response(request)

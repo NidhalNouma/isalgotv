@@ -31,6 +31,7 @@
     hx-target="#settingsDiv"
     enctype="multipart/form-data"
     hx-wait="swap"
+    novalidate
   >
     {% csrf_token %}
     <button
@@ -68,13 +69,13 @@
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >
-      <div class="relative w-full max-w-lg max-h-full h-fit">
+      <div class="relative w-full max-w-lg max-h-full h-fit overflow-y-scroll scrollbar-hide">
         <!-- Modal content -->
         <div
           class="relative bg-background rounded-lg shadow h-full flex flex-col"
         >
           <!-- Modal header -->
-          <div class="flex items-center justify-between p-4">
+          <div class="flex items-center justify-between p-4 sticky top-0 bg-background z-50">
             <h3 class="text-xl font-semibold text-title flex items-center">
               <button
                 type="button"
@@ -94,12 +95,12 @@
                     d="M244 400L100 256l144-144M120 256h292"
                   ></path>
                 </svg></button
-              >Result
+              >Performance summary
             </h3>
             <button
               id="add-result-modal-close-result-btn"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
               data-modal-hide="add-result-modal-result"
             >
               <svg
@@ -130,19 +131,73 @@
               </p>
             </div>
 
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="flex items-center justify-center">
+              <p class="text-text text-sm font-semibold">Uplaad csv file</p>
+                <input
+                  id="csv_results"
+                  class="hidden"
+                  type="file"
+                  accept=".csv"
+                  name="csv_results"
+                  onchange="handleResultsCsvFileSelect(event)"
+                />
+                <div id="output" class="text-text"></div>
+                <button
+                  onclick='showSelectImgs("csv_results")'
+                  type="button"
+                  class="ml-2 mt-auto inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-text" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3V320c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 53 43 96 96 96H352c53 0 96-43 96-96V352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V352z"/></svg>
+                  <span class="sr-only">Upload csv</span>
+                </button>
+            </div>
+
+            <div class="inline-flex items-center justify-center w-full">
+              <hr class="w-full h-px my-8 bg-text/50 border-0 ">
+              <span class="absolute px-3 font-medium text-text/50 -translate-x-1/2 left-1/2 bg-background uppercase text-xs">or fill manually</span>
+            </div>
+
+            <div class="grid gap-6 mb-6 md:grid-cols-3">
               <div>
                 <label
                   for="pair"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Pair</label
+                  >Symbol</label
                 >
                 <input
                   type="text"
                   id="pair"
                   name="pair"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
                   placeholder="US30"
+                />
+              </div>
+              <div>
+                <label
+                  for="broker"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Broker</label
+                >
+                <input
+                  type="text"
+                  id="broker"
+                  name="broker"
+                  class="input-text w-full"
+                  placeholder="OANDA"
+                />
+              </div>
+              <div>
+                <label
+                  for="initial_capital"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Initial capital</label
+                >
+                <input
+                  type="text"
+                  id="initial_capital"
+                  name="initial_capital"
+                  class="input-text w-full"
+                  placeholder="10000 USD"
                 />
               </div>
               <div>
@@ -155,7 +210,119 @@
                   type="number"
                   id="total_trades"
                   name="total_trades"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="total_trades_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="total_trades_long"
+                  name="total_trades_long"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="total_trades_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="total_trades_short"
+                  name="total_trades_short"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="winning_trades"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Winning trades</label
+                >
+                <input
+                  type="number"
+                  id="winning_trades"
+                  name="winning_trades"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="winning_trades_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="winning_trades_long"
+                  name="winning_trades_long"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="winning_trades_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="winning_trades_short"
+                  name="winning_trades_short"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="losing_trades"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Losing trades</label
+                >
+                <input
+                  type="number"
+                  id="losing_trades"
+                  name="losing_trades"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="losing_trades_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="losing_trades_long"
+                  name="losing_trades_long"
+                  class="input-text w-full"
+                  placeholder="40"
+                />
+              </div>
+              <div>
+                <label
+                  for="losing_trades_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="losing_trades_short"
+                  name="losing_trades_short"
+                  class="input-text w-full"
                   placeholder="40"
                 />
               </div>
@@ -169,7 +336,35 @@
                   type="number"
                   id="net_profit"
                   name="net_profit"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
+                  placeholder="500"
+                />
+              </div>
+              <div>
+                <label
+                  for="net_profit_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="net_profit_long"
+                  name="net_profit_long"
+                  class="input-text w-full"
+                  placeholder="500"
+                />
+              </div>
+              <div>
+                <label
+                  for="net_profit_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="net_profit_short"
+                  name="net_profit_short"
+                  class="input-text w-full"
                   placeholder="500"
                 />
               </div>
@@ -177,42 +372,210 @@
                 <label
                   for="net_profit_percentage"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Net profit percentage</label
+                  >Net profit %</label
                 >
                 <input
                   type="number"
                   id="net_profit_percentage"
                   name="net_profit_percentage"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
                   placeholder="50%"
                 />
               </div>
               <div>
                 <label
-                  for="max_dd"
+                  for="net_profit_percentage_long"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Max Drawdown</label
+                  >Long</label
                 >
                 <input
                   type="number"
-                  id="max_dd"
-                  name="max_dd"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="20"
+                  id="net_profit_percentage_long"
+                  name="net_profit_percentage_long"
+                  class="input-text w-full"
+                  placeholder="50%"
                 />
               </div>
               <div>
                 <label
-                  for="max_dd_percentage"
+                  for="net_profit_percentage_short"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Max Drawdown percentage</label
+                  >Short</label
                 >
                 <input
                   type="number"
-                  id="max_dd_percentage"
-                  name="max_dd_percentage"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="0.4%"
+                  id="net_profit_percentage_short"
+                  name="net_profit_percentage_short"
+                  class="input-text w-full"
+                  placeholder="50%"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_profit"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Gross profit</label
+                >
+                <input
+                  type="number"
+                  id="gross_profit"
+                  name="gross_profit"
+                  class="input-text w-full"
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_profit_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="gross_profit_long"
+                  name="gross_profit_long"
+                  class="input-text w-full"
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_profit_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="gross_profit_short"
+                  name="gross_profit_short"
+                  class="input-text w-full"
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_profit_percent"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Gross profit %</label
+                >
+                <input
+                  type="number"
+                  id="gross_profit_percent"
+                  name="gross_profit_percent"
+                  class="input-text w-full"
+                  placeholder="50%"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_profit_percent_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="gross_profit_percent_long"
+                  name="gross_profit_percent_long"
+                  class="input-text w-full"
+                  placeholder="50%"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_profit_percent_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="gross_profit_percent_short"
+                  name="gross_profit_percent_short"
+                  class="input-text w-full"
+                  placeholder="50%"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_loss"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Gross loss</label
+                >
+                <input
+                  type="number"
+                  id="gross_loss"
+                  name="gross_loss"
+                  class="input-text w-full"
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_loss_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="gross_loss_long"
+                  name="gross_loss_long"
+                  class="input-text w-full"
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_loss_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="gross_loss_short"
+                  name="gross_loss_short"
+                  class="input-text w-full"
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_loss_percent"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Gross loss %</label
+                >
+                <input
+                  type="number"
+                  id="gross_loss_percent"
+                  name="gross_loss_percent"
+                  class="input-text w-full"
+                  placeholder="50%"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_loss_percent_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="gross_loss_percent_long"
+                  name="gross_loss_percent_long"
+                  class="input-text w-full"
+                  placeholder="50%"
+                />
+              </div>
+              <div>
+                <label
+                  for="gross_loss_percent_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="gross_loss_percent_short"
+                  name="gross_loss_percent_short"
+                  class="input-text w-full"
+                  placeholder="50%"
                 />
               </div>
               <div>
@@ -225,7 +588,35 @@
                   type="number"
                   id="profit_factor"
                   name="profit_factor"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
+                  placeholder="3.8"
+                />
+              </div>
+              <div>
+                <label
+                  for="profit_factor_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="profit_factor_long"
+                  name="profit_factor_long"
+                  class="input-text w-full"
+                  placeholder="3.8"
+                />
+              </div>
+              <div>
+                <label
+                  for="profit_factor_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="profit_factor_short"
+                  name="profit_factor_short"
+                  class="input-text w-full"
                   placeholder="3.8"
                 />
               </div>
@@ -233,16 +624,73 @@
                 <label
                   for="profitable_percentage"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Profitable percentage</label
+                  >Percent Profitable</label
                 >
                 <input
                   type="number"
                   id="profitable_percentage"
                   name="profitable_percentage"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
                   placeholder="12%"
                 />
               </div>
+              <div>
+                <label
+                  for="profitable_percentage_long"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Long</label
+                >
+                <input
+                  type="number"
+                  id="profitable_percentage_long"
+                  name="profitable_percentage_long"
+                  class="input-text w-full"
+                  placeholder="12%"
+                />
+              </div>
+              <div>
+                <label
+                  for="profitable_percentage_short"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Short</label
+                >
+                <input
+                  type="number"
+                  id="profitable_percentage_short"
+                  name="profitable_percentage_short"
+                  class="input-text w-full"
+                  placeholder="12%"
+                />
+              </div>
+              <div>
+                <label
+                  for="max_dd"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Max Drawdown</label
+                >
+                <input
+                  type="number"
+                  id="max_dd"
+                  name="max_dd"
+                  class="input-text w-full"
+                  placeholder="20"
+                />
+              </div>
+              <div>
+                <label
+                  for="max_dd_percentage"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Max Drawdown %</label
+                >
+                <input
+                  type="number"
+                  id="max_dd_percentage"
+                  name="max_dd_percentage"
+                  class="input-text w-full"
+                  placeholder="0.4%"
+                />
+              </div>
+              <div></div>
               <div>
                 <label
                   for="start_at"
@@ -253,7 +701,7 @@
                   type="datetime-local"
                   id="start_at"
                   name="start_at"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
                   placeholder=""
                 />
               </div>
@@ -267,10 +715,11 @@
                   type="datetime-local"
                   id="end_at"
                   name="end_at"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
                   placeholder=""
                 />
               </div>
+              <div></div>
               <div>
                 <label
                   for="time_frame"
@@ -281,7 +730,7 @@
                   type="number"
                   id="time_frame"
                   name="time_frame"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="input-text w-full"
                   placeholder="1"
                   min="1"
                   step="1"
@@ -297,15 +746,14 @@
                   type="select"
                   id="time_frame_period"
                   name="time_frame_period"
-                  class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option value="S">Seconds</option>
-                  <option value="M">Minutes</option>
-                  <option value="H">Hours</option>
-                  <option value="D">Days</option>
-                  <option value="W">Weeks</option>
-                  <option value="Mn">Months</option>
-                  <option value="Y">Years</option>
+                  class="input-text w-full">
+                  <option value="seconds">Seconds</option>
+                  <option value="minutes">Minutes</option>
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                  <option value="weeks">Weeks</option>
+                  <option value="months">Months</option>
+                  <option value="years">Years</option>
                 </select>
               </div>
             </div>
@@ -335,20 +783,20 @@
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >
-      <div class="relative w-full max-w-lg max-h-full h-fit">
+      <div class="relative w-full max-w-lg max-h-full h-fit overflow-y-scroll scrollbar-hide">
         <!-- Modal content -->
         <div
           class="relative bg-background rounded-lg shadow h-full flex flex-col"
         >
           <!-- Modal header -->
-          <div class="flex items-center justify-between p-4">
+          <div class="flex items-center justify-between p-4 sticky top-0 bg-background z-50">
             <h3 class="text-xl font-semibold text-title flex items-center">
-              Settings
+              Properties
             </h3>
             <button
               id="add-result-modal-close-btn"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
               data-modal-hide="add-result-modal"
             >
               <svg
@@ -379,51 +827,73 @@
               </p>
             </div>
 
-            {% for setting in strategy.settings.objects %}
-            <div class="mb-4">
-              <label
-                for="id_settings_{{ setting.name }}"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >{{ setting.name }}</label
-              >
-              {% if setting.type == 'number' %}
-              <input
-                type="number"
-                class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="settings_{{ setting.name }}"
-                id="id_settings_{{ setting.name }}"
-                placeholder="{{ setting.default_value }}"
-                required
-              />
-              {% elif setting.type == 'options' %}
-              <input
-                type="text"
-                class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="settings_{{ setting.name }}"
-                id="id_settings_{{ setting.name }}"
-                placeholder="{{ setting.default_value }}"
-                required
-              />
-              {% elif setting.type == 'boolean' %}
-              <input
-                type="checkbox"
-                class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="settings_{{ setting.name }}"
-                id="id_settings_{{ setting.name }}"
-                placeholder="{{ setting.default_value }}"
-              />
-              {% else %}
-              <input
-                type="text"
-                class="bg-transparent border border-gray-300 text-text text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="settings_{{ setting.name }}"
-                id="id_settings_{{ setting.name }}"
-                placeholder="{{ setting.default_value }}"
-                required
-              />
-              {% endif %}
+              <div class="flex items-center justify-center">
+                <p class="text-text text-sm font-semibold">Uplaad csv file</p>
+                  <input
+                    id="csv_settings"
+                    class="hidden"
+                    type="file"
+                    accept=".csv"
+                    name="csv_settings"
+                    onchange="handleSettingCsvFileSelect(event)"
+                  />
+                  <div id="output" class="text-text"></div>
+                  <button
+                    onclick='showSelectImgs("csv_settings")'
+                    type="button"
+                    class="ml-2 mt-auto inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-text" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3V320c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 53 43 96 96 96H352c53 0 96-43 96-96V352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V352z"/></svg>
+                    <span class="sr-only">Upload csv</span>
+                  </button>
+              </div>
+
+              <div class="inline-flex items-center justify-center w-full">
+                <hr class="w-full h-px my-8 bg-text/50 border-0 ">
+                <span class="absolute px-3 font-medium text-text/50 -translate-x-1/2 left-1/2 bg-background uppercase text-xs">or fill manually</span>
+              </div>
+            
+              <div class="mt-2 mb-4">
+                {% for group_name, group_value  in strategy.settings.items %}
+                <div class="mb-6">
+                  <h6 class="text-text text-xs">{{group_name}}</h6>
+                  
+                  {% for line in group_value %}
+                    <div class=" my-3 flex items-center" >
+                      {% for set in line %}
+                        <div class="mr-3 flex items-center">
+                          {% if set.type == 'boolean' %}
+                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" type="checkbox" {% if set.default_value == 'true' %}checked{%endif%} value="{% if set.default_value == 'true' %}true{%else%}false{%endif%}" class="mr-2 w-4 h-4 input-checkbox">
+                          {% endif %} 
+                            <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title">{{ set.display_name }}</label>
+                          
+                          {% if set.type != 'boolean' and set.type != 'options' %}
+                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" placeholder="{{ set.default_value }}" type="text" value="" class="ml-2 w-28 input-text ">
+                          {% endif %}
+                          {% if set.type == 'options' %}
+                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" placeholder="{{ set.default_value }}" type="text" value={{ set.default_value }} class="hidden ml-2 bg-transparent border ">
+                            <button id="dropdown_{{ set.name }}" data-dropdown-toggle="dropdown_toggle_{{ set.name }}" class="ml-2 w-28 input-text flex items-center justify-between" type="button"><span id="dropdown_text_{{ set.name }}" class="text-sm w-24 overflow-hidden">{{set.default_value}}</span> <svg class="w-2.5 h-2.5 ms-3 grow" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                              </svg>
+                              </button>
+                              <!-- Dropdown menu -->
+                              <div id="dropdown_toggle_{{ set.name }}" class="z-10 hidden bg-text rounded shadow w-28 ">
+                                  <ul class="py-1 text-xs text-background" aria-labelledby="dropdown_{{ set.name }}">
+                                    {% for option in set.options %}
+                                    <li>
+                                      <button onclick="customDropdownBtnClick('{{option}}', 'dropdown_text_{{ set.name }}', 'id_settings_{{ set.name }}', 'dropdown_{{ set.name }}');" type="button" class="block w-full text-left px-2 py-2 hover:bg-background/50 ">{{option}}</button>
+                                    </li>
+                                    {% endfor %}
+                                  </ul>
+                              </div>
+                          {% endif %}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
           </div>
 
           <div
@@ -432,6 +902,8 @@
             role="alert"
           ></div>
 
+            <!-- onclick="post()"
+            type="submit" -->
           <button
             type="button"
             onclick="validateSettings()"
@@ -450,13 +922,13 @@
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >
-      <div class="relative w-full max-w-lg max-h-full h-fit">
+      <div class="relative w-full max-w-lg max-h-full h-fit overflow-y-scroll scrollbar-hide">
         <!-- Modal content -->
         <div
           class="relative bg-background rounded-lg shadow h-full flex flex-col"
         >
           <!-- Modal header -->
-          <div class="flex items-center justify-between p-4">
+          <div class="flex items-center justify-between p-4 sticky top-0 bg-background z-50">
             <h3 class="text-xl font-semibold text-title flex items-center">
               <button
                 type="button"
@@ -481,7 +953,7 @@
             <button
               id="add-result-modal-close-btn-post"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-title/70 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
               data-modal-hide="add-result-modal-post"
             >
               <svg
@@ -620,8 +1092,9 @@
     let isValid = true;
 
     inputs.forEach((input) => {
-      if (input.value.trim() === "") {
+      if (input.value.trim() === "" && input.id !== "csv_results") {
         isValid = false;
+        // console.log(input)
         input.classList.add("!border-red-500"); // Add red border for invalid inputs
       } else {
         input.classList.remove("!border-red-500");
@@ -663,7 +1136,7 @@
         }
       } else {
         // For other input types, check if the value is empty
-        if (!input.value) {
+        if (!input.value && input.hasAttribute('required')) {
           errorMessageDiv.textContent =
             "Please fill out " + input.id.replace("id_settings_", "");
           errorMessageDiv.classList.remove("hidden");

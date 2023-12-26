@@ -24,6 +24,7 @@
       <h6 class="text-title/80 font-semibold">{{result.test_end_at}}</h6>
     </div>
   </div>
+
   <div class="text-sm font-medium flex mb-1 text-text/70">
     <h6 class="text-green-400 mr-2">
       <span class="text-sm text-text/70">Profit</span>
@@ -39,11 +40,10 @@
 
   <div class="">
     <button
-      data-modal-target="result-modal-{{result.id}}"
-      data-modal-toggle="result-modal-{{result.id}}"
+      onclick="openModel('result-modal-{{result.id}}')"
       class="bg-primary dark:text-text text-text-light text-xs font-normal px-1.5 rounded flex items-center"
     >
-      Settings and Result
+      Properties and Performance
       <svg
         stroke-width="0"
         viewBox="0 0 16 16"
@@ -59,9 +59,24 @@
     {%include "include/result_and_settings_modal.html"%}
   </div>
 
-  <p class="text-text/70 text-sm pb-0 break-all">
+  <p
+    id="paragraph-result-{{result.id}}"
+    class="text-text/70 text-sm pb-0 break-all line-clamp-3"
+  >
     {{result.description|linebreaksbr}}
   </p>
+  <span
+    id="hide-paragraph-result-{{result.id}}"
+    onclick="document.getElementById('paragraph-result-{{result.id}}').classList.add('line-clamp-3'); document.getElementById('show-paragraph-result-{{result.id}}').classList.remove('hidden');  document.getElementById('hide-paragraph-result-{{result.id}}').classList.add('hidden')"
+    class="text-text text-xs rounded cursor-pointer font-semibold hidden"
+    >hide</span
+  >
+  <span
+    id="show-paragraph-result-{{result.id}}"
+    onclick="document.getElementById('paragraph-result-{{result.id}}').classList.remove('line-clamp-3'); document.getElementById('show-paragraph-result-{{result.id}}').classList.add('hidden');  document.getElementById('hide-paragraph-result-{{result.id}}').classList.remove('hidden')"
+    class="text-text text-xs rounded cursor-pointer font-semibold"
+    >show all</span
+  >
   {% include "include/images.html" with images=result.images.all %}
 
   <div class="mb-0.5 mt-2 flex items-center">
@@ -79,3 +94,16 @@
     {% include "include/result_replies.html" %}
   </div>
 </div>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    if (getNumberOfLines("paragraph-result-{{result.id}}") <= 3) {
+      document
+        .getElementById("paragraph-result-{{result.id}}")
+        .classList.add("line-clamp-3");
+      document
+        .getElementById("show-paragraph-result-{{result.id}}")
+        .classList.add("hidden");
+    }
+  });
+</script>
