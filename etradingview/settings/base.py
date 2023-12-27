@@ -86,6 +86,7 @@ TEMPLATES = [
                 BASE_DIR / "etradingview/templates",
                 BASE_DIR / "etradingview/templates/etradingview",
                 BASE_DIR / "profile_user/templates/profile_user",
+                BASE_DIR / "docs/templates/docs",
                 BASE_DIR / "strategies/templates/strategies"],
         'APP_DIRS': True,
         'OPTIONS': {

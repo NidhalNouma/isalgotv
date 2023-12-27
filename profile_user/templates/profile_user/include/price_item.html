@@ -5,6 +5,7 @@
   <div class="mt-10">
     <h3 class="text-text text-5xl font-bold">${{price}}</h3>
     <h3 class="text-text text-xl mt-2">all-inclusive</h3>
+    <p class="mt-0 text-text/50 text-center text-xs">{% if title != 'Life time' %}Cancel at any time.{% endif %}</p>
   </div>
   <div class="mt-10 mb-2">
     {% if user.is_authenticated %} {% if subscription %} 
@@ -56,10 +57,13 @@
     {% endif %} {% else %}
     <a
       href="{% url 'register' %}"
-      class="btn-primary-landing"
+      class="btn-secondary w-full font-semibold !from-text via-text/70 to-text/50  !bg-text !text-background"
       >Sign up</a
     >
     {% endif %}
+
+    <p class="mt-4 text-text/50 text-center text-xs">{% if title == 'MONTHLY' %} Billed monthly {% elif title == 'QUARTERLY' %} Billed every 3 months {% elif title == 'YEARLY' %} Billed yearly {% elif title == 'Life time' %} One time payment {%endif%}</p>
+    
   </div>
 </div>
 

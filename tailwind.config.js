@@ -1,18 +1,19 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors')
+const colors = require("tailwindcss/colors");
 
 module.exports = {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
-      './templates/**/*.html',
-      './etradingview/templates/**/*.html',
-      './strategies/templates/**/*.html',
-      './profile_user/templates/**/*.html',
+    "./templates/**/*.html",
+    "./etradingview/templates/**/*.html",
+    "./strategies/templates/**/*.html",
+    "./profile_user/templates/**/*.html",
+    "./docs/templates/**/*.html",
 
-      './node_modules/flowbite/**/*.js'
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
-    colors:{
+    colors: {
       // primary : { dark: "hsl(265, 100%, 35%);", light: "hsl(265, 100%, 35%);" },
       // secondary : { dark: "hsl(178, 97.9%, 26.7%);" , light: "hsl(178, 97.9%, 26.7%);" },
       // accent : { dark: "hsl(58, 75%, 40%);", light: "hsl(58, 75%, 40%);" },
@@ -31,8 +32,8 @@ module.exports = {
       // info : "",
       // warning : "",
       // danger : "",
-      transparent: 'transparent',
-      current: 'currentColor',
+      transparent: "transparent",
+      current: "currentColor",
       black: colors.black,
       white: colors.white,
       gray: colors.gray,
@@ -43,17 +44,14 @@ module.exports = {
     extend: {
       keyframes: {
         animate: {
-          '0%,10%,100%': { width: '0%' },
-          '70%,80%,90%': { width: '100%' },
-        }
+          "0%,10%,100%": { width: "0%" },
+          "70%,80%,90%": { width: "100%" },
+        },
       },
-      animation:{
-        animate: 'animate 6s linear',
-      }
+      animation: {
+        animate: "animate 6s linear",
+      },
     },
   },
-  plugins: [
-    require('flowbite/plugin'),
-    require('@tailwindcss/line-clamp'),
-  ],
-}
+  plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],
+};
