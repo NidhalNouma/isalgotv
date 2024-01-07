@@ -1,0 +1,30 @@
+{% extends 'page.html' %} {% load static %} {% block page %}
+
+<main class="relative flex justify-between my-6 sm:my-12">
+  {% include 'include/docs/side_nav.html' %}
+  <div class="text-text flex-auto">
+    <section class="">
+      <h1 class="text-2xl font-bold tracking-tight">Automate your alerts</h1>
+
+      <p class="mt-2 text-base">
+        You have the option to automate your alerts and send them to any broker
+        of your choice for trade execution, allowing you to start generating
+        profits. Here's how you can set up this automation
+      </p>
+      {% comment %}
+      <video
+        class="aspect-video w-full mr-auto my-3 rounded max-w-2xl"
+        muted=""
+        controls="controls"
+      >
+        <source
+          src="https://isalgotest.s3.amazonaws.com/docs/copy_username.mp4"
+          type="video/mp4"
+        />
+      </video>
+      {% endcomment %}
+    </section>
+  </div>
+</main>
+
+{% endblock page %}

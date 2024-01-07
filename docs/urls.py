@@ -2,13 +2,16 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import index
+from .views import *
 
 
 urlpatterns = [
-    path('', index, name='docs_index'),
-    # path('admin/', admin.site.urls),
-    # path('accounts/', include('allauth.urls')),
-    # path('p/', include('profile_user.urls')),
-    # path('st/', include('strategies.urls')) ,
+    path('Introduction/', index, name='docs_index'),
+    path('instalation/', instalation, name='docs_instalation'),
+    path('setup/', setup, name='docs_setup'),
+    path('share/', share, name='docs_share'),
+    path('alerts/', alerts, name='docs_alerts'),
+    path('automate/', automate, name='docs_automate'),
+    path('q&a/', question, name='docs_questions'),
+    path('contact_us/', contactus, name='docs_contactus')
 ]

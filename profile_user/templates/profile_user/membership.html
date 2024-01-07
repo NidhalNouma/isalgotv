@@ -22,20 +22,20 @@
 
     <main class="mt-8 mb-16">
 
-        <div class="mt-14 w-full flex flex-col md:flex-row items-center justify-center gap-8">
+        <div class="mt-14 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
             {% include "include/price_item.html" with title="MONTHLY" price="99" %}
             {% include "include/price_item.html" with title="QUARTERLY" price="345" %}
             {% include "include/price_item.html" with title="YEARLY" price="898" %}
+            {% include "include/price_item.html" with title="Life time" price="1800" %}
         </div>
-        <div class="mt-14 w-full flex flex-col md:flex-row items-center justify-center gap-8">
+        {% comment %} <div class="mt-14 w-full flex flex-col md:flex-row items-center justify-center gap-8">
             <div class="mx-auto w-full">
             </div>
             <div class="mx-auto w-full">
-                {% include "include/price_item.html" with title="Life time" price="1800" %}
             </div>
             <div class="mx-auto w-full">
             </div>
-        </div>
+        </div> {% endcomment %}
 
         
         

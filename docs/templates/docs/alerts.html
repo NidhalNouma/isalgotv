@@ -1,0 +1,92 @@
+{% extends 'page.html' %} {% load static %} {% block page %}
+
+<main class="relative flex justify-between my-6 sm:my-12">
+  {% include 'include/docs/side_nav.html' %}
+  <div class="text-text flex-auto">
+    <section class="">
+      <h1 class="text-2xl font-bold tracking-tight">Alerts</h1>
+
+      <p class="mt-2 text-base">
+        Each strategy will come with a minimum of four built-in alerts, designed
+        for both entry and exit signals. These alerts serve the dual purpose of
+        keeping you informed about every action the strategy takes and enabling
+        automation if you wish to implement alert-based automation.
+      </p>
+    </section>
+
+    <section class="mt-8">
+      <h1 class="text-2xl font-bold tracking-tight">Placeholders</h1>
+
+      <p class="mt-2 text-base">
+        These placeholders can be used in the alert message, and they will be
+        replaced with dynamic values when the alert is triggered. They are the
+        sole method for including dynamic values that can vary from bar to bar.
+        <br/>The placeholders need to be enclosed within double curly braces. Below are the placeholders you can use:
+      </p>
+
+      <div class="mt-2 bg-text/10 rounded w-full p-2">
+        <div class="inline-flex items-baseline">
+          <span class="mr-2">{% verbatim %}{{exchange}}{% endverbatim %}</span>
+          <p class="text-sm">
+            Exchange of the symbol used in the alert (NASDAQ, NYSE, MOEX, etc.).
+            Note that for delayed symbols, the exchange will end with “_DL” or
+            “_DLY.” For example, “NYMEX_DL.”
+          </p>
+        </div>
+        <div class="mt-4 inline-flex items-baseline">
+          <span class="mr-2">{% verbatim %}{{interval}}{% endverbatim %}</span>
+          <p class="text-sm">
+            Returns the timeframe of the chart the alert is created on. Note
+            that Range charts are calculated based on 1m data, so the
+            placeholder will always return “1” on any alert created on a Range
+            chart.
+          </p>
+        </div>
+        <div class="mt-4 inline-flex items-baseline">
+          <span class="mr-2">{% verbatim %}{{open}}, {{high}}, {{low}}, {{close}}, {{volume}}{% endverbatim %}</span>
+          <p class="text-sm">
+            Corresponding values of the bar on which the alert has been
+            triggered.
+          </p>
+        </div>
+        <div class="mt-4 inline-flex items-baseline">
+          <span class="mr-2">{% verbatim %}{{time}}{% endverbatim %}</span>
+          <p class="text-sm">
+            Returns the time at the beginning of the bar. Time is UTC, formatted as yyyy-MM-ddTHH:mm:ssZ, so for example: 2019-08-27T09:56:00Z.
+          </p>
+        </div>
+        <div class="mt-4 inline-flex items-baseline">
+          <span class="mr-2">{% verbatim %}{{timenow}}{% endverbatim %}</span>
+          <p class="text-sm">
+            Current time when the alert triggers, formatted in the same way as {{time}}. The precision is to the nearest second, regardless of the chart’s timeframe.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8">
+      <h1 class="text-2xl font-bold tracking-tight">Examples</h1>
+
+      <p class="mt-2 text-base">
+        Here are a few examples of how to compose alerts using placeholders:
+      </p>
+    </section>
+
+    <dl class="flex pt-6 mt-8 border-t border-text/30">
+      <div class="ml-auto text-right">
+        <dt class="text-sm font-sans font-normal tracking-tight">Next</dt>
+
+        <dd class="mt-1">
+          <a
+            href="{% url 'docs_automate' %}"
+            class="text-base font-semibold hover:underline"
+          >
+            How to automate the alerts?
+          </a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</main>
+
+{% endblock page %}

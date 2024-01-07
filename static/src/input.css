@@ -124,3 +124,14 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Text selection */
+::-moz-selection { /* Code for Firefox */
+  color: hsl(178 ,40%, 52%);
+  /* background: hsl(var(--color-secondary)); */
+}
+
+::selection {
+  color: hsl(178 ,40%, 52%);
+  /* background: hsl(var(--color-secondary)); */
+}
