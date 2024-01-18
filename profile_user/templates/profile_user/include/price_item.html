@@ -18,7 +18,7 @@
   <div class="mt-10">
     <h3 class="text-text text-5xl font-bold">${{price}}</h3>
     <h3 class="text-text text-xl mt-2">all-inclusive</h3>
-    <p class="mt-0 text-text/50 text-center text-xs">{% if title != 'Life time' %}Cancel at any time.{%else%} Life time access. {% endif %}</p>
+    <p class="truncate mt-0 text-text/50 text-center text-xs">{% if title != 'Life time' %}Cancel at any time.{%else%} Life time access. {% endif %}</p>
   </div>
   <div class="mt-10 mb-2">
     {% if user.is_authenticated %} {% if subscription %} 

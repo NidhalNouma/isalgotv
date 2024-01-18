@@ -81,42 +81,42 @@
   <section class="mt-14 text-center">
     <h4 class="text-title">Select one of our plans to get started.</h4>
 
-    <div class="mt-6 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center justify-center gap-8 text-left">
+    <div class="mt-6 mx-auto text-left  w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
       {%include "include/price_item.html" with title="MONTHLY" price="99" %}
       {%include "include/price_item.html" with title="QUARTERLY" price="345" %}
       {%include "include/price_item.html" with title="YEARLY" price="898" %}
+      {% include "include/price_item.html" with title="Life time" price="1800" %}
     </div>
   </section>
   {% elif step == 2 %}
 
   <section class="mt-14">
-    <h4 class="text-title text-center">Confirm your tradingview user name.</h4>
+    <h4 class="text-title text-center">Confirm your tradingview username.</h4>
     <p class="text-text text-center mt-2">
-      Go to your
+      Go to your  
       <a
-        class="text-title font-semibold underline"
-        href="https://www.tradingview.com/"
+        class="text-title font-medium underline"
+        href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591"
         target="_blank"
         >TradingView</a
       >
-      profile to copy your username and past it <br />
-      inside the field.
+      profile to copy your username and paste it inside the field. <br/>The video below demonstrates where you can find your TradingView username.
     </p>
     <div class="mt-6 w-full flex flex-col sm:flex-row items-center justify-center gap-8">
-      <form hx-post="{% url 'update-tradingview-username' %}" class="mb-2 pt-3">
+      <form hx-post="{% url 'update-tradingview-username' %}" class="mb-2 pt-3 max-w-sm w-72">
         {% csrf_token %}
         <label
           for=""
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >Tradingview username</label
         >
-        <div class="relative mb-4">
+        <div class="relative mb-4 w-full">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
             <svg
               aria-hidden="true"
-              class="w-5 h-5 text-gray-500 dark:text-gray-400"
+              class="w-5 h-5 text-text/40"
               fill="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -127,15 +127,16 @@
             </svg>
           </div>
           <input
-            type="text"
-            name="tradingview_username"
-            id=""
-            value='{{user_profile.tradingview_username}}'
-            class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="UserName"
+          type="text"
+          name="tradingview_username"
+          id=""
+          value='{{user_profile.tradingview_username}}'
+          class="w-full   block pl-10 p-2.5 input-text"
+          placeholder="UserName"
           />
         </div>
-
+        
+        <div class="mt-1 mb-3" id="tradingview_username_submit_error"> {% include "include/errors.html" %} </div>
         <button
           type="submit"
           id=""
@@ -145,10 +146,20 @@
         </button>
       </form>
       <div class="max-w-xl">
-        <img
+        <video
+        class="aspect-video w-full mr-auto my-3 rounded max-w-2xl"
+        muted=""
+        controls="controls"
+        >
+        <source
+          src="https://isalgotest.s3.amazonaws.com/docs/copy_username.mp4"
+          type="video/mp4"
+        />
+      </video>
+        <!-- <img
           class="rounded-xl"
           src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_user_name_find.gif?alt=media&token=7f7475ea-879b-454f-b251-38ab1e9a9ddb"
-        />
+        /> -->
       </div>
     </div>
   </section>
@@ -168,12 +179,24 @@
       </p>
 
       <div class="max-w-xl mt-6 mx-auto">
-        <img
+        <video
+        class="aspect-video w-full mr-auto my-3 rounded max-w-2xl"
+        muted=""
+        controls="controls"
+      >
+        <source
+          src="https://isalgotest.s3.amazonaws.com/docs/find_strategies.mp4"
+          type="video/mp4"
+        />
+      </video>
+        <!-- <img
           class="rounded-xl"
-          src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" />
+          src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" /> -->
       </div>
   </section>
   {%endif%} {%if congrate %} {%include "include/congrate.html" %} {%endif %}
 </main>
+
+<!-- <iframe class="" oFjD8qE2 src="https://s.tradingview.com/embed/oFjD8qE2"></iframe> -->
 
 {% endblock page %}

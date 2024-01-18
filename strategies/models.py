@@ -78,6 +78,7 @@ class Strategy(models.Model):
     tradingview_ID = models.CharField(max_length=100)
     tradingview_url = models.URLField(blank=True)
     video_url = models.URLField(blank=True)
+    chart_url = models.URLField(blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     settings = SettingsJSONField()
 

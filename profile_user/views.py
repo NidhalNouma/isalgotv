@@ -17,6 +17,8 @@ import datetime
 import environ
 env = environ.Env()
 
+from .utils.tradingview import *
+
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
 
@@ -41,12 +43,12 @@ def home(request):
             if user_profile.tradingview_username:
                 step = 3
     
-    print('t ', request.subscription)
-    print('r ', request.subscription_period_end)
-    print('a ', request.subscription_active)
-    print('s ', request.subscription_status)
-    print('pid ', request.subscription_price_id)
-    print('pid ', request.subscription_plan)
+    # print('t ', request.subscription)
+    # print('r ', request.subscription_period_end)
+    # print('a ', request.subscription_active)
+    # print('s ', request.subscription_status)
+    # print('pid ', request.subscription_price_id)
+    # print('pid ', request.subscription_plan)
 
     congrate = False
     if 'sub' in request.GET:
@@ -178,16 +180,52 @@ def update_user_password(request):
 def edit_tradingview_username(request):
 
     page = request.GET.get('pg','')
-    if request.user.is_authenticated:
+    tv_username = request.POST.get('tradingview_username')
+
+
+    if tv_username and request.user.is_authenticated:
+
+        response_data = username_search(tv_username)
+        if response_data == None:
+            error = "an error occurred while searching for username. Please try again later."
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#tradingview_username_submit_error")
+        
+        check_username = False
+        for item in response_data:
+            # print("ID:", item["username"])
+            if item["username"] == tv_username:
+                print('username exists ', tv_username)
+                check_username = True
+
+        if check_username == False:
+            error = "Username not found. Please try again with another username."
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#tradingview_username_submit_error")
+        
         profile_user = User_Profile.objects.get(user=request.user)
 
-        profile_user.tradingview_username = request.POST.get('tradingview_username')
-        profile_user.save()
+        profile_user.tradingview_username = tv_username
+
+        access_response = give_access("0c8160c689014edfa61fc78efbbdbc59", tv_username, True)
+
+        if access_response == None:
+            error = "an error occurred while getting access. Please try again later or contact our support team."
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#tradingview_username_submit_error")
+
+
+        profile_user.save() 
         if not page:
             return HttpResponseClientRedirect(reverse('home'))
         else:
             response = render(request, 'include/settings/tradingview.html', {'user_profile': profile_user, 'msg': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')
+
+    else:
+        error = "Username is required."
+        response = render(request, 'include/errors.html', context = {"error": error})
+        return retarget(response, "#tradingview_username_submit_error")
 
 
 @require_http_methods([ "POST"])

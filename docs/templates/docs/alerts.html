@@ -24,17 +24,17 @@
         <br/>The placeholders need to be enclosed within double curly braces. Below are the placeholders you can use:
       </p>
 
-      <div class="mt-2 bg-text/10 rounded w-full p-2">
-        <div class="inline-flex items-baseline">
-          <span class="mr-2">{% verbatim %}{{exchange}}{% endverbatim %}</span>
+      <div class="mt-4 w-full p-0">
+        <div class="inline-flex items-baseline bg-background rounded p-1">
+          <span class="mr-2 px-0.5 bg-text/20 rounded">{% verbatim %}{{exchange}}{% endverbatim %}</span>
           <p class="text-sm">
             Exchange of the symbol used in the alert (NASDAQ, NYSE, MOEX, etc.).
             Note that for delayed symbols, the exchange will end with “_DL” or
             “_DLY.” For example, “NYMEX_DL.”
           </p>
         </div>
-        <div class="mt-4 inline-flex items-baseline">
-          <span class="mr-2">{% verbatim %}{{interval}}{% endverbatim %}</span>
+        <div class="mt-4 inline-flex items-baseline bg-background rounded p-1">
+          <span class="mr-2  px-0.5 bg-text/20 rounded">{% verbatim %}{{interval}}{% endverbatim %}</span>
           <p class="text-sm">
             Returns the timeframe of the chart the alert is created on. Note
             that Range charts are calculated based on 1m data, so the
@@ -42,21 +42,23 @@
             chart.
           </p>
         </div>
-        <div class="mt-4 inline-flex items-baseline">
-          <span class="mr-2">{% verbatim %}{{open}}, {{high}}, {{low}}, {{close}}, {{volume}}{% endverbatim %}</span>
+        <div class="mt-4 inline-flex items-baseline bg-background rounded p-1">
+          <span class="mr-2  px-0.5 bg-text/20 rounded">{% verbatim %}{{open}}, {{high}}, {{low}}, {{close}}, {{volume}}{% endverbatim %}</span>
           <p class="text-sm">
             Corresponding values of the bar on which the alert has been
             triggered.
           </p>
         </div>
-        <div class="mt-4 inline-flex items-baseline">
-          <span class="mr-2">{% verbatim %}{{time}}{% endverbatim %}</span>
+        
+        <div class="mt-4 inline-flex items-baseline bg-background rounded p-1">
+          <span class="mr-2  px-0.5 bg-text/20 rounded">{% verbatim %}{{time}}{% endverbatim %}</span>
           <p class="text-sm">
             Returns the time at the beginning of the bar. Time is UTC, formatted as yyyy-MM-ddTHH:mm:ssZ, so for example: 2019-08-27T09:56:00Z.
           </p>
         </div>
-        <div class="mt-4 inline-flex items-baseline">
-          <span class="mr-2">{% verbatim %}{{timenow}}{% endverbatim %}</span>
+
+        <div class="mt-4 inline-flex items-baseline bg-background rounded p-1">
+          <span class="mr-2  px-0.5 bg-text/20 rounded">{% verbatim %}{{timenow}}{% endverbatim %}</span>
           <p class="text-sm">
             Current time when the alert triggers, formatted in the same way as {{time}}. The precision is to the nearest second, regardless of the chart’s timeframe.
           </p>

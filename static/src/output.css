@@ -1169,7 +1169,7 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
   --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
@@ -1177,10 +1177,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.9) var(--tw-gradient-via-position), var(--tw-gradient-to);
   --tw-gradient-to: hsl(var(--color-text) / 0.8) var(--tw-gradient-to-position);
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -1209,11 +1209,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 }
 
 .input-text::-moz-placeholder {
-  color: hsl(var(--color-text) / 0.2);
+  color: hsl(var(--color-text) / 0.4);
 }
 
 .input-text::placeholder {
-  color: hsl(var(--color-text) / 0.2);
+  color: hsl(var(--color-text) / 0.4);
 }
 
 .input-text:focus {
@@ -1930,6 +1930,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 1.75rem;
 }
 
+.w-72 {
+  width: 18rem;
+}
+
 .w-8 {
   width: 2rem;
 }
@@ -2001,6 +2005,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.max-w-sm {
+  max-width: 24rem;
 }
 
 .max-w-xl {
@@ -2345,6 +2353,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-width: 4px;
 }
 
+.border-\[1px\] {
+  border-width: 1px;
+}
+
 .border-b-0 {
   border-bottom-width: 0px;
 }
@@ -2414,6 +2426,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-text\/50 {
   border-color: hsl(var(--color-text) / 0.5);
+}
+
+.border-text\/60 {
+  border-color: hsl(var(--color-text) / 0.6);
 }
 
 .\!bg-text {
@@ -2509,8 +2525,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-text-light) / var(--tw-bg-opacity));
 }
 
-.bg-text\/10 {
-  background-color: hsl(var(--color-text) / 0.1);
+.bg-text\/20 {
+  background-color: hsl(var(--color-text) / 0.2);
+}
+
+.bg-text\/30 {
+  background-color: hsl(var(--color-text) / 0.3);
 }
 
 .bg-text\/40 {
@@ -2641,10 +2661,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-title) / 1);
 }
 
-.stroke-background {
-  stroke: hsl(var(--color-background) / 1);
-}
-
 .stroke-current {
   stroke: currentColor;
 }
@@ -2717,6 +2733,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.px-0\.5 {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
 }
 
 .px-1 {
@@ -3040,6 +3061,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-text-light {
   --tw-text-opacity: 1;
   color: hsl(var(--color-text-light) / var(--tw-text-opacity));
+}
+
+.text-text\/40 {
+  color: hsl(var(--color-text) / 0.4);
 }
 
 .text-text\/50 {
@@ -3369,6 +3394,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-text) / 1);
 }
 
+.hover\:fill-title:hover {
+  fill: hsl(var(--color-title) / 1);
+}
+
 .hover\:font-medium:hover {
   font-weight: 500;
 }
@@ -3395,6 +3424,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .hover\:text-text-light:hover {
   --tw-text-opacity: 1;
   color: hsl(var(--color-text-light) / var(--tw-text-opacity));
+}
+
+.hover\:text-text\/80:hover {
+  color: hsl(var(--color-text) / 0.8);
 }
 
 .hover\:text-title:hover {

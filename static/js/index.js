@@ -577,3 +577,16 @@ function openModel(id) {
 function hideModel(id) {
   if (modals[id]) modals[id].hide();
 }
+
+function openPopupWindow(url, name = "windowChart") {
+  const h = (window.screen.height * 80) / 100;
+  const w = (window.screen.width * 80) / 100;
+
+  const Y =
+    window.outerHeight / 2 - h / 2; /* 0.5 * windowHeight - 0.5 * popupHeight */
+  const X =
+    window.outerWidth / 2 - w / 2; /* 0.5 * windowWidth - 0.5 * popupWidth */
+
+  window.open(url, name, `width=${w},${h}=600,top=${Y},left=${X}`);
+  return false;
+}
