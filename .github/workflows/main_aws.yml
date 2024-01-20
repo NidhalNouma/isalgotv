@@ -5,6 +5,7 @@ on:
     branches: [main]
 
 env:
+  AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
   AWS_REGION: us-east-1 # Set your AWS region here
   ECR_REPOSITORY: isalgo_test # Set your ECR repository name here
   ECS_CLUSTER: isalgo_test_ecs_cluster # Set your ECS cluster name here
@@ -47,7 +48,7 @@ jobs:
 
       - name: Login to ECR
         run: |
-          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
 
       - name: Build and Push to ECR
         run: |
