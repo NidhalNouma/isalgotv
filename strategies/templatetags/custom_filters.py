@@ -11,3 +11,7 @@ def subtract(value, arg):
 def count_lines(value):
     # Count the number of lines in the given text
     return len(value.split('\n'))
+
+@register.filter
+def get_price(prices, title):
+    return prices.get(title, '')

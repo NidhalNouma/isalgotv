@@ -3,11 +3,13 @@ from django.contrib import messages
 
 from django.contrib.auth import logout
 
+from django.conf import settings
+
 def index(request):
     if request.user.is_authenticated:
         return redirect('home')
     
-    return render(request, "etradingview/index.html")
+    return render(request, "etradingview/index.html", context={'prices': settings.PRICES})
 
 
 def redirect_social(request):

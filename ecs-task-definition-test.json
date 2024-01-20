@@ -1,0 +1,38 @@
+{
+    "family": "isalgo",
+    "containerDefinitions": [
+      {
+        "name": "django-container",
+        "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo_test",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8000,
+            "hostPort": 8000
+          }
+        ],
+        "environment": [
+          {
+            "name": "DJANGO_SETTINGS_MODULE",
+            "value": "etradingview.settings.dev"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/isalgo",
+            "awslogs-region": "region",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::aws_account_id:role/ecsTaskExecutionRole"
+  }
+  

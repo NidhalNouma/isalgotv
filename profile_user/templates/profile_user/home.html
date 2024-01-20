@@ -1,4 +1,5 @@
 {% extends 'page.html' %} 
+{% load custom_tags %}
 
 {% block head %}
 <script src="https://js.stripe.com/v3/"></script>
@@ -81,12 +82,35 @@
   <section class="mt-14 text-center">
     <h4 class="text-title">Select one of our plans to get started.</h4>
 
-    <div class="mt-6 mx-auto text-left  w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
-      {%include "include/price_item.html" with title="MONTHLY" price="99" %}
-      {%include "include/price_item.html" with title="QUARTERLY" price="345" %}
-      {%include "include/price_item.html" with title="YEARLY" price="898" %}
-      {% include "include/price_item.html" with title="Life time" price="1800" %}
+    {% if prices|get_item:"LIFETIME" %}
+
+    <div class="mt-6 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
+        {% include "include/price_item.html" with title="MONTHLY" %}
+        {% include "include/price_item.html" with title="QUARTERLY" %}
+        {% include "include/price_item.html" with title="YEARLY" %}
+        {% include "include/price_item.html" with title="LIFETIME" %}
     </div>
+
+    <div class="max-w-3xl text-left mx-auto flex items-baseline mt-16 text-title/60 bg-secondary/30 border-[1px] border-secondary/60 rounded p-2">
+        
+        <p class="text-sm mx-auto"><svg
+            class="stroke-title/60 fill-title/60 w-4 h-4 mr-0 inline"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" ></path>
+        </svg> <span class="font-semibold">LIFETIME membership</span> is designed to support our company's efforts in improving and developing more trading strategies. Lifetime members will receive priority access to our beta strategies. <br/>LIFETIME membership can expire and may no longer be available at any time.</p>
+    </div>
+
+    {% else %}
+
+    <div class="mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
+        {% include "include/price_item.html" with title="MONTHLY" price="99" %}
+        {% include "include/price_item.html" with title="QUARTERLY" price="345" %}
+        {% include "include/price_item.html" with title="YEARLY" price="898" %}
+    </div>
+
+    {% endif %}
   </section>
   {% elif step == 2 %}
 

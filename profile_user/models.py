@@ -14,6 +14,7 @@ class User_Profile(models.Model):
     customer_id = models.CharField(max_length=100)
 
     is_lifetime = models.BooleanField(default=False)
+    lifetime_intent = models.CharField(default="", max_length=100)
 
     def __str__(self):
         return self.user.username

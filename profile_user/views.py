@@ -59,7 +59,7 @@ def home(request):
     # request.GET = request.GET.copy()
     # request.GET.clear()
 
-    context = {'user_profile': user_profile, "congrate": congrate, 'step':step }
+    context = {'user_profile': user_profile, "congrate": congrate, 'step':step , 'prices': settings.PRICES}
     return render(request,'home.html', context)
 
 def membership(request):
@@ -79,7 +79,8 @@ def membership(request):
               'subscription_period_end': subscription_period_end,
               'subscription_status': subscription_status,
               'payment_methods': payment_methods,
-              'stripe_customer': stripe_customer}
+              'stripe_customer': stripe_customer,
+              'prices': settings.PRICES}
     
     return render(request, 'membership.html', context)
 
@@ -206,7 +207,7 @@ def edit_tradingview_username(request):
         profile_user = User_Profile.objects.get(user=request.user)
 
         profile_user.tradingview_username = tv_username
-
+        # TODO: give access to all available strategies
         access_response = give_access("0c8160c689014edfa61fc78efbbdbc59", tv_username, True)
 
         if access_response == None:
@@ -364,10 +365,31 @@ def create_subscription_stripeform(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
         try:
+            old_subscription_id = profile_user.subscription_id
 
-            if len(profile_user.subscription_id) > 0:
-                cancel_subscription = stripe.Subscription.delete(profile_user.subscription_id)
-                print("Old subscription has been canceled ... ")
+            if plan_id == "LIFETIME":
+                lifetime = stripe.PaymentIntent.create(
+                    amount=2680 * 100,
+                    currency="usd",
+                    payment_method=payment_method,
+                    confirm=True,
+                    customer=customer_id,
+                    description="Lifetime subscription.",
+                    automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
+                    metadata={"price_id": price_id}
+                )
+
+                User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True)
+                print("New lifetime has been created ...")
+
+                if len(old_subscription_id) > 0:
+                    cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+                    print("Old subscription has been canceled ... ")
+
+                    return HttpResponseClientRedirect(reverse('membership'))
+                
+                return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
+                
 
             subscription = stripe.Subscription.create(
                 customer=customer_id,
@@ -375,9 +397,16 @@ def create_subscription_stripeform(request):
                     'price': price_id,
                 }],
             )
-            print("New subscription has been created ...")
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
+            print("New subscription has been created ...")
+
+            if len(old_subscription_id) > 0:
+                cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+                print("Old subscription has been canceled ... ")
+
+                return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+
             # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
             return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
 

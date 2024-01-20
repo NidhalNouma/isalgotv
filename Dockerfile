@@ -1,15 +1,22 @@
-FROM python:3
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
 
-WORKDIR /app
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-COPY . .
-# RUN python3 manage.py collectstatic --no-input --clear --settings=etradingview.settings.prod
-RUN python3 manage.py migrate --settings=etradingview.settings.prod
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--settings=etradingview.settings.prod" ]
+# Set work directory
+WORKDIR /usr/src/app
 
+# Install dependencies
+COPY requirements.txt /usr/src/app/
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy project
+COPY . /usr/src/app/
 
-# docker build --progress=plain --no-cache --tag isalgo .
-# docker run -d --name isalgo_run --publish 3000:8000 isalgo
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Command to run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application"]

@@ -16,15 +16,25 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
           echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
+
           echo "STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}" >> .env
           echo "STRIPE_API_PUBLIC_KEY=${{ secrets.STRIPE_API_PUBLIC_KEY }}" >> .env
+
           echo "STRIPE_PRICE_MN_ID=${{ secrets.STRIPE_PRICE_MN_ID }}" >> .env
-          echo "STRIPE_PRICE_6MN_ID=${{ secrets.STRIPE_PRICE_6MN_ID }}" >> .env
+          echo "STRIPE_PRICE_3MN_ID=${{ secrets.STRIPE_PRICE_3MN_ID }}" >> .env
           echo "STRIPE_PRICE_Y_ID=${{ secrets.STRIPE_PRICE_Y_ID }}" >> .env
+          echo "STRIPE_PRICE_LT_ID=${{ secrets.STRIPE_PRICE_LT_ID }}" >> .env
+
+          echo "STRIPE_PRICE_MN_PRICE=${{ secrets.STRIPE_PRICE_MN_PRICE }}" >> .env
+          echo "STRIPE_PRICE_3MN_PRICE=${{ secrets.STRIPE_PRICE_3MN_PRICE }}" >> .env
+          echo "STRIPE_PRICE_Y_PRICE=${{ secrets.STRIPE_PRICE_Y_PRICE }}" >> .env
+          echo "STRIPE_PRICE_LT_PRICE=${{ secrets.STRIPE_PRICE_LT_PRICE }}" >> .env
+
           echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
           echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
           echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> .env
           echo "DATABASE_PASS=${{ secrets.DATABASE_PASS }}" >> .env
+
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env

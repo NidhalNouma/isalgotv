@@ -9,33 +9,39 @@
     <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
     {% endif %}
 
-    <main class="mt-8 mb-16 grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
+    <main class="mt-8 mb-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
 
         {% for strategy in strategies %}
 
         <div class="flex flex-col items-center">
 
-            <div class="w-full">
-                {% with first_image=strategy.images.first %}
-                    {% if first_image %}
-                    <a href="{% url 'strategy' id=strategy.id %}">
-                        <img
-                        class="max-w-full max-h-72 mx-auto"
-                        src="{% static 'images/chart_nobg.png' %}"
-                        />
-                    </a>  
+            <div class="w-full mb-2">
+                <a href="{% url 'strategy' id=strategy.id %}">
+                    {% if strategy.image %}
+                        <img src="{{ strategy.image_url }}" alt="Strategy Image" class="w-full max-h-64 aspect-video mx-auto rounded-lg">
                     {% else %}
-                        <p>No images available.</p>
+                        <img src="{% static 'images/chart_nobg_l.png' %}" alt="Default Image" class="w-full max-h-64 aspect-video mx-auto rounded-lg">
                     {% endif %}
-                {% endwith %}
+                 </a>  
             </div>
 
             <div class="w-full">
                 <a href="{% url 'strategy' id=strategy.id %}">
-                    <h3 class="text-title text-xl font-bold line-clamp-2">{{ strategy.name }}</h3>
+                    <h3 class="text-title text-xl font-bold line-clamp-2 flex items-center">
+                        {% if strategy.is_live == False %}
+                            <span class="btn-accent font-semibold font-sans rounded-full py-0 text-xs">BETA</span>
+                        {% endif %}
+                        {{ strategy.name }}
+                    </h3>
                 </a>
                 <p class="text-text line-clamp-3 text-sm">{{ strategy.description }}</p>
-                <a href="{% url 'strategy' id=strategy.id %}" class="text-sm text-secondary underline">Read more</a>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="text-text/60 text-sm font-semibold">
+                        {{ strategy.strategyresults_set.all|length }} Results | {{ strategy.strategycomments_set.all|length }} Ideas
+                    </span>
+
+                    <a href="{% url 'strategy' id=strategy.id %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border border-secondary">Read more &rarr;</a>
+                </div>
             </div>
         </div>
 

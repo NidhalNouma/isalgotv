@@ -1,0 +1,78 @@
+name: Build and Deploy Django App to AWS
+
+on:
+  push:
+    branches: [main]
+
+env:
+  AWS_REGION: us-east-1 # Set your AWS region here
+  ECR_REPOSITORY: isalgo_test # Set your ECR repository name here
+  ECS_CLUSTER: isalgo_test_ecs_cluster # Set your ECS cluster name here
+  ECS_SERVICE: isalgo_test_ecs_service # Set your ECS service name here
+  ECS_TASK_DEFINITION: isalgo_test_ecs_task_def # Set your ECS task definition name here
+  ECS_TASK_DEFINITION_JSON: ecs-task-definition-test.json # Set your ECS task definition json file
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ env.AWS_REGION }}
+
+      - name: Create ECR Repository if it doesn't exist
+        run: |
+          if ! aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}; then
+            aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}
+          fi
+
+      - name: Login to ECR
+        run: |
+          $(aws ecr get-login --no-include-email --region ${{ env.AWS_REGION }})
+
+      - name: Build and Push to ECR
+        run: |
+          IMAGE_TAG=latest
+          docker build -t ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+
+      - name: Create ECS Cluster if it doesn't exist
+        run: |
+          if ! aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }}; then
+            aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER }}
+          fi
+
+      - name: Register ECS Task Definition
+        run: |
+          aws ecs register-task-definition --cli-input-json file://${{ env.ECS_TASK_DEFINITION_JSON }}
+
+      - name: Create ECS Service if it doesn't exist
+        run: |
+          if ! aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }}; then
+            aws ecs create-service \
+              --cluster ${{ env.ECS_CLUSTER }} \
+              --service-name ${{ env.ECS_SERVICE }} \
+              --task-definition ${{ env.ECS_TASK_DEFINITION }} \
+              --desired-count 1
+              # Include other necessary parameters such as network configuration, load balancers, etc.
+          fi
+        # Update ECS service with new task definition
+        # Note: This step is necessary if the service already exists and you want to update it with a new Docker image.
+      - name: Update ECS Service
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --task-definition ${{ env.ECS_TASK_DEFINITION }}

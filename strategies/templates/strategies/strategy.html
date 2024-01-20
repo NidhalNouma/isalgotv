@@ -1,7 +1,15 @@
 {% extends 'page.html' %} {% load static %} {% block page %}
 
 <div class="mt-8 flex justify-between">
-  <h1 class="text-left text-2xl text-title font-bold">{{ strategy.name }}</h1>
+  <a class=" hover:underline " target="_blank" href="{{ strategy.tradingview_url }}">
+    <h1 class="text-left text-2xl flex items-center text-title font-bold  hover:underline">
+      {% if strategy.is_live == False %}
+      <span class="btn-accent mr-2 font-semibold font-sans rounded-full py-0.5 text-xs">BETA</span>
+      {% endif %}
+      {{ strategy.name }}
+      <svg class="h-4 w-r ml-2 " stroke="currentColor" fill="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"></path></svg>
+    </h1>
+  </a>
   {% if not subscription %}
   <a
     href="{% url 'membership' %}"
@@ -45,15 +53,23 @@
       </a>
     </div>
     <div class="">
-      <img
-        class="max-w-full max-h-72 mx-auto"
-        src="{% static 'images/chart_nobg.png' %}"
-      />
+      {% if strategy.image %}
+          <img src="{{ strategy.image_url }}" alt="Strategy Image" class="max-w-full max-h-72 mx-auto">
+      {% else %}
+          <img src="{% static 'images/chart_nobg.png' %}" alt="Default Image" class="max-w-full max-h-72 mx-auto">
+      {% endif %}
     </div>
 
     <div class="text-text whitespace-pre-line text-sm">
       <p class="text-text whitespace-pre-line">{{ strategy.content | safe }}</p>
     </div>
+
+
+    {% if subscription %}
+    <div class="my-3">
+      <a href="mailto:support@isalgo.com?subject=FOUND A BUG: {{strategy.name}}&body=" class="inline-flex items-center text-sm text-text px-2.5 py-1 rounded-full border border-text"><svg class="w-4 h-4 mr-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg> Found a bug?</a>
+    </div>
+    {% endif %}
 
     <section class="my-6">
       <div class="w-full py-3">

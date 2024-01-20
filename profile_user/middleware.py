@@ -50,7 +50,7 @@ def check_user_and_stripe_middleware(get_response):
 
             request.user_profile = user_profile
 
-            if user_profile.subscription_id:
+            if user_profile.subscription_id and user_profile.is_lifetime == False:
                 subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
 
                 end_timestamp = subscription.current_period_end * 1000
