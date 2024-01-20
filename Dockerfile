@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8-slim
+FROM python:3.9
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -17,6 +17,9 @@ COPY . /usr/src/app/
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
+
+# Expose port 8000
+EXPOSE 8000
 
 # Command to run the application
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application"]
