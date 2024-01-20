@@ -2,9 +2,7 @@
 FROM python:3.9
 
 # Set environment variables
-ENV DJANGO_SETTINGS_MODULE=etradingview.settings.dev
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE etradingview.settings.dev
 
 # Set work directory
 WORKDIR /usr/src/app
