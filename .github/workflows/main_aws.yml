@@ -53,6 +53,7 @@ jobs:
       - name: Build and Push to ECR
         run: |
           IMAGE_TAG=latest
+          ECR_URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
           docker build \
             --build-arg SECRET_KEY="${{ secrets.SECRET_KEY }}" \
             --build-arg EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}" \
@@ -74,9 +75,9 @@ jobs:
             --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \
             --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
-            -t ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
-          docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+            -t $ECR_URI:$IMAGE_TAG .
+          docker tag $ECR_URI:$IMAGE_TAG $ECR_URI:$IMAGE_TAG
+          docker push $ECR_URI:$IMAGE_TAG
 
       - name: Create ECS Cluster if it doesn't exist
         run: |
