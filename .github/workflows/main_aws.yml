@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: isalgo_test # Set your ECR repository name here
   ECS_CLUSTER: isalgo_test_ecs_cluster # Set your ECS cluster name here
   ECS_SERVICE: isalgo_test_ecs_service # Set your ECS service name here
-  ECS_TASK_DEFINITION: isalgo_test_ecs_task_def # Set your ECS task definition name here
+  ECS_TASK_DEFINITION: isalgo # Set your ECS task definition name here
   ECS_TASK_DEFINITION_JSON: ecs-task-definition-test.json # Set your ECS task definition json file
 
 jobs:
