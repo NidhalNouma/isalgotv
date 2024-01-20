@@ -47,7 +47,7 @@ jobs:
 
       - name: Login to ECR
         run: |
-          $(aws ecr get-login --no-include-email --region ${{ env.AWS_REGION }})
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
 
       - name: Build and Push to ECR
         run: |
