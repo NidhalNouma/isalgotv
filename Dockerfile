@@ -1,8 +1,12 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9
 
+# At the top of your Dockerfile
+ARG SECRET_KEY
+
 # Set environment variables
 ENV DJANGO_SETTINGS_MODULE etradingview.settings.dev
+ENV SECRET_KEY ${SECRET_KEY}
 
 # Set work directory
 WORKDIR /usr/src/app
