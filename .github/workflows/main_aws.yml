@@ -89,21 +89,20 @@ jobs:
         run: |
           aws ecs register-task-definition --cli-input-json file://${{ env.ECS_TASK_DEFINITION_JSON }}
 
-      - name: Create ECS Service if it doesn't exist
+      - name: Create or Update ECS Service
         run: |
-          if ! aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }}; then
+          if ! aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} | grep -q ACTIVE; then
+            echo "Creating ECS Service: ${{ env.ECS_SERVICE }}"
             aws ecs create-service \
               --cluster ${{ env.ECS_CLUSTER }} \
               --service-name ${{ env.ECS_SERVICE }} \
               --task-definition ${{ env.ECS_TASK_DEFINITION }} \
               --desired-count 1
               # Include other necessary parameters such as network configuration, load balancers, etc.
+          else
+            echo "Updating ECS Service: ${{ env.ECS_SERVICE }}"
+            aws ecs update-service \
+              --cluster ${{ env.ECS_CLUSTER }} \
+              --service ${{ env.ECS_SERVICE }} \
+              --task-definition ${{ env.ECS_TASK_DEFINITION }}
           fi
-        # Update ECS service with new task definition
-        # Note: This step is necessary if the service already exists and you want to update it with a new Docker image.
-      - name: Update ECS Service
-        run: |
-          aws ecs update-service \
-            --cluster ${{ env.ECS_CLUSTER }} \
-            --service ${{ env.ECS_SERVICE }} \
-            --task-definition ${{ env.ECS_TASK_DEFINITION }}
