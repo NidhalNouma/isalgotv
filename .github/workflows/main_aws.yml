@@ -54,6 +54,7 @@ jobs:
         run: |
           IMAGE_TAG=latest
           docker build \
+            --build-arg SECRET_KEY="${{ secrets.SECRET_KEY }}" \
             --build-arg EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}" \
             --build-arg EMAIL_HOST_PASSWORD="${{ secrets.EMAIL_HOST_PASSWORD }}" \
             --build-arg STRIPE_API_KEY="${{ secrets.STRIPE_API_KEY }}" \
