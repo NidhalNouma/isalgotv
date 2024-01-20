@@ -54,7 +54,21 @@ jobs:
         run: |
           IMAGE_TAG=latest
           docker build \
-            --build-arg SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+            --build-arg EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}" \
+            --build-arg EMAIL_HOST_PASSWORD="${{ secrets.EMAIL_HOST_PASSWORD }}" \
+            --build-arg STRIPE_API_KEY="${{ secrets.STRIPE_API_KEY }}" \
+            --build-arg STRIPE_API_PUBLIC_KEY="${{ secrets.STRIPE_API_PUBLIC_KEY }}" \
+            --build-arg STRIPE_PRICE_MN_ID="${{ secrets.STRIPE_PRICE_MN_ID }}" \
+            --build-arg STRIPE_PRICE_3MN_ID="${{ secrets.STRIPE_PRICE_3MN_ID }}" \
+            --build-arg STRIPE_PRICE_Y_ID="${{ secrets.STRIPE_PRICE_Y_ID }}" \
+            --build-arg STRIPE_PRICE_LT_ID="${{ secrets.STRIPE_PRICE_LT_ID }}" \
+            --build-arg STRIPE_PRICE_MN_PRICE="${{ secrets.STRIPE_PRICE_MN_PRICE }}" \
+            --build-arg STRIPE_PRICE_3MN_PRICE="${{ secrets.STRIPE_PRICE_3MN_PRICE }}" \
+            --build-arg STRIPE_PRICE_Y_PRICE="${{ secrets.STRIPE_PRICE_Y_PRICE }}" \
+            --build-arg STRIPE_PRICE_LT_PRICE="${{ secrets.STRIPE_PRICE_LT_PRICE }}" \
+            --build-arg DATABASE_HOST="${{ secrets.DATABASE_HOST }}" \
+            --build-arg DATABASE_NAME="${{ secrets.DATABASE_NAME }}" \
+            --build-arg DATABASE_USER="${{ secrets.DATABASE_USER }}" \
             -t ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
           docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
