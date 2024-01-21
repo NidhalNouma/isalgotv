@@ -23,7 +23,7 @@
           "logDriver": "awslogs",
           "options": {
             "awslogs-group": "/ecs/isalgo",
-            "awslogs-region": "region",
+            "awslogs-region": "us-east-1",
             "awslogs-stream-prefix": "ecs"
           }
         }
