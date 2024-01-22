@@ -15,7 +15,8 @@ env:
   SECURITY_GROUP_ID: sg-01a796680d6ae48b2 # Set your security group ID
   SUBNET_IDS: subnet-0d5644469efcf2370, subnet-060b993da7b594b67, subnet-07fbf55b284399e2d, subnet-07a3aa633664275a4
   TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:us-east-1:358776226602:targetgroup/ecsTargetgroupForIsalgo/4f11c1285f8b95e9
-  DJANGO_PORT: 8000
+  CONTAINER_NAME: django-isalgo
+  CONTAINER_PORT: 8000
 
 jobs:
   deploy:
@@ -105,7 +106,7 @@ jobs:
               --desired-count 1 \
               --launch-type "FARGATE" \
               --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}" \
-              --load-balancers "targetGroupArn=${{ env.TARGET_GROUP_ARN }},containerName=${{ env.ECS_TASK_DEFINITION_NAME }},containerPort=${{ env.DJANGO_PORT }}"
+              --load-balancers "targetGroupArn=${{ env.TARGET_GROUP_ARN }},containerName=${{ env.CONTAINER_NAME }},containerPort=${{ env.CONTAINER_PORT }}"
           else
             echo "Updating ECS Service: ${{ env.ECS_SERVICE }}"
             aws ecs update-service \
