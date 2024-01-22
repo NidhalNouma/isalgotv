@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -149,9 +149,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS =  [ BASE_DIR / "static",]
+STATICFILES_DIRS = [ BASE_DIR / "static",]
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
@@ -168,8 +167,11 @@ COMPRESS_ENABLED = True
 
 COMPRESS_OFFLINE = True
 
-STATICFILES_FINDERS = ['compressor.finders.CompressorFinder', 'django.contrib.staticfiles.finders.AppDirectoriesFinder']
-
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',  # Finds files in STATICFILES_DIRS
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',  # Finds files in your apps' static directories
+    'compressor.finders.CompressorFinder',  # Required for Django Compressor
+]
 
 # SMTP settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
