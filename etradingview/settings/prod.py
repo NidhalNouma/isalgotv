@@ -4,7 +4,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-DEBUG = False
+# DEBUG = False
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
