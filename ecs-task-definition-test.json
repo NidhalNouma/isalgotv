@@ -14,10 +14,6 @@
           }
         ],
         "environment": [
-          {
-            "name": "DJANGO_SETTINGS_MODULE",
-            "value": "etradingview.settings.prod"
-          }
         ],
         "logConfiguration": {
           "logDriver": "awslogs",

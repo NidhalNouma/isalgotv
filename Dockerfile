@@ -73,6 +73,9 @@ COPY . /usr/src/app/
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
+# Run migrate
+RUN python manage.py migrate --noinput
+
 # Expose port 8000
 EXPOSE 8000
 
