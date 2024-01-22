@@ -42,7 +42,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'compressor', 
     'profile_user.apps.ProfileUserConfig',
     'strategies',
     'docs',
@@ -63,6 +62,7 @@ INSTALLED_APPS = [
 
     "django_htmx",
     'storages',
+    'compressor', 
 ]
 
 MIDDLEWARE = [
@@ -151,7 +151,8 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS =  [ BASE_DIR / "static",]
+
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # Default primary key field type
@@ -165,7 +166,9 @@ COMPRESS_ROOT = BASE_DIR / 'static'
 
 COMPRESS_ENABLED = True
 
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder', 'django.contrib.staticfiles.finders.AppDirectoriesFinder')
+COMPRESS_OFFLINE = True
+
+STATICFILES_FINDERS = ['compressor.finders.CompressorFinder', 'django.contrib.staticfiles.finders.AppDirectoriesFinder']
 
 
 # SMTP settings
