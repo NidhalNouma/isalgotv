@@ -4,15 +4,16 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-# DEBUG = False
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
     'isalgo.com',
-    '*'
+    'test.isalgo.com',
+    'www.isalgo.com',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com','https://*.127.0.0.1','http://*.isalgo.com','http://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']
 
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
