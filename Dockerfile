@@ -71,7 +71,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /usr/src/app/
 
 # Collect static files
-# RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Run migrate
 RUN python manage.py migrate --noinput

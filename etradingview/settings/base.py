@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'ckeditor',
 
     "django_htmx",
+    'storages',
 ]
 
 MIDDLEWARE = [
