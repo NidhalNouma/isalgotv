@@ -38,51 +38,7 @@
         </svg>
       </div>
     </a>
-    {% if user.is_authenticated == False %}
-    <div class="flex md:order-2">
-      <a
-        type="button"
-        href="{% url 'login' %}"
-        class="btn-secondary mr-3 md:mr-0"
-        >Sign In
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          class="h-4 w-4 ml-1"
-          stroke-width="0"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path fill="none" d="M0 0h24v24H0z"></path>
-          <path
-            d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"
-          ></path>
-        </svg>
-      </a>
-      <button
-        data-collapse-toggle="mobile-menu-2"
-        type="button"
-        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden dark:text-gray-400"
-        aria-controls="mobile-menu-2"
-        aria-expanded="false"
-      >
-        <span class="sr-only">Open main menu</span>
-        <svg
-          class="w-6 h-6"
-          aria-hidden="true"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </button>
-    </div>
-    {% else %}
+    {% if user.is_authenticated %}
     <div class="flex items-center md:order-2">
       <button
         type="button"
@@ -113,14 +69,16 @@
       </button>
       <!-- Dropdown menu -->
       <div
-        class="z-50 hidden my-4 text-base list-none bg-background divide-y divide-background rounded-lg shadow"
+        class="px-4 z-50 hidden my-4 text-base list-none bg-background divide-y divide-background rounded-lg shadow"
         id="user-dropdown"
       >
-        <div class="px-4 py-3">
-          <span class="block text-sm text-gray-500 truncate dark:text-gray-400"
-            >{{user.username}}</span
+      {% if user_profile.tradingview_username %}
+        <div class="px-0.5 py-0 pt-2">
+          <span class="block text-sm text-text/60"
+            >{{user_profile.tradingview_username}}</span
           >
         </div>
+        {% endif %}
         <ul class="py-2" aria-labelledby="user-menu-button">
           {% if user.is_superuser %}
           <li>
@@ -151,6 +109,50 @@
         data-collapse-toggle="mobile-menu-2"
         type="button"
         class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden ocus:outline-none dark:text-gray-400"
+        aria-controls="mobile-menu-2"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg
+          class="w-6 h-6"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    {% else %}
+    <div class="flex md:order-2">
+      <a
+        type="button"
+        href="{% url 'login' %}"
+        class="btn-secondary mr-3 md:mr-0"
+        >Sign In
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          class="h-4 w-4 ml-1"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"
+          ></path>
+        </svg>
+      </a>
+      <button
+        data-collapse-toggle="mobile-menu-2"
+        type="button"
+        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden dark:text-gray-400"
         aria-controls="mobile-menu-2"
         aria-expanded="false"
       >

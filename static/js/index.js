@@ -1,3 +1,4 @@
+console.log("js loaded");
 function swapDivBtn(id1, id2) {
   const btn1 = document.getElementById(id1 + "-btn");
   const btn2 = document.getElementById(id2 + "-btn");
@@ -128,8 +129,9 @@ async function onPayFormStripeSubmit(title) {
   const nameInput = document.getElementById("cardName-" + title);
 
   const pmValue = document.getElementById("pm-" + title);
+  console.log("Checking card for " + title + " ... ");
 
-  if (pmValue.value.length === 0) {
+  if (pmValue.value.length === 0 || pmValue.value === "None") {
     const result = await stripe.createPaymentMethod({
       elements,
       params: {
@@ -143,8 +145,6 @@ async function onPayFormStripeSubmit(title) {
       closeLoader(title);
       return false;
     } else {
-      console.log(result);
-
       pmValue.value = result.paymentMethod.id;
     }
   }

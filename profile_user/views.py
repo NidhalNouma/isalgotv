@@ -59,49 +59,20 @@ def home(request):
     # request.GET = request.GET.copy()
     # request.GET.clear()
 
-    context = {'user_profile': user_profile, "congrate": congrate, 'step':step , 'prices': settings.PRICES}
+    context = {"congrate": congrate, 'step':step , 'prices': settings.PRICES}
     return render(request,'home.html', context)
 
 def membership(request):
     payment_form = PaymentCardForm()
-    user_profile = request.user_profile
-    subscription = request.subscription
-    subscription_period_end = request.subscription_period_end
-    subscription_plan = request.subscription_plan
-    subscription_status = request.subscription_status
-    payment_methods = request.payment_methods
-    stripe_customer = request.stripe_customer
 
-    context = {'user_profile': user_profile,
-              "payment_form": payment_form,
-              'subscription': subscription,
-              'subscription_plan': subscription_plan,
-              'subscription_period_end': subscription_period_end,
-              'subscription_status': subscription_status,
-              'payment_methods': payment_methods,
-              'stripe_customer': stripe_customer,
-              'prices': settings.PRICES}
+    context = {"payment_form": payment_form, 'prices': settings.PRICES}
     
     return render(request, 'membership.html', context)
 
 
 @login_required(login_url='login')
 def settings_page(request):
-    user_profile = request.user_profile
-    subscription = request.subscription
-    subscription_period_end = request.subscription_period_end
-    subscription_plan = request.subscription_plan
-    subscription_status = request.subscription_status
-    payment_methods = request.payment_methods
-    stripe_customer = request.stripe_customer
-
-    context = {'user_profile': user_profile,
-              'subscription': subscription,
-              'subscription_plan': subscription_plan,
-              'subscription_period_end': subscription_period_end,
-              'subscription_status': subscription_status,
-              "payment_methods": payment_methods,
-              'stripe_customer': stripe_customer}
+    context = {}
     return render(request, 'settings.html', context)
 
 def register(request):
@@ -234,7 +205,7 @@ def create_payment_method(request):
     if request.method == 'POST':
         data = request.POST
         
-        context = {"error": '', 'payment_methods' : None, 'stripe_customer': request.stripe_customer}
+        context = {"error": '', 'payment_methods' : None}
         payment_method = data['pm_id']
 
         if not payment_method:
@@ -272,7 +243,7 @@ def delete_payment_method(request):
     if request.method == 'POST':
         data = request.POST
         
-        context = {"error": '', 'payment_methods' : None, 'stripe_customer': request.stripe_customer}
+        context = {"error": '', 'payment_methods' : None}
         payment_method = data['pm_id']
 
         if not payment_method:
@@ -297,7 +268,7 @@ def setdefault_payment_method(request):
     if request.method == 'POST':
         data = request.POST
         
-        context = {"error": '', 'payment_methods' : request.payment_methods, 'stripe_customer': request.stripe_customer}
+        context = {"error": '', 'payment_methods' : request.payment_methods }
         payment_method = data['pm_id']
 
         if not payment_method:
@@ -329,7 +300,7 @@ def create_subscription_stripeform(request):
         price_id = PRICE_LIST.get(plan_id, '')
         # csrf_token = request.POST.get('csrfmiddlewaretoken')
 
-        context = {"error": '', 'title': plan_id, 'user_profile': request.user_profile, 'payment_methods': request.payment_methods, 'stripe_customer': request.stripe_customer}
+        context = {"error": '', 'title': plan_id}
 
         if not price_id:
             context["error"] = 'No plan has been specified, please refresh the page and try again.'
@@ -341,7 +312,7 @@ def create_subscription_stripeform(request):
         
         payment_method = data['pm_id']
 
-        if not payment_method:
+        if not payment_method or payment_method == "None":
             context["error"] = 'No payment method has been detected.'
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])

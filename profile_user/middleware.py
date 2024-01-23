@@ -1,6 +1,7 @@
 from .models import User_Profile
 import environ
 import datetime
+import time
 env = environ.Env()
 
 import stripe
@@ -28,8 +29,7 @@ def check_user_and_stripe_middleware(get_response):
         subscription_plan = None
         payment_methods = None
         stripe_customer = None
-
-
+        has_subscription = False
 
         if current_user.is_authenticated:
             try: 
@@ -50,7 +50,10 @@ def check_user_and_stripe_middleware(get_response):
 
             request.user_profile = user_profile
 
-            if user_profile.subscription_id and user_profile.is_lifetime == False:
+            if user_profile.is_lifetime:
+                has_subscription = True
+
+            elif user_profile.subscription_id and user_profile.is_lifetime == False:
                 subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
 
                 end_timestamp = subscription.current_period_end * 1000
@@ -62,6 +65,12 @@ def check_user_and_stripe_middleware(get_response):
                 for key, val in PRICE_LIST.items():  
                     if val == subscription_price_id: 
                         subscription_plan = key
+
+                if subscription_status == 'active' and subscription.current_period_end > time.time():
+                    has_subscription = True
+                elif subscription.status == "canceled" and subscription.current_period_end > time.time():
+                    has_subscription = True
+
             if user_profile.customer_id:
                 payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id)
                 payment_methods = payment_methods.data
@@ -78,6 +87,10 @@ def check_user_and_stripe_middleware(get_response):
         request.subscription_price_id = subscription_price_id
         request.subscription_plan = subscription_plan
         request.payment_methods = payment_methods
+
+        print("sub", subscription)
+
+        request.has_subscription = has_subscription
 
         
         response = get_response(request)

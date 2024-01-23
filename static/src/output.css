@@ -1570,6 +1570,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-left: auto;
 }
 
+.mr-0 {
+  margin-right: 0px;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
@@ -1663,8 +1667,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: auto;
 }
 
-.mr-0 {
-  margin-right: 0px;
+.me-3 {
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
+}
+
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+
+.mt-\[2px\] {
+  margin-top: 2px;
 }
 
 .line-clamp-2 {
@@ -1826,8 +1839,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 1px;
 }
 
-.h-52 {
-  height: 13rem;
+.max-h-64 {
+  max-height: 16rem;
 }
 
 .max-h-72 {
@@ -1848,10 +1861,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-h-full {
   max-height: 100%;
-}
-
-.max-h-64 {
-  max-height: 16rem;
 }
 
 .min-h-screen {
@@ -1991,8 +2000,28 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 100%;
 }
 
+.w-\[100vw\] {
+  width: 100vw;
+}
+
+.min-w-\[12rem\] {
+  min-width: 12rem;
+}
+
+.\!min-w-\[12rem\] {
+  min-width: 12rem !important;
+}
+
+.min-w-\[54rem\] {
+  min-width: 54rem;
+}
+
 .max-w-2xl {
   max-width: 42rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
 }
 
 .max-w-7xl {
@@ -2025,10 +2054,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-w-xl {
   max-width: 36rem;
-}
-
-.max-w-3xl {
-  max-width: 48rem;
 }
 
 .flex-1 {
@@ -2146,8 +2171,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   resize: both;
 }
 
+.list-inside {
+  list-style-position: inside;
+}
+
 .list-none {
   list-style-type: none;
+}
+
+.list-disc {
+  list-style-type: disc;
 }
 
 .grid-cols-1 {
@@ -2431,6 +2464,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-secondary) / var(--tw-border-opacity));
 }
 
+.border-secondary\/60 {
+  border-color: hsl(var(--color-secondary) / 0.6);
+}
+
 .border-text {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-text) / var(--tw-border-opacity));
@@ -2446,18 +2483,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-text\/60 {
   border-color: hsl(var(--color-text) / 0.6);
-}
-
-.border-accent\/60 {
-  border-color: hsl(var(--color-accent) / 0.6);
-}
-
-.border-primary\/60 {
-  border-color: hsl(var(--color-primary) / 0.6);
-}
-
-.border-secondary\/60 {
-  border-color: hsl(var(--color-secondary) / 0.6);
 }
 
 .\!bg-text {
@@ -2548,11 +2573,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
 }
 
-.bg-text-light {
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--color-text-light) / var(--tw-bg-opacity));
-}
-
 .bg-text\/20 {
   background-color: hsl(var(--color-text) / 0.2);
 }
@@ -2595,12 +2615,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(255 255 255 / 0.5);
 }
 
-.bg-accent\/30 {
-  background-color: hsl(var(--color-accent) / 0.3);
-}
-
-.bg-primary\/30 {
-  background-color: hsl(var(--color-primary) / 0.3);
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(235 245 255 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -2697,10 +2714,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-title) / 1);
 }
 
-.fill-accent {
-  fill: hsl(var(--color-accent) / 1);
-}
-
 .fill-title\/60 {
   fill: hsl(var(--color-title) / 0.6);
 }
@@ -2729,20 +2742,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   stroke: hsl(var(--color-title) / 1);
 }
 
-.stroke-accent {
-  stroke: hsl(var(--color-accent) / 1);
-}
-
 .stroke-title\/60 {
   stroke: hsl(var(--color-title) / 0.6);
 }
 
 .stroke-2 {
   stroke-width: 2;
-}
-
-.stroke-\[10px\] {
-  stroke-width: 10px;
 }
 
 .object-scale-down {
@@ -2782,10 +2787,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding: 1.5rem;
 }
 
-.p-8 {
-  padding: 2rem;
-}
-
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -2816,6 +2817,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-right: 0.5rem;
 }
 
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -2834,11 +2840,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-}
-
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 .py-0 {
@@ -2886,9 +2887,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-bottom: 1rem;
 }
 
-.px-2\.5 {
-  padding-left: 0.625rem;
-  padding-right: 0.625rem;
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pb-0 {
@@ -3030,6 +3031,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   text-transform: uppercase;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .leading-6 {
   line-height: 1.5rem;
 }
@@ -3132,6 +3137,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-text) / 0.5);
 }
 
+.text-text\/60 {
+  color: hsl(var(--color-text) / 0.6);
+}
+
 .text-text\/70 {
   color: hsl(var(--color-text) / 0.7);
 }
@@ -3171,26 +3180,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(114 59 19 / var(--tw-text-opacity));
 }
 
-.text-text\/60 {
-  color: hsl(var(--color-text) / 0.6);
-}
-
-.text-accent {
+.text-blue-800 {
   --tw-text-opacity: 1;
-  color: hsl(var(--color-accent) / var(--tw-text-opacity));
-}
-
-.text-primary {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-primary) / var(--tw-text-opacity));
+  color: rgb(30 66 159 / var(--tw-text-opacity));
 }
 
 .underline {
   text-decoration-line: underline;
-}
-
-.no-underline {
-  text-decoration-line: none;
 }
 
 .opacity-0 {
@@ -3518,14 +3514,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   text-decoration-line: underline;
 }
 
-.hover\:no-underline:hover {
-  text-decoration-line: none;
-}
-
-.hover\:\!no-underline:hover {
-  text-decoration-line: none !important;
-}
-
 .hover\:opacity-100:hover {
   opacity: 1;
 }
@@ -3700,6 +3688,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:text-yellow-300) {
   --tw-text-opacity: 1;
   color: rgb(250 202 21 / var(--tw-text-opacity));
+}
+
+:is(.dark .dark\:text-blue-400) {
+  --tw-text-opacity: 1;
+  color: rgb(118 169 250 / var(--tw-text-opacity));
 }
 
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
@@ -3910,16 +3903,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     max-width: 36rem;
   }
 
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .md\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:flex-row {
@@ -3942,11 +3935,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 }
 
 @media (min-width: 1024px) {
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

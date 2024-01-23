@@ -11,26 +11,16 @@ from .models import *
 from django.db.models.functions import Random
 
 def get_strategies(request):
-    subscription = request.subscription
-    subscription_period_end = request.subscription_period_end
-    subscription_plan = request.subscription_plan
-    subscription_status = request.subscription_status
-
     strategies = Strategy.objects.prefetch_related(
             Prefetch('images', queryset=StrategyImages.objects.all())
         )
     
     # print(strategies)
 
-    context =  {'strategies': strategies, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
+    context =  {'strategies': strategies}
     return render(request, 'strategies.html', context)
 
 def get_results(request):
-    subscription = request.subscription
-    subscription_period_end = request.subscription_period_end
-    subscription_plan = request.subscription_plan
-    subscription_status = request.subscription_status
-
     pair_name = request.GET.get('pair')
 
     unique_pairs = StrategyResults.objects.values_list('pair', flat=True).distinct()
@@ -44,17 +34,13 @@ def get_results(request):
     
     # print(strategies)
 
-    context =  {'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
+    context =  {'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name}
     return render(request, 'results.html', context)
 
 def get_strategy(request, id):
     strategy = {}
     comments = {}
     results = {}
-    subscription = request.subscription
-    subscription_period_end = request.subscription_period_end
-    subscription_plan = request.subscription_plan
-    subscription_status = request.subscription_status
 
     # try:
     #     strategy = get_object_or_404(Strategy, pk=id)
@@ -79,7 +65,7 @@ def get_strategy(request, id):
     except Strategy.DoesNotExist:
         raise Http404("The object does not exist.")
     
-    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': random_results, 'subscription': subscription, 'subscription_period_end': subscription_period_end, 'subscription_plan': subscription_plan, 'subscription_status': subscription_status}
+    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': random_results}
     return render(request, 'strategy.html', context)
 
 @require_http_methods([ "POST"])
@@ -112,7 +98,7 @@ def add_comment(request, id):
             comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
-            context = {'comments': comments, 'strategy': strategy, 'subscription': request.subscription}
+            context = {'comments': comments, 'strategy': strategy}
             return render(request, 'include/comments.html', context=context)
         else:
             context = {'errors': form.errors}
@@ -234,7 +220,7 @@ def add_result(request, id):
             results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
-            context = {'results': results, 'strategy': strategy, 'subscription': request.subscription}
+            context = {'results': results, 'strategy': strategy}
             response = render(request, 'include/results.html', context=context)
             return response
         else:
@@ -270,7 +256,7 @@ def add_comment_reply(request, id):
 
             # Trigger an HTMX update to fetch the new comment
             replies = comment.replies.select_related('created_by').prefetch_related('images')
-            context = {'comment': comment, 'replies': replies, 'subscription': request.subscription}
+            context = {'comment': comment, 'replies': replies}
             return render(request, 'include/comment_replies.html', context=context)
         else:
             context = {'errors': form.errors}
@@ -304,7 +290,7 @@ def add_result_reply(request, id):
 
             # Trigger an HTMX update to fetch the new comment
             replies = result.replies.select_related('created_by').prefetch_related('images')
-            context = {'result': result, 'replies': replies, 'subscription': request.subscription}
+            context = {'result': result, 'replies': replies}
             return render(request, 'include/result_replies.html', context=context)
         else:
             context = {'errors': form.errors}
@@ -328,7 +314,7 @@ def result_vote(request, result_id, vote_type):
                 result.negative_votes.add(request.user)
                 result.positive_votes.remove(request.user)
 
-    context = {'result': result, 'subscription': request.subscription}
+    context = {'result': result}
     return render(request, 'include/result_votes.html', context=context)
 
 def comment_like(request, comment_id, like_type):
@@ -348,5 +334,5 @@ def comment_like(request, comment_id, like_type):
                 comment.dislike.add(request.user)
                 comment.likes.remove(request.user)
 
-    context = {'comment': comment, 'subscription': request.subscription}
+    context = {'comment': comment}
     return render(request, 'include/comment_likes.html', context=context)
