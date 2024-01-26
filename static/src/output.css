@@ -879,7 +879,7 @@ input:checked + .toggle-bg {
   --color-secondary: 178 40% 52%;
   --color-accent: 229 76% 72%;
   /* --color-accent: 8 78% 68%; */
-  --color-background: 188 25% 10%;
+  --color-background: 188 25% 7%;
   --color-text: 0 0% 80%;
   --color-text-light: 0 0% 80%;
   --color-title: 0 0% 100%;
@@ -1371,6 +1371,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   top: 0;
 }
 
+.left-\[50\%\] {
+  left: 50%;
+}
+
+.right-\[50\%\] {
+  right: 50%;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -1542,6 +1550,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: auto;
 }
 
+.me-3 {
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
+}
+
 .ml-0 {
   margin-left: 0px;
 }
@@ -1568,10 +1581,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .ml-auto {
   margin-left: auto;
-}
-
-.mr-0 {
-  margin-right: 0px;
 }
 
 .mr-1 {
@@ -1663,21 +1672,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: 2rem;
 }
 
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+
 .mt-auto {
   margin-top: auto;
 }
 
-.me-3 {
-  -webkit-margin-end: 0.75rem;
-          margin-inline-end: 0.75rem;
-}
-
-.mt-1\.5 {
-  margin-top: 0.375rem;
-}
-
-.mt-\[2px\] {
-  margin-top: 2px;
+.mt-0\.5 {
+  margin-top: 0.125rem;
 }
 
 .line-clamp-2 {
@@ -1692,6 +1696,20 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-4 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 .block {
@@ -1979,6 +1997,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 36%;
 }
 
+.w-\[36rem\] {
+  width: 36rem;
+}
+
 .w-\[50\%\] {
   width: 50%;
 }
@@ -2000,20 +2022,24 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 100%;
 }
 
-.w-\[100vw\] {
-  width: 100vw;
+.w-4\/12 {
+  width: 33.333333%;
+}
+
+.w-7\/12 {
+  width: 58.333333%;
+}
+
+.w-9\/12 {
+  width: 75%;
+}
+
+.w-2\/12 {
+  width: 16.666667%;
 }
 
 .min-w-\[12rem\] {
   min-width: 12rem;
-}
-
-.\!min-w-\[12rem\] {
-  min-width: 12rem !important;
-}
-
-.min-w-\[54rem\] {
-  min-width: 54rem;
 }
 
 .max-w-2xl {
@@ -2054,6 +2080,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-w-xl {
   max-width: 36rem;
+}
+
+.max-w-\[25\%\] {
+  max-width: 25%;
+}
+
+.max-w-\[22\%\] {
+  max-width: 22%;
 }
 
 .flex-1 {
@@ -2171,16 +2205,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   resize: both;
 }
 
-.list-inside {
-  list-style-position: inside;
-}
-
 .list-none {
   list-style-type: none;
-}
-
-.list-disc {
-  list-style-type: disc;
 }
 
 .grid-cols-1 {
@@ -2197,6 +2223,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .grid-cols-7 {
   grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.grid-cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -2615,11 +2645,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(255 255 255 / 0.5);
 }
 
-.bg-blue-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(235 245 255 / var(--tw-bg-opacity));
-}
-
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2670,6 +2695,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
           background-clip: text;
 }
 
+.fill-\[\#cccc\] {
+  fill: #cccc;
+}
+
 .fill-background {
   fill: hsl(var(--color-background) / 1);
 }
@@ -2714,10 +2743,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-title) / 1);
 }
 
-.fill-title\/60 {
-  fill: hsl(var(--color-title) / 0.6);
-}
-
 .stroke-current {
   stroke: currentColor;
 }
@@ -2740,10 +2765,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .stroke-title {
   stroke: hsl(var(--color-title) / 1);
-}
-
-.stroke-title\/60 {
-  stroke: hsl(var(--color-title) / 0.6);
 }
 
 .stroke-2 {
@@ -2936,6 +2957,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-top: 0.05rem;
 }
 
+.pr-8 {
+  padding-right: 2rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -3027,12 +3056,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   font-weight: 600;
 }
 
-.uppercase {
-  text-transform: uppercase;
+.font-light {
+  font-weight: 300;
 }
 
-.lowercase {
-  text-transform: lowercase;
+.uppercase {
+  text-transform: uppercase;
 }
 
 .leading-6 {
@@ -3178,11 +3207,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
-}
-
-.text-blue-800 {
-  --tw-text-opacity: 1;
-  color: rgb(30 66 159 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -3335,6 +3359,20 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-4 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 [modal-backdrop] {
@@ -3690,11 +3728,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(250 202 21 / var(--tw-text-opacity));
 }
 
-:is(.dark .dark\:text-blue-400) {
-  --tw-text-opacity: 1;
-  color: rgb(118 169 250 / var(--tw-text-opacity));
-}
-
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
@@ -3940,6 +3973,20 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   }
 
   .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

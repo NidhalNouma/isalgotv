@@ -88,7 +88,7 @@ def check_user_and_stripe_middleware(get_response):
         request.subscription_plan = subscription_plan
         request.payment_methods = payment_methods
 
-        print("sub", subscription)
+        # print("sub", subscription)
 
         request.has_subscription = has_subscription
 

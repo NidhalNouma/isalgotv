@@ -12,4 +12,5 @@ urlpatterns = [
     path('vote/<int:result_id>/<str:vote_type>/', result_vote, name='result_vote'),
     path('like/<int:comment_id>/<str:like_type>/', comment_like, name='comment_like'),
     path('results/', get_results, name='results'),
+    path('ideas/', get_ideas, name='ideas'),
 ]

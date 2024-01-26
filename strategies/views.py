@@ -9,6 +9,7 @@ from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
 
 from django.db.models.functions import Random
+from django.db.models import F
 
 def get_strategies(request):
     strategies = Strategy.objects.prefetch_related(
@@ -28,30 +29,29 @@ def get_results(request):
 
 
     if pair_name:
-        results = StrategyResults.objects.filter(pair=pair_name).order_by('-profit_factor')
+        results = StrategyResults.objects.filter(pair=pair_name).order_by('-created_at')
     else:
-        results = StrategyResults.objects.all().order_by('-profit_factor')
+        results = StrategyResults.objects.all().order_by('-created_at')
     
     # print(strategies)
 
     context =  {'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name}
     return render(request, 'results.html', context)
 
+def get_ideas(request):
+    ideas = StrategyComments.objects.all().order_by('-created_at')
+    context =  {'ideas': ideas }
+    return render(request, 'ideas.html', context)
+
 def get_strategy(request, id):
     strategy = {}
     comments = {}
     results = {}
-
-    # try:
-    #     strategy = get_object_or_404(Strategy, pk=id)
-    #     comments = strategy.strategycomments_set.all()
-    #     results = strategy.strategyresults_set.all()
-    # except Strategy.DoesNotExist:
-    #     raise Http404("The object does not exist.")
+    
     try:
         strategy = Strategy.objects.select_related('created_by').prefetch_related(
-            'images',
-        ).get(pk=id)
+                'images',
+            ).get(pk=id)
 
         comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
@@ -60,6 +60,8 @@ def get_strategy(request, id):
         results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
+
+        Strategy.objects.filter(pk=id).update(view_count=F('view_count') + 1)
         
         random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
     except Strategy.DoesNotExist:

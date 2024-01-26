@@ -86,7 +86,8 @@ class Strategy(models.Model):
     settings = SettingsJSONField()
 
     is_live = models.BooleanField(default=False)
-
+    view_count = models.IntegerField(default=0)
+    
     images = GenericRelation(StrategyImages) 
     
     def __str__(self):

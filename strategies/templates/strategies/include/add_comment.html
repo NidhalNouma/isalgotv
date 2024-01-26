@@ -1,5 +1,5 @@
 <div class="">
-  {% if user.is_authenticated and subscription %}
+  {% if user.is_authenticated and has_subscription %}
   <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-comment-btn"
@@ -7,7 +7,7 @@
   >
     Share your idea
   </button>
-  {% elif user.is_authenticated and not subscription %}
+  {% elif user.is_authenticated and not has_subscription %}
   <button
     class="text-secondary text-sm font-semibold underlinei"
     data-modal-target="upgrade-modal"
@@ -16,12 +16,12 @@
     Share your idea
   </button>
   {% else %}
-  <a
+  {% comment %} <a
     class="text-secondary text-sm font-semibold underlinei"
     href="{% url 'login' %}"
   >
     Share your idea
-  </a>
+  </a> {% endcomment %}
   {% endif %}
   <form
     class="hidden"

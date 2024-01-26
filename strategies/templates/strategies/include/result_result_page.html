@@ -1,14 +1,18 @@
-<div class="w-full mb-3 p-2">
+<div class="">
   <div class="flex items-center">
-    <span
-      class="text-background bg-text px-1.5 rounded-full text-sm font-medium mr-2 whitespace-nowrap"
-      >{{result.pair}}</span
-    >
+    <a class="" href="{% url 'results' %}?pair={{result.pair}}">
+      <span
+        class="text-background bg-text px-1.5 rounded-full text-sm py-0 font-medium mr-2 whitespace-nowrap"
+        >{{result.pair}}</span
+      >
+    </a>
+    {% if hide_title != "True" %}
     <a class="grow" href="{% url 'strategy' id=result.strategy.id %}">
-      <h6 class="text-xs text-title underline truncate">
+      <h6 class="text-xs text-title underline truncate line-clamp-1">
         {{result.strategy.name}}
       </h6>
     </a>
+    {% endif %}
   </div>
 
   <div class="text-xs font-medium my-2 text-text/70">

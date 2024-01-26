@@ -3,7 +3,7 @@
 
 {% block page %}
 
-{% if subscription %}
+{% if has_subscription %}
 <h1 class="mt-8 text-left text-6xl text-title font-extrabold">Results</h1>
 {% else %}
 <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our results<span></h1>
@@ -36,7 +36,9 @@
 
     <section class=" grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
         {% for result in results %}
-            {% include "include/result_result_page.html" with result=result %}
+            <div class="w-full mb-3 p-2">
+                {% include "include/result_result_page.html" with result=result %}
+            </div>
         {% endfor %}
     </section>
 

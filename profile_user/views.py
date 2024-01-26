@@ -12,12 +12,16 @@ from django_htmx.http import trigger_client_event
 from .models import User_Profile
 from .forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
+from django.db.models import Max
+from strategies.models import *
+
 
 import datetime
 import environ
 env = environ.Env()
 
 from .utils.tradingview import *
+from .utils.send_mails import *
 
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
@@ -32,16 +36,21 @@ def home(request):
     step = 1
     user_profile = False
 
-    if request.subscription == None:
+    if request.has_subscription == None:
         step = 1
     else:
-        if request.subscription_active == True:
+        if request.has_subscription == True:
             step = 2
         if request.user_profile:
             user_profile = request.user_profile
             
             if user_profile.tradingview_username:
-                step = 3
+                if 'step' in request.GET:
+                    if request.GET.get('step') == '3':
+                        step = 3
+                
+                else:
+                    step = 4
     
     # print('t ', request.subscription)
     # print('r ', request.subscription_period_end)
@@ -60,12 +69,32 @@ def home(request):
     # request.GET.clear()
 
     context = {"congrate": congrate, 'step':step , 'prices': settings.PRICES}
+
+    if step == 4:
+        res_num = 8
+        new_strategies = Strategy.objects.all().order_by('-created_at')[:res_num]
+        most_viewed_strategies = Strategy.objects.all().order_by('-view_count')[:res_num]
+        new_results = StrategyResults.objects.all().order_by('-created_at')[:res_num]
+        best_results = StrategyResults.objects.all().order_by('-profit_factor')[:res_num]
+        new_ideas = StrategyComments.objects.all().order_by('-created_at')[:res_num]
+
+        context['new_strategies'] = new_strategies
+        context['most_viewed_strategies'] = most_viewed_strategies
+        context['new_results'] = new_results
+        context['best_results'] = best_results
+        context['new_ideas'] = new_ideas
+
     return render(request,'home.html', context)
 
 def membership(request):
     payment_form = PaymentCardForm()
 
-    context = {"payment_form": payment_form, 'prices': settings.PRICES}
+    congrate = False
+    if 'sub' in request.GET:
+        if request.GET.get('sub') == 'True':
+            congrate = True
+
+    context = {"payment_form": payment_form, 'prices': settings.PRICES, "congrate": congrate}
     
     return render(request, 'membership.html', context)
 
@@ -91,6 +120,7 @@ def register(request):
             user.save()
             User_Profile.objects.create(user = user)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            send_welcome_email(user.email, user.email)
             return redirect('home')
         else:
             messages.error(request, "An error occurred while registering")
@@ -99,7 +129,9 @@ def register(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('index')
+
+    referer_url = request.META.get('HTTP_REFERER')
+    return redirect(referer_url if referer_url else 'index')
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -118,6 +150,9 @@ def login_user(request):
         user = authenticate(request, username = email, password = password)
         if user is not None:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+            # send_welcome_email(user.email, user.email)
+
             return redirect('home')
         else:
             messages.error(request, "Email or Password incorrect!")
@@ -189,7 +224,7 @@ def edit_tradingview_username(request):
 
         profile_user.save() 
         if not page:
-            return HttpResponseClientRedirect(reverse('home'))
+            return HttpResponseClientRedirect(reverse('home') + '?step=3')
         else:
             response = render(request, 'include/settings/tradingview.html', {'user_profile': profile_user, 'msg': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')
@@ -350,14 +385,20 @@ def create_subscription_stripeform(request):
                     metadata={"price_id": price_id}
                 )
 
-                User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True)
+                highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
+                lifetime_num = 1
+                if highest_lifetime_num:
+                    lifetime_num = lifetime_num + 1
+
+
+                User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
                 print("New lifetime has been created ...")
 
                 if len(old_subscription_id) > 0:
                     cancel_subscription = stripe.Subscription.delete(old_subscription_id)
                     print("Old subscription has been canceled ... ")
 
-                    return HttpResponseClientRedirect(reverse('membership'))
+                    return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
                 
                 return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
                 
@@ -419,3 +460,10 @@ def cancel_subscription(request):
     
 
 
+
+
+
+def preview_email(request):
+    # Dummy data for template context
+    context = {'user_name': 'Test User'}
+    return render(request, 'emails/welcome_email.html', context)

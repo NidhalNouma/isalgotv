@@ -1,0 +1,128 @@
+{% load static %}
+<h1 class="mt-8 text-left text-6xl text-title font-extrabold">Home</h1>
+
+<main class="mt-4 mb-16 md:flex block justify-between">
+    <section class="pr-10">
+        <section class="">
+            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
+            Newest strategies
+            <a href="{% url 'strategies' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
+            </h6>
+
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+            {% for strategy in new_strategies %}
+
+            <a href="{% url 'strategy' id=strategy.id %}" class="">
+                {% if strategy.image %}
+                <img
+                src="{{ strategy.image_url }}"
+                alt="Strategy Image"
+                class="w-full max-h-64 aspect-video mx-auto rounded-lg"
+                />
+                {% else %}
+                <img
+                src="{% static 'images/chart_nobg_l.png' %}"
+                alt="Default Image"
+                class="w-full max-h-64 aspect-video mx-auto rounded-lg"
+                />
+                {% endif %}
+
+                <h6 class="mt-1 text-title text-sm  line-clamp-1">{{strategy.name}}</h6>
+                <h6 class="text-text/60 text-xs font-light mt-0.5">
+                    {{ strategy.strategyresults_set.all|length }} Results | {{ strategy.strategycomments_set.all|length }} Ideas
+                </h6>
+            </a>
+
+            {% endfor %}
+            </div>
+        </section>
+
+        <section class="mt-8">
+            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
+            Checkout these reuslts
+            <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
+            </h6>
+
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+            {% for result in new_results %}
+                <div class="">
+                    {% include "include/result_result_page.html" with result=result hide_title="True" %}
+                </div>
+            {% endfor %}
+            </div>
+        </section>
+
+        <section class="mt-8">
+            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
+            Most viewed strategies
+            <a href="{% url 'strategies' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
+            </h6>
+
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+            {% for strategy in most_viewed_strategies %}
+
+            <a href="{% url 'strategy' id=strategy.id %}" class="">
+                {% if strategy.image %}
+                <img
+                src="{{ strategy.image_url }}"
+                alt="Strategy Image"
+                class="w-full max-h-64 aspect-video mx-auto rounded-lg"
+                />
+                {% else %}
+                <img
+                src="{% static 'images/chart_nobg_l.png' %}"
+                alt="Default Image"
+                class="w-full max-h-64 aspect-video mx-auto rounded-lg"
+                />
+                {% endif %}
+
+                <h6 class="mt-1 text-title text-sm  line-clamp-1">{{strategy.name}}</h6>
+                <!-- <span class="text-text/60 text-xs font-semibold">
+                    {{ strategy.strategyresults_set.all|length }} Results | {{ strategy.strategycomments_set.all|length }} Ideas
+                </span> -->
+                <h6 class="text-text/60 text-xs font-light">{{strategy.view_count}} views</h6>
+            </a>
+
+            {% endfor %}
+            </div>
+        </section>
+
+
+        <section class="mt-8">
+            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
+                Best results so far
+            <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
+            </h6>
+
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+            {% for result in best_results %}
+                <div class="">
+                    {% include "include/result_result_page.html" with result=result hide_title="True" %}
+                </div>
+            {% endfor %}
+            </div>
+        </section>
+
+        <!-- <section class="mt-8">
+            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
+            Checkout these ideas
+            </h6>
+
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+            {% for comment in new_ideas %}
+
+                {% include "include/comment_comment_page.html" with comment=comment %}
+
+            {% endfor %}
+            </div>
+        </section> -->
+    </section>
+
+  <section class="min-w-[12rem] max-w-[22%] hidden md:block">
+    {% for comment in new_ideas %}
+        <div class="py-2 mb-4">
+            {% include "include/comment_comment_page.html" with comment=comment %}
+        </div>
+    {% endfor %}
+  </section>
+</main>

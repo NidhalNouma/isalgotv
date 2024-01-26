@@ -2,7 +2,15 @@
   class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-6"
 >
   <h5 class="text-title font-semibold mb-6">Membership</h5>
+  
+  {% if user_profile.is_lifetime %}
+  <p class="text-left text-title text-lg font-semibold">
+    You're subscribing to our
+    <span class="text-title font-extrabold">LIFETIME</span>
+    plan.
+  </p>
 
+  {% else %}
   {% if subscription %}
   <div class="">
     <p class="text-left text-title text-lg font-semibold">
@@ -150,5 +158,6 @@
       Membership
     </a>
   </div>
+  {% endif %}
   {% endif %}
 </div>

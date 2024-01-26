@@ -1,5 +1,5 @@
 <div class="">
-  {% if user.is_authenticated and subscription %}
+  {% if user.is_authenticated and has_subscription %}
   <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
@@ -8,7 +8,7 @@
   >
     Share your result
   </button>
-  {% elif user.is_authenticated and not subscription %}
+  {% elif user.is_authenticated and not has_subscription %}
   <button
     class="text-secondary text-sm font-semibold underlinei"
     data-modal-target="upgrade-modal"
@@ -17,12 +17,12 @@
     Share your result
   </button>
   {% else %}
-  <a
+  {% comment %} <a
     class="text-secondary text-sm font-semibold underlinei"
     href="{% url 'login' %}"
   >
     Share your result
-  </a>
+  </a> {% endcomment %}
   {% endif %}
   <form
     class="flex flex-col"

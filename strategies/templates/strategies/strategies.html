@@ -3,7 +3,7 @@
 
 {% block page %}
 
-    {% if subscription %}
+    {% if has_subscription %}
     <h1 class="mt-8 text-left text-6xl text-title font-extrabold">Strategies</h1>
     {% else %}
     <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
@@ -36,7 +36,7 @@
                 </a>
                 <p class="text-text line-clamp-3 text-sm">{{ strategy.description }}</p>
                 <div class="flex items-center justify-between mt-1">
-                    <span class="text-text/60 text-sm font-semibold">
+                    <span class="text-text/60 text-sm font-light">
                         {{ strategy.strategyresults_set.all|length }} Results | {{ strategy.strategycomments_set.all|length }} Ideas
                     </span>
 

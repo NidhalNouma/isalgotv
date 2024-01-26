@@ -306,8 +306,8 @@ htmx.on("htmx:afterRequest", (evt) => {
   //you have to add htmx: before the event ex: 'htmx:afterRequest'
 });
 
-function scrollToResult(resultId) {
-  const resultElement = document.getElementById(`result-${resultId}`);
+function scrollToResultOrComment(type, id) {
+  const resultElement = document.getElementById(`${type}-${id}`);
 
   if (resultElement) {
     // Calculate the scroll position to center the element

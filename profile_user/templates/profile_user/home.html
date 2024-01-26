@@ -8,6 +8,10 @@
 {% block page %}
 
 
+{% if step > 3 %}
+{% include "include/home.html" %}
+{% else %}
+
 <main class="my-16 flex flex-col  relative">
   {% if congrate %}
   <div
@@ -31,6 +35,7 @@
     </div>
   </div>
   {%endif%}
+  {% if step <= 3 %}
   <div class="mx-auto">
     <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0">
       <li
@@ -77,6 +82,7 @@
       </li>
     </ol>
   </div>
+  {% endif %}
 
   {%if step == 1%}
   <section class="mt-14 text-center">
@@ -187,7 +193,7 @@
       </div>
     </div>
   </section>
-  {%else%}
+  {% elif step == 3 %}
   <section class="mt-16 text-center">
     <h4 class="text-title">You're ready to go.</h4>
     <p class="text-text text-center mt-2">
@@ -218,9 +224,10 @@
           src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" /> -->
       </div>
   </section>
+
   {%endif%} {%if congrate %} {%include "include/congrate.html" %} {%endif %}
 </main>
-
+{% endif %}
 <!-- <iframe class="" oFjD8qE2 src="https://s.tradingview.com/embed/oFjD8qE2"></iframe> -->
 
 {% endblock page %}
