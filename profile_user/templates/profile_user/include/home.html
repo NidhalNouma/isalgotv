@@ -2,7 +2,7 @@
 <h1 class="mt-8 text-left text-6xl text-title font-extrabold">Home</h1>
 
 <main class="mt-4 mb-16 md:flex block justify-between">
-    <section class="pr-10">
+    <section class="">
         <section class="">
             <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
             Newest strategies
@@ -118,7 +118,7 @@
         </section> -->
     </section>
 
-  <section class="min-w-[12rem] max-w-[22%] hidden md:block">
+  <section class="min-w-[12rem] max-w-[22%] hidden md:block pl-10">
     {% for comment in new_ideas %}
         <div class="py-2 mb-4">
             {% include "include/comment_comment_page.html" with comment=comment %}

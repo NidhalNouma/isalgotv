@@ -45,7 +45,7 @@
 
 @layer components {
   .btn-primary-landing{
-    @apply bg-gradient-to-r from-text via-text/70 to-text/50 hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-background font-semibold text-xl px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap;
+    @apply flex items-center justify-center bg-gradient-to-tr from-background via-secondary/40 to-secondary/20 hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-secondary font-semibold text-xl px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0;
   }
 
   .btn-primary {
