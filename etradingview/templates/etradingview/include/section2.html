@@ -1,23 +1,26 @@
+{% load static %}
 <div
-  class="mt-12 mb-8 relative rounded-xl p-4 sm:p-8 w-full md:w-9/12 flex items-center justify-around {{class}}"
+  class="backdrop-blur-sm- min-h-[35vh] h-[45vh] my-8 relative rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around {{class}}"
 >
-  {% comment %}
-  <div
-    class="-z-10 absolute top-0 bottom-0 left-0 w-full bg-gradient-to-t to-background from-{{color}} ifrom-primary blur-[600px]"
-  ></div>
-  {% endcomment %}
-  <div class="max-w-[100%] md:max-w-[65%]">
+  <div class="max-w-[100%] md:max-w-[55%] my-6">
     <h3 class="text-title text-3xl font-semibold">{{h1}}</h3>
     <h6 class="text-text text-xl mt-2 font-medium">{{h2}}</h6>
   </div>
-  <div class="mx-auto h-64 mt-3 hidden md:block">
-    <lottie-player
-      class="h-full w-full"
-      src="{{lottie_src}}"
-      background="transparent"
-      speed="1"
-      loop
-      autoplay
-    ></lottie-player>
+  <div
+    class="mx-6 h-full block w-auto relative border-2 p-2 border-title rounded-xl bg-background shadow-xl shadow-title/50"
+    style=""
+  >
+    {% comment %}
+    <div
+      class="absolute inset-0 bg-accent/10 scale-150 rounded-full blur-[110px]"
+    ></div>
+    {% endcomment %}
+
+    <div
+      class="overflow-hidden h-36 md:h-full rounded-xl relative {{img_class}}"
+    >
+      <img class="parallax-round-reverse" alt="" src="{% static img_src %}" />
+      <div class="absolute inset-0 bg-background/25"></div>
+    </div>
   </div>
 </div>
