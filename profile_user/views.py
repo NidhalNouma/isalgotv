@@ -15,6 +15,9 @@ from django_htmx.http import HttpResponseClientRedirect, retarget
 from django.db.models import Max
 from strategies.models import *
 
+from django.core.mail import EmailMessage
+
+
 
 import datetime
 import environ
@@ -461,9 +464,30 @@ def cancel_subscription(request):
 
 
 
-
-
 def preview_email(request):
     # Dummy data for template context
     context = {'user_name': 'Test User'}
     return render(request, 'emails/welcome_email.html', context)
+
+def send_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        content = request.POST.get('content')
+
+        email_message = EmailMessage(
+            subject,
+            content,
+            "noreply@isalgo.com",  # From email
+            ['support@isalgo.com'],  # To email (your email)
+            headers={'Reply-To': email}
+        )
+
+        # Attach document if present
+        for file in request.FILES.values():
+            email_message.attach(file.name, file.read(), file.content_type)
+
+        email_message.send()
+
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)

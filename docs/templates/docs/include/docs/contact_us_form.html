@@ -1,0 +1,97 @@
+
+<form  hx-post="{% url 'send_email' %}" class="min-w-[28rem] max-w-lg p-4 border-2 border-background rounded-xl bg-background/60 brightness-150">
+    {% csrf_token %}
+    <label for="email" class="block mb-2 text-sm font-medium text-text"
+      >Email</label
+    >
+    <div class="relative mb-6">
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5 text-text/60"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+          ></path>
+          <path
+            d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+          ></path>
+        </svg>
+      </div>
+      <input
+        type="text"
+        name="email"
+        {% if user.email %}disabled{% endif %}
+        id="email"
+        value="{{ user.email }}"
+        class="input-text w-full pl-10 p-2.5"
+        placeholder="name@company.com"
+      />
+    </div>
+    <label for="subject" class="block mb-2 text-sm font-medium text-text"
+      >Subject</label
+    >
+    <div class="relative mb-6">
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5 text-text/60"
+          fill="currentColor"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M 10 5 L 10 6.9003906 L 4.0078125 10.802734 L 4.0078125 27 L 27.992188 27 L 27.992188 10.802734 L 22 6.8984375 L 22 5 L 10 5 z M 12 7 L 20 7 L 20 14.681641 L 16 17.273438 L 12 14.681641 L 12 7 z M 13 9 L 13 11 L 19 11 L 19 9 L 13 9 z M 10 9.2851562 L 10 13.386719 L 6.84375 11.341797 L 10 9.2851562 z M 22 9.2851562 L 25.15625 11.341797 L 22 13.386719 L 22 9.2851562 z M 13 12 L 13 14 L 19 14 L 19 12 L 13 12 z M 6.0078125 13.183594 L 16 19.65625 L 25.992188 13.183594 L 25.992188 25 L 6.0078125 25 L 6.0078125 13.183594 z"
+          ></path>
+        </svg>
+      </div>
+      <input
+        type="text"
+        name="subject"
+        id="subject"
+        class="input-text w-full pl-10 p-2.5"
+        placeholder="Subject ..."
+      />
+    </div>
+    <div class="relative mb-6">
+    <label for="subject" class="block mb-2 text-sm font-medium text-text"
+      >Message</label
+    >
+    <textarea
+      name="content"
+      rows="6"
+      class="w-full input-text"
+      placeholder="Your message..."></textarea>
+    </div>
+    <div class="relative mb-0 border border-text/60 rounded-md p-2 flex items-center">
+      <input class="hidden" type="file" name="files" id="mail-content"></input>
+      <button id="mail-open-content" type="button" class="p-2 hover:text-accent hover:border-accent rounded-full text-text border-2 border-text/60"><svg class="h-6 w-6" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M216.08 192v143.85a40.08 40.08 0 0 0 80.15 0l.13-188.55a67.94 67.94 0 1 0-135.87 0v189.82a95.51 95.51 0 1 0 191 0V159.74"></path></svg></button>
+      <p class="text-text text-xs ml-3">Add up to 5 screenshots or videos.<br/>
+        Max file size is 10 MB</p>
+    </div>
+
+    <button type="submit" class="btn-primary mt-4 mb-2 w-full">
+      Send
+      <svg
+        class="h-4 w-4 ml-2"
+        stroke="currentColor"
+        fill="currentColor"
+        stroke-width="0"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill="none"
+          stroke-width="2"
+          d="M22,3 L2,11 L20.5,19 L22,3 Z M10,20.5 L13,16 M15.5,9.5 L9,14 L9.85884537,20.0119176 C9.93680292,20.5576204 10.0751625,20.5490248 10.1651297,20.009222 L11,15 L15.5,9.5 Z"
+        ></path>
+      </svg>
+    </button>
+  </form>
