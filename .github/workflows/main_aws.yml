@@ -97,6 +97,15 @@ jobs:
         run: |
           aws ecs register-task-definition --cli-input-json file://${{ env.ECS_TASK_DEFINITION_JSON }}
 
+      - name: Set Network Configuration
+        id: network_config
+        run: |
+          if [ "${{ env.ECS_LAUNCH_TYPE }}" == "FARGATE" ]; then
+            echo "::set-output name=assign_public_ip::,assignPublicIp=ENABLED"
+          else
+            echo "::set-output name=assign_public_ip::"
+          fi
+
       - name: Create or Update ECS Service
         run: |
           SERVICE_STATUS=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} | jq -r '.services[] | select(.serviceName == "${{ env.ECS_SERVICE }}") | .status')
@@ -108,7 +117,7 @@ jobs:
               --task-definition ${{ env.ECS_TASK_DEFINITION_NAME }} \
               --desired-count 1 \
               --launch-type ${{ env.ECS_LAUNCH_TYPE }} \
-              --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}" \
+              --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}]${{ steps.network_config.outputs.assign_public_ip }}}"
               --load-balancers "targetGroupArn=${{ env.TARGET_GROUP_ARN }},containerName=${{ env.CONTAINER_NAME }},containerPort=${{ env.CONTAINER_PORT }}"
           else
             echo "Updating ECS Service: ${{ env.ECS_SERVICE }}"
