@@ -6,23 +6,9 @@
     <section class="">
       <h1 class="text-2xl font-bold text-title tracking-tight">Contact us</h1>
 
-      <div  id="alert-2" class="mb-8 mx-auto text-sm flex p-4 mt-2 text-title/60 bg-secondary/30 rounded" role="alert">
-        <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-        </svg>
-        <span class="sr-only">Info</span>
-        <div>
-        <p>Please make sure to check the <a class="underline font-semibold" href="{% url 'docs_questions' %}">Q&A page</a> to see if you can find what you're looking for; it will save you time.</p>
-        </div>
-
-        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg inline-flex items-center justify-center h-8 w-8 " data-dismiss-target="#alert-2" aria-label="Close">
-          <span class="sr-only">Close</span>
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-        </button>
+      <div class="mb-8 mt-2">
+        {% include 'include/succes.html' with close="alert_to_red" succes="Please make sure to check the <a class='underline font-semibold' href='/docs/q&a/'>Q&A page</a> to see if you can find what you're looking for; it will save you time." %}
       </div>
-
 
       <div class="mt-2 flex lg:flex-row flex-col justify-center items-center max-w-full">
         <div class=" flex items-center justify-center my-6">
@@ -40,14 +26,16 @@
           </svg> -->
         </div>
         
-        <svg xmlns="http://www.w3.org/2000/svg" class="lg:block hidden growi max-w-[50%] w-48 pointer-events-none h-16 m-4 stroke-primary" viewBox="0 0 290 26" fill="none" style="max-width: 100%; max-height: 100%;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="lg:block hidden max-w-[50%] w-48 pointer-events-none h-16 m-4 stroke-primary" viewBox="0 0 290 26" fill="none" style="max-width: 100%; max-height: 100%;">
           <path d="M1.62488 11.8965C91.3917 11.8965 181.159 11.8965 270.925 11.8965C274.575 11.8965 278.225 11.8965 281.874 11.8965C284.328 11.8965 281.558 10.7245 280.867 10.3198C273.828 6.1932 264.375 6.09433 256.779 3.22489C247.993 -0.0945098 259.575 3.66089 262.56 4.40737C267.605 5.66847 272.657 6.77278 277.714 7.95483C280.315 8.56291 285.652 9.75951 287.743 11.5023C291.36 14.5161 264.782 23.7213 260.195 23.7213" stroke-width="4" stroke-linecap="round" stroke-dasharray="0,0,0,379.635009765625"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,379.635009765625;            0,189.8175048828125,189.8175048828125,0;            379.635009765625,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></path>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="lg:hidden block grow max-w-[50%] w-48i pointer-events-none h-16 m-4 stroke-primary" viewBox="0 0 26 290" fill="none" style="max-width: 100%; max-height: 100%;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="lg:hidden block max-w-[50%] w-48i pointer-events-none h-16 m-4 stroke-primary" viewBox="0 0 26 290" fill="none" style="max-width: 100%; max-height: 100%;">
           <path d="M13.7544 1.57071C13.7544 91.3376 13.7544 181.104 13.7543 270.871C13.7543 274.521 13.7543 278.171 13.7543 281.82C13.7543 284.273 14.9263 281.503 15.331 280.813C19.4576 273.773 19.5565 264.321 22.4259 256.725C25.7453 247.939 21.9899 259.52 21.2434 262.506C19.9823 267.551 18.878 272.603 17.696 277.66C17.0879 280.261 15.8913 285.598 14.1485 287.689C11.1347 291.305 1.92947 264.728 1.92947 260.141" stroke-width="8" stroke-linecap="round" stroke-dasharray="0,0,0,379.6339416503906"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,379.6339416503906;            0,189.8169708251953,189.8169708251953,0;            379.6339416503906,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></path>
         </svg>
         
-        {% include "include/docs/contact_us_form.html" %}
+        <div class="max-w-lg w-full " id="contact_us_mail">
+          {% include "include/docs/contact_us_form.html" %}
+        </div>
       </div>
 
     </section>

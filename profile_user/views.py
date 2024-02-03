@@ -475,19 +475,45 @@ def send_email(request):
         subject = request.POST.get('subject')
         content = request.POST.get('content')
 
-        email_message = EmailMessage(
-            subject,
-            content,
-            "noreply@isalgo.com",  # From email
-            ['support@isalgo.com'],  # To email (your email)
-            headers={'Reply-To': email}
-        )
+        if not email:
+            error = "Email address not provided!"
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#contact_us_mail_error")
 
-        # Attach document if present
-        for file in request.FILES.values():
-            email_message.attach(file.name, file.read(), file.content_type)
+        if not subject:
+            error = "Subject not provided!"
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#contact_us_mail_error")
 
-        email_message.send()
+        if not content:
+            error = "Message not provided!"
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#contact_us_mail_error")
+        
+        try:
+            email_message = EmailMessage(
+                subject,
+                content,
+                "noreply@isalgo.com",  # From email
+                ['support@isalgo.com'],  # To email (your email)
+                headers={'Reply-To': email}
+            )
 
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'}, status=400)
+            files = request.FILES.getlist('documents')
+            # print("Number of files received:", len(files))
+            # Attach document if present
+            for file in files:
+                # print(file.name)
+                email_message.attach(file.name, file.read(), file.content_type)
+
+            email_message.send()
+
+            response = render(request, 'include/docs/contact_us_form.html', context = {"succes": "Email sent successfully. We will get back to you in less than 48 hours."})
+
+            return retarget(response, "#contact_us_mail")
+
+        except Exception as e:
+            print("Error sending maill", e)
+            error = "An error occured please try again!"
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#contact_us_mail_error")

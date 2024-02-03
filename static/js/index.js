@@ -302,6 +302,10 @@ htmx.on("htmx:afterRequest", (evt) => {
     );
     closeForm.click();
   }
+
+  if (evt?.detail?.target.id.includes("contact_us_mail")) {
+    closeLoader("-send-mail", "");
+  }
   // check which element triggered the htmx request. If it's the one you want call the function you need
   //you have to add htmx: before the event ex: 'htmx:afterRequest'
 });
@@ -589,4 +593,69 @@ function openPopupWindow(url, name = "windowChart") {
 
   window.open(url, name, `width=${w},${h}=600,top=${Y},left=${X}`);
   return false;
+}
+
+function showSelectedFiles(inputId, listId) {
+  const input = document.getElementById(inputId);
+  const fileList = document.getElementById(listId);
+  fileList.innerHTML = ""; // Clear existing list
+
+  for (var i = 0; i < input.files.length; i++) {
+    let file = input.files[i];
+    let fileReader = new FileReader();
+
+    let fileSize = (file.size / 1024).toFixed(2); // Convert size to KB
+    let fileSizeDisplay =
+      fileSize > 1024 ? (fileSize / 1024).toFixed(2) + " MB" : fileSize + " KB";
+
+    let fileName = file.name;
+
+    // Closure to capture the file information.
+    fileReader.onload = (function (theFile) {
+      return function (e) {
+        var mainDiv = document.createElement("div");
+        mainDiv.className =
+          "flex justify-between items-center mt-4 mb-1 bg-text/30 text-text text-sm rounded-md p-2 max-w-full";
+
+        let imgDiv = document.createElement("div");
+        imgDiv.className = "flex items-center grow-0 max-w-[min(20rem,80%)]";
+
+        if (theFile.type.match("image.*")) {
+          let img = new Image();
+          img.src = e.target.result;
+          img.className = "h-16 w-16 mr-3 rounded-lg";
+          imgDiv.appendChild(img);
+        } else if (theFile.type.match("video.*")) {
+          let video = document.createElement("video");
+          video.src = e.target.result;
+          video.className = "h-16 w-16 mr-3 rounded-lg";
+          video.controls = false;
+          imgDiv.appendChild(video);
+        } else {
+          imgDiv.innerHTML =
+            '<div class="w-16 aspect-square p-2 flex items-center justify-center"><svg class="h-8 w-8 fill-text p-1 " stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M64 464c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16H224v80c0 17.7 14.3 32 32 32h80V448c0 8.8-7.2 16-16 16H64zM64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V154.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0H64zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120z"></path></svg></div>';
+        }
+
+        var hTitle = document.createElement("h6");
+        var hSize = document.createElement("h6");
+
+        hTitle.textContent = fileName;
+        hTitle.className = "line-clamp-1";
+        hSize.textContent = fileSizeDisplay;
+        hSize.className = "text-text/80 text-xs line-clamp-1 ";
+
+        let textDiv = document.createElement("div");
+        textDiv.appendChild(hTitle);
+        textDiv.appendChild(hSize);
+
+        imgDiv.appendChild(textDiv);
+        mainDiv.appendChild(imgDiv);
+
+        fileList.appendChild(mainDiv);
+      };
+    })(file);
+
+    // Read in the image file as a data URL.
+    fileReader.readAsDataURL(file);
+  }
 }

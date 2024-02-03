@@ -3,11 +3,10 @@
 {% load compress %} {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark max-w-screen overflow-x-hidden">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    {% comment %} <meta name="viewport" content="width=device-width, initial-scale=1.0" /> {% endcomment %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>IsAlgo | Elevate your trading to the next level</title>
     <link
@@ -23,7 +22,7 @@
   </head>
 
   <body
-    class="bg-background flex flex-col min-h-screen overflow-x-hidden relative max-w-8xl mx-auto"
+    class="bg-background flex flex-col min-h-screen relative max-w-8xl mx-auto overflow-x-clip"
   >
     {% block toppage %} {% endblock toppage %}
     <div class="container mx-auto grow flex flex-col px-3 sm:px-6 relative">

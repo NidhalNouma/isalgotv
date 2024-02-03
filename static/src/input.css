@@ -41,6 +41,7 @@
     p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
       font-family: 'Kanit', sans-serif;
     }
+
   }
 
 @layer components {
