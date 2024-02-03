@@ -117,7 +117,7 @@ jobs:
               --task-definition ${{ env.ECS_TASK_DEFINITION_NAME }} \
               --desired-count 1 \
               --launch-type ${{ env.ECS_LAUNCH_TYPE }} \
-              --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}]${{ steps.network_config.outputs.assign_public_ip }}}"
+              --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}]${{ steps.network_config.outputs.assign_public_ip }}}" \
               --load-balancers "targetGroupArn=${{ env.TARGET_GROUP_ARN }},containerName=${{ env.CONTAINER_NAME }},containerPort=${{ env.CONTAINER_PORT }}"
           else
             echo "Updating ECS Service: ${{ env.ECS_SERVICE }}"
