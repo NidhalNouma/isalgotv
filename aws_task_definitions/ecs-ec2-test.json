@@ -1,0 +1,29 @@
+{
+    "family": "isalgo",
+    "containerDefinitions": [
+      {
+        "name": "django-isalgo",
+        "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo_test",
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8000,
+            "hostPort": 8000
+          }
+        ],
+        "environment": [],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/isalgo",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["EC2"],
+    "networkMode": "bridge",
+    "executionRoleArn": "arn:aws:iam::358776226602:role/ecsTaskExecutionRole"
+  }
+  
