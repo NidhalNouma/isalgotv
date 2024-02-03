@@ -4,6 +4,8 @@
       {
         "name": "django-isalgo",
         "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo_test",
+        "cpu": 1,
+        "memory": 1,
         "essential": true,
         "portMappings": [
           {
