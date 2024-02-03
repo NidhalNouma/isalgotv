@@ -1,5 +1,5 @@
 {
-    "family": "isalgo",
+    "family": "isalgo_ec2",
     "containerDefinitions": [
       {
         "name": "django-isalgo",
