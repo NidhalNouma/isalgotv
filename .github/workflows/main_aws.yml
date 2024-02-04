@@ -16,7 +16,8 @@ env:
   ECS_TASK_DEFINITION_JSON: aws_task_definitions/ecs-ec2-test.json # Set your ECS task definition json file
   SECURITY_GROUP_ID: sg-01a796680d6ae48b2 # Set your security group ID
   SUBNET_IDS: subnet-0d5644469efcf2370, subnet-060b993da7b594b67, subnet-07fbf55b284399e2d, subnet-07a3aa633664275a4
-  TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:us-east-1:358776226602:targetgroup/ecsTargetgroupToIsalgo/3585c2c62d13d859
+  # TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:us-east-1:358776226602:targetgroup/ecsTargetgroupToIsalgo/3585c2c62d13d859
+  TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:us-east-1:358776226602:targetgroup/isalgoEc2Ecs/7030bb1594a02f11
   CONTAINER_NAME: django-isalgo
   CONTAINER_PORT: 8000
   ECS_LAUNCH_TYPE: "EC2" # ecs lanch type EC2 or FARGATE
