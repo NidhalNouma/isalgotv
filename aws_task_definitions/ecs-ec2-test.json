@@ -4,8 +4,8 @@
       {
         "name": "django-isalgo",
         "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo_test",
-        "cpu": 1024,
-        "memory": 1024,
+        "cpu": 512,
+        "memory": 100,
         "essential": true,
         "portMappings": [
           {
@@ -26,8 +26,6 @@
     ],
     "requiresCompatibilities": ["EC2"],
     "networkMode": "awsvpc",
-    "cpu": "1024",
-    "memory": "1024",
     "executionRoleArn": "arn:aws:iam::358776226602:role/ecsTaskExecutionRole"
   }
   
