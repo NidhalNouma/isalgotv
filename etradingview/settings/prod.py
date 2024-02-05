@@ -11,6 +11,7 @@ ALLOWED_HOSTS = [
     'isalgo.com',
     'test.isalgo.com',
     'www.isalgo.com',
+    '*'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']
