@@ -83,4 +83,6 @@ RUN python manage.py migrate --noinput
 EXPOSE 8000
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", "--access-logfile", "-", "--error-logfile", "-"]
+

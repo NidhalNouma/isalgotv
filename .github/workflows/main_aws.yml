@@ -1,3 +1,18 @@
+# Setup a new IAM role to be able on AWS
+
+# using aws Fargate: create a ECR repositry if you don't have one
+#                    create a new ECS cluster
+#                    create a security group that allows trafic to the instance
+#                    create a target group with type Ip adresses, and set listner port to 8000 (or port of your app)
+#                    Link the target group to a loadbalancer
+
+# using aws EC2: create a ECR repositry if you don't have one
+#                create a new EC2 instance that is compatible with ecs and attach the IAM role to it
+#                create a new ECS cluster
+#                create a security group that allows trafic to the instance
+#                create a target group with type Ip adresses, and set listner port to 8000 (or port of your app)
+#                Link the target group to a loadbalancer
+
 name: Build and Deploy Django App to AWS
 
 on:
@@ -9,7 +24,6 @@ env:
   AWS_REGION: us-east-1 # Set your AWS region here
   ECR_REPOSITORY: isalgo_test # Set your ECR repository name here
   # ECS_CLUSTER: isalgo_test_ecs_cluster # Set your ECS cluster name here
-  # ECS_SERVICE: isalgo_test_ecs_service # Set your ECS service name here
   ECS_CLUSTER: isalgo_ec2_test # Set your ECS cluster name here
   ECS_SERVICE: isalgo_test_ecs_service # Set your ECS service name here
   ECS_TASK_DEFINITION_NAME: isalgo_ec2 # Set your ECS task definition name here
@@ -97,15 +111,6 @@ jobs:
       - name: Register ECS Task Definition
         run: |
           aws ecs register-task-definition --cli-input-json file://${{ env.ECS_TASK_DEFINITION_JSON }}
-
-      - name: Set Network Configuration
-        id: network_config
-        run: |
-          if [ "${{ env.ECS_LAUNCH_TYPE }}" == "FARGATE" ]; then
-            echo "::set-output name=assign_public_ip::awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}"
-          else
-            echo "::set-output name=assign_public_ip::"
-          fi
 
       - name: Create or Update ECS Service
         run: |
