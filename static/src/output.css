@@ -872,6 +872,7 @@ input:checked + .toggle-bg {
   --color-text: 0 0% 20%;
   --color-text-light: 0 0% 80%;
   --color-title: 0 0% 0%;
+  --color-title-light: 0 0% 100%;
 }
 
 :root[class~="dark"] {
@@ -1675,10 +1676,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin: 2rem;
 }
 
-.m-1 {
-  margin: 0.25rem;
-}
-
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
@@ -2139,10 +2136,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 2.25rem;
 }
 
-.h-96 {
-  height: 24rem;
-}
-
 .h-\[45vh\] {
   height: 45vh;
 }
@@ -2308,10 +2301,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 2.25rem;
 }
 
-.w-96 {
-  width: 24rem;
-}
-
 .w-\[27rem\] {
   width: 27rem;
 }
@@ -2340,6 +2329,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 56rem;
 }
 
+.w-\[80\%\] {
+  width: 80%;
+}
+
 .w-auto {
   width: auto;
 }
@@ -2353,16 +2346,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 100%;
 }
 
-.min-w-\[12rem\] {
-  min-width: 12rem;
-}
-
-.min-w-full {
-  min-width: 100%;
-}
-
 .min-w-\[100vw\] {
   min-width: 100vw;
+}
+
+.min-w-\[12rem\] {
+  min-width: 12rem;
 }
 
 .max-w-2xl {
@@ -2531,15 +2520,15 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.scale-50 {
-  --tw-scale-x: .5;
-  --tw-scale-y: .5;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .scale-75 {
   --tw-scale-x: .75;
   --tw-scale-y: .75;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-\[0\.2\] {
+  --tw-scale-x: 0.2;
+  --tw-scale-y: 0.2;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3067,6 +3056,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: linear-gradient(to top left, var(--tw-gradient-stops));
 }
 
+.bg-gradient-to-tr {
+  background-image: linear-gradient(to top right, var(--tw-gradient-stops));
+}
+
 .\!from-text {
   --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position) !important;
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position) !important;
@@ -3077,6 +3070,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-from: hsl(var(--color-secondary) / 1) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-secondary) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-secondary\/30 {
+  --tw-gradient-from: hsl(var(--color-secondary) / 0.3) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-secondary) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.via-accent\/20 {
+  --tw-gradient-to: hsl(var(--color-accent) / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.2) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .via-text\/40 {
@@ -3091,6 +3095,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .to-primary {
   --tw-gradient-to: hsl(var(--color-primary) / 1) var(--tw-gradient-to-position);
+}
+
+.to-secondary\/30 {
+  --tw-gradient-to: hsl(var(--color-secondary) / 0.3) var(--tw-gradient-to-position);
 }
 
 .to-text\/20 {
@@ -3625,6 +3633,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-title) / var(--tw-text-opacity));
 }
 
+.text-title-light {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-title-light) / var(--tw-text-opacity));
+}
+
 .text-title\/50 {
   color: hsl(var(--color-title) / 0.5);
 }
@@ -3659,6 +3672,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   text-decoration-line: underline;
 }
 
+.decoration-secondary {
+  text-decoration-color: hsl(var(--color-secondary) / 1);
+}
+
+.decoration-4 {
+  text-decoration-thickness: 4px;
+}
+
 .opacity-0 {
   opacity: 0;
 }
@@ -3685,6 +3706,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .opacity-40 {
   opacity: 0.4;
+}
+
+.opacity-60 {
+  opacity: 0.6;
 }
 
 .shadow {
@@ -3771,13 +3796,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.blur-\[200px\] {
-  --tw-blur: blur(200px);
+.blur-\[2px\] {
+  --tw-blur: blur(2px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.blur-\[2px\] {
-  --tw-blur: blur(2px);
+.blur-\[300px\] {
+  --tw-blur: blur(300px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -3808,6 +3833,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.backdrop-blur-xl {
+  --tw-backdrop-blur: blur(24px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .backdrop-brightness-100 {
@@ -3842,6 +3873,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transition-duration: 150ms;
 }
 
+.duration-0 {
+  transition-duration: 0s;
+}
+
 .duration-150 {
   transition-duration: 150ms;
 }
@@ -3852,6 +3887,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .duration-700 {
   transition-duration: 700ms;
+}
+
+.duration-75 {
+  transition-duration: 75ms;
 }
 
 .ease-in-out {

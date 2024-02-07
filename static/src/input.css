@@ -15,6 +15,7 @@
       --color-text: 0 0% 20%;
       --color-text-light: 0 0% 80%;
       --color-title: 0 0% 0%;
+      --color-title-light: 0 0% 100%;
     }
   
     :root[class~="dark"] {
@@ -92,6 +93,7 @@
     [modal-backdrop] {
       @apply bg-background/80 brightness-110 bg-opacity-80
     }
+  
 }
 
 .hideMe {

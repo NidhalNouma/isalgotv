@@ -117,7 +117,7 @@ jobs:
           SERVICE_STATUS=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} | jq -r '.services[] | select(.serviceName == "${{ env.ECS_SERVICE }}") | .status')
           if [ "$SERVICE_STATUS" != "ACTIVE" ]; then
             echo "Creating ECS Service: ${{ env.ECS_SERVICE }}"
-            command="aws ecs create-service --cluster ${{ env.ECS_CLUSTER }} --service-name ${{ env.ECS_SERVICE }} --task-definition ${{ env.ECS_TASK_DEFINITION_NAME }} --desired-count 1 --launch-type ${{ env.ECS_LAUNCH_TYPE }}"
+            command="aws ecs create-service --cluster ${{ env.ECS_CLUSTER }} --service-name ${{ env.ECS_SERVICE }} --task-definition ${{ env.ECS_TASK_DEFINITION_NAME }} --desired-count 2 --launch-type ${{ env.ECS_LAUNCH_TYPE }}"
             if [ "${{ env.ECS_LAUNCH_TYPE }}" == "FARGATE" ]; then
               command+=" --network-configuration awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}"
             fi
