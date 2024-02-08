@@ -119,17 +119,7 @@
           </div>
           <!-- Modal body -->
           <div class="h-full w-full my-auto px-4 flex flex-col">
-            <div
-              class="rounded-lg bg-text text-background flex flex-col mt-0 mb-4"
-            >
-              <p class="text-sm font-medium p-2">
-                Share your achievements with the community and contribute to
-                their progress. By sharing your results and the settings you
-                utilized, you empower others to benefit from your experiences.
-                Your insights can help enhance strategies and solve challenges
-                collectively.
-              </p>
-            </div>
+            {% include 'include/infos.html' with info="Share your achievements with the community and contribute to their progress. By sharing your results and the settings you utilized, you empower others to benefit from your experiences. Your insights can help enhance strategies and solve challenges collectively." %}
 
             <div class="flex items-center justify-center">
               <p class="text-text text-sm font-semibold">Uplaad csv file</p>
@@ -815,17 +805,9 @@
           </div>
           <!-- Modal body -->
           <div class="h-full w-full my-auto px-4 flex flex-col">
-            <div
-              class="rounded-lg bg-text text-background flex flex-col mt-0 mb-4"
-            >
-              <p class="text-sm font-medium p-2">
-                Share your achievements with the community and contribute to
-                their progress. By sharing your results and the settings you
-                utilized, you empower others to benefit from your experiences.
-                Your insights can help enhance strategies and solve challenges
-                collectively.
-              </p>
-            </div>
+              <div class="mb-4">
+                {% include 'include/infos.html' with info="Share your achievements with the community and contribute to their progress. By sharing your results and the settings you utilized, you empower others to benefit from your experiences. Your insights can help enhance strategies and solve challenges collectively." %}
+              </div>
 
               <div class="flex items-center justify-center">
                 <p class="text-text text-sm font-semibold">Uplaad csv file</p>

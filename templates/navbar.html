@@ -2,7 +2,7 @@
 
 <nav
   id="nav-bar"
-  class="bg-background brightness-125 sticky w-full rounded-md mt-4 mx-auto z-20 top-2 left-0"
+  class="bg-background ibackdrop-blur-2xl backdrop-brightness-150 sticky w-full rounded-md mt-4 mx-auto z-20 top-2 left-0"
 >
   <div
     class="flex flex-wrap items-center justify-between mx-auto px-3 sm:px-4 py-1.5 sm:py-2"
@@ -73,7 +73,7 @@
         class="px-4 z-50 hidden my-4 text-base list-none bg-background divide-y divide-background rounded-lg shadow"
         id="user-dropdown"
       >
-      {% if user_profile.tradingview_username %}
+        {% if user_profile.tradingview_username %}
         <div class="px-0.5 py-0 pt-2 text-center">
           <span class="block text-sm text-text/60"
             >{{user_profile.tradingview_username}}</span
@@ -85,23 +85,75 @@
           <li>
             <a
               href="{% url 'admin:index' %}"
-              class="flex items-center px-4 py-2 text-sm text-text/90 hover:text-title "
-              ><svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><g fill-rule="evenodd"><circle cx="17" cy="15.5" r="1.12"></circle><path d="M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z"></path><path d="M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path></g></svg> Admin</a
+              class="flex items-center px-4 py-2 text-sm text-text/90 hover:text-title transition-all"
+              ><svg
+                class="h-4 w-4 mr-1"
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <g fill-rule="evenodd">
+                  <circle cx="17" cy="15.5" r="1.12"></circle>
+                  <path
+                    d="M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z"
+                  ></path>
+                  <path
+                    d="M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"
+                  ></path>
+                </g>
+              </svg>
+              Admin</a
             >
           </li>
           {% endif %}
           <li>
             <a
               href="{% url 'settings' %}"
-              class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center"
-              ><svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4zM416.39 256a154.34 154.34 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.48 164.48 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155.3 155.3 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.48 164.48 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155.3 155.3 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47z"></path></svg> Settings</a
+              class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all"
+              ><svg
+                class="h-4 w-4 mr-1"
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                  d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4zM416.39 256a154.34 154.34 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.48 164.48 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155.3 155.3 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.48 164.48 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155.3 155.3 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47z"
+                ></path>
+              </svg>
+              Settings</a
             >
           </li>
           <li>
             <a
               href="{% url 'logout' %}"
-              class="flex items-center px-4 py-2 text-sm text-text/80 hover:text-title"
-              ><svg class="h-4 w-4 mr-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"></path><path d="M15 12h-12l3 -3"></path><path d="M6 15l-3 -3"></path></svg> Log out</a
+              class="flex items-center px-4 py-2 text-sm text-text/80 hover:text-title transition-all"
+              ><svg
+                class="h-4 w-4 mr-1"
+                stroke="currentColor"
+                fill="none"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"
+                ></path>
+                <path d="M15 12h-12l3 -3"></path>
+                <path d="M6 15l-3 -3"></path>
+              </svg>
+              Log out</a
             >
           </li>
         </ul>
@@ -109,7 +161,7 @@
       <button
         data-collapse-toggle="mobile-menu-2"
         type="button"
-        class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden ocus:outline-none dark:text-gray-400"
+        class="inline-flex items-center p-2 ml-1 text-sm text-text rounded-lg md:hidden ocus:outline-none transition-all"
         aria-controls="mobile-menu-2"
         aria-expanded="false"
       >
@@ -153,7 +205,7 @@
       <button
         data-collapse-toggle="mobile-menu-2"
         type="button"
-        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden dark:text-gray-400"
+        class="inline-flex items-center p-2 text-sm text-text rounded-lg md:hidden transition-all"
         aria-controls="mobile-menu-2"
         aria-expanded="false"
       >
@@ -185,7 +237,7 @@
         <li>
           <a
             href="{% url 'strategies' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'strategies' %} text-text {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium"
+            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'strategies' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
             >Strategies</a
           >
@@ -193,7 +245,7 @@
         <li>
           <a
             href="{% url 'results' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %} text-text {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium"
+            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
             >Results</a
           >
@@ -201,7 +253,7 @@
         <li>
           <a
             href="{% url 'ideas' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'ideas' %} text-text {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium"
+            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'ideas' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
             >Ideas</a
           >
@@ -209,7 +261,7 @@
         <li>
           <a
             href="{% url 'membership' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %} text-text {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium"
+            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
             >Membership</a
           >
@@ -217,7 +269,7 @@
         <li>
           <a
             href="{% url 'docs_index' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %} text-text {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium"
+            class="block text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
             >Docs</a
           >

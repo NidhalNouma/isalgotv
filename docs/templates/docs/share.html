@@ -3,27 +3,12 @@
 <main class="relative flex justify-between my-6 sm:my-12">
   {% include 'include/docs/side_nav.html' %}
   <div class="text-text flex-auto">
-    <section
-      class="text-text bg-text/30 border-[1px] border-text/60 rounded p-2 flex items-start"
-    >
-      <svg
-        class="stroke-text fill-text grow w-6 h-6 mr-2"
-        stroke-width="0"
-        viewBox="0 0 16 16"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
-        ></path>
-      </svg>
-      <p class="">
-        We are committed to building a community that values sharing successes
-        with others. If you achieve positive results, we encourage you to share
-        them with the community to enhance our collective experience and
-        continue refining our systems.
-      </p>
-    </section>
-    <section class="mt-8">
+
+    <div class="mb-8">
+      {% include 'include/infos.html' with info="We are committed to building a community that values sharing successes with others. If you achieve positive results, we encourage you to share them with the community to enhance our collective experience and continue refining our systems." %}
+    </div>
+
+    <section class="">
       <p class="text-base">
         Each strategy will have a section below for you to share your results
         and ideas. You can also explore and try the results shared by other

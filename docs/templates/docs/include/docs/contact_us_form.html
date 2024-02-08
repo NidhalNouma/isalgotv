@@ -1,6 +1,6 @@
 <form
   hx-post="{% url 'send_email' %}"
-  class="w-full max-w-full mx-auto p-4 border-2 border-background rounded-xl bg-background/60 brightness-150"
+  class="w-full max-w-full mx-auto p-4 border-2 border-background rounded-xl bg-background/60 backdrop-brightness-150"
   enctype="multipart/form-data"
 >
   {% csrf_token %}

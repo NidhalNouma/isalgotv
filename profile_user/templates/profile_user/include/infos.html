@@ -1,8 +1,7 @@
-{% comment %} Add close text as an ID to add the close button {% endcomment %}
-{% if succes %}
+{% if info %}
 <div
   id="alert-{{close}}"
-  class="mx-auto text-sm flex p-4 text-green-600 bg-green-800/10 rounded {{class}}"
+  class="mx-auto text-sm flex p-4 text-blue-600 bg-blue-800/10  rounded {{class}}"
   role="alert"
 >
   <svg
@@ -16,9 +15,9 @@
       d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
     />
   </svg>
-  <span class="sr-only">succes!</span>
+  <span class="sr-only">info!</span>
   <div>
-    <p>{{ succes|safe }}</p>
+    <p>{{ info|safe }}</p>
   </div>
 
   {% if close %}
