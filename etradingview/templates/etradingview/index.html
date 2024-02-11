@@ -463,8 +463,19 @@ setInterval(() => {
 
    let initialScroll = 0;
 
+   function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(context, args);
+        }, wait);
+    };
+}
 
-    window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', debounce(() => {
         const scrollY = window.scrollY;
 
         parallax.forEach(icon => {
@@ -535,6 +546,7 @@ setInterval(() => {
                 if (scrollY > initialScroll) {
                     // Scrolling down, scale up the element
                     const scale = 1 + ((scrollY - initialScroll) * 0.0005);
+                    if(scale < 1.25)
                     icon.style.transform = `scale(${scale})`;
                     icon.style.opacity = Math.min(1, 0.6 + ((scrollY - initialScroll) * opacity_spead));
                 } else {
@@ -546,7 +558,7 @@ setInterval(() => {
                 // icon.style.transform = `translateY(${top}px) scale(${scale}) `;
                 // icon.style.transform = `scale(${scale}) `;
           });
-    });
+    }), 20);
 
 
 </script>
