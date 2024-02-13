@@ -66,8 +66,8 @@ jobs:
             --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \
             --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
             -t $ECR_URI:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        #   docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
       - name: Deploy to AWS Lambda
         run: |
-          aws lambda update-function-code --function-name ${{ env.AWS_REGION }} --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          aws lambda update-function-code --function-name ${{ env.FUNCTION_NAME }} --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
