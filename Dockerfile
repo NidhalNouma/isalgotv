@@ -65,16 +65,21 @@ WORKDIR /usr/src/app
 
 # Install dependencies
 COPY requirements.txt /usr/src/app/
+
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install aws-lambda-wsgi
+RUN pip install aws-lambda-wsgi
+RUN pip install mangum
 
 # Copy project
 COPY . /usr/src/app/
 
 # Collect static files
-RUN python manage.py collectstatic --noinput --clear
+# RUN python manage.py collectstatic --noinput --clear
 
 # Compress for tailwindcss build
-RUN python manage.py compress
+# RUN python manage.py compress
 
 # Run migrate
 RUN python manage.py migrate --noinput
@@ -83,14 +88,12 @@ RUN python manage.py migrate --noinput
 EXPOSE 8000
 
 # Command to run the application
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application"]
 # CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", "--access-logfile", "-", "--error-logfile", "-"]
 
 
 # FOR deploy on AWS LAMBDA
 
-# Install aws-lambda-wsgi
-RUN pip install aws-lambda-wsgi
-
 # Adjust CMD to use aws-lambda-wsgi
-CMD ["aws-lambda-wsgi", "etradingview.wsgi:application"]
+# CMD ["aws-lambda-wsgi", "etradingview.wsgi:application"]
+# Specify the handler file as the command to run
+CMD ["python", "lambda_handler.py"]
