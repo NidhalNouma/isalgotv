@@ -6,7 +6,7 @@ from etradingview.asgi import application
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-handler = Mangum(application)
+handler = Mangum(application, lifespan="off")
 
 def lambda_handler(event, context):
     logger.info("Received event: " + json.dumps(event))
