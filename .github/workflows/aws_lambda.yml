@@ -60,7 +60,7 @@ jobs:
             --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \
             --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
-            --platform=linux/amd64 \
+            --platform linux/amd64 \
             -t $ECR_URI:$IMAGE_TAG .
 
           docker tag $ECR_URI:$IMAGE_TAG $ECR_URI:$IMAGE_TAG

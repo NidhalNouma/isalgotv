@@ -91,8 +91,8 @@ EXPOSE 8000
 
 # Adjust CMD to use aws-lambda-wsgi
 # Specify the handler file as the command to run
-CMD ["python", "lambda_handler.py"]
+# CMD ["python", "lambda_handler.py"]
 # CMD ["python", "-m", "awslambdaric", "lambda_handler.handler"]
-# ENTRYPOINT ["python", "-m", "awslambdaric"]
-# CMD ["lambda_handler.handler"]
+ENTRYPOINT [ "python", "-m", "awslambdaric" ]
+CMD [ "lambda_handler.handler" ]
 
