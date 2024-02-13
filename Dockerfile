@@ -1,4 +1,10 @@
-FROM public.ecr.aws/lambda/python:3.9
+FROM public.ecr.aws/lambda/python:3.11
+
+# Install system dependencies required for mysqlclient
+RUN yum install -y \
+    gcc \
+    mariadb-devel \
+    && yum clean all
 
 # Set arguments
 ARG SECRET_KEY
@@ -62,7 +68,7 @@ ENV TV_SESSION_ID ${TV_SESSION_ID}
 ENV LAMBDA_TASK_ROOT /usr/src/app/
 
 # Set work directory
-WORKDIR ${LAMBDA_TASK_ROOT} 
+# WORKDIR ${LAMBDA_TASK_ROOT} 
 
 # Install dependencies
 COPY requirements.txt ${LAMBDA_TASK_ROOT} 
