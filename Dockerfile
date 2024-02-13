@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.9
+FROM python:3.9
 
 # Install system dependencies required for mysqlclient
 RUN yum install -y \
@@ -65,7 +65,7 @@ ENV AWS_STORAGE_BUCKET_NAME ${AWS_STORAGE_BUCKET_NAME}
 
 ENV TV_SESSION_ID ${TV_SESSION_ID}
 
-# ENV LAMBDA_TASK_ROOT /usr/src/app/
+ENV LAMBDA_TASK_ROOT /var/task
 
 # Set work directory
 WORKDIR ${LAMBDA_TASK_ROOT} 
