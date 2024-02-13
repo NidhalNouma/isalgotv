@@ -6,6 +6,8 @@ on:
       - main # Adjust this to your branch
 
 env:
+  AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
+  ECR_REPOSITORY: isalgo_test # Set your ECR repository name here
   AWS_REGION: us-east-1 # Set your AWS region here
   FUNCTION_NAME: isalgo_test
 
@@ -23,16 +25,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Create ECR Repository if it doesn't exist
+        run: |
+          if ! aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}; then
+            aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}
+          fi
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
 
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: your-repository-name # Replace with your repository name
           IMAGE_TAG: latest
+
         run: |
+          IMAGE_TAG=latest
+          ECR_URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
           docker build \
             --build-arg SECRET_KEY="${{ secrets.SECRET_KEY }}" \
             --build-arg EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}" \
