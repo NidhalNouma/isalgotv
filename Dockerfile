@@ -1,10 +1,10 @@
 FROM python:3.9
 
 # Install system dependencies required for mysqlclient
-RUN yum install -y \
-    gcc \
-    mariadb-devel \
-    && yum clean all
+# RUN yum install -y \
+#     gcc \
+#     mariadb-devel \
+#     && yum clean all
 
 # Set arguments
 ARG SECRET_KEY
