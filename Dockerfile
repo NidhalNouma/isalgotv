@@ -1,4 +1,4 @@
-FROM python:3.9 
+FROM public.ecr.aws/lambda/python:3.9
 
 # Set arguments
 ARG SECRET_KEY
@@ -76,4 +76,5 @@ COPY . ${LAMBDA_TASK_ROOT}
 
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}  
 
-CMD ["lambda_handler.handler"]  
+ENTRYPOINT [ "python", "-m", "awslambdaric" ]
+CMD [ "lambda_handler.handler" ]
