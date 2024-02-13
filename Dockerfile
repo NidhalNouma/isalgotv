@@ -66,7 +66,7 @@ WORKDIR /usr/src/app
 # Install dependencies
 COPY requirements.txt /usr/src/app/
 
-RUN pip3 install --user --no-cache-dir -r requirements.txt
+RUN python3.9 -m pip install --user -r requirements.txt
 
 # Copy project
 COPY . /usr/src/app/
@@ -78,7 +78,7 @@ COPY . /usr/src/app/
 # RUN python manage.py compress
 
 # Run migrate
-RUN python3 manage.py migrate --noinput
+RUN python3.9 manage.py migrate --noinput
 
 # Expose port 8000
 EXPOSE 8000
@@ -93,6 +93,6 @@ EXPOSE 8000
 # Specify the handler file as the command to run
 # CMD ["python", "lambda_handler.py"]
 # CMD ["python", "-m", "awslambdaric", "lambda_handler.handler"]
-ENTRYPOINT [ "python3", "-m", "awslambdaric" ]
+ENTRYPOINT [ "python3.9", "-m", "awslambdaric" ]
 CMD [ "lambda_handler.handler" ]
 
