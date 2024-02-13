@@ -84,5 +84,13 @@ EXPOSE 8000
 
 # Command to run the application
 # CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", "--access-logfile", "-", "--error-logfile", "-"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", "--access-logfile", "-", "--error-logfile", "-"]
 
+
+# FOR deploy on AWS LAMBDA
+
+# Install aws-lambda-wsgi
+RUN pip install aws-lambda-wsgi
+
+# Adjust CMD to use aws-lambda-wsgi
+CMD ["aws-lambda-wsgi", "etradingview.wsgi:application"]
