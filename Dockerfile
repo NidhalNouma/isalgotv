@@ -80,6 +80,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . ${LAMBDA_TASK_ROOT} 
 
+# Collect static files
+RUN python manage.py collectstatic --noinput --clear
+
+# Compress for tailwindcss build
+RUN python manage.py compress
+
+# Run migrate
+RUN python manage.py migrate --noinput
+
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}  
 
 ENTRYPOINT [ "python", "-m", "awslambdaric" ]
