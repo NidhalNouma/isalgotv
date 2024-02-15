@@ -1640,6 +1640,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   top: 100%;
 }
 
+.start-2 {
+  inset-inline-start: 0.5rem;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -3195,6 +3199,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-title) / 1);
 }
 
+.fill-transparent {
+  fill: transparent;
+}
+
 .stroke-accent {
   stroke: hsl(var(--color-accent) / 1);
 }
@@ -3227,8 +3235,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   stroke: hsl(var(--color-title) / 1);
 }
 
+.stroke-background {
+  stroke: hsl(var(--color-background) / 1);
+}
+
 .stroke-2 {
   stroke-width: 2;
+}
+
+.stroke-1 {
+  stroke-width: 1;
 }
 
 .object-scale-down {

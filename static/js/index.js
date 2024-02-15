@@ -311,7 +311,8 @@ htmx.on("htmx:afterRequest", (evt) => {
 });
 
 function scrollToResultOrComment(type, id) {
-  const resultElement = document.getElementById(`${type}-${id}`);
+  let resultElement = document.getElementById(`${type}-${id}`);
+  if (!id) resultElement = document.getElementById(`${type}`);
 
   if (resultElement) {
     // Calculate the scroll position to center the element

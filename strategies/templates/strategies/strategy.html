@@ -1,13 +1,31 @@
 {% extends 'page.html' %} {% load static %} {% block page %}
 
 <div class="mt-8 flex justify-between">
-  <a class=" hover:underline " target="_blank" href="{{ strategy.tradingview_url }}">
-    <h1 class="text-left text-2xl flex items-center text-title font-bold  hover:underline">
+  <a
+    class="hover:underline"
+    target="_blank"
+    href="{{ strategy.tradingview_url }}"
+  >
+    <h1
+      class="text-left text-2xl flex items-center text-title font-bold hover:underline"
+    >
       {% if strategy.is_live == False %}
-      <span class="btn-accent mr-2 font-semibold font-sans rounded-full py-0.5 text-xs">BETA</span>
-      {% endif %}
-      {{ strategy.name }}
-      <svg class="h-4 w-r ml-2 " stroke="currentColor" fill="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"></path></svg>
+      <span
+        class="btn-accent mr-2 font-semibold font-sans rounded-full py-0.5 text-xs"
+        >BETA</span
+      >
+      {% endif %} {{ strategy.name }}
+      <svg
+        class="h-4 w-r ml-2"
+        stroke="currentColor"
+        fill="currentColor"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"
+        ></path>
+      </svg>
     </h1>
   </a>
   {% if not has_subscription %}
@@ -31,8 +49,7 @@
   {% endif %}
 </div>
 
-
-<main class=" mb-16 md:flex block justify-between">
+<main class="mb-16 md:flex block justify-between">
   <section class="w-full sm:w-8/12">
     <div class="mt-2 mb-8">
       <a
@@ -48,15 +65,25 @@
           viewBox="0 0 512 512"
           xmlns="http://www.w3.org/2000/svg"
         >
-        <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"></path>
+          <path
+            d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"
+          ></path>
         </svg>
       </a>
     </div>
     <div class="">
       {% if strategy.image %}
-          <img src="{{ strategy.image_url }}" alt="Strategy Image" class="max-w-full max-h-72 mx-auto">
+      <img
+        src="{{ strategy.image_url }}"
+        alt="Strategy Image"
+        class="max-w-full max-h-72 mx-auto"
+      />
       {% else %}
-          <img src="{% static 'images/chart_nobg.png' %}" alt="Default Image" class="max-w-full max-h-72 mx-auto">
+      <img
+        src="{% static 'images/chart_nobg.png' %}"
+        alt="Default Image"
+        class="max-w-full max-h-72 mx-auto"
+      />
       {% endif %}
     </div>
 
@@ -64,10 +91,24 @@
       <p class="text-text whitespace-pre-line">{{ strategy.content | safe }}</p>
     </div>
 
-
     {% if has_subscription %}
     <div class="my-3">
-      <a href="mailto:issues@isalgo.com?subject=Report A BUG: {{strategy.name}}&body=" class="inline-flex items-center text-sm text-text px-2.5 py-1 rounded-full border border-text"><svg class="w-4 h-4 mr-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg> Report a bug?</a>
+      <a
+        href="mailto:issues@isalgo.com?subject=Report A BUG: {{strategy.name}}&body="
+        class="inline-flex items-center text-sm text-text px-2.5 py-1 rounded-full border border-text"
+        ><svg
+          class="w-4 h-4 mr-2"
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+        </svg>
+        Report a bug?</a
+      >
     </div>
     {% endif %}
 
@@ -134,34 +175,14 @@
     {% for result in random_results %} {% include "include/quick_result.html" with result=result %} {% endfor %}
   </section>
 
-  {% include "include/modal_images_main.html" %} 
-  {% if user.is_authenticated and not subscription %}
-  {% include "include/upgrade_modal.html" %}
-  {% endif %}
+  {% include "include/modal_images_main.html" %} {% if user.is_authenticated and not subscription %} {% include "include/upgrade_modal.html" %} {% endif %}
 
-  <!-- TODO: adding functionality for the buttons below -->
+ 
+  <div
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-1 text-xs text-background bg-text backdrop-brightness-100 rounded flex items-center"
+    id="btns-list">
+  {% include 'include/likes_results_comments.html' %}
 
-  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-1 text-xs text-background bg-text backdrop-brightness-100 rounded flex items-center" id="btns-list">
-    <button data-tooltip-target="tooltip-like" data-tooltip-placement="top" class="flex items-center px-2" type="button"><svg class="w-3.5 h-3.5 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"></path></svg> 32</button>
-    <div id="tooltip-like" role="tooltip" class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip">
-      Likes
-      <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
-    <button data-tooltip-target="tooltip-results" data-tooltip-placement="top" class="flex items-center px-2" type="button"><svg class="w-3.5 h-3.5 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M396.8 352h22.4c6.4 0 12.8-6.4 12.8-12.8V108.8c0-6.4-6.4-12.8-12.8-12.8h-22.4c-6.4 0-12.8 6.4-12.8 12.8v230.4c0 6.4 6.4 12.8 12.8 12.8zm-192 0h22.4c6.4 0 12.8-6.4 12.8-12.8V140.8c0-6.4-6.4-12.8-12.8-12.8h-22.4c-6.4 0-12.8 6.4-12.8 12.8v198.4c0 6.4 6.4 12.8 12.8 12.8zm96 0h22.4c6.4 0 12.8-6.4 12.8-12.8V204.8c0-6.4-6.4-12.8-12.8-12.8h-22.4c-6.4 0-12.8 6.4-12.8 12.8v134.4c0 6.4 6.4 12.8 12.8 12.8zM496 400H48V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16zm-387.2-48h22.4c6.4 0 12.8-6.4 12.8-12.8v-70.4c0-6.4-6.4-12.8-12.8-12.8h-22.4c-6.4 0-12.8 6.4-12.8 12.8v70.4c0 6.4 6.4 12.8 12.8 12.8z"></path></svg> {{ strategy.strategyresults_set.all|length }}</button>
-    <div id="tooltip-results" role="tooltip" class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip">
-      Results
-      <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
-    <button data-tooltip-target="tooltip-comments" data-tooltip-placement="top" class="flex items-center px-2" type="button"><svg class="w-3.5 h-3.5 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v9.5A1.75 1.75 0 0 1 14.25 14H8.061l-2.574 2.573A1.458 1.458 0 0 1 3 15.543V14H1.75A1.75 1.75 0 0 1 0 12.25v-9.5C0 1.784.784 1 1.75 1ZM1.5 2.75v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Z"></path><path d="M22.5 8.75a.25.25 0 0 0-.25-.25h-3.5a.75.75 0 0 1 0-1.5h3.5c.966 0 1.75.784 1.75 1.75v9.5A1.75 1.75 0 0 1 22.25 20H21v1.543a1.457 1.457 0 0 1-2.487 1.03L15.939 20H10.75A1.75 1.75 0 0 1 9 18.25v-1.465a.75.75 0 0 1 1.5 0v1.465c0 .138.112.25.25.25h5.5a.75.75 0 0 1 .53.22l2.72 2.72v-2.19a.75.75 0 0 1 .75-.75h2a.25.25 0 0 0 .25-.25v-9.5Z"></path></svg> {{ strategy.strategycomments_set.all|length }}</button>
-    <div id="tooltip-comments" role="tooltip" class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip">
-      Ideas
-      <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
-    <button id="backToTopBtn" data-tooltip-target="tooltip-top" data-tooltip-placement="top" class="hidden items-center px-2" type="button"><svg class="w-3.5 h-3.5 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"></path></svg></button>
-    <div id="tooltip-top" role="tooltip" class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip">
-      Back to top
-      <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
   </div>
 </main>
 
@@ -181,20 +202,38 @@ id="btn-result-modal-data-hide"
 </div> -->
 
 <script type="text/javascript">
+
+  function showResults(resultParam) {
+      const showCommentsBtn = document.getElementById("settingsBtn");
+      showCommentsBtn.click();
+      if(resultParam)
+      scrollToResultOrComment("result", resultParam);
+      else
+      scrollToResultOrComment("resultsDiv");
+    }
+
+  function showComments(commentParam) {
+      const showCommentsBtn = document.getElementById("commentsBtn");
+      showCommentsBtn.click();
+      if(commentParam)
+      scrollToResultOrComment("comment", commentParam);
+      else
+      scrollToResultOrComment("commentsDiv");
+    }
+
   document.addEventListener("DOMContentLoaded", function () {
+
     const urlParams = new URLSearchParams(window.location.search);
     const resultParam = urlParams.get("result");
 
     if (resultParam) {
-      scrollToResultOrComment("result", resultParam);
+      showResults(resultParam);
     }
 
     const commentParam = urlParams.get("comment");
 
     if (commentParam) {
-      const showCommentsBtn = document.getElementById("commentsBtn");
-      showCommentsBtn.click()
-      scrollToResultOrComment("comment", commentParam);
+      showComments(commentParam);
     }
   });
 
@@ -219,7 +258,6 @@ id="btn-result-modal-data-hide"
       // Hide the button when the user is near the top
       backToTopButton.style.display = "none";
     }
-
   });
 
   backToTopButton.addEventListener("click", () => {

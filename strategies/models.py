@@ -85,6 +85,8 @@ class Strategy(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     settings = SettingsJSONField()
 
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
+
     is_live = models.BooleanField(default=False)
     view_count = models.IntegerField(default=0)
     

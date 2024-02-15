@@ -70,6 +70,19 @@ def get_strategy(request, id):
     context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': random_results}
     return render(request, 'strategy.html', context)
 
+
+def strategy_like(request, id):
+    strategy = Strategy.objects.get(pk=id)
+
+    if request.user:
+        if request.user in strategy.likes.all():
+            strategy.likes.remove(request.user)
+        else:
+            strategy.likes.add(request.user)
+
+    context = {'strategy': strategy}
+    return render(request, 'include/likes_results_comments.html', context=context)
+
 @require_http_methods([ "POST"])
 def add_comment(request, id):
     strategy = Strategy.objects.get(pk=id)
