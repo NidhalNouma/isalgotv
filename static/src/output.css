@@ -1988,6 +1988,22 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: auto;
 }
 
+.ml-6 {
+  margin-left: 1.5rem;
+}
+
+.ml-0\.5 {
+  margin-left: 0.125rem;
+}
+
+.mr-0 {
+  margin-right: 0px;
+}
+
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -2415,6 +2431,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-width: 20rem;
 }
 
+.max-w-fit {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -2822,6 +2843,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-top-width: 1px;
 }
 
+.border-b-\[1px\] {
+  border-bottom-width: 1px;
+}
+
+.border-b-\[0px\] {
+  border-bottom-width: 0px;
+}
+
 .\!border-red-500 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(240 82 82 / var(--tw-border-opacity)) !important;
@@ -2896,6 +2925,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-title {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-title) / var(--tw-border-opacity));
+}
+
+.border-text\/40 {
+  border-color: hsl(var(--color-text) / 0.4);
+}
+
+.border-b-\[1\] {
+  border-bottom-color: 1;
 }
 
 .\!bg-background {
@@ -3079,6 +3116,37 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-blue-800\/10 {
   background-color: rgb(30 66 159 / 0.1);
+}
+
+.bg-red-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 128 128 / var(--tw-bg-opacity));
+}
+
+.bg-red-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 180 180 / var(--tw-bg-opacity));
+}
+
+.bg-red-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(155 28 28 / var(--tw-bg-opacity));
+}
+
+.bg-red-800\/40 {
+  background-color: rgb(155 28 28 / 0.4);
+}
+
+.bg-red-300\/40 {
+  background-color: rgb(248 180 180 / 0.4);
+}
+
+.bg-red-800\/20 {
+  background-color: rgb(155 28 28 / 0.2);
+}
+
+.bg-green-800\/20 {
+  background-color: rgb(3 84 63 / 0.2);
 }
 
 .bg-opacity-50 {
@@ -4467,6 +4535,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .sm\:ml-8 {
     margin-left: 2rem;
+  }
+
+  .sm\:ml-6 {
+    margin-left: 1.5rem;
   }
 
   .sm\:block {

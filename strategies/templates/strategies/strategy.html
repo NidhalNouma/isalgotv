@@ -16,7 +16,7 @@
       >
       {% endif %} {{ strategy.name }}
       <svg
-        class="h-4 w-r ml-2"
+        class="h-4 w-4 ml-2"
         stroke="currentColor"
         fill="currentColor"
         viewBox="0 0 512 512"
@@ -34,7 +34,7 @@
     class="btn-accent font-semibold whitespace-nowrap"
     >Unlock access
     <svg
-      class="h-4 w-r ml-1"
+      class="h-4 w-4 ml-1"
       stroke="currentColor"
       fill="currentColor"
       stroke-width="1"
@@ -177,12 +177,11 @@
 
   {% include "include/modal_images_main.html" %} {% if user.is_authenticated and not subscription %} {% include "include/upgrade_modal.html" %} {% endif %}
 
- 
   <div
     class="fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-1 text-xs text-background bg-text backdrop-brightness-100 rounded flex items-center"
-    id="btns-list">
-  {% include 'include/likes_results_comments.html' %}
-
+    id="btns-list"
+  >
+    {% include 'include/likes_results_comments.html' %}
   </div>
 </main>
 
@@ -202,27 +201,21 @@ id="btn-result-modal-data-hide"
 </div> -->
 
 <script type="text/javascript">
-
   function showResults(resultParam) {
-      const showCommentsBtn = document.getElementById("settingsBtn");
-      showCommentsBtn.click();
-      if(resultParam)
-      scrollToResultOrComment("result", resultParam);
-      else
-      scrollToResultOrComment("resultsDiv");
-    }
+    const showCommentsBtn = document.getElementById("settingsBtn");
+    showCommentsBtn.click();
+    if (resultParam) scrollToResultOrComment("result", resultParam);
+    else scrollToResultOrComment("resultsDiv");
+  }
 
   function showComments(commentParam) {
-      const showCommentsBtn = document.getElementById("commentsBtn");
-      showCommentsBtn.click();
-      if(commentParam)
-      scrollToResultOrComment("comment", commentParam);
-      else
-      scrollToResultOrComment("commentsDiv");
-    }
+    const showCommentsBtn = document.getElementById("commentsBtn");
+    showCommentsBtn.click();
+    if (commentParam) scrollToResultOrComment("comment", commentParam);
+    else scrollToResultOrComment("commentsDiv");
+  }
 
   document.addEventListener("DOMContentLoaded", function () {
-
     const urlParams = new URLSearchParams(window.location.search);
     const resultParam = urlParams.get("result");
 

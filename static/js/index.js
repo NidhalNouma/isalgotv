@@ -28,24 +28,21 @@ function swapDivBtn(id1, id2) {
   div2.classList.remove("hidden");
 }
 
-function openLoader(title, id = "-pay-submit-") {
-  document.getElementById("spinner" + id + title).style.display = "block";
+function openLoader(title, id = "-pay-submit-", className = "block") {
+  document.getElementById("spinner" + id + title).style.display = className;
   document.getElementById("btn" + id + title).style.display = "none";
 
   if (document.getElementById("error" + id + title))
     document.getElementById("error" + id + title).style.display = "none";
 }
-function closeLoader(title, id = "-pay-submit-") {
+function closeLoader(title, id = "-pay-submit-", className = "block") {
   document.getElementById("spinner" + id + title).style.display = "none";
-  document.getElementById("btn" + id + title).style.display = "block";
+  document.getElementById("btn" + id + title).style.display = className;
 
   if (document.getElementById("error" + id + title))
     document.getElementById("error" + id + title).style.display = "none";
 }
-function closeLoader(title, id = "-pay-submit-") {
-  document.getElementById("spinner" + id + title).style.display = "none";
-  document.getElementById("btn" + id + title).style.display = "block";
-}
+
 function changeHidden(id1, id2) {
   document.getElementById(id1)?.classList?.remove("hidden");
   document.getElementById(id2)?.classList?.add("hidden");
@@ -296,6 +293,10 @@ htmx.on("htmx:afterRequest", (evt) => {
     closeLoader(title);
   }
 
+  if (evt?.detail?.target.id.includes("tradingview_username_submit")) {
+    closeLoader("", "-tv");
+  }
+
   if (evt?.detail?.target.id === "setting-payment_methods") {
     const closeForm = document.getElementById(
       "add-payment_methods-close-form-btn"
@@ -326,19 +327,21 @@ function scrollToResultOrComment(type, id) {
       behavior: "smooth",
     });
 
-    // Add a highlight class
-    resultElement.classList.add("brightness-125");
-    resultElement.classList.add("transition");
-    resultElement.classList.add("ease-in-out");
-    resultElement.classList.add("duration-1000");
+    if (id) {
+      // Add a highlight class
+      resultElement.classList.add("brightness-125");
+      resultElement.classList.add("transition");
+      resultElement.classList.add("ease-in-out");
+      resultElement.classList.add("duration-1000");
 
-    // Remove the highlight after a certain time (e.g., 3 seconds)
-    setTimeout(() => {
-      resultElement.classList.remove("brightness-125");
-      // resultElement.classList.remove("transition");
-      // resultElement.classList.remove("ease-in-out");
-      // resultElement.classList.remove("duration-1000");
-    }, 3000);
+      // Remove the highlight after a certain time (e.g., 3 seconds)
+      setTimeout(() => {
+        resultElement.classList.remove("brightness-125");
+        // resultElement.classList.remove("transition");
+        // resultElement.classList.remove("ease-in-out");
+        // resultElement.classList.remove("duration-1000");
+      }, 3000);
+    }
   }
 }
 

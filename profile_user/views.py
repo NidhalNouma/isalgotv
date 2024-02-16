@@ -10,6 +10,7 @@ from django.urls import reverse
 from django_htmx.http import trigger_client_event
 
 from .models import User_Profile
+from strategies.models import Strategy
 from .forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django.db.models import Max
@@ -106,6 +107,14 @@ def membership(request):
 def settings_page(request):
     context = {}
     return render(request, 'settings.html', context)
+
+@login_required(login_url='login')
+def access_page(request):
+    strategies = Strategy.objects.all()
+    context = {
+        "strategies": strategies
+    }
+    return render(request, 'access.html', context)
 
 def register(request):
     if request.user.is_authenticated:
@@ -205,31 +214,34 @@ def edit_tradingview_username(request):
         for item in response_data:
             # print("ID:", item["username"])
             if item["username"] == tv_username:
-                print('username exists ', tv_username)
                 check_username = True
 
         if check_username == False:
+            print('username ,,,')
             error = "Username not found. Please try again with another username."
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#tradingview_username_submit_error")
         
-        profile_user = User_Profile.objects.get(user=request.user)
+        profile_user = request.user_profile
 
         profile_user.tradingview_username = tv_username
-        # TODO: give access to all available strategies
-        access_response = give_access("0c8160c689014edfa61fc78efbbdbc59", tv_username, True)
 
-        if access_response == None:
-            error = "an error occurred while getting access. Please try again later or contact our support team."
-            response = render(request, 'include/errors.html', context = {"error": error})
-            return retarget(response, "#tradingview_username_submit_error")
+        profile_user.save()
 
+        strategies = Strategy.objects.all()
 
-        profile_user.save() 
+        for strategy in strategies:
+            access_response = give_access(strategy.id, profile_user.id, True)
+
+        # if access_response == None:
+        #     error = "an error occurred while getting access. Please try again later or contact our support team."
+        #     response = render(request, 'include/errors.html', context = {"error": error})
+        #     return retarget(response, "#tradingview_username_submit_error")
+
         if not page:
             return HttpResponseClientRedirect(reverse('home') + '?step=3')
         else:
-            response = render(request, 'include/settings/tradingview.html', {'user_profile': profile_user, 'msg': 'Username updated succesfully!'})
+            response = render(request, 'include/settings/tradingview.html', {'succes': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')
 
     else:
@@ -237,6 +249,17 @@ def edit_tradingview_username(request):
         response = render(request, 'include/errors.html', context = {"error": error})
         return retarget(response, "#tradingview_username_submit_error")
 
+@require_http_methods([ "POST"])
+def get_access(request, strategy_id):
+    if request.user and request.has_subscription:
+        profile_user = request.user_profile
+
+        access_response = give_access(strategy_id, profile_user.id, True)
+
+    strategies = Strategy.objects.all()
+
+    return render(request, 'include/access_list.html', context = {"strategies": strategies})
+    
 
 @require_http_methods([ "POST"])
 def create_payment_method(request):

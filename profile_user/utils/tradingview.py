@@ -1,19 +1,25 @@
 import requests
 from django.conf import settings
 
+from strategies.models import Strategy
+from profile_user.models import User_Profile
+
 import environ
 env = environ.Env()
 
 TV_SESSION_ID = env('TV_SESSION_ID')
 
 
-def give_access(strategy_tv_id, tradingview_username, access):
+def give_access(strategy_id, profile_id, access):
     add_or_reemove = "add" if access == True else "remove"
     url = f"https://www.tradingview.com/pine_perm/{add_or_reemove}/"
     try:
+        profile = User_Profile.objects.get(pk = profile_id)
+        strategy = Strategy.objects.get(pk = strategy_id)
+
         data = {
-          "username_recip": tradingview_username,
-          "pine_id": f"PUB;{strategy_tv_id}"
+          "username_recip": profile.tradingview_username,
+          "pine_id": f"PUB;{strategy.tradingview_ID}"
           }
         
         headers = {
@@ -26,9 +32,17 @@ def give_access(strategy_tv_id, tradingview_username, access):
                 + TV_SESSION_ID 
                 + '; etg=5fd4ffe4-2278-48ff-a088-7906be0f1636; cachec=5fd4ffe4-2278-48ff-a088-7906be0f1636; png=5fd4ffe4-2278-48ff-a088-7906be0f1636; tv_ecuid=5fd4ffe4-2278-48ff-a088-7906be0f1636; _sp_id.cf1a=fac826df-f914-48bb-b54d-dccd1879f5f4.1664371720.12.1671447948.1671399850.d61b1ebf-b1c8-44f7-8dc1-7a32b363ef9f',
           }
+        
 
         response = requests.post(url, data=data, headers=headers)
         response.raise_for_status() 
+        # print('data:', data)
+
+        if add_or_reemove:
+          profile.strategies.add(strategy)
+        else:
+          profile.strategies.remove(strategy)
+
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
