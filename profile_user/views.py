@@ -19,6 +19,13 @@ from strategies.models import *
 from django.core.mail import EmailMessage
 
 
+import logging
+
+# Configure logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)  # Adjust as needed
+
+
 
 import datetime
 import environ
@@ -497,6 +504,9 @@ def send_email(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         content = request.POST.get('content')
+
+        logger.info('New contact us mail '+ email)
+        print('New contact us mail '+ email)
 
         if not email:
             error = "Email address not provided!"
