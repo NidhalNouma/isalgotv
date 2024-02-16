@@ -19,14 +19,6 @@ from strategies.models import *
 from django.core.mail import EmailMessage
 
 
-import logging
-
-# Configure logging
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)  # Adjust as needed
-
-
-
 import datetime
 import environ
 env = environ.Env()
@@ -132,16 +124,21 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST) 
         # print(form)
-        if form.is_valid():
-            user = form.save(commit=False)
-            print("user ", user)
-            user.email = user.username
-            user.save()
-            User_Profile.objects.create(user = user)
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            send_welcome_email(user.email, user.email)
-            return redirect('home')
-        else:
+        try:
+            if form.is_valid():
+                user = form.save(commit=False)
+                print("user ", user)
+                user.email = user.username
+                user.save()
+                User_Profile.objects.create(user = user)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                send_welcome_email(user.email, user.email)
+                return redirect('home')
+            else:
+                messages.error(request, "An error occurred while registering")
+
+        except Exception as e:
+            print("An error occurred while registering", e)
             messages.error(request, "An error occurred while registering")
 
     return render(request,'auth/register.html', {'form': form})
@@ -258,14 +255,18 @@ def edit_tradingview_username(request):
 
 @require_http_methods([ "POST"])
 def get_access(request, strategy_id):
+    pg = request.GET.get('pg')
+
     if request.user and request.has_subscription:
         profile_user = request.user_profile
 
         access_response = give_access(strategy_id, profile_user.id, True)
 
-    strategies = Strategy.objects.all()
-
-    return render(request, 'include/access_list.html', context = {"strategies": strategies})
+    if pg == "st":
+        return HttpResponseClientRedirect('/st/' + str(strategy_id) +'/')
+    else:
+        strategies = Strategy.objects.all()
+        return render(request, 'include/access_list.html', context = {"strategies": strategies})
     
 
 @require_http_methods([ "POST"])
@@ -490,8 +491,6 @@ def cancel_subscription(request):
         context['error'] = 'error occured while trying to cancel subscription.'
 
         return render(request, 'include/settings/membership.html', context)
-    
-
 
 
 def preview_email(request):
@@ -504,9 +503,6 @@ def send_email(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         content = request.POST.get('content')
-
-        logger.info('New contact us mail '+ email)
-        print('New contact us mail '+ email)
 
         if not email:
             error = "Email address not provided!"
@@ -538,6 +534,8 @@ def send_email(request):
             for file in files:
                 # print(file.name)
                 email_message.attach(file.name, file.read(), file.content_type)
+
+            # print('Email sent successfully!')
 
             email_message.send()
 

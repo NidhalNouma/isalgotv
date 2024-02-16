@@ -66,6 +66,10 @@
     @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
   }
 
+  .btn-a {
+    @apply text-text font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center;
+  }
+
   .input-text{
     @apply bg-transparent border border-text/40 px-2.5 py-2 text-text text-base rounded-md focus:ring-accent  placeholder:text-text/40
   }

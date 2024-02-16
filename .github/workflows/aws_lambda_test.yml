@@ -62,6 +62,7 @@ jobs:
             --build-arg DATABASE_HOST="${{ secrets.DATABASE_HOST }}" \
             --build-arg DATABASE_NAME="${{ secrets.DATABASE_NAME }}" \
             --build-arg DATABASE_USER="${{ secrets.DATABASE_USER }}" \
+            --build-arg DATABASE_PASS="${{ secrets.DATABASE_PASS }}" \
             --build-arg AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
             --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \

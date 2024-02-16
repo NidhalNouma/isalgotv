@@ -1198,6 +1198,21 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }
 
+.btn-a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-text) / var(--tw-text-opacity));
+}
+
 .input-text {
   border-radius: 0.375rem;
   border-width: 1px;
@@ -1640,10 +1655,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   top: 100%;
 }
 
-.start-2 {
-  inset-inline-start: 0.5rem;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -1858,6 +1869,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-left: 0px;
 }
 
+.ml-0\.5 {
+  margin-left: 0.125rem;
+}
+
 .ml-1 {
   margin-left: 0.25rem;
 }
@@ -1986,22 +2001,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .mt-auto {
   margin-top: auto;
-}
-
-.ml-6 {
-  margin-left: 1.5rem;
-}
-
-.ml-0\.5 {
-  margin-left: 0.125rem;
-}
-
-.mr-0 {
-  margin-right: 0px;
-}
-
-.mr-0\.5 {
-  margin-right: 0.125rem;
 }
 
 .line-clamp-1 {
@@ -2431,11 +2430,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-width: 20rem;
 }
 
-.max-w-fit {
-  max-width: -moz-fit-content;
-  max-width: fit-content;
-}
-
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -2839,16 +2833,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-bottom-width: 0px;
 }
 
-.border-t {
-  border-top-width: 1px;
-}
-
-.border-b-\[1px\] {
-  border-bottom-width: 1px;
-}
-
 .border-b-\[0px\] {
   border-bottom-width: 0px;
+}
+
+.border-t {
+  border-top-width: 1px;
 }
 
 .\!border-red-500 {
@@ -2914,6 +2904,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-text) / 0.3);
 }
 
+.border-text\/40 {
+  border-color: hsl(var(--color-text) / 0.4);
+}
+
 .border-text\/50 {
   border-color: hsl(var(--color-text) / 0.5);
 }
@@ -2925,14 +2919,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-title {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-title) / var(--tw-border-opacity));
-}
-
-.border-text\/40 {
-  border-color: hsl(var(--color-text) / 0.4);
-}
-
-.border-b-\[1\] {
-  border-bottom-color: 1;
 }
 
 .\!bg-background {
@@ -2972,6 +2958,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(26 86 219 / var(--tw-bg-opacity));
 }
 
+.bg-blue-800\/10 {
+  background-color: rgb(30 66 159 / 0.1);
+}
+
 .bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
@@ -2992,8 +2982,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 
-.bg-green-800\/50 {
-  background-color: rgb(3 84 63 / 0.5);
+.bg-green-800\/10 {
+  background-color: rgb(3 84 63 / 0.1);
 }
 
 .bg-primary {
@@ -3014,8 +3004,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(253 242 242 / var(--tw-bg-opacity));
 }
 
-.bg-red-800\/50 {
-  background-color: rgb(155 28 28 / 0.5);
+.bg-red-800\/10 {
+  background-color: rgb(155 28 28 / 0.1);
 }
 
 .bg-secondary {
@@ -3086,67 +3076,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(255 255 255 / 0.5);
 }
 
-.bg-background\/20 {
-  background-color: hsl(var(--color-background) / 0.2);
-}
-
-.bg-background\/80 {
-  background-color: hsl(var(--color-background) / 0.8);
-}
-
-.bg-background\/90 {
-  background-color: hsl(var(--color-background) / 0.9);
-}
-
-.bg-background\/10 {
-  background-color: hsl(var(--color-background) / 0.1);
-}
-
-.bg-red-800\/10 {
-  background-color: rgb(155 28 28 / 0.1);
-}
-
-.bg-green-800\/10 {
-  background-color: rgb(3 84 63 / 0.1);
-}
-
 .bg-yellow-800\/10 {
   background-color: rgb(114 59 19 / 0.1);
-}
-
-.bg-blue-800\/10 {
-  background-color: rgb(30 66 159 / 0.1);
-}
-
-.bg-red-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 128 128 / var(--tw-bg-opacity));
-}
-
-.bg-red-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(248 180 180 / var(--tw-bg-opacity));
-}
-
-.bg-red-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(155 28 28 / var(--tw-bg-opacity));
-}
-
-.bg-red-800\/40 {
-  background-color: rgb(155 28 28 / 0.4);
-}
-
-.bg-red-300\/40 {
-  background-color: rgb(248 180 180 / 0.4);
-}
-
-.bg-red-800\/20 {
-  background-color: rgb(155 28 28 / 0.2);
-}
-
-.bg-green-800\/20 {
-  background-color: rgb(3 84 63 / 0.2);
 }
 
 .bg-opacity-50 {
@@ -3275,6 +3206,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   stroke: hsl(var(--color-accent) / 1);
 }
 
+.stroke-background {
+  stroke: hsl(var(--color-background) / 1);
+}
+
 .stroke-current {
   stroke: currentColor;
 }
@@ -3303,16 +3238,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   stroke: hsl(var(--color-title) / 1);
 }
 
-.stroke-background {
-  stroke: hsl(var(--color-background) / 1);
-}
-
 .stroke-2 {
   stroke-width: 2;
-}
-
-.stroke-1 {
-  stroke-width: 1;
 }
 
 .object-scale-down {
@@ -3604,6 +3531,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   font-weight: 600;
 }
 
+.\!font-semibold {
+  font-weight: 600 !important;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -3672,9 +3603,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(49 196 141 / 0.9);
 }
 
-.text-green-700 {
+.text-green-600 {
   --tw-text-opacity: 1;
-  color: rgb(4 108 78 / var(--tw-text-opacity));
+  color: rgb(5 122 85 / var(--tw-text-opacity));
 }
 
 .text-green-800 {
@@ -3696,9 +3627,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(240 82 82 / var(--tw-text-opacity));
 }
 
-.text-red-700 {
+.text-red-600 {
   --tw-text-opacity: 1;
-  color: rgb(200 30 30 / var(--tw-text-opacity));
+  color: rgb(224 36 36 / var(--tw-text-opacity));
 }
 
 .text-red-800 {
@@ -3755,10 +3686,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-title-light) / var(--tw-text-opacity));
 }
 
-.text-title\/50 {
-  color: hsl(var(--color-title) / 0.5);
-}
-
 .text-title\/60 {
   color: hsl(var(--color-title) / 0.6);
 }
@@ -3780,24 +3707,19 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-yellow-600 {
+  --tw-text-opacity: 1;
+  color: rgb(159 88 10 / var(--tw-text-opacity));
+}
+
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
 }
 
-.text-red-600 {
+.text-accent {
   --tw-text-opacity: 1;
-  color: rgb(224 36 36 / var(--tw-text-opacity));
-}
-
-.text-green-600 {
-  --tw-text-opacity: 1;
-  color: rgb(5 122 85 / var(--tw-text-opacity));
-}
-
-.text-yellow-600 {
-  --tw-text-opacity: 1;
-  color: rgb(159 88 10 / var(--tw-text-opacity));
+  color: hsl(var(--color-accent) / var(--tw-text-opacity));
 }
 
 .underline {
@@ -3948,11 +3870,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.brightness-125 {
-  --tw-brightness: brightness(1.25);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 .brightness-150 {
   --tw-brightness: brightness(1.5);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -3973,26 +3890,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
-.backdrop-blur-sm {
-  --tw-backdrop-blur: blur(4px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-.backdrop-blur-2xl {
-  --tw-backdrop-blur: blur(40px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
 .backdrop-brightness-100 {
   --tw-backdrop-brightness: brightness(1);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-.backdrop-brightness-125 {
-  --tw-backdrop-brightness: brightness(1.25);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -4147,6 +4046,36 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 ::selection {
   color: hsl(178 ,40%, 52%);
   /* background: hsl(var(--color-secondary)); */
+}
+
+@media (min-width: 640px) {
+  .sm\:btn-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position);
+    --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.9) var(--tw-gradient-via-position), var(--tw-gradient-to);
+    --tw-gradient-to: hsl(var(--color-text) / 0.8) var(--tw-gradient-to-position);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    --tw-text-opacity: 1;
+    color: hsl(var(--color-background) / var(--tw-text-opacity));
+  }
+
+  .sm\:btn-text:hover {
+    background-image: linear-gradient(to left, var(--tw-gradient-stops));
+  }
 }
 
 .hover\:border-accent:hover {
@@ -4387,14 +4316,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(31 41 55 / 0.5);
 }
 
-:is(.dark .dark\:bg-green-800\/10) {
-  background-color: rgb(3 84 63 / 0.1);
-}
-
-:is(.dark .dark\:bg-red-800\/10) {
-  background-color: rgb(155 28 28 / 0.1);
-}
-
 :is(.dark .dark\:bg-red-900) {
   --tw-bg-opacity: 1;
   background-color: rgb(119 29 29 / var(--tw-bg-opacity));
@@ -4428,11 +4349,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(49 196 141 / var(--tw-text-opacity));
 }
 
-:is(.dark .dark\:text-green-600) {
-  --tw-text-opacity: 1;
-  color: rgb(5 122 85 / var(--tw-text-opacity));
-}
-
 :is(.dark .dark\:text-red-200) {
   --tw-text-opacity: 1;
   color: rgb(251 213 213 / var(--tw-text-opacity));
@@ -4441,11 +4357,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:text-red-400) {
   --tw-text-opacity: 1;
   color: rgb(249 128 128 / var(--tw-text-opacity));
-}
-
-:is(.dark .dark\:text-red-600) {
-  --tw-text-opacity: 1;
-  color: rgb(224 36 36 / var(--tw-text-opacity));
 }
 
 :is(.dark .dark\:text-text) {
@@ -4533,12 +4444,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     margin-bottom: 3rem;
   }
 
-  .sm\:ml-8 {
-    margin-left: 2rem;
-  }
-
   .sm\:ml-6 {
     margin-left: 1.5rem;
+  }
+
+  .sm\:ml-8 {
+    margin-left: 2rem;
   }
 
   .sm\:block {
