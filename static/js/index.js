@@ -126,9 +126,20 @@ async function onPayFormStripeSubmit(title) {
   const nameInput = document.getElementById("cardName-" + title);
 
   const pmValue = document.getElementById("pm-" + title);
-  console.log("Checking card for " + title + " ... ");
 
-  if (pmValue.value.length === 0 || pmValue.value === "None") {
+  const paymentsList = document.getElementById("payment-card-list-" + title);
+  console.log(
+    "Checking card for " +
+      title +
+      " ... " +
+      paymentsList.classList.contains("hidden")
+  );
+
+  if (
+    pmValue.value.length === 0 ||
+    pmValue.value === "None" ||
+    paymentsList.classList.contains("hidden")
+  ) {
     const result = await stripe.createPaymentMethod({
       elements,
       params: {

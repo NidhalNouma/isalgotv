@@ -1,22 +1,21 @@
 {% extends 'page.html' %} {% load static %} {% block page %}
 
-<div class="mt-8 flex flex-col sm:flex-row justify-between">
+
+<main class="mb-16 mt-8 md:flex block justify-between">
+  <section class="w-full sm:w-8/12">
+
+<div class="flex flex-col sm:flex-row justify-between">
   <a
     class="hover:underline"
     target="_blank"
     href="{{ strategy.tradingview_url }}"
   >
     <h1
-      class="text-left text-2xl flex items-baseline text-title font-bold hover:underline"
+      class="text-left text-2xl text-title font-bold hover:underline"
     >
-      {% if strategy.is_live == False %}
-      <span
-        class="btn-accent hidden sm:block mr-2 font-semibold font-sans rounded-full py-0.5 text-xs"
-        >BETA</span
-      >
-      {% endif %} {{ strategy.name }}
+     {{ strategy.name }}
       <svg
-        class="h-4 w-4 ml-2"
+        class="h-4 w-4 ml-1 inline"
         stroke="currentColor"
         fill="currentColor"
         viewBox="0 0 512 512"
@@ -26,93 +25,20 @@
           d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"
         ></path>
       </svg>
+      {% if strategy.is_live == False %}
+      <span
+        class="btn-accent hidden sm:inline ml-1 font-semibold font-sans rounded-full py-0.5 text-xs"
+        >BETA</span
+      >
+      {% endif %} 
     </h1>
   </a>
-  {% if not has_subscription %}
-  <div>      
-  <a
-    href="{% url 'membership' %}"
-    class="btn-accent font-semibold whitespace-nowrap"
-    >Unlock access
-    <svg
-      class="h-4 w-4 ml-1"
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="1"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
-      ></path>
-    </svg>
-  </a>
-  </div>
-  {% elif has_subscription and not strategy in user_profile.strategies %}
-<div id="access-mb" class="">
-  <form
-  class="inline-flex"
-  hx-post="{% url 'give_access' strategy.id %}?pg=st"
-  hx-target="#access-mb"
->
-  {% csrf_token %}
-  <button
-    class="btn-accent font-semibold whitespace-nowrap"
-    type="submit"
-    id="btn-acc-{{strategy.id}}"
-    onclick="openLoader('', '-acc-{{strategy.id}}', 'flex');"
-  >
-    Unlock access
-    <svg
-      class="h-4 w-4 ml-1"
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="1"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
-      ></path>
-    </svg>
-  </button>
-  <button
-    id="spinner-acc-{{strategy.id}}"
-    disabled
-    type="button"
-    class="btn-accent font-semibold whitespace-nowrap hidden"
-  >
-    Unlock access
-    <svg
-      aria-hidden="true"
-      role="status"
-      class="inline w-3.5 h-3.5 ml-1.5 animate-spin"
-      viewBox="0 0 100 101"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-        fill="#E5E7EB"
-      />
-      <path
-        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-        fill="currentColor"
-      />
-    </svg>
-  </button>
-</form>
 </div>
-  {% endif %}
-</div>
-
-<main class="mb-16 md:flex block justify-between">
-  <section class="w-full sm:w-8/12">
     <div class="mt-2 mb-8 ">
       <a
         href="#"
         onClick="openPopupWindow('{{strategy.chart_url}}')"
-        class="hidden btn-a sm:btn-text !font-semibold whitespace-nowrap"
+        class="btn-text !font-semibold whitespace-nowrap"
         >Live chart
         <svg
           class="h-4 w-r ml-1"
@@ -228,7 +154,95 @@
     </section>
   </section>
 
-  <section class="w-3/12 hidden md:block">
+  <section class="w-3/12 hidden md:flex flex-col">
+    <div class="mb-6 w-full">
+
+  {% if not has_subscription %}
+  <div class=" float-right">      
+  <a
+    href="{% url 'membership' %}"
+    class="btn-accent font-semibold whitespace-nowrap"
+    >Unlock access
+    <svg
+      class="h-4 w-4 ml-1"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="1"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
+      ></path>
+    </svg>
+  </a>
+  </div>
+  {% elif has_subscription and not user_profile.tradingview_username %}
+  <div>      
+    <a
+      href="{% url 'settings' %}"
+      class="btn-accent text-start font-semibold whitespace-nowrap max-w-xs"
+      >
+      Set your tradingview username <br/>to get access.
+  </a>
+    </div>
+  {% elif has_subscription and not strategy in user_profile.strategies %}
+<div id="access-mb" class="float-right">
+  <form
+  class="inline-flex"
+  hx-post="{% url 'give_access' strategy.id %}?pg=st"
+  hx-target="#access-mb"
+>
+  {% csrf_token %}
+  <button
+    class="btn-accent font-semibold whitespace-nowrap"
+    type="submit"
+    id="btn-acc-{{strategy.id}}"
+    onclick="openLoader('', '-acc-{{strategy.id}}', 'flex');"
+  >
+    Unlock access
+    <svg
+      class="h-4 w-4 ml-1"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="1"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
+      ></path>
+    </svg>
+  </button>
+  <button
+    id="spinner-acc-{{strategy.id}}"
+    disabled
+    type="button"
+    class="btn-accent font-semibold whitespace-nowrap hidden"
+  >
+    Unlock access
+    <svg
+      aria-hidden="true"
+      role="status"
+      class="inline w-3.5 h-3.5 ml-1.5 animate-spin"
+      viewBox="0 0 100 101"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="#E5E7EB"
+      />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentColor"
+      />
+    </svg>
+  </button>
+</form>
+</div>
+  {% endif %}
+    </div>
     {% for result in random_results %} {% include "include/quick_result.html" with result=result %} {% endfor %}
   </section>
 
