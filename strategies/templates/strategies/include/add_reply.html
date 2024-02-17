@@ -36,6 +36,7 @@
         accept="image/*"
         name="images"
         multiple
+        onchange="showSelectedFiles('add-reply-imgs-{{id}}-{{name}}' ,'l-{{id}}-{{name}}-file-list')"
       />
       <button
         onclick='showSelectImgs("add-reply-imgs-{{id}}-{{name}}")'
@@ -97,4 +98,6 @@
   </div>
 
   <div id="reply-form-errors-{{id}}-{{name}}"></div>
+
+  <div id="l-{{id}}-{{name}}-file-list" class="max-w-full"></div>
 </form>

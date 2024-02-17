@@ -28,9 +28,6 @@
             <div class="w-full">
                 <a href="{% url 'strategy' id=strategy.id %}">
                     <h3 class="text-title text-xl font-bold line-clamp-2 flex items-center">
-                        {% if strategy.is_live == False %}
-                            <span class="btn-accent font-semibold font-sans rounded-full py-0 text-xs">BETA</span>
-                        {% endif %}
                         {{ strategy.name }}
                     </h3>
                 </a>

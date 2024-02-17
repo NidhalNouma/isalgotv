@@ -8,7 +8,7 @@
 {% block page %}
 
     {% if user_profile.is_lifetime %}
-    <h1 class="mt-8 text-left text-6xl text-title font-extrabold">Membership</h1>
+    <h1 class="mt-8 text-left text-3xl sm:text-6xl text-title font-extrabold">Membership</h1>
     <div class=" mt-4">
         <p class="text-left text-title text-lg font-semibold">You're a <span class="text-title font-extrabold">LIFETIME</span> member.</p>
     </div>
@@ -47,7 +47,7 @@
 
     {% else %}
         {% if subscription %}
-        <h1 class="mt-8 text-left text-6xl text-title font-extrabold">Membership</h1>
+        <h1 class="mt-8 text-left text-3xl sm:text-6xl text-title font-extrabold">Membership</h1>
         <div class=" mt-4">
             <p class="text-left text-title text-lg font-semibold">You're subscribing to our <span class="text-title font-extrabold">{{ subscription_plan }}</span> plan.</p>
             {% if subscription_status == 'canceled' %}
@@ -57,7 +57,7 @@
             {% endif %}
         </div>
         {%else%}
-        <h1 class="mt-8 text-center text-6xl text-title font-extrabold">Choose your plan and unlock access to<br/> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
+        <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Choose your plan and unlock access to<br/> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
         {%endif%}
 
         <main class="mt-8 mb-16">

@@ -15,14 +15,14 @@
   >
     Share your idea
   </button>
-  {% else %}
-  {% comment %} <a
+  {% else %} {% comment %}
+  <a
     class="text-secondary text-sm font-semibold underlinei"
     href="{% url 'login' %}"
   >
     Share your idea
-  </a> {% endcomment %}
-  {% endif %}
+  </a>
+  {% endcomment %} {% endif %}
   <form
     class="hidden"
     id="add-comment-form"
@@ -61,6 +61,7 @@
           accept="image/*"
           name="images"
           multiple
+          onchange="showSelectedFiles('add-comment-imgs' ,'comment-file-list')"
         />
         <button
           onclick='showSelectImgs("add-comment-imgs")'
@@ -122,5 +123,6 @@
     </div>
 
     <div id="add-comment-form-errors"></div>
+    <div id="comment-file-list" class="max-w-full"></div>
   </form>
 </div>

@@ -571,6 +571,12 @@ function openModel(id) {
   const modalElement = document.querySelector("#" + id);
 
   const modalOptions = {
+    bodyScrolling: false,
+
+    bodyScrolling: true,
+    onHide: () => {
+      document.querySelector("html").style.overflowY = "unset";
+    },
     // placement: "bottom-right",
     // backdrop: "dynamic",
     // backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
@@ -591,10 +597,49 @@ function openModel(id) {
     modals[id] = modal;
     modal.show();
   }
+
+  document.querySelector("html").style.overflowY = "hidden";
 }
 
 function hideModel(id) {
   if (modals[id]) modals[id].hide();
+}
+
+const drawers = {};
+function openDrawer(id) {
+  const draweli = document.querySelector("#" + id);
+
+  const drawerOptions = {
+    placement: "right",
+
+    backdrop: true,
+    bodyScrolling: true,
+
+    // backdrop: "dynamic",
+    // backdropClasses: "bg-text/80 ",
+    onHide: () => {
+      document.querySelector("html").style.overflowY = "unset";
+    },
+    // onShow: () => {
+    //   console.log("modal is shown");
+    // },
+    // onToggle: () => {
+    //   console.log("modal has been toggled");
+    // },
+  };
+
+  if (drawers[id]) drawers[id].show();
+  else {
+    const drawer = new Drawer(draweli, drawerOptions);
+    drawers[id] = drawer;
+    drawer.show();
+  }
+
+  document.querySelector("html").style.overflowY = "hidden";
+}
+
+function hideDrawer(id) {
+  if (drawers[id]) drawers[id].hide();
 }
 
 function openPopupWindow(url, name = "windowChart") {

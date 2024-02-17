@@ -95,7 +95,11 @@
     }
 
     [modal-backdrop] {
-      @apply bg-background/80 brightness-110 bg-opacity-80
+      @apply bg-background/80 brightness-125 bg-opacity-80 z-40
+    }
+
+    [drawer-backdrop] {
+      @apply bg-background/80 brightness-125 bg-opacity-80 z-50
     }
   
 }
