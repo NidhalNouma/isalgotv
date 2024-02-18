@@ -75,30 +75,39 @@ function validateNumberInput(input, maxLength) {
 let stripe, cardElement, elements;
 
 function mountStripeElement(id) {
+  const lbl = document.getElementById("lbl-card-element-" + id);
   if (!stripe) {
     stripe = Stripe(
       "pk_test_51NQMS2J5gHo8PE1NkuozkIhIpTZ04rH9zWLHdqqFwSTTPG3ciGfylBLolIdsaYnddawM6sN55JmoTuJCNjEQO4ST00JFXmLBeR"
     );
-    elements = stripe.elements();
-    cardElement = elements.create("card", {
-      hidePostalCode: true,
-      style: {
-        base: {
-          color: "#fff",
-          "font-size": "0.875rem",
-          "line-height": "1.25rem",
+  }
 
-          iconColor: "rgb(156 163 175)",
-          "::placeholder": {
-            color: "rgb(156 163 175)",
-          },
-          ":focus": {
-            "border-color": "rgb(63 131 248);",
-          },
+  let color = "#fff";
+  if (lbl) {
+    color = lbl.style.color;
+    let style = window.getComputedStyle(lbl);
+    color = style.getPropertyValue("color");
+  }
+
+  elements = stripe.elements();
+  cardElement = elements.create("card", {
+    hidePostalCode: true,
+    style: {
+      base: {
+        color: color,
+        "font-size": "0.875rem",
+        "line-height": "1.25rem",
+
+        iconColor: "rgb(156 163 175)",
+        "::placeholder": {
+          color: "rgb(156 163 175)",
+        },
+        ":focus": {
+          "border-color": "hsl(229, 76%, 72%);",
         },
       },
-    });
-  }
+    },
+  });
 
   cardElement.mount("#card-element-" + id);
 }
@@ -128,17 +137,15 @@ async function onPayFormStripeSubmit(title) {
   const pmValue = document.getElementById("pm-" + title);
 
   const paymentsList = document.getElementById("payment-card-list-" + title);
-  console.log(
-    "Checking card for " +
-      title +
-      " ... " +
-      paymentsList.classList.contains("hidden")
-  );
+  console.log("Checking card for " + title + " ... " + pmValue.value);
+
+  const errorDiv = document.getElementById("stripe-error-" + title);
+  if (errorDiv) errorDiv.innerHTML = "";
 
   if (
     pmValue.value.length === 0 ||
     pmValue.value === "None" ||
-    paymentsList.classList.contains("hidden")
+    (paymentsList && paymentsList.classList.contains("hidden"))
   ) {
     const result = await stripe.createPaymentMethod({
       elements,
@@ -297,22 +304,32 @@ htmx.on("htmx:afterRequest", (evt) => {
   if (evt?.detail?.target.id.includes("form-pay-")) {
     const title = evt?.detail?.target.id.replace("form-pay-", "");
     mountStripeElement(title);
+
+    const pmValue = document.getElementById("pm-" + title);
+    if (pmValue) pmValue.value = "None";
   }
 
   if (evt?.detail?.target.id.includes("stripe-error-")) {
     const title = evt?.detail?.target.id.replace("stripe-error-", "");
     closeLoader(title);
-  }
 
-  if (evt?.detail?.target.id.includes("tradingview_username_submit")) {
-    closeLoader("", "-tv");
+    const pmValue = document.getElementById("pm-" + title);
+    if (pmValue) pmValue.value = "None";
   }
 
   if (evt?.detail?.target.id === "setting-payment_methods") {
+    let title = "payment_methods";
     const closeForm = document.getElementById(
       "add-payment_methods-close-form-btn"
     );
     closeForm.click();
+
+    const pmValue = document.getElementById("pm-" + title);
+    if (pmValue) pmValue.value = "None";
+  }
+
+  if (evt?.detail?.target.id.includes("tradingview_username_submit")) {
+    closeLoader("", "-tv");
   }
 
   if (evt?.detail?.target.id.includes("contact_us_mail")) {

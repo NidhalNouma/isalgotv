@@ -29,12 +29,6 @@
     <input
       type="text"
       name="email"
-      {%
-      if
-      user.email
-      %}disabled{%
-      endif
-      %}
       id="email"
       value="{{ user.email }}"
       class="input-text w-full pl-10 p-2.5"

@@ -1,6 +1,10 @@
 {% if error %}
 <div
+  {% if id %}
+  id="{{id}}"
+  {% else %}
   id="alert-{{close}}"
+  {% endif %}
   class="mx-auto text-sm flex p-4 text-red-600 bg-red-800/10  rounded {{class}}"
   role="alert"
 >

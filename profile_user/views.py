@@ -286,6 +286,7 @@ def create_payment_method(request):
         customer_id = profile_user.customer_id
 
         try:
+            print("Adding payment method ...", payment_method, customer_id)
             stripe.PaymentMethod.attach(
                 payment_method,
                 customer=customer_id,
@@ -503,6 +504,9 @@ def send_email(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         content = request.POST.get('content')
+
+        # if request.user.is_authenticated:
+        #     email = request.user.username
 
         if not email:
             error = "Email address not provided!"

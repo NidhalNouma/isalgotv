@@ -3,13 +3,15 @@
 
 {% block page %}
 
-{% if has_subscription %}
+{% if has_subscription and results|length > 0 %}
 <h1 class="mt-8 text-left text-3xl sm:text-6xl text-title font-extrabold">Results</h1>
 {% else %}
 <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of these results<span></h1>
 {% endif %}
 
 <main class="mt-8 mb-16">
+    
+    {% if results|length > 0 %}
         
     <section class="flex items-center mb-6 py-4 px-1 sticky top-14 sm:top-16 bg-background cursor-pointer overflow-y-auto scrollbar-hide">
         {% if selected_pair %}
@@ -41,6 +43,12 @@
             </div>
         {% endfor %}
     </section>
+
+    {% else %}
+
+    <p class="text-text text-sm">No results availble yet.</p>
+
+    {% endif %}
 
 </main>
 

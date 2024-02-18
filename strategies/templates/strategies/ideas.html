@@ -13,6 +13,8 @@
     <div class="w-full mb-3 p-2">
       {% include "include/comment_comment_page.html" with comment=idea %}
     </div>
+    {% empty %}
+    <p class="text-text text-sm">No ideas availble yet.</p>
     {% endfor %}
   </section>
 </main>

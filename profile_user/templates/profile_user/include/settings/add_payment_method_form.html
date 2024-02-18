@@ -8,7 +8,7 @@
   <div class="mb-3">
     <label
       for="cardName"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      class="block mb-2 text-sm font-medium text-title"
       >Name on card</label
     >
     <div class="relative mb-6">
@@ -17,7 +17,7 @@
       >
         <svg
           aria-hidden="true"
-          class="w-5 h-5 text-gray-500 dark:text-gray-400"
+          class="w-5 h-5 text-title/40"
           fill="currentColor"
           viewBox="0 0 1024 1024"
           xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@
         type="text"
         name="cardName"
         id="cardName-payment_methods"
-        class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        class=" block w-full pl-10 input-text"
         placeholder="John Smith"
       />
     </div>
@@ -39,14 +39,15 @@
 
   <div class="mb-3">
     <label
-      for="cardName"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      id="lbl-card-element-payment_methods"
+      for="card-element-payment_methods"
+      class="block mb-2 text-sm font-medium text-title"
       >Card details</label
     >
     <div class="relative mb-7">
       <div
         id="card-element-payment_methods"
-        class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        class=" block w-full py-2.5 input-text"
       ></div>
     </div>
   </div>
@@ -54,7 +55,7 @@
   <input type="text" name="pm_id" id="pm-payment_methods" class="hidden" />
 
   <div class="mb-3" id="stripe-error-payment_methods">
-    {% include 'include/errors.html' with error=error id="error-pay-submit-payment_methods" %}
+    {% include 'include/errors.html' with error=error %}
   </div>
 
   <div class="w-full">

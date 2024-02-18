@@ -15,4 +15,6 @@ def profile_context(request):
         'payment_methods': getattr(request, 'payment_methods', None),
 
         'has_subscription': getattr(request, 'has_subscription', False),
+
+        'notifications': getattr(request, 'notifications', False),
     }

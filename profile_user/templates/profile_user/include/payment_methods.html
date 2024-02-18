@@ -1,7 +1,7 @@
 {% for pm in payment_methods %}
 <div 
   {% if to_select == True %} onclick="paymentMethodSelected('{{pm.id}}', '{{inputId}}')" {% endif %}
-  class="flex items-center rounded hover:bg-title/20 px-1.5 cursor-pointer">
+  class="flex items-center text-title/70 rounded hover:text-title transition-all px-1.5 cursor-pointer">
   <div class="py-1">
     {% if pm.card.brand == "visa"%}
     <svg
@@ -66,8 +66,8 @@
     {% endif %}
   </div>
   <div class="ml-3">
-    <h6 class="text-text text-sm">**** {{pm.card.last4}}</h6>
-    <h6 class="text-text text-xs">
+    <h6 class="text-sm">**** {{pm.card.last4}}</h6>
+    <h6 class="text-xs">
       Expire on: {{pm.card.exp_month}}/{{pm.card.exp_year}}
       {% if stripe_customer.invoice_settings.default_payment_method == pm.id and to_select is None %}
             <span class="ml-1 text-background text-xs bg-accent px-1 rounded-3xl">default</span>
@@ -88,20 +88,20 @@
     </button>
       
       <!-- Dropdown menu -->
-      <div id="dropdownDots-{{pm.id}}" class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44 bg-title">
+      <div id="dropdownDots-{{pm.id}}" class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44 bg-background">
           <ul class="py-2 text-sm " aria-labelledby="dropdownMenuIconButton-{{pm.id}}">
             <li>
               <form hx-post="{% url 'payment_method-set-default' %}">
                 {%csrf_token%}
                 <input type="text" name="pm_id" value="{{pm.id}}" class="hidden" />
-                <button type="submit" class="w-full text-left block px-4 py-2 text-background hover:bg-background/20">Set default</button>
+                <button type="submit" class="w-full text-left block px-4 py-2 btn-icon">Set default</button>
               </form>
             </li>
             <li>
               <form hx-post="{% url 'payment_method-delete' %}">
                 {%csrf_token%}
                 <input type="text" name="pm_id" value="{{pm.id}}" class="hidden" />
-                <button type="submit" class="w-full text-left block px-4 py-2 text-red-500 hover:bg-background/20">Delete</button>
+                <button type="submit" class="w-full text-left block px-4 py-2 text-red-500/60 hover:text-red-500">Delete</button>
               </form>
             </li>
           </ul>

@@ -1,4 +1,4 @@
-from .models import User_Profile
+from .models import User_Profile, Notification
 import environ
 import datetime
 import time
@@ -30,6 +30,7 @@ def check_user_and_stripe_middleware(get_response):
         payment_methods = None
         stripe_customer = None
         has_subscription = False
+        notifications = None
 
         if current_user.is_authenticated:
             try: 
@@ -72,10 +73,12 @@ def check_user_and_stripe_middleware(get_response):
                     has_subscription = True
 
             if user_profile.customer_id:
-                payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id)
+                payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id, limit=100)
                 payment_methods = payment_methods.data
             
             stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+
+            notifications = notifications = Notification.objects.filter(user=user_profile).order_by('-created_at')
 
         
         request.stripe_customer = stripe_customer
@@ -87,6 +90,7 @@ def check_user_and_stripe_middleware(get_response):
         request.subscription_price_id = subscription_price_id
         request.subscription_plan = subscription_plan
         request.payment_methods = payment_methods
+        request.notifications = notifications
 
         # print("sub", subscription)
 

@@ -24,3 +24,10 @@ class User_Profile(models.Model):
         if self.tradingview_username:
             return self.tradingview_username
         return self.user.username
+
+class Notification(models.Model):
+    user = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+    message = models.TextField()
+    url = models.URLField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)

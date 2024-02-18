@@ -8,6 +8,8 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
 
+from profile_user.utils.notifcations import send_notification
+
 from django.db.models.functions import Random
 from django.db.models import F
 
@@ -269,6 +271,8 @@ def add_comment_reply(request, id):
                     content_object=reply,
                 )
 
+            send_notification(request.user.user_profile, comment.created_by, "reply to your idea.", "")
+
             # Trigger an HTMX update to fetch the new comment
             replies = comment.replies.select_related('created_by').prefetch_related('images')
             context = {'comment': comment, 'replies': replies}
@@ -302,6 +306,8 @@ def add_result_reply(request, id):
                     img=image,
                     content_object=reply,
                 )
+
+            
 
             # Trigger an HTMX update to fetch the new comment
             replies = result.replies.select_related('created_by').prefetch_related('images')
