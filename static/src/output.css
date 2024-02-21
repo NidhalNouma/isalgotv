@@ -1801,6 +1801,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: auto;
 }
 
+.my-2\.5 {
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+
 .-ml-1 {
   margin-left: -0.25rem;
 }
@@ -2018,6 +2023,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: auto;
 }
 
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
+}
+
+.mb-2\.5 {
+  margin-bottom: 0.625rem;
+}
+
+.mb-3\.5 {
+  margin-bottom: 0.875rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -2044,6 +2061,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
+}
+
+.line-clamp-5 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
 }
 
 .block {
@@ -2836,6 +2860,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-top-right-radius: 0.25rem;
 }
 
+.rounded-e-lg {
+  border-start-end-radius: 0.5rem;
+  border-end-end-radius: 0.5rem;
+}
+
+.rounded-s-lg {
+  border-start-start-radius: 0.5rem;
+  border-end-start-radius: 0.5rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -2866,6 +2900,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .\!border-red-500 {
@@ -2941,6 +2979,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-title {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-title) / var(--tw-border-opacity));
+}
+
+.border-gray-900 {
+  --tw-border-opacity: 1;
+  border-color: rgb(17 24 39 / var(--tw-border-opacity));
 }
 
 .\!bg-background {
@@ -3116,6 +3159,26 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-background\/90 {
   background-color: hsl(var(--color-background) / 0.9);
+}
+
+.bg-text\/10 {
+  background-color: hsl(var(--color-text) / 0.1);
+}
+
+.bg-title\/10 {
+  background-color: hsl(var(--color-title) / 0.1);
+}
+
+.bg-primary\/10 {
+  background-color: hsl(var(--color-primary) / 0.1);
+}
+
+.bg-blue-700\/10 {
+  background-color: rgb(26 86 219 / 0.1);
+}
+
+.bg-background\/10 {
+  background-color: hsl(var(--color-background) / 0.1);
 }
 
 .bg-opacity-50 {
@@ -4061,6 +4124,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   -webkit-line-clamp: 4;
 }
 
+.line-clamp-5 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+}
+
 [modal-backdrop] {
   z-index: 40;
   background-color: hsl(var(--color-background) / 0.8);
@@ -4203,6 +4273,15 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-900:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-text\/20:hover {
+  background-color: hsl(var(--color-text) / 0.2);
+}
+
 .hover\:fill-text:hover {
   fill: hsl(var(--color-text) / 1);
 }
@@ -4259,6 +4338,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(240 82 82 / var(--tw-text-opacity));
 }
 
+.hover\:text-white:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -4267,13 +4351,27 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   opacity: 1;
 }
 
+.focus\:z-10:focus {
+  z-index: 10;
+}
+
 .focus\:border-blue-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
 }
 
+.focus\:bg-gray-900:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
 .focus\:fill-text:focus {
   fill: hsl(var(--color-text) / 1);
+}
+
+.focus\:text-white:focus {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .focus\:outline-none:focus {
@@ -4319,6 +4417,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
 }
 
+.focus\:ring-gray-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(107 114 128 / var(--tw-ring-opacity));
+}
+
 .group:focus .group-focus\:outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -4350,6 +4453,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 :is(.dark .dark\:border-transparent) {
   border-color: transparent;
+}
+
+:is(.dark .dark\:border-white) {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
 :is(.dark .dark\:bg-blue-600) {
@@ -4454,6 +4562,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
 }
 
+:is(.dark .dark\:hover\:bg-gray-700:hover) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
 :is(.dark .dark\:hover\:text-blue-500:hover) {
   --tw-text-opacity: 1;
   color: rgb(63 131 248 / var(--tw-text-opacity));
@@ -4477,6 +4590,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:focus\:border-blue-500:focus) {
   --tw-border-opacity: 1;
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
+}
+
+:is(.dark .dark\:focus\:bg-gray-700:focus) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 
 :is(.dark .dark\:focus\:ring-blue-500:focus) {
@@ -4505,6 +4623,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .sm\:ml-8 {
     margin-left: 2rem;
+  }
+
+  .sm\:line-clamp-4 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
   }
 
   .sm\:block {
@@ -4628,6 +4753,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   .sm\:text-7xl {
     font-size: 4.5rem;
     line-height: 1;
+  }
+
+  .sm\:line-clamp-4 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
   }
 }
 

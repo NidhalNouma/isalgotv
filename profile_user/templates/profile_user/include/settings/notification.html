@@ -1,0 +1,12 @@
+<a {% if notification.url %} href="{{notification.url}}" {% endif %}>
+  <div
+    class="w-full bg-background/10 backdrop-brightness-150 rounded px-2 py-1.5 mb-3.5 flex flex-col"
+  >
+    <p class="text-text text-sm line-clamp-3 sm:line-clamp-4">
+      {{notification.message|safe}}
+    </p>
+    <span class="text-text text-xs ml-auto mt-1"
+      >{{notification.created_at|timesince}} ago</span
+    >
+  </div></a
+>

@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import trigger_client_event
 
-from .models import User_Profile
+from .models import User_Profile, Notification
 from strategies.models import Strategy
 from .forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
@@ -101,6 +101,12 @@ def membership(request):
     
     return render(request, 'membership.html', context)
 
+
+@login_required(login_url='login')
+def notifications_page(request):
+    notifications = Notification.objects.filter(user=request.user_profile).order_by('-created_at')
+    context = {'notifications': notifications}
+    return render(request, 'notifications.html', context)
 
 @login_required(login_url='login')
 def settings_page(request):

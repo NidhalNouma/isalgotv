@@ -28,6 +28,6 @@ class User_Profile(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     message = models.TextField()
-    url = models.URLField(blank=True)
+    url = models.TextField(blank=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)

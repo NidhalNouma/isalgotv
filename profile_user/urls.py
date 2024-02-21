@@ -12,6 +12,7 @@ urlpatterns = [
     path('membership/cancel', cancel_subscription, name="membership-cancel"),
     path('profile/', get_profile, name='profile'),
     path('profile/update/tradingview_username', edit_tradingview_username, name='update-tradingview-username'),
+    path('notifications/', notifications_page, name='notifications'),
     path('settings/', settings_page, name='settings'),
     path('access/', access_page, name='access'),
     path('give_access/<int:strategy_id>/', get_access, name='give_access'),

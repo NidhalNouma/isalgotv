@@ -30,7 +30,7 @@ def check_user_and_stripe_middleware(get_response):
         payment_methods = None
         stripe_customer = None
         has_subscription = False
-        notifications = None
+        # notifications = None
 
         if current_user.is_authenticated:
             try: 
@@ -78,7 +78,7 @@ def check_user_and_stripe_middleware(get_response):
             
             stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
 
-            notifications = notifications = Notification.objects.filter(user=user_profile).order_by('-created_at')
+            # notifications = Notification.objects.filter(user=user_profile).order_by('-created_at')
 
         
         request.stripe_customer = stripe_customer
@@ -90,7 +90,7 @@ def check_user_and_stripe_middleware(get_response):
         request.subscription_price_id = subscription_price_id
         request.subscription_plan = subscription_plan
         request.payment_methods = payment_methods
-        request.notifications = notifications
+        # request.notifications = notifications
 
         # print("sub", subscription)
 
