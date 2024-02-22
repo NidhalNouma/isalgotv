@@ -7,7 +7,7 @@ class User_Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
     bio = models.TextField(max_length=1000, blank=True)
-    tradingview_username = models.CharField(max_length=100)
+    tradingview_username = models.CharField(max_length=100, blank=True)
     strategies = models.ManyToManyField(to='strategies.Strategy', blank=True)
 
     subscription_id = models.CharField(max_length=100, blank=True)
@@ -15,7 +15,7 @@ class User_Profile(models.Model):
 
     is_lifetime = models.BooleanField(default=False)
     lifetime_num = models.IntegerField(default=0)
-    lifetime_intent = models.CharField(default="", max_length=100)
+    lifetime_intent = models.CharField(default="", max_length=100, blank=True)
 
     def __str__(self):
         return self.user.username

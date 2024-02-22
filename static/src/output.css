@@ -3343,6 +3343,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   stroke-width: 2;
 }
 
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .object-scale-down {
   -o-object-fit: scale-down;
      object-fit: scale-down;
@@ -3556,6 +3561,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .text-start {
   text-align: start;
+}
+
+.align-middle {
+  vertical-align: middle;
 }
 
 .font-sans {
@@ -4644,6 +4653,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     display: flex;
   }
 
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
   .sm\:h-10 {
     height: 2.5rem;
   }
@@ -4694,6 +4707,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:items-center {
+    align-items: center;
   }
 
   .sm\:space-x-8 > :not([hidden]) ~ :not([hidden]) {
@@ -4753,6 +4770,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   .sm\:text-7xl {
     font-size: 4.5rem;
     line-height: 1;
+  }
+
+  .sm\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
   .sm\:line-clamp-4 {

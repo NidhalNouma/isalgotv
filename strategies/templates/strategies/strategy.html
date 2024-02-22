@@ -55,11 +55,11 @@
       </a>
     </div>
     <div class="">
-      {% if strategy.image %}
+      {% if strategy.image_url %}
       <img
         src="{{ strategy.image_url }}"
         alt="Strategy Image"
-        class="max-w-full max-h-72 mx-auto"
+        class="w-full aspect-video mx-auto rounded-lg object-cover"
       />
       {% else %}
       <img
@@ -90,7 +90,7 @@
           <path fill="none" d="M0 0h24v24H0z"></path>
           <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
         </svg>
-        Report a bug?</a
+        Report a bug</a
       >
     </div>
     {% endif %}
@@ -186,7 +186,7 @@
       Set your tradingview username <br/>to get access.
   </a>
     </div>
-  {% elif has_subscription and not strategy in user_profile.strategies %}
+  {% elif has_subscription and strategy not in user_profile.strategies %}
 <div id="access-mb" class="float-right">
   <form
   class="inline-flex"

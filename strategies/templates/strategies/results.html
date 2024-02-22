@@ -3,7 +3,7 @@
 
 {% block page %}
 
-{% if has_subscription or results|length == 0 %}
+{% if has_subscription or results|length < 6 %}
 <h1 class="mt-8 text-left text-3xl sm:text-6xl text-title font-extrabold">Results</h1>
 {% else %}
 <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of these results<span></h1>
@@ -13,6 +13,7 @@
     
     {% if results|length > 0 %}
         
+    {% if pairs|length > 7 %}
     <section class="flex items-center mb-6 py-4 px-1 sticky top-14 sm:top-16 bg-background cursor-pointer overflow-y-auto scrollbar-hide">
         {% if selected_pair %}
         <a class=" mr-2 " href="{% url 'results' %}">
@@ -35,6 +36,7 @@
         {% endif %}
         {% endfor %}
     </section>
+    {% endif %}
 
     <section class=" grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
         {% for result in results %}

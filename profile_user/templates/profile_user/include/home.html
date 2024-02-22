@@ -13,7 +13,7 @@
             {% for strategy in new_strategies %}
 
             <a href="{% url 'strategy' id=strategy.id %}" class="">
-                {% if strategy.image %}
+                {% if strategy.image_url %}
                 <img
                 src="{{ strategy.image_url }}"
                 alt="Strategy Image"
@@ -37,6 +37,7 @@
             </div>
         </section>
 
+        {% if new_results|length > 3 %}
         <section class="mt-8">
             <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
             Checkout these reuslts
@@ -51,6 +52,7 @@
             {% endfor %}
             </div>
         </section>
+        {% endif %}
 
         <section class="mt-8">
             <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
@@ -62,7 +64,7 @@
             {% for strategy in most_viewed_strategies %}
 
             <a href="{% url 'strategy' id=strategy.id %}" class="">
-                {% if strategy.image %}
+                {% if strategy.image_url %}
                 <img
                 src="{{ strategy.image_url }}"
                 alt="Strategy Image"
@@ -88,6 +90,8 @@
         </section>
 
 
+
+        {% if best_results|length > 6 %}
         <section class="mt-8">
             <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
                 Best results so far
@@ -102,6 +106,7 @@
             {% endfor %}
             </div>
         </section>
+        {% endif %}
 
         <!-- <section class="mt-8">
             <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">

@@ -3,7 +3,7 @@
 
 {% block page %}
 
-    {% if has_subscription or strategies|length == 0 %}
+    {% if has_subscription or strategies|length < 6 %}
     <h1 class="mt-8 text-left text-3xl sm:text-6xl text-title font-extrabold">Strategies</h1>
     {% else %}
     <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
@@ -17,8 +17,8 @@
 
             <div class="w-full mb-2">
                 <a href="{% url 'strategy' id=strategy.id %}">
-                    {% if strategy.image %}
-                        <img src="{{ strategy.image_url }}" alt="Strategy Image" class="w-full max-h-64 aspect-video mx-auto rounded-lg">
+                    {% if strategy.image_url %}
+                        <img src="{{ strategy.image_url }}" alt="Strategy Image" class="w-full aspect-video mx-auto rounded-lg">
                     {% else %}
                         <img src="{% static 'images/chart_nobg_l.png' %}" alt="Default Image" class="w-full max-h-64 aspect-video mx-auto rounded-lg">
                     {% endif %}

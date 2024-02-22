@@ -13,25 +13,25 @@
       <div
         class="flex items-center justify-between p-4 rounded-t sticky top-0 bg-background z-50"
       >
-        <h3 class="text-xl font-semibold text-text">{{result.pair}}</h3>
+        <h3 class="sm:inline-flex hidden  mr-4  text-lg sm:text-xl font-semibold text-text">{{result.pair}}</h3>
         <ul
-          class="font-semibold ml-4 flex flex-wrap items-center text-sm text-center text-text"
+          class="font-semibold flex flex-wrap items-center text-sm text-center text-text"
         >
-          <li class="mr-2">
+          <li class="mr-1 ">
             <button
               id="r-{{result.id}}-result-btn"
-              class="inline-block px-2 py-1 rounded-lg text-text-light dark:text-text bg-primary"
+              class="inline-block px-2 py-1 text-sm rounded-lg text-text-light dark:text-text bg-primary"
               aria-current="page"
               onclick='swapDivBtn("r-{{result.id}}-settings", "r-{{result.id}}-result")'
             >
               Performance
             </button>
           </li>
-          <li class="mr-2">
+          <li class="mr-1">
             <button
               onclick='swapDivBtn("r-{{result.id}}-result", "r-{{result.id}}-settings")'
               id="r-{{result.id}}-settings-btn"
-              class="inline-block px-2 py-1 rounded-lg hover:text-text-light text-text hover:bg-primary"
+              class="inline-block px-2 py-1 text-sm rounded-lg hover:text-text-light text-text hover:bg-primary"
             >
             Properties
             </button>
@@ -60,19 +60,19 @@
       <!-- Profits -->
       <div id="r-{{result.id}}-result" class="p-6 space-y-6">
         <span class="text-base bg-text font-semibold text-background px-1.5 rounded">{{result.broker}}:{{result.pair}}</span>
-        <div class="flex items-center">
-          <h6 class="text-text text-sm">
+        <div class="flex sm:flex-row flex-col items-start sm:items-center">
+          <h6 class="text-text text-sm mr-4">
             Time frame:
             <span class="ml-1 text-sm bg-text font-semibold text-background px-1.5 rounded">{{result.time_frame_int}} {{result.time_frame}}</span>
           </h6>
-          <h6 class="text-text text-sm ml-4">
+          <h6 class="text-text text-sm ">
             Initial capital:
             <span class="ml-1 text-sm bg-text font-semibold text-background px-1.5 rounded">{{result.initial_capital}}</span>
           </h6>
         </div>
         
         <h6 class="text-title text-sm">
-          {{result.test_start_at}}   <span class="text-text mx-2">&#8594;</span>   {{result.test_end_at}} 
+          {{result.test_start_at|date:'M d Y - H:i'}}   <span class="text-text mx-2">&#8594;</span>   {{result.test_end_at|date:'M d Y - H:i'}} 
         </h6>
 
 <div class="relative overflow-x-auto">
@@ -238,16 +238,16 @@
                   
                   {% for line in group_value %}
                   <!-- {{line}} -->
-                    <div class=" my-3 flex items-center" >
+                    <div class=" my-4  max-w-full " >
                       {% for set in line %}
-                        <div class="mr-3 flex items-center">
+                        <div class="mr-3 inline-flex items-center justify-center align-middle ">
                           {% if set.type == 'boolean' %}
                             <input disabled name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" type="checkbox" {% if set.default_value == 'true' %}checked{%endif%} value="{% if set.default_value == 'true' %}true{%else%}false{%endif%}" class="mr-2 w-4 h-4 input-checkbox">
                           {% endif %} 
-                            <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title">{{ set.display_name }}</label>
+                            <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title whitespace-nowrap">{{ set.display_name }}</label>
                           
                           {% if set.type != 'boolean'  %}
-                            <span class="ml-2 bg-text font-semibold text-background px-1.5 rounded">{{ set.default_value }}</span>
+                            <span class="ml-2 bg-text text-sm font-semibold text-background px-1.5 rounded">{{ set.default_value }}</span>
                           {% endif %}
                         </div>
                       {% endfor %}

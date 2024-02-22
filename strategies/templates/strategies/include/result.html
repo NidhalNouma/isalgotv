@@ -3,14 +3,14 @@
   id="result-{{result.id}}"
   class="mb-2 py-2 bg-background rounded-xl flex flex-col w-full max-w-full"
 >
-  <div class="flex mb-1 items-center">
+  <div class="flex sm:flex-row flex-col mb-1 items-start sm:items-center">
     <a class="" href="{% url 'results' %}?pair={{result.pair}}">
       <span class="text-background bg-text px-1.5 rounded-full text-sm mr-2"
         >{{result.pair}}</span
       >
     </a>
     <div class="text-xs flex items-center ">
-      <h6 class="text-title/80 font-semibold">{{result.test_start_at}}</h6>
+      <h6 class="text-title/80 font-semibold">{{result.test_start_at|date:'M d Y - H:i'}}</h6>
       <svg
         stroke-width="0"
         viewBox="0 0 16 16"
@@ -22,19 +22,19 @@
           d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
         ></path>
       </svg>
-      <h6 class="text-title/80 font-semibold">{{result.test_end_at}}</h6>
+      <h6 class="text-title/80 font-semibold">{{result.test_end_at|date:'M d Y - H:i'}}</h6>
     </div>
   </div>
 
   <div class="text-sm font-medium flex mb-1 text-text/70">
     <h6 class="text-green-400 mr-2">
       <span class="text-sm text-text/70">Profit</span>
-      {{result.net_profit}} USD
+      {{result.net_profit}}
       <span class="text-xs">{{result.net_profit_percentage}}%</span>
     </h6>
     <h6 class="text-red-400">
       <span class="text-sm text-text/70">Drawdown</span>
-      {{result.max_drawdown}} USD
+      {{result.max_drawdown}}
       <span class="text-xs">{{result.max_drawdown_percentage}}%</span>
     </h6>
   </div>

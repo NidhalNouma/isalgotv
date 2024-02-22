@@ -390,11 +390,22 @@ function handleSettingCsvFileSelect(event) {
     let previousKey = "";
     lines.forEach((line, index) => {
       let [key, value] = line.split(",");
+      console.log(key, value);
 
       value = value.replace(/(\r\n|\n|\r)/gm, "");
       key = key.replace(/(\r\n|\n|\r)/gm, "");
 
       if (key.length === 0) key = previousKey + "_val";
+      else if (key.toLowerCase() === "value") key = previousKey + "_v";
+      else if (key.toLowerCase() === "partial") key = previousKey + "_par";
+      else if (key.toLowerCase() === "partial close")
+        key = previousKey + "_par";
+      else if (key.toLowerCase() === "atr period") key = previousKey + "_atr";
+      else if (
+        key.toLowerCase() === "multiplier" &&
+        previousKey.includes("atr")
+      )
+        key = previousKey + "_atrm";
 
       const input = document.getElementById("id_settings_" + key);
       if (input && input.type == "checkbox") {

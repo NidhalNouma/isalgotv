@@ -1,0 +1,620 @@
+{
+    "TRADING SESSIONS": [
+      [
+        {
+          "name": "Main session",
+          "display_name": "Main session",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Main session_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "00:00 - 24:00"
+        }
+      ],
+      [
+        {
+          "name": "Session 1",
+          "display_name": "Session 1",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Session 1_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "00:00 - 08:00"
+        }
+      ],
+      [
+        {
+          "name": "Session 2",
+          "display_name": "Session 2",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Session 2_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "00:00 - 08:00"
+        }
+      ],
+      [
+        {
+          "name": "Session 3",
+          "display_name": "Session 3",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Session 3_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "00:00 - 08:00"
+        }
+      ]
+    ],
+    "TRADING DAYS": [
+      [
+        {
+          "name": "MON",
+          "display_name": "MON",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "TUE",
+          "display_name": "TUE",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "WED",
+          "display_name": "WED",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "THU",
+          "display_name": "THU",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "FRI",
+          "display_name": "FRI",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "SAT",
+          "display_name": "SAT",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "SUN",
+          "display_name": "SUN",
+          "type": "boolean",
+          "default_value": "True"
+        }
+      ]
+    ],
+    "BACKTESTING": [
+      [
+        {
+          "name": "Start on",
+          "display_name": "Start on",
+          "type": "boolean",
+          "default_value": "False"
+        },
+        {
+          "name": "Start on_val",
+          "display_name": "",
+          "type": "time",
+          "default_value": ""
+        }
+      ],
+      [
+        {
+          "name": "End at",
+          "display_name": "End at",
+          "type": "boolean",
+          "default_value": "False"
+        },
+        {
+          "name": "End at_val",
+          "display_name": "",
+          "type": "time",
+          "default_value": ""
+        }
+      ]
+    ],
+    "TRADES": [
+      [
+        {
+          "name": "Direction",
+          "display_name": "Direction",
+          "type": "options",
+          "default_value": "Long & Short",
+          "options": [
+            "Long",
+            "Short",
+            "Long & Short"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "Position size",
+          "display_name": "Position size",
+          "type": "options",
+          "default_value": "Fixed",
+          "options": [
+            "Fixed",
+            "Percentage"
+          ]
+        },
+        {
+          "name": "Position size_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "1"
+        }
+      ],
+      [
+        {
+          "name": "Min size",
+          "display_name": "Min size",
+          "type": "string",
+          "default_value": "1"
+        },
+        {
+          "name": "Max size",
+          "display_name": "Max size",
+          "type": "string",
+          "default_value": "100000"
+        }
+      ],
+      [
+        {
+          "name": "Max trades per day",
+          "display_name": "Max trades per day",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Max trades per day_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "3"
+        }
+      ],
+      [
+        {
+          "name": "Distance",
+          "display_name": "Distance",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Distance_val",
+          "display_name": "",
+          "type": "options",
+          "default_value": "Candles",
+          "options": [
+            "Candles",
+            "Minutes"
+          ]
+        },
+        {
+          "name": "Distance_val_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "3"
+        }
+      ],
+      [
+        {
+          "name": "One trade",
+          "display_name": "One trade",
+          "type": "boolean",
+          "default_value": "False"
+        }
+      ],
+      [
+        {
+          "name": "Reverse",
+          "display_name": "Reverse",
+          "type": "boolean",
+          "default_value": "False"
+        }
+      ]
+    ],
+    "TRADES EXIT": [
+      [
+        {
+          "name": "Max loss",
+          "display_name": "Max loss",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Absolute",
+            "Percentage",
+            "Off"
+          ]
+        },
+        {
+          "name": "Max loss_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "10"
+        }
+      ],
+      [
+        {
+          "name": "Max profit",
+          "display_name": "Max profit",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Absolute",
+            "Percentage",
+            "Off"
+          ]
+        },
+        {
+          "name": "Max profit_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "10"
+        }
+      ],
+      [
+        {
+          "name": "Max loss per day",
+          "display_name": "Max loss per day",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Absolute",
+            "Percentage",
+            "Off"
+          ]
+        },
+        {
+          "name": "Max loss per day_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "10"
+        }
+      ],
+      [
+        {
+          "name": "Max profit per day",
+          "display_name": "Max profit per day",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Absolute",
+            "Percentage",
+            "Off"
+          ]
+        },
+        {
+          "name": "Max profit per day_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "10"
+        }
+      ],
+      [
+        {
+          "name": "X Candle",
+          "display_name": "X Candle",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "X Candle_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "3"
+        },
+        {
+          "name": "X Candle_val_par",
+          "display_name": "Partial",
+          "type": "string",
+          "default_value": "50"
+        }
+      ],
+      [
+        {
+          "name": "X opposite",
+          "display_name": "X opposite",
+          "type": "boolean",
+          "default_value": "False"
+        }
+      ]
+    ],
+    "STOP LOSS": [
+      [
+        {
+          "name": "Stop loss",
+          "display_name": "Stop loss",
+          "type": "options",
+          "default_value": "ATR",
+          "options": [
+            "Pips",
+            "ATR",
+            "Highs/Lows",
+            "Candles",
+            "Off"
+          ]
+        },
+        {
+          "name": "Stop loss_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "140"
+        }
+      ],
+      [
+        {
+          "name": "Stop loss_v_atr",
+          "display_name": "ATR period",
+          "type": "string",
+          "default_value": "14"
+        },
+        {
+          "name": "Stop loss_v_atr_atrm",
+          "display_name": "Multiplier",
+          "type": "string",
+          "default_value": "4"
+        }
+      ]
+    ],
+    "BREAK EVEN": [
+      [
+        {
+          "name": "Break even",
+          "display_name": "Break even",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Pips",
+            "TP 1",
+            "TP 2",
+            "TP 3",
+            "Off"
+          ]
+        },
+        {
+          "name": "Break even_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "50"
+        }
+      ],
+      [
+        {
+          "name": "Move SL",
+          "display_name": "Move SL",
+          "type": "string",
+          "default_value": "0"
+        }
+      ]
+    ],
+    "TRAILING STOP": [
+      [
+        {
+          "name": "Trailing",
+          "display_name": "Trailing",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Pips",
+            "TP 1",
+            "TP 2",
+            "TP 3",
+            "Off"
+          ]
+        },
+        {
+          "name": "Trailing_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "10"
+        }
+      ],
+      [
+        {
+          "name": "Trailing stop",
+          "display_name": "Trailing stop",
+          "type": "string",
+          "default_value": "50"
+        },
+        {
+          "name": "Trailing step",
+          "display_name": "Trailing step",
+          "type": "string",
+          "default_value": "5"
+        }
+      ]
+    ],
+    "TAKE PROFIT 1": [
+      [
+        {
+          "name": "Take profit 1",
+          "display_name": "Take profit 1",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Pips",
+            "ATR",
+            "R:R",
+            "Highs/Lows",
+            "Candles",
+            "Off"
+          ]
+        },
+        {
+          "name": "Take profit 1_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "100"
+        }
+      ],
+      [
+        {
+          "name": "Take profit 1_v_atr",
+          "display_name": "ATR period",
+          "type": "string",
+          "default_value": "14"
+        },
+        {
+          "name": "Take profit 1_v_atr_atrm",
+          "display_name": "Multiplier",
+          "type": "string",
+          "default_value": "4"
+        }
+      ],
+      [
+        {
+          "name": "Take profit 1_v_atr_atrm_par",
+          "display_name": "Partial close",
+          "type": "string",
+          "default_value": "40"
+        }
+      ]
+    ],
+    "TAKE PROFIT 2": [
+      [
+        {
+          "name": "Take profit 2",
+          "display_name": "Take profit 2",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Pips",
+            "ATR",
+            "R:R",
+            "Highs/Lows",
+            "Candles",
+            "Off"
+          ]
+        },
+        {
+          "name": "Take profit 2_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "100"
+        }
+      ],
+      [
+        {
+          "name": "Take profit 2_v_atr",
+          "display_name": "ATR period",
+          "type": "string",
+          "default_value": "14"
+        },
+        {
+          "name": "Take profit 2_v_atr_atrm",
+          "display_name": "Multiplier",
+          "type": "string",
+          "default_value": "4"
+        }
+      ],
+      [
+        {
+          "name": "Take profit 2_v_atr_atrm_par",
+          "display_name": "Partial close",
+          "type": "string",
+          "default_value": "40"
+        }
+      ]
+    ],
+    "TAKE PROFIT 3": [
+      [
+        {
+          "name": "Take profit 3",
+          "display_name": "Take profit 3",
+          "type": "options",
+          "default_value": "Off",
+          "options": [
+            "Pips",
+            "ATR",
+            "R:R",
+            "Highs/Lows",
+            "Candles",
+            "Off"
+          ]
+        },
+        {
+          "name": "Take profit 3_v",
+          "display_name": "Value",
+          "type": "string",
+          "default_value": "100"
+        }
+      ],
+      [
+        {
+          "name": "Take profit 3_v_atr",
+          "display_name": "ATR period",
+          "type": "string",
+          "default_value": "14"
+        },
+        {
+          "name": "Take profit 3_v_atr_atrm",
+          "display_name": "Multiplier",
+          "type": "string",
+          "default_value": "4"
+        }
+      ],
+      [
+        {
+          "name": "Take profit 3_v_atr_atrm_par",
+          "display_name": "Partial close",
+          "type": "string",
+          "default_value": "100"
+        }
+      ]
+    ],
+    "ALERTS": [
+      [
+        {
+          "name": "Long",
+          "display_name": "Long",
+          "type": "string",
+          "default_value": ""
+        }
+      ],
+      [
+        {
+          "name": "Short",
+          "display_name": "Short",
+          "type": "string",
+          "default_value": ""
+        }
+      ],
+      [
+        {
+          "name": "Long exit",
+          "display_name": "Long exit",
+          "type": "string",
+          "default_value": ""
+        }
+      ],
+      [
+        {
+          "name": "Short exit",
+          "display_name": "Short exit",
+          "type": "string",
+          "default_value": ""
+        }
+      ]
+    ]
+  }
