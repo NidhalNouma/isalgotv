@@ -211,7 +211,7 @@
           ]
         },
         {
-          "name": "Distance_val_v",
+          "name": "Distance_val_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "3"
@@ -248,7 +248,7 @@
           ]
         },
         {
-          "name": "Max loss_v",
+          "name": "Max loss_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "10"
@@ -267,7 +267,7 @@
           ]
         },
         {
-          "name": "Max profit_v",
+          "name": "Max profit_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "10"
@@ -286,7 +286,7 @@
           ]
         },
         {
-          "name": "Max loss per day_v",
+          "name": "Max loss per day_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "10"
@@ -305,7 +305,7 @@
           ]
         },
         {
-          "name": "Max profit per day_v",
+          "name": "Max profit per day_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "10"
@@ -325,7 +325,7 @@
           "default_value": "3"
         },
         {
-          "name": "X Candle_val_par",
+          "name": "Partial",
           "display_name": "Partial",
           "type": "string",
           "default_value": "50"
@@ -356,7 +356,7 @@
           ]
         },
         {
-          "name": "Stop loss_v",
+          "name": "Stop loss_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "140"
@@ -364,13 +364,13 @@
       ],
       [
         {
-          "name": "Stop loss_v_atr",
+          "name": "Stop loss_c_c",
           "display_name": "ATR period",
           "type": "string",
           "default_value": "14"
         },
         {
-          "name": "Stop loss_v_atr_atrm",
+          "name": "Stop loss_c_c_c",
           "display_name": "Multiplier",
           "type": "string",
           "default_value": "4"
@@ -393,7 +393,7 @@
           ]
         },
         {
-          "name": "Break even_v",
+          "name": "Break even_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "50"
@@ -424,7 +424,7 @@
           ]
         },
         {
-          "name": "Trailing_v",
+          "name": "Trailing_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "10"
@@ -462,7 +462,7 @@
           ]
         },
         {
-          "name": "Take profit 1_v",
+          "name": "Take profit 1_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "100"
@@ -470,13 +470,13 @@
       ],
       [
         {
-          "name": "Take profit 1_v_atr",
+          "name": "Take profit 1_c_c",
           "display_name": "ATR period",
           "type": "string",
           "default_value": "14"
         },
         {
-          "name": "Take profit 1_v_atr_atrm",
+          "name": "Take profit 1_c_c_c",
           "display_name": "Multiplier",
           "type": "string",
           "default_value": "4"
@@ -484,7 +484,7 @@
       ],
       [
         {
-          "name": "Take profit 1_v_atr_atrm_par",
+          "name": "Take profit 1_c_c_c_c",
           "display_name": "Partial close",
           "type": "string",
           "default_value": "40"
@@ -508,7 +508,7 @@
           ]
         },
         {
-          "name": "Take profit 2_v",
+          "name": "Take profit 2_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "100"
@@ -516,13 +516,13 @@
       ],
       [
         {
-          "name": "Take profit 2_v_atr",
+          "name": "Take profit 2_c_c",
           "display_name": "ATR period",
           "type": "string",
           "default_value": "14"
         },
         {
-          "name": "Take profit 2_v_atr_atrm",
+          "name": "Take profit 2_c_c_c",
           "display_name": "Multiplier",
           "type": "string",
           "default_value": "4"
@@ -530,7 +530,7 @@
       ],
       [
         {
-          "name": "Take profit 2_v_atr_atrm_par",
+          "name": "Take profit 2_c_c_c_c",
           "display_name": "Partial close",
           "type": "string",
           "default_value": "40"
@@ -554,7 +554,7 @@
           ]
         },
         {
-          "name": "Take profit 3_v",
+          "name": "Take profit 3_c",
           "display_name": "Value",
           "type": "string",
           "default_value": "100"
@@ -562,13 +562,13 @@
       ],
       [
         {
-          "name": "Take profit 3_v_atr",
+          "name": "Take profit 3_c_c",
           "display_name": "ATR period",
           "type": "string",
           "default_value": "14"
         },
         {
-          "name": "Take profit 3_v_atr_atrm",
+          "name": "Take profit 3_c_c_c",
           "display_name": "Multiplier",
           "type": "string",
           "default_value": "4"
@@ -576,7 +576,7 @@
       ],
       [
         {
-          "name": "Take profit 3_v_atr_atrm_par",
+          "name": "Take profit 3_c_c_c_c",
           "display_name": "Partial close",
           "type": "string",
           "default_value": "100"

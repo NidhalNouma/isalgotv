@@ -68,7 +68,7 @@
 
         <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-        </svg>Tradingview username</h5> 
+        </svg>Share</h5> 
         <button type="button" onclick="hideDrawer('{{drawer_id}}')" class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -78,7 +78,7 @@
       </div>
 
     <div class="text-text text-start px-4 my-4">
-      {% include 'include/docs/find_username.html' %}
+      {% include "include/docs/share_archivement.html" %}
     </div>
   </div>
 {% endwith %}
@@ -793,7 +793,7 @@
 
                     <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                    </svg>Tradingview username</h5> 
+                    </svg>Share</h5> 
                     <button type="button" onclick="hideDrawer('{{drawer_id}}')" class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
                       <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -803,7 +803,7 @@
                   </div>
 
                 <div class="text-text text-start px-4 my-4">
-                  {% include 'include/docs/find_username.html' %}
+                  {% include "include/docs/share_archivement.html" %}
                 </div>
               </div>
             {% endwith %}
@@ -884,14 +884,14 @@
                   {% for line in group_value %}
                     <div class=" my-3 " >
                       {% for set in line %}
-                        <div class="mr-3 inline-flex items-center">
+                        <div class="mr-3 inline-flex items-center align-middle">
                           {% if set.type == 'boolean' %}
                             <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" type="checkbox" {% if set.default_value == 'true' %}checked{%endif%} value="{% if set.default_value == 'true' %}true{%else%}false{%endif%}" class="mr-2 w-4 h-4 input-checkbox">
                           {% endif %} 
                             <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title">{{ set.display_name }}</label>
                           
                           {% if set.type != 'boolean' and set.type != 'options' %}
-                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" placeholder="{{ set.default_value }}" type="text" value="" class="ml-2 w-28 input-text ">
+                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" placeholder="{{ set.default_value }}" type="text" value="" class="ml-2 w-28 input-text py-1.5 ">
                           {% endif %}
                           {% if set.type == 'options' %}
                             <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" placeholder="{{ set.default_value }}" type="text" value={{ set.default_value }} class="hidden ml-2 bg-transparent border ">
@@ -1010,6 +1010,7 @@
                   accept="image/*"
                   name="images"
                   multiple
+                  onchange="showSelectedFiles('add-result-imgs' ,'add-result-imgs-list')"
                 />
                 <button
                   onclick='showSelectImgs("add-result-imgs")'
@@ -1052,7 +1053,10 @@
                 placeholder="Comment..."
               ></textarea>
             </div>
+
+            <div id="add-result-imgs-list" class="max-w-full"></div>
           </div>
+
 
           <div
             id="modal-result-error-message-post"

@@ -243,7 +243,9 @@
 </div>
   {% endif %}
     </div>
-    {% for result in random_results %} {% include "include/quick_result.html" with result=result %} {% endfor %}
+    <div class="ml-auto">
+      {% for result in random_results %} {% include "include/quick_result.html" with result=result %} {% endfor %}
+    </div>
   </section>
 
   {% include "include/modal_images_main.html" %} {% if user.is_authenticated and not subscription %} {% include "include/upgrade_modal.html" %} {% endif %}

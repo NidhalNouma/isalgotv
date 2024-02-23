@@ -2235,6 +2235,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 100vh;
 }
 
+.h-14 {
+  height: 3.5rem;
+}
+
 .max-h-64 {
   max-height: 16rem;
 }
@@ -2415,6 +2419,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .w-full {
   width: 100%;
+}
+
+.w-2\/12 {
+  width: 16.666667%;
 }
 
 .min-w-\[100vw\] {
@@ -2661,8 +2669,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
 .flex-col {
   flex-direction: column;
+}
+
+.flex-col-reverse {
+  flex-direction: column-reverse;
 }
 
 .flex-wrap {
@@ -4693,6 +4709,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     width: 50vw;
   }
 
+  .sm\:w-9\/12 {
+    width: 75%;
+  }
+
   .sm\:max-w-\[90\%\] {
     max-width: 90%;
   }
@@ -4707,6 +4727,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:flex-row-reverse {
+    flex-direction: row-reverse;
   }
 
   .sm\:items-center {
