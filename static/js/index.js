@@ -95,6 +95,7 @@ function mountStripeElement(id) {
     style: {
       base: {
         color: color,
+        "font-family": "lato",
         "font-size": "0.875rem",
         "line-height": "1.25rem",
 

@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Arvo&display=swap');
-
 
 @layer base {
     :root {
@@ -35,19 +32,30 @@
       }
     }
 
-    html, h1 span, h2 span, h3 span, h4 span, h5 span{
-      font-family: 'Arvo', serif;
+    *{
+     font-family: "lato","Sora","Manrope", sans-serif; 
+     line-height: 150%;
+    }
+
+    html, h1, h2, h3, h1 span, h2 span, h3 span, h4 span, h5 span{
+      /* font-family: "Bree Serif", serif; */
+      /* letter-spacing: 1.1px; */
+      /* line-height: normal; */
     }
     
     p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
-      font-family: 'Kanit', sans-serif;
+      /* font-family: "Manrope", sans-serif; */
     }
 
   }
 
 @layer components {
   .btn-primary-landing{
-    @apply flex items-center justify-center bg-gradient-to-tr from-background via-secondary/40 to-secondary/20 hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-secondary font-semibold text-xl px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0;
+    @apply relative flex items-center justify-center bg-gradient-to-tr from-accent  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-title dark:text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0;
+  }
+  .btn-primary-landing::before{
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-accent  to-secondary blur-md -z-10 rounded-lg scale-100 ;
   }
 
   .btn-primary {

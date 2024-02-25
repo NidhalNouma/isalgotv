@@ -1,6 +1,6 @@
 {% load static %}
 <div
-  class="backdrop-blur-sm- min-h-fit sm:h-[45vh] my-8 relative rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around {{class}}"
+  class="backdrop-blur-sm  overflow-hidden min-h-fit sm:h-[55vh] my-8 md:my-16 relative rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around {{class}}"
 >
   <div class="max-w-[100%] md:max-w-[55%] my-6">
     <h3 class="text-title text-3xl font-semibold">
@@ -19,10 +19,12 @@
     {% endcomment %}
 
     <div
-      class="overflow-hidden h-36 md:h-full rounded-xl relative {{img_class}}"
+      class="overflow-hidden md:overflow-visible h-36 md:h-full rounded-xl relative {{img_class}}"
     >
       <img class="parallax-round-reverse" alt="" src="{% static img_src %}" />
+      {% comment %}
       <div class="absolute inset-0 bg-background/25"></div>
+      {% endcomment %}
     </div>
   </div>
 </div>

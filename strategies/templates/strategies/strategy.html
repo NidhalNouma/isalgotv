@@ -155,7 +155,7 @@
   </section>
 
   <section class="w-3/12 hidden md:flex flex-col">
-    <div class="mb-6 w-full">
+    <div class="mb-6 w-full ml-auto flex flex-col">
 
   {% if not has_subscription %}
   <div class=" float-right">      
@@ -178,7 +178,7 @@
   </a>
   </div>
   {% elif has_subscription and not user_profile.tradingview_username %}
-  <div>      
+  <div class="ml-auto">      
     <a
       href="{% url 'settings' %}"
       class="btn-accent text-start font-semibold whitespace-nowrap max-w-xs"

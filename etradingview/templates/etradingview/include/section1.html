@@ -1,7 +1,7 @@
 {% load static %}
 
 <div
-  class="mx-auto mt-4 my-auto flex items-center justify-center w-[80%] aspect-video relative pointer-events-none"
+  class="mx-auto flex items-center justify-center w-full aspect-video relative pointer-events-none"
 >
   {% comment %}
   <svg
@@ -112,11 +112,13 @@
       />
     </circle>
   </svg>
-  {% endcomment %}
-
+  {% endcomment %} {% comment %} class="absolute left-0 top-0 bottom-0 right-0
+  opacity-60i parallax-scale mt-16 bg-gradient-to-tr from-secondary/30
+  via-accent/20 to-secondary/30 backdrop-blur-xl rounded-xl h-full aspect-video
+  p-1 transition-all duration-0" {% endcomment %}
   <div
     id="image-container"
-    class="opacity-60 parallax-scale mt-16 bg-gradient-to-tr from-secondary/30 via-accent/20 to-secondary/30 backdrop-blur-xl rounded-xl h-full aspect-video p-1 transition-all duration-0"
+    class="absolute parallax-scale- -z-10 left-0 md:right-0 bg-gradient-to-tr md:h-[75vh] from-secondary/30 via-accent/20 to-secondary/30 backdrop-blur-xl rounded-xl aspect-video p-0.5 transition-all duration-0"
   >
     <img
       id="result_images"
