@@ -1842,6 +1842,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: auto;
 }
 
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .-ml-1 {
   margin-left: -0.25rem;
 }
@@ -2256,6 +2261,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 100vh;
 }
 
+.h-\[150\%\] {
+  height: 150%;
+}
+
 .max-h-64 {
   max-height: 16rem;
 }
@@ -2287,6 +2296,58 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-\[80vh\] {
+  min-height: 80vh;
+}
+
+.min-h-\[75vh\] {
+  min-height: 75vh;
+}
+
+.min-h-\[min\(75vh\2c 250px\)\] {
+  min-height: min(75vh,250px);
+}
+
+.min-h-\[min\(75vh\2c 280px\)\] {
+  min-height: min(75vh,280px);
+}
+
+.min-h-\[min\(75vh\2c 3000px\)\] {
+  min-height: min(75vh,3000px);
+}
+
+.min-h-\[min\(75vh\2c 300px\)\] {
+  min-height: min(75vh,300px);
+}
+
+.min-h-\[min\(75vh\2c 350px\)\] {
+  min-height: min(75vh,350px);
+}
+
+.min-h-\[min\(75vh\2c 400px\)\] {
+  min-height: min(75vh,400px);
+}
+
+.min-h-\[min\(75vh\2c 500px\)\] {
+  min-height: min(75vh,500px);
+}
+
+.min-h-\[min\(80vh\2c 500px\)\] {
+  min-height: min(80vh,500px);
+}
+
+.min-h-\[min\(80vh\2c 400px\)\] {
+  min-height: min(80vh,400px);
+}
+
+.min-h-\[min\(80vh\2c 600px\)\] {
+  min-height: min(80vh,600px);
+}
+
+.min-h-\[max\(80vh\2c 600px\)\] {
+  min-height: max(80vh,600px);
 }
 
 .w-1\/2 {
@@ -4797,6 +4858,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     margin-top: 1.5rem;
   }
 
+  .md\:mt-4 {
+    margin-top: 1rem;
+  }
+
   .md\:block {
     display: block;
   }
@@ -4817,12 +4882,60 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     height: 100%;
   }
 
+  .md\:h-\[75\%\] {
+    height: 75%;
+  }
+
+  .md\:h-\[100\%\] {
+    height: 100%;
+  }
+
+  .md\:h-\[150\%\] {
+    height: 150%;
+  }
+
+  .md\:h-\[180\%\] {
+    height: 180%;
+  }
+
+  .md\:h-\[50vh\] {
+    height: 50vh;
+  }
+
+  .md\:h-\[70vh\] {
+    height: 70vh;
+  }
+
+  .md\:h-\[100vh\] {
+    height: 100vh;
+  }
+
+  .md\:h-\[min\(75vh\2c 280px\)\] {
+    height: min(75vh,280px);
+  }
+
+  .md\:h-\[min\(75vh\2c 380px\)\] {
+    height: min(75vh,380px);
+  }
+
+  .md\:h-\[min\(75vh\2c 500px\)\] {
+    height: min(75vh,500px);
+  }
+
+  .md\:h-\[min\(75vh\2c 700px\)\] {
+    height: min(75vh,700px);
+  }
+
   .md\:w-\[60\%\] {
     width: 60%;
   }
 
   .md\:w-auto {
     width: auto;
+  }
+
+  .md\:w-1\/2 {
+    width: 50%;
   }
 
   .md\:max-w-\[55\%\] {
@@ -4867,6 +4980,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     border-width: 0px;
   }
 
+  .md\:border-none {
+    border-style: none;
+  }
+
+  .md\:bg-transparent {
+    background-color: transparent;
+  }
+
   .md\:p-0 {
     padding: 0px;
   }
@@ -4877,6 +4998,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:text-start {
     text-align: start;
+  }
+
+  .md\:shadow-none {
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 }
 

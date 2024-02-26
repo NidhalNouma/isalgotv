@@ -1,7 +1,7 @@
 {% load static %}
 
 <div
-  class="mx-auto flex items-center justify-center w-full aspect-video relative pointer-events-none"
+  class="mx-auto flex items-center justify-center aspect-video h-full relative pointer-events-none"
 >
   {% comment %}
   <svg
@@ -118,7 +118,7 @@
   p-1 transition-all duration-0" {% endcomment %}
   <div
     id="image-container"
-    class="absolute parallax-scale- -z-10 left-0 md:right-0 bg-gradient-to-tr md:h-[75vh] from-secondary/30 via-accent/20 to-secondary/30 backdrop-blur-xl rounded-xl aspect-video p-0.5 transition-all duration-0"
+    class="absolute parallax-scale- -z-10 left-0 md:right-0 bg-gradient-to-tr md:h-[min(75vh,700px)] from-secondary/30 via-accent/20 to-secondary/30 backdrop-blur-xl rounded-xl aspect-video p-0.5 transition-all duration-0"
   >
     <img
       id="result_images"

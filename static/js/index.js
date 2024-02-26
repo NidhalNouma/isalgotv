@@ -336,6 +336,26 @@ htmx.on("htmx:afterRequest", (evt) => {
   if (evt?.detail?.target.id.includes("contact_us_mail")) {
     closeLoader("-send-mail", "");
   }
+
+  if (
+    evt?.detail?.target.id.includes("add-comment-form-errors") ||
+    evt?.detail?.target.id.includes("commentsDiv")
+  ) {
+    // const title = evt?.detail?.target.id.replace("stripe-error-", "");
+    closeLoader("", "-add-comment", "inline-flex");
+  }
+
+  if (evt?.detail?.target.id.includes("reply-form-errors-")) {
+    const title = evt?.detail?.target.id.replace("reply-form-errors-", "");
+
+    closeLoader(title, "-add-reply-", "inline-flex");
+  }
+
+  if (evt?.detail?.target.id.includes("replies-")) {
+    const title = evt?.detail?.target.id.replace("replies-", "");
+
+    closeLoader(title, "-add-reply-", "inline-flex");
+  }
   // check which element triggered the htmx request. If it's the one you want call the function you need
   //you have to add htmx: before the event ex: 'htmx:afterRequest'
 });

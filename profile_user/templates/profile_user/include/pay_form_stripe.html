@@ -5,6 +5,8 @@
 >
   {% csrf_token %}
 
+  <div class="mb-4">{% include 'include/infos.html' with info="Add or select your payment method. We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club, China UnionPay, and debit cards." %}</div>
+
   <div id="payment-card-new-{{title}}" class="mb-3 {% if payment_methods|length > 0 %} hidden {% endif %}">
   <div class="mb-3">
    
@@ -69,7 +71,7 @@
     {% include 'include/errors.html' with error=error id="error-pay-submit-{{title}}" %}
   </div>
 
-  <div class="w-full">
+  <div class="w-full pt-3">
     <button
       type="button"
       onclick="onPayFormStripeSubmit('{{title}}')"

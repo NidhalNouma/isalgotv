@@ -43,8 +43,8 @@ setInterval(() => {
 </script>
 {% endblock toppage %}
 {% block page %} 
-<main class="max-w-full relative pt-10 md:pt-16 -scroll-mb-28 flex md:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
-  <div class="relative my-auto md:text-start text-center">
+<main class="max-w-full min-h-[min(80vh,600px)] md:w-1/2 relative pt-10 md:pt-16 -scroll-mb-28 flex md:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
+  <div class="relative my-auto md:text-start text-center grow">
     <div class="my-auto">
       <h2 class="text-title text-4xl sm:text-7xl font-extrabold">
         Elevate your trading prowess <br/>with our advanced
@@ -55,7 +55,7 @@ setInterval(() => {
       <h6 class="text-text text-base font-semibold mt-4">
         We offer top-notch backtestable trading strategies that are optimized for the <a href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank" class="bg-accent dark:text-background truncate">TradingView platform</a>
       </h6>
-      <div class="flex flex-row w-full mt-2 md:mt-6 mb-auto">
+      <div class="flex flex-row w-full mt-4 md:mt-4 mb-auto">
         <a
         href="{% url 'register' %}"
         class="btn-primary-landing mb-5 mt-4 sm:text-2xl md:ml-0"

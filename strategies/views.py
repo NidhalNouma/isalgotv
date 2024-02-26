@@ -282,7 +282,7 @@ def add_comment_reply(request, id):
             return render(request, 'include/comment_replies.html', context=context)
         else:
             context = {'errors': form.errors}
-            response = render(request, "include/st_psot_errors.html", context=context)
+            response = render(request, "include/st_post_errors.html", context=context)
             return retarget(response, "#reply-form-errors-"+str(id)+"-comment")
 
 @require_http_methods([ "POST"])
@@ -323,7 +323,7 @@ def add_result_reply(request, id):
             return render(request, 'include/result_replies.html', context=context)
         else:
             context = {'errors': form.errors}
-            response = render(request, "include/st_psot_errors.html", context=context)
+            response = render(request, "include/st_post_errors.html", context=context)
             return retarget(response, "#reply-form-errors-"+str(id)+"-result")
 
 def result_vote(request, result_id, vote_type):
