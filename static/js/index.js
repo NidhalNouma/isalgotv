@@ -114,7 +114,7 @@ function mountStripeElement(id) {
 }
 
 function unmountStripeElement(title) {
-  cardElement.unmount();
+  if (cardElement) cardElement.unmount();
   closeLoader(title);
 }
 

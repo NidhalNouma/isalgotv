@@ -95,59 +95,59 @@
       </thead>
       <tbody>
           <tr class="bg-background text-title">
-              <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+              <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                   Net profit
               </th>
               <td class="text-center text-base py-4 {% if result.net_profit > 0 %} text-green-400 {% elif result.net_profit < 0 %} text-red-400 {% endif %}">
                   {{result.net_profit}}
-                  <span class="text-xs">{{result.net_profit_percentage}}%</span>
+                  <span class="text-xs block">{{result.net_profit_percentage}}%</span>
               </td>
               <td class="text-center text-base py-4 {% if result.net_profit_long > 0 %} text-green-400 {% elif result.net_profit_long < 0 %} text-red-400 {% endif %}">
                   {{result.net_profit_long}}
-                  <span class="text-xs">{{result.net_profit_percentage_long}}%</span>
+                  <span class="text-xs block">{{result.net_profit_percentage_long}}%</span>
                 </td>
               <td class="text-center text-base py-4 {% if result.net_profit_short > 0 %} text-green-400 {% elif result.net_profit_short < 0 %} text-red-400 {% endif %}">
                   {{result.net_profit_short}}
-                  <span class="text-xs">{{result.net_profit_percentage_short}}%</span>
+                  <span class="text-xs block">{{result.net_profit_percentage_short}}%</span>
               </td>
           </tr>
           <tr class="bg-background text-title">
-              <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+              <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                   Gross profit
               </th>
               <td class="text-center text-base py-4 {% if result.gross_profit > 0 %} text-green-400 {% elif result.gross_profit < 0 %} text-red-400 {% endif %}">
                   {{result.gross_profit}}
-                  <span class="text-xs">{{result.gross_profit_percentage}}%</span>
+                  <span class="text-xs block">{{result.gross_profit_percentage}}%</span>
               </td>
               <td class="text-center text-base py-4 {% if result.gross_profit_long > 0 %} text-green-400 {% elif result.gross_profit_long < 0 %} text-red-400 {% endif %}">
                   {{result.gross_profit_long}}
-                  <span class="text-xs">{{result.gross_profit_percentage_long}}%</span>
+                  <span class="text-xs block">{{result.gross_profit_percentage_long}}%</span>
                 </td>
               <td class="text-center text-base py-4 {% if result.gross_profit_short > 0 %} text-green-400 {% elif result.gross_profit_short < 0 %} text-red-400 {% endif %}">
                   {{result.gross_profit_short}}
-                  <span class="text-xs">{{result.gross_profit_percentage_short}}%</span>
+                  <span class="text-xs block">{{result.gross_profit_percentage_short}}%</span>
               </td>
           </tr>
           <tr class="bg-background text-title">
-              <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+              <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                   Gross loss
               </th>
               <td class="text-center text-base py-4  {% if result.gross_loss > 0 %} text-red-400 {% endif %}">
                   {{result.gross_loss}}
-                  <span class="text-xs">{{result.gross_loss_percentage}}%</span>
+                  <span class="text-xs block">{{result.gross_loss_percentage}}%</span>
               </td>
               <td class="text-center text-base py-4  {% if result.gross_loss_long > 0 %} text-red-400 {% endif %}">
                   {{result.gross_loss_long}}
-                  <span class="text-xs">{{result.gross_loss_percentage_long}}%</span>
+                  <span class="text-xs block">{{result.gross_loss_percentage_long}}%</span>
                 </td>
               <td class="text-center text-base py-4 {% if result.gross_loss_short > 0 %} text-red-400 {% endif %}">
                   {{result.gross_loss_short}}
-                  <span class="text-xs">{{result.gross_loss_percentage_short}}%</span>
+                  <span class="text-xs block">{{result.gross_loss_percentage_short}}%</span>
               </td>
           </tr>
 
           <tr class="bg-background text-title">
-            <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+            <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                 Profit factor
             </th>
             <td class="text-center text-base py-4 {% if result.profit_factor > 0 %} text-green-400 {% elif result.profit_factor < 0 %} text-red-400 {% endif %}">
@@ -175,7 +175,7 @@
           </tr>
 
           <tr class="bg-background text-title">
-            <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+            <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
               Total trades
             </th>
             <td class="text-center text-base py-4">
@@ -189,7 +189,7 @@
           </tr>
 
           <tr class="bg-background text-title">
-            <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+            <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
               Winning trades
             </th>
             <td class="text-center text-base py-4 {% if result.winning_total_trade > 0 %} text-green-400 {% endif %}">
@@ -203,7 +203,7 @@
           </tr>
 
           <tr class="bg-background text-title">
-            <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+            <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
               Losing trades
             </th>
             <td class="text-center text-base py-4 {% if result.losing_total_trade > 0 %} text-red-400 {% endif %}">
@@ -217,12 +217,12 @@
           </tr>
 
           <tr class="bg-background text-title">
-              <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
+              <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                 Max Drawdown
               </th>
               <td class="text-center text-base py-4  {% if result.max_drawdown > 0 %} text-red-400 {% endif %}">
                   {{result.max_drawdown}}
-                  <span class="text-xs">{{result.max_drawdown_percentage}}%</span>
+                  <span class="text-xs block">{{result.max_drawdown_percentage}}%</span>
               </td>
           </tr>
       </tbody>
@@ -234,11 +234,12 @@
       <div id="r-{{result.id}}-settings" class="hidden p-6 space-y-3">
         {% for group_name, group_value  in result.settings.items %}
                 <div class="mb-6">
-                  <h6 class="text-text text-xs">{{group_name}}</h6>
+                  <h6 class="text-text text-xs pb-4">{{group_name}}</h6>
+                  <div class="pb-4 ">
                   
                   {% for line in group_value %}
                   <!-- {{line}} -->
-                    <div class=" mt-3 mb-5  max-w-full " >
+                    <div class=" my-3 max-w-full " >
                       {% for set in line %}
                         <div class="mr-3 inline-flex items-center justify-center align-middle ">
                           {% if set.type == 'boolean' %}
@@ -254,7 +255,8 @@
                     </div>
                   {% endfor %}
                 </div>
-                {% endfor %}
+              </div>
+          {% endfor %}
       </div>
     </div>
   </div>

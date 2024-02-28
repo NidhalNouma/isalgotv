@@ -230,7 +230,15 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
         'height': 300,
         'width': '100%',
-    },
+        'extraPlugins': ','.join([
+            'uploadimage', # Enable the upload image feature
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # other plugins
+        ]),
+    }
 }
-
 

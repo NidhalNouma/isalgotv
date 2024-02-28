@@ -43,7 +43,7 @@ setInterval(() => {
 </script>
 {% endblock toppage %}
 {% block page %} 
-<main class="max-w-full min-h-[min(80vh,600px)] md:w-1/2 relative pt-10 md:pt-16 -scroll-mb-28 flex md:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
+<main class="max-w-full min-h-[80vh] md:w-1/2 relative pt-10 md:pt-16 -scroll-mb-28 flex md:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
   <div class="relative my-auto md:text-start text-center grow">
     <div class="my-auto">
       <h2 class="text-title text-4xl sm:text-7xl font-extrabold">
@@ -83,10 +83,10 @@ setInterval(() => {
   {% include "include/icons_svg.html" %}
 
   <div class=" flex flex-col">
-    {% include "include/section2.html" with class=" bg-text/10" img_class="rotate-3 scale-110  " color="primary" h1="Universal Applicability: " span="Any Symbol, Any Timeframe" span_color="bg-text text-background " h2="Unlock the full potential of our strategies, tailored to suit any symbol and timeframe. Experience seamless performance on every chart" img_src="images/symbols.png" %}
-    {% include "include/section2.html" with class="bg-accent/10  md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  " h1="Tailored Settings for " span="Optimal Results" span_color="bg-accent dark:text-background" h2="Every strategy comes with its own customizable settings, allowing you to fine-tune and maximize its effectiveness" img_src="images/settings.png" %}
-    {% include "include/section2.html" with class="bg-secondary/10 " img_class="rotate-6 scale-110  " color="primary" h1="Stay Informed with " span="Entry and Exit Alerts" span_color="bg-secondary dark:text-background" h2="All our strategies feature built-in alerts to keep you updated on every entry and exit point, ensuring you never miss a crucial moment" img_src="images/alerts.png" %}
-    {% include "include/section2.html" with class="bg-primary/10 md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  "  h1="Join the " span="Profits Together" span_color="bg-primary text-title-light"  h2="Leverage our community-tested results and contribute by sharing your best outcomes for collective success" img_src="images/profits.png" %}
+    {% include "include/section2.html" with class=" bg-text/10" img_class="rotate-3 scale-110  " color="primary" h1="Universal Applicability: " span="Any Symbol, Any Timeframe" span_color="bg-text text-background " h2="Unlock the full potential of our strategies, tailored to suit any symbol and timeframe. Experience seamless performance on every chart" img_src="images/symbols.svg" %}
+    {% include "include/section2.html" with class="bg-accent/10  md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  " h1="Tailored Settings for " span="Optimal Results" span_color="bg-accent dark:text-background" h2="Every strategy comes with its own customizable settings, allowing you to fine-tune and maximize its effectiveness" img_src="images/settings.svg" %}
+    {% include "include/section2.html" with class="bg-secondary/10 " img_class="rotate-6 scale-110  " color="primary" h1="Stay Informed with " span="Entry and Exit Alerts" span_color="bg-secondary dark:text-background" h2="All our strategies feature built-in alerts to keep you updated on every entry and exit point, ensuring you never miss a crucial moment" img_src="images/alerts.svg" %}
+    {% include "include/section2.html" with class="bg-primary/10 md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  "  h1="Join the " span="Profits Together" span_color="bg-primary text-title-light"  h2="Leverage our community-tested results and contribute by sharing your best outcomes for collective success" img_src="images/profits.svg" %}
   </div>
 </section>
 

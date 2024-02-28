@@ -1,6 +1,14 @@
 # context_processors.py
 
+import environ
+env = environ.Env()
+
 def profile_context(request):
+    coupon = {
+        "code": env('COUPON_CODE'),
+        "off": env('COUPON_OFF'),
+    }
+
     return {
         'stripe_customer': getattr(request, 'stripe_customer', None),
         'user_profile': getattr(request, 'user_profile', None),
@@ -17,4 +25,5 @@ def profile_context(request):
         'has_subscription': getattr(request, 'has_subscription', False),
 
         'notifications': getattr(request, 'notifications', False),
+        'coupon': coupon,
     }

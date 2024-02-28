@@ -56,11 +56,11 @@
     </div>
     <div class="">
       {% if strategy.image_url %}
-      <img
+      <!-- <img
         src="{{ strategy.image_url }}"
         alt="Strategy Image"
         class="w-full aspect-video mx-auto rounded-lg object-cover"
-      />
+      /> -->
       {% else %}
       <img
         src="{% static 'images/chart_nobg.png' %}"
@@ -71,7 +71,7 @@
     </div>
 
     <div class="text-text whitespace-pre-line text-sm">
-      <p class="text-text whitespace-pre-line">{{ strategy.content | safe }}</p>
+      <div class="text-text whitespace-pre-line CKEDITOR">{{ strategy.content | safe }}</div>
     </div>
 
     {% if has_subscription %}

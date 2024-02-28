@@ -89,6 +89,10 @@
   .input-checkbox{
     @apply text-accent bg-background border-title/40 rounded
   }
+
+  .CKEDITOR img {
+    @apply !aspect-video !h-auto object-cover rounded
+  }
 }
 
 

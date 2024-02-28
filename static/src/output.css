@@ -1285,6 +1285,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-accent) / var(--tw-text-opacity));
 }
 
+.CKEDITOR img {
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  border-radius: 0.25rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1698,6 +1706,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   top: 100%;
 }
 
+.bottom-10 {
+  bottom: 2.5rem;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -1842,9 +1854,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: auto;
 }
 
-.my-5 {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.my-1\.5 {
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
 }
 
 .-ml-1 {
@@ -2068,6 +2085,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: auto;
 }
 
+.mr-5 {
+  margin-right: 1.25rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -2261,10 +2282,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 100vh;
 }
 
-.h-\[150\%\] {
-  height: 150%;
-}
-
 .max-h-64 {
   max-height: 16rem;
 }
@@ -2289,6 +2306,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-height: 100%;
 }
 
+.min-h-\[80vh\] {
+  min-height: 80vh;
+}
+
 .min-h-fit {
   min-height: -moz-fit-content;
   min-height: fit-content;
@@ -2296,58 +2317,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .min-h-screen {
   min-height: 100vh;
-}
-
-.min-h-\[80vh\] {
-  min-height: 80vh;
-}
-
-.min-h-\[75vh\] {
-  min-height: 75vh;
-}
-
-.min-h-\[min\(75vh\2c 250px\)\] {
-  min-height: min(75vh,250px);
-}
-
-.min-h-\[min\(75vh\2c 280px\)\] {
-  min-height: min(75vh,280px);
-}
-
-.min-h-\[min\(75vh\2c 3000px\)\] {
-  min-height: min(75vh,3000px);
-}
-
-.min-h-\[min\(75vh\2c 300px\)\] {
-  min-height: min(75vh,300px);
-}
-
-.min-h-\[min\(75vh\2c 350px\)\] {
-  min-height: min(75vh,350px);
-}
-
-.min-h-\[min\(75vh\2c 400px\)\] {
-  min-height: min(75vh,400px);
-}
-
-.min-h-\[min\(75vh\2c 500px\)\] {
-  min-height: min(75vh,500px);
-}
-
-.min-h-\[min\(80vh\2c 500px\)\] {
-  min-height: min(80vh,500px);
-}
-
-.min-h-\[min\(80vh\2c 400px\)\] {
-  min-height: min(80vh,400px);
-}
-
-.min-h-\[min\(80vh\2c 600px\)\] {
-  min-height: min(80vh,600px);
-}
-
-.min-h-\[max\(80vh\2c 600px\)\] {
-  min-height: max(80vh,600px);
 }
 
 .w-1\/2 {
@@ -2617,8 +2586,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.translate-y-\[0\.07rem\] {
-  --tw-translate-y: 0.07rem;
+.translate-y-\[0\.25rem\] {
+  --tw-translate-y: 0.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2627,38 +2596,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.translate-y-\[1rem\] {
-  --tw-translate-y: 1rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-\[1\.5rem\] {
-  --tw-translate-y: 1.5rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-\[0rem\] {
-  --tw-translate-y: 0rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-\[0\.5rem\] {
-  --tw-translate-y: 0.5rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-\[0\.2rem\] {
-  --tw-translate-y: 0.2rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-\[0\.3rem\] {
-  --tw-translate-y: 0.3rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-\[0\.25rem\] {
-  --tw-translate-y: 0.25rem;
+.translate-x-1\/2 {
+  --tw-translate-x: 50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3062,11 +3001,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-gray-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(107 114 128 / var(--tw-border-opacity));
-}
-
 .border-green-400 {
   --tw-border-opacity: 1;
   border-color: rgb(49 196 141 / var(--tw-border-opacity));
@@ -3181,6 +3115,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-primary) / var(--tw-bg-opacity));
 }
 
+.bg-primary\/10 {
+  background-color: hsl(var(--color-primary) / 0.1);
+}
+
 .bg-primary\/50 {
   background-color: hsl(var(--color-primary) / 0.5);
 }
@@ -3203,6 +3141,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-secondary) / var(--tw-bg-opacity));
 }
 
+.bg-secondary\/10 {
+  background-color: hsl(var(--color-secondary) / 0.1);
+}
+
 .bg-secondary\/30 {
   background-color: hsl(var(--color-secondary) / 0.3);
 }
@@ -3222,6 +3164,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .bg-text {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
+}
+
+.bg-text\/10 {
+  background-color: hsl(var(--color-text) / 0.1);
 }
 
 .bg-text\/20 {
@@ -3268,30 +3214,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-yellow-800\/10 {
   background-color: rgb(114 59 19 / 0.1);
-}
-
-.bg-accent\/30 {
-  background-color: hsl(var(--color-accent) / 0.3);
-}
-
-.bg-primary\/30 {
-  background-color: hsl(var(--color-primary) / 0.3);
-}
-
-.bg-accent\/50 {
-  background-color: hsl(var(--color-accent) / 0.5);
-}
-
-.bg-primary\/10 {
-  background-color: hsl(var(--color-primary) / 0.1);
-}
-
-.bg-secondary\/10 {
-  background-color: hsl(var(--color-secondary) / 0.1);
-}
-
-.bg-text\/10 {
-  background-color: hsl(var(--color-text) / 0.1);
 }
 
 .bg-opacity-50 {
@@ -3472,6 +3394,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
      object-fit: scale-down;
 }
 
+.\!p-2 {
+  padding: 0.5rem !important;
+}
+
 .p-0 {
   padding: 0px;
 }
@@ -3510,14 +3436,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.\!p-0 {
-  padding: 0px !important;
-}
-
-.\!p-2 {
-  padding: 0.5rem !important;
 }
 
 .px-0 {
@@ -3678,6 +3596,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-top: 0.05rem;
 }
 
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -3805,9 +3727,26 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   letter-spacing: -0.025em;
 }
 
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
 .\!text-background {
   --tw-text-opacity: 1 !important;
   color: hsl(var(--color-background) / var(--tw-text-opacity)) !important;
+}
+
+.\!text-text {
+  --tw-text-opacity: 1 !important;
+  color: hsl(var(--color-text) / var(--tw-text-opacity)) !important;
 }
 
 .\!text-title {
@@ -3960,9 +3899,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(114 59 19 / var(--tw-text-opacity));
 }
 
-.\!text-text {
-  --tw-text-opacity: 1 !important;
-  color: hsl(var(--color-text) / var(--tw-text-opacity)) !important;
+.text-accent\/60 {
+  color: hsl(var(--color-accent) / 0.6);
+}
+
+.text-background\/60 {
+  color: hsl(var(--color-background) / 0.6);
 }
 
 .underline {
@@ -4123,14 +4065,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.backdrop-blur-xl {
-  --tw-backdrop-blur: blur(24px);
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(4px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
-.backdrop-blur-sm {
-  --tw-backdrop-blur: blur(4px);
+.backdrop-blur-xl {
+  --tw-backdrop-blur: blur(24px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -4488,11 +4430,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
 }
 
-:is(.dark .dark\:border-gray-400) {
-  --tw-border-opacity: 1;
-  border-color: rgb(156 163 175 / var(--tw-border-opacity));
-}
-
 :is(.dark .dark\:border-gray-600) {
   --tw-border-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
@@ -4582,6 +4519,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:text-yellow-300) {
   --tw-text-opacity: 1;
   color: rgb(250 202 21 / var(--tw-text-opacity));
+}
+
+:is(.dark .dark\:text-title\/60) {
+  color: hsl(var(--color-title) / 0.6);
 }
 
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
@@ -4701,10 +4642,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     height: 8rem;
   }
 
-  .sm\:h-\[45vh\] {
-    height: 45vh;
-  }
-
   .sm\:h-\[55vh\] {
     height: 55vh;
   }
@@ -4759,14 +4696,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     --tw-space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
-  }
-
-  .sm\:overflow-auto {
-    overflow: auto;
-  }
-
-  .sm\:overflow-visible {
-    overflow: visible;
   }
 
   .sm\:p-6 {
@@ -4854,10 +4783,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     margin-top: 0px;
   }
 
-  .md\:mt-6 {
-    margin-top: 1.5rem;
-  }
-
   .md\:mt-4 {
     margin-top: 1rem;
   }
@@ -4874,56 +4799,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     display: none;
   }
 
-  .md\:h-\[75vh\] {
-    height: 75vh;
+  .md\:h-\[min\(75vh\2c 700px\)\] {
+    height: min(75vh,700px);
   }
 
   .md\:h-full {
     height: 100%;
   }
 
-  .md\:h-\[75\%\] {
-    height: 75%;
-  }
-
-  .md\:h-\[100\%\] {
-    height: 100%;
-  }
-
-  .md\:h-\[150\%\] {
-    height: 150%;
-  }
-
-  .md\:h-\[180\%\] {
-    height: 180%;
-  }
-
-  .md\:h-\[50vh\] {
-    height: 50vh;
-  }
-
-  .md\:h-\[70vh\] {
-    height: 70vh;
-  }
-
-  .md\:h-\[100vh\] {
-    height: 100vh;
-  }
-
-  .md\:h-\[min\(75vh\2c 280px\)\] {
-    height: min(75vh,280px);
-  }
-
-  .md\:h-\[min\(75vh\2c 380px\)\] {
-    height: min(75vh,380px);
-  }
-
-  .md\:h-\[min\(75vh\2c 500px\)\] {
-    height: min(75vh,500px);
-  }
-
-  .md\:h-\[min\(75vh\2c 700px\)\] {
-    height: min(75vh,700px);
+  .md\:w-1\/2 {
+    width: 50%;
   }
 
   .md\:w-\[60\%\] {
@@ -4932,10 +4817,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:w-auto {
     width: auto;
-  }
-
-  .md\:w-1\/2 {
-    width: 50%;
   }
 
   .md\:max-w-\[55\%\] {

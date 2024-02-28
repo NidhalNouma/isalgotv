@@ -3,13 +3,13 @@ name: Deploy to AWS Lambda
 on:
   push:
     branches:
-      - test # Adjust this to your branch
+      - main # Adjust this to your branch
 
 env:
   AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
-  ECR_REPOSITORY: isalgo_test # Set your ECR repository name here
+  ECR_REPOSITORY: isalgo # Set your ECR repository name here
   AWS_REGION: us-east-1 # Set your AWS region here
-  FUNCTION_NAME: isalgo_test
+  FUNCTION_NAME: isalgo
 
 jobs:
   deploy:

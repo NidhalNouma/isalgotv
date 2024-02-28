@@ -44,7 +44,7 @@
       {% csrf_token %}
       <label
         for="{{form.username.id_for_label}}"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        class="block mb-2 text-sm font-medium text-text"
         >Your Email</label
       >
       <div class="relative mb-6">
@@ -53,7 +53,7 @@
         >
           <svg
             aria-hidden="true"
-            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+            class="w-5 h-5 text-text/60"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -70,13 +70,13 @@
           name="{{form.username.html_name}}"
           type="text"
           id="{{form.username.id_for_label}}"
-          class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="input-text pl-10 w-full"
           placeholder="name@company.com"
         />
       </div>
       <label
         for="{{form.password1.id_for_label}}"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        class="block mb-2 text-sm font-medium text-text"
         >Password</label
       >
       <div class="relative mb-6">
@@ -85,7 +85,7 @@
         >
           <svg
             aria-hidden="true"
-            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+            class="w-5 h-5 text-text/60"
             fill="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -99,13 +99,13 @@
           type="password"
           name="{{form.password1.html_name}}"
           id="{{form.password1.id_for_label}}"
-          class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="input-text pl-10 w-full"
           placeholder="****************"
         />
       </div>
       <label
         for="{{form.password2.id_for_label}}"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        class="block mb-2 text-sm font-medium text-text"
         >Confirm password</label
       >
       <div class="relative mb-6">
@@ -114,7 +114,7 @@
         >
           <svg
             aria-hidden="true"
-            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+            class="w-5 h-5 text-text/60"
             fill="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +128,7 @@
           type="password"
           id="{{form.password2.id_for_label}}"
           name="{{form.password2.html_name}}"
-          class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="input-text pl-10 w-full"
           placeholder="****************"
         />
       </div>

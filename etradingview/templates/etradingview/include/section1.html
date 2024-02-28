@@ -1,7 +1,7 @@
 {% load static %}
 
 <div
-  class="mx-auto flex items-center justify-center aspect-video h-full relative pointer-events-none"
+  class="mx-auto flex items-center justify-center aspect-video w-full h-full relative pointer-events-none"
 >
   {% comment %}
   <svg
@@ -121,6 +121,7 @@
     class="absolute parallax-scale- -z-10 left-0 md:right-0 bg-gradient-to-tr md:h-[min(75vh,700px)] from-secondary/30 via-accent/20 to-secondary/30 backdrop-blur-xl rounded-xl aspect-video p-0.5 transition-all duration-0"
   >
     <img
+      loading="lazy"
       id="result_images"
       class="rounded-xl w-full h-full transition"
       src="{% static 'images/landing_result_1.png' %}"
@@ -139,7 +140,8 @@
   // Suppose your Django view passes a context variable 'image_list' that contains URLs of images
   let images = [
     "{% static 'images/landing_result_1.png' %}",
-    "{% static 'images/landing_result_1.png' %}",
+    "{% static 'images/landing_result_2.png' %}",
+    "{% static 'images/landing_result_3.png' %}",
   ]; // Marking safe to prevent HTML escaping
   var currentIndex = 0;
 

@@ -31,6 +31,7 @@ stripe.api_key = env('STRIPE_API_KEY')
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
+PRICES = settings.PRICES
 
 # Create your views here.
 
@@ -387,6 +388,8 @@ def create_subscription_stripeform(request):
         data = request.POST
         
         payment_method = data['pm_id']
+        coupon_id = data['coupon']
+        coupon = None
 
         if not payment_method or payment_method == "None":
             context["error"] = 'No payment method has been detected.'
@@ -395,6 +398,15 @@ def create_subscription_stripeform(request):
 
         profile_user = request.user_profile
         customer_id = profile_user.customer_id
+
+        if coupon_id:
+            try:
+                coupon = stripe.Coupon.retrieve(coupon_id)
+
+            except Exception as e:
+                context["error"] = 'Invalid coupon code '+str(e)
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-"+context['title'])
 
         try:
             stripe.PaymentMethod.attach(
@@ -415,8 +427,16 @@ def create_subscription_stripeform(request):
             old_subscription_id = profile_user.subscription_id
 
             if plan_id == "LIFETIME":
+                price = float(PRICES["LIFETIME"])
+                
+                if coupon:
+                    if coupon.percent_off:
+                        price = round(price - (price * coupon.percent_off / 100), 2)
+                    elif coupon.amount_off:
+                        price = round(price - coupon.amount_off, 2)
+
                 lifetime = stripe.PaymentIntent.create(
-                    amount=2680 * 100,
+                    amount=int(price * 100),
                     currency="usd",
                     payment_method=payment_method,
                     confirm=True,
@@ -449,6 +469,7 @@ def create_subscription_stripeform(request):
                 items=[{
                     'price': price_id,
                 }],
+                coupon=coupon_id,
             )
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
