@@ -20,19 +20,19 @@ CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']
 # CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME':  env('DATABASE_NAME'),
-#         'USER':  env('DATABASE_USER'),
-#         'PASSWORD':  env('DATABASE_PASS'),
-#         'HOST':  env('DATABASE_HOST'),
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'sql_mode': 'traditional',
-#         }
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':  env('DATABASE_NAME'),
+        'USER':  env('DATABASE_USER'),
+        'PASSWORD':  env('DATABASE_PASS'),
+        'HOST':  env('DATABASE_HOST'),
+        'PORT': 3306,
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
+    }
+}
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')

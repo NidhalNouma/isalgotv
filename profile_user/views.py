@@ -560,15 +560,16 @@ def send_email(request):
             )
 
             files = request.FILES.getlist('documents')
-            # print("Number of files received:", len(files))
+            print("Number of files received:", len(files))
             # Attach document if present
             for file in files:
                 # print(file.name)
                 email_message.attach(file.name, file.read(), file.content_type)
 
-            # print('Email sent successfully!')
 
+            print('files get received')
             email_message.send()
+            print('Email sent successfully!')
 
             response = render(request, 'include/docs/contact_us_form.html', context = {"succes": "Email sent successfully. We will get back to you in less than 48 hours."})
 
