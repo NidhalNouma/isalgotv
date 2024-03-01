@@ -27,7 +27,7 @@ env:
   # ECS_CLUSTER: isalgo_test_ecs_cluster # Set your ECS cluster name here
   ECS_CLUSTER: isalgo_live # Set your ECS cluster name here
   ECS_SERVICE: isalgo_live_ecs_service # Set your ECS service name here
-  ECS_TASK_DEFINITION_NAME: django-isalgo-live # Set your ECS task definition name here
+  ECS_TASK_DEFINITION_NAME: isalgo # Set your ECS task definition name here
   ECS_TASK_DEFINITION_JSON: aws_task_definitions/ecs-fargate.json # Set your ECS task definition json file
   SECURITY_GROUP_ID: sg-01a796680d6ae48b2 # Set your security group ID
   SUBNET_IDS: subnet-0d5644469efcf2370 # ,subnet-0d5644469efcf2370, subnet-060b993da7b594b67, subnet-07fbf55b284399e2d, subnet-07a3aa633664275a4
