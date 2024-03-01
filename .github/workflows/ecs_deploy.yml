@@ -17,7 +17,8 @@ name: Build and Deploy Django App to AWS
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main # Adjust this to your branch
 
 env:
   AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
