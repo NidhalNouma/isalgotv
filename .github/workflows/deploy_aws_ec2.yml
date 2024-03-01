@@ -2,7 +2,7 @@ name: django CI
 
 on:
   push:
-    branches: [main_ec2]
+    branches: [main]
 
 jobs:
   build:
