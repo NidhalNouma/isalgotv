@@ -1,5 +1,7 @@
+# Use an official Python runtime as a parent image
 FROM python:3.9
 
+# Set arguments
 ARG SECRET_KEY
 
 ARG EMAIL_HOST_USER
@@ -21,7 +23,6 @@ ARG STRIPE_PRICE_LT_PRICE
 ARG DATABASE_HOST
 ARG DATABASE_NAME
 ARG DATABASE_USER
-ARG DATABASE_PASS
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
@@ -55,7 +56,6 @@ ENV STRIPE_PRICE_LT_PRICE ${STRIPE_PRICE_LT_PRICE}
 ENV DATABASE_HOST ${DATABASE_HOST}
 ENV DATABASE_NAME ${DATABASE_NAME}
 ENV DATABASE_USER ${DATABASE_USER}
-ENV DATABASE_PASS ${DATABASE_PASS}
 
 ENV AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
@@ -66,20 +66,16 @@ ENV TV_SESSION_ID ${TV_SESSION_ID}
 ENV COUPON_CODE ${COUPON_CODE}
 ENV COUPON_OFF ${COUPON_OFF}
 
-ENV LAMBDA_TASK_ROOT /var/task
-
 # Set work directory
-WORKDIR ${LAMBDA_TASK_ROOT} 
+WORKDIR /usr/src/app
 
 # Install dependencies
-COPY requirements.txt ${LAMBDA_TASK_ROOT} 
-
-RUN chmod +r requirements.txt
+COPY requirements.txt /usr/src/app/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project
-COPY . ${LAMBDA_TASK_ROOT} 
+COPY . /usr/src/app/
 
 # Collect static files
 RUN python manage.py collectstatic --noinput --clear
@@ -90,7 +86,11 @@ RUN python manage.py compress
 # Run migrate
 RUN python manage.py migrate --noinput
 
-COPY lambda_handler.py ${LAMBDA_TASK_ROOT}  
+# Expose port 8000
+EXPOSE 8000
 
-ENTRYPOINT [ "python", "-m", "awslambdaric" ]
-CMD [ "lambda_handler.handler" ]
+# Command to run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", "--access-logfile", "-", "--error-logfile", "-"]
+
+
+

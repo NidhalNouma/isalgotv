@@ -3,7 +3,7 @@
     "containerDefinitions": [
       {
         "name": "django-isalgo",
-        "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo_test",
+        "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo",
         "cpu": 256,
         "memory": 512,
         "essential": true,
