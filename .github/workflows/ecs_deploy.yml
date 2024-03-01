@@ -1,3 +1,10 @@
+name: Build and Deploy Django App to AWS
+
+on:
+  push:
+    branches:
+      - main # Adjust this to your branch
+
 # Setup a new IAM role to be able on AWS
 
 # using aws Fargate: create a ECR repositry if you don't have one
@@ -12,13 +19,6 @@
 #                create a security group that allows trafic to the instance
 #                create a target group with type Ip adresses, and set listner port to 8000 (or port of your app)
 #                Link the target group to a loadbalancer
-
-name: Build and Deploy Django App to AWS
-
-on:
-  push:
-    branches:
-      - main # Adjust this to your branch
 
 env:
   AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
