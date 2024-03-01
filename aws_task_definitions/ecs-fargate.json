@@ -2,7 +2,7 @@
     "family": "isalgo",
     "containerDefinitions": [
       {
-        "name": "django-isalgo",
+        "name": "django-isalgo-live",
         "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo",
         "cpu": 256,
         "memory": 512,
