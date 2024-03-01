@@ -79,28 +79,29 @@ jobs:
           IMAGE_TAG=latest
           ECR_URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
           docker build \
-            --build-arg SECRET_KEY="${{ secrets.SECRET_KEY }}" \
-            --build-arg EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}" \
-            --build-arg EMAIL_HOST_PASSWORD="${{ secrets.EMAIL_HOST_PASSWORD }}" \
-            --build-arg STRIPE_API_KEY="${{ secrets.STRIPE_API_KEY }}" \
-            --build-arg STRIPE_API_PUBLIC_KEY="${{ secrets.STRIPE_API_PUBLIC_KEY }}" \
-            --build-arg STRIPE_PRICE_MN_ID="${{ secrets.STRIPE_PRICE_MN_ID }}" \
-            --build-arg STRIPE_PRICE_3MN_ID="${{ secrets.STRIPE_PRICE_3MN_ID }}" \
-            --build-arg STRIPE_PRICE_Y_ID="${{ secrets.STRIPE_PRICE_Y_ID }}" \
-            --build-arg STRIPE_PRICE_LT_ID="${{ secrets.STRIPE_PRICE_LT_ID }}" \
-            --build-arg STRIPE_PRICE_MN_PRICE="${{ secrets.STRIPE_PRICE_MN_PRICE }}" \
-            --build-arg STRIPE_PRICE_3MN_PRICE="${{ secrets.STRIPE_PRICE_3MN_PRICE }}" \
-            --build-arg STRIPE_PRICE_Y_PRICE="${{ secrets.STRIPE_PRICE_Y_PRICE }}" \
-            --build-arg STRIPE_PRICE_LT_PRICE="${{ secrets.STRIPE_PRICE_LT_PRICE }}" \
-            --build-arg DATABASE_HOST="${{ secrets.DATABASE_HOST }}" \
-            --build-arg DATABASE_NAME="${{ secrets.DATABASE_NAME }}" \
-            --build-arg DATABASE_USER="${{ secrets.DATABASE_USER }}" \
-            --build-arg AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \
-            --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
-            --build-arg COUPON_CODE="${{ secrets.COUPON_CODE }}" \
-            --build-arg COUPON_OFF="${{ secrets.COUPON_OFF }}" \
+          --build-arg SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+          --build-arg EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}" \
+          --build-arg EMAIL_HOST_PASSWORD="${{ secrets.EMAIL_HOST_PASSWORD }}" \
+          --build-arg STRIPE_API_KEY="${{ secrets.STRIPE_API_KEY }}" \
+          --build-arg STRIPE_API_PUBLIC_KEY="${{ secrets.STRIPE_API_PUBLIC_KEY }}" \
+          --build-arg STRIPE_PRICE_MN_ID="${{ secrets.STRIPE_PRICE_MN_ID }}" \
+          --build-arg STRIPE_PRICE_3MN_ID="${{ secrets.STRIPE_PRICE_3MN_ID }}" \
+          --build-arg STRIPE_PRICE_Y_ID="${{ secrets.STRIPE_PRICE_Y_ID }}" \
+          --build-arg STRIPE_PRICE_LT_ID="${{ secrets.STRIPE_PRICE_LT_ID }}" \
+          --build-arg STRIPE_PRICE_MN_PRICE="${{ secrets.STRIPE_PRICE_MN_PRICE }}" \
+          --build-arg STRIPE_PRICE_3MN_PRICE="${{ secrets.STRIPE_PRICE_3MN_PRICE }}" \
+          --build-arg STRIPE_PRICE_Y_PRICE="${{ secrets.STRIPE_PRICE_Y_PRICE }}" \
+          --build-arg STRIPE_PRICE_LT_PRICE="${{ secrets.STRIPE_PRICE_LT_PRICE }}" \
+          --build-arg DATABASE_HOST="${{ secrets.DATABASE_HOST }}" \
+          --build-arg DATABASE_NAME="${{ secrets.DATABASE_NAME }}" \
+          --build-arg DATABASE_USER="${{ secrets.DATABASE_USER }}" \
+          --build-arg DATABASE_PASS="${{ secrets.DATABASE_PASS }}" \
+          --build-arg AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+          --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+          --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \
+          --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
+          --build-arg COUPON_CODE="${{ secrets.COUPON_CODE }}" \
+          --build-arg COUPON_OFF="${{ secrets.COUPON_OFF }}" \
             -t $ECR_URI:$IMAGE_TAG .
           docker tag $ECR_URI:$IMAGE_TAG $ECR_URI:$IMAGE_TAG
           docker push $ECR_URI:$IMAGE_TAG
