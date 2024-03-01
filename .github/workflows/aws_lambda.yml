@@ -3,7 +3,7 @@ name: Deploy to AWS Lambda
 on:
   push:
     branches:
-      - main-lambda # Adjust this to your branch
+      - main_lambda # Adjust this to your branch
 
 env:
   AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
