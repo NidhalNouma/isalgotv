@@ -38,7 +38,13 @@ def check_user_and_stripe_middleware(get_response):
             except User_Profile.DoesNotExist:
                 user_profile = User_Profile.objects.create(user=current_user)
 
-            if not user_profile.customer_id:
+            if user_profile.customer_id:
+                try:
+                    stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+                except Exception as e:
+                    print("Error with getting stripe customer...", e)
+
+            if not user_profile.customer_id or not stripe_customer:
                 customer = stripe.Customer.create(
                         email=current_user.email,
                         name=current_user.username,
@@ -55,28 +61,33 @@ def check_user_and_stripe_middleware(get_response):
                 has_subscription = True
 
             elif user_profile.subscription_id and user_profile.is_lifetime == False:
-                subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
+                try:
+                    subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
 
-                end_timestamp = subscription.current_period_end * 1000
-                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
-                subscription_period_end = end_time
-                subscription_active = subscription.plan.active
-                subscription_status = subscription.status
-                subscription_price_id = subscription.plan.id
-                for key, val in PRICE_LIST.items():  
-                    if val == subscription_price_id: 
-                        subscription_plan = key
+                    end_timestamp = subscription.current_period_end * 1000
+                    end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
+                    subscription_period_end = end_time
+                    subscription_active = subscription.plan.active
+                    subscription_status = subscription.status
+                    subscription_price_id = subscription.plan.id
+                    for key, val in PRICE_LIST.items():  
+                        if val == subscription_price_id: 
+                            subscription_plan = key
 
-                if subscription_status == 'active' and subscription.current_period_end > time.time():
-                    has_subscription = True
-                elif subscription.status == "canceled" and subscription.current_period_end > time.time():
-                    has_subscription = True
+                    if subscription_status == 'active' and subscription.current_period_end > time.time():
+                        has_subscription = True
+                    elif subscription.status == "canceled" and subscription.current_period_end > time.time():
+                        has_subscription = True
+                except Exception as e:
+                    print("Error with getting stripe data ...", e)
+
 
             if user_profile.customer_id:
-                payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id, limit=100)
-                payment_methods = payment_methods.data
-            
-            stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+                try:
+                    payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id, limit=100)
+                    payment_methods = payment_methods.data
+                except Exception as e:
+                    print("Error with getting payment methods ...", e)
 
             # notifications = Notification.objects.filter(user=user_profile).order_by('-created_at')
 
