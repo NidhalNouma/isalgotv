@@ -86,7 +86,7 @@ RUN python manage.py collectstatic --noinput --clear
 RUN python manage.py compress
 
 # Run migrate
-RUN python manage.py migrate --noinput
+# RUN python manage.py migrate --noinput
 
 # Expose port 8000
 EXPOSE 8000
