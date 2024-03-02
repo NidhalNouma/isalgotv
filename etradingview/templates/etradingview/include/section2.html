@@ -21,7 +21,11 @@
     <div
       class="overflow-hidden md:overflow-visible h-36 md:h-full rounded-xl relative {{img_class}}"
     >
-      <img class="parallax-round-reverse max-w-sm" alt="" src="{% static img_src %}" />
+      <img
+        class="parallax-round-reverse max-w-sm w-full object-scale-down"
+        alt=""
+        src="{% static img_src %}"
+      />
       {% comment %}
       <div class="absolute inset-0 bg-background/25"></div>
       {% endcomment %}

@@ -92,6 +92,7 @@ function mountStripeElement(id) {
   elements = stripe.elements();
   cardElement = elements.create("card", {
     hidePostalCode: true,
+    disableLink: true,
     style: {
       base: {
         color: color,

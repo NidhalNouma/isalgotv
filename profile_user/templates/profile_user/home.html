@@ -76,10 +76,10 @@
     {% if prices|get_item:"LIFETIME" %}
 
     <div class="text-left mt-6 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
-        {% include "include/price_item.html" with title="MONTHLY" %}
-        {% include "include/price_item.html" with title="QUARTERLY" %}
-        {% include "include/price_item.html" with title="YEARLY" %}
-        {% include "include/price_item.html" with title="LIFETIME" %}
+      {% include "include/price_item.html" with title="MONTHLY" %}
+      {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" %}
+      {% include "include/price_item.html" with title="YEARLY" save="Save $197" %}
+      {% include "include/price_item.html" with title="LIFETIME" save="Pay once" %}
     </div>
 
 
@@ -90,9 +90,9 @@
     {% else %}
 
     <div class="text-left mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
-        {% include "include/price_item.html" with title="MONTHLY" price="99" %}
-        {% include "include/price_item.html" with title="QUARTERLY" price="345" %}
-        {% include "include/price_item.html" with title="YEARLY" price="898" %}
+      {% include "include/price_item.html" with title="MONTHLY" %}
+      {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" %}
+      {% include "include/price_item.html" with title="YEARLY" save="Save $197" %}
     </div>
 
     {% endif %}

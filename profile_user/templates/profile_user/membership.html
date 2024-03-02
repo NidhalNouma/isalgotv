@@ -66,9 +66,9 @@
 
             <div class="mt-14 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
                 {% include "include/price_item.html" with title="MONTHLY" %}
-                {% include "include/price_item.html" with title="QUARTERLY" %}
-                {% include "include/price_item.html" with title="YEARLY" %}
-                {% include "include/price_item.html" with title="LIFETIME" %}
+                {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" %}
+                {% include "include/price_item.html" with title="YEARLY" save="Save $197" %}
+                {% include "include/price_item.html" with title="LIFETIME" save="Pay once" %}
             </div>
 
             {% comment %} <div class="max-w-3xl mx-auto text-sm flex p-4 mt-16 text-title/60 bg-secondary/30 border-[1px] border-secondary/60 rounded" role="alert">
@@ -84,9 +84,9 @@
             {% else %}
 
             <div class="mt-14 w-full flex flex-col md:flex-row items-center justify-center gap-8">
-                {% include "include/price_item.html" with title="MONTHLY" price="99" %}
-                {% include "include/price_item.html" with title="QUARTERLY" price="345" %}
-                {% include "include/price_item.html" with title="YEARLY" price="898" %}
+                {% include "include/price_item.html" with title="MONTHLY" %}
+                {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" %}
+                {% include "include/price_item.html" with title="YEARLY" save="Save $197" %}
             </div>
 
             {% endif %}
