@@ -45,7 +45,7 @@ def get_ideas(request):
     context =  {'ideas': ideas }
     return render(request, 'ideas.html', context)
 
-def get_strategy(request, id):
+def get_strategy(request, slug):
     strategy = {}
     comments = {}
     results = {}
@@ -53,7 +53,7 @@ def get_strategy(request, id):
     try:
         strategy = Strategy.objects.select_related('created_by').prefetch_related(
                 'images',
-            ).get(pk=id)
+            ).get(slug=slug)
 
         comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
@@ -63,7 +63,7 @@ def get_strategy(request, id):
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
 
-        Strategy.objects.filter(pk=id).update(view_count=F('view_count') + 1)
+        Strategy.objects.filter(slug=slug).update(view_count=F('view_count') + 1)
         
         random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
     except Strategy.DoesNotExist:

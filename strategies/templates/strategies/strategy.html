@@ -1,6 +1,14 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
+{% block head_title %}
+<title>{{ strategy.name }} - IsAlgo</title>
+{% endblock head_title %}
 
+{% block head_description %}
+<meta name="description" content="{{ strategy.description }}">
+{% endblock head_description %}
+
+{% block page %}
 <main class="mb-16 mt-8 md:flex block justify-between">
   <section class="w-full sm:w-8/12">
 

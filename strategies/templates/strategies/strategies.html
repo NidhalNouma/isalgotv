@@ -16,7 +16,7 @@
         <div class="flex flex-col items-center">
 
             <div class="w-full mb-2">
-                <a href="{% url 'strategy' id=strategy.id %}">
+                <a href="{% url 'strategy' slug=strategy.slug %}">
                     {% if strategy.image_url %}
                         <img src="{{ strategy.image_url }}" alt="Strategy Image" class="w-full aspect-video mx-auto rounded-lg">
                     {% else %}
@@ -26,7 +26,7 @@
             </div>
 
             <div class="w-full">
-                <a href="{% url 'strategy' id=strategy.id %}">
+                <a href="{% url 'strategy' slug=strategy.slug %}">
                     <h3 class="text-title text-xl font-bold line-clamp-2 flex items-center">
                         {{ strategy.name }}
                     </h3>
@@ -37,7 +37,7 @@
                         {{ strategy.strategyresults_set.all|length }} Results | {{ strategy.strategycomments_set.all|length }} Ideas
                     </span>
 
-                    <a href="{% url 'strategy' id=strategy.id %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border border-secondary">Read more &rarr;</a>
+                    <a href="{% url 'strategy' slug=strategy.slug %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border border-secondary">Read more &rarr;</a>
                 </div>
             </div>
         </div>

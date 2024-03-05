@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from profile_user.models import User_Profile
 from django.core.validators import MinLengthValidator
@@ -72,7 +73,10 @@ class Strategy(models.Model):
      
     type = models.CharField(max_length=1, choices=TYPE, default="S")
     version = models.CharField(max_length=10, default="1.0")
+
     name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+
     description = models.TextField()
     content = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -94,6 +98,11 @@ class Strategy(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if self.slug == '':
+            self.slug = slugify(self.name)  # Automatically generates a slug from the name.
+        super(Strategy, self).save(*args, **kwargs)
 
 
 class Replies(models.Model):
