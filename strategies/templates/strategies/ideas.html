@@ -1,5 +1,14 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %} 
 
+{% block head_title %}
+<title>Your Ideas Matter: Help Us Enhance Our Trading Strategies | IsAlgo</title>
+{% endblock head_title %}
+
+{% block head_description %}
+<meta name="description" content="Share your insights and contribute to the evolution of our trading strategies. Your perspective is invaluable in our quest to offer the most effective and versatile trading solutions.">
+{% endblock head_description %}
+
+{% block page %}
 
 {% if has_subscription or ideas|length < 6 %}
 <h1 class="mt-8 text-left text-3xl sm:text-6xl text-title font-extrabold">Ideas</h1>

@@ -1,6 +1,14 @@
 {% extends 'page.html' %}
 {% load static %}
 
+{% block head_title %}
+<title>Master the Market: Best High-Level Trading Strategies Revealed | IsAlgo</title>
+{% endblock head_title %}
+
+{% block head_description %}
+<meta name="description" content="Elevate your trading with our expert guide on high-level trading strategies. Discover versatile, backtestable, and automatable approaches that promise success across any market and timeframe.">
+{% endblock head_description %}
+
 {% block page %}
 
     {% if has_subscription or strategies|length < 6 %}

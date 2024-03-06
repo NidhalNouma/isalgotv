@@ -1,6 +1,14 @@
 {% extends 'page.html' %}
 {% load static %}
 
+{% block head_title %}
+<title>Join Our Profitable Community: Elevate Your Trading Game | IsAlgo</title>
+{% endblock head_title %}
+
+{% block head_description %}
+<meta name="description" content="Become part of a community where trading success is the norm. Discover strategies results, insights, and support to thrive in any market. Your journey towards profitability starts here.">
+{% endblock head_description %}
+
 {% block page %}
 
 {% if has_subscription or results|length < 6 %}

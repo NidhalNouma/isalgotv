@@ -77,9 +77,10 @@ let stripe, cardElement, elements;
 function mountStripeElement(id) {
   const lbl = document.getElementById("lbl-card-element-" + id);
   if (!stripe) {
-    stripe = Stripe(
-      "pk_test_51NQMS2J5gHo8PE1NkuozkIhIpTZ04rH9zWLHdqqFwSTTPG3ciGfylBLolIdsaYnddawM6sN55JmoTuJCNjEQO4ST00JFXmLBeR"
-    );
+    // const stripe_key = document
+    //   .getElementById("contextData")
+    //   .getAttribute("stripe_public_key");
+    stripe = Stripe(stripe_public_key);
   }
 
   let color = "#fff";

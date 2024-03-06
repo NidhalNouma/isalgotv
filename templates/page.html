@@ -30,6 +30,9 @@
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}
+    <script type="text/javascript">
+      const stripe_public_key = "{{ stripe_public_key }}"; 
+    </script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
     <script src="{% static 'js/index.js' %}" defer></script>
     <!-- Google Tag Manager -->

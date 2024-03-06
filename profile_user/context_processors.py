@@ -26,4 +26,6 @@ def profile_context(request):
 
         'notifications': getattr(request, 'notifications', False),
         'coupon': coupon,
+
+        "stripe_public_key": env('STRIPE_API_PUBLIC_KEY'),
     }
