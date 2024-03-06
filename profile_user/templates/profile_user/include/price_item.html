@@ -32,7 +32,7 @@
   <div class="mt-10 mb-2">
     {% if user.is_authenticated %} {% if subscription %} 
     {%if subscription_plan == title %}
-    {% if subscription_status == 'canceled' %}
+    {% if subscription_status == 'canceled' or subscription_status == 'past_due' %}
     <button
       onclick="mountStripeElement('{{title}}')"
       data-modal-target="staticModal-{{title}}"
@@ -40,6 +40,15 @@
       class="w-full btn-secondary mx-auto mt-3"
     >
       Renew &#8634;
+    </button>
+    {% elif subscription_status == 'incomplete' %}
+    <button
+      onclick="mountStripeElement('{{title}}')"
+      data-modal-target="staticModal-{{title}}"
+      data-modal-toggle="staticModal-{{title}}"
+      class="w-full btn-secondary mx-auto mt-3"
+    >
+      Complete &#8634;
     </button>
     {% else %}
     <button

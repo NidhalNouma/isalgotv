@@ -78,6 +78,10 @@ def check_user_and_stripe_middleware(get_response):
                         has_subscription = True
                     elif subscription.status == "canceled" and subscription.current_period_end > time.time():
                         has_subscription = True
+                    elif subscription.status == "incomplete":
+                        has_subscription = False
+
+                    # print(subscription_status)
                 except Exception as e:
                     print("Error with getting stripe data ...", e)
 

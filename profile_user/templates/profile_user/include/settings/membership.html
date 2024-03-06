@@ -32,6 +32,11 @@
       >
       to renew
     </p>
+
+    {% elif subscription_status == 'incomplete' %}
+    <p class="mt-2 text-left text-title text-base">
+      Your subscription is incomplete.
+    </p>
     {% else %}
     <p class="mt-2 text-left text-title text-base">
       Your subscription renew on

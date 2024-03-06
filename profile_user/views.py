@@ -239,10 +239,11 @@ def edit_tradingview_username(request):
 
         profile_user.save()
 
-        strategies = Strategy.objects.all()
+        if request.has_subscription:
+            strategies = Strategy.objects.all()
 
-        for strategy in strategies:
-            access_response = give_access(strategy.id, profile_user.id, True)
+            for strategy in strategies:
+                access_response = give_access(strategy.id, profile_user.id, True)
 
         # if access_response == None:
         #     error = "an error occurred while getting access. Please try again later or contact our support team."
@@ -469,6 +470,7 @@ def create_subscription_stripeform(request):
                 items=[{
                     'price': price_id,
                 }],
+                payment_behavior="error_if_incomplete",
                 coupon=coupon_id,
             )
 
