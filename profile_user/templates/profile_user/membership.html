@@ -52,7 +52,7 @@
             <p class="text-left text-title text-lg font-semibold">You're subscribing to our <span class="text-title font-extrabold">{{ subscription_plan }}</span> plan.</p>
             {% if subscription_status == 'canceled' %}
             <p class="mt-2 text-left text-title text-base">Your subscription was canceled, end on <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span></p>
-            {% elif subscription_status == 'incomplete' %}
+            {% elif subscription_status == 'incomplete' or subscription_status == 'incomplete_expired'%}
             <p class="mt-2 text-left text-title text-base">Your subscription is incomplete.</p>
             {% else %}
             <p class="mt-2 text-left text-title text-base">Your subscription renew on <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span></p>

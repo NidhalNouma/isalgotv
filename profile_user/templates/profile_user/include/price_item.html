@@ -41,7 +41,7 @@
     >
       Renew &#8634;
     </button>
-    {% elif subscription_status == 'incomplete' %}
+    {% elif subscription_status == 'incomplete'  or subscription_status == 'incomplete_expired' %}
     <button
       onclick="mountStripeElement('{{title}}')"
       data-modal-target="staticModal-{{title}}"

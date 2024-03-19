@@ -81,7 +81,7 @@ def check_user_and_stripe_middleware(get_response):
                     elif subscription.status == "incomplete":
                         has_subscription = False
 
-                    # print(subscription_status)
+                    # print(subscription_status, has_subscription)
                 except Exception as e:
                     print("Error with getting stripe data ...", e)
 

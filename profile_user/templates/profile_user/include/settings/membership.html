@@ -33,9 +33,19 @@
       to renew
     </p>
 
-    {% elif subscription_status == 'incomplete' %}
+    {% elif subscription_status == 'incomplete' or subscription_status == 'incomplete_expired' %}
     <p class="mt-2 text-left text-title text-base">
       Your subscription is incomplete.
+    </p>
+
+    <p class="mt-4 text-right text-text text-sm">
+      Click
+      <a
+        href="{% url 'membership' %}"
+        class="cursor-pointer underline font-semibold"
+        >here</a
+      >
+      to complete
     </p>
     {% else %}
     <p class="mt-2 text-left text-title text-base">

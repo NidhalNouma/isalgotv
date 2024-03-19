@@ -5,10 +5,10 @@
 
 @layer base {
     :root {
-      --color-primary: 260 100% 30%;
-      --color-secondary: 178 40% 52%;
-      --color-accent: 229 76% 72%;
-      --color-background: 188 16% 92%;
+      --color-primary: 260 100% 30%; /* hex - #330099 */
+      --color-secondary: 178 40% 52%; /* hex - #54b6b2 */
+      --color-accent: 229 76% 72%;  /* hex - #8195ee */
+      --color-background: 188 16% 92%; /* hex - #e7edee */
       --color-text: 0 0% 20%;
       --color-text-light: 0 0% 80%;
       --color-title: 0 0% 0%;
@@ -20,7 +20,7 @@
       --color-secondary: 178 40% 52%;
       --color-accent: 229 76% 72%;
       /* --color-accent: 8 78% 68%; */
-      --color-background: 188 25% 4%;
+      --color-background: 188 25% 4%; /* hex - #080c0d */
       --color-text: 0 0% 80%;
       --color-text-light: 0 0% 80%;
       --color-title: 0 0% 100%;

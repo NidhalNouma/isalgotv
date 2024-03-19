@@ -14,7 +14,13 @@ from django.db.models.functions import Random
 from django.db.models import F
 
 def get_strategies(request):
-    strategies = Strategy.objects.prefetch_related(
+    
+    if request.user.is_staff or request.user.is_superuser:
+        strategies = Strategy.objects.prefetch_related(
+            Prefetch('images', queryset=StrategyImages.objects.all())
+        )
+    else:
+        strategies = Strategy.objects.filter(is_live=True).prefetch_related(
             Prefetch('images', queryset=StrategyImages.objects.all())
         )
     
@@ -51,9 +57,14 @@ def get_strategy(request, slug):
     results = {}
     
     try:
-        strategy = Strategy.objects.select_related('created_by').prefetch_related(
-                'images',
-            ).get(slug=slug)
+        if request.user.is_staff or request.user.is_superuser:
+            strategy = Strategy.objects.select_related('created_by').prefetch_related(
+                    'images',
+                ).get(slug=slug)
+        else:
+            strategy = Strategy.objects.filter(is_live=True).select_related('created_by').prefetch_related(
+                    'images',
+                ).get(slug=slug)
 
         comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
