@@ -5,7 +5,7 @@
     id="add-comment-btn"
     onclick='toggleForm("add-comment-btn", "add-comment-form")'
   >
-    Share your idea
+    Share your thoughts
   </button>
   {% elif user.is_authenticated and not has_subscription %}
   <button
@@ -13,7 +13,7 @@
     data-modal-target="upgrade-modal"
     data-modal-toggle="upgrade-modal"
   >
-    Share your idea
+    Share your thoughts
   </button>
   {% else %} {% comment %}
   <a
@@ -101,7 +101,7 @@
         name="description"
         rows="5"
         class="block mx-1.5 p-2 w-full text-sm input-text"
-        placeholder="Your idea..."
+        placeholder="Your thoughts..."
       ></textarea>
       <button
         onclick="openLoader('', '-add-comment', 'inline-flex')"

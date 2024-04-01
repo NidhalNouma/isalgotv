@@ -491,7 +491,16 @@ function handleSettingCsvFileSelect(event) {
         if (document.getElementById("time_frame"))
           document.getElementById("time_frame").value = num;
         if (document.getElementById("time_frame_period")) {
-          const val = str.replace(/(\r\n|\n|\r)/gm, "");
+          let val = str.replace(/(\r\n|\n|\r)/gm, "");
+
+          if (val.toLowerCase().indexOf("second") !== -1) val = "seconds";
+          else if (val.toLowerCase().indexOf("minute") !== -1) val = "minutes";
+          else if (val.toLowerCase().indexOf("hour") !== -1) val = "hours";
+          else if (val.toLowerCase().indexOf("day") !== -1) val = "days";
+          else if (val.toLowerCase().indexOf("week") !== -1) val = "weeks";
+          else if (val.toLowerCase().indexOf("month") !== -1) val = "months";
+          else if (val.toLowerCase().indexOf("year") !== -1) val = "years";
+
           document.getElementById("time_frame_period").value = val;
         }
       } else if (key === "Initial capital") {

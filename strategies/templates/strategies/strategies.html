@@ -40,12 +40,18 @@
                     </h3>
                 </a>
                 <p class="text-text line-clamp-3 text-sm">{{ strategy.description }}</p>
-                <div class="flex items-center justify-between mt-2">
+                <div class="flex items-center justify-between mt-1">
                     <span class="text-text/60 text-xs font-light">
-                        {{ strategy.strategyresults_set.all|length }} Results | {{ strategy.strategycomments_set.all|length }} Ideas
+                        {% if strategy.strategyresults_set.all|length > 0 %}
+                        {{ strategy.strategyresults_set.all|length }} Results
+                        {% endif %} 
+                        
+                        <!-- {% if strategy.strategycomments_set.all|length > 0 %}
+                            {{ strategy.strategycomments_set.all|length }} Comments
+                        {% endif %} -->
                     </span>
 
-                    <a href="{% url 'strategy' slug=strategy.slug %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border border-secondary">Read more &rarr;</a>
+                    <a href="{% url 'strategy' slug=strategy.slug %}" class="text-xs text-secondary px-2 py-1 rounded-full border border-secondary">Read more &rarr;</a>
                 </div>
             </div>
         </div>

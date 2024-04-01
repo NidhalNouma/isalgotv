@@ -1,3 +1,5 @@
+{% load custom_filters %}
+
 <div class="overflow-hidden">
   <div class="flex items-center">
     <a class="" href="{% url 'results' %}?pair={{result.pair}}">
@@ -7,12 +9,22 @@
       >
     </a>
     {% if hide_title != "True" %}
-    <a class="grow" href="{% url 'strategy' id=result.strategy.id %}">
+    <a class="grow" href="{% url 'strategy' slug=result.strategy.slug %}">
       <h6 class="text-xs text-title underline truncate line-clamp-1">
         {{result.strategy.name}}
       </h6>
     </a>
     {% endif %}
+  </div>
+
+
+  <div class="w-full max-w-[12rem] bg-text/30 rounded-xl border-primary border my-1">
+    <div
+      class="bg-text text-xs text-[0.7rem] py-[0.1rem] font-medium text-background text-center p-0.25 leading-none rounded-full"
+      style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
+    >
+      {% comment %} {{ result.test_start_at|period_in_months_years:result.test_end_at }} {% endcomment %}
+    </div>
   </div>
 
   <div class="text-xs font-medium my-2 text-text/70">
@@ -47,7 +59,7 @@
   </div>
 
   <a
-    href="{% url 'strategy' id=result.strategy.id %}?result={{result.id}}"
+    href="{% url 'strategy' slug=result.strategy.slug %}?result={{result.id}}"
     class="w-fit flex items-center px-1 bg-secondary text-xs rounded font-medium text-text dark:text-background"
   >
     Check and vote
