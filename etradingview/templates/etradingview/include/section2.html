@@ -22,12 +22,14 @@
         class="parallax-round-reverse max-w-sm w-full object-scale-down min-h-full blur-[3px]"
         alt=""
         src="{% static img_src %}"
+        loading="lazy"
       />
 
       <div
         class="absolute scale-105 shadow-xl shadow-background/50 border-2 p-0 border-background rounded-lg inset-x-0 top-1/2 -translate-y-1/2 bg-background/25 w-full h-52 overflow-hidden"
       >
         <img
+          loading="lazy"
           class="parallax-round-reverse max-w-sm w-full object-scale-down min-h-full"
           alt=""
           src="{% static img_src %}"

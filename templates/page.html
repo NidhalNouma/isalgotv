@@ -5,10 +5,9 @@
 <!DOCTYPE html>
 <html lang="en" class="dark max-w-screen overflow-x-hidden">
   <head>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Manrope:wght@200..800&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Manrope:wght@200..800&family=Sora:wght@100..800&display=swap" rel="stylesheet">
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,11 +20,30 @@
     
     <!-- This is for search engines and won't affect the actual URL directly, but it's a good practice to ensure your slug is reflected in the URL structure managed by your server or CMS -->
     <link rel="canonical" href="https:www.//isalgo.com/easy-trading-strategies-for-all-levels">
-    <link
-    rel="icon"
-    href="{% static 'images/logo.png' %}"
-    type="image/x-icon"
-    />
+    <link rel="icon" href="{% static 'images/logo.png' %}" type="image/x-icon" />
+    <link rel="icon" sizes="16x16" href="{% static 'images/logo_img_16_16.png' %}" type="image/png">
+    <link rel="icon" sizes="32x32" href="{% static 'images/logo_img_32_32.png' %}" type="image/png">
+    <link rel="icon" type="image/png" sizes="48x48" href="{% static 'images/logo_img_48_48.png' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/logo_img_180_180.png' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{% static 'mages/logo_img_144_144.png' %}">
+
+
+
+    <!-- Open Graph / Facebook meta tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="IsAlgo">
+    <meta property="og:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game.">
+    <meta property="og:url" content="https://www.isalgo.com">
+    <meta property="og:image" content="{% static 'images/logo.png' %}">
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IsAlgo">
+    <meta name="twitter:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game.">
+    <meta name="twitter:url" content="https://www.isalgo.com">
+    <meta name="twitter:image" content="{% static 'images/logo.png' %}">
+
     {% block head %} {% endblock head %}
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
@@ -36,37 +54,37 @@
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
     <script src="{% static 'js/index.js' %}" defer></script>
     <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-WZRB9CDM');</script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WZRB9CDM');</script>
   <!-- End Google Tag Manager -->
   </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7B05SE08Q7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7B05SE08Q7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-7B05SE08Q7');
-</script>
-<!-- end Google tag -->
+      gtag('config', 'G-7B05SE08Q7');
+    </script>
+    <!-- end Google tag -->
 
   <body
     class="bg-background flex flex-col min-h-screen relative max-w-8xl mx-auto overflow-x-clip"
   >
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZRB9CDM"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZRB9CDM"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     {% block toppage %} {% endblock toppage %}
     <div id="main-div" class="container mx-auto grow flex flex-col px-3 sm:px-6 relative">
       {% include 'navbar.html' %} 
-      <div class="min-h-[90vh]">
+      <div class="min-h-[90vh] flex flex-col relative">
       {% block page %} {% endblock page %}
       </div>
        {% include 'footer.html' %}
