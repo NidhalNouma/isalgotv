@@ -1,21 +1,21 @@
 <div class="">
   {% if user.is_authenticated and has_subscription %}
-  <button
+  {% comment %} <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
     data-modal-target="add-result-modal"
     data-modal-toggle="add-result-modal"
   >
     Share your results
-  </button>
+  </button> {% endcomment %}
   {% elif user.is_authenticated and not has_subscription %}
-  <button
+  {% comment %} <button
     class="text-secondary text-sm font-semibold underlinei"
     data-modal-target="upgrade-modal"
     data-modal-toggle="upgrade-modal"
   >
     Share your results
-  </button>
+  </button> {% endcomment %}
   {% else %}
   {% comment %} <a
     class="text-secondary text-sm font-semibold underlinei"

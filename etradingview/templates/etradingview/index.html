@@ -43,7 +43,7 @@ setInterval(() => {
 </script>
 {% endblock toppage %}
 {% block page %} 
-<main class="max-w-full min-h-[80vh] relative pt-10 md:pt-16 -scroll-mb-28 flex lg:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
+<main class="max-w-full md:min-h-[80vh] relative pt-10 md:pt-16 -scroll-mb-28 flex lg:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
   <div class="relative my-auto lg:text-start text-center grow">
     <div class="my-auto">
       <h2 class="text-title text-4xl sm:text-7xl font-extrabold">
@@ -71,9 +71,34 @@ setInterval(() => {
 
 
 <section class="mx-auto w-full mt-28 relative flex flex-col">
-  <h2 class="text-title text-5xl font-semibold text-center mt-16 mb-2">Improve your impact</h2>
-  <span class="bg-secondary dark:text-background text-title  text-5xl font-semibold mx-auto text-center mb-8">on the marketr</span>
-  {% include "include/symbols_imgs.html" %}
+  <h2 class="text-title text-5xl font-semibold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title  text-5xl font-semibold mx-auto text-center truncate">for traders</span></h2>
+  <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
+
+  <div class="grid md:grid-cols-3 gap-5 mt-12 ">
+
+    <div class="border-r-0 md:border-r-2 border-secondary">
+      <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
+        <h5 class="text-secondary text-xl font-bold mb-4 uppercase">Easy to use</h5>
+        <p class="text-text font-semibold ">Our tools boast simplicity and extensive customization options, seamlessly integrating into your workflow.</p>
+      </div>
+    </div>
+
+    <div class="border-r-0 md:border-r-2 border-accent">
+      <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
+        <h5 class="text-accent text-xl font-bold mb-4 uppercase">BEYOND CHARTS</h5>
+        <p class="text-text font-semibold ">Our aim is to foster a thriving community where we can grow together.</p>
+      </div>
+    </div>
+
+    <div class="">
+      <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
+        <h5 class="text-title text-xl font-bold mb-4 uppercase">Stay ahead</h5>
+        <p class="text-text font-semibold ">Access all the essentials for navigating the market like a pro, all in one place, across all assets.</p>
+      </div>
+    </div>
+
+  </div>
+ 
 
 </section>
 
@@ -83,10 +108,10 @@ setInterval(() => {
   {% include "include/icons_svg.html" %}
 
   <div class=" flex flex-col">
-    {% include "include/section2.html" with class=" bg-text/10" img_class="rotate-3 scale-110  " color="primary" h1="Universal Applicability: " span="Any Symbol, Any Timeframe" span_color="bg-text text-background " h2="Unlock the full potential of our strategies, tailored to suit any symbol and timeframe. Experience seamless performance on every chart" img_src="images/symbols.svg" %}
-    {% include "include/section2.html" with class="bg-accent/10  md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  " h1="Tailored Settings for " span="Optimal Results" span_color="bg-accent dark:text-background" h2="Every strategy comes with its own customizable settings, allowing you to fine-tune and maximize its effectiveness" img_src="images/settings.svg" %}
-    {% include "include/section2.html" with class="bg-secondary/10 " img_class="rotate-6 scale-110  " color="primary" h1="Stay Informed with " span="Entry and Exit Alerts" span_color="bg-secondary dark:text-background" h2="All our strategies feature built-in alerts to keep you updated on every entry and exit point, ensuring you never miss a crucial moment" img_src="images/alerts.svg" %}
-    {% include "include/section2.html" with class="bg-primary/10 md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  "  h1="Join the " span="Profits Together" span_color="bg-primary text-title-light"  h2="Leverage our community-tested results and contribute by sharing your best outcomes for collective success" img_src="images/profits.svg" %}
+    {% include "include/section2.html" with class="border-4 border-text/30" img_class="rotate-3 scale-110  " color="primary" h1="Universal Applicability: " span="Any Symbol, Any Timeframe" span_color="bg-text text-background " h2="Unlock the full potential of our strategies, tailored to suit any symbol and timeframe. Experience seamless performance on every chart" img_src="images/symbols.svg" %}
+    {% include "include/section2.html" with class="border-4 border-accent/30  md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  " h1="Tailored Settings for " span="Optimal Results" span_color="bg-accent dark:text-background" h2="Every strategy comes with its own customizable settings, allowing you to fine-tune and maximize its effectiveness" img_src="images/settings.svg" %}
+    {% include "include/section2.html" with class="border-4 border-secondary/30 " img_class="rotate-6 scale-110  " color="primary" h1="Stay Informed with " span="Entry and Exit Alerts" span_color="bg-secondary dark:text-background" h2="All our strategies feature built-in alerts to keep you updated on every entry and exit point, ensuring you never miss a crucial moment" img_src="images/alerts.svg" %}
+    {% include "include/section2.html" with class="border-4 border-primary/30 md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  "  h1="Join the " span="Profits Together" span_color="bg-primary text-title-light"  h2="Leverage our community-tested results and contribute by sharing your best outcomes for collective success" img_src="images/profits.svg" %}
   </div>
 </section>
 
@@ -331,9 +356,10 @@ setInterval(() => {
     <div class="flex flex-col mt-2 mb-auto w-full items-center">
       <a
       href="{% url 'docs_contactus' %}"
-      class="btn-text text-text from-text/60 via-text/40 to-text/20 max-w-xs mb-5 mt-4 sm:text-2xl py-3 px-6"
+      class="btn-text text-text font-extrabold from-text/60 via-text/40 to-text/20 max-w-xs mb-5 mt-4 text-3xl py-4 px-6"
       >Contact us
-      <svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-width="2" d="M1,2 L22,2 L22,18 L14,18 L6,22 L6,18 L1,18 L1,2 Z M6,10 L7,10 L7,11 L6,11 L6,10 Z M11,10 L12,10 L12,11 L11,11 L11,10 Z M16,10 L17,10 L17,11 L16,11 L16,10 Z"></path></svg></a>
+      <svg class="h-7 w-7 ml-2 " stroke="currentColor" fill="currentColor" stroke-width="0.3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 2H8C4.691 2 2 4.691 2 8v13a1 1 0 0 0 1 1h13c3.309 0 6-2.691 6-6V8c0-3.309-2.691-6-6-6zm4 14c0 2.206-1.794 4-4 4H4V8c0-2.206 1.794-4 4-4h8c2.206 0 4 1.794 4 4v8z"></path><path d="M7 9h10v2H7zm0 4h7v2H7z"></path></svg>
+      </a>
     </div>
 
   </div>

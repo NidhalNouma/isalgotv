@@ -64,8 +64,12 @@
   <!-- End Google Tag Manager (noscript) -->
 
     {% block toppage %} {% endblock toppage %}
-    <div id="main-div" class="container mx-auto grow flex flex-col px-3 sm:px-6 relative ">
-      {% include 'navbar.html' %} {% block page %} {% endblock page %} {% include 'footer.html' %}
+    <div id="main-div" class="container mx-auto grow flex flex-col px-3 sm:px-6 relative">
+      {% include 'navbar.html' %} 
+      <div class="min-h-[90vh]">
+      {% block page %} {% endblock page %}
+      </div>
+       {% include 'footer.html' %}
     </div>
     
     {% if user.is_authenticated and not has_subscription and coupon.code %}

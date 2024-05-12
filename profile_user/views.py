@@ -551,6 +551,11 @@ def send_email(request):
             error = "Message not provided!"
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
+            
+        if len(content) < 200:
+            error = "Minimum message length is 200 characters!"
+            response = render(request, 'include/errors.html', context={"error": error})
+            return retarget(response, "#contact_us_mail_error")
         
         try:
             email_message = EmailMessage(

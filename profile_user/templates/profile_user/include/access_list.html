@@ -10,7 +10,7 @@
     class="my-6 border-b-[0px] border-text/40 flex justify-between items-center"
   >
     <a
-      href="{% url 'strategy' strategy.id %}"
+      href="{% url 'strategy' slug=strategy.slug %}"
       class="text-title text-sm hover:underline"
       >{{strategy.name}} &rarr;</a
     >
