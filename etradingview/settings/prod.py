@@ -73,8 +73,8 @@ LOGGING = {
             'level': 'INFO',  # Adjust as needed
             'propagate': True,
         },
-         'social_django': {
-            'handlers': ['file'],
+        'django-allauth': {
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': True,
         },
