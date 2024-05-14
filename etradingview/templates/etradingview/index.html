@@ -103,15 +103,17 @@ setInterval(() => {
 </section>
 
 
-<section class="mt-28 my-8 ">
-    <div id="cr" class="relative w-10/12 aspect-video mx-auto cr">
+<section class="mt-36 my-8 ">
+    <h2 class="text-title text-5xl font-semibold text-center mt-0 mb-4">To turn losses <span class="bg-accent dark:text-background text-title  text-5xl font-semibold mx-auto text-center truncate">into gains</span></h2>
+    <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-16 sm:max-w-full max-w-md mx-auto">Reverse losses and maximize profit potential</h2>
+    <div id="cr" class="relative w-10/12 aspect-video mx-auto cr px-3 rounded-lg "  style="background-color: rgb(20, 23, 33)">
       <div class="absolute inset-0 h-full w-full overflow-hidden">
-          <img src="{% static '/images/landing_result_1.png' %}" alt="Image 1" class="inset-0 h-full w-full object-scale-down image-1">
+          <img src="{% static 'images/landing-result-profit.png' %}" alt="Trading strategy result 1" class="rounded-lg border-2 border-accent inset-0 h-full w-full object-scale-down image-1">
       </div>
       <div class="absolute inset-0 h-full w-full overflow-hidden">
-          <img src="{% static '/images/landing_result_2.png' %}" alt="Image 2" class="inset-0 h-full w-full object-scale-down image-2">
+          <img src="{% static 'images/landing-result-loss.png' %}" alt="Trading strategy result 2" class="rounded-lg border-2 border-secondary inset-0 h-full w-full object-scale-down image-2">
       </div>
-      <div id="separator" class="absolute left-1/2 -translate-x-1/2 h-full w-1 scale-y-100 rounded-full bg-gradient-to-t from-secondary to-accent"></div>
+      <div id="separator" class="absolute left-0 -translate-x-1/2 h-full w-1 scale-y-105 rounded-full bg-gradient-to-t from-secondary to-accent"></div>
   </div>
 
   <script>
@@ -120,16 +122,26 @@ setInterval(() => {
     const image1 = document.querySelector('.image-1');
     const image2 = document.querySelector('.image-2');
 
-    container.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', (e) => {
         const rect = container.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const width = rect.width;
 
-        const percent = (x / width) * 100;
+        if (x >= 0 && x <= width) {
+            const percent = (x / width) * 100;
 
-        separator.style.left = `${percent}%`;
-        image1.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-        image2.style.clipPath = `inset(0 0 0 ${percent}%)`;
+            separator.style.left = `${percent}%`;
+            image1.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            image2.style.clipPath = `inset(0 0 0 ${percent}%)`;
+        } else if (x < 0) {
+            separator.style.left = `0%`;
+            image1.style.clipPath = `inset(0 100% 0 0)`;
+            image2.style.clipPath = `inset(0 0 0 0)`;
+        } else if (x > width) {
+            separator.style.left = `100%`;
+            image1.style.clipPath = `inset(0 0% 0 0)`;
+            image2.style.clipPath = `inset(0 0 0 100%)`;
+        }
     });
 </script>
 </section>

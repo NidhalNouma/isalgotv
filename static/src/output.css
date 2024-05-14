@@ -2108,6 +2108,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: auto;
 }
 
+.mt-36 {
+  margin-top: 9rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -3351,6 +3355,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
 
+.bg-gradient-to-l {
+  background-image: linear-gradient(to left, var(--tw-gradient-stops));
+}
+
 .\!from-text {
   --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position) !important;
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position) !important;
@@ -3372,6 +3380,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .from-text\/60 {
   --tw-gradient-from: hsl(var(--color-text) / 0.6) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-accent {
+  --tw-gradient-from: hsl(var(--color-accent) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-accent) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-background {
+  --tw-gradient-from: hsl(var(--color-background) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-background) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -4808,6 +4828,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .sm\:max-w-sm {
     max-width: 24rem;
+  }
+
+  .sm\:max-w-full {
+    max-width: 100%;
   }
 
   .sm\:grid-cols-2 {
