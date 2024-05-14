@@ -11,7 +11,7 @@ from django_htmx.http import trigger_client_event
 
 from .models import User_Profile, Notification
 from strategies.models import Strategy
-from .forms import User_ProfileForm, PaymentCardForm
+from .forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django.db.models import Max
 from strategies.models import *
@@ -24,7 +24,6 @@ import environ
 env = environ.Env()
 
 from .utils.tradingview import *
-from .utils.send_mails import *
 
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
@@ -76,8 +75,8 @@ def home(request):
 
     if step == 4:
         res_num = 8
-        new_strategies = Strategy.objects.all().order_by('-created_at')[:res_num]
-        most_viewed_strategies = Strategy.objects.all().order_by('-view_count')[:res_num]
+        new_strategies = Strategy.objects.filter(is_live=True).order_by('-created_at')[:res_num]
+        most_viewed_strategies = Strategy.objects.filter(is_live=True).order_by('-view_count')[:res_num]
         new_results = StrategyResults.objects.all().order_by('-created_at')[:res_num]
         best_results = StrategyResults.objects.all().order_by('-profit_factor')[:res_num]
         new_ideas = StrategyComments.objects.all().order_by('-created_at')[:res_num]
@@ -129,17 +128,15 @@ def register(request):
     form = UserCreationForm()
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST) 
+        form = UserCreationEmailForm(request.POST) 
         # print(form)
         try:
             if form.is_valid():
                 user = form.save(commit=False)
-                print("user ", user)
                 user.email = user.username
                 user.save()
                 User_Profile.objects.create(user = user)
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                send_welcome_email(user.email, user.email)
                 return redirect('home')
             else:
                 messages.error(request, "An error occurred while registering")
@@ -173,8 +170,6 @@ def login_user(request):
         user = authenticate(request, username = email, password = password)
         if user is not None:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-
-            # send_welcome_email(user.email, user.email)
 
             return redirect('home')
         else:
@@ -551,7 +546,7 @@ def send_email(request):
             error = "Message not provided!"
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
-            
+
         if len(content) < 200:
             error = "Minimum message length is 200 characters!"
             response = render(request, 'include/errors.html', context={"error": error})

@@ -103,6 +103,38 @@ setInterval(() => {
 </section>
 
 
+<section class="mt-28 my-8 ">
+    <div id="cr" class="relative w-10/12 aspect-video mx-auto cr">
+      <div class="absolute inset-0 h-full w-full overflow-hidden">
+          <img src="{% static '/images/landing_result_1.png' %}" alt="Image 1" class="inset-0 h-full w-full object-scale-down image-1">
+      </div>
+      <div class="absolute inset-0 h-full w-full overflow-hidden">
+          <img src="{% static '/images/landing_result_2.png' %}" alt="Image 2" class="inset-0 h-full w-full object-scale-down image-2">
+      </div>
+      <div id="separator" class="absolute left-1/2 -translate-x-1/2 h-full w-1 scale-y-100 rounded-full bg-gradient-to-t from-secondary to-accent"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('cr');
+    const separator = document.getElementById('separator');
+    const image1 = document.querySelector('.image-1');
+    const image2 = document.querySelector('.image-2');
+
+    container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const width = rect.width;
+
+        const percent = (x / width) * 100;
+
+        separator.style.left = `${percent}%`;
+        image1.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+        image2.style.clipPath = `inset(0 0 0 ${percent}%)`;
+    });
+</script>
+</section>
+
+
 <section class="mx-auto max-w-full mt-28 my-8 relative">
 
   {% include "include/icons_svg.html" %}

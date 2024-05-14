@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import environ
 
+
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
@@ -243,3 +244,9 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+# Backend tasks
+
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Configure as per your broker
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://' + env('REDIS_ENDPOINT') + ':6379/0'  # Configure as per your broker
+CELERY_RESULT_BACKEND = 'redis://' + env('REDIS_ENDPOINT') + ':6379/0'
