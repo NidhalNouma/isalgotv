@@ -18,7 +18,7 @@ CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 DATABASES = {
     'default': {
