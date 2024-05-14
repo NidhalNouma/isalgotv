@@ -78,6 +78,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'allauth': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     },
 }
 

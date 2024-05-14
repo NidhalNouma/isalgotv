@@ -32,7 +32,12 @@ from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
 PRICES = settings.PRICES
 
-# Create your views here.
+from allauth.account.signals import user_signed_up
+from django.dispatch import receiver
+
+@receiver(user_signed_up)
+def send_welcome_email_allauth(request, user, **kwargs):
+    print('new user sign up ... ', user.email)
 
 @login_required(login_url='login')
 def home(request):

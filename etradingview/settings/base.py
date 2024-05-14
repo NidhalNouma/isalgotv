@@ -187,11 +187,6 @@ DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
 
 # Django allauth
 
-SITE_ID = 2
-
-LOGIN_REDIRECT_URL = '/'
-SOCIALACCOUNT_LOGIN_ON_GET= True
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
@@ -208,6 +203,14 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+
+SITE_ID = 2
+
+# LOGIN_REDIRECT_URL = '/p'
+SOCIALACCOUNT_LOGIN_ON_GET= True
+
+# SOCIALACCOUNT_ADAPTER = 'etradingview.adapters.CustomSocialAccountAdapter'
 
 # Prices
 
@@ -246,7 +249,5 @@ CKEDITOR_CONFIGS = {
 
 # Backend tasks
 
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Configure as per your broker
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_BROKER_URL = 'redis://' + env('REDIS_ENDPOINT') + ':6379/0'  # Configure as per your broker
 CELERY_RESULT_BACKEND = 'redis://' + env('REDIS_ENDPOINT') + ':6379/0'
