@@ -16,9 +16,9 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']
 
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
 
 DATABASES = {
     'default': {
@@ -71,6 +71,11 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',  # Adjust as needed
+            'propagate': True,
+        },
+         'social_django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
             'propagate': True,
         },
     },
