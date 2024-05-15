@@ -18,6 +18,8 @@ from strategies.models import *
 
 from django.core.mail import EmailMessage
 
+from .tasks import send_new_member_email_task, send_cancel_membership_email_task, send_new_lifetime_email_task
+
 
 import datetime
 import environ
@@ -374,6 +376,7 @@ def setdefault_payment_method(request):
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
     if request.method == 'POST':
+        # TODO: An error occurred when cancelling the subscription and then creating a new one in the frontend
 
         plan_id = request.GET.get('plan','')
         price_id = PRICE_LIST.get(plan_id, '')
@@ -456,8 +459,8 @@ def create_subscription_stripeform(request):
 
                 User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
                 print("New lifetime has been created ...")
-
-                # TODO: Send new life time mail
+                
+                send_new_lifetime_email_task(request.user.email)
 
                 if len(old_subscription_id) > 0:
                     cancel_subscription = stripe.Subscription.delete(old_subscription_id)
@@ -486,8 +489,7 @@ def create_subscription_stripeform(request):
 
                 return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
             else:
-                pass
-                # TODO: Send subscribe mail
+                send_new_member_email_task(request.user.email)
 
             # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
             return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
@@ -520,7 +522,7 @@ def cancel_subscription(request):
                 end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
                 context['subscription_period_end'] = end_time
 
-                # TODO: Send cancel subscribtion mail
+                send_cancel_membership_email_task(request.user.email)
 
                 return render(request, 'include/settings/membership.html', context)
             except Exception as e:

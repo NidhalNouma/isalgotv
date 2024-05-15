@@ -29,5 +29,5 @@ urlpatterns = [
 
 
     # path('preview-email/', preview_email, name='preview_email'),
-    # path('send-email/', send_email, name='send_email'),
+    path('send-email/', send_email, name='send_email'),
 ]
