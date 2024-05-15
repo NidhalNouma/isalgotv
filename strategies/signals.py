@@ -20,6 +20,7 @@ def capture_pre_save_state(sender, instance, **kwargs):
     else:
         instance._pre_save_instance = None
 
+
 @receiver(post_save, sender=Strategy)
 def check_is_live_change(sender, instance, created, **kwargs):
     old_is_live = getattr(instance, '_pre_save_instance', None)
@@ -28,10 +29,5 @@ def check_is_live_change(sender, instance, created, **kwargs):
     # Check if 'is_live' was changed from False to True
     if old_is_live is False and new_is_live is True:
         send_strategy_email_to_all_users.delay(instance.name, 'https://www.isalgo.com/strategies/' + instance.slug, instance.tradingview_url, instance.image_url)
-        # # Retrieve all users from the database
-        # users = User.objects.all()
-        # # Loop through each user and print their email
-        # print('Sending email to all users for the new strategy ', instance.name)
-        # for user in users:
-        #     new_strategy_mail(user.email, instance.name, 'https://www.isalgo.com/strategies/' + instance.slug, instance.tradingview_url, instance.image_url)
+
 
