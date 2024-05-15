@@ -207,7 +207,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 2
 
-# LOGIN_REDIRECT_URL = '/p'
+LOGIN_REDIRECT_URL = '/p'
 SOCIALACCOUNT_LOGIN_ON_GET= True
 
 # SOCIALACCOUNT_ADAPTER = 'etradingview.adapters.CustomSocialAccountAdapter'

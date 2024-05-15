@@ -317,7 +317,12 @@ htmx.on("htmx:afterRequest", (evt) => {
     closeLoader(title);
 
     const pmValue = document.getElementById("pm-" + title);
-    if (pmValue) pmValue.value = "None";
+    if (pmValue) {
+      const id1 = "payment-card-list-" + title;
+      if (document.getElementById(id1)?.classList?.contains("hidden")) {
+        pmValue.value = "None";
+      }
+    }
   }
 
   if (evt?.detail?.target.id === "setting-payment_methods") {

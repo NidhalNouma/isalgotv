@@ -53,7 +53,7 @@
       name="tradingview_username"
       id="tv_un"
       value="{{user_profile.tradingview_username}}"
-      class="bg-background border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="input-text  block w-full pl-10 p-2.5 "
       placeholder="username"
     />
   </div>
@@ -61,19 +61,30 @@
   <div id="tradingview_username_submit_error">
     {% if succes %}
     {% include 'include/succes.html' %}
-    {% else %} 
+    {% elif has_subscription %} 
     {% include 'include/infos.html' with info="By changing your tradingview username, the previous username will no longer have access to our strategies." %}
+    {% else %} 
+    {% include 'include/infos.html' with info="Choose one of our plans to get started and gain access." %}
     {% endif %} 
   </div>
-
-  <button
-    type="submit"
+{% if has_subscription %}
+<button
+type="submit"
+id="btn-tv"
+onclick="openLoader('', '-tv');"
+class="btn-primary mt-4 mb-2 w-full"
+>
+Save
+</button>
+{% else %}
+  <a
     id="btn-tv"
-    onclick="openLoader('', '-tv');"
     class="btn-primary mt-4 mb-2 w-full"
+    href="{% url 'membership' %}"
   >
-    Save
-  </button>
+    Choose a plan
+  </a>
+  {% endif %}
   <button
     id="spinner-tv"
     disabled

@@ -243,7 +243,8 @@ def edit_tradingview_username(request):
             strategies = Strategy.objects.all()
 
             for strategy in strategies:
-                access_response = give_access(strategy.id, profile_user.id, True)
+                if strategy.is_live:
+                    access_response = give_access(strategy.id, profile_user.id, True)
 
         # if access_response == None:
         #     error = "an error occurred while getting access. Please try again later or contact our support team."
@@ -456,6 +457,8 @@ def create_subscription_stripeform(request):
                 User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
                 print("New lifetime has been created ...")
 
+                # TODO: Send new life time mail
+
                 if len(old_subscription_id) > 0:
                     cancel_subscription = stripe.Subscription.delete(old_subscription_id)
                     print("Old subscription has been canceled ... ")
@@ -482,6 +485,9 @@ def create_subscription_stripeform(request):
                 print("Old subscription has been canceled ... ")
 
                 return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+            else:
+                pass
+                # TODO: Send subscribe mail
 
             # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
             return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
@@ -513,6 +519,8 @@ def cancel_subscription(request):
                 end_timestamp = cancel_subscription.current_period_end * 1000
                 end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
                 context['subscription_period_end'] = end_time
+
+                # TODO: Send cancel subscribtion mail
 
                 return render(request, 'include/settings/membership.html', context)
             except Exception as e:

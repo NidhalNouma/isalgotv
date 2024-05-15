@@ -10,6 +10,8 @@ stripe.api_key = env('STRIPE_API_KEY')
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
 
+# TODO: Adding subscription stripe data to the session
+
 def check_user_and_stripe_middleware(get_response):
     # One-time configuration and initialization.
 
