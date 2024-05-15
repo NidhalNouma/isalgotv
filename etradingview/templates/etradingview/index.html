@@ -71,7 +71,7 @@ setInterval(() => {
 
 
 <section class="mx-auto w-full mt-28 relative flex flex-col">
-  <h2 class="text-title text-5xl font-semibold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title  text-5xl font-semibold mx-auto text-center truncate">for traders</span></h2>
+  <h2 class="text-title text-5xl font-semibold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">for traders</span></h2>
   <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
 
   <div class="grid md:grid-cols-3 gap-5 mt-12 ">
@@ -104,7 +104,7 @@ setInterval(() => {
 
 
 <section class="mt-36 my-8 ">
-    <h2 class="text-title text-5xl font-semibold text-center mt-0 mb-4">To turn losses <span class="bg-accent dark:text-background text-title  text-5xl font-semibold mx-auto text-center truncate">into gains</span></h2>
+    <h2 class="text-title text-5xl font-semibold text-center mt-0 mb-4">To turn losses <span class="bg-accent dark:text-background text-title truncate">into gains</span></h2>
     <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-16 sm:max-w-full max-w-md mx-auto">Reverse losses and maximize profit potential</h2>
     <div id="cr" class="relative w-full sm:w-10/12 aspect-video mx-auto cr px-3 rounded-lg "  style="background-color: rgb(20, 23, 33)">
       <div class="absolute inset-0 h-full w-full overflow-hidden">
@@ -122,27 +122,38 @@ setInterval(() => {
     const image1 = document.querySelector('.image-1');
     const image2 = document.querySelector('.image-2');
 
-    document.addEventListener('mousemove', (e) => {
-        const rect = container.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const width = rect.width;
+    function updateSeparator(x) {
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
 
-        if (x >= 0 && x <= width) {
-            const percent = (x / width) * 100;
+          if (x >= 0 && x <= width) {
+              const percent = (x / width) * 100;
 
-            separator.style.left = `${percent}%`;
-            image1.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-            image2.style.clipPath = `inset(0 0 0 ${percent}%)`;
-        } else if (x < 0) {
-            separator.style.left = `0%`;
-            image1.style.clipPath = `inset(0 100% 0 0)`;
-            image2.style.clipPath = `inset(0 0 0 0)`;
-        } else if (x > width) {
-            separator.style.left = `100%`;
-            image1.style.clipPath = `inset(0 0% 0 0)`;
-            image2.style.clipPath = `inset(0 0 0 100%)`;
-        }
-    });
+              separator.style.left = `${percent}%`;
+              image1.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+              image2.style.clipPath = `inset(0 0 0 ${percent}%)`;
+          } else if (x < 0) {
+              separator.style.left = `0%`;
+              image1.style.clipPath = `inset(0 100% 0 0)`;
+              image2.style.clipPath = `inset(0 0 0 0)`;
+          } else if (x > width) {
+              separator.style.left = `100%`;
+              image1.style.clipPath = `inset(0 0% 0 0)`;
+              image2.style.clipPath = `inset(0 0 0 100%)`;
+          }
+      }
+
+      document.addEventListener('mousemove', (e) => {
+          const rect = container.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          updateSeparator(x);
+      });
+
+      document.addEventListener('touchmove', (e) => {
+          const rect = container.getBoundingClientRect();
+          const x = e.touches[0].clientX - rect.left;
+          updateSeparator(x);
+      });
 </script>
 </section>
 
