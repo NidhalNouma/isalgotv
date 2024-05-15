@@ -10,4 +10,5 @@ def user_profile_save(sender, instance, created, **kwargs):
         # Send Emails to all users about the new added
         user_email = instance.user.email
         if user_email:
-            send_welcome_email_task.delay(user_email, user_email)
+            send_welcome_email_task(user_email, user_email)
+            # send_welcome_email_task.delay(user_email, user_email)

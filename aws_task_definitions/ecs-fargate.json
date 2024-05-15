@@ -23,23 +23,12 @@
             "awslogs-stream-prefix": "ecs"
           }
         }
-      } , {
-          "name": "celery-worker",
-          "image": "358776226602.dkr.ecr.us-east-1.amazonaws.com/isalgo",
-          "cpu": 256,
-          "memory": 512,
-          "essential": true,
-          "command": [
-              "celery", "-A", "etradingview", "worker", "-l", "info"
-          ],
-          "environment": [
-          ]
-      }
+      } 
     ],
     "requiresCompatibilities": ["FARGATE"],
     "networkMode": "awsvpc",
-    "cpu": "512",
-    "memory": "1024",
+    "cpu": "256",
+    "memory": "512",
     "executionRoleArn": "arn:aws:iam::358776226602:role/ecsTaskExecutionRole"
   }
   

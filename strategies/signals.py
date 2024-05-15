@@ -28,6 +28,7 @@ def check_is_live_change(sender, instance, created, **kwargs):
     
     # Check if 'is_live' was changed from False to True
     if old_is_live is False and new_is_live is True:
-        send_strategy_email_to_all_users.delay(instance.name, 'https://www.isalgo.com/strategies/' + instance.slug, instance.tradingview_url, instance.image_url)
+        # send_strategy_email_to_all_users.delay(instance.name, 'https://www.isalgo.com/strategies/' + instance.slug, instance.tradingview_url, instance.image_url)
+        send_strategy_email_to_all_users(instance.name, 'https://www.isalgo.com/strategies/' + instance.slug, instance.tradingview_url, instance.image_url)
 
 
