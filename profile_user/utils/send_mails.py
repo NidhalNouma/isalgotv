@@ -50,6 +50,7 @@ def cancel_membership_email(user_email):
     email.content_subtype = 'html'  # This is required because default is plain text
     
     try:
+        print('Sending cancel member email', user_email)
         email.send()
     except Exception as e:
         # Handle the exception as needed

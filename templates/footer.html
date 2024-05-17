@@ -156,7 +156,8 @@
   <div class="text-text/60 text-xs mb-6">
     <p class="mb-2">Please note that the information provided on our website is intended for educational purposes only and should not be construed as financial or investment advice.</p>
     <p class="mb-2">Risk Disclaimer: Trading carries inherent risks, and the majority of day traders experience losses. The potential for loss in trading can be significant. Decisions to buy, sell, hold, or trade securities, commodities, and other investments involve risk and should be made based on advice from qualified financial professionals. Past performance is not indicative of future results. All content is hypothetical and selected after the fact to illustrate our product and should not be considered financial advice. It is important to carefully consider whether trading is suitable for you given your financial circumstances.</p>
-    <p class="mb-4">Read the full disclaimer <a href="" class="">here.</a></p>
+    <p class="mb-1">Read the full disclaimer <a href="{% url 'docs_disclaimer' %}" class="underline">here.</a></p>
+    <p class="mb-4"><a href="{% url 'docs_terms_of_use' %}" class="underline">Terms of use</a>  -  <a href="{% url 'docs_privacy_policy' %}" class="underline">Privacy policy</a></p>
 
     <span class="text-text/80">Copyright &copy; IsAlgo {% now "Y" %}</span>
   </div>

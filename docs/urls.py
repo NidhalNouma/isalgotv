@@ -13,5 +13,9 @@ urlpatterns = [
     path('alerts/', alerts, name='docs_alerts'),
     path('automate/', automate, name='docs_automate'),
     path('q&a/', question, name='docs_questions'),
-    path('contact_us/', contactus, name='docs_contactus')
+    path('contact_us/', contactus, name='docs_contactus'),
+
+    path('disclaimer/', disclaimer, name='docs_disclaimer'),
+    path('terms-of-use/', terms_of_use, name='docs_terms_of_use'),
+    path('privacy-policy/', privacy_policy, name='docs_privacy_policy')
 ]

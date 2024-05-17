@@ -376,7 +376,6 @@ def setdefault_payment_method(request):
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
     if request.method == 'POST':
-        # TODO: An error occurred when cancelling the subscription and then creating a new one in the frontend
 
         plan_id = request.GET.get('plan','')
         price_id = PRICE_LIST.get(plan_id, '')
@@ -484,8 +483,9 @@ def create_subscription_stripeform(request):
             print("New subscription has been created ...")
 
             if len(old_subscription_id) > 0:
-                cancel_subscription = stripe.Subscription.delete(old_subscription_id)
-                print("Old subscription has been canceled ... ")
+                if request.subscription_status != 'canceled':
+                    cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+                    print("Old subscription has been canceled ... ")
 
                 return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
             else:

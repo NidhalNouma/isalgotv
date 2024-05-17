@@ -2172,6 +2172,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: grid;
 }
 
+.contents {
+  display: contents;
+}
+
 .hidden {
   display: none;
 }
@@ -2741,6 +2745,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .list-none {
   list-style-type: none;
+}
+
+.list-disc {
+  list-style-type: disc;
 }
 
 .grid-cols-1 {
