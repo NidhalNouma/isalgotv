@@ -2743,12 +2743,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   scroll-margin-bottom: -7rem;
 }
 
-.list-none {
-  list-style-type: none;
-}
-
 .list-disc {
   list-style-type: disc;
+}
+
+.list-none {
+  list-style-type: none;
 }
 
 .grid-cols-1 {
@@ -2997,6 +2997,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-top-right-radius: 0.25rem;
 }
 
+.\!border-2 {
+  border-width: 2px !important;
+}
+
 .border {
   border-width: 1px;
 }
@@ -3019,10 +3023,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-\[1px\] {
   border-width: 1px;
-}
-
-.\!border-2 {
-  border-width: 2px !important;
 }
 
 .border-b-0 {
@@ -3055,8 +3055,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-accent) / var(--tw-border-opacity));
 }
 
-.border-accent\/30 {
-  border-color: hsl(var(--color-accent) / 0.3);
+.border-accent\/60 {
+  border-color: hsl(var(--color-accent) / 0.6);
 }
 
 .border-background {
@@ -3094,17 +3094,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-primary) / var(--tw-border-opacity));
 }
 
-.border-primary\/30 {
-  border-color: hsl(var(--color-primary) / 0.3);
+.border-primary\/60 {
+  border-color: hsl(var(--color-primary) / 0.6);
 }
 
 .border-secondary {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-secondary) / var(--tw-border-opacity));
-}
-
-.border-secondary\/30 {
-  border-color: hsl(var(--color-secondary) / 0.3);
 }
 
 .border-secondary\/60 {
@@ -3139,46 +3135,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-title\/20 {
   border-color: hsl(var(--color-title) / 0.2);
-}
-
-.border-title\/40 {
-  border-color: hsl(var(--color-title) / 0.4);
-}
-
-.border-accent\/50 {
-  border-color: hsl(var(--color-accent) / 0.5);
-}
-
-.border-primary\/50 {
-  border-color: hsl(var(--color-primary) / 0.5);
-}
-
-.border-secondary\/50 {
-  border-color: hsl(var(--color-secondary) / 0.5);
-}
-
-.border-accent\/80 {
-  border-color: hsl(var(--color-accent) / 0.8);
-}
-
-.border-primary\/80 {
-  border-color: hsl(var(--color-primary) / 0.8);
-}
-
-.border-secondary\/80 {
-  border-color: hsl(var(--color-secondary) / 0.8);
-}
-
-.border-text\/80 {
-  border-color: hsl(var(--color-text) / 0.8);
-}
-
-.border-accent\/60 {
-  border-color: hsl(var(--color-accent) / 0.6);
-}
-
-.border-primary\/60 {
-  border-color: hsl(var(--color-primary) / 0.6);
 }
 
 .\!bg-background {
@@ -3259,6 +3215,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-primary) / var(--tw-bg-opacity));
 }
 
+.bg-primary\/10 {
+  background-color: hsl(var(--color-primary) / 0.1);
+}
+
 .bg-primary\/50 {
   background-color: hsl(var(--color-primary) / 0.5);
 }
@@ -3281,6 +3241,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-secondary) / var(--tw-bg-opacity));
 }
 
+.bg-secondary\/10 {
+  background-color: hsl(var(--color-secondary) / 0.1);
+}
+
 .bg-secondary\/30 {
   background-color: hsl(var(--color-secondary) / 0.3);
 }
@@ -3300,6 +3264,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .bg-text {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
+}
+
+.bg-text\/10 {
+  background-color: hsl(var(--color-text) / 0.1);
 }
 
 .bg-text\/20 {
@@ -3346,22 +3314,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-yellow-800\/10 {
   background-color: rgb(114 59 19 / 0.1);
-}
-
-.bg-primary\/30 {
-  background-color: hsl(var(--color-primary) / 0.3);
-}
-
-.bg-primary\/10 {
-  background-color: hsl(var(--color-primary) / 0.1);
-}
-
-.bg-secondary\/10 {
-  background-color: hsl(var(--color-secondary) / 0.1);
-}
-
-.bg-text\/10 {
-  background-color: hsl(var(--color-text) / 0.1);
 }
 
 .bg-opacity-50 {
@@ -4244,18 +4196,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
-.backdrop-blur-xl {
-  --tw-backdrop-blur: blur(24px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-.backdrop-blur-md {
-  --tw-backdrop-blur: blur(12px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
 .backdrop-blur-sm {
   --tw-backdrop-blur: blur(4px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
@@ -4359,6 +4299,40 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-brightness: brightness(1.25);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
+
+/* Scroller */
+
+/* width */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--color-background) / var(--tw-bg-opacity));
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--color-background) / var(--tw-bg-opacity));
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+  --tw-scale-x: 1.5;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  background-color: hsl(var(--color-text) / 0.3);
+}
+
+/* End Scroller */
 
 .hideMe {
   animation: cssAnimation 6s forwards;
@@ -4620,6 +4594,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: transparent;
 }
 
+:is(.dark .dark\:bg-background\/10) {
+  background-color: hsl(var(--color-background) / 0.1);
+}
+
 :is(.dark .dark\:bg-blue-600) {
   --tw-bg-opacity: 1;
   background-color: rgb(28 100 242 / var(--tw-bg-opacity));
@@ -4647,15 +4625,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:bg-red-900) {
   --tw-bg-opacity: 1;
   background-color: rgb(119 29 29 / var(--tw-bg-opacity));
-}
-
-:is(.dark .dark\:bg-background) {
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--color-background) / var(--tw-bg-opacity));
-}
-
-:is(.dark .dark\:bg-background\/10) {
-  background-color: hsl(var(--color-background) / 0.1);
 }
 
 :is(.dark .dark\:bg-opacity-80) {
@@ -5120,4 +5089,3 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
-

@@ -375,6 +375,7 @@ def setdefault_payment_method(request):
 
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
+    # TODO: Adding check coupon code if it's available before checkout
     if request.method == 'POST':
 
         plan_id = request.GET.get('plan','')

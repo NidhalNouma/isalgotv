@@ -117,6 +117,30 @@
     [drawer-backdrop] {
       @apply bg-background/80 brightness-125 bg-opacity-80 z-50
     }
+
+    /* Scroller */
+
+    /* width */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      @apply bg-background rounded-full
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      @apply bg-background rounded-full
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-text/30 scale-x-150
+    }
+
+    /* End Scroller */
   
 }
 
@@ -162,4 +186,3 @@
   color: hsl(178 ,40%, 52%);
   /* background: hsl(var(--color-secondary)); */
 }
-
