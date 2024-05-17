@@ -1,5 +1,278 @@
 {
-    "TRADING SESSIONS": [
+  "TREND": [
+    [
+      {
+        "name": "Trend",
+        "display_name": "Trend",
+        "type": "options",
+        "default_value": "Off",
+        "options": [
+          "Reverse",
+          "Follow",
+          "Off"
+        ]
+      }
+    ], [
+      {
+        "name": "Trend_c",
+        "display_name": "Length",
+        "type": "string",
+        "default_value": "200"
+      }
+    ], [
+      {
+        "name": "Factor",
+        "display_name": "Factor",
+        "type": "string",
+        "default_value": "1"
+      }
+    ]
+  ],
+  "MOVING AVERAGE": [
+    [
+      {
+        "name": "MA",
+        "display_name": "MA",
+        "type": "options",
+        "default_value": "Off",
+        "options": [
+          "Off",
+          "MA",
+          "Reverse MA"
+        ]
+      }
+    ], [
+      {
+        "name": "MA_c",
+        "display_name": "Length",
+        "type": "string",
+        "default_value": "200"
+      }
+    ], [
+      {
+        "name": "Source",
+        "display_name": "Source",
+        "type": "options",
+        "default_value": "close",
+        "options": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4",
+          "hlcc4"
+        ]
+      }
+    ]
+  ],
+  "ENTRY CANDLE": [
+    [
+      {
+        "name": "Source_c",
+        "display_name": "Direction",
+        "type": "boolean",
+        "default_value": "false"
+      }
+    ], [
+      {
+        "name": "Candle Min",
+        "display_name": "Candle Min",
+        "type": "boolean",
+        "default_value": "false"
+      }, {
+        "name": "Candle Min_c",
+        "display_name": "",
+        "type": "string",
+        "default_value": "50"
+      }, {
+        "name": "Candle Min_c_c",
+        "display_name": "Max",
+        "type": "string",
+        "default_value": "1000"
+      }
+    ], [
+      {
+        "name": "Body Min",
+        "display_name": "Body Min",
+        "type": "boolean",
+        "default_value": "false"
+      }, {
+        "name": "Body Min_c",
+        "display_name": "",
+        "type": "string",
+        "default_value": "10"
+      }, {
+        "name": "Body Min_c_c",
+        "display_name": "Max",
+        "type": "string",
+        "default_value": "100"
+      }
+    ], [
+      {
+        "name": "Body % Min",
+        "display_name": "Body % Min",
+        "type": "boolean",
+        "default_value": "false"
+      }, {
+        "name": "Body % Min_c",
+        "display_name": "",
+        "type": "string",
+        "default_value": "10"
+      }, {
+        "name": "Body % Min_c_c",
+        "display_name": "Max",
+        "type": "string",
+        "default_value": "100"
+      }
+    ], [
+      {
+        "name": "H/L canldes",
+        "display_name": "H/L canldes",
+        "type": "boolean",
+        "default_value": "true"
+      }, {
+        "name": "H/L canldes_c",
+        "display_name": "",
+        "type": "string",
+        "default_value": "23"
+      }, {
+        "name": "From",
+        "display_name": "From",
+        "type": "string",
+        "default_value": "10"
+      }
+    ], [
+      {
+        "name": "From_c",
+        "display_name": "H/L canldes",
+        "type": "boolean",
+        "default_value": "true"
+      }, {
+        "name": "From_c_c",
+        "display_name": "",
+        "type": "string",
+        "default_value": "0"
+      }, {
+        "name": "%",
+        "display_name": "%",
+        "type": "string",
+        "default_value": "25"
+      }
+    ], [
+      {
+        "name": "Shift",
+        "display_name": "Shift",
+        "type": "string",
+        "default_value": "1"
+      }
+    ]
+  ], "Learning Algorithm": [
+    [
+      {
+        "name": "Activate",
+        "display_name": "Activate",
+        "type": "boolean",
+        "default_value": "true"
+      } 
+    ], [
+      {
+        "name": "Trend distance",
+        "display_name": "Trend distance",
+        "type": "string",
+        "default_value": "10"
+      }, {
+        "name": "Trend distance_c",
+        "display_name": "Priority",
+        "type": "string",
+        "default_value": "5"
+      }
+    ], [
+      {
+        "name": "Trend distance_c_c",
+        "display_name": "H/L distance",
+        "type": "string",
+        "default_value": "10"
+      }, {
+        "name": "Trend distance_c_c_c",
+        "display_name": "Priority",
+        "type": "string",
+        "default_value": "5"
+      }
+    ], [
+      {
+        "name": "Trend time",
+        "display_name": "Trend time",
+        "type": "string",
+        "default_value": "20"
+      }, {
+        "name": "Trend time_c",
+        "display_name": "Priority",
+        "type": "string",
+        "default_value": "5"
+      }
+    ], [
+      {
+        "name": "Candle size",
+        "display_name": "Candle size",
+        "type": "string",
+        "default_value": "20"
+      }, {
+        "name": "Candle size_c",
+        "display_name": "Priority",
+        "type": "string",
+        "default_value": "5"
+      }
+    ], [
+      {
+        "name": "Body size",
+        "display_name": "Body size",
+        "type": "string",
+        "default_value": "20"
+      }, {
+        "name": "Body size_c",
+        "display_name": "Priority",
+        "type": "string",
+        "default_value": "5"
+      }
+    ], [
+      {
+        "name": "Min priorities",
+        "display_name": "Min priorities",
+        "type": "string",
+        "default_value": "20"
+      }
+    ], [
+      {
+        "name": "Min trades",
+        "display_name": "Min trades",
+        "type": "string",
+        "default_value": "4"
+      }
+    ], [
+      {
+        "name": "Profit %",
+        "display_name": "Profit %",
+        "type": "string",
+        "default_value": "60"
+      }
+    ], [
+      {
+        "name": "Start",
+        "display_name": "Start",
+        "type": "string",
+        "default_value": "100"
+      }
+    ], [
+      {
+        "name": "Strict",
+        "display_name": "Strict",
+        "type": "boolean",
+        "default_value": "false"
+      }
+    ]
+  ], "TRADING SESSIONS": [
       [
         {
           "name": "Main session",
@@ -181,6 +454,20 @@
       ],
       [
         {
+          "name": "Max trades",
+          "display_name": "Max trades",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Max trades_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "1"
+        }
+      ],
+      [
+        {
           "name": "Max trades per day",
           "display_name": "Max trades per day",
           "type": "boolean",
@@ -188,6 +475,20 @@
         },
         {
           "name": "Max trades per day_val",
+          "display_name": "",
+          "type": "string",
+          "default_value": "3"
+        }
+      ],
+      [
+        {
+          "name": "Max trades per trend",
+          "display_name": "Max trades per trend",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "Max trades per trend_val",
           "display_name": "",
           "type": "string",
           "default_value": "3"
@@ -219,8 +520,8 @@
       ],
       [
         {
-          "name": "One trade",
-          "display_name": "One trade",
+          "name": "One direction",
+          "display_name": "One direction",
           "type": "boolean",
           "default_value": "False"
         }
@@ -333,6 +634,20 @@
       ],
       [
         {
+          "name": "X trend - Partial",
+          "display_name": "X trend - Partial",
+          "type": "boolean",
+          "default_value": "True"
+        },
+        {
+          "name": "X trend - Partial_c",
+          "display_name": "",
+          "type": "string",
+          "default_value": "100"
+        }
+      ],
+      [
+        {
           "name": "X opposite",
           "display_name": "X opposite",
           "type": "boolean",
@@ -371,7 +686,7 @@
         },
         {
           "name": "Stop loss_c_c_c",
-          "display_name": "Multiplier",
+          "display_name": "Extra",
           "type": "string",
           "default_value": "4"
         }
@@ -477,7 +792,7 @@
         },
         {
           "name": "Take profit 1_c_c_c",
-          "display_name": "Multiplier",
+          "display_name": "Extra",
           "type": "string",
           "default_value": "4"
         }
@@ -523,7 +838,7 @@
         },
         {
           "name": "Take profit 2_c_c_c",
-          "display_name": "Multiplier",
+          "display_name": "Extra",
           "type": "string",
           "default_value": "4"
         }
@@ -569,7 +884,7 @@
         },
         {
           "name": "Take profit 3_c_c_c",
-          "display_name": "Multiplier",
+          "display_name": "Extra",
           "type": "string",
           "default_value": "4"
         }

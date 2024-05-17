@@ -1,23 +1,23 @@
 <div class="">
   {% if user.is_authenticated and has_subscription %}
-  {% comment %} <button
+  <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
     data-modal-target="add-result-modal"
     data-modal-toggle="add-result-modal"
   >
     Share your results
-  </button> {% endcomment %}
+  </button> 
   {% elif user.is_authenticated and not has_subscription %}
-  {% comment %} <button
+  <button
     class="text-secondary text-sm font-semibold underlinei"
     data-modal-target="upgrade-modal"
     data-modal-toggle="upgrade-modal"
   >
     Share your results
-  </button> {% endcomment %}
-  {% else %}
-  {% comment %} <a
+  </button> 
+ 
+  {% comment %} {% else %} <a
     class="text-secondary text-sm font-semibold underlinei"
     href="{% url 'login' %}"
   >
@@ -879,7 +879,7 @@
               <div class="mt-2 mb-4">
                 {% for group_name, group_value  in strategy.settings.items %}
                 <div class="mb-6">
-                  <h6 class="text-text text-xs">{{group_name}}</h6>
+                  <h6 class="text-text text-xs uppercase">{{group_name}}</h6>
                   
                   {% for line in group_value %}
                     <div class=" my-3 " >
