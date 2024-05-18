@@ -47,24 +47,13 @@
 </div>
 
   {% if strategy.chart_url %}
-    <div class="mt-2 mb-8 ">
+    <div class="mt-2 mb-4 ">
       <a
         href="#"
         onClick="openPopupWindow('{{strategy.chart_url}}')"
         class="btn-text !font-semibold whitespace-nowrap"
         >Live chart
-        <svg
-          class="h-4 w-r ml-1"
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="1"
-          viewBox="0 0 512 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"
-          ></path>
-        </svg>
+        <svg class="h-4 w-r ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"></path><path d="M15.9 20.11l0 .01"></path><path d="M19.04 17.61l0 .01"></path><path d="M20.77 14l0 .01"></path><path d="M20.77 10l0 .01"></path><path d="M19.04 6.39l0 .01"></path><path d="M15.9 3.89l0 .01"></path><path d="M12 3l0 .01"></path><path d="M8.1 3.89l0 .01"></path><path d="M4.96 6.39l0 .01"></path><path d="M3.23 10l0 .01"></path><path d="M3.23 14l0 .01"></path><path d="M4.96 17.61l0 .01"></path><path d="M8.1 20.11l0 .01"></path><path d="M12 21l0 .01"></path></svg>
       </a>
     </div>
     {% endif %}

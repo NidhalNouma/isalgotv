@@ -777,10 +777,11 @@
 
             <button
               onclick='nextResultStep("add-result-modal-close-result-btn", "add-result-form-open-post", "add-result-modal-result")'
-              class="btn-text mb-4 w-fit mx-auto"
+              class="btn-text mb-4 w-fit mx-auto font-medium px-4"
               type="button"
             >
               Next
+            <svg class="h-4 aspect-square ml-0.5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-width="2" d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8"></path></svg>
             </button>
           </div>
         </div>
@@ -930,9 +931,10 @@
           <button
             type="button"
             onclick="validateSettings()"
-            class="btn-text mb-4 w-fit mx-auto"
+            class="btn-text mb-4 w-fit mx-auto font-medium px-4"
           >
             Next
+            <svg class="h-4 aspect-square ml-0.5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-width="2" d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8"></path></svg>
           </button>
         </div>
       </div>
@@ -1068,11 +1070,12 @@
 
           <button
             onclick="post()"
-            class="btn-secondary mb-4 w-fit mx-auto"
+            class="btn-secondary mb-4 w-fit mx-auto font-medium px-4"
             type="submit"
             id="btn-result-post"
           >
             Post
+            <svg class="ml-0.5 h-4 aspect-square" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
 
           <button
@@ -1202,12 +1205,12 @@
     console.log("Form submission completed!");
 
     //closeform.click();
-    closeLoader("", "-result-post");
+    closeLoader("", "-result-post", "flex");
     return true;
   }
 
   function clearResultForm() {
-    closeLoader("", "-result-post");
+    closeLoader("", "-result-post", "flex");
     const closeForm = document.getElementById(
       "add-result-modal-close-btn-post"
     );

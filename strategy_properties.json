@@ -7,8 +7,8 @@
         "type": "options",
         "default_value": "Off",
         "options": [
-          "Reverse",
           "Follow",
+          "Reverse",
           "Off"
         ]
       }
@@ -21,7 +21,7 @@
       }
     ], [
       {
-        "name": "Factor",
+        "name": "factor",
         "display_name": "Factor",
         "type": "string",
         "default_value": "1"
@@ -82,12 +82,12 @@
         "type": "boolean",
         "default_value": "false"
       }, {
-        "name": "Candle Min_c",
+        "name": "Candle Min_val",
         "display_name": "",
         "type": "string",
         "default_value": "50"
       }, {
-        "name": "Candle Min_c_c",
+        "name": "Candle Min_val_c",
         "display_name": "Max",
         "type": "string",
         "default_value": "1000"
@@ -99,12 +99,12 @@
         "type": "boolean",
         "default_value": "false"
       }, {
-        "name": "Body Min_c",
+        "name": "Body Min_val",
         "display_name": "",
         "type": "string",
         "default_value": "10"
       }, {
-        "name": "Body Min_c_c",
+        "name": "Body Min_val_c",
         "display_name": "Max",
         "type": "string",
         "default_value": "100"
@@ -116,12 +116,12 @@
         "type": "boolean",
         "default_value": "false"
       }, {
-        "name": "Body % Min_c",
+        "name": "Body % Min_val",
         "display_name": "",
         "type": "string",
         "default_value": "10"
       }, {
-        "name": "Body % Min_c_c",
+        "name": "Body % Min_val_c",
         "display_name": "Max",
         "type": "string",
         "default_value": "100"
@@ -129,36 +129,36 @@
     ], [
       {
         "name": "H/L canldes",
-        "display_name": "H/L canldes",
+        "display_name": "H/L candles",
         "type": "boolean",
         "default_value": "true"
       }, {
-        "name": "H/L canldes_c",
+        "name": "H/L canldes_val",
         "display_name": "",
         "type": "string",
         "default_value": "23"
       }, {
-        "name": "From",
+        "name": " From",
         "display_name": "From",
         "type": "string",
         "default_value": "10"
       }
     ], [
       {
-        "name": "From_c",
-        "display_name": "H/L canldes",
+        "name": " From_c",
+        "display_name": "H/L distance",
         "type": "boolean",
         "default_value": "true"
       }, {
-        "name": "From_c_c",
+        "name": " From_c_val",
         "display_name": "",
         "type": "string",
         "default_value": "0"
       }, {
-        "name": "%",
+        "name": " %",
         "display_name": "%",
         "type": "string",
-        "default_value": "25"
+        "default_value": "35"
       }
     ], [
       {
@@ -278,7 +278,7 @@
           "name": "Main session",
           "display_name": "Main session",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "false"
         },
         {
           "name": "Main session_val",
@@ -292,13 +292,13 @@
           "name": "Session 1",
           "display_name": "Session 1",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "false"
         },
         {
           "name": "Session 1_val",
           "display_name": "",
           "type": "string",
-          "default_value": "00:00 - 08:00"
+          "default_value": "22:00 - 08:00"
         }
       ],
       [
@@ -306,13 +306,13 @@
           "name": "Session 2",
           "display_name": "Session 2",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "false"
         },
         {
           "name": "Session 2_val",
           "display_name": "",
           "type": "string",
-          "default_value": "00:00 - 08:00"
+          "default_value": "08:00 - 16:00"
         }
       ],
       [
@@ -326,7 +326,7 @@
           "name": "Session 3_val",
           "display_name": "",
           "type": "string",
-          "default_value": "00:00 - 08:00"
+          "default_value": "14:30 - 21:00"
         }
       ]
     ],
@@ -336,7 +336,7 @@
           "name": "MON",
           "display_name": "MON",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "False"
         },
         {
           "name": "TUE",
@@ -425,7 +425,7 @@
           "name": "Position size",
           "display_name": "Position size",
           "type": "options",
-          "default_value": "Fixed",
+          "default_value": "Percentage",
           "options": [
             "Fixed",
             "Percentage"
@@ -435,7 +435,7 @@
           "name": "Position size_val",
           "display_name": "",
           "type": "string",
-          "default_value": "1"
+          "default_value": "4"
         }
       ],
       [
@@ -471,13 +471,13 @@
           "name": "Max trades per day",
           "display_name": "Max trades per day",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "false"
         },
         {
           "name": "Max trades per day_val",
           "display_name": "",
           "type": "string",
-          "default_value": "3"
+          "default_value": "5"
         }
       ],
       [
@@ -485,7 +485,7 @@
           "name": "Max trades per trend",
           "display_name": "Max trades per trend",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "False"
         },
         {
           "name": "Max trades per trend_val",
@@ -515,7 +515,7 @@
           "name": "Distance_val_c",
           "display_name": "Value",
           "type": "string",
-          "default_value": "3"
+          "default_value": "10"
         }
       ],
       [
@@ -617,31 +617,31 @@
           "name": "X Candle",
           "display_name": "X Candle",
           "type": "boolean",
-          "default_value": "True"
+          "default_value": "False"
         },
         {
           "name": "X Candle_val",
           "display_name": "",
           "type": "string",
-          "default_value": "3"
+          "default_value": "5"
         },
         {
           "name": "Partial",
           "display_name": "Partial",
           "type": "string",
-          "default_value": "50"
+          "default_value": "100"
         }
       ],
       [
         {
-          "name": "X trend - Partial",
-          "display_name": "X trend - Partial",
+          "name": "X trend",
+          "display_name": "X trend",
           "type": "boolean",
           "default_value": "True"
         },
         {
-          "name": "X trend - Partial_c",
-          "display_name": "",
+          "name": " -  Partial",
+          "display_name": " -  Partial",
           "type": "string",
           "default_value": "100"
         }
@@ -661,7 +661,7 @@
           "name": "Stop loss",
           "display_name": "Stop loss",
           "type": "options",
-          "default_value": "ATR",
+          "default_value": "Highs/Lows",
           "options": [
             "Pips",
             "ATR",
@@ -674,7 +674,7 @@
           "name": "Stop loss_c",
           "display_name": "Value",
           "type": "string",
-          "default_value": "140"
+          "default_value": "18"
         }
       ],
       [
@@ -688,7 +688,7 @@
           "name": "Stop loss_c_c_c",
           "display_name": "Extra",
           "type": "string",
-          "default_value": "4"
+          "default_value": "3000"
         }
       ]
     ],
@@ -698,7 +698,7 @@
           "name": "Break even",
           "display_name": "Break even",
           "type": "options",
-          "default_value": "Off",
+          "default_value": "TP 1",
           "options": [
             "Pips",
             "TP 1",
@@ -711,7 +711,7 @@
           "name": "Break even_c",
           "display_name": "Value",
           "type": "string",
-          "default_value": "50"
+          "default_value": "10"
         }
       ],
       [
@@ -766,7 +766,7 @@
           "name": "Take profit 1",
           "display_name": "Take profit 1",
           "type": "options",
-          "default_value": "Off",
+          "default_value": "R:R",
           "options": [
             "Pips",
             "ATR",
@@ -780,7 +780,7 @@
           "name": "Take profit 1_c",
           "display_name": "Value",
           "type": "string",
-          "default_value": "100"
+          "default_value": "1"
         }
       ],
       [
@@ -794,7 +794,7 @@
           "name": "Take profit 1_c_c_c",
           "display_name": "Extra",
           "type": "string",
-          "default_value": "4"
+          "default_value": "0"
         }
       ],
       [
@@ -812,7 +812,7 @@
           "name": "Take profit 2",
           "display_name": "Take profit 2",
           "type": "options",
-          "default_value": "Off",
+          "default_value": "R:R",
           "options": [
             "Pips",
             "ATR",
@@ -826,7 +826,7 @@
           "name": "Take profit 2_c",
           "display_name": "Value",
           "type": "string",
-          "default_value": "100"
+          "default_value": "2"
         }
       ],
       [
@@ -840,7 +840,7 @@
           "name": "Take profit 2_c_c_c",
           "display_name": "Extra",
           "type": "string",
-          "default_value": "4"
+          "default_value": "0"
         }
       ],
       [
@@ -858,7 +858,7 @@
           "name": "Take profit 3",
           "display_name": "Take profit 3",
           "type": "options",
-          "default_value": "Off",
+          "default_value": "R:R",
           "options": [
             "Pips",
             "ATR",
@@ -872,7 +872,7 @@
           "name": "Take profit 3_c",
           "display_name": "Value",
           "type": "string",
-          "default_value": "100"
+          "default_value": "3"
         }
       ],
       [
@@ -886,7 +886,7 @@
           "name": "Take profit 3_c_c_c",
           "display_name": "Extra",
           "type": "string",
-          "default_value": "4"
+          "default_value": "0"
         }
       ],
       [

@@ -80,12 +80,14 @@
                 </div>
             </div>
         </div>
-        <div class="h-full w-full flex items-center justify-center">
-            <h2 class=" font-extrabold bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent text-6xl uppercase"><span class="text-accent">More </span></br><span class="text-secondary">coming </span></br><span class="">soon ...</span></h2>
-        </div>
         {% empty %}
         <p class="text-text text-sm">No strategy availble yet.</p>
         {% endfor %}
+        {% if strategies|length < 40 %}
+        <div class="h-full w-full flex items-center justify-center">
+            <h2 class=" font-extrabold bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent text-6xl uppercase"><span class="text-accent">More </span></br><span class="text-secondary">coming </span></br><span class="">soon ...</span></h2>
+        </div>
+        {% endif %}
 
     </main>
 {% endblock page %}

@@ -435,7 +435,7 @@ function handleSettingCsvFileSelect(event) {
       value = value.replace(/(\r\n|\n|\r)/gm, "");
       key = key.replace(/(\r\n|\n|\r)/gm, "");
 
-      if (key.length === 0) key = previousKey + "_val";
+      if (key.length === 0 || key === " ") key = previousKey + "_val";
       else {
         let count = keyCounts[key];
         console.log(key, count);

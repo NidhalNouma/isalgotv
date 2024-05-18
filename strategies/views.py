@@ -164,7 +164,7 @@ def add_result(request, id):
                             set['default_value'] = 'false'
 
         # print(settings_data)
-        print(settings)
+        # print(settings)
         # return
 
         form_data = {
@@ -226,7 +226,7 @@ def add_result(request, id):
             'time_frame': request.POST.get('time_frame_period'),
             'settings': settings,
         }
-        print(request.POST)
+        # print(request.POST)
         form = StrategyResultForm(form_data, request.FILES)  # Allow file uploads
         if form.is_valid():
             result = form.save(commit=False)
