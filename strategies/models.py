@@ -8,31 +8,36 @@ from django.core.validators import MinLengthValidator
 
 from ckeditor.fields import RichTextField
 import jsonschema
+import json
 from django.core.exceptions import ValidationError
 
-# Create your models here.
 def settings_validator_json(value):
-    schema =  {
-        "type": "object",
-        "patternProperties": {
-            "^[\w\s]+$": {  # Allow any word characters (including spaces)
-                "type": "array",
-                "items": {
+    schema = {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "key": {"type": "string"},
+                "value": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "name": {"type": "string"},
-                            "display_name": {"type": "string"},
-                            "type": {"type": "string"},
-                            "default_value": {"type": "string"},
-                            "options": {"type": "array"},
-                        },
-                        "required": ["name", "type", "default_value"],
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {"type": "string"},
+                                "display_name": {"type": "string"},
+                                "type": {"type": "string"},
+                                "default_value": {"type": "string"},
+                                "options": {"type": "array", "items": {"type": "string"}},
+                            },
+                            "required": ["name", "type", "default_value"]
+                        }
                     }
                 }
-            }
-        },
+            },
+            "required": ["key", "value"]
+        }
     }
 
     try:

@@ -878,7 +878,8 @@
               </div>
             
               <div class="mt-2 mb-4">
-                {% for group_name, group_value  in strategy.settings.items %}
+                {% for item in strategy.settings %}
+                {% with group_name=item.key group_value=item.value %}
                 <div class="mb-6">
                   <h6 class="text-text text-xs uppercase">{{group_name}}</h6>
                   
@@ -916,6 +917,7 @@
                     </div>
                   {% endfor %}
                 </div>
+                {% endwith %}
                 {% endfor %}
             </div>
           </div>

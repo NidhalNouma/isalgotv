@@ -8,29 +8,27 @@
     </h3>
     <h6 class="text-text text-xl mt-2 font-medium">{{h2}}</h6>
   </div>
-  <div class="mx-6 h-full block w-auto relative" style="">
-    {% comment %}
-    <div
-      class="absolute inset-0 bg-accent/10 scale-150 rounded-full blur-[110px]"
-    ></div>
-    {% endcomment %}
+  <div class="mx-6 h-full block w-auto relative" >
 
     <div
       class="overflow-hidden md:overflow-visible h-36 md:h-full rounded-xl relative {{img_class}}"
     >
-      <img
-        class="parallax-round-reverse max-w-sm w-full object-scale-down min-h-full blur-[3px]"
+    <div class="min-h-full max-w-sm w-full ">
+        <img
+        class="parallax-round-reverse object-cover h-full w-full blur-[3px]"
         alt=""
         src="{% static img_src %}"
         loading="lazy"
-      />
+        /> 
+    </div>
 
       <div
-        class="{{class}} !border-2 absolute scale-105 shadow-xl shadow-background/50 p-0 rounded-lg inset-x-0 top-1/2 -translate-y-1/2 bg-background/25 w-full h-52 overflow-hidden"
+        class="{{class}} !border-2 absolute scale-105 shadow-xl shadow-background/50 p-0 rounded-lg inset-x-0 top-1/2 -translate-y-1/2 bg-background/25 w-full h-full md:h-52  overflow-hidden"
       >
         <img
+          style="image-rendering: optimizeQuality;"
           loading="lazy"
-          class="parallax-round-reverse max-w-sm w-full object-scale-down min-h-full"
+          class="parallax-round-reverse w-full object-cover min-h-full"
           alt=""
           src="{% static img_src %}"
         />

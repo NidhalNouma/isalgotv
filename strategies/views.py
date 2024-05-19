@@ -139,123 +139,132 @@ def add_result(request, id):
     strategy = Strategy.objects.get(pk=id)
 
     if request.method == 'POST':
+        try:
 
-        settings_data = {}
-        for key, value_list in request.POST.items():
-            if key.startswith('settings_'):
-                setting_name = key[len('settings_'):]
-                settings_data[setting_name] = value_list[0:] 
+            settings_data = {}
+            for key, value_list in request.POST.items():
+                if key.startswith('settings_'):
+                    setting_name = key[len('settings_'):]
+                    settings_data[setting_name] = value_list[0:] 
 
-        settings = strategy.settings
+            settings = strategy.settings
 
-        # for setting in settings['objects']:
-        #     setting_name = setting['name']
-        #     if setting_name in settings_data:
-        #         setting['default_value'] = settings_data[setting_name]
+            # for setting in settings['objects']:
+            #     setting_name = setting['name']
+            #     if setting_name in settings_data:
+            #         setting['default_value'] = settings_data[setting_name]
 
-        for group_key, group_value in settings.items():
-            for lines in group_value:
-                for set in lines:
-                    setting_name = set['name']
-                    if setting_name in settings_data:
-                        set['default_value'] = settings_data[setting_name]
-                    elif set['type'] == 'boolean':
-                        if setting_name not in settings_data:
-                            set['default_value'] = 'false'
+            for item in settings:
+                group_key = item['key']
+                group_value = item['value']
+                for lines in group_value:
+                    for set in lines:
+                        setting_name = set['name']
+                        if setting_name in settings_data:
+                            set['default_value'] = settings_data[setting_name]
+                        elif set['type'] == 'boolean':
+                            if setting_name not in settings_data:
+                                set['default_value'] = 'false'
 
-        # print(settings_data)
-        # print(settings)
-        # return
+            # print(settings_data)
+            # print(settings)
+            # return
 
-        form_data = {
-            'description': request.POST.get('description'),
-            'pair': request.POST.get('pair'),
-            'broker': request.POST.get('broker'),
-            'initial_capital': request.POST.get('initial_capital'),
+            form_data = {
+                'description': request.POST.get('description'),
+                'pair': request.POST.get('pair'),
+                'broker': request.POST.get('broker'),
+                'initial_capital': request.POST.get('initial_capital'),
 
-            'total_trade': request.POST.get('total_trades'),
-            'total_trade_long': request.POST.get('total_trades_long'),
-            'total_trade_short': request.POST.get('total_trades_short'),
+                'total_trade': request.POST.get('total_trades'),
+                'total_trade_long': request.POST.get('total_trades_long'),
+                'total_trade_short': request.POST.get('total_trades_short'),
 
-            'winning_total_trade': request.POST.get('winning_trades'),
-            'winning_total_trade_long': request.POST.get('winning_trades_long'),
-            'winning_total_trade_short': request.POST.get('winning_trades_short'),
+                'winning_total_trade': request.POST.get('winning_trades'),
+                'winning_total_trade_long': request.POST.get('winning_trades_long'),
+                'winning_total_trade_short': request.POST.get('winning_trades_short'),
 
-            'losing_total_trade': request.POST.get('losing_trades'),
-            'losing_total_trade_long': request.POST.get('losing_trades_long'),
-            'losing_total_trade_short': request.POST.get('losing_trades_short'),
+                'losing_total_trade': request.POST.get('losing_trades'),
+                'losing_total_trade_long': request.POST.get('losing_trades_long'),
+                'losing_total_trade_short': request.POST.get('losing_trades_short'),
 
-            'net_profit': request.POST.get('net_profit'),
-            'net_profit_long': request.POST.get('net_profit_long'),
-            'net_profit_short': request.POST.get('net_profit_short'),
+                'net_profit': request.POST.get('net_profit'),
+                'net_profit_long': request.POST.get('net_profit_long'),
+                'net_profit_short': request.POST.get('net_profit_short'),
 
-            'net_profit_percentage': request.POST.get('net_profit_percentage'),
-            'net_profit_percentage_long': request.POST.get('net_profit_percentage_long'),
-            'net_profit_percentage_short': request.POST.get('net_profit_percentage_short'),
+                'net_profit_percentage': request.POST.get('net_profit_percentage'),
+                'net_profit_percentage_long': request.POST.get('net_profit_percentage_long'),
+                'net_profit_percentage_short': request.POST.get('net_profit_percentage_short'),
 
-            'max_drawdown': request.POST.get('max_dd'),
-            'max_drawdown_percentage': request.POST.get('max_dd_percentage'),
+                'max_drawdown': request.POST.get('max_dd'),
+                'max_drawdown_percentage': request.POST.get('max_dd_percentage'),
 
-            'profit_factor': request.POST.get('profit_factor'),
-            'profit_factor_long': request.POST.get('profit_factor_long'),
-            'profit_factor_short': request.POST.get('profit_factor_short'),
+                'profit_factor': request.POST.get('profit_factor'),
+                'profit_factor_long': request.POST.get('profit_factor_long'),
+                'profit_factor_short': request.POST.get('profit_factor_short'),
 
-            'profitable_percentage': request.POST.get('profitable_percentage'),
-            'profitable_percentage_long': request.POST.get('profitable_percentage_long'),
-            'profitable_percentage_short': request.POST.get('profitable_percentage_short'),
+                'profitable_percentage': request.POST.get('profitable_percentage'),
+                'profitable_percentage_long': request.POST.get('profitable_percentage_long'),
+                'profitable_percentage_short': request.POST.get('profitable_percentage_short'),
 
-            'gross_profit': request.POST.get('gross_profit'),
-            'gross_profit_long': request.POST.get('gross_profit_long'),
-            'gross_profit_short': request.POST.get('gross_profit_short'),
+                'gross_profit': request.POST.get('gross_profit'),
+                'gross_profit_long': request.POST.get('gross_profit_long'),
+                'gross_profit_short': request.POST.get('gross_profit_short'),
 
-            'gross_profit_percentage': request.POST.get('gross_profit_percent'),
-            'gross_profit_percentage_long': request.POST.get('gross_profit_percent_long'),
-            'gross_profit_percentage_short': request.POST.get('gross_profit_percent_short'),
+                'gross_profit_percentage': request.POST.get('gross_profit_percent'),
+                'gross_profit_percentage_long': request.POST.get('gross_profit_percent_long'),
+                'gross_profit_percentage_short': request.POST.get('gross_profit_percent_short'),
 
-            'gross_loss': request.POST.get('gross_loss'),
-            'gross_loss_long': request.POST.get('gross_loss_long'),
-            'gross_loss_short': request.POST.get('gross_loss_short'),
+                'gross_loss': request.POST.get('gross_loss'),
+                'gross_loss_long': request.POST.get('gross_loss_long'),
+                'gross_loss_short': request.POST.get('gross_loss_short'),
 
-            'gross_loss_percentage': request.POST.get('gross_loss_percent'),
-            'gross_loss_percentage_long': request.POST.get('gross_loss_percent_long'),
-            'gross_loss_percentage_short': request.POST.get('gross_loss_percent_short'),
+                'gross_loss_percentage': request.POST.get('gross_loss_percent'),
+                'gross_loss_percentage_long': request.POST.get('gross_loss_percent_long'),
+                'gross_loss_percentage_short': request.POST.get('gross_loss_percent_short'),
 
-            'test_start_at': request.POST.get('start_at'),
-            'test_end_at': request.POST.get('end_at'),
-            'time_frame_int': request.POST.get('time_frame'),
-            'time_frame': request.POST.get('time_frame_period'),
-            'settings': settings,
-        }
-        # print(request.POST)
-        form = StrategyResultForm(form_data, request.FILES)  # Allow file uploads
-        if form.is_valid():
-            result = form.save(commit=False)
-            result.strategy = strategy
-            result.created_by = request.user.user_profile
-            result.save()
+                'test_start_at': request.POST.get('start_at'),
+                'test_end_at': request.POST.get('end_at'),
+                'time_frame_int': request.POST.get('time_frame'),
+                'time_frame': request.POST.get('time_frame_period'),
+                'settings': settings,
+            }
+            # print(request.POST)
+            form = StrategyResultForm(form_data, request.FILES)  # Allow file uploads
+            if form.is_valid():
+                result = form.save(commit=False)
+                result.strategy = strategy
+                result.created_by = request.user.user_profile
+                result.save()
 
 
-            # Save images with modified name and URL
-            for index, image in enumerate(request.FILES.getlist('images')):
-                image_name = f'{result.id}_{index}_{image.name}'  
-                StrategyImages.objects.create(
-                    name=image_name,
-                    img=image,
-                    content_object=result,
+                # Save images with modified name and URL
+                for index, image in enumerate(request.FILES.getlist('images')):
+                    image_name = f'{result.id}_{index}_{image.name}'  
+                    StrategyImages.objects.create(
+                        name=image_name,
+                        img=image,
+                        content_object=result,
+                    )
+
+                # Trigger an HTMX update to fetch the new comment
+                results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
+                    'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
                 )
-
-            # Trigger an HTMX update to fetch the new comment
-            results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
-                'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
-            )
-            context = {'results': results, 'strategy': strategy}
-            response = render(request, 'include/results.html', context=context)
-            return response
-        else:
-            print(form.errors)
-            context = {'errors': form.errors}
+                context = {'results': results, 'strategy': strategy}
+                response = render(request, 'include/results.html', context=context)
+                return response
+            else:
+                print(form.errors)
+                context = {'errors': form.errors}
+                response = render(request, "include/st_post_errors.html", context=context)
+                return retarget(response, "#add-result-form-errors")
+        
+        except Exception as e:
+            context = {'errors': "An error occurred!"}
             response = render(request, "include/st_post_errors.html", context=context)
             return retarget(response, "#add-result-form-errors")
+
 
 @require_http_methods([ "POST"])
 def add_comment_reply(request, id):
