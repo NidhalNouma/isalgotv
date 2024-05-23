@@ -7,7 +7,7 @@ def send_welcome_email(user_email, user_name):
         user_name = user_email.split("@")[0]
     subject = 'Welcome to IsAlgo comunity!'
     html_content = render_to_string('emails/welcome_email.html', {'user_name': user_name})
-    email = EmailMessage(subject, html_content, from_email=f"Welcome to IsAlgo! <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
     try:
@@ -20,7 +20,7 @@ def send_welcome_email(user_email, user_name):
 def new_member_email(user_email):
     subject = 'Welcome to Our Community!'
     html_content = render_to_string('emails/new_member.html')
-    email = EmailMessage(subject, html_content, from_email=f"Your Membership is Confirmed! <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
     try:
@@ -33,7 +33,7 @@ def new_member_email(user_email):
 def new_lifetime_email(user_email):
     subject = 'Welcome to Lifetime Membership!'
     html_content = render_to_string('emails/new_lifetime.html')
-    email = EmailMessage(subject, html_content, from_email=f"We're Thrilled to Have You! <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
     try:
@@ -46,7 +46,7 @@ def new_lifetime_email(user_email):
 def cancel_membership_email(user_email):
     subject = "We're Sorry to See You Go"
     html_content = render_to_string('emails/cancel_membership.html')
-    email = EmailMessage(subject, html_content, from_email=f"Help Us Improve! <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
     try:
@@ -56,10 +56,23 @@ def cancel_membership_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
+def access_removed_email(user_email):
+    subject = "Unfortunately, your access has been removed."
+    html_content = render_to_string('emails/access_removed.html')
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending remove access email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
 def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, strategy_img):
     subject = 'Check this one out!'
     html_content = render_to_string('emails/new_strategy.html', {'strategy_name': strategy_name, 'strategy_url': strategy_url, 'strategy_img': strategy_img, 'strategy_tv_url': strategy_tv_url})
-    email = EmailMessage(subject, html_content, from_email=f"New strategy added! <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
     try:
@@ -67,3 +80,4 @@ def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, 
     except Exception as e:
         # Handle the exception as needed
         print(f"Error sending email: {e}")
+

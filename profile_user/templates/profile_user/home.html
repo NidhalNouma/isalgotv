@@ -71,7 +71,20 @@
 
   {%if step == 1%}
   <section class="mt-14 text-center">
+
+    {% if not user_profile.subscription_id %}
+    <h2 class="text-text text-md font-semibold text-center mt-2 tracking-wider">
+      Start today with <div class="relative inline-block text-title text-lg ">3 day trial
+      <div class="absolute top-[90%] w-full">
+          <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+      </div>
+      </div>
+    </h2>
+    {% else %}
     <h4 class="text-title">Select one of our plans to get started.</h4>
+    {% endif %}
 
     {% if prices|get_item:"LIFETIME" %}
 

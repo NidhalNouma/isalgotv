@@ -23,6 +23,7 @@ def profile_context(request):
         'payment_methods': getattr(request, 'payment_methods', None),
 
         'has_subscription': getattr(request, 'has_subscription', False),
+        'subscription_canceled': getattr(request, 'subscription_canceled', False),
 
         'notifications': getattr(request, 'notifications', False),
         'coupon': coupon,

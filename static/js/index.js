@@ -43,9 +43,14 @@ function closeLoader(title, id = "-pay-submit-", className = "block") {
     document.getElementById("error" + id + title).style.display = "none";
 }
 
-function changeHidden(id1, id2) {
+function changeHidden(id1, id2, className) {
   document.getElementById(id1)?.classList?.remove("hidden");
   document.getElementById(id2)?.classList?.add("hidden");
+
+  if (className) {
+    document.getElementById(id1)?.classList?.add(className);
+    document.getElementById(id2)?.classList?.remove(className);
+  }
 }
 
 function customDropdownBtnClick(newValue, textId, inputId, buttonId) {
@@ -159,7 +164,9 @@ async function onPayFormStripeSubmit(title) {
       },
     });
     if (result.error) {
-      console.log(`Payment failed: ${result.error.message}`);
+      let errorMsg = result.error.message + "\nNo payment method found!";
+      let errorHtml = `<div class="mx-auto text-sm flex p-4 text-red-600 bg-red-800/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
+      if (errorDiv) errorDiv.innerHTML = errorHtml;
       closeLoader(title);
       return false;
     } else {
@@ -315,6 +322,22 @@ htmx.on("htmx:afterRequest", (evt) => {
   if (evt?.detail?.target.id.includes("stripe-error-")) {
     const title = evt?.detail?.target.id.replace("stripe-error-", "");
     closeLoader(title);
+
+    const pmValue = document.getElementById("pm-" + title);
+    if (pmValue) {
+      const id1 = "payment-card-list-" + title;
+      if (document.getElementById(id1)?.classList?.contains("hidden")) {
+        pmValue.value = "None";
+      }
+    }
+  }
+
+  if (evt?.detail?.target.id.includes("stripe-next-")) {
+    console.log("next ...");
+    const title = evt?.detail?.target.id.replace("stripe-next-", "");
+    closeLoader(title);
+
+    changeHidden("submit-btn-sub-" + title, "submit-btn-next-" + title, "flex");
 
     const pmValue = document.getElementById("pm-" + title);
     if (pmValue) {

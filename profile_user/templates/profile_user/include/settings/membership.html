@@ -18,7 +18,7 @@
       <span class="text-title font-extrabold">{{ subscription_plan }}</span>
       plan.
     </p>
-    {% if subscription_status == 'canceled' %}
+    {% if subscription_canceled == True or subscription_status == 'canceled'%}
     <p class="mt-2 text-left text-title text-base">
       Your subscription was canceled, end on
       <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span>
@@ -49,7 +49,7 @@
     </p>
     {% else %}
     <p class="mt-2 text-left text-title text-base">
-      Your subscription renew on
+      Your next payment is scheduled for
       <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span>
     </p>
 

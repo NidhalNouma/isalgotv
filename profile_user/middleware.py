@@ -32,6 +32,7 @@ def check_user_and_stripe_middleware(get_response):
         payment_methods = None
         stripe_customer = None
         has_subscription = False
+        subscription_canceled = False
         # notifications = None
 
         if current_user.is_authenticated:
@@ -78,10 +79,15 @@ def check_user_and_stripe_middleware(get_response):
 
                     if subscription_status == 'active' and subscription.current_period_end > time.time():
                         has_subscription = True
-                    elif subscription.status == "canceled" and subscription.current_period_end > time.time():
+                    elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
                         has_subscription = True
+                    # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
+                    #     has_subscription = True
                     elif subscription.status == "incomplete":
                         has_subscription = False
+
+                    if subscription.cancel_at_period_end:
+                        subscription_canceled = True
 
                     # print(subscription_status, has_subscription)
                 except Exception as e:
@@ -112,19 +118,16 @@ def check_user_and_stripe_middleware(get_response):
         # print("sub", subscription)
 
         request.has_subscription = has_subscription
+        request.subscription_canceled = subscription_canceled
 
-        
         response = get_response(request)
 
         # print(subscription)
+        # print(has_subscription)
         # print(subscription_period_end)
         # print(subscription_status)
         # print(subscription_active)
         # print(stripe_customer)
-
-
-        # Code to be executed for each request/response after
-        # the view is called.
 
         return response
 

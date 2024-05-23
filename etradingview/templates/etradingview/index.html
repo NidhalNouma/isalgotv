@@ -44,7 +44,7 @@ setInterval(() => {
 {% endblock toppage %}
 {% block page %} 
 <main class="max-w-full md:min-h-[80vh] relative pt-10 md:pt-16 -scroll-mb-28 flex lg:flex-row flex-col justify-center gap-16 items-center border-secondary iborder ibackdrop-brightness-150 rounded-lg " >
-  <div class="relative my-auto lg:text-start text-center grow">
+  <div class="relative my-auto lg:text-start text-center grow md:min-w-[45%]">
     <div class="my-auto">
       <h2 class="text-title text-4xl sm:text-7xl font-extrabold">
         Elevate your trading prowess <br/>with our advanced
@@ -428,7 +428,17 @@ setInterval(() => {
     <span class="bg-secondary dark:text-background">Select your preferred plan</span>
   </h2>
 
-  <div class="mt-14 w-full flex flex-col md:flex-row items-center justify-center gap-8">
+  <h2 class="text-text text-lg font-semibold text-center mt-6 tracking-wider">
+    Start today with <div class="relative inline-block text-title text-xl ">3 day trial
+      <div class="absolute top-[90%] w-full">
+        <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </h2>
+
+  <div class="mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
     {% include "include/price_item.html" with title="MONTHLY" %}
     {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" %}
     {% include "include/price_item.html" with title="YEARLY" save="Save $197" %}

@@ -20,3 +20,7 @@ def send_new_lifetime_email_task(user_email):
 @shared_task
 def send_cancel_membership_email_task(user_email):
     cancel_membership_email(user_email)
+
+@shared_task
+def access_removed_email_task(user_email):
+    access_removed_email(user_email)

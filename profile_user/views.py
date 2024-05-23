@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import trigger_client_event
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User_Profile, Notification
 from strategies.models import Strategy
@@ -18,8 +19,8 @@ from strategies.models import *
 
 from django.core.mail import EmailMessage
 
-from .tasks import send_new_member_email_task, send_cancel_membership_email_task, send_new_lifetime_email_task
 
+from .tasks import *
 
 import datetime
 import environ
@@ -29,6 +30,7 @@ from .utils.tradingview import *
 
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
+stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -61,6 +63,8 @@ def home(request):
                 
                 else:
                     step = 4
+
+    # step = 1
     
     # print('t ', request.subscription)
     # print('r ', request.subscription_period_end)
@@ -375,12 +379,12 @@ def setdefault_payment_method(request):
 
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
-    # TODO: Adding check coupon code if it's available before checkout
     if request.method == 'POST':
+        data = request.POST
 
         plan_id = request.GET.get('plan','')
+        is_checking = data.get('check', "true")
         price_id = PRICE_LIST.get(plan_id, '')
-        # csrf_token = request.POST.get('csrfmiddlewaretoken')
 
         context = {"error": '', 'title': plan_id}
 
@@ -390,11 +394,42 @@ def create_subscription_stripeform(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
-        data = request.POST
+        price = float(PRICES.get(plan_id, 0))  * 100
         
         payment_method = data['pm_id']
         coupon_id = data['coupon']
         coupon = None
+
+        trial_days = 3
+        if request.user_profile.subscription_id:
+            trial_days = 0
+
+        if coupon_id:
+            try:
+                coupon = stripe.Coupon.retrieve(coupon_id)
+
+                if coupon.percent_off:
+                    price = round(price - (price * coupon.percent_off / 100), 2)
+                elif coupon.amount_off:
+                    price = round(price - coupon.amount_off, 2)
+
+            except Exception as e:
+                context["error"] = 'Invalid coupon code '+str(e)
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-"+context['title'])
+            
+        if is_checking == "true":
+            trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
+            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
+                trial_ends = None
+            txt_price = str(price / 100)
+            context["check"] = "false"
+            context["staertime"] = trial_ends
+            context["price"] = txt_price
+            context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
+            response = render(request, 'include/pay_next.html', context)
+            return retarget(response, "#stripe-next-"+context['title'])
+
 
         if not payment_method or payment_method == "None":
             context["error"] = 'No payment method has been detected.'
@@ -403,15 +438,6 @@ def create_subscription_stripeform(request):
 
         profile_user = request.user_profile
         customer_id = profile_user.customer_id
-
-        if coupon_id:
-            try:
-                coupon = stripe.Coupon.retrieve(coupon_id)
-
-            except Exception as e:
-                context["error"] = 'Invalid coupon code '+str(e)
-                response = render(request, 'include/errors.html', context)
-                return retarget(response, "#stripe-error-"+context['title'])
 
         try:
             stripe.PaymentMethod.attach(
@@ -432,16 +458,9 @@ def create_subscription_stripeform(request):
             old_subscription_id = profile_user.subscription_id
 
             if plan_id == "LIFETIME":
-                price = float(PRICES["LIFETIME"])
-                
-                if coupon:
-                    if coupon.percent_off:
-                        price = round(price - (price * coupon.percent_off / 100), 2)
-                    elif coupon.amount_off:
-                        price = round(price - coupon.amount_off, 2)
 
                 lifetime = stripe.PaymentIntent.create(
-                    amount=int(price * 100),
+                    amount=int(price),
                     currency="usd",
                     payment_method=payment_method,
                     confirm=True,
@@ -455,7 +474,6 @@ def create_subscription_stripeform(request):
                 lifetime_num = 1
                 if highest_lifetime_num:
                     lifetime_num = lifetime_num + 1
-
 
                 User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
                 print("New lifetime has been created ...")
@@ -478,6 +496,8 @@ def create_subscription_stripeform(request):
                 }],
                 payment_behavior="error_if_incomplete",
                 coupon=coupon_id,
+                trial_period_days=trial_days,
+                trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
             )
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
@@ -501,6 +521,171 @@ def create_subscription_stripeform(request):
             return retarget(response, "#stripe-error-"+context['title'])
 
 @require_http_methods([ "POST"])
+def update_subscription_stripeform(request):
+    # TODO: Try to fix the upgrade and downgrade where the payment will schedule when the current period end 
+    # TODO: check the payment form template and so when you close the form everything reset or when adding a coupon code change the button from subscribe to next
+    if request.method == 'POST':
+        data = request.POST
+
+        plan_id = request.GET.get('plan','')
+        is_checking = data.get('check', "true")
+        
+        price_id = PRICE_LIST.get(plan_id, '')
+
+        context = {"error": '', 'title': plan_id}
+
+        profile_user = request.user_profile
+        customer_id = profile_user.customer_id
+
+        old_subscription_id = profile_user.subscription_id
+        old_subscription = request.subscription
+        subscription_period_end = request.subscription_period_end
+
+        if not price_id:
+            context["error"] = 'No plan has been specified, please refresh the page and try again.'
+            # return render(request, 'include/pay_form_stripe.html', context)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
+
+        price = float(PRICES.get(plan_id, 0))  * 100
+        
+        payment_method = data['pm_id']
+        coupon_id = data['coupon']
+        coupon = None
+
+        if coupon_id:
+            try:
+                coupon = stripe.Coupon.retrieve(coupon_id)
+
+                if coupon.percent_off:
+                    price = round(price - (price * coupon.percent_off / 100), 2)
+                elif coupon.amount_off:
+                    price = round(price - coupon.amount_off, 2)
+
+            except Exception as e:
+                context["error"] = 'Invalid coupon code '+str(e)
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-"+context['title'])
+            
+        if is_checking == "true":
+            trial_ends = subscription_period_end
+            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
+                trial_ends = None
+                
+            txt_price = str(price / 100)
+            context["check"] = "false"
+            context["staertime"] = trial_ends
+            context["price"] = txt_price
+            context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
+            response = render(request, 'include/pay_next.html', context)
+            return retarget(response, "#stripe-next-"+context['title'])
+
+
+        if not payment_method or payment_method == "None":
+            context["error"] = 'No payment method has been detected.'
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
+
+        try:
+            stripe.PaymentMethod.attach(
+                payment_method,
+                customer=customer_id,
+            )
+            stripe.Customer.modify(
+                customer_id,
+                invoice_settings={
+                    'default_payment_method': payment_method
+                }
+            )
+        except Exception as e:
+            context["error"] = 'Attached payment to customer '+str(e)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
+        try:
+
+            if plan_id == "LIFETIME":
+
+                lifetime = stripe.PaymentIntent.create(
+                    amount=int(price),
+                    currency="usd",
+                    payment_method=payment_method,
+                    confirm=True,
+                    customer=customer_id,
+                    description="Lifetime subscription.",
+                    automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
+                    metadata={"price_id": price_id}
+                )
+
+                highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
+                lifetime_num = 1
+                if highest_lifetime_num:
+                    lifetime_num = lifetime_num + 1
+
+                User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
+                print("New lifetime has been created ...")
+                
+                send_new_lifetime_email_task(request.user.email)
+
+                if len(old_subscription_id) > 0:
+                    cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+                    print("Old subscription has been canceled ... ")
+
+                    return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+                
+                return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
+                
+
+            # subscription = stripe.Subscription.modify(
+            #     old_subscription_id,
+            #     cancel_at_period_end=False,
+            #     # customer=customer_id,
+            #     items=[{
+            #         'id': old_subscription['items']['data'][0].id,
+            #         'price': price_id,
+            #     }],
+            #     payment_behavior="error_if_incomplete",
+            #     coupon=coupon_id,
+            #     billing_cycle_anchor="now",
+            #     proration_behavior='always_invoice',
+            #     # trial_end=subscription_period_end,
+            #     trial_end='now',
+            # )
+
+            cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
+
+            subscription = stripe.Subscription.create(
+                customer=customer_id,
+                items=[{
+                    'price': price_id,
+                }],
+                payment_behavior="error_if_incomplete",
+                coupon=coupon_id,
+                trial_end=subscription_period_end,
+                trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+            )
+
+            User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
+
+            print("Subscription has been updated ...")
+
+            # if len(old_subscription_id) > 0:
+            #     if request.subscription_status != 'canceled':
+            #         cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+            #         print("Old subscription has been canceled ... ")
+
+            #     return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+            # else:
+            #     send_new_member_email_task(request.user.email)
+
+            # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
+            return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+
+        except Exception as e:
+            context["error"] = "Creating subscription "  +str(e)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-"+context['title'])
+
+@require_http_methods([ "POST"])
 def cancel_subscription(request):
     if request.method == 'POST':
         subscription = request.subscription
@@ -514,10 +699,10 @@ def cancel_subscription(request):
                 'error': "" } 
         if subscription.id:
             try:
-                # cancel_subscription = stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
-                cancel_subscription = stripe.Subscription.delete(subscription.id)
+                cancel_subscription = stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
                 context['subscription'] = cancel_subscription
                 context['subscription_status'] = cancel_subscription.status
+                context['subscription_canceled'] = True
 
                 end_timestamp = cancel_subscription.current_period_end * 1000
                 end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
@@ -537,7 +722,7 @@ def cancel_subscription(request):
 def preview_email(request):
     # Dummy data for template context
     context = {'user_name': 'Test User'}
-    return render(request, 'emails/welcome_email.html', context)
+    return render(request, 'emails/access_removed.html', context)
 
 def send_email(request):
     if request.method == 'POST':
@@ -598,3 +783,49 @@ def send_email(request):
             error = "An error occured please try again!"
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
+        
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, stripe_wh_secret
+        )
+    except ValueError as e:
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        return HttpResponse(status=400)
+
+    if event['type'] == 'customer.subscription.deleted':
+        print("Strip-Webhook: Subscription deleted ...")
+        subscription = event['data']['object']
+
+        remove_access(subscription.id)
+
+    elif event['type'] == 'customer.subscription.updated':
+        print("Strip-Webhook: Subscription updated ...")
+        subscription = event['data']['object']
+        if subscription.status == "canceld":
+            remove_access(subscription.id)
+
+    else:
+      print('Unhandled event type {}'.format(event['type']))
+
+    return HttpResponse(status=200)
+
+
+def remove_access(subscription_id):
+    profile_user = User_Profile.objects.get(subscription_id=subscription_id)
+    if profile_user:
+        user = profile_user.user
+            
+        strategies = Strategy.objects.all()
+
+        for strategy in strategies:
+            access_response = give_access(strategy.id, profile_user.id, False)
+                
+        access_removed_email_task(user.email)

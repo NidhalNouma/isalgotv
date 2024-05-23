@@ -1,5 +1,9 @@
 <form
+  {% if user_profile.subscription_id and subscription_status != 'canceled' %}
+  hx-post="{% url 'membership-update' %}?plan={{ title }}"
+  {% else %}
   hx-post="{% url 'membership-create' %}?plan={{ title }}"
+  {% endif %}
   class="relative"
   id="form-pay-{{ title }}"
 >
@@ -96,6 +100,11 @@
 
   <input type="text" name="pm_id" id="pm-{{title}}" class="hidden" value="{{stripe_customer.invoice_settings.default_payment_method}}" />
 
+  <div class="mb-0 mt-3" id="stripe-next-{{title}}">
+
+    {% include 'include/pay_next.html' with id="info-pay-submit-{{title}}" %}
+  </div>
+
   <div class="mb-3 mt-3" id="stripe-error-{{title}}">
     {% include 'include/errors.html' with error=error id="error-pay-submit-{{title}}" %}
   </div>
@@ -107,8 +116,8 @@
       id="btn-pay-submit-{{title}}"
       class="btn-accent block w-full max-w-full mx-auto font-semibold text-center"
     >
-      <div class="flex items-center justify-center w-full">
-        SUBSCRIBE
+      <div id="submit-btn-sub-{{title}}" class="hidden items-center justify-center w-full">
+        Subscribe
         <svg
           stroke="currentColor"
           fill="currentColor"
@@ -122,6 +131,10 @@
             d="M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zM8 1.5c3.59 0 6.5 2.91 6.5 6.5s-2.91 6.5-6.5 6.5-6.5-2.91-6.5-6.5 2.91-6.5 6.5-6.5zM8 9.356c1.812 0 3.535-0.481 5-1.327-0.228 2.788-2.393 4.971-5 4.971s-4.772-2.186-5-4.973c1.465 0.845 3.188 1.329 5 1.329zM4 5.5c0-0.828 0.448-1.5 1-1.5s1 0.672 1 1.5c0 0.828-0.448 1.5-1 1.5s-1-0.672-1-1.5zM10 5.5c0-0.828 0.448-1.5 1-1.5s1 0.672 1 1.5c0 0.828-0.448 1.5-1 1.5s-1-0.672-1-1.5z"
           ></path>
         </svg>
+      </div>
+      <div id="submit-btn-next-{{title}}" class=" items-center justify-center w-full flex">
+        Next
+        <svg class="h-4 w-4 ml-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="m268 112 144 144-144 144m124-144H100"></path></svg>
       </div>
     </button>
 
@@ -148,7 +161,7 @@
           fill="currentColor"
         />
       </svg>
-      Checking card ...
+      Loading ...
     </button>
   </div>
 </form>
