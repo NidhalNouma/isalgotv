@@ -234,10 +234,17 @@ def edit_tradingview_username(request):
                 check_username = True
 
         if check_username == False:
-            print('username ,,,')
-            error = "Username not found. Please try again with another username."
+            error = "The username provided cannot be found. Please ensure that you enter a valid TradingView username."
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#tradingview_username_submit_error")
+        
+        is_tv_user_exist = User_Profile.objects.exclude(user=request.user).filter(tradingview_username=tv_username).exists()
+
+        if is_tv_user_exist:
+            error = "The username you entered has already been used by another account. If you believe this is a mistake, please contact us for further assistance."
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#tradingview_username_submit_error")
+
         
         profile_user = request.user_profile
 
@@ -697,6 +704,7 @@ def cancel_subscription(request):
                 'subscription_plan':subscription_plan, 
                 'subscription': subscription, 
                 'error': "" } 
+
         if subscription.id:
             try:
                 cancel_subscription = stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
@@ -714,7 +722,7 @@ def cancel_subscription(request):
             except Exception as e:
                 pass
 
-        context['error'] = 'error occured while trying to cancel subscription.'
+        context['error'] = 'An error occurred while attempting to cancel your subscription. Please contact us for assistance.'
 
         return render(request, 'include/settings/membership.html', context)
 
@@ -825,7 +833,8 @@ def remove_access(subscription_id):
             
         strategies = Strategy.objects.all()
 
-        for strategy in strategies:
-            access_response = give_access(strategy.id, profile_user.id, False)
+        if profile_user.tradingview_username:
+            for strategy in strategies:
+                access_response = give_access(strategy.id, profile_user.id, False)
                 
         access_removed_email_task(user.email)

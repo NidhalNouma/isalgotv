@@ -29,15 +29,19 @@ function swapDivBtn(id1, id2) {
 }
 
 function openLoader(title, id = "-pay-submit-", className = "block") {
-  document.getElementById("spinner" + id + title).style.display = className;
-  document.getElementById("btn" + id + title).style.display = "none";
+  let spinner = document.getElementById("spinner" + id + title);
+  if (spinner) spinner.style.display = className;
+  let btn = document.getElementById("btn" + id + title);
+  if (btn) btn.style.display = "none";
 
   if (document.getElementById("error" + id + title))
     document.getElementById("error" + id + title).style.display = "none";
 }
 function closeLoader(title, id = "-pay-submit-", className = "block") {
-  document.getElementById("spinner" + id + title).style.display = "none";
-  document.getElementById("btn" + id + title).style.display = className;
+  let spinner = document.getElementById("spinner" + id + title);
+  if (spinner) spinner.style.display = "none";
+  let btn = document.getElementById("btn" + id + title);
+  if (btn) btn.style.display = className;
 
   if (document.getElementById("error" + id + title))
     document.getElementById("error" + id + title).style.display = "none";
@@ -139,7 +143,7 @@ function paymentMethodSelected(pmId, inputId) {
 }
 
 async function onPayFormStripeSubmit(title) {
-  openLoader(title);
+  openLoader(title, "-pay-submit-", "flex");
   const nameInput = document.getElementById("cardName-" + title);
 
   const pmValue = document.getElementById("pm-" + title);
@@ -360,7 +364,7 @@ htmx.on("htmx:afterRequest", (evt) => {
   }
 
   if (evt?.detail?.target.id.includes("tradingview_username_submit")) {
-    closeLoader("", "-tv");
+    closeLoader("", "-tv", "flex");
   }
 
   if (evt?.detail?.target.id.includes("contact_us_mail")) {
@@ -697,6 +701,7 @@ function openModel(id) {
     // },
   };
 
+  // TODO: Fix modal problem after htmx response when cancel a membership
   if (modals[id]) modals[id].show();
   else {
     const modal = new Modal(modalElement, modalOptions);

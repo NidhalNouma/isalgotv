@@ -1724,14 +1724,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   top: 100%;
 }
 
-.bottom-full {
-  bottom: 100%;
-}
-
-.-bottom-full {
-  bottom: -100%;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -1864,6 +1856,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: 1rem;
 }
 
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .my-6 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -1877,11 +1874,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.my-5 {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
 }
 
 .-ml-1 {
@@ -2271,10 +2263,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .h-5 {
   height: 1.25rem;
-}
-
-.h-52 {
-  height: 13rem;
 }
 
 .h-6 {
@@ -2683,21 +2671,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.rotate-45 {
-  --tw-rotate: 45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-2 {
-  --tw-rotate: 2deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-rotate-2 {
-  --tw-rotate: -2deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .scale-105 {
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
@@ -2707,6 +2680,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .scale-110 {
   --tw-scale-x: 1.1;
   --tw-scale-y: 1.1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-125 {
+  --tw-scale-x: 1.25;
+  --tw-scale-y: 1.25;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2725,12 +2704,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .scale-\[1\.005\] {
   --tw-scale-x: 1.005;
   --tw-scale-y: 1.005;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.scale-125 {
-  --tw-scale-x: 1.25;
-  --tw-scale-y: 1.25;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3171,9 +3144,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-title) / 0.2);
 }
 
-.\!bg-background {
-  --tw-bg-opacity: 1 !important;
-  background-color: hsl(var(--color-background) / var(--tw-bg-opacity)) !important;
+.\!bg-background\/20 {
+  background-color: hsl(var(--color-background) / 0.2) !important;
 }
 
 .\!bg-text {
@@ -3197,6 +3169,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-background\/10 {
   background-color: hsl(var(--color-background) / 0.1);
+}
+
+.bg-background\/20 {
+  background-color: hsl(var(--color-background) / 0.2);
 }
 
 .bg-background\/25 {
@@ -3324,6 +3300,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-text) / 0.6);
 }
 
+.bg-text\/90 {
+  background-color: hsl(var(--color-text) / 0.9);
+}
+
 .bg-title {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-title) / var(--tw-bg-opacity));
@@ -3350,14 +3330,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(114 59 19 / 0.1);
 }
 
-.bg-background\/20 {
-  background-color: hsl(var(--color-background) / 0.2);
-}
-
-.\!bg-background\/20 {
-  background-color: hsl(var(--color-background) / 0.2) !important;
-}
-
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -3376,10 +3348,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-gradient-to-tl {
   background-image: linear-gradient(to top left, var(--tw-gradient-stops));
-}
-
-.\!bg-none {
-  background-image: none !important;
 }
 
 .\!from-text {
@@ -3453,6 +3421,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-background) / 1);
 }
 
+.fill-background\/20 {
+  fill: hsl(var(--color-background) / 0.2);
+}
+
 .fill-current {
   fill: currentColor;
 }
@@ -3493,10 +3465,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: transparent;
 }
 
-.fill-background\/20 {
-  fill: hsl(var(--color-background) / 0.2);
-}
-
 .stroke-accent {
   stroke: hsl(var(--color-accent) / 1);
 }
@@ -3531,10 +3499,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .stroke-title {
   stroke: hsl(var(--color-title) / 1);
-}
-
-.stroke-background\/20 {
-  stroke: hsl(var(--color-background) / 0.2);
 }
 
 .stroke-2 {
@@ -3589,10 +3553,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.p-8 {
-  padding: 2rem;
 }
 
 .px-0 {
@@ -3650,6 +3610,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-right: 1.5rem;
 }
 
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .py-0 {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -3685,6 +3650,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-bottom: 0.625rem;
 }
 
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -3708,16 +3678,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .py-\[0\.1rem\] {
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
-}
-
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.py-20 {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
 }
 
 .pb-0 {
@@ -3933,14 +3893,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .tracking-wider {
   letter-spacing: 0.05em;
-}
-
-.tracking-widest {
-  letter-spacing: 0.1em;
-}
-
-.-tracking-wider {
-  letter-spacing: -0.05em;
 }
 
 .\!text-background {
@@ -4217,11 +4169,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.blur-\[110px\] {
-  --tw-blur: blur(110px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 .blur-\[120px\] {
   --tw-blur: blur(120px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -4274,12 +4221,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .backdrop-blur-sm {
   --tw-backdrop-blur: blur(4px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-.backdrop-blur-md {
-  --tw-backdrop-blur: blur(12px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -4491,6 +4432,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
+.hover\:bg-background\/40:hover {
+  background-color: hsl(var(--color-background) / 0.4);
+}
+
 .hover\:bg-background\/50:hover {
   background-color: hsl(var(--color-background) / 0.5);
 }
@@ -4530,14 +4475,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-background\/20:hover {
-  background-color: hsl(var(--color-background) / 0.2);
-}
-
-.hover\:bg-background\/40:hover {
-  background-color: hsl(var(--color-background) / 0.4);
 }
 
 .hover\:fill-text:hover {
@@ -5061,12 +4998,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     display: none;
   }
 
-  .md\:h-full {
-    height: 100%;
-  }
-
   .md\:h-52 {
     height: 13rem;
+  }
+
+  .md\:h-full {
+    height: 100%;
   }
 
   .md\:min-h-\[80vh\] {
@@ -5083,14 +5020,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:w-auto {
     width: auto;
-  }
-
-  .md\:min-w-\[50\%\] {
-    min-width: 50%;
-  }
-
-  .md\:min-w-\[40\%\] {
-    min-width: 40%;
   }
 
   .md\:min-w-\[45\%\] {

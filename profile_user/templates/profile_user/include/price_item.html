@@ -174,11 +174,19 @@
     <div class="relative bg-background rounded-lg shadow">
       <!-- Modal header -->
       <div
-        class="flex items-center justify-between p-4 rounded-t"
+        class="flex items-start justify-between p-4 rounded-t"
       >
-        <h3 class="text-xl font-semibold text-title">
-          Subscribe to the {{title}} plan
-        </h3>
+        <div class="">
+          <h3 class="text-xl font-semibold text-title">
+            Subscribe to the {{title}} plan
+          </h3>
+
+              {% if title != 'LIFETIME' and not user_profile.subscription_id %}
+              <div class="mt-1 text-start">
+                <h4 class="bg-text/90 text-background font-semibold text-sm inline-block px-2 rounded">Enjoy a 3-day free trial starting today!</h4>
+              </div>
+            {% endif %}
+        </div>
         <button
           onclick="unmountStripeElement('{{title}}')"
           type="button"
