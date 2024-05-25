@@ -183,7 +183,11 @@
 
               {% if title != 'LIFETIME' and not user_profile.subscription_id %}
               <div class="mt-1 text-start">
-                <h4 class="bg-text/90 text-background font-semibold text-sm inline-block px-2 rounded">Enjoy a 3-day free trial starting today!</h4>
+                <h4 class="text-text font-semibold text-sm inline-block relative">Enjoy a <div class="relative inline-block text-title">3 day free trial<div class="absolute top-[80%] w-full">
+                  <svg class="w-full scale-110 rotate-6 stroke-title" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="4.5" stroke-linecap="round"/>
+                  </svg>
+              </div></div> starting today!</h4>
               </div>
             {% endif %}
         </div>

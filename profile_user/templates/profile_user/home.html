@@ -183,7 +183,6 @@ class="flex items-center justify-between mb-2 text-sm font-medium text-title w-f
           id="btn-tv"
           onclick="openLoader('', '-tv', 'flex');"
           type="submit"
-          id=""
           class=" max-w-full w-full mx-auto btn-secondary inline-flex"
         >
           Next
@@ -269,9 +268,14 @@ class="flex items-center justify-between mb-2 text-sm font-medium text-title w-f
         class="text-title font-medium underline"
         href="{% url 'docs_index' %}"
         >documentation</a
-      > for a step-by-step guide.
-        
-      </p>
+      > for a step-by-step guide.</p>
+      <a
+      href="{% url 'home' %}"
+      class=" px-6 mx-auto btn-secondary inline-flex mt-6"
+    >
+      All done
+      <svg class="h-4 w-4 ml-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg>
+    </a>
   </section>
 
   {%endif%} {%if congrate %} {%include "include/congrate.html" %} {%endif %}
