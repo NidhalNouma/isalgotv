@@ -24,3 +24,7 @@ def send_cancel_membership_email_task(user_email):
 @shared_task
 def access_removed_email_task(user_email):
     access_removed_email(user_email)
+
+@shared_task
+def overdue_access_removed_email_task(user_email):
+    overdue_access_removed_email(user_email)

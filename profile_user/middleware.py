@@ -77,9 +77,13 @@ def check_user_and_stripe_middleware(get_response):
                         if val == subscription_price_id: 
                             subscription_plan = key
 
+                    # subscription_status = 'past_due'
+
                     if subscription_status == 'active' and subscription.current_period_end > time.time():
                         has_subscription = True
                     elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
+                        has_subscription = True
+                    elif subscription_status == 'past_due' and subscription.current_period_end > time.time():
                         has_subscription = True
                     # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
                     #     has_subscription = True

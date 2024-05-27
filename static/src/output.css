@@ -1756,10 +1756,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   z-index: 60;
 }
 
-.float-right {
-  float: right;
-}
-
 .float-left {
   float: left;
 }
@@ -2455,6 +2451,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 2.25rem;
 }
 
+.w-\[20\%\] {
+  width: 20%;
+}
+
 .w-\[27rem\] {
   width: 27rem;
 }
@@ -2500,36 +2500,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 100%;
 }
 
-.w-3\/12 {
-  width: 25%;
-}
-
-.w-2\/12 {
-  width: 16.666667%;
-}
-
-.w-\[20\%\] {
-  width: 20%;
-}
-
-.w-\[22\%\] {
-  width: 22%;
-}
-
 .min-w-\[100vw\] {
   min-width: 100vw;
-}
-
-.min-w-\[12rem\] {
-  min-width: 12rem;
-}
-
-.min-w-\[30\%\] {
-  min-width: 30%;
-}
-
-.min-w-\[20\%\] {
-  min-width: 20%;
 }
 
 .max-w-2xl {
@@ -2550,10 +2522,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-w-\[12rem\] {
   max-width: 12rem;
-}
-
-.max-w-\[22\%\] {
-  max-width: 22%;
 }
 
 .max-w-\[50\%\] {
@@ -3081,6 +3049,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(240 82 82 / var(--tw-border-opacity)) !important;
 }
 
+.border-\[\#7289da\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(114 137 218 / var(--tw-border-opacity));
+}
+
 .border-accent {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-accent) / var(--tw-border-opacity));
@@ -3168,9 +3141,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-title) / 0.2);
 }
 
-.border-\[\#7289da\] {
+.border-yellow-300 {
   --tw-border-opacity: 1;
-  border-color: rgb(114 137 218 / var(--tw-border-opacity));
+  border-color: rgb(250 202 21 / var(--tw-border-opacity));
+}
+
+.border-yellow-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(159 88 10 / var(--tw-border-opacity));
 }
 
 .\!bg-background\/20 {
@@ -3329,10 +3307,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-text) / 0.6);
 }
 
-.bg-text\/90 {
-  background-color: hsl(var(--color-text) / 0.9);
-}
-
 .bg-title {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-title) / var(--tw-bg-opacity));
@@ -3359,20 +3333,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(114 59 19 / 0.1);
 }
 
-.bg-\[\#7289da\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(114 137 218 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#7289da\]\/10 {
-  background-color: rgb(114 137 218 / 0.1);
-}
-
-.\!bg-\[\#7289da\] {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(114 137 218 / var(--tw-bg-opacity)) !important;
-}
-
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -3391,6 +3351,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-gradient-to-tl {
   background-image: linear-gradient(to top left, var(--tw-gradient-stops));
+}
+
+.\!from-\[\#7289da\] {
+  --tw-gradient-from: #7289da var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(114 137 218 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
 }
 
 .\!from-text {
@@ -3417,12 +3383,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.\!from-\[\#7289da\] {
-  --tw-gradient-from: #7289da var(--tw-gradient-from-position) !important;
-  --tw-gradient-to: rgb(114 137 218 / 0) var(--tw-gradient-to-position) !important;
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
-}
-
 .via-text\/40 {
   --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.4) var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -3431,6 +3391,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .via-text\/70 {
   --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.7) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.\!to-\[\#7289da\] {
+  --tw-gradient-to: #7289da var(--tw-gradient-to-position) !important;
 }
 
 .to-accent {
@@ -3453,17 +3417,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-to: hsl(var(--color-text) / 0.5) var(--tw-gradient-to-position);
 }
 
-.to-\[\#7289da\] {
-  --tw-gradient-to: #7289da var(--tw-gradient-to-position);
-}
-
-.\!to-\[\#7289da\] {
-  --tw-gradient-to: #7289da var(--tw-gradient-to-position) !important;
-}
-
 .bg-clip-text {
   -webkit-background-clip: text;
           background-clip: text;
+}
+
+.fill-\[\#7289da\]\/40 {
+  fill: rgb(114 137 218 / 0.4);
 }
 
 .fill-\[\#cccc\] {
@@ -3502,6 +3462,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: hsl(var(--color-text) / 1);
 }
 
+.fill-text\/10 {
+  fill: hsl(var(--color-text) / 0.1);
+}
+
 .fill-text\/50 {
   fill: hsl(var(--color-text) / 0.5);
 }
@@ -3520,26 +3484,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .fill-transparent {
   fill: transparent;
-}
-
-.fill-text\/20 {
-  fill: hsl(var(--color-text) / 0.2);
-}
-
-.fill-text\/10 {
-  fill: hsl(var(--color-text) / 0.1);
-}
-
-.fill-text\/\[0\.15\] {
-  fill: hsl(var(--color-text) / 0.15);
-}
-
-.fill-\[\#7289da\]\/10 {
-  fill: rgb(114 137 218 / 0.1);
-}
-
-.fill-\[\#7289da\]\/40 {
-  fill: rgb(114 137 218 / 0.4);
 }
 
 .stroke-accent {
@@ -4234,6 +4178,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .outline {
   outline-style: solid;
+}
+
+.outline-2 {
+  outline-width: 2px;
+}
+
+.outline-offset-4 {
+  outline-offset: 4px;
+}
+
+.outline-secondary {
+  outline-color: hsl(var(--color-secondary) / 1);
 }
 
 .blur {
@@ -5061,10 +5017,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:mt-4 {
     margin-top: 1rem;
-  }
-
-  .md\:block {
-    display: block;
   }
 
   .md\:flex {

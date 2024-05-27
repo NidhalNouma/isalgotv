@@ -547,6 +547,12 @@ def update_subscription_stripeform(request):
         old_subscription_id = profile_user.subscription_id
         old_subscription = request.subscription
         subscription_period_end = request.subscription_period_end
+        subscription_status = request.subscription_status
+
+
+        trial_ends = subscription_period_end
+        if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME" or subscription_status == 'past_due':
+            trial_ends = 'now'
 
         if not price_id:
             context["error"] = 'No plan has been specified, please refresh the page and try again.'
@@ -575,8 +581,7 @@ def update_subscription_stripeform(request):
                 return retarget(response, "#stripe-error-"+context['title'])
             
         if is_checking == "true":
-            trial_ends = subscription_period_end
-            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
+            if trial_ends == 'now':
                 trial_ends = None
                 
             txt_price = str(price / 100)
@@ -658,8 +663,6 @@ def update_subscription_stripeform(request):
             #     trial_end='now',
             # )
 
-            cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
-
             subscription = stripe.Subscription.create(
                 customer=customer_id,
                 items=[{
@@ -667,13 +670,17 @@ def update_subscription_stripeform(request):
                 }],
                 payment_behavior="error_if_incomplete",
                 coupon=coupon_id,
-                trial_end=subscription_period_end,
+                trial_end=trial_ends,
                 trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
             )
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
 
             print("Subscription has been updated ...")
+
+            cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
+            print("Old Subscription has been canceled ...")
+
 
             # if len(old_subscription_id) > 0:
             #     if request.subscription_status != 'canceled':
@@ -730,7 +737,7 @@ def cancel_subscription(request):
 def preview_email(request):
     # Dummy data for template context
     context = {'user_name': 'Test User'}
-    return render(request, 'emails/access_removed.html', context)
+    return render(request, 'emails/overdue_access_removed.html', context)
 
 def send_email(request):
     if request.method == 'POST':
@@ -819,6 +826,8 @@ def stripe_webhook(request):
         subscription = event['data']['object']
         if subscription.status == "canceld":
             remove_access(subscription.id)
+        elif subscription.status == "past_due":
+            remove_access(subscription.id, False)
 
     else:
       print('Unhandled event type {}'.format(event['type']))
@@ -826,7 +835,7 @@ def stripe_webhook(request):
     return HttpResponse(status=200)
 
 
-def remove_access(subscription_id):
+def remove_access(subscription_id, cancel_email = True):
     profile_user = User_Profile.objects.get(subscription_id=subscription_id)
     if profile_user:
         user = profile_user.user
@@ -837,4 +846,5 @@ def remove_access(subscription_id):
             for strategy in strategies:
                 access_response = give_access(strategy.id, profile_user.id, False)
                 
-        access_removed_email_task(user.email)
+        if cancel_email:
+            access_removed_email_task(user.email)

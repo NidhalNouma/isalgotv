@@ -69,6 +69,19 @@ def access_removed_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
+def overdue_access_removed_email(user_email):
+    subject = "Action Required: Update Your Payment Method to Restore Access."
+    html_content = render_to_string('emails/overdue_access_removed.html')
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending overdue remove access email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
 def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, strategy_img):
     subject = 'Check this one out!'
     html_content = render_to_string('emails/new_strategy.html', {'strategy_name': strategy_name, 'strategy_url': strategy_url, 'strategy_img': strategy_img, 'strategy_tv_url': strategy_tv_url})
