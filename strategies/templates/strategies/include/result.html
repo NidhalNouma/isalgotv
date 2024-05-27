@@ -6,7 +6,8 @@
 >
   <div class="flex sm:flex-row flex-col mb-1 items-start sm:items-center">
     <a class="" href="{% url 'results' %}?pair={{result.pair}}">
-      <span class="text-background bg-text px-1.5 rounded-full text-sm font-semibold mr-2"
+      <span
+        class="text-background bg-text px-1.5 rounded-full text-sm font-semibold mr-2"
         >{{result.pair}}</span
       >
     </a>
@@ -25,9 +26,16 @@
       </svg>
       <h6 class="text-title/80 font-semibold">{{result.test_end_at|date:'M d Y - H:i'}}</h6>
     </div> -->
-  <div class="w-full max-w-xs bg-text/30 rounded-xl border-primary border my-1">
-    <div class="bg-text text-xs text-[0.7rem] font-medium text-background text-center p-0.25 leading-none rounded-full" style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%">{{ result.test_start_at|period_in_months_years:result.test_end_at }}</div>
-  </div>
+    <div
+      class="w-full max-w-xs bg-text/30 rounded-xl border-primary border my-1"
+    >
+      <div
+        class="bg-text text-xs text-[0.7rem] font-medium text-background text-center p-0.25 leading-none rounded-full"
+        style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
+      >
+        {{ result.test_start_at|period_in_months_years:result.test_end_at }}
+      </div>
+    </div>
   </div>
 
   <div class="text-sm font-medium flex mb-1 text-text/70">
@@ -70,7 +78,8 @@
   >
     {{result.description|linebreaksbr}}
   </p>
-  {% comment %} <span
+  {% comment %}
+  <span
     id="hide-paragraph-result-{{result.id}}"
     onclick="document.getElementById('paragraph-result-{{result.id}}').classList.add('line-clamp-3'); document.getElementById('show-paragraph-result-{{result.id}}').classList.remove('hidden');  document.getElementById('hide-paragraph-result-{{result.id}}').classList.add('hidden')"
     class="text-text text-xs rounded cursor-pointer font-semibold hidden"
@@ -81,12 +90,115 @@
     onclick="document.getElementById('paragraph-result-{{result.id}}').classList.remove('line-clamp-3'); document.getElementById('show-paragraph-result-{{result.id}}').classList.add('hidden');  document.getElementById('hide-paragraph-result-{{result.id}}').classList.remove('hidden')"
     class="text-text text-xs rounded cursor-pointer font-semibold"
     >show all</span
-  > {% endcomment %}
-  {% include "include/images.html" with images=result.images.all %}
+  >
+  {% endcomment %} {% include "include/images.html" with
+  images=result.images.all %}
 
   <div class="mb-0.5 mt-2 flex items-center">
-    <span class="text-text/50 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ result.created_by.get_tradingview_username}}/?aff_id=134591&aff_sub=134591&source=134591">@{{ result.created_by.get_tradingview_username}}</a></span>
-    <span class="ml-4 text-text/50 text-xs">{{ result.created_at|timesince }} ago</span>
+    <span class="text-text/50 text-xs hover:text-text/80"
+      ><a
+        class="font-bold"
+        target="_blank"
+        href="https://www.tradingview.com/u/{{ result.created_by.get_tradingview_username}}/?aff_id=134591&aff_sub=134591&source=134591"
+        >@{{ result.created_by.get_tradingview_username}}</a
+      ></span
+    >
+    <span class="ml-3 mr-2.5 text-text/50 text-xs"
+      >{{ result.created_at|timesince }} ago</span
+    >
+
+    <div class="">
+      <button
+        id="shareButton-{{ result.id }}"
+        class="text-text/80 flex items-center text-xs px-1 rounded box-border"
+      >
+        <svg
+          class="h-3.5 aspect-square"
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="128"
+            cy="256"
+            r="48"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+          ></circle>
+          <circle
+            cx="384"
+            cy="112"
+            r="48"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+          ></circle>
+          <circle
+            cx="384"
+            cy="400"
+            r="48"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+          ></circle>
+          <path
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+            d="m169.83 279.53 172.34 96.94m0-240.94-172.34 96.94"
+          ></path>
+        </svg>
+        <span
+          id="shareText-{{ result.id }}"
+          class="hidden ml-1.5 transition-all duration-300 border-b border-text/50"
+          >Share result link</span
+        >
+      </button>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const shareButton = document.getElementById(
+          "shareButton-{{ result.id }}"
+        );
+        const shareText = document.getElementById("shareText-{{ result.id }}");
+
+        // Handle mouse enter event
+        shareButton.addEventListener("mouseenter", function () {
+          shareText.classList.remove("hidden");
+        });
+
+        // Handle mouse leave event
+        shareButton.addEventListener("mouseleave", function () {
+          shareText.classList.add("hidden");
+          shareText.textContent = "Share result link";
+        });
+
+        // Handle click event
+        shareButton.addEventListener("click", function () {
+          shareText.textContent = "Link copied!"; // Change text
+          const url = new URL(window.location.href);
+          const params = url.searchParams;
+
+          // Set 'result' query parameter to '3'
+          params.set("result", "{{ result.id }}");
+          url.search = params.toString();
+
+          // Copy the URL to the clipboard
+          navigator.clipboard
+            .writeText(url.toString())
+            .then(() => console.log("Link copied to clipboard!"))
+            .catch((err) => console.error("Failed to copy link: ", err));
+        });
+      });
+    </script>
   </div>
 
   <div id="replies-{{ result.id }}-result" class="">
@@ -98,10 +210,10 @@
   document.addEventListener("DOMContentLoaded", function () {
     if (getNumberOfLines("paragraph-result-{{result.id}}") <= 3) {
       document
-        .getElementById("paragraph-result-{{result.id}}")
+        .getElementById("paragraph-result-{{result.id}}")?
         .classList.add("line-clamp-3");
       document
-        .getElementById("show-paragraph-result-{{result.id}}")
+        .getElementById("show-paragraph-result-{{result.id}}")?
         .classList.add("hidden");
     }
   });

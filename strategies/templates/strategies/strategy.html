@@ -328,7 +328,7 @@ id="btn-result-modal-data-hide"
     else scrollToResultOrComment("commentsDiv");
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.addEventListener("load", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const resultParam = urlParams.get("result");
 

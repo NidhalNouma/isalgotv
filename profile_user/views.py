@@ -529,7 +529,6 @@ def create_subscription_stripeform(request):
 
 @require_http_methods([ "POST"])
 def update_subscription_stripeform(request):
-    # TODO: Try to fix the upgrade and downgrade where the payment will schedule when the current period end 
     # TODO: check the payment form template and so when you close the form everything reset or when adding a coupon code change the button from subscribe to next
     if request.method == 'POST':
         data = request.POST
