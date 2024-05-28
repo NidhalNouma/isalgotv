@@ -38,7 +38,7 @@ def give_access(strategy_id, profile_id, access):
         response.raise_for_status() 
         # print('data:', data)
 
-        if add_or_reemove:
+        if access:
           profile.strategies.add(strategy)
         else:
           profile.strategies.remove(strategy)

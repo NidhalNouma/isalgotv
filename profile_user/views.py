@@ -285,7 +285,8 @@ def get_access(request, strategy_id):
         access_response = give_access(strategy_id, profile_user.id, True)
 
     if pg == "st":
-        return HttpResponseClientRedirect('/st/' + str(strategy_id) +'/')
+        strategy = Strategy.objects.get(pk = strategy_id)
+        return HttpResponseClientRedirect(reverse('strategy', args=[strategy.slug]))
     else:
         strategies = Strategy.objects.all()
         return render(request, 'include/access_list.html', context = {"strategies": strategies})

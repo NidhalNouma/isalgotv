@@ -24,7 +24,7 @@
       <span class="text-red-600 text-xs px-1 rounded-full bg-red-800/10"
         >Inactive</span
       >
-      {% endif %} {% if has_subscription %}
+      {% endif %} {% if has_subscription and subscription_status != 'past_due' %}
       <form
         class="inline-flex"
         hx-post="{% url 'give_access' strategy.id %}"

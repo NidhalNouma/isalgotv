@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch, OuterRef, Subquery
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
-
+from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
@@ -82,6 +82,15 @@ def get_strategy(request, slug):
     
     context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': random_results}
     return render(request, 'strategy.html', context)
+
+def get_strategy_id(request, id):
+    
+    try:
+        strategy = Strategy.objects.get(id=id)
+        return HttpResponseRedirect(reverse('strategy', args=[strategy.slug]))
+        
+    except Strategy.DoesNotExist:
+        raise Http404("The object does not exist.")
 
 
 def strategy_like(request, id):

@@ -190,8 +190,8 @@
     </svg>
   </div>
 
-{% elif has_subscription and strategy not in user_profile.strategies %}
-<div id="access-mb" class="w-full flex">
+{% elif has_subscription and strategy not in user_profile.strategies.all and subscription_status != 'past_due' %}
+<div id="access-mb" class="w-full flex mb-2">
   <form
   class="inline-flex ml-auto"
   hx-post="{% url 'give_access' strategy.id %}?pg=st"
@@ -204,7 +204,7 @@
     id="btn-acc-{{strategy.id}}"
     onclick="openLoader('', '-acc-{{strategy.id}}', 'flex');"
   >
-    Unlock access
+    Get access
     <svg
       class="h-4 w-4 ml-1"
       stroke="currentColor"
@@ -224,7 +224,7 @@
     type="button"
     class="btn-accent font-semibold whitespace-nowrap hidden"
   >
-    Unlock access
+    Get access
     <svg
       aria-hidden="true"
       role="status"
