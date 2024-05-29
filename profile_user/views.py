@@ -51,7 +51,7 @@ def home(request):
     if request.has_subscription == None:
         step = 1
     else:
-        if request.has_subscription == True:
+        if request.has_subscription == True and request.subscription_status != 'past_due':
             step = 2
         if request.user_profile:
             user_profile = request.user_profile
@@ -64,23 +64,11 @@ def home(request):
                 else:
                     step = 4
 
-    # step = 1
-    
-    # print('t ', request.subscription)
-    # print('r ', request.subscription_period_end)
-    # print('a ', request.subscription_active)
-    # print('s ', request.subscription_status)
-    # print('pid ', request.subscription_price_id)
-    # print('pid ', request.subscription_plan)
-
     congrate = False
     if 'sub' in request.GET:
         if request.GET.get('sub') == 'True':
             congrate = True
             step = 2
-    
-    # request.GET = request.GET.copy()
-    # request.GET.clear()
 
     context = {"congrate": congrate, 'step':step , 'prices': settings.PRICES}
 

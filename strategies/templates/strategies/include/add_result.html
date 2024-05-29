@@ -3,8 +3,7 @@
   <button
     class="text-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
-    data-modal-target="add-result-modal"
-    data-modal-toggle="add-result-modal"
+    onclick="openModel('add-result-modal')"
   >
     Share your results
   </button> 
@@ -34,33 +33,6 @@
     novalidate
   >
     {% csrf_token %}
-    <button
-      class="hidden btn-text my-4 w-fit"
-      id="add-result-form-open-result"
-      data-modal-target="add-result-modal-result"
-      data-modal-toggle="add-result-modal-result"
-      type="button"
-    >
-      result
-    </button>
-    <button
-      id="add-result-form-open-setting"
-      data-modal-target="add-result-modal"
-      data-modal-toggle="add-result-modal"
-      class="hidden btn-text my-4 w-fit"
-      type="button"
-    >
-      Settings
-    </button>
-    <button
-      id="add-result-form-open-post"
-      data-modal-target="add-result-modal-post"
-      data-modal-toggle="add-result-modal-post"
-      class="hidden btn-text my-4 w-fit"
-      type="button"
-    >
-      Post
-    </button>
 
     {% with drawer_id="drawer-Performance" %}
     <div id="{{drawer_id}}" class="fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] bg-background" tabindex="-1" aria-labelledby="drawer-right-label">
@@ -100,7 +72,7 @@
               <button
                 type="button"
                 class="mr-2"
-                onclick='nextResultStep("add-result-modal-close-result-btn", "add-result-btn")'
+                onclick='nextResultStep("add-result-modal-result", "add-result-modal")'
               >
                 <svg
                   class="w-5 h-5 text-title fill-title stroke-title"
@@ -121,7 +93,7 @@
               id="add-result-modal-close-result-btn"
               type="button"
               class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-              data-modal-hide="add-result-modal-result"
+              onclick="hideModel('add-result-modal-result')"
             >
               <svg
                 class="w-5 h-5"
@@ -776,7 +748,7 @@
             ></div>
 
             <button
-              onclick='nextResultStep("add-result-modal-close-result-btn", "add-result-form-open-post", "add-result-modal-result")'
+              onclick='nextResultStep("add-result-modal-result", "add-result-modal-post", "add-result-modal-result")'
               class="btn-text mb-4 w-fit mx-auto font-medium px-4"
               type="button"
             >
@@ -828,9 +800,9 @@
             </h3>
             <button
               id="add-result-modal-close-btn"
+              onclick="hideModel('add-result-modal')"
               type="button"
               class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-              data-modal-hide="add-result-modal"
             >
               <svg
                 class="w-5 h-5"
@@ -960,7 +932,7 @@
               <button
                 type="button"
                 class="mr-2"
-                onclick='nextResultStep("add-result-modal-close-btn-post", "add-result-form-open-result")'
+                onclick='nextResultStep("add-result-modal-post", "add-result-modal-result")'
               >
                 <svg
                   class="w-5 h-5 text-title fill-title stroke-title"
@@ -981,7 +953,7 @@
               id="add-result-modal-close-btn-post"
               type="button"
               class="text-title/70 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-              data-modal-hide="add-result-modal-post"
+              onclick="hideModel('add-result-modal-post')"
             >
               <svg
                 class="w-5 h-5"
@@ -1135,11 +1107,9 @@
 
   function nextResultStep(closeId, openId, formId) {
     if (validateForm(formId)) {
-      const closeForm = document.getElementById(closeId);
-      const openForm = document.getElementById(openId);
 
-      closeForm.click();
-      openForm.click();
+      hideModel(closeId);
+      openModel(openId);
     }
   }
 
@@ -1169,11 +1139,9 @@
         }
       }
     }
-
-    //const openForm = document.getElementById("add-result-form-open-post");
-    const openForm = document.getElementById("add-result-form-open-result");
+    
     closeform.click();
-    openForm.click();
+    openModel('add-result-modal-result')
     return true;
   }
 

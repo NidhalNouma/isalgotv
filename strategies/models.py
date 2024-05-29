@@ -50,6 +50,25 @@ class SettingsJSONField(models.JSONField):
         kwargs['validators'] = [settings_validator_json]
         super().__init__(*args, **kwargs)
 
+def update_names(data):
+    name_counter = 0  # This counter will keep track of the suffix to append
+
+    def recurse(items):
+        nonlocal name_counter
+        original_name = ""
+        for item in items:
+            for entry in item['value']:  
+                for setting in entry:
+                    setting_name = setting['name']
+                    if not original_name:
+                        original_name = setting_name
+                    if setting['name'].find(f"{original_name}_") == -1:
+                        setting['name'] = f"{original_name}_{name_counter}"
+                    name_counter += 1
+
+    recurse(data)
+    return data
+
 
 class StrategyImages(models.Model):
     def photo_path(instance, filename):
@@ -107,6 +126,10 @@ class Strategy(models.Model):
     def save(self, *args, **kwargs):
         if self.slug == '':
             self.slug = slugify(self.name)  # Automatically generates a slug from the name.
+
+        if self.settings:
+            self.settings = update_names(self.settings)
+            
         super(Strategy, self).save(*args, **kwargs)
 
 

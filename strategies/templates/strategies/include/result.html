@@ -91,8 +91,8 @@
     class="text-text text-xs rounded cursor-pointer font-semibold"
     >show all</span
   >
-  {% endcomment %} {% include "include/images.html" with
-  images=result.images.all %}
+  {% endcomment %}
+ {% include "include/images.html" with images=result.images.all %}
 
   <div class="mb-0.5 mt-2 flex items-center">
     <span class="text-text/50 text-xs hover:text-text/80"
@@ -103,17 +103,17 @@
         >@{{ result.created_by.get_tradingview_username}}</a
       ></span
     >
-    <span class="ml-3 mr-2.5 text-text/50 text-xs"
+    <span class="mx-3 text-text/50 text-xs"
       >{{ result.created_at|timesince }} ago</span
     >
 
     <div class="">
       <button
         id="shareButton-{{ result.id }}"
-        class="text-text/80 flex items-center text-xs px-1 rounded box-border"
+        class="text-text/80 flex items-center text-xs px-0 rounded box-border"
       >
         <svg
-          class="h-3.5 aspect-square"
+          class="h-3 aspect-square"
           stroke="currentColor"
           fill="currentColor"
           stroke-width="0"

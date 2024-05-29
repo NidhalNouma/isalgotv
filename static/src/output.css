@@ -3013,6 +3013,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-top-right-radius: 0.25rem;
 }
 
+.rounded-b {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
 .\!border-2 {
   border-width: 2px !important;
 }
@@ -3041,6 +3046,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-width: 1px;
 }
 
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+
 .border-b-0 {
   border-bottom-width: 0px;
 }
@@ -3063,6 +3073,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-b {
   border-bottom-width: 1px;
+}
+
+.border-l-2 {
+  border-left-width: 2px;
 }
 
 .\!border-red-500 {
@@ -3170,6 +3184,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-yellow-600 {
   --tw-border-opacity: 1;
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
+}
+
+.border-\[\#7289da\]\/50 {
+  border-color: rgb(114 137 218 / 0.5);
 }
 
 .\!bg-background\/20 {
@@ -3352,6 +3370,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-yellow-800\/10 {
   background-color: rgb(114 59 19 / 0.1);
+}
+
+.bg-\[\#7289da\]\/50 {
+  background-color: rgb(114 137 218 / 0.5);
+}
+
+.bg-\[\#7289da\]\/10 {
+  background-color: rgb(114 137 218 / 0.1);
 }
 
 .bg-opacity-50 {

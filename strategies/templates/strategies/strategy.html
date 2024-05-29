@@ -179,7 +179,7 @@
   <div class="mb-2 w-full ml-auto flex flex-col">
 
   {% if has_subscription and not user_profile.tradingview_username %}
-  <div class="w-full p-2 rounded border border-text relative">    
+  <div class="w-full p-2 rounded bg-text/50 relative">    
     <p class="text-text text-xs font-medium">Add your TradingView username to get access.</p>  
     <a href="{% url 'settings' %}" class="btn-text mt-2 text-xs font-semibold">Add here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
 
@@ -251,7 +251,7 @@
     <div class="w-full">
 
       {% if random_results|length >= 0 and has_subscription and user_profile.tradingview_username %}
-      <div class="w-full p-2 rounded border border-text relative mb-2 overflow-hidden">    
+      <div class="w-full p-2 rounded bg-text/10 relative mb-2 overflow-hidden">    
         <p class="text-text text-xs font-medium">See how you can write alerts to get notified on every action.</p>  
         <a href="{% url 'docs_alerts' %}" class="btn-text mt-2 text-xs font-semibold">Click here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
     
@@ -265,7 +265,7 @@
       {% endfor %}
       
       {% if random_results|length >= 4 and has_subscription %}
-      <div class="w-full p-2 rounded border border-text relative mb-2 overflow-hidden">    
+      <div class="w-full p-2 rounded bg-text/10 relative mb-2 overflow-hidden">    
         <p class="text-text text-xs font-medium">Want to learn how to automate this strategy?</p>  
         <a href="{% url 'docs_automate' %}" class="btn-text mt-2 text-xs font-semibold">Click here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
     
@@ -273,7 +273,7 @@
       </div>
       {% endif %}
 
-      <div class="w-full p-2 rounded relative mb-2 mt-4 border border-[#7289da] overflow-hidden">    
+      <div class="w-full p-2 rounded relative mb-2 mt-4 bg-[#7289da]/10 overflow-hidden">    
         <p class="text-text text-xs font-medium">Join our Discord Community!</p>  
         <a href="https://discord.gg/wVsXdGSMFg" target="_blank" class="btn-text !from-[#7289da] !to-[#7289da] mt-2 text-xs font-semibold">Join us <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
     

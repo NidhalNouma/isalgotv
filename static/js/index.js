@@ -442,102 +442,87 @@ function handleSettingCsvFileSelect(event) {
     const contents = e.target.result;
     const lines = contents.split("\n");
 
-    let keyCounts = {};
-
-    lines.forEach((line, index) => {
-      let [key, value] = line.split(",");
-
-      // If the key exists in keyCounts, increment its value; otherwise, set it to 1
-      if (keyCounts[key]) {
-        keyCounts[key]++;
-      } else {
-        keyCounts[key] = 1;
-      }
-    });
-
     let previousKey = "";
+    let startKey = "";
+    let cnt = 0;
+
     lines.forEach((line, index) => {
       let [key, value] = line.split(",");
 
       value = value.replace(/(\r\n|\n|\r)/gm, "");
       key = key.replace(/(\r\n|\n|\r)/gm, "");
 
-      if (key.length === 0 || key === " ") key = previousKey + "_val";
-      else {
-        let count = keyCounts[key];
-        console.log(key, count);
-        if (count > 1) key = previousKey + "_c";
-      }
+      const originalKey = key;
 
-      // if (key.toLowerCase() === "value") key = previousKey + "_v";
-      // else if (key.toLowerCase() === "partial") key = previousKey + "_par";
-      // else if (key.toLowerCase() === "partial close")
-      //   key = previousKey + "_par";
-      // else if (key.toLowerCase() === "atr period") key = previousKey + "_atr";
-      // else if (
-      //   key.toLowerCase() === "multiplier" &&
-      //   previousKey.includes("atr")
-      // )
-      //   key = previousKey + "_atrm";
+      if (startKey) key = startKey;
 
-      const input = document.getElementById("id_settings_" + key);
-      if (input && input.type == "checkbox") {
-        if (value === "On") {
-          input.checked = true;
-          input.value = "true";
-        } else {
-          input.checked = false;
-          input.value = "false";
+      let keyNumber = key + "_" + cnt;
+
+      const input = document.getElementById("id_settings_" + keyNumber);
+      if (input) {
+        cnt = cnt + 1;
+        if (startKey === "") startKey = key;
+
+        if (input.type == "checkbox") {
+          if (value === "On") {
+            input.checked = true;
+            input.value = "true";
+          } else {
+            input.checked = false;
+            input.value = "false";
+          }
+        } else if (input.type == "text") {
+          const dropdown = document.getElementById(
+            "dropdown_text_" + keyNumber
+          );
+          if (dropdown) dropdown.innerHTML = value;
+          input.value = value;
         }
-      } else if (input && input.type == "text") {
-        input.value = value;
+      } else {
+        if (originalKey === "Symbol" && document.getElementById("pair")) {
+          const [broker, symbol] = value.split(":");
+          document.getElementById("pair").value = symbol;
+          document.getElementById("broker").value = broker;
+        } else if (originalKey === "Trading range") {
+          const [start, end] = value.split(" — ");
 
-        const dropdown = document.getElementById("dropdown_text_" + key);
-        if (dropdown) dropdown.innerHTML = value;
-      }
+          if (document.getElementById("start_at")) {
+            const time = new Date(start);
+            time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
+            document.getElementById("start_at").value = time
+              .toISOString()
+              .slice(0, 16);
+          }
+          if (document.getElementById("end_at")) {
+            const time = new Date(end);
+            time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
+            document.getElementById("end_at").value = time
+              .toISOString()
+              .slice(0, 16);
+          }
+        } else if (originalKey === "Timeframe") {
+          const [num, str] = value.split(" ");
 
-      if (key === "Symbol" && document.getElementById("pair")) {
-        const [broker, symbol] = value.split(":");
-        document.getElementById("pair").value = symbol;
-        document.getElementById("broker").value = broker;
-      } else if (key === "Trading range") {
-        const [start, end] = value.split(" — ");
+          if (document.getElementById("time_frame"))
+            document.getElementById("time_frame").value = num;
+          if (document.getElementById("time_frame_period")) {
+            let val = str.replace(/(\r\n|\n|\r)/gm, "");
 
-        if (document.getElementById("start_at")) {
-          const time = new Date(start);
-          time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
-          document.getElementById("start_at").value = time
-            .toISOString()
-            .slice(0, 16);
+            if (val.toLowerCase().indexOf("second") !== -1) val = "seconds";
+            else if (val.toLowerCase().indexOf("minute") !== -1)
+              val = "minutes";
+            else if (val.toLowerCase().indexOf("hour") !== -1) val = "hours";
+            else if (val.toLowerCase().indexOf("day") !== -1) val = "days";
+            else if (val.toLowerCase().indexOf("week") !== -1) val = "weeks";
+            else if (val.toLowerCase().indexOf("month") !== -1) val = "months";
+            else if (val.toLowerCase().indexOf("year") !== -1) val = "years";
+
+            document.getElementById("time_frame_period").value = val;
+          }
+        } else if (originalKey === "Initial capital") {
+          if (document.getElementById("initial_capital"))
+            document.getElementById("initial_capital").value = value;
         }
-        if (document.getElementById("end_at")) {
-          const time = new Date(end);
-          time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
-          document.getElementById("end_at").value = time
-            .toISOString()
-            .slice(0, 16);
-        }
-      } else if (key === "Timeframe") {
-        const [num, str] = value.split(" ");
-
-        if (document.getElementById("time_frame"))
-          document.getElementById("time_frame").value = num;
-        if (document.getElementById("time_frame_period")) {
-          let val = str.replace(/(\r\n|\n|\r)/gm, "");
-
-          if (val.toLowerCase().indexOf("second") !== -1) val = "seconds";
-          else if (val.toLowerCase().indexOf("minute") !== -1) val = "minutes";
-          else if (val.toLowerCase().indexOf("hour") !== -1) val = "hours";
-          else if (val.toLowerCase().indexOf("day") !== -1) val = "days";
-          else if (val.toLowerCase().indexOf("week") !== -1) val = "weeks";
-          else if (val.toLowerCase().indexOf("month") !== -1) val = "months";
-          else if (val.toLowerCase().indexOf("year") !== -1) val = "years";
-
-          document.getElementById("time_frame_period").value = val;
-        }
-      } else if (key === "Initial capital") {
-        if (document.getElementById("initial_capital"))
-          document.getElementById("initial_capital").value = value;
       }
 
       previousKey = key;
