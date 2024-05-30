@@ -67,7 +67,7 @@
     {% include 'include/infos.html' with info="Choose one of our plans to get started and gain access." %}
     {% endif %} 
   </div>
-{% if has_subscription %}
+{% if has_subscription and subscription_status != 'past_due' %}
 <button
 type="submit"
 id="btn-tv"

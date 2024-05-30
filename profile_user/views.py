@@ -240,7 +240,7 @@ def edit_tradingview_username(request):
 
         profile_user.save()
 
-        if request.has_subscription:
+        if request.has_subscription and request.subscription_status != 'past_due':
             strategies = Strategy.objects.all()
 
             for strategy in strategies:
@@ -267,7 +267,7 @@ def edit_tradingview_username(request):
 def get_access(request, strategy_id):
     pg = request.GET.get('pg')
 
-    if request.user and request.has_subscription:
+    if request.user and request.has_subscription and request.subscription_status != 'past_due':
         profile_user = request.user_profile
 
         access_response = give_access(strategy_id, profile_user.id, True)
