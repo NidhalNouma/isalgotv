@@ -390,8 +390,10 @@ htmx.on("htmx:afterRequest", (evt) => {
 
     closeLoader(title, "-add-reply-", "inline-flex");
   }
-  // check which element triggered the htmx request. If it's the one you want call the function you need
-  //you have to add htmx: before the event ex: 'htmx:afterRequest'
+
+  if (evt?.detail?.target.id.includes("access-mb")) {
+    openModel("get-access-modal");
+  }
 });
 
 function scrollToResultOrComment(type, id) {

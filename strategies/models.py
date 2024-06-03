@@ -62,7 +62,7 @@ def update_names(data):
                     setting_name = setting['name']
                     if not original_name:
                         original_name = setting_name
-                    if setting['name'].find(f"{original_name}_") == -1:
+                    if setting['name'].find(f"{original_name}_") == -1: # or setting['name'].count("_") >= 2:
                         setting['name'] = f"{original_name}_{name_counter}"
                     name_counter += 1
 

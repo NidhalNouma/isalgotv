@@ -114,7 +114,7 @@ def settings_page(request):
 
 @login_required(login_url='login')
 def access_page(request):
-    strategies = Strategy.objects.all()
+    strategies = Strategy.objects.filter(is_live=True)
     context = {
         "strategies": strategies
     }
@@ -273,10 +273,11 @@ def get_access(request, strategy_id):
         access_response = give_access(strategy_id, profile_user.id, True)
 
     if pg == "st":
-        strategy = Strategy.objects.get(pk = strategy_id)
-        return HttpResponseClientRedirect(reverse('strategy', args=[strategy.slug]))
+        context = access_response
+        response = render(request, 'include/get_access_model.html', context)
+        return response
     else:
-        strategies = Strategy.objects.all()
+        strategies = Strategy.objects.filter(is_live=True)
         return render(request, 'include/access_list.html', context = {"strategies": strategies})
     
 
@@ -830,7 +831,7 @@ def remove_access(subscription_id, cancel_email = True):
             
         strategies = Strategy.objects.all()
 
-        if profile_user.tradingview_username:
+        if profile_user.tradingview_username and profile_user.is_lifetime == False:
             for strategy in strategies:
                 access_response = give_access(strategy.id, profile_user.id, False)
                 

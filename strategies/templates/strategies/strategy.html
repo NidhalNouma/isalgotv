@@ -196,6 +196,7 @@
   class="inline-flex ml-auto"
   hx-post="{% url 'give_access' strategy.id %}?pg=st"
   hx-target="#access-mb"
+  hx-swap="outerHTML"
 >
   {% csrf_token %}
   <button

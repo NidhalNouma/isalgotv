@@ -14,6 +14,7 @@ def give_access(strategy_id, profile_id, access):
     add_or_reemove = "add" if access == True else "remove"
     url = f"https://www.tradingview.com/pine_perm/{add_or_reemove}/"
     try:
+        r = {"error": "", "access": None}
         profile = User_Profile.objects.get(pk = profile_id)
         strategy = Strategy.objects.get(pk = strategy_id)
 
@@ -43,10 +44,12 @@ def give_access(strategy_id, profile_id, access):
         else:
           profile.strategies.remove(strategy)
 
-        return response.json()
+        r["access"] = response.json()
+        return r
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-        return None  
+        r['error'] =  "We encountered an error while granting access. Please reach out to us so we can assist you promptly!"
+        return r
     
 
 def username_search(tradingview_username):
