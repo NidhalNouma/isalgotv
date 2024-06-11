@@ -1,7 +1,7 @@
-<div class="">
+<div class="mb-2">
   {% if user.is_authenticated and has_subscription %}
   <button
-    class="text-secondary text-sm font-semibold underlinei"
+    class="btn-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
     onclick="openModel('add-result-modal')"
   >
@@ -9,7 +9,7 @@
   </button> 
   {% elif user.is_authenticated and not has_subscription %}
   <button
-    class="text-secondary text-sm font-semibold underlinei"
+    class="btn-secondary text-sm font-semibold underlinei"
     data-modal-target="upgrade-modal"
     data-modal-toggle="upgrade-modal"
   >
@@ -17,7 +17,7 @@
   </button> 
  
   {% comment %} {% else %} <a
-    class="text-secondary text-sm font-semibold underlinei"
+    class="btn-secondary text-sm font-semibold underlinei"
     href="{% url 'login' %}"
   >
     Share your result
@@ -860,7 +860,7 @@
                       {% for set in line %}
                         <div class="mr-3 inline-flex items-center align-middle">
                           {% if set.type == 'boolean' %}
-                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" type="checkbox" {% if set.default_value == 'true' %}checked{%endif%} value="{% if set.default_value == 'true' %}true{%else%}false{%endif%}" class="mr-2 w-4 h-4 input-checkbox">
+                            <input name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" type="checkbox" {% if set.default_value == 'true' or set.default_value == 'True' %}checked{%endif%} value="{% if set.default_value == 'true' %}true{%else%}false{%endif%}" class="mr-2 w-4 h-4 input-checkbox">
                           {% endif %} 
                             <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title">{{ set.display_name }}</label>
                           

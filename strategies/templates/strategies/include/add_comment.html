@@ -1,7 +1,7 @@
-<div class="">
+<div class="mb-2">
   {% if user.is_authenticated and has_subscription %}
   <button
-    class="text-secondary text-sm font-semibold underlinei"
+    class="btn-secondary text-sm font-semibold underlinei"
     id="add-comment-btn"
     onclick='toggleForm("add-comment-btn", "add-comment-form")'
   >
@@ -9,7 +9,7 @@
   </button>
   {% elif user.is_authenticated and not has_subscription %}
   <button
-    class="text-secondary text-sm font-semibold underlinei"
+    class="btn-secondary text-sm font-semibold underlinei"
     data-modal-target="upgrade-modal"
     data-modal-toggle="upgrade-modal"
   >
@@ -17,7 +17,7 @@
   </button>
   {% else %} {% comment %}
   <a
-    class="text-secondary text-sm font-semibold underlinei"
+    class="btn-secondary text-sm font-semibold underlinei"
     href="{% url 'login' %}"
   >
     Share your idea
