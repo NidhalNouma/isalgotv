@@ -128,7 +128,8 @@ class Strategy(models.Model):
             self.slug = slugify(self.name)  # Automatically generates a slug from the name.
 
         if self.settings:
-            self.settings = update_names(self.settings)
+            if self.is_live == False:
+                self.settings = update_names(self.settings)
             
         super(Strategy, self).save(*args, **kwargs)
 
