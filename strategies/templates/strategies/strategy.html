@@ -11,11 +11,8 @@
 {% block page %}
 <main class="mb-16 mt-8">
 
-
-<div class="md:flex block justify-between">
-  <section class="w-full md:w-9/12">
-
-<div class="flex flex-col sm:flex-row justify-between">
+<div class="flex flex-col justify-between">
+  <div class="flex items-center justify-between">
   <a
     class="hover:underline"
     target="_blank"
@@ -44,7 +41,6 @@
       {% endif %} 
     </h1>
   </a>
-</div>
 
   {% if strategy.chart_url %}
     <div class="mt-2 mb-4 ">
@@ -57,6 +53,112 @@
       </a>
     </div>
     {% endif %}
+  </div>
+
+  <div class="my-1">
+    {% if has_subscription and not user_profile.tradingview_username %}
+    <div class="w-full p-2 rounded bg-text/50 relative">    
+      <p class="text-text text-xs font-medium">Add your TradingView username to get access.</p>  
+      <a href="{% url 'settings' %}" class="btn-text mt-2 text-xs font-semibold">Add here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
+  
+      <svg class="h-full absolute right-0 top-0 fill-text/10  mr-1" viewBox="0 0 246 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.0421406 2.08597L99.3354 2.102L99.8644 127.19L49.6599 126.839L49.6452 51.7831L-0.00524902 51.705L0.0421406 2.08597Z" />
+        <path d="M136.859 50.4942C150.698 50.4942 161.916 39.2729 161.916 25.4306C161.916 11.5884 150.698 0.367027 136.859 0.367027C123.02 0.367027 111.801 11.5884 111.801 25.4306C111.801 39.2729 123.02 50.4942 136.859 50.4942Z" />
+        <path d="M187.607 2.16962L245.454 2.23096L193.058 126.28L135.823 126.157L187.207 2.2693L187.607 2.16962Z" />
+      </svg>
+    </div>
+  
+  {% elif has_subscription and strategy not in user_profile.strategies.all and subscription_status != 'past_due' %}
+  <div id="access-mb" class="w-full flex mb-2">
+    <form
+    class="inline-flex ml-auto"
+    hx-post="{% url 'give_access' strategy.id %}?pg=st"
+    hx-target="#access-mb"
+    hx-swap="outerHTML"
+  >
+    {% csrf_token %}
+    <button
+      class="btn-accent font-semibold whitespace-nowrap "
+      type="submit"
+      id="btn-acc-{{strategy.id}}"
+      onclick="openLoader('', '-acc-{{strategy.id}}', 'flex');"
+    >
+      Get access
+      <svg
+        class="h-4 w-4 ml-1"
+        stroke="currentColor"
+        fill="currentColor"
+        stroke-width="1"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
+        ></path>
+      </svg>
+    </button>
+    <button
+      id="spinner-acc-{{strategy.id}}"
+      disabled
+      type="button"
+      class="btn-accent font-semibold whitespace-nowrap hidden"
+    >
+      Get access
+      <svg
+        aria-hidden="true"
+        role="status"
+        class="inline w-3.5 h-3.5 ml-1.5 animate-spin"
+        viewBox="0 0 100 101"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+          fill="#E5E7EB"
+        />
+        <path
+          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+          fill="currentColor"
+        />
+      </svg>
+    </button>
+  </form>
+  </div>
+    {% endif %}
+  </div>
+</div>
+
+    <section class="stickyi top-14 bg-background/20 backdrop-blur-2xl  z-40 w-full pt-1 mb-6">
+      <div class=" w-full max-w-xl mx-auto grid grid-cols-3 gap-1 border rounded-lg border-secondary/30 p-1">
+        <button
+          id="strategyBtn"
+          class="text-base font-light text-text rounded-lg bg-secondary/10 py-2  hover:bg-secondary/10 transition-all"
+        >
+          <!-- {{ strategy.strategyresults_set.all|length }}  -->
+          Strategy
+        </button>
+        <button
+          id="settingsBtn"
+          class="text-base font-light text-text rounded-lg py-2  hover:bg-secondary/10 transition-all"
+        >
+          <!-- {{ strategy.strategyresults_set.all|length }}  -->
+          Results
+        </button>
+        <button
+          id="commentsBtn"
+          class="text-base font-light text-text rounded-lg hover:bg-secondary/10 py-2 transition-all" 
+        >
+          <!-- {{ strategy.strategycomments_set.all|length }}  -->
+          Comments
+        </button>
+      </div>
+    </section>
+
+
+<div class="md:flex block justify-between">
+
+  <section class="w-full mx-auto max-w-5xl">
+
 
 
     {% if not has_subscription %}
@@ -76,7 +178,7 @@
     </section>
     {% endif %}
 
-    <div class="">
+    <div id="strategyDiv" class="">
       {% if strategy.image_url %}
       <!-- <img
         src="{{ strategy.image_url }}"
@@ -90,7 +192,7 @@
         class="max-w-full max-h-72 mx-auto"
       />
       {% endif %}
-    </div>
+
 
     <div class="text-text whitespace-pre-line text-sm">
       <div class="text-text whitespace-pre-line CKEDITOR">{{ strategy.content | safe }}</div>
@@ -117,136 +219,32 @@
     </div>
 
     {% endif %}
+    </div>
+
+
+    <div class="" id="commentsDiv">{% include "include/comments.html" %}</div>
+
+    <div id="resultsDiv" class="">
+      {% include "include/add_result.html" %}
+      <div class="" id="settingsDiv">
+        {% include "include/results.html" %}
+      </div>
+    </div>
+
     
     <section class="my-6">
-      <div class="w-full py-3">
-        <button
-          id="settingsBtn"
-          class="text-sm font-semibold text-text border-b-2 border-secondary px-1.5 pb-1.5 hover:border-b-2 mr-2"
-        >
-          <!-- {{ strategy.strategyresults_set.all|length }}  -->
-          Results
-        </button>
-        <button
-          id="commentsBtn"
-          class="text-sm font-semibold text-text border-secondary px-1.5 pb-1.5 hover:border-b-2"
-        >
-          <!-- {{ strategy.strategycomments_set.all|length }}  -->
-          Comments
-        </button>
-      </div>
 
-      <div class="" id="commentsDiv">{% include "include/comments.html" %}</div>
-      <div id="resultsDiv" class="">
-        {% include "include/add_result.html" %}
-        <div class="" id="settingsDiv">
-          {% include "include/results.html" %}
-        </div>
-      </div>
 
       <script type="text/javascript">
-        const showCommentsBtn = document.getElementById("commentsBtn");
-        const showSettingsBtn = document.getElementById("settingsBtn");
-        const commentsDiv = document.getElementById("commentsDiv");
-        const settingsDiv = document.getElementById("resultsDiv");
-
-        // By default, show the settings div and hide the comments div
-        settingsDiv.style.display = "block";
-        commentsDiv.style.display = "none";
-
-        // Add event listeners to the buttons
-        showCommentsBtn.addEventListener("click", () => {
-          // Show the comments div and hide the settings div
-          commentsDiv.style.display = "block";
-          settingsDiv.style.display = "none";
-          showCommentsBtn.classList.add("border-b-2");
-          showSettingsBtn.classList.remove("border-b-2");
-        });
-
-        showSettingsBtn.addEventListener("click", () => {
-          // Show the settings div and hide the comments div
-          settingsDiv.style.display = "block";
-          commentsDiv.style.display = "none";
-
-          showCommentsBtn.classList.remove("border-b-2");
-          showSettingsBtn.classList.add("border-b-2");
-        });
+     
       </script>
     </section>
   </section>
-
+<!-- 
   <section class=" hidden md:flex flex-col w-[20%]">
   <div class="mb-2 w-full ml-auto flex flex-col">
 
-  {% if has_subscription and not user_profile.tradingview_username %}
-  <div class="w-full p-2 rounded bg-text/50 relative">    
-    <p class="text-text text-xs font-medium">Add your TradingView username to get access.</p>  
-    <a href="{% url 'settings' %}" class="btn-text mt-2 text-xs font-semibold">Add here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
 
-    <svg class="h-full absolute right-0 top-0 fill-text/10  mr-1" viewBox="0 0 246 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0.0421406 2.08597L99.3354 2.102L99.8644 127.19L49.6599 126.839L49.6452 51.7831L-0.00524902 51.705L0.0421406 2.08597Z" />
-      <path d="M136.859 50.4942C150.698 50.4942 161.916 39.2729 161.916 25.4306C161.916 11.5884 150.698 0.367027 136.859 0.367027C123.02 0.367027 111.801 11.5884 111.801 25.4306C111.801 39.2729 123.02 50.4942 136.859 50.4942Z" />
-      <path d="M187.607 2.16962L245.454 2.23096L193.058 126.28L135.823 126.157L187.207 2.2693L187.607 2.16962Z" />
-    </svg>
-  </div>
-
-{% elif has_subscription and strategy not in user_profile.strategies.all and subscription_status != 'past_due' %}
-<div id="access-mb" class="w-full flex mb-2">
-  <form
-  class="inline-flex ml-auto"
-  hx-post="{% url 'give_access' strategy.id %}?pg=st"
-  hx-target="#access-mb"
-  hx-swap="outerHTML"
->
-  {% csrf_token %}
-  <button
-    class="btn-accent font-semibold whitespace-nowrap "
-    type="submit"
-    id="btn-acc-{{strategy.id}}"
-    onclick="openLoader('', '-acc-{{strategy.id}}', 'flex');"
-  >
-    Get access
-    <svg
-      class="h-4 w-4 ml-1"
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="1"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
-      ></path>
-    </svg>
-  </button>
-  <button
-    id="spinner-acc-{{strategy.id}}"
-    disabled
-    type="button"
-    class="btn-accent font-semibold whitespace-nowrap hidden"
-  >
-    Get access
-    <svg
-      aria-hidden="true"
-      role="status"
-      class="inline w-3.5 h-3.5 ml-1.5 animate-spin"
-      viewBox="0 0 100 101"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-        fill="#E5E7EB"
-      />
-      <path
-        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-        fill="currentColor"
-      />
-    </svg>
-  </button>
-</form>
-</div>
-  {% endif %}
     </div>
     {% if random_results|length >= 0 %}
     <div class="w-full">
@@ -283,7 +281,7 @@
    
     </div>
     {% endif %}
-  </section>
+  </section> -->
 
   {% include "include/modal_images_main.html" %} {% if user.is_authenticated and not has_subscription %} {% include "include/upgrade_modal.html" %} {% endif %}
 
@@ -315,6 +313,53 @@ id="btn-result-modal-data-hide"
 </div> -->
 
 <script type="text/javascript">
+
+  const showCommentsBtn = document.getElementById("commentsBtn");
+  const showSettingsBtn = document.getElementById("settingsBtn");
+  const showStrategyBtn = document.getElementById("strategyBtn");
+  const commentsDiv = document.getElementById("commentsDiv");
+  const settingsDiv = document.getElementById("resultsDiv");
+  const strategyDiv = document.getElementById("strategyDiv");
+
+  let cssClass = "bg-secondary/10";
+
+  // By default, show the settings div and hide the comments div
+  strategyDiv.style.display = "block";
+  settingsDiv.style.display = "none";
+  commentsDiv.style.display = "none";
+
+  // Add event listeners to the buttons
+  showStrategyBtn.addEventListener("click", () => {
+    // Show the comments div and hide the settings div
+    strategyDiv.style.display = "block";
+    commentsDiv.style.display = "none";
+    settingsDiv.style.display = "none";
+    showCommentsBtn.classList.remove(cssClass);
+    showSettingsBtn.classList.remove(cssClass);
+    showStrategyBtn.classList.add(cssClass);
+  });
+
+  showCommentsBtn.addEventListener("click", () => {
+    // Show the comments div and hide the settings div
+    commentsDiv.style.display = "block";
+    settingsDiv.style.display = "none";
+    strategyDiv.style.display = "none";
+    showCommentsBtn.classList.add(cssClass);
+    showSettingsBtn.classList.remove(cssClass);
+    showStrategyBtn.classList.remove(cssClass);
+  });
+
+  showSettingsBtn.addEventListener("click", () => {
+    // Show the settings div and hide the comments div
+    settingsDiv.style.display = "block";
+    commentsDiv.style.display = "none";
+    strategyDiv.style.display = "none";
+
+    showCommentsBtn.classList.remove(cssClass);
+    showStrategyBtn.classList.remove(cssClass);
+    showSettingsBtn.classList.add(cssClass);
+  });
+
   function showResults(resultParam) {
     const showCommentsBtn = document.getElementById("settingsBtn");
     showCommentsBtn.click();

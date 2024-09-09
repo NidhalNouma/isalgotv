@@ -3,22 +3,9 @@ name: Build and Deploy Django App to AWS ECS
 on:
   push:
     branches:
-      - main-ecs # Adjust this to your branch
+      - main # Adjust this to your branch
 
 # Setup a new IAM role to be able on AWS
-
-# using aws Fargate: create a ECR repositry if you don't have one
-#                    create a new ECS cluster
-#                    create a security group that allows trafic to the instance
-#                    create a target group with type Ip adresses, and set listner port to 8000 (or port of your app)
-#                    Link the target group to a loadbalancer
-
-# using aws EC2: create a ECR repositry if you don't have one
-#                create a new EC2 instance that is compatible with ecs and attach the IAM role to it
-#                create a new ECS cluster
-#                create a security group that allows trafic to the instance
-#                create a target group with type Ip adresses, and set listner port to 8000 (or port of your app)
-#                Link the target group to a loadbalancer
 
 env:
   AWS_ACCOUNT_ID: 358776226602 # Set your AWS account ID
@@ -27,15 +14,6 @@ env:
   # ECS_CLUSTER: isalgo_test_ecs_cluster # Set your ECS cluster name here
   ECS_CLUSTER: isalgo_live # Set your ECS cluster name here
   ECS_SERVICE: isalgo_live_ecs_service # Set your ECS service name here
-  ECS_TASK_DEFINITION_NAME: isalgo # Set your ECS task definition name here
-  ECS_TASK_DEFINITION_JSON: aws_task_definitions/ecs-fargate.json # Set your ECS task definition json file
-  SECURITY_GROUP_ID: sg-01a796680d6ae48b2 # Set your security group ID
-  SUBNET_IDS: subnet-0d5644469efcf2370, subnet-060b993da7b594b67, subnet-07fbf55b284399e2d, subnet-07a3aa633664275a4
-  # TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:us-east-1:358776226602:targetgroup/ecsTargetgroupToIsalgo/3585c2c62d13d859
-  TARGET_GROUP_ARN: arn:aws:elasticloadbalancing:us-east-1:358776226602:targetgroup/isalgoLiveTG/2c17192a8d1a843b
-  CONTAINER_NAME: django-isalgo-live
-  CONTAINER_PORT: 8000
-  ECS_LAUNCH_TYPE: "FARGATE" # ecs lanch type EC2 or FARGATE
 
 jobs:
   deploy:
@@ -107,33 +85,3 @@ jobs:
             -t $ECR_URI:$IMAGE_TAG .
           docker tag $ECR_URI:$IMAGE_TAG $ECR_URI:$IMAGE_TAG
           docker push $ECR_URI:$IMAGE_TAG
-
-      - name: Create ECS Cluster if it doesn't exist
-        run: |
-          if ! aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }}; then
-            aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER }}
-          fi
-
-      - name: Register ECS Task Definition
-        run: |
-          aws ecs register-task-definition --cli-input-json file://${{ env.ECS_TASK_DEFINITION_JSON }}
-
-      - name: Create or Update ECS Service
-        run: |
-          SERVICE_STATUS=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} | jq -r '.services[] | select(.serviceName == "${{ env.ECS_SERVICE }}") | .status')
-          if [ "$SERVICE_STATUS" != "ACTIVE" ]; then
-            echo "Creating ECS Service: ${{ env.ECS_SERVICE }}"
-            command="aws ecs create-service --cluster ${{ env.ECS_CLUSTER }} --service-name ${{ env.ECS_SERVICE }} --task-definition ${{ env.ECS_TASK_DEFINITION_NAME }} --desired-count 1 --launch-type ${{ env.ECS_LAUNCH_TYPE }}"
-            if [ "${{ env.ECS_LAUNCH_TYPE }}" == "FARGATE" ]; then
-              command+=" --network-configuration \"awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],securityGroups=[${{ env.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}\""
-            fi
-            command+=" --load-balancers targetGroupArn=${{ env.TARGET_GROUP_ARN }},containerName=${{ env.CONTAINER_NAME }},containerPort=${{ env.CONTAINER_PORT }}"
-            echo $command
-            eval $command
-          else
-            echo "Updating ECS Service: ${{ env.ECS_SERVICE }}"
-            aws ecs update-service \
-              --cluster ${{ env.ECS_CLUSTER }} \
-              --service ${{ env.ECS_SERVICE }} \
-              --task-definition ${{ env.ECS_TASK_DEFINITION_NAME }}
-          fi
