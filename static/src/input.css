@@ -86,6 +86,10 @@
     @apply bg-transparent border border-text/40 px-2.5 py-2 text-text text-base rounded-md focus:ring-accent  placeholder:text-text/40
   }
 
+  .text-dark{
+    @apply text-text dark:text-background
+  }
+
   .input-checkbox{
     @apply text-accent bg-background border-title/40 rounded
   }

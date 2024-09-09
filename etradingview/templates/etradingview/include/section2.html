@@ -1,32 +1,38 @@
 {% load static %}
 <div
-  class="backdrop-blur-sm overflow-hidden min-h-fit sm:h-[55vh] my-8 md:my-16 relative rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around {{class}} dark:bg-background/10"
+  class="relative  overflow-hidden min-h-fit sm:h-[55vh] my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around {{class}}"
 >
+  <div
+    class="absolute top-0 left-0 right-0 w-full h-8 bg-gradient-to-b from-background pointer-events-none z-10"
+  ></div>
+  <div
+    class="absolute bottom-0 left-0 right-0 w-full h-8 bg-gradient-to-t from-background pointer-events-none z-10"
+  ></div>
+
   <div class="max-w-[100%] md:max-w-[55%] my-6">
     <h3 class="text-title text-3xl font-semibold">
       {{h1}} <span class="{{span_color}}">{{span}}</span>
     </h3>
     <h6 class="text-text text-xl mt-2 font-medium">{{h2}}</h6>
   </div>
-  <div class="mx-6 h-full block w-auto relative" >
-
+  <div class="mx-6 h-full block w-auto relative">
     <div
       class="overflow-hidden md:overflow-visible h-36 md:h-full rounded-xl relative {{img_class}}"
     >
-    <div class="min-h-full max-w-sm w-full ">
+      <div class="min-h-full max-w-sm w-full">
         <img
-        class="parallax-round-reverse object-cover h-full w-full blur-[3px]"
-        alt=""
-        src="{% static img_src %}"
-        loading="lazy"
-        /> 
-    </div>
+          class="parallax-round-reverse object-cover h-full w-full blur-[3px]"
+          alt=""
+          src="{% static img_src %}"
+          loading="lazy"
+        />
+      </div>
 
       <div
-        class="{{class}} !border-2 absolute scale-105 shadow-xl shadow-background/50 p-0 rounded-lg inset-x-0 top-1/2 -translate-y-1/2 bg-background/25 w-full h-full md:h-52  overflow-hidden"
+        class="{{class}} !border-none border-text/40 absolute scale-110 shadow-xl shadow-background/50 p-0 rounded-lg inset-x-0 top-1/2 -translate-y-1/2 bg-background/25 w-full h-full md:h-52  overflow-hidden"
       >
         <img
-          style="image-rendering: optimizeQuality;"
+          style="image-rendering: optimizeQuality"
           loading="lazy"
           class="parallax-round-reverse w-full object-cover min-h-full"
           alt=""
