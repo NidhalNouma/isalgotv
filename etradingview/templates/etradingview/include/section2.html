@@ -3,13 +3,12 @@
   class="relative bg-background  overflow-hidden min-h-fit sm:h-[55vh] my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around {{class}}"
 >
   <div
-    class="absolute top-0 left-0 right-0 w-full h-8 bg-gradient-to-b from-background pointer-events-none z-10"
+    class="absolute top-0 left-0 right-0 w-full bottom-2/3 bg-gradient-to-b from-background pointer-events-none z-10"
   ></div>
   <div
-    class="absolute bottom-0 left-0 right-0 w-full h-8 bg-gradient-to-t from-background pointer-events-none z-10"
+    class="absolute bottom-0 left-0 right-0 w-full top-2/3 bg-gradient-to-t from-background pointer-events-none z-10"
   ></div>
-
-  <div class="max-w-[100%] md:max-w-[55%] my-6">
+  <div class="max-w-[100%] md:max-w-[55%] my-6 bg-background py-2 rounded-lg">
     <h3 class="text-title text-3xl font-semibold">
       {{h1}} <span class="{{span_color}}">{{span}}</span>
     </h3>
@@ -19,7 +18,7 @@
     <div
       class="overflow-hidden md:overflow-visible h-36 md:h-full rounded-xl relative {{img_class}}"
     >
-      <div class="min-h-full max-w-sm w-full">
+      <div class="min-h-full max-w-sm w-full relative">
         <img
           class="parallax-round-reverse object-cover h-full w-full blur-[3px]"
           alt=""

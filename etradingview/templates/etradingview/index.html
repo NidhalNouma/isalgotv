@@ -46,7 +46,8 @@ setInterval(() => {
   
 
 <main class="max-w-full min-h-[80vh] relative pt-8 -scroll-mb-28 flex justify-center  items-center" >
-  <div class="relative my-auto  text-center grow z-10 bg-background backdrop-blur-xl py-8">
+  <div class="relative my-auto  text-center grow z-10 bg-background py-8">
+    {% comment %} <div class="w-full rounded-full aspect-auto absolute inset-0 bg-gradient-to-tr from-accent/10 to-secondary/10 blur-[150px] -z-10"></div> {% endcomment %}
       <h2 class="text-title text-4xl sm:text-7xl font-extrabold">
         Elevate your trading prowess <br/>with our advanced
       </h2>
@@ -71,7 +72,9 @@ setInterval(() => {
           {% comment %} <svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path></svg> {% endcomment %}
         </a>
       </div>
+
   </div>
+  
 
 
 <svg class="stroke-secondary h-full absolute left-0 top-0 bottom-0 scale-y-150 z-0"  viewBox="0 0 619 2873" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -133,13 +136,22 @@ setInterval(() => {
     <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-16 sm:max-w-full max-w-md mx-auto">Reverse losses and maximize profit potential</h2>
     <div id="cr" class="relative w-full sm:w-10/12 aspect-video mx-auto cr px-3 rounded-lg "  style="background-color: rgb(20, 23, 33)">
       <div class="absolute inset-0 h-full w-full overflow-hidden">
-          <img src="{% static 'images/landing-result-profit.png' %}" alt="Trading strategy result 1" class="rounded-lg border-2 border-accent inset-0 h-full w-full object-scale-down image-1">
+        <img src="{% static 'images/landing-result-profit.png' %}" alt="Trading strategy result 1" class="rounded-lg border-2 border-accent inset-0 h-full w-full object-scale-down image-1">
       </div>
       <div class="absolute inset-0 h-full w-full overflow-hidden">
-          <img src="{% static 'images/landing-result-loss.png' %}" alt="Trading strategy result 2" class="rounded-lg border-2 border-secondary inset-0 h-full w-full object-scale-down image-2">
+        <img src="{% static 'images/landing-result-loss.png' %}" alt="Trading strategy result 2" class="rounded-lg border-2 border-secondary inset-0 h-full w-full object-scale-down image-2">
       </div>
       <div id="separator" class="absolute left-0 -translate-x-1/2 h-full w-1 scale-y-105 rounded-full bg-gradient-to-t from-secondary to-accent"></div>
-  </div>
+      
+      
+      <div class="w-full rounded-xl aspect-auto absolute inset-0 bg-gradient-to-r from-accent/30 to-secondary/30 blur-xl -z-10"></div>
+
+
+      {% comment %} <svg class="absolute min-w-[100vw] top-1/4 left-[-40%] right-[-40%] opacity-40 pointer-events-none -z-10" viewBox="0 0 4956 707" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="stroke-accent" d="M2.12664 389.685C35.6594 380.524 67.1106 356.428 100.842 344.689C151.296 327.13 199.878 304.808 251.636 291.144C367.468 260.567 482.858 233.349 602.43 221.792C756.468 206.902 904.318 213.142 1058.22 230.736C1234.69 250.909 1419.4 257.67 1590.19 310.195C1722.41 350.858 1847.76 409.589 1975.94 460.639C2163.42 535.313 2346.46 597.846 2545.84 634.207C2947.47 707.454 3370.53 703.595 3769.16 613.153C3866.43 591.084 3973.36 567.253 4065.45 528.247C4136.46 498.175 4201.95 461.693 4267.56 421.525C4334.85 380.324 4407.04 336.901 4478.15 304.033C4532.6 278.864 4588.76 257.031 4644 233.564C4680.3 218.143 4717.93 198.5 4757.13 192.288C4810.49 183.836 4872.83 161.838 4921.47 144.09" stroke-width="5" stroke-linecap="round"/>
+        <path class="stroke-secondary" d="M40.6793 704.846C185.914 670.963 336.48 653.887 483.994 632.604C636.429 610.611 789.673 574.726 936.95 530.389C1093.12 483.376 1248.72 447.165 1398.77 380.847C1551.94 313.149 1703.3 239.043 1860.75 181.603C2019.33 123.748 2173.87 70.3808 2341.24 43.8644C2553.63 10.2165 2766 -2.84468 2981.07 4.44545C3186.46 11.4076 3393.33 32.3959 3596.64 62.3862C3721.19 80.7587 3849.5 115.211 3964.31 168.639C4098.09 230.901 4214.58 331.487 4338.97 410.007C4448.31 479.032 4563.84 519.617 4690.1 534.051C4730.19 538.634 4770.23 533.202 4810.41 535.72C4835.63 537.3 4862.31 528.877 4886.49 531.642C4896.05 532.735 4950.59 519.267 4953.72 514.466" stroke-width="5" stroke-linecap="round"/>
+      </svg> {% endcomment %}
+    </div>
 
   <script>
     const container = document.getElementById('cr');
@@ -182,7 +194,7 @@ setInterval(() => {
 </script>
 </section>
 
-  {% include "include/icons_svg.html" %}
+  {% comment %} {% include "include/icons_svg.html" %} {% endcomment %}
 
 <section class="mx-auto max-w-full mt-28 my-8 relative">
 
@@ -193,6 +205,11 @@ setInterval(() => {
     {% include "include/section2.html" with class=" " img_class="rotate-6 scale-110  " color="primary" h1="Stay Informed with " span="Entry and Exit Alerts" span_color="bg-secondary dark:text-background" h2="All our strategies feature built-in alerts to keep you updated on every entry and exit point, ensuring you never miss a crucial moment" img_src="images/alerts.svg" %}
     {% include "include/section2.html" with class="  md:flex-row-reverse  ml-auto" color="secondary" img_class="-rotate-3 scale-110  "  h1="Join the " span="Profits Together" span_color="bg-primary text-title-light"  h2="Leverage our community-tested results and contribute by sharing your best outcomes for collective success" img_src="images/profits.svg" %}
   </div>
+
+
+<svg class="stroke-secondary h-full absolute left-1/2 -translate-x-1/2 top-0 bottom-0 scale-y-110 -z-10"  viewBox="0 0 619 2873" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M295.167 2871C295.167 2830.1 301.203 2789.27 311.104 2748.74C364.352 2530.82 474.862 2319.18 518.662 2100.11C540.509 1990.85 559.186 1878.02 554.81 1767.87C551.854 1693.47 519.201 1632.26 458.027 1566.57C405.55 1510.22 344.498 1460.93 263.295 1416.52C202.639 1383.35 133.887 1355.01 84.4993 1315.76C-16.904 1235.18 -8.93736 1121.09 24.6415 1029.12C75.2651 890.482 206.773 768.855 323.93 645.636C434.758 529.073 518.055 411.377 554.81 280.388C580.714 188.072 593.802 94.5739 617 2" stroke-width="4" stroke-linecap="round"/>
+</svg>
 </section>
 
 
