@@ -46,8 +46,10 @@ oauthlib==3.2.2
 packaging==23.2
 pillow==10.2.0
 prompt-toolkit==3.0.43
+psycopg==3.2.1
 pycparser==2.21
 PyJWT==2.8.0
+PyMySQL==1.1.1
 pyodbc==5.1.0
 python-dateutil==2.8.2
 python3-openid==3.2.0
