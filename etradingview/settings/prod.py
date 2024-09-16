@@ -20,17 +20,16 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME':  env('DATABASE_NAME'),
         'USER':  env('DATABASE_USER'),
         'PASSWORD':  env('DATABASE_PASS'),
         'HOST':  env('DATABASE_HOST'),
-        'PORT': 3306,
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'PORT': '5432',     
     }
 }
 

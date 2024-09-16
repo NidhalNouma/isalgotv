@@ -6,19 +6,29 @@ environ.Env.read_env()
 DEBUG = True
 # ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1"]
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME':  env('DATABASE_NAME'),
-#         'USER':  env('DATABASE_USER'),
-#         'PASSWORD':  env('DATABASE_PASS'),
-#         'HOST':  env('DATABASE_HOST'),
-#         'PORT': 3306,
-#         'OPTIONS': {
-#             'sql_mode': 'traditional',
-#         }
-#     }
-# }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  env('DATABASE_NAME'),
+        'USER':  env('DATABASE_USER'),
+        'PASSWORD':  env('DATABASE_PASS'),
+        'HOST':  env('DATABASE_HOST'),
+        'PORT': '5432',     
+    },
+
+    'mysql': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':  env('DATABASE_NAME'),
+        'USER':  env('DATABASE_USER'),
+        'PASSWORD':  env('DATABASE_PASS'),
+        'HOST':  env('DATABASE_HOST'),
+        'PORT': 3306,
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
+    }
+}
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
