@@ -28,7 +28,7 @@
   </div>
 
   <div class="text-xs font-medium my-2 text-text/70">
-    <h6 class="text-green-400/90 flex items-center">
+    <h6 class="text-profit flex items-center">
       <svg
         class="w-4 h-4 fill-current stroke-current mr-1.5"
         stroke-width="0"
@@ -40,9 +40,9 @@
         ></path>
       </svg>
       {{result.net_profit}}
-      <span class="text-xs ml-1">{{result.net_profit_percentage}}%</span>
+      <span class="text-base font-semibold ml-1">{{result.net_profit_percentage}}%</span>
     </h6>
-    <h6 class="text-red-400/90 flex items-center">
+    <h6 class="text-loss flex items-center">
       <svg
         class="w-4 h-4 fill-current stroke-current mr-1.5"
         stroke-width="0"
@@ -54,13 +54,13 @@
         ></path>
       </svg>
       {{result.max_drawdown}}
-      <span class="text-xs ml-1">{{result.max_drawdown_percentage}}%</span>
+      <span class="text-base font-semibold ml-1">{{result.max_drawdown_percentage}}%</span>
     </h6>
   </div>
 
   <a
     href="{% url 'strategy' slug=result.strategy.slug %}?result={{result.id}}"
-    class="w-fit flex items-center px-1 bg-secondary text-xs rounded font-medium text-text dark:text-background"
+    class="w-fit flex items-center px-1 bg-secondary text-xs rounded font-semibold text-text dark:text-background"
   >
     Check and vote
     <svg

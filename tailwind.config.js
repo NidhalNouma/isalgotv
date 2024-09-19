@@ -29,6 +29,8 @@ module.exports = {
       "text-light": "hsl(var(--color-text-light) / <alpha-value>)",
       title: "hsl(var(--color-title) / <alpha-value>)",
       "title-light": "hsl(var(--color-title-light) / <alpha-value>)",
+      profit: "hsl(var(--color-profit) / <alpha-value>)",
+      loss: "hsl(var(--color-loss) / <alpha-value>)",
       // success : "",
       // info : "",
       // warning : "",

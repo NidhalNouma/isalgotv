@@ -311,7 +311,7 @@ function showModalImages(images, imgId, id = "modal-images") {
 }
 
 htmx.on("htmx:afterRequest", (evt) => {
-  if (evt?.detail?.target.id === "settingsDiv") {
+  if (evt?.detail?.target.id === "resultsDiv") {
     clearResultForm();
   }
 

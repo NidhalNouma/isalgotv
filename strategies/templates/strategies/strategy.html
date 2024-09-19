@@ -225,9 +225,9 @@
 
     <div class="" id="commentsDiv">{% include "include/comments.html" %}</div>
 
-    <div id="resultsDiv" class="">
+    <div class="" id="FullResultsDiv">
       {% include "include/add_result.html" %}
-      <div class="mt-2" >
+      <div class="mt-2" id="resultsDiv"  >
         {% include "include/results.html" %}
       </div>
     </div>
@@ -319,7 +319,7 @@ id="btn-result-modal-data-hide"
   const showSettingsBtn = document.getElementById("settingsBtn");
   const showStrategyBtn = document.getElementById("strategyBtn");
   const commentsDiv = document.getElementById("commentsDiv");
-  const settingsDiv = document.getElementById("resultsDiv");
+  const settingsDiv = document.getElementById("FullResultsDiv");
   const strategyDiv = document.getElementById("strategyDiv");
 
   let cssClass = ["bg-secondary", "text-dark"];
