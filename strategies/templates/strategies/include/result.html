@@ -5,12 +5,19 @@
   class="mb-2 py-2 bg-background rounded-xl flex flex-col w-full max-w-full"
 >
   <div class="flex sm:flex-row flex-col mb-1 items-start sm:items-center">
-    <a class="" href="{% url 'results' %}?pair={{result.pair}}">
-      <span
-        class="text-background bg-text px-1.5 rounded-full text-sm font-semibold mr-2"
+    <div class="mr-2">
+      <a class="mr-1.5" href="{% url 'results' %}?pair={{result.pair}}">
+        <span
+        class="text-background bg-text px-1.5 rounded-full text-sm font-semibold"
         >{{result.pair}}</span
-      >
-    </a>
+        >
+      </a>
+      <h6 class="text-text/90 text-xs font-semibold inline">
+        <span class="text-sm">{{result.total_trade}}</span> 
+        <span class=" text-text/70 ml-0.5">Trades</span>
+      </h6>
+    </div>
+
     <!-- <div class="text-xs flex items-center ">
       <h6 class="text-title/80 font-semibold">{{result.test_start_at|date:'M d Y - H:i'}}</h6>
       <svg
@@ -38,20 +45,21 @@
     </div>
   </div>
 
-  <div class="text-sm font-medium flex mb-1 text-text/70">
+
+  <div class="text-sm font-medium flex text-text/70">
     <h6 class="text-profit mr-2 text-xs font-semibold">
       <span class="text-sm text-text/70">Profit</span>
-      {{result.net_profit}}
-      <span class="text-base">{{result.net_profit_percentage}}%</span>
+      <!-- {{result.net_profit}} -->
+      <span class="text-base">{{result.net_profit_percentage|format_profit|safe}}%</span>
     </h6>
     <h6 class="text-loss text-xs font-semibold">
       <span class="text-sm text-text/70">Drawdown</span>
-      {{result.max_drawdown}}
-      <span class="text-base">{{result.max_drawdown_percentage}}%</span>
+      <!-- {{result.max_drawdown}} -->
+      <span class="text-base">{{result.max_drawdown_percentage|format_profit|safe}}%</span>
     </h6>
   </div>
 
-  <div class="">
+  <div class="mt-2 mb-0.5">
     <button
       onclick="openModel('result-modal-{{result.id}}')"
       class="bg-primary dark:text-text text-text-light text-xs font-normal px-1.5 rounded flex items-center"

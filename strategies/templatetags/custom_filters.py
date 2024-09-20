@@ -56,3 +56,29 @@ def map_months_to_number(start_date, end_date):
     else:
         # Linear interpolation between 40 (at 4 months) and 100 (at 60 months)
         return round(40 + (total_months - 4) * (60 / (60 - 4)))
+
+
+# @register.filter
+# def format_profit(value):
+#     # Ensure we handle input correctly
+#     if isinstance(value, (int, float)):
+#         print(value)
+#         # Split the integer and decimal parts
+#         integer_part, decimal_part = str(value).split('.')
+#         # Create a formatted string
+#         return f'<span style="font-size: larger; font-weight: bold;">{integer_part}</span><span style="font-size: smaller;">.{decimal_part}</span>'
+#     return value
+
+
+@register.filter
+def format_profit(value):
+    try:
+        value = float(value)
+        integer_part, decimal_part = str(value).split('.')
+        # Create a formatted string
+        return f'<span >{integer_part}</span><span class="text-xs">.{decimal_part}</span>'
+
+    except ValueError:
+        return value  # If conversion fails, return the original value
+
+

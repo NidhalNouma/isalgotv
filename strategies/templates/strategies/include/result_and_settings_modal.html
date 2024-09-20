@@ -14,30 +14,7 @@
       <div
         class="flex items-center justify-between p-4 rounded-t sticky top-0 bg-background z-50"
       >
-        <h3 class="sm:inline-flex hidden  mr-4  text-lg sm:text-xl font-semibold text-text">{{result.pair}}</h3>
-        <ul
-          class="font-semibold flex flex-wrap items-center text-sm text-center text-text"
-        >
-          <li class="mr-1 ">
-            <button
-              id="r-{{result.id}}-result-btn"
-              class="inline-block px-2 py-1 text-sm rounded-lg text-text-light dark:text-text bg-primary"
-              aria-current="page"
-              onclick='swapDivBtn("r-{{result.id}}-settings", "r-{{result.id}}-result")'
-            >
-              Performance
-            </button>
-          </li>
-          <li class="mr-1">
-            <button
-              onclick='swapDivBtn("r-{{result.id}}-result", "r-{{result.id}}-settings")'
-              id="r-{{result.id}}-settings-btn"
-              class="inline-block px-2 py-1 text-sm rounded-lg hover:text-text-light text-text hover:bg-primary"
-            >
-            Properties
-            </button>
-          </li>
-        </ul>
+        <h3 class="   text-lg sm:text-xl font-semibold text-text">{{result.pair}}</h3>
         <button
           type="button"
           onclick="hideModel('result-modal-{{result.id}}')"
@@ -58,6 +35,25 @@
         </button>
       </div>
       <!-- Modal body -->
+
+    <div class="w-full max-w-sm font-semibold mx-auto grid grid-cols-2 gap-1 border rounded-md border-text/70 p-1 mb-3">
+      <button
+        id="r-{{result.id}}-result-btn"
+        onclick='swapDivBtn("r-{{result.id}}-settings", "r-{{result.id}}-result")'
+        class="inline-block px-2 py-1 text-sm rounded-md text-background  bg-text transition-all"
+      >
+        <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"><path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path></svg> -->
+        Performance
+      </button>
+      <button
+        onclick='swapDivBtn("r-{{result.id}}-result", "r-{{result.id}}-settings")'
+        id="r-{{result.id}}-settings-btn"
+        class="inline-block px-2 py-1 text-sm rounded-md hover:text-background text-text bg-transparent hover:bg-text transition-all"
+      >
+       <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path></svg> -->
+       Properties
+      </button>
+      </div>
       <!-- Profits -->
       <div id="r-{{result.id}}-result" class="px-6 py-4 space-y-6">
         <h6 class=""> <span class="text-text/50 mr-2 text-sm">Symbol</span> <span class="text-base inline-block bg-text font-semibold text-background px-1.5 rounded">{{result.broker}}:{{result.pair}}</span></h6>
@@ -112,51 +108,51 @@
               <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                   Net profit
               </th>
-              <td class="text-center text-base py-4 {% if result.net_profit > 0 %} text-profit {% elif result.net_profit < 0 %} text-loss {% endif %}">
-                  {{result.net_profit}}
-                  <span class="text-xs block">{{result.net_profit_percentage}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.net_profit > 0 %} text-profit {% elif result.net_profit < 0 %} text-loss {% endif %}">
+                  {{result.net_profit_percentage|format_profit|safe}}%
+                  <span class="text-xs block">{{result.net_profit|format_profit|safe}}</span>
               </td>
-              <td class="text-center text-base py-4 {% if result.net_profit_long > 0 %} text-profit {% elif result.net_profit_long < 0 %} text-loss {% endif %}">
-                  {{result.net_profit_long}}
-                  <span class="text-xs block">{{result.net_profit_percentage_long}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.net_profit_long > 0 %} text-profit {% elif result.net_profit_long < 0 %} text-loss {% endif %}">
+                  {{result.net_profit_percentage_long|format_profit|safe}}%
+                  <span class="text-xs block">{{result.net_profit_long|format_profit|safe}}</span>
                 </td>
-              <td class="text-center text-base py-4 {% if result.net_profit_short > 0 %} text-profit {% elif result.net_profit_short < 0 %} text-loss {% endif %}">
-                  {{result.net_profit_short}}
-                  <span class="text-xs block">{{result.net_profit_percentage_short}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.net_profit_short > 0 %} text-profit {% elif result.net_profit_short < 0 %} text-loss {% endif %}">
+                  {{result.net_profit_percentage_short|format_profit|safe}}%
+                  <span class="text-xs block">{{result.net_profit_short|format_profit|safe}}</span>
               </td>
           </tr>
           <tr class="bg-background text-title">
               <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                   Gross profit
               </th>
-              <td class="text-center text-base py-4 {% if result.gross_profit > 0 %} text-profit {% elif result.gross_profit < 0 %} text-loss {% endif %}">
-                  {{result.gross_profit}}
-                  <span class="text-xs block">{{result.gross_profit_percentage}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.gross_profit > 0 %} text-profit {% elif result.gross_profit < 0 %} text-loss {% endif %}">
+                  {{result.gross_profit_percentage|format_profit|safe}}%
+                  <span class="text-xs block">{{result.gross_profit|format_profit|safe}}</span>
               </td>
-              <td class="text-center text-base py-4 {% if result.gross_profit_long > 0 %} text-profit {% elif result.gross_profit_long < 0 %} text-loss {% endif %}">
-                  {{result.gross_profit_long}}
-                  <span class="text-xs block">{{result.gross_profit_percentage_long}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.gross_profit_long > 0 %} text-profit {% elif result.gross_profit_long < 0 %} text-loss {% endif %}">
+                  {{result.gross_profit_percentage_long|format_profit|safe}}%
+                  <span class="text-xs block">{{result.gross_profit_long|format_profit|safe}}</span>
                 </td>
-              <td class="text-center text-base py-4 {% if result.gross_profit_short > 0 %} text-profit {% elif result.gross_profit_short < 0 %} text-loss {% endif %}">
-                  {{result.gross_profit_short}}
-                  <span class="text-xs block">{{result.gross_profit_percentage_short}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.gross_profit_short > 0 %} text-profit {% elif result.gross_profit_short < 0 %} text-loss {% endif %}">
+                  {{result.gross_profit_percentage_short|format_profit|safe}}%
+                  <span class="text-xs block">{{result.gross_profit_short|format_profit|safe}}</span>
               </td>
           </tr>
           <tr class="bg-background text-title">
               <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                   Gross loss
               </th>
-              <td class="text-center text-base py-4  {% if result.gross_loss > 0 %} text-loss {% endif %}">
-                  {{result.gross_loss}}
-                  <span class="text-xs block">{{result.gross_loss_percentage}}%</span>
+              <td class="text-center font-semibold text-base py-4  {% if result.gross_loss > 0 %} text-loss {% endif %}">
+                  {{result.gross_loss_percentage|format_profit|safe}}%
+                  <span class="text-xs block">{{result.gross_loss|format_profit|safe}}</span>
               </td>
-              <td class="text-center text-base py-4  {% if result.gross_loss_long > 0 %} text-loss {% endif %}">
-                  {{result.gross_loss_long}}
-                  <span class="text-xs block">{{result.gross_loss_percentage_long}}%</span>
+              <td class="text-center font-semibold text-base py-4  {% if result.gross_loss_long > 0 %} text-loss {% endif %}">
+                  {{result.gross_loss_percentage_long|format_profit|safe}}%
+                  <span class="text-xs block">{{result.gross_loss_long|format_profit|safe}}</span>
                 </td>
-              <td class="text-center text-base py-4 {% if result.gross_loss_short > 0 %} text-loss {% endif %}">
-                  {{result.gross_loss_short}}
-                  <span class="text-xs block">{{result.gross_loss_percentage_short}}%</span>
+              <td class="text-center font-semibold text-base py-4 {% if result.gross_loss_short > 0 %} text-loss {% endif %}">
+                  {{result.gross_loss_percentage_short|format_profit|safe}}%
+                  <span class="text-xs block">{{result.gross_loss_short|format_profit|safe}}</span>
               </td>
           </tr>
 
@@ -164,13 +160,13 @@
             <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                 Profit factor
             </th>
-            <td class="text-center text-base py-4 {% if result.profit_factor > 0 %} text-profit {% elif result.profit_factor < 0 %} text-loss {% endif %}">
-                {{result.profit_factor}}
+            <td class="text-center font-semibold text-base py-4 {% if result.profit_factor > 0 %} text-profit {% elif result.profit_factor < 0 %} text-loss {% endif %}">
+                {{result.profit_factor|format_profit|safe}}
             </td>
-            <td class="text-center text-base py-4 {% if result.profit_factor_long > 0 %} text-profit {% elif result.profit_factor_long < 0 %} text-loss {% endif %}">
-                {{result.profit_factor_long}}              </td>
-            <td class="text-center text-base py-4 {% if result.profit_factor_short > 0 %} text-profit {% elif result.profit_factor_short < 0 %} text-loss {% endif %}">
-                {{result.profit_factor_short}}
+            <td class="text-center font-semibold text-base py-4 {% if result.profit_factor_long > 0 %} text-profit {% elif result.profit_factor_long < 0 %} text-loss {% endif %}">
+                {{result.profit_factor_long|format_profit|safe}}</td>
+            <td class="text-center font-semibold text-base py-4 {% if result.profit_factor_short > 0 %} text-profit {% elif result.profit_factor_short < 0 %} text-loss {% endif %}">
+                {{result.profit_factor_short|format_profit|safe}}
             </td>
           </tr>
 
@@ -178,13 +174,13 @@
             <th scope="row" class="pr-3 py-4 text-text font-medium twhitespace-nowrap ">
               Profitable %
             </th>
-            <td class="text-center text-base py-4 {% if result.profitable_percentage > 0 %} text-profit {% elif result.profitable_percentage < 0 %} text-loss {% endif %}">
-                {{result.profitable_percentage}}%
+            <td class="text-center font-semibold text-base py-4 {% if result.profitable_percentage > 0 %} text-profit {% elif result.profitable_percentage < 0 %} text-loss {% endif %}">
+                {{result.profitable_percentage|format_profit|safe}}%
             </td>
-            <td class="text-center text-base py-4 {% if result.profitable_percentage_long > 0 %} text-profit {% elif result.profitable_percentage_long < 0 %} text-loss {% endif %}">
-                {{result.profitable_percentage_long}}%              </td>
-            <td class="text-center text-base py-4 {% if result.profitable_percentage_short > 0 %} text-profit {% elif result.profitable_percentage_short < 0 %} text-loss {% endif %}">
-                {{result.profitable_percentage_short}}%
+            <td class="text-center font-semibold text-base py-4 {% if result.profitable_percentage_long > 0 %} text-profit {% elif result.profitable_percentage_long < 0 %} text-loss {% endif %}">
+                {{result.profitable_percentage_long|format_profit|safe}}%              </td>
+            <td class="text-center font-serif text-base py-4 {% if result.profitable_percentage_short > 0 %} text-profit {% elif result.profitable_percentage_short < 0 %} text-loss {% endif %}">
+                {{result.profitable_percentage_short|format_profit|safe}}%
             </td>
           </tr>
 
@@ -234,9 +230,9 @@
               <th scope="row" class="pr-3 py-4 text-text font-medium whitespace-nowrap ">
                 Max Drawdown
               </th>
-              <td class="text-center text-base py-4  {% if result.max_drawdown > 0 %} text-loss {% endif %}">
-                  {{result.max_drawdown}}
-                  <span class="text-xs block">{{result.max_drawdown_percentage}}%</span>
+              <td class="text-center font-semibold text-base py-4  {% if result.max_drawdown > 0 %} text-loss {% endif %}">
+                  {{result.max_drawdown_percentage|format_profit|safe}}%
+                  <span class="text-xs block">{{result.max_drawdown|format_profit|safe}}</span>
               </td>
           </tr>
       </tbody>
@@ -253,9 +249,9 @@
                   <div class="pb-4 ">
                   
                   {% for line in group_value %}
-                  <!-- {{line}} -->
-                    <div class=" my-3 max-w-full " >
-                      {% for set in line %}
+                  <div class=" my-3 max-w-full " >
+                    {% for set in line %}
+                    <!-- {{set}} -->
                         <div class="mr-3 inline-flex items-center justify-center align-middle ">
                           {% if set.type == 'boolean' %}
                             <input disabled name="settings_{{ set.name }}" id="id_settings_{{ set.name }}" type="checkbox" {% if set.default_value == 'true' %}checked{%endif%} value="{% if set.default_value == 'true' %}true{%else%}false{%endif%}" class="mr-2 w-4 h-4 input-checkbox">
@@ -263,8 +259,10 @@
                             <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title whitespace-nowrap">{{ set.display_name }}</label>
                           
                           {% if set.type != 'boolean'  %}
-                            <span class="ml-2 bg-text text-sm font-semibold text-background px-1.5 rounded">{{ set.default_value }}</span>
+                            <span class="ml-2 bg-text text-sm font-semibold text-background px-1.5 rounded">{{ set.default_value|escape }}</span>
                           {% endif %}
+                          <span class="text-text">
+                          </span>
                         </div>
                       {% endfor %}
                     </div>

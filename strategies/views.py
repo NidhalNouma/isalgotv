@@ -303,7 +303,7 @@ def add_comment_reply(request, id):
             tv_username = request.user.user_profile.tradingview_username if request.user.user_profile.tradingview_username else 'Someone'
             html_text = f"<span class='font-semibold'>{tv_username}</span>'s replied to your idea. </br></br>{reply.description}"
 
-            send_notification(request.user.user_profile, comment.created_by, html_text, f"/st/{comment.strategy.id}/?comment={comment.id}")
+            send_notification(request.user.user_profile, comment.created_by, html_text, f"/strategies/{comment.strategy.slug}/?comment={comment.id}")
 
             # Trigger an HTMX update to fetch the new comment
             replies = comment.replies.select_related('created_by').prefetch_related('images')
@@ -344,7 +344,7 @@ def add_result_reply(request, id):
             tv_username = request.user.user_profile.tradingview_username if request.user.user_profile.tradingview_username else 'Someone'
             html_text = f"<span class='font-semibold'>{tv_username}</span>'s replied to your result. </br></br>{reply.description}"
 
-            send_notification(request.user.user_profile, result.created_by, html_text, f"/st/{result.strategy.id}/?result={result.id}")
+            send_notification(request.user.user_profile, result.created_by, html_text, f"/strategies/{result.strategy.slug}/?result={result.id}")
 
             # Trigger an HTMX update to fetch the new comment
             replies = result.replies.select_related('created_by').prefetch_related('images')
@@ -377,7 +377,7 @@ def result_vote(request, result_id, vote_type):
         tv_username = request.user.user_profile.tradingview_username if request.user.user_profile.tradingview_username else 'Someone'
         html_text = f"<span class='font-semibold'>{tv_username}</span>'s voted one your result."
 
-        send_notification(request.user.user_profile, result.created_by, html_text, f"/st/{result.strategy.id}/?result={result.id}")
+        send_notification(request.user.user_profile, result.created_by, html_text, f"/strategies/{result.strategy.slug}/?result={result.id}")
 
     context = {'result': result}
     return render(request, 'include/result_votes.html', context=context)
@@ -396,7 +396,7 @@ def comment_like(request, comment_id, like_type):
                 tv_username = request.user.user_profile.tradingview_username if request.user.user_profile.tradingview_username else 'Someone'
                 html_text = f"<span class='font-semibold'>{tv_username}</span>'s liked your comment."
 
-                send_notification(request.user.user_profile, comment.created_by, html_text, f"/st/{comment.strategy.id}/?comment={comment.id}")
+                send_notification(request.user.user_profile, comment.created_by, html_text, f"/strategies/{comment.strategy.slug}/?comment={comment.id}")
 
         elif like_type == 'negative':
             if request.user in comment.dislike.all():
@@ -408,7 +408,7 @@ def comment_like(request, comment_id, like_type):
                 tv_username = request.user.user_profile.tradingview_username if request.user.user_profile.tradingview_username else 'Someone'
                 html_text = f"<span class='font-semibold'>{tv_username}</span>'s disliked your comment."
 
-                send_notification(request.user.user_profile, comment.created_by, html_text, f"/st/{comment.strategy.id}/?comment={comment.id}")
+                send_notification(request.user.user_profile, comment.created_by, html_text, f"/strategies/{comment.strategy.slug}/?comment={comment.id}")
 
     context = {'comment': comment}
     return render(request, 'include/comment_likes.html', context=context)

@@ -9,19 +9,19 @@ function swapDivBtn(id1, id2) {
   const btnClass2 = btn2.classList.toString(); // Convert class list to string
 
   btnClass1.split(" ").forEach((className) => {
-    btn1.classList.remove(className);
+    if (className) btn1?.classList.remove(className);
   });
 
   btnClass2.split(" ").forEach((className) => {
-    btn2.classList.remove(className);
+    if (className) btn2?.classList.remove(className);
   });
 
   btnClass1.split(" ").forEach((className) => {
-    btn2.classList.add(className);
+    if (className) btn2?.classList.add(className);
   });
 
   btnClass2.split(" ").forEach((className) => {
-    btn1.classList.add(className);
+    if (className) btn1?.classList.add(className);
   });
 
   div1.classList.add("hidden");

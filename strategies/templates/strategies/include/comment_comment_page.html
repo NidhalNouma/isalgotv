@@ -1,7 +1,7 @@
 {% load custom_filters %}
 
 <div class="">
-    <a class="" href="{% url 'strategy' id=comment.strategy.id %}">
+    <a class="" href="{% url 'strategy' slug=comment.strategy.slug %}">
         <h6 class="text-xs text-title underline truncate line-clamp-1">
           {{comment.strategy.name}}
         </h6>
@@ -11,7 +11,7 @@
   <span class="text-text/60 text-xs font-light">{% with total=comment.likes.count|subtract:comment.dislike.count %} {{ total }} {% endwith %} likes</span>
 
  <div class="flex items-center justify-between mt-1">
-    <a href="{% url 'strategy' id=comment.strategy.id %}?comment={{comment.id}}"
+    <a href="{% url 'strategy' slug=comment.strategy.slug %}?comment={{comment.id}}"
         class="w-fit flex items-center bg-transparent text-xs rounded font-medium text-secondary"
         >
         Read and reply
