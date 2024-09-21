@@ -10,8 +10,7 @@
   {% elif user.is_authenticated and not has_subscription %}
   <button
     class="btn-secondary text-sm font-semibold underlinei"
-    data-modal-target="upgrade-modal"
-    data-modal-toggle="upgrade-modal"
+    onclick="openModel('upgrade-modal')"
   >
     Share your results
   </button> 

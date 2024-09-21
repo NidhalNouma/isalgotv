@@ -119,11 +119,11 @@
     }
 
     [modal-backdrop] {
-      @apply bg-background/80 brightness-125 bg-opacity-80 z-40
+      @apply bg-text/10 brightness-75 backdrop-blur-sm  z-40
     }
 
     [drawer-backdrop] {
-      @apply bg-background/80 brightness-125 bg-opacity-80 z-50
+      @apply bg-text/10 brightness-75 backdrop-blur-sm z-50
     }
 
     /* Scroller */

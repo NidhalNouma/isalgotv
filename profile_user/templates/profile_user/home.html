@@ -73,7 +73,7 @@
   <section class="mt-14 text-center">
 
     {% if not user_profile.subscription_id %}
-    <h2 class="text-text text-md font-semibold text-center mt-2 tracking-wider">
+    {% comment %} <h2 class="text-text text-md font-semibold text-center mt-2 tracking-wider">
       Start today with <div class="relative inline-block text-title text-lg ">3 day trial
       <div class="absolute top-[90%] w-full">
           <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +81,17 @@
           </svg>
       </div>
       </div>
-    </h2>
+    </h2> {% endcomment %}
+    <h2 class="text-text text-sm font-semibold text-center mt-6 tracking-wider">
+      <div class="relative inline-block text-title text-sm  ">30-Day
+       <div class="absolute top-[90%] w-full">
+         <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round"/>
+         </svg>
+       </div>
+     </div>
+      Money-Back Guarantee <svg onclick="openModel('money-back-modal')" class="bg-accent/40 fill-title p-0 rounded-full w-4 aspect-square inline align-middle cursor-pointer" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
+   </h2>
     {% else %}
     <h4 class="text-title">Select one of our plans to get started.</h4>
     {% endif %}
@@ -282,5 +292,7 @@ class="flex items-center justify-between mb-2 text-sm font-medium text-title w-f
 </main>
 {% endif %}
 <!-- <iframe class="" oFjD8qE2 src="https://s.tradingview.com/embed/oFjD8qE2"></iframe> -->
+
+{% include "include/money_back_modal.html" %} 
 
 {% endblock page %}

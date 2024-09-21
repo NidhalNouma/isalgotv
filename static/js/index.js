@@ -244,8 +244,10 @@ function showSelectImgs(id) {
 
 function showModalImages(images, imgId, id = "modal-images") {
   // console.log(images);
-  const modal = document.getElementById(id);
-  modal.classList.remove("hidden");
+  // const modal = document.getElementById(id);
+  // modal.classList.remove("hidden");
+
+  openModel(id);
 
   let currentIndex = 0;
 
@@ -668,21 +670,20 @@ function openModel(id) {
   const modalElement = document.querySelector("#" + id);
 
   const modalOptions = {
-    bodyScrolling: false,
+    // bodyScrolling: false,
 
-    bodyScrolling: true,
+    // bodyScrolling: true,
     onHide: () => {
+      // document.querySelector("html").style.overflowY = "unset";
       document.querySelector("html").style.overflowY = "unset";
     },
     // placement: "bottom-right",
-    // backdrop: "dynamic",
+    backdrop: "dynamic",
     // backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
-    // onHide: () => {
-    //   console.log("modal is hidden");
-    // },
-    // onShow: () => {
-    //   console.log("modal is shown");
-    // },
+    onShow: () => {
+      document.querySelector("html").style.overflowY = "hidden";
+      console.log("modal is shown");
+    },
     // onToggle: () => {
     //   console.log("modal has been toggled");
     // },
@@ -695,8 +696,6 @@ function openModel(id) {
     modals[id] = modal;
     modal.show();
   }
-
-  document.querySelector("html").style.overflowY = "hidden";
 }
 
 function hideModel(id) {

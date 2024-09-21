@@ -2254,6 +2254,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: grid;
 }
 
+.inline-grid {
+  display: inline-grid;
+}
+
 .contents {
   display: contents;
 }
@@ -2631,6 +2635,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-w-\[min\(20rem\2c 80\%\)\] {
   max-width: min(20rem,80%);
+}
+
+.max-w-fit {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
 }
 
 .max-w-full {
@@ -3235,6 +3244,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-text) / 0.6);
 }
 
+.border-text\/70 {
+  border-color: hsl(var(--color-text) / 0.7);
+}
+
 .border-title {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-title) / var(--tw-border-opacity));
@@ -3247,14 +3260,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-yellow-600 {
   --tw-border-opacity: 1;
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
-}
-
-.border-primary\/70 {
-  border-color: hsl(var(--color-primary) / 0.7);
-}
-
-.border-text\/70 {
-  border-color: hsl(var(--color-text) / 0.7);
 }
 
 .\!bg-background\/20 {
@@ -3277,6 +3282,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-accent\/20 {
   background-color: hsl(var(--color-accent) / 0.2);
+}
+
+.bg-accent\/30 {
+  background-color: hsl(var(--color-accent) / 0.3);
 }
 
 .bg-background {
@@ -3443,6 +3452,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(114 59 19 / 0.1);
 }
 
+.bg-accent\/40 {
+  background-color: hsl(var(--color-accent) / 0.4);
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -3543,6 +3556,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .to-accent {
   --tw-gradient-to: hsl(var(--color-accent) / 1) var(--tw-gradient-to-position);
+}
+
+.to-background {
+  --tw-gradient-to: hsl(var(--color-background) / 1) var(--tw-gradient-to-position);
 }
 
 .to-primary {
@@ -3732,6 +3749,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding: 1.5rem;
 }
 
+.p-0\.5 {
+  padding: 0.125rem;
+}
+
 .\!px-6 {
   padding-left: 1.5rem !important;
   padding-right: 1.5rem !important;
@@ -3878,8 +3899,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-left: 2.5rem;
 }
 
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
 .pl-3 {
   padding-left: 0.75rem;
+}
+
+.pr-1 {
+  padding-right: 0.25rem;
 }
 
 .pr-3 {
@@ -3936,6 +3965,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .text-start {
   text-align: start;
+}
+
+.align-baseline {
+  vertical-align: baseline;
 }
 
 .align-top {
@@ -4239,11 +4272,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(114 59 19 / var(--tw-text-opacity));
 }
 
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -4515,18 +4543,22 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 [modal-backdrop] {
   z-index: 40;
-  background-color: hsl(var(--color-background) / 0.8);
-  --tw-bg-opacity: 0.8;
-  --tw-brightness: brightness(1.25);
+  background-color: hsl(var(--color-text) / 0.1);
+  --tw-brightness: brightness(.75);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  --tw-backdrop-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 [drawer-backdrop] {
   z-index: 50;
-  background-color: hsl(var(--color-background) / 0.8);
-  --tw-bg-opacity: 0.8;
-  --tw-brightness: brightness(1.25);
+  background-color: hsl(var(--color-text) / 0.1);
+  --tw-brightness: brightness(.75);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  --tw-backdrop-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 /* Scroller */
@@ -4643,6 +4675,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-background) / 0.4) !important;
 }
 
+.hover\:bg-accent\/40:hover {
+  background-color: hsl(var(--color-accent) / 0.4);
+}
+
 .hover\:bg-background\/50:hover {
   background-color: hsl(var(--color-background) / 0.5);
 }
@@ -4655,11 +4691,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .hover\:bg-gray-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-primary:hover {
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--color-primary) / var(--tw-bg-opacity));
 }
 
 .hover\:bg-secondary:hover {
@@ -4706,6 +4737,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-accent) / var(--tw-text-opacity));
 }
 
+.hover\:text-background:hover {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-background) / var(--tw-text-opacity));
+}
+
 .hover\:text-blue-600:hover {
   --tw-text-opacity: 1;
   color: rgb(28 100 242 / var(--tw-text-opacity));
@@ -4731,11 +4767,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-text) / var(--tw-text-opacity));
 }
 
-.hover\:text-text-light:hover {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-text-light) / var(--tw-text-opacity));
-}
-
 .hover\:text-text\/80:hover {
   color: hsl(var(--color-text) / 0.8);
 }
@@ -4743,16 +4774,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .hover\:text-title:hover {
   --tw-text-opacity: 1;
   color: hsl(var(--color-title) / var(--tw-text-opacity));
-}
-
-.hover\:text-background:hover {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-background) / var(--tw-text-opacity));
-}
-
-.hover\:text-black:hover {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {
@@ -5017,10 +5038,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     display: flex;
   }
 
-  .sm\:inline-flex {
-    display: inline-flex;
-  }
-
   .sm\:h-10 {
     height: 2.5rem;
   }
@@ -5192,16 +5209,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     margin-bottom: 4rem;
   }
 
+  .md\:my-8 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
   .md\:mr-0 {
     margin-right: 0px;
   }
 
   .md\:mt-0 {
     margin-top: 0px;
-  }
-
-  .md\:mt-8 {
-    margin-top: 2rem;
   }
 
   .md\:flex {
@@ -5236,6 +5254,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     max-width: 55%;
   }
 
+  .md\:max-w-\[70\%\] {
+    max-width: 70%;
+  }
+
   .md\:max-w-xl {
     max-width: 36rem;
   }
@@ -5258,6 +5280,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:flex-row-reverse {
     flex-direction: row-reverse;
+  }
+
+  .md\:items-start {
+    align-items: flex-start;
   }
 
   .md\:space-x-8 > :not([hidden]) ~ :not([hidden]) {
@@ -5284,6 +5310,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:p-0 {
     padding: 0px;
+  }
+
+  .md\:text-start {
+    text-align: start;
   }
 }
 

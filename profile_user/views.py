@@ -397,7 +397,8 @@ def create_subscription_stripeform(request):
         coupon_id = data['coupon']
         coupon = None
 
-        trial_days = 3
+        # trial_days = 3
+        trial_days = 0
         if request.user_profile.subscription_id:
             trial_days = 0
 
