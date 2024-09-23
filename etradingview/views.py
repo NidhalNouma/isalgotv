@@ -7,8 +7,10 @@ from django.conf import settings
 
 from allauth.socialaccount.views import SignupView
 
+
 class CustomSocialSignupView(SignupView):
     def get_success_url(self):
+        print('Signup successful with Google ...')
         # Redirect to home after successful signup
         return redirect('home')
 
