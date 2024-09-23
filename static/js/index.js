@@ -666,32 +666,41 @@ function getNumberOfLines(id) {
 }
 
 const modals = {};
-function openModel(id) {
+function openModel(id, backdrop = "dynamic") {
   const modalElement = document.querySelector("#" + id);
 
   const modalOptions = {
-    // bodyScrolling: false,
-
-    // bodyScrolling: true,
     onHide: () => {
-      // document.querySelector("html").style.overflowY = "unset";
       document.querySelector("html").style.overflowY = "unset";
+      modalElement.classList.remove("scale-100"); // Remove full scale on hide
+      modalElement.classList.add("scale-0"); // Scale down when hiding
+      setTimeout(() => {
+        modalElement.classList.add("hidden"); // Hide after the scale transition
+      }, 200); // Match this duration with the transition duration
     },
-    // placement: "bottom-right",
-    backdrop: "dynamic",
-    // backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
+    backdrop: backdrop,
     onShow: () => {
       document.querySelector("html").style.overflowY = "hidden";
+      document.querySelector("body").classList.remove("overflow-hidden");
+      modalElement.classList.remove("hidden"); // Show the modal
+      setTimeout(() => {
+        modalElement.classList.remove("scale-0"); // Start scaling up
+        modalElement.classList.add("scale-100"); // Animate to full size
+      }, 10); // Delay to allow for rendering
       console.log("modal is shown");
     },
-    // onToggle: () => {
-    //   console.log("modal has been toggled");
-    // },
   };
 
-  // TODO: Fix modal problem after htmx response when cancel a membership
-  if (modals[id]) modals[id].show();
-  else {
+  // Initialize modal if it doesn't exist
+  if (modals[id]) {
+    modals[id].show();
+  } else {
+    modalElement.classList.add(
+      "scale-0",
+      "transition-transform",
+      "duration-200",
+      "ease-out"
+    );
     const modal = new Modal(modalElement, modalOptions);
     modals[id] = modal;
     modal.show();

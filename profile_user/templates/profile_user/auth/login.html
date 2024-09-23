@@ -1,18 +1,6 @@
 {% extends 'page.html' %} {% block page %} {% load socialaccount %}
 
-<script>
-  function addQueryParameterIfNotExist() {
-      const url = new URL(window.location.href);
-      const path = url.pathname;
 
-      if (!url.searchParams.has('next')) {
-        let newUrl = path + url.search + (url.search ? '&' : '?') + 'next=/p/';
-        window.location.href = newUrl;
-      }
-  }
-
-  addQueryParameterIfNotExist();
-</script>
 
 <main class="my-auto mx-auto max-w-[100%] md:max-w-xl w-[27rem]">
   <div class="text-title text-xl">

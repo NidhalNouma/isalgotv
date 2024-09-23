@@ -56,5 +56,12 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    "scale-0",
+    "scale-100",
+    "transition-transform",
+    "duration-200",
+    "ease-out",
+  ],
   plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],
 };

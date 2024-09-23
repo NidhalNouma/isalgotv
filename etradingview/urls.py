@@ -22,6 +22,7 @@ from .views import *
 
 urlpatterns = [
     path('accounts/profile/', redirect_to_home),
+    # path('accounts/google/login/callback/', redirect_to_home),
     path('accounts/', include('allauth.urls')),
     path('accounts/social/signup/', CustomSocialSignupView.as_view(), name="redirect_social"),
     path('admin/login/', redirect_admin_login, name="redirect_admin_login"),

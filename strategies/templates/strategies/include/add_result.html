@@ -3,14 +3,14 @@
   <button
     class="btn-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
-    onclick="openModel('add-result-modal')"
+    onclick="openModel('add-result-modal', false)"
   >
     Share your results
   </button> 
   {% elif user.is_authenticated and not has_subscription %}
   <button
     class="btn-secondary text-sm font-semibold underlinei"
-    onclick="openModel('upgrade-modal')"
+    onclick="openModel('upgrade-modal', false)"
   >
     Share your results
   </button> 
