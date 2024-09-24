@@ -44,10 +44,11 @@ def check_user_and_stripe_middleware(get_response):
             if user_profile.customer_id:
                 try:
                     stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+                    # print("stripe customer, " , stripe_customer)
                 except Exception as e:
                     print("Error with getting stripe customer...", e)
 
-            if not user_profile.customer_id or not stripe_customer:
+            if not user_profile.customer_id or not stripe_customer or "deleted" in stripe_customer:
                 customer = stripe.Customer.create(
                         email=current_user.email,
                         name=current_user.username,
