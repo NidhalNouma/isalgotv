@@ -203,7 +203,7 @@ SOCIALACCOUNT_LOGIN_ON_GET= True
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # or "mandatory" based on your requirement
-LOGIN_REDIRECT_URL = '/p'  # Ensure it redirects to the home page after login
+LOGIN_REDIRECT_URL = '/p/'  # Ensure it redirects to the home page after login
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 
 # SOCIALACCOUNT_ADAPTER = 'etradingview.adapters.CustomSocialAccountAdapter'

@@ -54,6 +54,23 @@ COMPRESS_URL = STATIC_URL
 COMPRESS_OFFLINE = True
 
 # Logs for aws cloud watch
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'allauth': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
