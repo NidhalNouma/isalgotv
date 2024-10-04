@@ -46,15 +46,15 @@ setInterval(() => {
   
 
 <main class="max-w-full min-h-[80vh] relative pt-8 -scroll-mb-28 flex justify-between  items-center" >
-  <div class="relative my-auto flex flex-col items-center md:items-start w-full md:max-w-[70%]  md:text-start text-center grow z-10 py-8">
+  <div class="relative  my-auto flex flex-col items-center md:items-start w-full md:max-w-[60%]  md:text-start text-center grow z-30 py-8">
     {% comment %} <div class="w-full  rounded-full aspect-auto absolute inset-0 bg-gradient-to-tr from-accent/10 to-secondary/10 blur-[150px] -z-10"></div> {% endcomment %}
-      <h2 class="text-title text-4xl sm:text-7xl font-extrabold bg-background max-w-fit">
+      <h2 class="text-title text-5xl sm:text-6xl font-extrabold bg-transparent max-w-fit">
         Elevate your trading prowess <br/>with our advanced
       </h2>
-      <h2 class="text-title text-4xl sm:text-7xl font-extrabold">
+      <h2 class="text-title text-5xl sm:text-6xl font-extrabold">
         <span class="bg-secondary dark:text-background truncate">trading strategies</span>
       </h2>
-      <h6 class="text-text text-base font-semibold mt-4 bg-background ">
+      <h6 class="text-text text-base font-semibold mt-4 bg-transparent ">
         We offer top-notch backtestable trading strategies that are optimized for the <a href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank" class="bg-accent dark:text-background truncate">TradingView platform</a>
       </h6>
       <div class="flex flex-row items-center  rounded justify-center gap-4 w-full max-w-fit  my-6 md:my-8 ">
@@ -76,27 +76,32 @@ setInterval(() => {
       <h6 onclick="openModel('money-back-modal')" class="text-text font-semibold text-sm rounded-md pl-2 pr-1 py-1 bg-accent/30 cursor-pointer hover:bg-accent/40 transition-all">30-Day Money-Back Guarantee<svg class="w-4 aspect-square inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg></h6>
 
   </div>
+
   
+  <div class="w-full h-full relative grow mb-auto md:block hidden ">
+    <aside class="absolute right-0 h-[80vh]  w-full z-20">
+      <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
+<spline-viewer class="pointer-events-none z-50 h-screen w-[100vw] -translate-x-[20%] " url="https://prod.spline.design/TVoEbow6rOGkqoZu/scene.splinecode"></spline-viewer> -->
+      
+
+      <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
+<spline-viewer class="ipointer-events-none z-50 h-[80vh] w-[100vw] -translate-x-[25%] overflow-hidden"  url="https://prod.spline.design/Ykez7FPwqxNQ0X1X/scene.splinecode"></spline-viewer> -->
+      
+<!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
+<spline-viewer class="ipointer-events-none z-50 h-[80vh] w-[100vw] -translate-x-[25%] overflow-hidden"  url="https://prod.spline.design/qwIO5syNWgWp3Z06/scene.splinecode"></spline-viewer> -->
+    </aside>
+  </div>
 
 
-<!-- <svg class="stroke-accent h-full absolute left-0 top-0 bottom-0 scale-y-150 z-0"  viewBox="0 0 619 2873" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M295.167 2871C295.167 2830.1 301.203 2789.27 311.104 2748.74C364.352 2530.82 474.862 2319.18 518.662 2100.11C540.509 1990.85 559.186 1878.02 554.81 1767.87C551.854 1693.47 519.201 1632.26 458.027 1566.57C405.55 1510.22 344.498 1460.93 263.295 1416.52C202.639 1383.35 133.887 1355.01 84.4993 1315.76C-16.904 1235.18 -8.93736 1121.09 24.6415 1029.12C75.2651 890.482 206.773 768.855 323.93 645.636C434.758 529.073 518.055 411.377 554.81 280.388C580.714 188.072 593.802 94.5739 617 2" stroke-width="8" stroke-linecap="round"/>
-</svg> -->
 <svg class="stroke-secondary h-full absolute right-0 top-0 bottom-0  scale-y-150 z-0" viewBox="0 0 241 2912" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M2.04915 2910.48C2.04915 2666.02 2.04915 2421.56 2.04915 2177.1C2.04915 1822.61 -4.50356 1480.79 133.709 1148.85C162.702 1079.22 198.312 1010.93 218.036 937.763C249.185 822.211 237.525 692.331 236.534 574.339C234.924 382.803 226.752 192.525 207.699 2" stroke-width="8" stroke-linecap="round"/>
 </svg>
-<!-- <svg class="stroke-secondary h-full absolute right-2/3 top-0 bottom-0  scale-y-150 z-0"  viewBox="0 0 448 2960" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M223.901 2958C222.23 2949.53 216.848 2940.65 213.765 2933.94C183.505 2868.03 154.936 2800.81 129.912 2731.41C60.9217 2540.06 21.9084 2341.33 10.1225 2131.52C-0.0679684 1950.11 -7.0622 1749.38 30.0261 1571.81C66.7954 1395.76 152.384 1237.17 214.687 1074.7C281.656 900.06 341.338 719.463 391.607 536.014C423.252 420.533 448.582 303.284 445.789 180.005C444.432 120.109 432.401 73.5228 406.719 24.4258C402.8 16.9325 400.826 7.61147 396.399 2"  stroke-width="8" stroke-linecap="round"/>
-</svg> -->
 <svg  class="stroke-accent h-full absolute left-2/3 top-0 bottom-0  scale-y-150 z-10" viewBox="0 0 599 2826" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M114.24 2C107.484 29.0241 88.7646 55.0606 77.3212 80.0427C32.9166 176.982 8.75177 275.45 3.71803 381.932C-3.03993 524.889 9.20181 667.611 57.2263 803.456C118.736 977.448 240.301 1118.27 340.423 1270.31C417.692 1387.65 477.211 1510.37 519.875 1644.4C570.392 1803.11 588.464 1966.23 594.88 2132.05C598.829 2234.12 597.224 2332.75 576.888 2433.01C550.348 2563.86 538.68 2691.22 530.623 2824.15"  stroke-width="8" stroke-linecap="round"/>
   </svg>
   
 
 
-   <div class="absolute inset-0 top-auto bottom-auto h-full w-full -z-[1] scale-x-110 scale-y-150 mb-2 bg-background/70 backdrop-blur-sm">
-
-  </div>
 </main>
 
 
