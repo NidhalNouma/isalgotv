@@ -5,28 +5,30 @@
 
 @layer base {
     :root {
-      --color-primary: 260 100% 30%; /* hex - #330099 */
-      --color-secondary: 178 40% 52%; /* hex - #54b6b2 */
-      --color-accent: 229 76% 72%;  /* hex - #8195ee */
+      --color-primary: 227 91% 59%; /* hex - #3861f6 */
+      --color-secondary: 227 91% 59%; /* hex - #3861f6 */
+      --color-accent: 0 0% 0%;  
+
       --color-background: 188 16% 92%; /* hex - #e7edee */
       --color-profit: 178 40% 40%;
       --color-loss: 343 80% 40%;
       --color-text: 0 0% 20%;
-      --color-text-light: 0 0% 80%;
+      --color-text-light: 0 0% 90%;
       --color-title: 0 0% 0%;
       --color-title-light: 0 0% 100%;
     }
   
     :root[class~="dark"] {
-      --color-primary: 260 100% 30%;
-      --color-secondary: 178 40% 52%;
-      --color-accent: 229 76% 72%;
-      /* --color-background: 226 24.5% 10.4%; */
-      --color-background: 188 25% 4%; /* hex - #080c0d */
+      --color-primary: 227 91% 59%;
+      --color-secondary: 227 91% 59%;
+      /* --color-accent: 226 39% 13%; hex - #141721 */ 
+      --color-accent: 0 0% 100%;  
+    
+      --color-background: 0 0% 0%; 
       --color-profit: 178 40% 50%;
       --color-loss: 330 100% 48%;
       --color-text: 0 0% 80%;
-      --color-text-light: 0 0% 80%;
+      --color-text-light: 0 0% 90%;
       --color-title: 0 0% 100%;
 
 
@@ -55,19 +57,19 @@
 
 @layer components {
   .btn-primary-landing{
-    @apply relative flex items-center justify-center bg-gradient-to-tr from-accent  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-title dark:text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0;
+    @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0;
   }
   .btn-primary-landing::before{
     content: "";
-    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-accent  to-secondary blur-md -z-10 rounded-lg scale-100 ;
+    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-text  to-secondary blur-md -z-10 rounded-lg scale-100 ;
   }
 
   .btn-primary {
-    @apply dark:text-text text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center;
+    @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center;
   }
 
   .btn-secondary {
-    @apply dark:text-background text-title bg-gradient-to-r from-secondary via-secondary/90 to-secondary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
+    @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
   }
 
   .btn-accent {
@@ -105,6 +107,154 @@
 
 
 @layer utilities {
+
+
+    /* Landing page alerts animation */
+    
+    @keyframes slideIn {
+      from {
+        transform: translateY(0%) translateX(100%) scale(0.9); /* Start off-screen to the left */
+        opacity: 1;
+      }
+      to {
+        transform: translateX(0) translateY(0) scale(1); /* Slide into place */
+        opacity: 1;
+      }
+    }
+
+    .imgs-alerts img {
+      animation: slideIn 0.5s ease;
+      @apply transition-all duration-1000
+    }
+
+
+
+    /* Landing page symbols animation */
+    @keyframes flip {
+      0% {
+        transform: rotateX(0deg) scale(1.1);
+      }
+      100% {
+        transform: rotateX(0deg) scale(1); 
+      }
+    }
+
+    .imgs-syms img {
+      transition: transform 1s;
+      transform-style: preserve-3d; /* Ensure 3D transform works */
+    }
+
+    .flipping {
+      animation: flip 0.5s linear forwards; /* Apply the flip animation */
+    }
+
+    /* Landing page settings animation */
+
+    @keyframes dropAndFade {
+      0% {
+        opacity: 0;  /* Start hidden */
+        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.2);  /* Start off-screen */
+      }
+      1% {
+        opacity: 1;  /* Start hidden */
+        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.2);
+      }
+      15% {
+        opacity: 1;  /* Appear */
+        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+      }
+      80% {
+        opacity: 1;  /* Stay visible */
+      }
+      90%, 100% {
+        opacity: 1;  /* Fade out for all images at the same time */
+      }
+    }
+    
+    /* Apply the animation to all images */
+    .imgs-drop img {
+      opacity: 0;
+      animation: dropAndFade 12s ease infinite;
+    }
+    
+    /* Stagger the start times for each image's animation */
+    .imgs-drop img:nth-child(1) {
+      animation-delay: 0s; /* First image starts immediately */
+    }
+    .imgs-drop img:nth-child(2) {
+      animation-delay: 1s;
+    }
+    .imgs-drop img:nth-child(3) {
+      animation-delay: 2s;
+    }
+    .imgs-drop img:nth-child(4) {
+      animation-delay: 3s;
+    }
+    .imgs-drop img:nth-child(5) {
+      animation-delay: 4s;
+    }
+    .imgs-drop img:nth-child(6) {
+      animation-delay: 5s;
+    }
+    .imgs-drop img:nth-child(7) {
+      animation-delay: 6s;
+    }
+    .imgs-drop img:nth-child(8) {
+      animation-delay: 7s;
+    }
+    .imgs-drop img:nth-child(9) {
+      animation-delay: 8s;
+    }
+    .imgs-drop img:nth-child(10) {
+      animation-delay: 9s;
+    }
+
+    .imgs-bw img {
+      @apply grayscale cursor-pointer transition-all
+    }
+
+    .imgs-bw img:hover {
+      @apply grayscale-0
+    }
+
+    /* Landing page result scroll animation */
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .animate-scroll {
+      animation: scroll 20s linear infinite;
+    }
+    
+    .animate-scroll-2 {
+      animation: scroll 25s linear infinite;
+    }
+
+    .animate-scroll img, .animate-scroll-2 img {
+      transform-origin: center center; 
+      transition: transform 0.3s ease-in-out;
+      @apply grayscale
+    }
+
+    .animate-scroll:hover,  .animate-scroll-2:hover{
+      animation-play-state: paused;
+    }
+
+    .animate-scroll img:hover,  .animate-scroll-2 img:hover{
+      transform: scale(1.1); 
+      transition: transform 0.3s ease-in-out;
+      z-index: 20;
+
+      @apply grayscale-0
+    }
+
+    /* ----------------------- */
 
     .wellcome-before {
       @apply absolute text-title border-r-2 border-title top-[-100%] left-0 w-0 h-[100%] overflow-hidden animate-animate;
@@ -186,11 +336,11 @@
 
 /* Text selection */
 ::-moz-selection { /* Code for Firefox */
-  color: hsl(178 ,40%, 52%);
+  color: hsl(227, 91%, 59%);
   /* background: hsl(var(--color-secondary)); */
 }
 
 ::selection {
-  color: hsl(178 ,40%, 52%);
+  color: hsl(227, 91%, 59%);
   /* background: hsl(var(--color-secondary)); */
 }

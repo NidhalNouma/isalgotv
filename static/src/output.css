@@ -865,33 +865,31 @@ input:checked + .toggle-bg {
 }
 
 :root {
-  --color-primary: 260 100% 30%;
-  /* hex - #330099 */
-  --color-secondary: 178 40% 52%;
-  /* hex - #54b6b2 */
-  --color-accent: 229 76% 72%;
-  /* hex - #8195ee */
+  --color-primary: 227 91% 59%;
+  /* hex - #3861f6 */
+  --color-secondary: 227 91% 59%;
+  /* hex - #3861f6 */
+  --color-accent: 0 0% 0%;
   --color-background: 188 16% 92%;
   /* hex - #e7edee */
   --color-profit: 178 40% 40%;
   --color-loss: 343 80% 40%;
   --color-text: 0 0% 20%;
-  --color-text-light: 0 0% 80%;
+  --color-text-light: 0 0% 90%;
   --color-title: 0 0% 0%;
   --color-title-light: 0 0% 100%;
 }
 
 :root[class~="dark"] {
-  --color-primary: 260 100% 30%;
-  --color-secondary: 178 40% 52%;
-  --color-accent: 229 76% 72%;
-  /* --color-background: 226 24.5% 10.4%; */
-  --color-background: 188 25% 4%;
-  /* hex - #080c0d */
+  --color-primary: 227 91% 59%;
+  --color-secondary: 227 91% 59%;
+  /* --color-accent: 226 39% 13%; hex - #141721 */
+  --color-accent: 0 0% 100%;
+  --color-background: 0 0% 0%;
   --color-profit: 178 40% 50%;
   --color-loss: 330 100% 48%;
   --color-text: 0 0% 80%;
-  --color-text-light: 0 0% 80%;
+  --color-text-light: 0 0% 90%;
   --color-title: 0 0% 100%;
   ::-webkit-calendar-picker-indicator {
     filter: invert(1);
@@ -1060,8 +1058,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-radius: 0.375rem;
   border-width: 0px;
   background-image: linear-gradient(to top right, var(--tw-gradient-stops));
-  --tw-gradient-from: hsl(var(--color-accent) / 1) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-accent) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   --tw-gradient-to: hsl(var(--color-secondary) / 1) var(--tw-gradient-to-position);
   padding-left: 1rem;
@@ -1072,16 +1070,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   line-height: 1.75rem;
   font-weight: 600;
   --tw-text-opacity: 1;
-  color: hsl(var(--color-title) / var(--tw-text-opacity));
+  color: hsl(var(--color-background) / var(--tw-text-opacity));
 }
 
 .btn-primary-landing:hover {
   background-image: linear-gradient(to bottom left, var(--tw-gradient-stops));
-}
-
-:is(.dark .btn-primary-landing) {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-background) / var(--tw-text-opacity));
 }
 
 @media (min-width: 768px) {
@@ -1101,8 +1094,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   border-radius: 0.5rem;
   background-image: linear-gradient(to top right, var(--tw-gradient-stops));
-  --tw-gradient-from: hsl(var(--color-accent) / 1) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-accent) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   --tw-gradient-to: hsl(var(--color-secondary) / 1) var(--tw-gradient-to-position);
   --tw-blur: blur(12px);
@@ -1141,23 +1134,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }
 
-:is(.dark .btn-primary) {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-text) / var(--tw-text-opacity));
-}
-
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
-  --tw-gradient-from: hsl(var(--color-secondary) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-from: hsl(var(--color-secondary) / 0.8) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-secondary) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  --tw-gradient-to: hsl(var(--color-secondary) / 0)  var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-secondary) / 0.9) var(--tw-gradient-via-position), var(--tw-gradient-to);
-  --tw-gradient-to: hsl(var(--color-secondary) / 0.8) var(--tw-gradient-to-position);
+  --tw-gradient-to: hsl(var(--color-secondary) / 1) var(--tw-gradient-to-position);
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.25rem;
@@ -1167,16 +1153,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   line-height: 1.25rem;
   font-weight: 500;
   --tw-text-opacity: 1;
-  color: hsl(var(--color-title) / var(--tw-text-opacity));
+  color: hsl(var(--color-text-light) / var(--tw-text-opacity));
 }
 
 .btn-secondary:hover {
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
-}
-
-:is(.dark .btn-secondary) {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-background) / var(--tw-text-opacity));
 }
 
 .btn-accent {
@@ -1364,11 +1345,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   inset: 0px;
 }
 
-.inset-x-0 {
-  left: 0px;
-  right: 0px;
-}
-
 .inset-y-0 {
   top: 0px;
   bottom: 0px;
@@ -1446,10 +1422,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   left: -20%;
 }
 
-.left-\[-40\%\] {
-  left: -40%;
-}
-
 .left-\[-5\%\] {
   left: -5%;
 }
@@ -1522,20 +1494,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   right: 0.625rem;
 }
 
-.right-2\/3 {
-  right: 66.666667%;
-}
-
 .right-\[-20\%\] {
   right: -20%;
 }
 
 .right-\[-2rem\] {
   right: -2rem;
-}
-
-.right-\[-40\%\] {
-  right: -40%;
 }
 
 .right-\[0\%\] {
@@ -1604,10 +1568,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .top-1\/2 {
   top: 50%;
-}
-
-.top-1\/4 {
-  top: 25%;
 }
 
 .top-14 {
@@ -1898,6 +1858,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: 0.5rem;
 }
 
+.my-24 {
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+}
+
 .my-28 {
   margin-top: 7rem;
   margin-bottom: 7rem;
@@ -1955,10 +1920,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .mb-10 {
   margin-bottom: 2.5rem;
-}
-
-.mb-12 {
-  margin-bottom: 3rem;
 }
 
 .mb-16 {
@@ -2138,10 +2099,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: 0.5rem;
 }
 
-.mt-20 {
-  margin-top: 5rem;
-}
-
 .mt-24 {
   margin-top: 6rem;
 }
@@ -2250,6 +2207,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: none;
 }
 
+.aspect-\[16\/7\] {
+  aspect-ratio: 16/7;
+}
+
 .aspect-auto {
   aspect-ratio: auto;
 }
@@ -2306,10 +2267,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 8rem;
 }
 
-.h-36 {
-  height: 9rem;
-}
-
 .h-4 {
   height: 1rem;
 }
@@ -2350,6 +2307,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 1.1rem;
 }
 
+.h-\[2px\] {
+  height: 2px;
+}
+
 .h-\[50\%\] {
   height: 50%;
 }
@@ -2379,14 +2340,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 100vh;
 }
 
-.h-\[80vh\] {
-  height: 80vh;
-}
-
-.h-64 {
-  height: 16rem;
-}
-
 .max-h-64 {
   max-height: 16rem;
 }
@@ -2411,6 +2364,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-height: 100%;
 }
 
+.min-h-\[60vh\] {
+  min-height: 60vh;
+}
+
 .min-h-\[80vh\] {
   min-height: 80vh;
 }
@@ -2419,22 +2376,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   min-height: 90vh;
 }
 
-.min-h-fit {
-  min-height: -moz-fit-content;
-  min-height: fit-content;
-}
-
 .min-h-full {
   min-height: 100%;
 }
 
 .min-h-screen {
   min-height: 100vh;
-}
-
-.min-h-min {
-  min-height: -moz-min-content;
-  min-height: min-content;
 }
 
 .w-1 {
@@ -2545,6 +2492,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 27rem;
 }
 
+.w-\[2px\] {
+  width: 2px;
+}
+
 .w-\[30rem\] {
   width: 30rem;
 }
@@ -2586,21 +2537,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 100%;
 }
 
-.w-\[100vw\] {
-  width: 100vw;
-}
-
 .min-w-\[100vw\] {
   min-width: 100vw;
-}
-
-.min-w-min {
-  min-width: -moz-min-content;
-  min-width: min-content;
-}
-
-.min-w-full {
-  min-width: 100%;
 }
 
 .max-w-2xl {
@@ -2740,43 +2678,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.translate-x-1\/2 {
-  --tw-translate-x: 50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-3\/4 {
-  --tw-translate-x: -75%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-1\/4 {
-  --tw-translate-x: -25%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-2\/4 {
-  --tw-translate-x: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-\[30\%\] {
-  --tw-translate-x: -30%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-\[20\%\] {
-  --tw-translate-x: -20%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-\[10\%\] {
-  --tw-translate-x: -10%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-\[25\%\] {
-  --tw-translate-x: -25%;
+.-rotate-1 {
+  --tw-rotate: -1deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2785,8 +2688,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.-rotate-2 {
+  --tw-rotate: -2deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .-rotate-3 {
   --tw-rotate: -3deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-rotate-6 {
+  --tw-rotate: -6deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2797,6 +2710,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .rotate-180 {
   --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.rotate-2 {
+  --tw-rotate: 2deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2851,13 +2769,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.scale-y-105 {
-  --tw-scale-y: 1.05;
+.scale-x-105 {
+  --tw-scale-x: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.scale-y-110 {
-  --tw-scale-y: 1.1;
+.scale-y-105 {
+  --tw-scale-y: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2898,10 +2816,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .resize {
   resize: both;
-}
-
-.-scroll-mb-28 {
-  scroll-margin-bottom: -7rem;
 }
 
 .list-disc {
@@ -3016,6 +2930,15 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   gap: 2rem;
 }
 
+.gap-x-6 {
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -3064,10 +2987,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .self-stretch {
   align-self: stretch;
-}
-
-.overflow-auto {
-  overflow: auto;
 }
 
 .overflow-hidden {
@@ -3214,10 +3133,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-top-width: 1px;
 }
 
-.\!border-none {
-  border-style: none !important;
-}
-
 .\!border-red-500 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(240 82 82 / var(--tw-border-opacity)) !important;
@@ -3262,9 +3177,19 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(49 196 141 / var(--tw-border-opacity));
 }
 
+.border-loss {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--color-loss) / var(--tw-border-opacity));
+}
+
 .border-primary {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-primary) / var(--tw-border-opacity));
+}
+
+.border-profit {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--color-profit) / var(--tw-border-opacity));
 }
 
 .border-secondary {
@@ -3310,6 +3235,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-title) / var(--tw-border-opacity));
 }
 
+.border-title\/10 {
+  border-color: hsl(var(--color-title) / 0.1);
+}
+
 .border-title\/20 {
   border-color: hsl(var(--color-title) / 0.2);
 }
@@ -3349,6 +3278,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-accent) / 0.4);
 }
 
+.bg-accent\/60 {
+  background-color: hsl(var(--color-accent) / 0.6);
+}
+
+.bg-accent\/80 {
+  background-color: hsl(var(--color-accent) / 0.8);
+}
+
 .bg-background {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-background) / var(--tw-bg-opacity));
@@ -3362,16 +3299,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-background) / 0.2);
 }
 
-.bg-background\/25 {
-  background-color: hsl(var(--color-background) / 0.25);
-}
-
 .bg-background\/40 {
   background-color: hsl(var(--color-background) / 0.4);
 }
 
 .bg-background\/60 {
   background-color: hsl(var(--color-background) / 0.6);
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .bg-blue-700 {
@@ -3420,6 +3358,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-primary) / 0.6);
 }
 
+.bg-profit\/40 {
+  background-color: hsl(var(--color-profit) / 0.4);
+}
+
 .bg-red-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(253 242 242 / var(--tw-bg-opacity));
@@ -3438,16 +3380,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-secondary) / 0.3);
 }
 
-.bg-secondary\/40 {
-  background-color: hsl(var(--color-secondary) / 0.4);
-}
-
 .bg-secondary\/50 {
   background-color: hsl(var(--color-secondary) / 0.5);
-}
-
-.bg-secondary\/60 {
-  background-color: hsl(var(--color-secondary) / 0.6);
 }
 
 .bg-text {
@@ -3513,6 +3447,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
 
+.bg-gradient-to-l {
+  background-image: linear-gradient(to left, var(--tw-gradient-stops));
+}
+
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
@@ -3553,8 +3491,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-accent\/30 {
-  --tw-gradient-from: hsl(var(--color-accent) / 0.3) var(--tw-gradient-from-position);
+.from-accent\/40 {
+  --tw-gradient-from: hsl(var(--color-accent) / 0.4) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-accent) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
@@ -3565,15 +3503,21 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-secondary {
-  --tw-gradient-from: hsl(var(--color-secondary) / 1) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-secondary) / 0) var(--tw-gradient-to-position);
+.from-loss\/30 {
+  --tw-gradient-from: hsl(var(--color-loss) / 0.3) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-loss) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-text-light\/80 {
-  --tw-gradient-from: hsl(var(--color-text-light) / 0.8) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-text-light) / 0) var(--tw-gradient-to-position);
+.from-loss\/40 {
+  --tw-gradient-from: hsl(var(--color-loss) / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-loss) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-secondary {
+  --tw-gradient-from: hsl(var(--color-secondary) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-secondary) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -3615,16 +3559,20 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-to: hsl(var(--color-primary) / 1) var(--tw-gradient-to-position);
 }
 
+.to-profit {
+  --tw-gradient-to: hsl(var(--color-profit) / 1) var(--tw-gradient-to-position);
+}
+
+.to-profit\/30 {
+  --tw-gradient-to: hsl(var(--color-profit) / 0.3) var(--tw-gradient-to-position);
+}
+
 .to-secondary {
   --tw-gradient-to: hsl(var(--color-secondary) / 1) var(--tw-gradient-to-position);
 }
 
 .to-secondary\/10 {
   --tw-gradient-to: hsl(var(--color-secondary) / 0.1) var(--tw-gradient-to-position);
-}
-
-.to-secondary\/30 {
-  --tw-gradient-to: hsl(var(--color-secondary) / 0.3) var(--tw-gradient-to-position);
 }
 
 .to-text\/20 {
@@ -4206,6 +4154,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-loss) / var(--tw-text-opacity));
 }
 
+.text-primary {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-primary) / var(--tw-text-opacity));
+}
+
 .text-profit {
   --tw-text-opacity: 1;
   color: hsl(var(--color-profit) / var(--tw-text-opacity));
@@ -4349,10 +4302,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   opacity: 0.4;
 }
 
-.opacity-50 {
-  opacity: 0.5;
-}
-
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -4377,19 +4326,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.shadow-xl {
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
 .shadow-accent {
   --tw-shadow-color: hsl(var(--color-accent) / 1);
-  --tw-shadow: var(--tw-shadow-colored);
-}
-
-.shadow-background\/50 {
-  --tw-shadow-color: hsl(var(--color-background) / 0.5);
   --tw-shadow: var(--tw-shadow-colored);
 }
 
@@ -4446,11 +4384,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .blur-\[2px\] {
   --tw-blur: blur(2px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.blur-\[3px\] {
-  --tw-blur: blur(3px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -4581,6 +4514,190 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   -webkit-line-clamp: 4;
 }
 
+/* Landing page alerts animation */
+
+@keyframes slideIn {
+  from {
+    transform: translateY(0%) translateX(100%) scale(0.9);
+    /* Start off-screen to the left */
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(0) translateY(0) scale(1);
+    /* Slide into place */
+    opacity: 1;
+  }
+}
+
+.imgs-alerts img {
+  animation: slideIn 0.5s ease;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms
+}
+
+/* Landing page symbols animation */
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotateX(0deg) scale(1);
+  }
+}
+
+.imgs-syms img {
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  /* Ensure 3D transform works */
+}
+
+.flipping {
+  animation: flip 0.5s linear forwards;
+  /* Apply the flip animation */
+}
+
+/* Landing page settings animation */
+
+@keyframes dropAndFade {
+  0% {
+    opacity: 0;
+    /* Start hidden */
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.2);
+    /* Start off-screen */
+  }
+
+  1% {
+    opacity: 1;
+    /* Start hidden */
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.2);
+  }
+
+  15% {
+    opacity: 1;
+    /* Appear */
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  80% {
+    opacity: 1;
+    /* Stay visible */
+  }
+
+  90%, 100% {
+    opacity: 1;
+    /* Fade out for all images at the same time */
+  }
+}
+
+/* Apply the animation to all images */
+
+.imgs-drop img {
+  opacity: 0;
+  animation: dropAndFade 12s ease infinite;
+}
+
+/* Stagger the start times for each image's animation */
+
+.imgs-drop img:nth-child(1) {
+  animation-delay: 0s;
+  /* First image starts immediately */
+}
+
+.imgs-drop img:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.imgs-drop img:nth-child(3) {
+  animation-delay: 2s;
+}
+
+.imgs-drop img:nth-child(4) {
+  animation-delay: 3s;
+}
+
+.imgs-drop img:nth-child(5) {
+  animation-delay: 4s;
+}
+
+.imgs-drop img:nth-child(6) {
+  animation-delay: 5s;
+}
+
+.imgs-drop img:nth-child(7) {
+  animation-delay: 6s;
+}
+
+.imgs-drop img:nth-child(8) {
+  animation-delay: 7s;
+}
+
+.imgs-drop img:nth-child(9) {
+  animation-delay: 8s;
+}
+
+.imgs-drop img:nth-child(10) {
+  animation-delay: 9s;
+}
+
+.imgs-bw img {
+  cursor: pointer;
+  --tw-grayscale: grayscale(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.imgs-bw img:hover {
+  --tw-grayscale: grayscale(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+/* Landing page result scroll animation */
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+.animate-scroll-2 {
+  animation: scroll 25s linear infinite;
+}
+
+.animate-scroll img, .animate-scroll-2 img {
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+  --tw-grayscale: grayscale(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+}
+
+.animate-scroll:hover,  .animate-scroll-2:hover{
+  animation-play-state: paused;
+}
+
+.animate-scroll img:hover,  .animate-scroll-2 img:hover{
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+  z-index: 20;
+  --tw-grayscale: grayscale(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+}
+
+/* ----------------------- */
+
 [modal-backdrop] {
   position: absolute;
   top: 0px;
@@ -4692,12 +4809,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 ::-moz-selection {
   /* Code for Firefox */
-  color: hsl(178 ,40%, 52%);
+  color: hsl(227, 91%, 59%);
   /* background: hsl(var(--color-secondary)); */
 }
 
 ::selection {
-  color: hsl(178 ,40%, 52%);
+  color: hsl(227, 91%, 59%);
   /* background: hsl(var(--color-secondary)); */
 }
 
@@ -5103,20 +5220,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     height: 8rem;
   }
 
-  .sm\:h-\[55vh\] {
-    height: 55vh;
-  }
-
   .sm\:h-\[45vh\] {
     height: 45vh;
   }
 
   .sm\:w-10 {
     width: 2.5rem;
-  }
-
-  .sm\:w-10\/12 {
-    width: 83.333333%;
   }
 
   .sm\:w-14 {
@@ -5218,11 +5327,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     line-height: 1;
   }
 
-  .sm\:text-7xl {
-    font-size: 4.5rem;
-    line-height: 1;
-  }
-
   .sm\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
@@ -5263,16 +5367,20 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     margin-bottom: 2rem;
   }
 
+  .md\:ml-6 {
+    margin-left: 1.5rem;
+  }
+
   .md\:mr-0 {
     margin-right: 0px;
   }
 
-  .md\:mt-0 {
-    margin-top: 0px;
+  .md\:mr-6 {
+    margin-right: 1.5rem;
   }
 
-  .md\:block {
-    display: block;
+  .md\:mt-0 {
+    margin-top: 0px;
   }
 
   .md\:flex {
@@ -5281,10 +5389,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:hidden {
     display: none;
-  }
-
-  .md\:h-52 {
-    height: 13rem;
   }
 
   .md\:h-full {
@@ -5303,8 +5407,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     width: auto;
   }
 
-  .md\:max-w-\[50\%\] {
-    max-width: 50%;
+  .md\:max-w-\[45\%\] {
+    max-width: 45%;
   }
 
   .md\:max-w-\[55\%\] {
@@ -5313,10 +5417,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:max-w-xl {
     max-width: 36rem;
-  }
-
-  .md\:max-w-\[60\%\] {
-    max-width: 60%;
   }
 
   .md\:grid-cols-2 {
@@ -5337,10 +5437,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:flex-row-reverse {
     flex-direction: row-reverse;
-  }
-
-  .md\:items-start {
-    align-items: flex-start;
   }
 
   .md\:space-x-8 > :not([hidden]) ~ :not([hidden]) {
@@ -5375,12 +5471,35 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 }
 
 @media (min-width: 1024px) {
+  .lg\:absolute {
+    position: absolute;
+  }
+
+  .lg\:left-\[25\%\] {
+    left: 25%;
+  }
+
   .lg\:block {
     display: block;
   }
 
   .lg\:hidden {
     display: none;
+  }
+
+  .lg\:max-w-\[60\%\] {
+    max-width: 60%;
+  }
+
+  .lg\:-translate-y-1\/2 {
+    --tw-translate-y: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:scale-150 {
+    --tw-scale-x: 1.5;
+    --tw-scale-y: 1.5;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .lg\:grid-cols-3 {
@@ -5393,6 +5512,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .lg\:flex-row {
     flex-direction: row;
+  }
+
+  .lg\:items-start {
+    align-items: flex-start;
+  }
+
+  .lg\:text-start {
+    text-align: start;
   }
 }
 
