@@ -73,7 +73,7 @@
   }
 
   .btn-accent {
-    @apply dark:text-background text-text bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
+    @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
   }
 
   .btn-text {
