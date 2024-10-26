@@ -15,7 +15,7 @@
 <main class="my-16 flex flex-col  relative">
   {% if congrate %}
   <div
-    class="mb-4 "
+    class="mb-4  max-w-xl"
   >
     {% include "include/succes.html" with succes="You have successfully subscribed to our membership." %}
   </div>
@@ -123,7 +123,7 @@
   {% elif step == 2 %}
 
   <section class="mt-14">
-    <p class="text-text text-center mt-2">
+    <p class="text-text text-center text-sm mt-2">
       Go to your  
       <a
         class="text-title font-medium underline"
@@ -246,7 +246,7 @@ class="flex items-center justify-between mb-2 text-sm font-medium text-title w-f
   {% elif step == 3 %}
   <section class="mt-16 text-center">
     <h4 class="text-title">You're ready to go.</h4>
-    <p class="text-text text-center mt-2">
+    <p class="text-text text-sm text-center mt-2">
         Go to your
         <a
           class="text-title font-semibold underline"
@@ -273,7 +273,7 @@ class="flex items-center justify-between mb-2 text-sm font-medium text-title w-f
           class="rounded-xl"
           src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" /> -->
       </div>
-      <p class="text-text text-center mt-6">
+      <p class="text-text text-sm text-center mt-6">
         If you encounter any issues, please refer to our <a
         class="text-title font-medium underline"
         href="{% url 'docs_index' %}"
