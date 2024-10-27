@@ -49,7 +49,7 @@
         };
       </script>
 
-      {% if IS_PRODUCTION == False %}
+      {% if IS_PRODUCTION %}
       <script src="{% static 'js/aichatReact.js' %}" defer></script>
       {% else %}
       <script src="http://localhost:3001/static/js/bundle.js"></script>
