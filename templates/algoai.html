@@ -1,0 +1,59 @@
+<!-- Main modal -->
+{% load static %}
+<div
+  id="modal-algoai"
+  data-modal-backdrop="static"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full"
+>
+  <div class="relative w-full max-w-[100vw] max-h-full h-full mx-auto">
+    <!-- Modal content -->
+    <div class="relative rounded-lg shadow h-full max-h-full flex flex-col">
+      <div class="absolute inset-0 -z-10 rounded-lg">
+        <div
+          class="absolute -top-0 right-0 aspect-square w-[50%] h-[50%] bg-gradient-to-l from-primary/60 to-accent/60 blur-lg -z-10 blur-circle animate-blur-motion-1"
+        ></div>
+        <div
+          class="absolute -bottom-0 right-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-r from-primary/60 to-accent/60 blur-lg -z-10 blur-circle animate-blur-motion-2"
+        ></div>
+        <div
+          class="absolute -bottom-0 left-0 aspect-square w-[50%] h-[50%] bg-gradient-to-r from-primary/60 to-accent/60 blur-lg -z-10 blur-circle animate-blur-motion-3"
+        ></div>
+        <div
+          class="absolute -top-0 left-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-l from-primary/60 to-accent/60 blur-lg -z-10 blur-circle animate-blur-motion-4"
+        ></div>
+        {% comment %}
+        <div class="absolute inset-0 bg-primary"></div>
+        <div
+          class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(124,58,237,0.1),transparent_50%)]"
+        ></div>
+        {% endcomment %}
+      </div>
+
+      <!-- Modal body -->
+      <div
+        class="h-full w-full max-h-full my-auto bg-background/80 backdrop-blur-[500px] rounded-xl relative flex flex-col"
+        id="isalgo-ai"
+        user-email="{{user_profile}}"
+        user-id="{{user_profile.id}}"
+        user-tv-username="{{user_profile.tradingview_username}}"
+        user-is-lifetime="{{user_profile.is_lifetime}}"
+        user-has-subscription="{{has_subscription}}"
+        user-subscription-plan="{{subscription_plan}}"
+      ></div>
+
+      <script>
+        window.closeAiChat = function (message) {
+          hideModel("modal-algoai");
+        };
+      </script>
+
+      {% if IS_PRODUCTION == False %}
+      <script src="{% static 'js/aichatReact.js' %}" defer></script>
+      {% else %}
+      <script src="http://localhost:3001/static/js/bundle.js"></script>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -9,6 +9,8 @@ module.exports = {
     "./strategies/templates/**/*.html",
     "./profile_user/templates/**/*.html",
     "./docs/templates/**/*.html",
+    "./aichat/src/**/*.js",
+    "./aichat/src/components/**/*.js",
 
     "./node_modules/flowbite/**/*.js",
   ],

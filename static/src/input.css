@@ -57,39 +57,48 @@
 
 @layer components {
   .btn-primary-landing{
-    @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0;
+    @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0 transition-all;
   }
   .btn-primary-landing::before{
     content: "";
-    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-text  to-secondary blur-md -z-10 rounded-lg scale-100 ;
+    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-text  to-secondary blur-md -z-10 rounded-lg scale-100 transition-all;
+  }
+  
+  .btn-ai {
+    @apply relative text-primary tracking-widest bg-background/90 border border-primary/70 font-semibold rounded-full text-sm px-5 py-0 text-center inline-flex  justify-center items-center transition-all
+  }
+
+  .btn-ai::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-text  to-secondary blur-[8px] -z-10 rounded-full scale-100 transition-all
   }
 
   .btn-primary {
-    @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center;
+    @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all
   }
 
   .btn-secondary {
-    @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
+    @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all
   }
 
   .btn-accent {
-    @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
+    @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all
   }
 
   .btn-text {
-    @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center;
+    @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all
   }
 
   .btn-a {
-    @apply text-text font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center;
+    @apply text-text font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all
   }
 
   .btn-icon {
-    @apply text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center;
+    @apply text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center transition-all 
   }
 
   .input-text{
-    @apply bg-transparent border border-text/40 px-2.5 py-2 text-text text-base rounded-md focus:ring-accent  placeholder:text-text/40
+    @apply bg-transparent border border-text/40 px-2.5 py-2 text-text text-base rounded-md focus:ring-accent  placeholder:text-text/40 transition-all
   }
 
   .text-dark{
@@ -253,6 +262,100 @@
 
       @apply grayscale-0
     }
+
+    /* Ai chat animation */
+
+    @keyframes blur-motion-1 {
+      0%, 100% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(-8px, 8px);
+      }
+      50% {
+        transform: translate(8px, -8px);
+      }
+      75% {
+        transform: translate(-4px, -4px);
+      }
+    }
+    
+    @keyframes blur-motion-2 {
+      0%, 100% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(4px, -8px);
+      }
+      50% {
+        transform: translate(-8px, 8px);
+      }
+      75% {
+        transform: translate(8px, 4px);
+      }
+    }
+    
+    @keyframes blur-motion-3 {
+      0%, 100% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(-8px, -8px);
+      }
+      50% {
+        transform: translate(8px, 4px);
+      }
+      75% {
+        transform: translate(-4px, 8px);
+      }
+    }
+    
+    @keyframes blur-motion-4 {
+      0%, 100% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(4px, 4px);
+      }
+      50% {
+        transform: translate(-8px, -4px);
+      }
+      75% {
+        transform: translate(8px, -4px);
+      }
+    }
+    
+    .blur-circle {
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+    
+    .animate-blur-motion-1 {
+      animation: blur-motion-1 5s infinite;
+    }
+    
+    .animate-blur-motion-2 {
+      animation: blur-motion-2 6s infinite;
+    }
+    
+    .animate-blur-motion-3 {
+      animation: blur-motion-3 7s infinite;
+    }
+    
+    .animate-blur-motion-4 {
+      animation: blur-motion-4 8s infinite;
+    }
+
+
+    @keyframes gradient-x {
+      0%, 100% { background-size: 200% 100%; background-position: left center; }
+      50% { background-size: 200% 100%; background-position: right center; }
+    }
+
+    .animate-gradient-x{
+      animation: gradient-x  15s ease infinite;
+    }
+
 
     /* ----------------------- */
 
