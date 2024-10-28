@@ -178,5 +178,18 @@
     {% include 'algoai.html' %}
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script>
+      const hasTouchScreen =
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        navigator.msMaxTouchPoints > 0;
+
+      if (hasTouchScreen) {
+        // Apply the Tailwind `hidden` class to elements with the 'shortcut' class
+        document.querySelectorAll(".shortcut").forEach((element) => {
+          element.classList.add("hidden");
+        });
+      }
+    </script>
   </body>
 </html>

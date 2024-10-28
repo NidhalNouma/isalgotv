@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { useUser } from "../contexts/UserContext";
 
-import { Menu, X, MessageSquarePlus, LogOut } from "lucide-react";
+import { PanelLeft, X, MessageSquarePlus, LogOut } from "lucide-react";
 
-function Navbar({ className }) {
+function Navbar({ className, onMenuClick, onMenuHover }) {
   const { user } = useUser();
   let isSidebarOpen = false;
   return (
@@ -18,14 +18,15 @@ function Navbar({ className }) {
           {user && (
             <Fragment>
               <button
-                //   onClick={toggleSidebar}
+                onClick={onMenuClick}
+                onMouseEnter={onMenuHover}
                 className="p-2 hover:bg-text/10 rounded-md transition-colors"
                 aria-label="Toggle Sidebar"
               >
                 {isSidebarOpen ? (
                   <X className="w-5 h-5 text-text/60" />
                 ) : (
-                  <Menu className="w-5 h-5 text-text/60" />
+                  <PanelLeft className="w-5 h-5 text-text/60" />
                 )}
               </button>
               <button

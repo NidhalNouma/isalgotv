@@ -48,13 +48,28 @@ module.exports = {
     },
     extend: {
       keyframes: {
+        "rotate-gradient": {
+          "0%": { "--gradient-angle": "0deg" },
+          "100%": { "--gradient-angle": "360deg" },
+        },
+
         animate: {
           "0%,10%,100%": { width: "0%" },
           "70%,80%,90%": { width: "100%" },
         },
+        rotateGradient: {
+          "0%": { "background-position": "0% 50%" },
+          "50%": { "background-position": "100% 50%" },
+          "100%": { "background-position": "0% 50%" },
+        },
       },
       animation: {
         animate: "animate 6s linear",
+        "rotate-gradient": "rotate-gradient 5s linear infinite",
+
+        rotateGradient: "rotateGradient 8s ease-in-out infinite",
+        rotateGradientSlow: "rotateGradient 12s ease-in-out infinite",
+        rotateGradientFast: "rotateGradient 4s ease-in-out infinite",
       },
     },
   },

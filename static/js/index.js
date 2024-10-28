@@ -1,4 +1,5 @@
 console.log("js loaded");
+
 function swapDivBtn(id1, id2) {
   const btn1 = document.getElementById(id1 + "-btn");
   const btn2 = document.getElementById(id2 + "-btn");

@@ -76,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'profile_user.middleware.check_user_and_stripe_middleware',
+    'profile_user.middleware.DetectOSMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 
     "django_htmx.middleware.HtmxMiddleware",

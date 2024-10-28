@@ -33,7 +33,7 @@
 
       <!-- Modal body -->
       <div
-        class="h-full w-full max-h-full my-auto bg-background/80 backdrop-blur-[500px] rounded-xl relative flex flex-col"
+        class="h-full w-full max-h-full my-auto bg-background/60 backdrop-blur-[320px] backdrop-brightness-50 rounded-xl relative flex flex-col overflow-hidden"
         id="isalgo-ai"
         user-email="{{user_profile}}"
         user-id="{{user_profile.id}}"
@@ -43,17 +43,24 @@
         user-subscription-plan="{{subscription_plan}}"
       ></div>
 
-      <script>
-        window.closeAiChat = function (message) {
-          hideModel("modal-algoai");
-        };
-      </script>
-
       {% if IS_PRODUCTION %}
       <script src="{% static 'js/aichatReact.js' %}" defer></script>
       {% else %}
       <script src="http://localhost:3001/static/js/bundle.js"></script>
       {% endif %}
+
+      <script>
+        window.addEventListener("keydown", function (event) {
+          if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+            event.preventDefault();
+            openModel("modal-algoai");
+          }
+        });
+
+        window.closeAiChat = function (message) {
+          hideModel("modal-algoai");
+        };
+      </script>
     </div>
   </div>
 </div>

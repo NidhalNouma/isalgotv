@@ -1,4 +1,5 @@
 from .models import User_Profile, Notification
+import re
 import environ
 import datetime
 import time
@@ -137,3 +138,24 @@ def check_user_and_stripe_middleware(get_response):
         return response
 
     return middleware
+
+
+class DetectOSMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Check the User-Agent header for "Mac" or "Windows"
+        user_agent = request.META.get("HTTP_USER_AGENT", "").lower()
+        if "mac" in user_agent:
+            request.is_mac = True
+            request.is_windows = False
+        elif "win" in user_agent:
+            request.is_mac = False
+            request.is_windows = True
+        else:
+            request.is_mac = False
+            request.is_windows = False
+
+        response = self.get_response(request)
+        return response

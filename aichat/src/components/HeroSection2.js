@@ -40,7 +40,7 @@ function HeroSection({ className }) {
         </a>
       </div>
 
-      <div className="flex flex-wrap justify-center items-center gap-8">
+      {/* <div className="flex flex-wrap justify-center items-center gap-8">
         <div className="flex items-center space-x-2">
           <Brain className="h-5 w-5 text-purple-500" />
           <span className="text-text/80">Customized AI Strategies</span>
@@ -57,7 +57,7 @@ function HeroSection({ className }) {
           <ChartCandlestick className="h-5 w-5 text-accent" />
           <span className="text-text/80">Competitive Edge</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
