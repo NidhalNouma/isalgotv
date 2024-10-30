@@ -4,7 +4,7 @@ import TypewriterEffect from "./TypewriterEffect";
 
 export default function ChatMessage({ message, isTyping, onComplete }) {
   return (
-    <div className={`py-6 `}>
+    <div className={`py-4 `}>
       <div className="max-w-3xl mx-auto flex gap-2 px-4">
         <div className="w-8 h-8 flex-shrink-0">
           {message.role === "user" ? (

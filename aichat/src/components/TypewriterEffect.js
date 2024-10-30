@@ -1,15 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function TypewriterEffect({ content, onComplete }) {
   const [displayedContent, setDisplayedContent] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (currentIndex < content.length) {
       const timeout = setTimeout(() => {
         setDisplayedContent((prev) => prev + content[currentIndex]);
         setCurrentIndex((prev) => prev + 1);
-      }, 20 + Math.random() * 30); // Varying speed for more natural effect
+
+        // Ensure parent containers are scrolled to bottom
+        const element = containerRef.current;
+        if (element) {
+          const scrollableParent = element.closest(".overflow-y-auto");
+          if (scrollableParent) {
+            scrollableParent.scrollTop = scrollableParent.scrollHeight;
+          }
+        }
+      }, 1 + Math.random() * 20); // Varying speed for more natural effect
 
       return () => clearTimeout(timeout);
     } else if (onComplete) {
@@ -17,5 +28,5 @@ export default function TypewriterEffect({ content, onComplete }) {
     }
   }, [content, currentIndex, onComplete]);
 
-  return <>{displayedContent}</>;
+  return <div ref={containerRef}>{displayedContent}</div>;
 }

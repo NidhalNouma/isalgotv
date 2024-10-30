@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 
@@ -9,9 +9,21 @@ export default function ChatState({
   onSendMessage,
   onTypingComplete,
 }) {
+  const messagesRef = useRef(null);
+
+  useEffect(() => {
+    const element = messagesRef.current;
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
+  }, [messages, typingMessage]);
+
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto">
+      <div
+        ref={messagesRef}
+        className="flex-1 overflow-y-auto scrollbar-hide scroll-smooth"
+      >
         {messages.map((message) => (
           <ChatMessage key={message.id} message={message} />
         ))}
