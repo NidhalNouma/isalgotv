@@ -25,7 +25,10 @@ function HeroSection({ className }) {
       </p>
 
       <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-        <a className="btn-primary-landing" href="/p/register">
+        <a
+          className="btn-primary-landing from-primary/80 to-primary"
+          href="/p/register"
+        >
           Notify Me at Launch
           <svg
             class="h-5 w-5 ml-2"

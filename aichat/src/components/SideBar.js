@@ -1,43 +1,51 @@
-import React from "react";
-import { MessageSquare, X } from "lucide-react";
+import { useState } from "react";
+import { MessageSquare, X, Search } from "lucide-react";
 
-function SideBar({
-  chats,
-  currentChat,
-  onNewChat,
-  onSelectChat,
-  onDeleteChat,
-  onClose,
-}) {
+import { useChat } from "../contexts/ChatsContext";
+
+function SideBar({ onClose }) {
+  const { chats, currentChat, createNewChat, deleteChat, selectChat } =
+    useChat();
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredChats = chats.filter((chat) =>
+    chat.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="w-[260px] bg-background/90 backdrop-blur-[320px] rounded-xl h-full flex flex-col relative">
-      <div className="absolute -z-10 inset-0 bg-gradient-to-tl from-primary/10 to-background/60 rounded-lg backdrop-blur-3xl"></div>
-      <div className="flex items-center justify-between p-4 ">
-        <button
-          onClick={onNewChat}
-          className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-        >
-          <MessageSquare className="w-5 h-5" />
-          <span>New Chat</span>
-        </button>
+    <div className="w-[260px] backdrop-blur-[320px] bg-background/80 rounded-xl h-full flex flex-col relative">
+      <div className="absolute -z-10 inset-0 bg-gradient-to-tl from-transparent to-text/10 rounded-lg backdrop-blur-[320px]"></div>
+      <div className=" flex items-center justify-between p-4 pr-1">
+        <div className="relative grow">
+          <input
+            type="text"
+            placeholder="Search chats..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-transparent text-text placeholder-text/40 rounded-md py-1 pl-9 pr-3 !focus:outline-none  focus:ring-0"
+          />
+
+          <Search className="absolute left-2.5 top-2 w-4 h-4 text-text/60" />
+        </div>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-300 transition-colors"
+          className="btn-icon transition-colors ml-auto"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
       <div className="flex-1 overflow-y-auto">
-        {chats?.map((chat) => (
+        {filteredChats?.map((chat) => (
           <div
             key={chat.id}
-            className={`group flex items-center gap-3 px-3 py-3 mx-2 rounded-md cursor-pointer hover:bg-[#2A2B32] transition-colors ${
-              chat.id === currentChat ? "bg-[#343541]" : ""
+            className={`group flex items-center gap-3 px-3 py-3 mx-2 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
+              chat.id === currentChat ? "bg-text/10" : ""
             }`}
           >
             <button
-              onClick={() => onSelectChat(chat.id)}
-              className="flex items-center gap-3 text-gray-300 flex-1 min-w-0"
+              onClick={() => selectChat(chat.id)}
+              className="flex items-center gap-3 text-text/80 flex-1 min-w-0"
             >
               <MessageSquare className="w-4 h-4 flex-shrink-0" />
               <span className="truncate text-sm">{chat.title}</span>
@@ -45,9 +53,9 @@ function SideBar({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onDeleteChat(chat.id);
+                deleteChat(chat.id);
               }}
-              className="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="text-text/40 hover:text-loss opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <X className="w-4 h-4" />
             </button>
