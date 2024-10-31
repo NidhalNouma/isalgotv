@@ -57,8 +57,7 @@ function ChatSection() {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // const response = `IsalGo AI is a powerful AI tool that will be available soon.`;
-    const response = `The issue may occur if endOfMessagesRef isn’t being triggered to scroll when typingMessage updates. This can happen because useEffect only listens for changes to messages, not typingMessage. To address this, you should add typingMessage to the dependency array so that \nthe scroll effect triggers whenever either messages or \ntypingMessage changes..`;
+    const response = `IsalGo AI is a powerful AI tool that will be available soon.`;
 
     const newMessage = {
       id: chats.length,
