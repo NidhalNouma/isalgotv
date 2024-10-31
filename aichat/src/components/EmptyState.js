@@ -18,7 +18,7 @@ export default function EmptyState({ onSendMessage }) {
   const [quickActionMsg, setQuuickActionMsg] = useState(null);
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 h-full">
+    <div className="flex-1 flex flex-col items-center justify-center md:px-4 px-1 h-full">
       <h1 className="text-4xl font-semibold mb-8 text-title ">
         {/* What can I help with? */}
         <Typewriter

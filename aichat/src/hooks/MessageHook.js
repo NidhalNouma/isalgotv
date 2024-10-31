@@ -14,7 +14,7 @@ export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
     if ((input.trim() || files.length > 0) && !disabled) {
       if (!user) {
         toggleAuthPopup();
-        setInput("");
+        // setInput("");
         return;
       }
 

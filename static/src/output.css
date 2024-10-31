@@ -1166,13 +1166,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .btn-ai::before {
   animation: rotateGradient 4s ease-in-out infinite;
   border-radius: 0.75rem;
-  background-image: linear-gradient(to top right, var(--tw-gradient-stops));
-  --tw-gradient-from: hsl(var(--color-primary) / 0.6) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-primary) / 0) var(--tw-gradient-to-position);
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  --tw-gradient-from: hsl(var(--color-text-light) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-text-light) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to);
-  --tw-gradient-to: hsl(var(--color-primary) / 0.8) var(--tw-gradient-to-position);
+  --tw-gradient-to: hsl(var(--color-primary) / 1) var(--tw-gradient-to-position);
   background-size: 200% 200%;
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -3501,6 +3499,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-background) / 0.6);
 }
 
+.bg-background\/70 {
+  background-color: hsl(var(--color-background) / 0.7);
+}
+
 .bg-background\/80 {
   background-color: hsl(var(--color-background) / 0.8);
 }
@@ -3779,9 +3781,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.via-accent\/60 {
+.via-accent\/30 {
   --tw-gradient-to: hsl(var(--color-accent) / 0)  var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.6) var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .via-primary\/70 {
@@ -3797,6 +3799,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .via-text\/70 {
   --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.7) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.via-accent\/10 {
+  --tw-gradient-to: hsl(var(--color-accent) / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.1) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .\!to-\[\#7289da\] {
@@ -5938,6 +5945,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:p-0 {
     padding: 0px;
+  }
+
+  .md\:px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .md\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .md\:text-start {

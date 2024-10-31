@@ -38,7 +38,10 @@ export default function ChatInput({
       {showAuthPopup && <AuthPopup onClose={() => setShowAuthPopup(false)} />}
 
       <div className={containerClass}>
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto py-6 px-2">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-3xl mx-auto py-6 md:px-2 px-0"
+        >
           <div className="relative rounded-3xl bg-text/10">
             {files.length > 0 && (
               <div className="px-4 pt-2">
