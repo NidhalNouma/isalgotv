@@ -70,7 +70,7 @@
 
   .btn-ai::before {
     content: "";
-    @apply animate-rotateGradientFast bg-[length:200%_200%] hover:bg-[length:100%_100%] absolute inset-0 bg-gradient-to-tr from-primary/60 via-text-light/30 to-primary/90 blur-[8px] -z-10 rounded-xl scale-100 hover:scale-105 transition-all duration-700
+    @apply animate-rotateGradientFast bg-[length:200%_200%] hover:bg-[length:100%_100%] absolute inset-0 bg-gradient-to-tr from-primary/60 via-text/30 to-primary/80 blur-[8px] -z-10 rounded-xl scale-100 hover:scale-105 transition-all duration-700
   }
 
   .btn-primary {
