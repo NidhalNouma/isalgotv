@@ -371,11 +371,11 @@
     }
 
     [modal-backdrop] {
-      @apply bg-title/10 brightness-50 backdrop-blur-0  z-40 absolute top-0 w-screen h-full left-0
+      @apply bg-title/10 brightness-75 backdrop-blur-sm  z-40 absolute top-0 w-screen h-full left-0
     }
 
     [drawer-backdrop] {
-      @apply bg-title/10 brightness-50 backdrop-blur-0 z-50
+      @apply bg-title/10 brightness-50 backdrop-blur-sm z-50
     }
 
     /* Scroller */
