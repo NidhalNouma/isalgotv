@@ -4,17 +4,11 @@
   data-modal-backdrop="static"
   tabindex="-1"
   aria-hidden="true"
-  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-0rem)] max-h-full"
+  class="fixed z-50 hidden overflow-hidden inset-0 h-full w-full max-h-full p-4"
 >
-  <div class="relative w-full max-w-[100vw] max-h-full h-full mx-auto">
-    <!-- Modal content -->
-    <div class="relative bg-background rounded-lg shadow h-full flex flex-col">
-      <!-- Modal header -->
-      <div class="flex items-center justify-between p-4">
-        <h3 class="text-xl font-semibold text-text"></h3>
         <button
           type="button"
-          class="btn-icon"
+          class="absolute top-4 right-3.5 btn-icon"
           onclick="hideModel('modal-images')"
         >
           <svg
@@ -30,9 +24,8 @@
             ></path>
           </svg>
         </button>
-      </div>
       <!-- Modal body -->
-      <div class="h-full w-full my-auto">
+      <div class="h-[90%] bg-background p-1 rounded-lg w-full my-auto">
         <div
           id="controls-carousel"
           class="relative w-full h-full"
@@ -58,7 +51,7 @@
           <!-- Slider controls -->
           <button
             type="button"
-            class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            class="absolute top-0 -left-8 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
             data-carousel-prev
             id="prev-button-carousel"
           >
@@ -85,7 +78,7 @@
           </button>
           <button
             type="button"
-            class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            class="absolute top-0 -right-8 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
             data-carousel-next
             id="next-button-carousel"
           >
@@ -112,6 +105,4 @@
           </button>
         </div>
       </div>
-    </div>
-  </div>
 </div>
