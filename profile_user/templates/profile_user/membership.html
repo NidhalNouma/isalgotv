@@ -41,8 +41,9 @@
                     <stop offset="1" stop-color="#2D037B" stop-opacity="0"/>
                     </radialGradient>
                     </defs>
-                </svg>
-            </div>
+            </svg>
+        </div>
+
     </div>
         
 
@@ -97,16 +98,6 @@
                 {% include "include/price_item.html" with title="LIFETIME" save="Pay once" %}
             </div>
 
-            {% comment %} <div class="max-w-3xl mx-auto text-sm flex p-4 mt-16 text-title/60 bg-secondary/30 border-[1px] border-secondary/60 rounded" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                <p><span class="font-semibold">LIFETIME membership</span> is designed to support our company's efforts in improving and developing more trading strategies. Lifetime members will receive priority access to our beta strategies. <br/>LIFETIME membership can expire and may no longer be available at any time.</p>
-                </div>
-            </div> {% endcomment %}
-
             {% else %}
 
             <div class="mt-0 w-full flex flex-col md:flex-row items-center justify-center gap-8">
@@ -116,9 +107,9 @@
             </div>
 
             {% endif %}
+        </main> 
         {% endif %}
         
-    </main> 
 
     {%if congrate %} {%include "include/congrate.html" %} {%endif %}
 

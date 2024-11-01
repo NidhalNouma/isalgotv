@@ -47,7 +47,6 @@ setInterval(() => {
 
 <main class="max-w-full min-h-[80vh] relative pt-8  flex flex-col lg:flex-row justify-between  items-center" >
   <div class="relative  my-auto flex flex-col items-center lg:items-start w-full lg:max-w-[60%]  lg:text-start text-center grow z-30 py-8">
-    {% comment %} <div class="w-full  rounded-full aspect-auto absolute inset-0 bg-gradient-to-tr from-accent/10 to-secondary/10 blur-[150px] -z-10"></div> {% endcomment %}
       <h2 class="text-title text-4xl sm:text-5xl font-extrabold bg-transparent tracking-wide max-w-lg">
         Elevate your trading prowess with our advanced
       </h2>
@@ -78,17 +77,18 @@ setInterval(() => {
         </a>
       </div>
 
-      <h6 onclick="openModel('money-back-modal')" class="text-text font-semibold text-sm rounded-md pl-2 pr-1 py-1 bg-accent/30 cursor-pointer hover:bg-accent/40 transition-all">30-Day Money-Back Guarantee<svg class="w-4 aspect-square inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg></h6>
+      <!-- <h6 onclick="openModel('money-back-modal')" class="text-text/80 font-semibold text-sm rounded-md pl-2 pr-1 py-1 bg-accent/10 cursor-pointer hover:bg-accent/20 transition-all">30-Day Money-Back Guarantee<svg class="w-4 aspect-square inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg></h6> -->
+      <a href="{% url 'register' %}" class="text-text tracking-wide font-medium text-sm rounded-md pl-2 pr-1 py-1 bg-title/20 cursor-pointer hover:bg-title/30 transition-all">Start today with <span class="text-sm font-semibold">20% off</span> <svg class="w-4 aspect-square inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg></a>
 
   </div>
 
  
 
-  <div class="w-full relative max-w-3xl">
-      <video class="rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" autoplay loop muted>
+  <div class="w-full relative max-w-3xl ">
+      <video class="lg:-rotate-1 shadow-lg rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" autoplay loop muted>
         <source src="https://isalgotest.s3.amazonaws.com/videos/Timeline+2.mp4" type="video/mp4">
       </video>
-      <div onclick="openModel('video-modal-l')" class="absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
+      <div onclick="openModel('video-modal-l')" class="lg:-rotate-1 absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-16 aspect-square w-16 rounded-full bg-background dark:bg-title flex items-center justify-center">
           <svg class="h-5 w-5 text-primary" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path></svg>
         </div>
