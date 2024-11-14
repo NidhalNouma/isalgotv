@@ -170,6 +170,8 @@ class StrategyResults(models.Model):
     settings =  SettingsJSONField()
     description = models.TextField()
 
+    version = models.CharField(max_length=10, default="1.0")
+
     positive_votes = models.ManyToManyField(User, related_name='positive_votes', blank=True)
     negative_votes = models.ManyToManyField(User, related_name='negative_votes', blank=True)
 

@@ -243,6 +243,7 @@ def add_result(request, id):
             if form.is_valid():
                 result = form.save(commit=False)
                 result.strategy = strategy
+                result.version = strategy.version
                 result.created_by = request.user.user_profile
                 result.save()
 

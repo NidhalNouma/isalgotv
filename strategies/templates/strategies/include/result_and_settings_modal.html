@@ -351,7 +351,7 @@
       </div>
       <!-- Settings -->
       <div id="r-{{result.id}}-settings" class="hidden p-6 space-y-3">
-        {% for item in strategy.settings %}
+        {% for item in result.settings %}
           {% with group_name=item.key group_value=item.value %}
                 <div class="mb-6">
                   <h6 class="text-text text-xs pb-4">{{group_name}}</h6>
