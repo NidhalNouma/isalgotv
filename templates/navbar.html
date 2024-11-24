@@ -227,7 +227,7 @@
       <button
         data-collapse-toggle="mobile-menu-2"
         type="button"
-        class="inline-flex items-center p-y2 ml-1 text-sm text-text rounded-lg md:hidden ocus:outline-none transition-all"
+        class="inline-flex items-center p-y2 ml-1 text-sm text-text rounded-lg lg:hidden ocus:outline-none transition-all"
         aria-controls="mobile-menu-2"
         aria-expanded="false"
       >
@@ -282,7 +282,7 @@
       <button
         data-collapse-toggle="mobile-menu-2"
         type="button"
-        class="inline-flex items-center py-2 text-sm text-text rounded-lg md:hidden transition-all"
+        class="inline-flex items-center py-2 text-sm text-text rounded-lg lg:hidden transition-all"
         aria-controls="mobile-menu-2"
         aria-expanded="false"
       >
@@ -305,7 +305,7 @@
     {% endif %}
 
     <div
-      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+      class="items-center justify-between hidden w-full lg:flex md:w-auto md:order-1"
       id="mobile-menu-2"
     >
       <ul
@@ -327,14 +327,14 @@
             >Results</a
           >
         </li>
-        <!-- <li>
+        <li>
           <a
-            href="{% url 'ideas' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'ideas' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
+            href="{% url 'automate' %}" 
+            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
-            >Ideas</a
+            >Automate</a
           >
-        </li> -->
+        </li> 
         <li>
           <a
             href="{% url 'membership' %}"
@@ -355,8 +355,7 @@
     </div>
   </div>
 </nav>
-{% comment %} {% if user.is_authenticated %} {% with
-drawer_id="drawer-Notifications" %}
+{% comment %} {% if user.is_authenticated %} {% with drawer_id="drawer-Notifications" %}
 <div
   id="{{drawer_id}}"
   class="fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] bg-background"

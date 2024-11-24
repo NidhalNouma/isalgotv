@@ -46,6 +46,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'profile_user.apps.ProfileUserConfig',
     'strategies',
+    'automate',
     'docs',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -92,6 +93,7 @@ TEMPLATES = [
                 BASE_DIR / "etradingview/templates/etradingview",
                 BASE_DIR / "profile_user/templates/profile_user",
                 BASE_DIR / "docs/templates/docs",
+                BASE_DIR / "automate/templates/automate",
                 BASE_DIR / "strategies/templates/strategies"],
         'APP_DIRS': True,
         'OPTIONS': {

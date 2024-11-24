@@ -122,31 +122,12 @@
           <form
             hx-post="{% url 'membership-cancel' %}"
             hx-target="#setting-membership"
-            class="max-w-md p-6 m-8 mx-auto mt-1"
+            class="max-w-md p-6 pt-1  mx-auto mt-1"
           >
             {% csrf_token %}
-            <div
-              class="flex items-center px-4 py-2 mb-0 text-sm text-yellow-800 rounded-lg bg-transparent dark:text-yellow-300"
-              role="alert"
-            >
-              <svg
-                class="flex-shrink-0 inline w-4 h-4 mr-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-                />
-              </svg>
-              <span class="sr-only">Info</span>
-              <div>
-                By canceling your membership you'll no longer have access to our
-                products after the current period end.
-              </div>
-            </div>
-            <div class="mt-4 flex items-center justify-around">
+            {% include "include/warnings.html" with warning="By canceling your membership you'll no longer have access to our products after the current period end." %}
+   
+            <div class="mt-6 flex items-center justify-around">
               <button
                 data-modal-hide="staticModal-cancel"
                 type="submit"

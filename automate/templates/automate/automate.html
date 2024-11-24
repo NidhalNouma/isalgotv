@@ -1,0 +1,40 @@
+{% extends 'page.html' %} {% load static %} 
+
+{% block head_title %}
+<title>IsAlgo | Automate your alerts</title>
+{% endblock head_title %}
+
+{% block head_description %}
+<meta name="description" content="Become part of a community where trading success is the norm. Discover strategies results, insights, and support to thrive in any market. Your journey towards profitability starts here.">
+{% endblock head_description %}
+
+
+{% block page %} 
+
+
+{% if has_subscription %}
+<div class=" flex items-baseline gap-2 sm:gap-3">
+    <h1 class="main-title">Automate </h1>
+    <button onclick="openModel('add-broker-modal');" class="btn-text sm:-translate-y-1 pr-3 pl-2 text-sm font-bold inline-flex items-center justify-center"><svg class="h-5 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Broker</button>
+</div>
+    
+
+<main id="at-accounts" class="mt-8 mb-16 ">
+    {% include 'include/accounts_list.html' %}
+</main>
+
+{% include 'include/add_broker_modal.html' %}
+{% include 'include/add_crypto_broker_modal.html' with broker_type="binance" %}
+{% include 'include/add_crypto_broker_modal.html' with broker_type="bitget" %}
+{% include 'include/add_crypto_broker_modal.html' with broker_type="bybit" %}
+{% include 'include/add_crypto_broker_modal.html' with broker_type="bingx" %}
+{% include 'include/add_crypto_broker_modal.html' with broker_type="bitmex" %}
+{% include 'include/add_crypto_broker_modal.html' with broker_type="bitmart" %}
+
+
+{% else %}
+<h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of these results<span></h1>
+{% endif %}
+
+
+{% endblock page %}

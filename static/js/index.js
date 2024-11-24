@@ -170,7 +170,7 @@ async function onPayFormStripeSubmit(title) {
     });
     if (result.error) {
       let errorMsg = result.error.message + "\nNo payment method found!";
-      let errorHtml = `<div class="mx-auto text-sm flex p-4 text-red-600 bg-red-800/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
+      let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
       if (errorDiv) errorDiv.innerHTML = errorHtml;
       closeLoader(title);
       return false;
@@ -396,6 +396,18 @@ htmx.on("htmx:afterRequest", (evt) => {
 
   if (evt?.detail?.target.id.includes("access-mb")) {
     openModel("get-access-modal");
+  }
+
+  if (evt?.detail?.target.id.includes("-form-errors")) {
+    const name = "-" + evt?.detail?.target.id.replace("-form-errors", "");
+    closeLoader("", name, "flex");
+  }
+
+  if (evt?.detail?.target.id.includes("at-accounts")) {
+    closeLoader("", "-add-binance", "flex");
+
+    hideModel("add-binance-modal");
+    hideModel("add-broker-modal");
   }
 });
 
@@ -667,27 +679,31 @@ function getNumberOfLines(id) {
 }
 
 const modals = {};
-function openModel(id, backdrop = "dynamic") {
+function openModel(id, backdrop = "dynamic", animated = false) {
   const modalElement = document.querySelector("#" + id);
 
   const modalOptions = {
     onHide: () => {
       document.querySelector("html").style.overflowY = "unset";
-      modalElement.classList.remove("scale-100"); // Remove full scale on hide
-      modalElement.classList.add("scale-0"); // Scale down when hiding
-      setTimeout(() => {
-        modalElement.classList.add("hidden"); // Hide after the scale transition
-      }, 200); // Match this duration with the transition duration
+      if (animated) {
+        modalElement.classList.remove("scale-100"); // Remove full scale on hide
+        modalElement.classList.add("scale-0"); // Scale down when hiding
+        setTimeout(() => {
+          modalElement.classList.add("hidden"); // Hide after the scale transition
+        }, 200); // Match this duration with the transition duration
+      }
     },
     backdrop: backdrop,
     onShow: () => {
       document.querySelector("html").style.overflowY = "hidden";
       document.querySelector("body").classList.remove("overflow-hidden");
       modalElement.classList.remove("hidden"); // Show the modal
-      setTimeout(() => {
-        modalElement.classList.remove("scale-0"); // Start scaling up
-        modalElement.classList.add("scale-100"); // Animate to full size
-      }, 10); // Delay to allow for rendering
+      if (animated) {
+        setTimeout(() => {
+          modalElement.classList.remove("scale-0"); // Start scaling up
+          modalElement.classList.add("scale-100"); // Animate to full size
+        }, 10); // Delay to allow for rendering
+      }
       console.log("modal is shown");
     },
   };
@@ -696,12 +712,14 @@ function openModel(id, backdrop = "dynamic") {
   if (modals[id]) {
     modals[id].show();
   } else {
-    modalElement.classList.add(
-      "scale-0",
-      "transition-transform",
-      "duration-200",
-      "ease-out"
-    );
+    if (animated) {
+      modalElement.classList.add(
+        "scale-0",
+        "transition-transform",
+        "duration-200",
+        "ease-out"
+      );
+    }
     const modal = new Modal(modalElement, modalOptions);
     modals[id] = modal;
     modal.show();
@@ -713,6 +731,7 @@ function hideModel(id) {
 }
 
 const drawers = {};
+
 function openDrawer(id) {
   const draweli = document.querySelector("#" + id);
 

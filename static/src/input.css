@@ -90,15 +90,19 @@
   }
 
   .btn-a {
-    @apply text-text font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all
+    @apply text-text/80 hover:text-text/60 font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all
   }
 
   .btn-icon {
-    @apply text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center transition-all 
+    @apply text-title/80 hover:text-title/60 bg-transparent rounded-lg text-sm px-1 ml-auto inline-flex items-center transition-all 
+  }
+
+  .input-label {
+    @apply block mb-2 text-sm font-medium text-text/80
   }
 
   .input-text{
-    @apply bg-transparent border border-text/40 px-2.5 py-2 text-text text-base rounded-md focus:ring-accent  placeholder:text-text/40 transition-all
+    @apply bg-text/10 border border-text/0 outline-none focus:border-text/40 focus:ring-text/50 px-2.5 py-2 text-text text-sm rounded-md  placeholder:text-text/40 transition-all
   }
 
   .text-dark{
@@ -111,6 +115,10 @@
 
   .CKEDITOR img {
     @apply !aspect-video !h-auto object-cover rounded
+  }
+
+  .main-title {
+    @apply mt-6 text-left text-3xl sm:text-5xl text-title font-extrabold
   }
 }
 
@@ -371,11 +379,11 @@
     }
 
     [modal-backdrop] {
-      @apply bg-title/10 brightness-75 backdrop-blur-sm  z-40 absolute top-0 w-screen h-full left-0
+      @apply bg-title/70 grayscale brightness-[0.1] z-40 absolute top-0 w-screen h-full left-0
     }
 
     [drawer-backdrop] {
-      @apply bg-title/10 brightness-50 backdrop-blur-sm z-50
+      @apply bg-title/70 grayscale brightness-[0.1] z-50
     }
 
     /* Scroller */

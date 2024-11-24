@@ -1308,39 +1308,71 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }
 
+.btn-a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: hsl(var(--color-text) / 0.8);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn-a:hover {
+  color: hsl(var(--color-text) / 0.6);
+}
+
 .btn-icon {
   margin-left: auto;
   display: inline-flex;
   align-items: center;
   border-radius: 0.5rem;
   background-color: transparent;
-  padding: 0.375rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: hsl(var(--color-title) / 0.6);
+  color: hsl(var(--color-title) / 0.8);
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
 
 .btn-icon:hover {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-title) / var(--tw-text-opacity));
+  color: hsl(var(--color-title) / 0.6);
+}
+
+.input-label {
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: hsl(var(--color-text) / 0.8);
 }
 
 .input-text {
   border-radius: 0.375rem;
   border-width: 1px;
-  border-color: hsl(var(--color-text) / 0.4);
-  background-color: transparent;
+  border-color: hsl(var(--color-text) / 0);
+  background-color: hsl(var(--color-text) / 0.1);
   padding-left: 0.625rem;
   padding-right: 0.625rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   --tw-text-opacity: 1;
   color: hsl(var(--color-text) / var(--tw-text-opacity));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
@@ -1355,8 +1387,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 }
 
 .input-text:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: hsl(var(--color-accent) / var(--tw-ring-opacity));
+  border-color: hsl(var(--color-text) / 0.4);
+  --tw-ring-color: hsl(var(--color-text) / 0.5);
 }
 
 .text-dark {
@@ -1384,6 +1416,23 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-radius: 0.25rem;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.main-title {
+  margin-top: 1.5rem;
+  text-align: left;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 800;
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-title) / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px) {
+  .main-title {
+    font-size: 3rem;
+    line-height: 1;
+  }
 }
 
 .sr-only {
@@ -1455,6 +1504,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   left: -0.75rem;
 }
 
+.-left-8 {
+  left: -2rem;
+}
+
 .-left-\[25\%\] {
   left: -25%;
 }
@@ -1465,6 +1518,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .-right-12 {
   right: -3rem;
+}
+
+.-right-8 {
+  right: -2rem;
 }
 
 .-right-\[25\%\] {
@@ -1595,6 +1652,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   right: 0.625rem;
 }
 
+.right-3 {
+  right: 0.75rem;
+}
+
+.right-3\.5 {
+  right: 0.875rem;
+}
+
 .right-\[-20\%\] {
   right: -20%;
 }
@@ -1689,6 +1754,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .top-3 {
   top: 0.75rem;
+}
+
+.top-4 {
+  top: 1rem;
 }
 
 .top-\[-12rem\] {
@@ -1827,30 +1896,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   top: 100%;
 }
 
-.right-3 {
-  right: 0.75rem;
-}
-
-.right-3\.5 {
-  right: 0.875rem;
-}
-
-.top-4 {
-  top: 1rem;
-}
-
-.left-8 {
-  left: 2rem;
-}
-
-.-left-8 {
-  left: -2rem;
-}
-
-.-right-8 {
-  right: -2rem;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -1901,10 +1946,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .m-4 {
   margin: 1rem;
-}
-
-.m-8 {
-  margin: 2rem;
 }
 
 .-mx-1 {
@@ -2190,6 +2231,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-right: auto;
 }
 
+.ms-2 {
+  -webkit-margin-start: 0.5rem;
+          margin-inline-start: 0.5rem;
+}
+
 .ms-3 {
   -webkit-margin-start: 0.75rem;
           margin-inline-start: 0.75rem;
@@ -2448,8 +2494,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 52%;
 }
 
-.h-\[calc\(100\%-0rem\)\] {
-  height: calc(100% - 0rem);
+.h-\[80vh\] {
+  height: 80vh;
+}
+
+.h-\[90\%\] {
+  height: 90%;
 }
 
 .h-\[calc\(100\%-1rem\)\] {
@@ -2471,10 +2521,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[90\%\] {
-  height: 90%;
 }
 
 .max-h-64 {
@@ -2539,6 +2585,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .w-10 {
   width: 2.5rem;
+}
+
+.w-10\/12 {
+  width: 83.333333%;
 }
 
 .w-11\/12 {
@@ -2686,20 +2736,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 100%;
 }
 
-.w-10\/12 {
-  width: 83.333333%;
-}
-
 .min-w-0 {
   min-width: 0px;
 }
 
 .min-w-\[100vw\] {
   min-width: 100vw;
-}
-
-.min-w-full {
-  min-width: 100%;
 }
 
 .max-w-2xl {
@@ -3120,9 +3162,24 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   gap: 2rem;
 }
 
+.gap-x-1 {
+  -moz-column-gap: 0.25rem;
+       column-gap: 0.25rem;
+}
+
+.gap-x-1\.5 {
+  -moz-column-gap: 0.375rem;
+       column-gap: 0.375rem;
+}
+
 .gap-x-2 {
   -moz-column-gap: 0.5rem;
        column-gap: 0.5rem;
+}
+
+.gap-x-3 {
+  -moz-column-gap: 0.75rem;
+       column-gap: 0.75rem;
 }
 
 .gap-x-6 {
@@ -3132,6 +3189,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .gap-y-2 {
   row-gap: 0.5rem;
+}
+
+.gap-y-4 {
+  row-gap: 1rem;
+}
+
+.gap-y-5 {
+  row-gap: 1.25rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -3144,6 +3209,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-space-x-reverse: 0;
   margin-right: calc(0.625rem * var(--tw-space-x-reverse));
   margin-left: calc(0.625rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
@@ -3182,6 +3253,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .self-start {
   align-self: flex-start;
+}
+
+.self-end {
+  align-self: flex-end;
 }
 
 .self-stretch {
@@ -3290,6 +3365,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .rounded-t {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
+}
+
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 
 .border {
@@ -3412,10 +3492,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-secondary) / var(--tw-border-opacity));
 }
 
-.border-secondary\/60 {
-  border-color: hsl(var(--color-secondary) / 0.6);
-}
-
 .border-secondary\/70 {
   border-color: hsl(var(--color-secondary) / 0.7);
 }
@@ -3463,6 +3539,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
 }
 
+.border-success {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--color-profit) / var(--tw-border-opacity));
+}
+
 .\!bg-background\/20 {
   background-color: hsl(var(--color-background) / 0.2) !important;
 }
@@ -3483,10 +3564,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-accent\/10 {
   background-color: hsl(var(--color-accent) / 0.1);
-}
-
-.bg-accent\/30 {
-  background-color: hsl(var(--color-accent) / 0.3);
 }
 
 .bg-accent\/40 {
@@ -3544,8 +3621,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(26 86 219 / var(--tw-bg-opacity));
 }
 
-.bg-blue-800\/10 {
-  background-color: rgb(30 66 159 / 0.1);
+.bg-error\/10 {
+  background-color: hsl(var(--color-loss) / 0.1);
 }
 
 .bg-gray-100 {
@@ -3570,6 +3647,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-green-800\/10 {
   background-color: rgb(3 84 63 / 0.1);
+}
+
+.bg-info\/10 {
+  background-color: rgb(37 99 235 / 0.1);
 }
 
 .bg-loss\/10 {
@@ -3611,17 +3692,21 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-secondary) / var(--tw-bg-opacity));
 }
 
-.bg-secondary\/30 {
-  background-color: hsl(var(--color-secondary) / 0.3);
-}
-
 .bg-secondary\/50 {
   background-color: hsl(var(--color-secondary) / 0.5);
+}
+
+.bg-success\/10 {
+  background-color: hsl(var(--color-profit) / 0.1);
 }
 
 .bg-text {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
+}
+
+.bg-text\/0 {
+  background-color: hsl(var(--color-text) / 0);
 }
 
 .bg-text\/10 {
@@ -3657,12 +3742,28 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-title) / var(--tw-bg-opacity));
 }
 
+.bg-title\/10 {
+  background-color: hsl(var(--color-title) / 0.1);
+}
+
+.bg-title\/20 {
+  background-color: hsl(var(--color-title) / 0.2);
+}
+
+.bg-title\/30 {
+  background-color: hsl(var(--color-title) / 0.3);
+}
+
 .bg-title\/80 {
   background-color: hsl(var(--color-title) / 0.8);
 }
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-warning\/10 {
+  background-color: rgb(202 138 4 / 0.1);
 }
 
 .bg-white {
@@ -3676,46 +3777,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-yellow-800\/10 {
   background-color: rgb(114 59 19 / 0.1);
-}
-
-.bg-text\/0 {
-  background-color: hsl(var(--color-text) / 0);
-}
-
-.bg-accent\/20 {
-  background-color: hsl(var(--color-accent) / 0.2);
-}
-
-.bg-background\/0 {
-  background-color: hsl(var(--color-background) / 0);
-}
-
-.bg-background\/30 {
-  background-color: hsl(var(--color-background) / 0.3);
-}
-
-.bg-title\/30 {
-  background-color: hsl(var(--color-title) / 0.3);
-}
-
-.bg-primary\/10 {
-  background-color: hsl(var(--color-primary) / 0.1);
-}
-
-.bg-primary\/40 {
-  background-color: hsl(var(--color-primary) / 0.4);
-}
-
-.bg-transparent\/40 {
-  background-color: rgb(0 0 0 / 0.4);
-}
-
-.bg-title\/10 {
-  background-color: hsl(var(--color-title) / 0.1);
-}
-
-.bg-title\/20 {
-  background-color: hsl(var(--color-title) / 0.2);
 }
 
 .bg-opacity-50 {
@@ -3776,12 +3837,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-accent\/10 {
-  --tw-gradient-from: hsl(var(--color-accent) / 0.1) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-accent) / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .from-accent\/40 {
   --tw-gradient-from: hsl(var(--color-accent) / 0.4) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-accent) / 0) var(--tw-gradient-to-position);
@@ -3830,6 +3885,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-text\/10 {
+  --tw-gradient-from: hsl(var(--color-text) / 0.1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-text\/60 {
   --tw-gradient-from: hsl(var(--color-text) / 0.6) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
@@ -3842,12 +3903,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-text\/10 {
-  --tw-gradient-from: hsl(var(--color-text) / 0.1) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .via-accent\/30 {
   --tw-gradient-to: hsl(var(--color-accent) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -3856,6 +3911,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .via-primary\/70 {
   --tw-gradient-to: hsl(var(--color-primary) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-primary) / 0.7) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.via-text\/10 {
+  --tw-gradient-to: hsl(var(--color-text) / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-text) / 0.1) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .via-text\/40 {
@@ -3900,10 +3960,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-to: hsl(var(--color-secondary) / 1) var(--tw-gradient-to-position);
 }
 
-.to-secondary\/10 {
-  --tw-gradient-to: hsl(var(--color-secondary) / 0.1) var(--tw-gradient-to-position);
-}
-
 .to-text {
   --tw-gradient-to: hsl(var(--color-text) / 1) var(--tw-gradient-to-position);
 }
@@ -3922,10 +3978,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .to-transparent {
   --tw-gradient-to: transparent var(--tw-gradient-to-position);
-}
-
-.to-primary\/10 {
-  --tw-gradient-to: hsl(var(--color-primary) / 0.1) var(--tw-gradient-to-position);
 }
 
 .bg-\[length\:200\%_200\%\] {
@@ -3999,6 +4051,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .fill-transparent {
   fill: transparent;
+}
+
+.fill-success {
+  fill: hsl(var(--color-profit) / 1);
 }
 
 .stroke-accent {
@@ -4089,11 +4145,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.\!px-6 {
-  padding-left: 1.5rem !important;
-  padding-right: 1.5rem !important;
 }
 
 .px-0 {
@@ -4221,11 +4272,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-bottom: 0.1rem;
 }
 
-.\!px-4 {
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
-}
-
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -4268,6 +4314,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .pr-8 {
   padding-right: 2rem;
+}
+
+.ps-3 {
+  -webkit-padding-start: 0.75rem;
+          padding-inline-start: 0.75rem;
 }
 
 .pt-1 {
@@ -4320,6 +4371,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .align-middle {
   vertical-align: middle;
+}
+
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .font-sans {
@@ -4421,6 +4476,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   text-transform: uppercase;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .leading-6 {
   line-height: 1.5rem;
 }
@@ -4464,6 +4523,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-title) / var(--tw-text-opacity)) !important;
 }
 
+.text-\[\#e8bb41\] {
+  --tw-text-opacity: 1;
+  color: rgb(232 187 65 / var(--tw-text-opacity));
+}
+
 .text-accent {
   --tw-text-opacity: 1;
   color: hsl(var(--color-accent) / var(--tw-text-opacity));
@@ -4481,6 +4545,15 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .text-current {
   color: currentColor;
+}
+
+.text-error {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-loss) / var(--tw-text-opacity));
+}
+
+.text-error\/80 {
+  color: hsl(var(--color-loss) / 0.8);
 }
 
 .text-gray-500 {
@@ -4501,6 +4574,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-green-600 {
   --tw-text-opacity: 1;
   color: rgb(5 122 85 / var(--tw-text-opacity));
+}
+
+.text-info {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
 .text-loss {
@@ -4542,6 +4620,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-secondary) / var(--tw-text-opacity));
 }
 
+.text-success\/80 {
+  color: hsl(var(--color-profit) / 0.8);
+}
+
 .text-text {
   --tw-text-opacity: 1;
   color: hsl(var(--color-text) / var(--tw-text-opacity));
@@ -4550,6 +4632,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-text-light {
   --tw-text-opacity: 1;
   color: hsl(var(--color-text-light) / var(--tw-text-opacity));
+}
+
+.text-text\/20 {
+  color: hsl(var(--color-text) / 0.2);
 }
 
 .text-text\/30 {
@@ -4610,6 +4696,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: transparent;
 }
 
+.text-warning {
+  --tw-text-opacity: 1;
+  color: rgb(202 138 4 / var(--tw-text-opacity));
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -4623,6 +4714,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
+}
+
+.text-success {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-profit) / var(--tw-text-opacity));
 }
 
 .underline {
@@ -4858,10 +4954,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
-}
-
-.transition-none {
-  transition-property: none;
 }
 
 .duration-200 {
@@ -5218,22 +5310,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   z-index: 40;
   height: 100%;
   width: 100vw;
-  background-color: hsl(var(--color-title) / 0.1);
-  --tw-brightness: brightness(.75);
+  background-color: hsl(var(--color-title) / 0.7);
+  --tw-brightness: brightness(0.1);
+  --tw-grayscale: grayscale(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-  --tw-backdrop-blur: blur(4px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 [drawer-backdrop] {
   z-index: 50;
-  background-color: hsl(var(--color-title) / 0.1);
-  --tw-brightness: brightness(.5);
+  background-color: hsl(var(--color-title) / 0.7);
+  --tw-brightness: brightness(0.1);
+  --tw-grayscale: grayscale(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-  --tw-backdrop-blur: blur(4px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 /* Scroller */
@@ -5336,61 +5424,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-image: none !important;
 }
 
-.after\:absolute::after {
-  content: var(--tw-content);
-  position: absolute;
+.checked\:\!border:checked {
+  border-width: 1px !important;
 }
 
-.after\:inset-0::after {
-  content: var(--tw-content);
-  inset: 0px;
-}
-
-.after\:left-0::after {
-  content: var(--tw-content);
-  left: 0px;
-}
-
-.after\:top-0::after {
-  content: var(--tw-content);
-  top: 0px;
-}
-
-.after\:bottom-0::after {
-  content: var(--tw-content);
-  bottom: 0px;
-}
-
-.after\:right-0::after {
-  content: var(--tw-content);
-  right: 0px;
-}
-
-.after\:z-10::after {
-  content: var(--tw-content);
-  z-index: 10;
-}
-
-.after\:h-full::after {
-  content: var(--tw-content);
-  height: 100%;
-}
-
-.after\:w-full::after {
-  content: var(--tw-content);
-  width: 100%;
-}
-
-.after\:bg-primary::after {
-  content: var(--tw-content);
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--color-primary) / var(--tw-bg-opacity));
-}
-
-.hover\:scale-110:hover {
-  --tw-scale-x: 1.1;
-  --tw-scale-y: 1.1;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+.checked\:\!border-text:checked {
+  --tw-border-opacity: 1 !important;
+  border-color: hsl(var(--color-text) / var(--tw-border-opacity)) !important;
 }
 
 .hover\:border-accent:hover {
@@ -5407,8 +5447,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-background) / 0.4) !important;
 }
 
-.hover\:bg-accent\/40:hover {
-  background-color: hsl(var(--color-accent) / 0.4);
+.hover\:bg-accent\/20:hover {
+  background-color: hsl(var(--color-accent) / 0.2);
 }
 
 .hover\:bg-background\/50:hover {
@@ -5418,6 +5458,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .hover\:bg-blue-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(30 66 159 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-error\/10:hover {
+  background-color: hsl(var(--color-loss) / 0.1);
 }
 
 .hover\:bg-gray-100:hover {
@@ -5430,9 +5474,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-secondary) / var(--tw-bg-opacity));
 }
 
+.hover\:bg-success\/10:hover {
+  background-color: hsl(var(--color-profit) / 0.1);
+}
+
 .hover\:bg-text:hover {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
+}
+
+.hover\:bg-text\/10:hover {
+  background-color: hsl(var(--color-text) / 0.1);
 }
 
 .hover\:bg-text\/20:hover {
@@ -5443,6 +5495,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-text) / 0.3);
 }
 
+.hover\:bg-title\/30:hover {
+  background-color: hsl(var(--color-title) / 0.3);
+}
+
+.hover\:bg-title\/50:hover {
+  background-color: hsl(var(--color-title) / 0.5);
+}
+
 .hover\:bg-title\/80:hover {
   background-color: hsl(var(--color-title) / 0.8);
 }
@@ -5450,46 +5510,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-text\/10:hover {
-  background-color: hsl(var(--color-text) / 0.1);
-}
-
-.hover\:bg-background\/30:hover {
-  background-color: hsl(var(--color-background) / 0.3);
-}
-
-.hover\:bg-text\/50:hover {
-  background-color: hsl(var(--color-text) / 0.5);
-}
-
-.hover\:bg-title\/50:hover {
-  background-color: hsl(var(--color-title) / 0.5);
-}
-
-.hover\:bg-accent\/20:hover {
-  background-color: hsl(var(--color-accent) / 0.2);
-}
-
-.hover\:bg-primary\/20:hover {
-  background-color: hsl(var(--color-primary) / 0.2);
-}
-
-.hover\:bg-primary\/50:hover {
-  background-color: hsl(var(--color-primary) / 0.5);
-}
-
-.hover\:bg-transparent\/50:hover {
-  background-color: rgb(0 0 0 / 0.5);
-}
-
-.hover\:bg-title\/20:hover {
-  background-color: hsl(var(--color-title) / 0.2);
-}
-
-.hover\:bg-title\/30:hover {
-  background-color: hsl(var(--color-title) / 0.3);
 }
 
 .hover\:fill-text:hover {
@@ -5519,6 +5539,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(28 100 242 / var(--tw-text-opacity));
 }
 
+.hover\:text-error\/60:hover {
+  color: hsl(var(--color-loss) / 0.6);
+}
+
+.hover\:text-error\/80:hover {
+  color: hsl(var(--color-loss) / 0.8);
+}
+
 .hover\:text-gray-600:hover {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
@@ -5534,9 +5562,17 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-loss) / var(--tw-text-opacity));
 }
 
+.hover\:text-primary\/80:hover {
+  color: hsl(var(--color-primary) / 0.8);
+}
+
 .hover\:text-red-500:hover {
   --tw-text-opacity: 1;
   color: rgb(240 82 82 / var(--tw-text-opacity));
+}
+
+.hover\:text-success\/60:hover {
+  color: hsl(var(--color-profit) / 0.6);
 }
 
 .hover\:text-text:hover {
@@ -5567,26 +5603,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .hover\:opacity-100:hover {
   opacity: 1;
-}
-
-.hover\:opacity-80:hover {
-  opacity: 0.8;
-}
-
-.hover\:opacity-30:hover {
-  opacity: 0.3;
-}
-
-.hover\:first\:scale-105:first-child:hover {
-  --tw-scale-x: 1.05;
-  --tw-scale-y: 1.05;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.hover\:first\:scale-110:first-child:hover {
-  --tw-scale-x: 1.1;
-  --tw-scale-y: 1.1;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .focus\:border-blue-500:focus {
@@ -5676,6 +5692,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: transparent;
 }
 
+:is(.dark .dark\:bg-background\/30) {
+  background-color: hsl(var(--color-background) / 0.3);
+}
+
 :is(.dark .dark\:bg-blue-600) {
   --tw-bg-opacity: 1;
   background-color: rgb(28 100 242 / var(--tw-bg-opacity));
@@ -5705,18 +5725,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(119 29 29 / var(--tw-bg-opacity));
 }
 
-:is(.dark .dark\:bg-text) {
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--color-text) / var(--tw-bg-opacity));
+:is(.dark .dark\:bg-text\/10) {
+  background-color: hsl(var(--color-text) / 0.1);
 }
 
 :is(.dark .dark\:bg-title) {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-title) / var(--tw-bg-opacity));
-}
-
-:is(.dark .dark\:bg-background\/30) {
-  background-color: hsl(var(--color-background) / 0.3);
 }
 
 :is(.dark .dark\:bg-opacity-80) {
@@ -5776,6 +5791,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
 }
 
+:is(.dark .dark\:checked\:\!bg-transparent:checked) {
+  background-color: transparent !important;
+}
+
+:is(.dark .dark\:hover\:bg-background\/50:hover) {
+  background-color: hsl(var(--color-background) / 0.5);
+}
+
 :is(.dark .dark\:hover\:bg-blue-700:hover) {
   --tw-bg-opacity: 1;
   background-color: rgb(26 86 219 / var(--tw-bg-opacity));
@@ -5789,10 +5812,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:hover\:bg-gray-800:hover) {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-}
-
-:is(.dark .dark\:hover\:bg-background\/50:hover) {
-  background-color: hsl(var(--color-background) / 0.5);
 }
 
 :is(.dark .dark\:hover\:text-background:hover) {
@@ -5833,6 +5852,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   .sm\:my-12 {
     margin-top: 3rem;
     margin-bottom: 3rem;
+  }
+
+  .sm\:mb-0 {
+    margin-bottom: 0px;
   }
 
   .sm\:ml-6 {
@@ -5922,6 +5945,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     max-width: 24rem;
   }
 
+  .sm\:-translate-y-1 {
+    --tw-translate-y: -0.25rem;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -5942,6 +5970,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     align-items: center;
   }
 
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
   .sm\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 0;
     margin-right: calc(1rem * var(--tw-space-x-reverse));
@@ -5958,6 +5990,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     --tw-space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
+  }
+
+  .sm\:self-auto {
+    align-self: auto;
+  }
+
+  .sm\:p-3 {
+    padding: 0.75rem;
   }
 
   .sm\:p-6 {
@@ -6003,13 +6043,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     line-height: 1;
   }
 
-  .sm\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
+  .sm\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 
   .sm\:text-lg {
     font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  .sm\:text-xl {
+    font-size: 1.25rem;
     line-height: 1.75rem;
   }
 
@@ -6052,11 +6097,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     margin-bottom: 2rem;
   }
 
-  .md\:mx-16 {
-    margin-left: 4rem;
-    margin-right: 4rem;
-  }
-
   .md\:ml-0 {
     margin-left: 0px;
   }
@@ -6087,10 +6127,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:flex {
     display: flex;
-  }
-
-  .md\:hidden {
-    display: none;
   }
 
   .md\:h-full {
@@ -6167,13 +6203,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     padding: 0px;
   }
 
-  .md\:p-16 {
-    padding: 4rem;
-  }
-
-  .md\:px-16 {
-    padding-left: 4rem;
-    padding-right: 4rem;
+  .md\:\!px-6 {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
   }
 
   .md\:px-2 {
@@ -6186,32 +6218,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     padding-right: 1rem;
   }
 
-  .md\:\!px-6 {
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-  }
-
-  .md\:py-16 {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
   .md\:text-start {
     text-align: start;
   }
 }
 
 @media (min-width: 1024px) {
-  .lg\:absolute {
-    position: absolute;
-  }
-
-  .lg\:left-\[25\%\] {
-    left: 25%;
-  }
-
   .lg\:block {
     display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
   }
 
   .lg\:hidden {
@@ -6222,25 +6240,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
     max-width: 60%;
   }
 
-  .lg\:-translate-y-1\/2 {
-    --tw-translate-y: -50%;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  }
-
-  .lg\:-rotate-1 {
-    --tw-rotate: -1deg;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  }
-
   .lg\:scale-110 {
     --tw-scale-x: 1.1;
     --tw-scale-y: 1.1;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  }
-
-  .lg\:scale-150 {
-    --tw-scale-x: 1.5;
-    --tw-scale-y: 1.5;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
