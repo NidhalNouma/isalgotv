@@ -2358,6 +2358,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: flex;
 }
 
+.\!flex {
+  display: flex !important;
+}
+
 .inline-flex {
   display: inline-flex;
 }
@@ -3542,6 +3546,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-success {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-profit) / var(--tw-border-opacity));
+}
+
+.border-text\/5 {
+  border-color: hsl(var(--color-text) / 0.05);
 }
 
 .\!bg-background\/20 {
@@ -5512,6 +5520,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-text\/5:hover {
+  background-color: hsl(var(--color-text) / 0.05);
+}
+
 .hover\:fill-text:hover {
   fill: hsl(var(--color-text) / 1);
 }
@@ -5603,6 +5615,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .hover\:opacity-100:hover {
   opacity: 1;
+}
+
+.hover\:opacity-80:hover {
+  opacity: 0.8;
 }
 
 .focus\:border-blue-500:focus {

@@ -9,7 +9,7 @@
             {{account.name}}
           </h2>
           <span
-            class="px-1 py-0.5 bg-background dark:bg-text/10 text-[#e8bb41] text-sm font-medium rounded capitalize"
+            class="px-1 bg-text dark:bg-text/10 text-[#e8bb41] text-sm font-medium rounded capitalize"
           >
             {{account.broker_type}}
           </span>
@@ -74,6 +74,7 @@
                     </button>
                 </form>
                 <button
+                    onclick="openModel('edit-{{account.id}}-{{account.broker_type}}-modal');"
                     class="p-1.5 hover:bg-text/10 text-text/80 hover:text-text/60 rounded-full transition-all"
                     title="Edit Account"
                     >
@@ -156,7 +157,7 @@
           <div>
             <p class="text-sm text-text/60">Webhook URL</p>
             <p class="text-sm font-medium text-text mt-1 line-clamp-1 overflow-hidden">
-                {{ webhook_url|slice:"21:40" }}...
+                ...{{ webhook_url|slice:"21:40" }}...
             </p>
           </div>
         </div>
@@ -292,3 +293,4 @@
 
 
 {% include 'include/account_logs_modal.html' with account=account name="crypto-broker" %}
+{% include 'include/edit_crypto_broker_modal.html' with account=account %}

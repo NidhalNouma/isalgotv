@@ -314,7 +314,7 @@
         <li>
           <a
             href="{% url 'strategies' %}"
-            class="block text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'strategies' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
+            class="block text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page"
             >Strategies</a
           >

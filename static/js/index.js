@@ -404,9 +404,15 @@ htmx.on("htmx:afterRequest", (evt) => {
   }
 
   if (evt?.detail?.target.id.includes("at-accounts")) {
-    closeLoader("", "-add-binance", "flex");
+    const listId = document.getElementById("at-accounts-list");
+    if (listId) {
+      const modalId = listId.getAttribute("trigger-modal");
+      if (modalId) hideModel(modalId);
 
-    hideModel("add-binance-modal");
+      const btnId = listId.getAttribute("trigger-btn");
+      if (btnId) closeLoader("", btnId, "flex");
+    }
+
     hideModel("add-broker-modal");
   }
 });
@@ -728,6 +734,7 @@ function openModel(id, backdrop = "dynamic", animated = false) {
 
 function hideModel(id) {
   if (modals[id]) modals[id].hide();
+  delete modals[id];
 }
 
 const drawers = {};
@@ -766,6 +773,7 @@ function openDrawer(id) {
 
 function hideDrawer(id) {
   if (drawers[id]) drawers[id].hide();
+  delete drawers[id];
 }
 
 function openPopupWindow(url, name = "windowChart") {

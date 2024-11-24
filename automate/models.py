@@ -115,7 +115,7 @@ class CryptoBrokerAccount(models.Model):
         ("bybit", "Bybit"),
         ("bingx", "Bingx"),
         ("bitmex", "Bitmex"),
-        ("bitmeart", "BitMart"),
+        ("bitmart", "BitMart"),
         # Add other brokers here
     ]
 
@@ -162,7 +162,3 @@ class CryptoBrokerAccount(models.Model):
             self.custom_id = generate_short_unique_id(self.broker_type, self.id)
             super(CryptoBrokerAccount, self).save(*args, **kwargs) 
 
-
-
-# ia1sne8fKJUfa4fJ7YGJz7k79YN842TbyeBx1mzihXzltVPWAr2IkzkTyX4wEBmY
-# YJ8e1se8PHfWeFIGJYKUF9wU2KlLoB7S3IT6ByGQTehHZvoLGQwj2o0pXsDsoICo

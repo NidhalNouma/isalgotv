@@ -1,6 +1,6 @@
 <div
-  id="add-{{broker_type}}-modal"
-  data-modal-target="add-{{broker_type}}-modal"
+  id="edit-{{account.id}}-{{account.broker_type}}-modal"
+  data-modal-target="edit-{{account.id}}-{{account.broker_type}}-modal"
   data-modal-backdrop="static"
   tabindex="-1"
   aria-hidden="true"
@@ -14,26 +14,8 @@
       class="flex items-center justify-between p-4 sticky top-0 bg-background z-50 rounded-t-lg"
     >
       <h3 class="text-xl font-semibold text-title flex items-center capitalize">
-        <button
-          type="button"
-          class="mr-2 btn-icon"
-          onclick="hideModel('add-{{broker_type}}-modal'); openModel('add-broker-modal');"
-        >
-          <svg
-            class="w-5 h-5 stroke-current"
-            viewBox="0 0 512 512"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="48"
-              d="M244 400L100 256l144-144M120 256h292"
-            ></path>
-          </svg></button
-        >{{broker_type}}
-        <button
+        Edit Account
+        <!-- <button
           class="ml-1"
           onclick="openDrawer('drawer-Performance')"
           type="button"
@@ -53,13 +35,13 @@
               d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
             ></path>
           </svg>
-        </button>
+        </button> -->
       </h3>
       <button
         type="button"
         class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-        data-modal-hide="add-{{broker_type}}-modal"
-        onclick="hideModel('add-{{broker_type}}-modal');"
+        data-modal-hide="edit-{{account.id}}-{{account.broker_type}}-modal"
+        onclick="hideModel('edit-{{account.id}}-{{account.broker_type}}-modal');"
       >
         <svg
           class="w-5 h-5"
@@ -77,41 +59,54 @@
     </div>
     <form
       class="relative p-6 pt-2 w-full max-w-md mx-auto flex flex-col gap-y-4"
-      id="add-{{broker_type}}-form"
-      hx-post="{% url 'add_crypto_broker_account' broker_type %}"
+      id="add-{{account.id}}_{{account.broker_type}}-form"
+      hx-post="{% url 'edit_crypto_broker_account' account.id %}"
       hx-target="#at-accounts"
       hx-wait="swap"
     >
       <div class="w-full">
-        <label for="{{broker_type}}_name" class="input-label">Name</label>
-        <input
-          type="text"
-          id="{{broker_type}}_name"
-          name="{broker_type}}_name"
-          class="input-text w-full"
-          placeholder="Account 1"
-        />
-      </div>
-      <div class="w-full">
-        <label for="{{broker_type}}_apiKey" class="input-label">API key</label>
-        <input
-          type="text"
-          id="{{broker_type}}_apiKey"
-          name="{{broker_type}}_apiKey"
-          class="input-text w-full"
-          placeholder="AK-nmc..."
-        />
-      </div>
-      <div class="w-full">
-        <label for="{{broker_type}}_secretKey" class="input-label"
-          >API secret key</label
+        <label
+          for="{{account.id}}_{{account.broker_type}}_name"
+          class="input-label"
+          >Name</label
         >
         <input
           type="text"
-          id="{{broker_type}}_secretKey"
-          name="{{broker_type}}_secretKey"
+          id="{{account.id}}_{{account.broker_type}}_name"
+          name="{{account.id}}_{{account.broker_type}}_name"
+          class="input-text w-full"
+          placeholder="Account 1"
+          value="{{account.name}}"
+        />
+      </div>
+      <div class="w-full">
+        <label
+          for="{{account.id}}_{{account.broker_type}}_apiKey"
+          class="input-label"
+          >API key</label
+        >
+        <input
+          type="text"
+          id="{{account.id}}_{{account.broker_type}}_apiKey"
+          name="{{account.id}}_{{account.broker_type}}_apiKey"
+          class="input-text w-full"
+          placeholder="AK-nmc..."
+          value="{{account.apiKey}}"
+        />
+      </div>
+      <div class="w-full">
+        <label
+          for="{{account.id}}_{{account.broker_type}}_secretKey"
+          class="input-label"
+          >API secret key</label
+        >
+        <input
+          type="password"
+          id="{{account.id}}_{{account.broker_type}}_secretKey"
+          name="{{account.id}}_{{account.broker_type}}_secretKey"
           class="input-text w-full"
           placeholder="--------"
+          value="{{account.secretKey}}"
         />
       </div>
       <div class="w-full">
@@ -123,84 +118,88 @@
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
-                id="{{broker_type}}-type-S"
+                id="{{account.id}}_{{account.broker_type}}-type-S"
                 type="radio"
                 value="S"
-                name="{{broker_type}}_type"
+                name="{{account.id}}_{{account.broker_type}}_type"
                 class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
-                checked
+                {% if account.type == "S" %}checked{% endif %}
               />
               <label
-                for="{{broker_type}}-type-S"
+                for="{{account.id}}_{{account.broker_type}}-type-S"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
                 >Spot
               </label>
             </div>
           </li>
 
-          {% if broker_type == "binance" %}
+          {% if account.broker_type == "binance" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
-                id="{{broker_type}}-type-C"
+                id="{{account.id}}_{{account.broker_type}}-type-C"
                 type="radio"
                 value="C"
-                name="{{broker_type}}_type"
+                name="{{account.id}}_{{account.broker_type}}_type"
                 class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+                {% if account.type == "C" %}checked{% endif %}
               />
               <label
-                for="{{broker_type}}-type-C"
+                for="{{account.id}}_{{account.broker_type}}-type-C"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
                 >COIN@M</label
               >
             </div>
           </li>
-          {% endif %} {% if broker_type == "binance" %}
+          {% endif %} {% if account.broker_type == "binance" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
-                id="{{broker_type}}-type-M"
+                id="{{account.id}}_{{account.broker_type}}-type-M"
                 type="radio"
                 value="U"
-                name="{{broker_type}}_type"
+                name="{{account.id}}_{{account.broker_type}}_type"
                 class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+                {% if account.type == "U" %}checked{% endif %}
               />
               <label
-                for="{{broker_type}}-type-M"
+                for="{{account.id}}_{{account.broker_type}}-type-M"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
                 >USD@M</label
               >
             </div>
           </li>
-          {% endif %} {% if broker_type == "bitget" %}
+          {% endif %} {% if account.broker_type == "bitget" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
-                id="{{broker_type}}-type-F"
+                id="{{account.id}}_{{account.broker_type}}-type-F"
                 type="radio"
                 value="F"
-                name="{{broker_type}}_type"
+                name="{{account.id}}_{{account.broker_type}}_type"
                 class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+                {% if account.type == "F" %}checked{% endif %}
               />
               <label
-                for="{{broker_type}}-type-F"
+                for="{{account.id}}_{{account.broker_type}}-type-F"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
                 >Futures</label
               >
             </div>
           </li>
-          {% endif %} {% if broker_type == "bybit" %}
+          {% endif %} {% if account.broker_type == "bybit" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
-                id="{{broker_type}}-type-D"
+                id="{{account.id}}_{{account.broker_type}}-type-D"
                 type="radio"
                 value="D"
-                name="{{broker_type}}_type"
+                name="{{account.id}}_{{account.broker_type}}_type"
                 class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+                {% if account.type == "D" %}checked{% endif %}
               />
               <label
-                for="{{broker_type}}-type-D"
+                for="{{account.id}}_{{account.broker_type}}-type-D"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
                 >Derivatives</label
               >
@@ -212,14 +211,17 @@
 
       {% csrf_token %}
 
-      <div id="add-{{broker_type}}-form-errors" class="my-2"></div>
+      <div
+        id="edit-{{account.id}}_{{account.broker_type}}-form-errors"
+        class="my-2"
+      ></div>
 
       <div class="w-full">
         <button
-          id="btn-add-{{broker_type}}"
+          id="btn-edit-{{account.id}}_{{account.broker_type}}"
           type="submit"
           class="btn-primary mb-2 w-full mx-auto"
-          onclick='document.getElementById("add-{{broker_type}}-form-errors").innerHTML = "";  openLoader("", "-add-{{broker_type}}", "flex");'
+          onclick='document.getElementById("edit-{{account.id}}_{{account.broker_type}}-form-errors").innerHTML = "";  openLoader("", "-edit-{{account.id}}_{{account.broker_type}}", "flex");'
         >
           Save
           <svg
@@ -239,7 +241,7 @@
           </svg>
         </button>
         <button
-          id="spinner-add-{{broker_type}}"
+          id="spinner-edit-{{account.id}}_{{account.broker_type}}"
           disabled
           type="button"
           class="text-text text-sm items-center justify-center bg-background mb-2 w-full mx-auto hidden"
