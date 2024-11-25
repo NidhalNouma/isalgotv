@@ -1660,6 +1660,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   right: 0.875rem;
 }
 
+.right-5 {
+  right: 1.25rem;
+}
+
 .right-\[-20\%\] {
   right: -20%;
 }
@@ -1758,6 +1762,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .top-4 {
   top: 1rem;
+}
+
+.top-5 {
+  top: 1.25rem;
 }
 
 .top-\[-12rem\] {
@@ -2354,12 +2362,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: inline;
 }
 
-.flex {
-  display: flex;
-}
-
 .\!flex {
   display: flex !important;
+}
+
+.flex {
+  display: flex;
 }
 
 .inline-flex {
@@ -2450,10 +2458,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 1rem;
 }
 
-.h-40 {
-  height: 10rem;
-}
-
 .h-44 {
   height: 11rem;
 }
@@ -2508,6 +2512,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .h-\[calc\(100\%-1rem\)\] {
   height: calc(100% - 1rem);
+}
+
+.h-auto {
+  height: auto;
 }
 
 .h-fit {
@@ -2631,16 +2639,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 0.875rem;
 }
 
-.w-32 {
-  width: 8rem;
-}
-
 .w-4 {
   width: 1rem;
-}
-
-.w-40 {
-  width: 10rem;
 }
 
 .w-44 {
@@ -2719,8 +2719,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   width: 52%;
 }
 
-.w-\[56rem\] {
-  width: 56rem;
+.w-\[66rem\] {
+  width: 66rem;
 }
 
 .w-\[75vw\] {
@@ -3467,11 +3467,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-green-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(49 196 141 / var(--tw-border-opacity));
-}
-
 .border-loss {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-loss) / var(--tw-border-opacity));
@@ -3498,6 +3493,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .border-secondary\/70 {
   border-color: hsl(var(--color-secondary) / 0.7);
+}
+
+.border-success {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--color-profit) / var(--tw-border-opacity));
 }
 
 .border-text {
@@ -3543,13 +3543,9 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
 }
 
-.border-success {
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--color-profit) / var(--tw-border-opacity));
-}
-
-.border-text\/5 {
-  border-color: hsl(var(--color-text) / 0.05);
+.\!bg-background {
+  --tw-bg-opacity: 1 !important;
+  background-color: hsl(var(--color-background) / var(--tw-bg-opacity)) !important;
 }
 
 .\!bg-background\/20 {
@@ -4017,10 +4013,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   fill: currentColor;
 }
 
-.fill-green-400 {
-  fill: #31C48D;
-}
-
 .fill-none {
   fill: none;
 }
@@ -4031,6 +4023,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .fill-secondary {
   fill: hsl(var(--color-secondary) / 1);
+}
+
+.fill-success {
+  fill: hsl(var(--color-profit) / 1);
 }
 
 .fill-text {
@@ -4059,10 +4055,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .fill-transparent {
   fill: transparent;
-}
-
-.fill-success {
-  fill: hsl(var(--color-profit) / 1);
 }
 
 .stroke-accent {
@@ -4574,11 +4566,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
-.text-green-400 {
-  --tw-text-opacity: 1;
-  color: rgb(49 196 141 / var(--tw-text-opacity));
-}
-
 .text-green-600 {
   --tw-text-opacity: 1;
   color: rgb(5 122 85 / var(--tw-text-opacity));
@@ -4626,6 +4613,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-secondary {
   --tw-text-opacity: 1;
   color: hsl(var(--color-secondary) / var(--tw-text-opacity));
+}
+
+.text-success {
+  --tw-text-opacity: 1;
+  color: hsl(var(--color-profit) / var(--tw-text-opacity));
 }
 
 .text-success\/80 {
@@ -4717,16 +4709,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-yellow-600 {
   --tw-text-opacity: 1;
   color: rgb(159 88 10 / var(--tw-text-opacity));
-}
-
-.text-yellow-800 {
-  --tw-text-opacity: 1;
-  color: rgb(114 59 19 / var(--tw-text-opacity));
-}
-
-.text-success {
-  --tw-text-opacity: 1;
-  color: hsl(var(--color-profit) / var(--tw-text-opacity));
 }
 
 .underline {
@@ -5427,6 +5409,33 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   /* background: hsl(var(--color-secondary)); */
 }
 
+/* automate_svg animation */
+
+.path-base {
+  filter: drop-shadow(0 0 2px hsl(var(--color-primary)));
+}
+
+.path-light {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  filter: drop-shadow(0 0 5px hsl(var(--color-text)));
+  animation: moveLight 5s ease-in-out infinite ;
+}
+
+@keyframes moveLight {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: -1000;
+  }
+}
+
 .before\:\!bg-none::before {
   content: var(--tw-content);
   background-image: none !important;
@@ -5520,10 +5529,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-text\/5:hover {
-  background-color: hsl(var(--color-text) / 0.05);
-}
-
 .hover\:fill-text:hover {
   fill: hsl(var(--color-text) / 1);
 }
@@ -5615,10 +5620,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .hover\:opacity-100:hover {
   opacity: 1;
-}
-
-.hover\:opacity-80:hover {
-  opacity: 0.8;
 }
 
 .focus\:border-blue-500:focus {
@@ -5790,11 +5791,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 :is(.dark .dark\:text-white) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-:is(.dark .dark\:text-yellow-300) {
-  --tw-text-opacity: 1;
-  color: rgb(250 202 21 / var(--tw-text-opacity));
 }
 
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
@@ -6147,6 +6143,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
   .md\:h-full {
     height: 100%;
+  }
+
+  .md\:w-8\/12 {
+    width: 66.666667%;
   }
 
   .md\:w-9\/12 {

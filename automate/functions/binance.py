@@ -19,8 +19,6 @@ def check_binance_credentials(api_key, api_secret, trade_type="spot", symbol = "
     try:
         if trade_type == "S": #Spot
             client = Client(api_key, api_secret)
-            # Spot market test order
-
             client.account()
             # client.new_order_test(
             #     symbol=symbol,
@@ -31,28 +29,18 @@ def check_binance_credentials(api_key, api_secret, trade_type="spot", symbol = "
         elif trade_type == "U": #USDM
             client = UMFutures(api_key, api_secret)
             # USD-M Futures test order
+            client.account()
 
-            client.new_order_test(
-                symbol=symbol,
-                side=Client.SIDE_BUY,
-                type=Client.ORDER_TYPE_MARKET,
-                quantity=1  # Adjust quantity according to minimum requirements
-            )
         elif trade_type == "C": #COINM
             client = CMFutures(api_key, api_secret)
             # Coin-M Futures test order
             client.account()
-            # client.new_order_test(
-            #     symbol=symbol,
-            #     side=Client.SIDE_BUY,
-            #     type=Client.ORDER_TYPE_MARKET,
-            #     quantity=1  # Adjust quantity according to minimum requirements
-            # )
+
         else:
             r = {'error': "Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'.", "valid": False}
             return r
 
-        r = {'message': "API credentials are valid and test order succeeded.", "valid": True}
+        r = {'message': "API credentials are valid.", "valid": True}
         return r
     
     except Exception as e:

@@ -102,7 +102,7 @@
             <button
               onclick="hideModel('staticModal-cancel')"
               type="button"
-              class="text-title/70 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              class="btn-icon"
             >
               <svg
                 class="w-5 h-5"
@@ -125,13 +125,13 @@
             class="max-w-md p-6 pt-1  mx-auto mt-1"
           >
             {% csrf_token %}
-            {% include "include/warnings.html" with warning="By canceling your membership you'll no longer have access to our products after the current period end." %}
+            {% include "include/warnings.html" with warning="By canceling your membership you'll no longer have access to our products after the current period end." class=" !bg-background " %}
    
             <div class="mt-6 flex items-center justify-around">
               <button
                 data-modal-hide="staticModal-cancel"
                 type="submit"
-                class="text-text font-normal text-sm"
+                class="btn-icon mr-auto"
                 onclick="openLoader('-p-cancel', '', 'flex');hideModel('staticModal-cancel');"
               >
                 Cancel
@@ -139,7 +139,7 @@
               <button
                 onclick="hideModel('staticModal-cancel')"
                 type="button"
-                class="text-text font-semibold"
+                class="btn-icon mr-auto font-semibold"
               >
                 &larr; Return
               </button>
@@ -153,7 +153,7 @@
   {% else %}
   <div class="">
     <div
-      class="flex items-center px-4 py-2 mb-0 text-sm text-yellow-800 rounded-lg bg-transparent dark:text-yellow-300"
+      class="flex items-center px-4 py-2 mb-0 text-sm text-warning rounded-lg bg-transparent "
       role="alert"
     >
       <svg

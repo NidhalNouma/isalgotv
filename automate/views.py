@@ -124,6 +124,10 @@ def edit_crypto_broker(request, pk):
 def toggle_crypto_broker(request, pk):
     model_instance = CryptoBrokerAccount.objects.get(pk=pk)
 
+    # context = {'error': "An error occurred while editing this account.", 'close': f'crypto-account-activate-{pk}' }
+    # response = render(request, "include/errors.html", context=context)
+    # return retarget(response, f'#crypto-account-activate-{pk}-form-errors')
+
     model_instance.active = not model_instance.active
     model_instance.save()
 
