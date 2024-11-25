@@ -13,62 +13,6 @@ def generate_short_unique_id(prefix, id):
     return f"{prefix}{id}x{short_id}"
 
 
-class TradeDetails(models.Model):
-
-    TYPE = [
-        ("B", "Buy"),
-        ("S", "Sell"),
-    ]
-
-    STATUS = [
-        ("O", "OPEN"),
-        ("P", "PARTIALLY_CLOSED"),
-        ("C", "CLOSED"),
-
-    ]
-
-    custom_id = models.CharField(max_length=20)
-    order_id = models.CharField(max_length=20)
-    symbol = models.CharField(max_length=12)
-
-    volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-    remaining_volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-    profit = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-
-    side = models.CharField(max_length=1, choices=TYPE)
- 
-    trade_type = models.CharField(max_length=6)
-
-    status = models.CharField(max_length=1, choices=STATUS, default='O')
-
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-
-class LogMessage(models.Model):
-    TYPE = [
-        ("E", "Error"),
-        ("S", "Success"),
-    ]
-
-    type = models.CharField(max_length=1, choices=TYPE)
-
-    trade = models.ForeignKey(TradeDetails, on_delete=models.DO_NOTHING, related_name="logs")
-
-    alert_message = models.TextField()
-    response_message = models.TextField()
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-
 class CryptoBrokerAccount(models.Model):
     BROKER_TYPES = [
         ("binance", "Binance"),
@@ -104,8 +48,8 @@ class CryptoBrokerAccount(models.Model):
     # default_symbol = models.CharField(max_length=30, default="")
     # default_volume = models.DecimalField(decimal_places=2, max_digits=10, default=0)
 
-    trades = GenericRelation(TradeDetails) 
-    logs = GenericRelation(LogMessage) 
+    # trades = GenericRelation(TradeDetails) 
+    # logs = GenericRelation(LogMessage) 
 
     custom_id = models.CharField(max_length=30, default="")
     
@@ -123,3 +67,62 @@ class CryptoBrokerAccount(models.Model):
             self.custom_id = generate_short_unique_id(self.broker_type, self.id)
             super(CryptoBrokerAccount, self).save(*args, **kwargs) 
 
+
+class CryptoTradeDetails(models.Model):
+
+    TYPE = [
+        ("B", "Buy"),
+        ("S", "Sell"),
+    ]
+
+    STATUS = [
+        ("O", "OPEN"),
+        ("P", "PARTIALLY_CLOSED"),
+        ("C", "CLOSED"),
+
+    ]
+
+    custom_id = models.CharField(max_length=20)
+    order_id = models.CharField(max_length=20)
+    symbol = models.CharField(max_length=12)
+
+    volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    remaining_volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    profit = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+
+    side = models.CharField(max_length=1, choices=TYPE)
+ 
+    trade_type = models.CharField(max_length=6)
+
+    status = models.CharField(max_length=1, choices=STATUS, default='O')
+
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    account = models.ForeignKey(CryptoBrokerAccount, on_delete=models.CASCADE, related_name="MAccount")
+
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
+    # object_id = models.PositiveIntegerField()
+    # content_object = GenericForeignKey('content_type', 'object_id')
+
+
+class CryptoLogMessage(models.Model):
+    STATUS = [
+        ("E", "Error"),
+        ("S", "Success"),
+    ]
+
+    response_status = models.CharField(max_length=1, choices=STATUS)
+
+    trade = models.ForeignKey(CryptoTradeDetails, on_delete=models.CASCADE, related_name="Trade")
+
+    alert_message = models.TextField()
+    response_message = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    account = models.ForeignKey(CryptoBrokerAccount, on_delete=models.CASCADE, related_name="Account")
+
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
+    # object_id = models.PositiveIntegerField()
+    # content_object = GenericForeignKey('content_type', 'object_id')
