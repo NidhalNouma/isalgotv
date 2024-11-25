@@ -85,7 +85,7 @@ setInterval(() => {
  
 
   <div class="w-full relative max-w-3xl ">
-      <video class=" shadow-lg rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" autoplay loop muted>
+      <video preload="none" poster="" class=" shadow-lg rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" autoplay loop muted>
         <source src="https://isalgotest.s3.amazonaws.com/videos/Timeline+2.mp4" type="video/mp4">
       </video>
       <div onclick="openModel('video-modal-l')" class=" absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
@@ -402,7 +402,7 @@ setInterval(() => {
             }, 500); // Match the CSS transition duration (0.5s)
           }
           // Add a new image every 3 seconds
-          // setInterval(addImage, 4000);
+          setInterval(addImage, 4000);
         });
         </script>
     </div>

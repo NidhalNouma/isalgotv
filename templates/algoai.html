@@ -12,28 +12,22 @@
     <div class="relative rounded-lg shadow h-full max-h-full flex flex-col">
       <div class="absolute inset-0 -z-10 rounded-lg">
         <div
-          class="absolute -top-0 right-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tr from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 blur-circle animate-blur-motion-1 bg-[length:200%_200%] animate-rotateGradientFast"
+          class="absolute -top-0 right-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tr from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-1 bg-[length:200%_200%] animate-rotateGradientFast"
         ></div>
         <div
-          class="absolute -bottom-0 right-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-br from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 blur-circle animate-blur-motion-2 bg-[length:200%_200%] animate-rotateGradientFast"
+          class="absolute -bottom-0 right-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-br from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-2 bg-[length:200%_200%] animate-rotateGradientFast"
         ></div>
         <div
-          class="absolute -bottom-0 left-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 blur-circle animate-blur-motion-3 bg-[length:200%_200%] animate-rotateGradientFast"
+          class="absolute -bottom-0 left-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-3 bg-[length:200%_200%] animate-rotateGradientFast"
         ></div>
         <div
-          class="absolute -top-0 left-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-bl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 blur-circle animate-blur-motion-4 bg-[length:200%_200%] animate-rotateGradientFast"
+          class="absolute -top-0 left-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-bl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-4 bg-[length:200%_200%] animate-rotateGradientFast"
         ></div>
-        {% comment %}
-        <div class="absolute inset-0 bg-primary"></div>
-        <div
-          class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(124,58,237,0.1),transparent_50%)]"
-        ></div>
-        {% endcomment %}
       </div>
 
       <!-- Modal body -->
       <div
-        class="h-full w-full max-h-full my-auto bg-background/70 backdrop-blur-[320px] backdrop-brightness-100 rounded-xl relative flex flex-col overflow-hidden"
+        class="h-full w-full max-h-full my-auto bg-background rounded-xl relative flex flex-col overflow-hidden"
         id="isalgo-ai"
         user-email="{{user_profile}}"
         user-id="{{user_profile.id}}"

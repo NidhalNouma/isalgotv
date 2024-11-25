@@ -2748,6 +2748,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   min-width: 100vw;
 }
 
+.min-w-\[80\%\] {
+  min-width: 80%;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
