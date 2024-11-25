@@ -4,4 +4,8 @@ from .models import CryptoBrokerAccount
 
 # Register your models here.
 
-admin.site.register(CryptoBrokerAccount)
+class CryptoBrokerAccountAdmin(admin.ModelAdmin):
+    list_display = ('name', 'custom_id', 'created_at') 
+    search_fields = ['name', 'custom_id'] 
+
+admin.site.register(CryptoBrokerAccount, CryptoBrokerAccountAdmin)

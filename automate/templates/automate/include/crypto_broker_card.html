@@ -149,7 +149,7 @@
         </div>
       </div>
 
-      {% with webhook_url=request.scheme|add:'://'|add:request.get_host|add:'/automate/'|add:account.custom_id %}
+      {% with webhook_url=request.scheme|add:'://'|add:request.get_host|add:'/automate/c/'|add:account.custom_id %}
 
       <div
         class="flex flex-row items-center justify-between p-1.5 bg-background rounded-lg cursor-pointer"
@@ -159,7 +159,7 @@
           <div>
             <p class="text-sm text-text/60">Webhook URL</p>
             <p class="text-sm font-medium text-text mt-1 line-clamp-1 overflow-hidden">
-                ...{{ webhook_url|slice:"21:40" }}...
+                ...{{ webhook_url|slice:"22:42" }}...
             </p>
           </div>
         </div>

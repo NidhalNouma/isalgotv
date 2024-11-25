@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
+from django.views.decorators.csrf import csrf_exempt
 
 from .functions.binance import check_binance_credentials
 from .models import *
@@ -138,8 +141,31 @@ def toggle_crypto_broker(request, pk):
 def delete_crypto_broker(request, pk):
     response = CryptoBrokerAccount.objects.delete(pk=pk) 
 
-    print(response)
+    # print(response)
 
     context = context_accounts_by_user(request)
     return render(request, 'include/accounts_list.html', context=context)
 
+
+
+
+@require_http_methods([ "POST"])
+@csrf_exempt
+def handle_webhook_crypto(request, custom_id):
+    try:
+        account = CryptoBrokerAccount.objects.get(custom_id=custom_id)
+        # Serialize the account object (convert to a dictionary)
+        account_data = {
+            'id': account.id,
+            'name': account.name,
+            'custom_id': account.custom_id,
+            # Include other relevant fields if needed
+        }
+        response_data = {
+            'account': account_data,
+            'status': 'success'
+        }
+        return JsonResponse(response_data, status=200)
+    except CryptoBrokerAccount.DoesNotExist:
+        return JsonResponse({'error': 'Account not found'}, status=404)
+    
