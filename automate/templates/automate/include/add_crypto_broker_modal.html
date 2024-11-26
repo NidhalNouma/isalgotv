@@ -212,6 +212,8 @@
 
       {% csrf_token %}
 
+      {% include "include/infos.html" with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class="my-2 w-full" %}
+
       <div id="add-{{broker_type}}-form-errors" class="my-2"></div>
 
       <div class="w-full">

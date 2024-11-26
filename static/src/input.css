@@ -445,37 +445,37 @@
 }
 
 /* Text selection */
-::-moz-selection { /* Code for Firefox */
+::-moz-selection { 
   color: hsl(227, 91%, 59%);
-  /* background: hsl(var(--color-secondary)); */
 }
 
 ::selection {
   color: hsl(227, 91%, 59%);
-  /* background: hsl(var(--color-secondary)); */
 }
 
 
 /* automate_svg animation */
 .path-base {
-  filter: drop-shadow(0 0 2px hsl(var(--color-primary)));
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  /* animation: draw 2s ease-in-out infinite alternate; */
 }
 
 .path-light {
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
-  filter: drop-shadow(0 0 5px hsl(var(--color-text)));
-  animation: moveLight 5s ease-in-out infinite ;
+  /* animation: draw 2s ease-in-out infinite alternate; */
+  opacity: 1;
 }
 
-@keyframes moveLight {
+@keyframes draw {
   0% {
-    stroke-dashoffset: 1000;
+    stroke-dashoffset: 1000; /* Start hidden */
   }
-  50% {
-    stroke-dashoffset: 0;
+  70% {
+    stroke-dashoffset: 0; /* Draws the path */
   }
   100% {
-    stroke-dashoffset: -1000;
+    stroke-dashoffset: 0; /* Holds position for the remaining time */
   }
 }

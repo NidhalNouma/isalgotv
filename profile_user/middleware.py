@@ -5,8 +5,9 @@ import datetime
 import time
 import requests
 
-server_ip = requests.get('https://ifconfig.me')
-print("Server IP: " + server_ip.text)
+server_ip_req = requests.get('https://ifconfig.me')
+server_ip = server_ip_req.text
+print("Server IP: " + server_ip)
 
 env = environ.Env()
 
@@ -131,7 +132,7 @@ def check_user_and_stripe_middleware(get_response):
         request.has_subscription = has_subscription
         request.subscription_canceled = subscription_canceled
 
-        request.server_ip = server_ip.text,
+        request.server_ip = server_ip,
 
         response = get_response(request)
 

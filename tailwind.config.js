@@ -73,6 +73,8 @@ module.exports = {
         rotateGradient: "rotateGradient 8s ease-in-out infinite",
         rotateGradientSlow: "rotateGradient 12s ease-in-out infinite",
         rotateGradientFast: "rotateGradient 4s ease-in-out infinite",
+
+        draw: "draw 2s ease-in-out forwards",
       },
     },
   },
