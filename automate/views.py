@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .functions.binance import check_binance_credentials
 from .models import *
 from .forms import *
+import requests
 
 
 def context_accounts_by_user(request):
@@ -147,12 +148,14 @@ def delete_crypto_broker(request, pk):
     return render(request, 'include/accounts_list.html', context=context)
 
 
-
-
 @require_http_methods([ "POST"])
 @csrf_exempt
 def handle_webhook_crypto(request, custom_id):
     try:
+
+        response = requests.get('https://ifconfig.me')
+        print(response.text)
+
         account = CryptoBrokerAccount.objects.get(custom_id=custom_id)
         # Serialize the account object (convert to a dictionary)
         account_data = {
@@ -163,9 +166,10 @@ def handle_webhook_crypto(request, custom_id):
         }
         response_data = {
             'account': account_data,
-            'status': 'success'
+            'status': 'success',
+            "IP": response.text
         }
         return JsonResponse(response_data, status=200)
     except CryptoBrokerAccount.DoesNotExist:
-        return JsonResponse({'error': 'Account not found'}, status=404)
+        return JsonResponse({'error': 'Account not found', "IP": response.text}, status=404)
     
