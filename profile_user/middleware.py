@@ -3,6 +3,11 @@ import re
 import environ
 import datetime
 import time
+import requests
+
+server_ip = requests.get('https://ifconfig.me')
+print("Server IP: " + server_ip.text)
+
 env = environ.Env()
 
 import stripe
@@ -125,6 +130,8 @@ def check_user_and_stripe_middleware(get_response):
 
         request.has_subscription = has_subscription
         request.subscription_canceled = subscription_canceled
+
+        request.server_ip = server_ip.text,
 
         response = get_response(request)
 

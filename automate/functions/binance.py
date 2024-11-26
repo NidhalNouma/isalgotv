@@ -4,7 +4,7 @@ from binance.cm_futures import CMFutures
 from binance.um_futures import UMFutures
 
 
-def check_binance_credentials(api_key, api_secret, trade_type="spot", symbol = "BTCUSDT"):
+def check_binance_credentials(api_key, api_secret, trade_type="spot"):
     """
     Checks API credentials by attempting a test order on Binance.
 
@@ -44,7 +44,7 @@ def check_binance_credentials(api_key, api_secret, trade_type="spot", symbol = "
         return r
     
     except Exception as e:
-        r = {'error': "API credentials are not valid", "valid": False}
+        r = {'error': "API credentials are not valid", "valid": False, "Exception": str(e)}
         return r
 
 

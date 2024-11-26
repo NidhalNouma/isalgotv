@@ -153,9 +153,6 @@ def delete_crypto_broker(request, pk):
 def handle_webhook_crypto(request, custom_id):
     try:
 
-        response = requests.get('https://ifconfig.me')
-        print(response.text)
-
         account = CryptoBrokerAccount.objects.get(custom_id=custom_id)
         # Serialize the account object (convert to a dictionary)
         account_data = {
@@ -167,9 +164,9 @@ def handle_webhook_crypto(request, custom_id):
         response_data = {
             'account': account_data,
             'status': 'success',
-            "IP": response.text
+            "IP": request.server_ip
         }
         return JsonResponse(response_data, status=200)
     except CryptoBrokerAccount.DoesNotExist:
-        return JsonResponse({'error': 'Account not found', "IP": response.text}, status=404)
+        return JsonResponse({'error': 'Account not found', "IP": request.server_ip}, status=404)
     
