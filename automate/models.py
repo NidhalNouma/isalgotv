@@ -84,26 +84,26 @@ class CryptoTradeDetails(models.Model):
 
     custom_id = models.CharField(max_length=20)
     order_id = models.CharField(max_length=20)
-    symbol = models.CharField(max_length=12)
 
+    symbol = models.CharField(max_length=12)
     volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
     remaining_volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+
+    entry_price = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    exit_price = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+
     profit = models.DecimalField(decimal_places=2, max_digits=20, default=0)
 
     side = models.CharField(max_length=1, choices=TYPE)
  
-    trade_type = models.CharField(max_length=6)
-
+    trade_type = models.CharField(max_length=1, default="S")
     status = models.CharField(max_length=1, choices=STATUS, default='O')
 
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-    account = models.ForeignKey(CryptoBrokerAccount, on_delete=models.CASCADE, related_name="MAccount")
-
-    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
-    # object_id = models.PositiveIntegerField()
-    # content_object = GenericForeignKey('content_type', 'object_id')
+    account = models.ForeignKey(CryptoBrokerAccount, on_delete=models.CASCADE, related_name="CryptoAccount")
 
 
 class CryptoLogMessage(models.Model):
@@ -114,13 +114,12 @@ class CryptoLogMessage(models.Model):
 
     response_status = models.CharField(max_length=1, choices=STATUS)
 
-    trade = models.ForeignKey(CryptoTradeDetails, on_delete=models.CASCADE, related_name="Trade")
-
     alert_message = models.TextField()
     response_message = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    trade = models.ForeignKey(CryptoTradeDetails, on_delete=models.CASCADE, related_name="Trade", blank=True, null=True)
     account = models.ForeignKey(CryptoBrokerAccount, on_delete=models.CASCADE, related_name="Account")
 
     # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)

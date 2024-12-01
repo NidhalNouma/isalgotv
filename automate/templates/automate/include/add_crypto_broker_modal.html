@@ -1,7 +1,5 @@
 <div
   id="add-{{broker_type}}-modal"
-  data-modal-target="add-{{broker_type}}-modal"
-  data-modal-backdrop="static"
   tabindex="-1"
   aria-hidden="true"
   class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
@@ -17,7 +15,7 @@
         <button
           type="button"
           class="mr-2 btn-icon"
-          onclick="hideModel('add-{{broker_type}}-modal'); openModel('add-broker-modal');"
+          onclick="hideModel('add-{{broker_type}}-modal'); openModel('add-broker-modal', false);"
         >
           <svg
             class="w-5 h-5 stroke-current"
@@ -58,7 +56,6 @@
       <button
         type="button"
         class="btn-icon"
-        data-modal-hide="add-{{broker_type}}-modal"
         onclick="hideModel('add-{{broker_type}}-modal');"
       >
         <svg
@@ -210,11 +207,10 @@
         </ul>
       </div>
 
-      {% csrf_token %}
+      {% csrf_token %} 
+      {% include "include/infos.html" with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class=" w-full" %}
 
-      {% include "include/infos.html" with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class="my-2 w-full" %}
-
-      <div id="add-{{broker_type}}-form-errors" class="my-2"></div>
+      <div id="add-{{broker_type}}-form-errors" class=""></div>
 
       <div class="w-full">
         <button

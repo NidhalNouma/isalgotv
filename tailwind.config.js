@@ -84,6 +84,10 @@ module.exports = {
     "transition-transform",
     "duration-200",
     "ease-out",
+    "drawer-left",
+    "drawer-right",
+    "drawer-top",
+    "drawer-bottom",
   ],
   plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],
 };

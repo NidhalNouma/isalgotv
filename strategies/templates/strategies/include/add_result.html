@@ -3,14 +3,14 @@
   <button
     class="btn-secondary text-sm font-semibold underlinei"
     id="add-result-btn"
-    onclick="openModel('add-result-modal', false)"
+    onclick="openModel('add-result-modal')"
   >
     Share your results
   </button> 
   {% elif user.is_authenticated and not has_subscription %}
   <button
     class="btn-secondary text-sm font-semibold underlinei"
-    onclick="openModel('upgrade-modal', false)"
+    onclick="openModel('upgrade-modal')"
   >
     Share your results
   </button> 
@@ -33,26 +33,11 @@
   >
     {% csrf_token %}
 
-    {% with drawer_id="drawer-Performance" %}
-    <div id="{{drawer_id}}" class="fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] bg-background" tabindex="-1" aria-labelledby="drawer-right-label">
-      <div class="flex items-center justify-between bg-background sticky z-30 top-0 w-full py-6 px-4">
+    {% load custom_tags %}
+    {% render_template "include/docs/share_archivement.html" as info_content %}
 
-        <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-        </svg>Share</h5> 
-        <button type="button" onclick="hideDrawer('{{drawer_id}}')" class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-          <span class="sr-only">Close menu</span>
-        </button>
-      </div>
+    {% include "include/drawer_modal.html" with drawer_id="drawer-Performance" title="Share" body=info_content %}
 
-    <div class="text-text text-start px-4 my-4">
-      {% include "include/docs/share_archivement.html" %}
-    </div>
-  </div>
-{% endwith %}
     <div
       id="add-result-modal-result"
       data-modal-backdrop="static"
@@ -1108,7 +1093,7 @@
     if (validateForm(formId)) {
 
       hideModel(closeId);
-      openModel(openId);
+      openModel(openId, false);
     }
   }
 
@@ -1140,7 +1125,7 @@
     }
     
     closeform.click();
-    openModel('add-result-modal-result')
+    openModel('add-result-modal-result', false)
     return true;
   }
 

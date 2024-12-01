@@ -118,7 +118,81 @@
   }
 
   .main-title {
-    @apply mt-6 text-left text-3xl sm:text-5xl text-title font-extrabold
+    @apply mt-4 sm:mt-6 text-left text-3xl sm:text-4xl text-title font-extrabold
+  }
+
+  .par {
+    @apply text-sm tracking-wider;
+  }
+
+  .docs {
+    @apply text-text flex-auto;
+  }
+
+  .docs section {
+    @apply mb-4;
+  }
+
+  .docs section h1 {
+    @apply text-lg font-bold tracking-tight;
+  }
+
+  .docs section h2 {
+    @apply text-base font-semibold tracking-tight mt-2;
+  }
+
+  .docs section p {
+    @apply mt-2 par;
+  }
+
+  .docs section ol {
+    @apply list-decimal ml-4 my-2 par;
+  }
+
+  .docs section ul {
+    @apply ml-4 my-2 par;
+  }
+
+  .docs section a {
+    @apply font-semibold text-title underline;
+  }
+
+  .docs section video {
+    @apply aspect-video w-full mr-auto my-3 rounded max-w-2xl;
+  }
+
+  .docs section img {
+    @apply max-w-sm mt-2 rounded;
+  }
+
+  .docs section span {
+    @apply font-semibold text-title;
+  }
+
+  .docs section p code{
+    @apply bg-title/10 px-1.5 py-0.5 rounded-sm cursor-pointer text-sm text-text/80 hover:text-text/60 transition-all;
+  }
+
+  .docs section p code:hover svg{
+    @apply text-text/60;
+  }
+
+  .docs section p code svg{
+    @apply w-4 aspect-square inline text-text/80 hover:text-text/60 transition-all rounded;
+  }
+
+/* Drawer classes */
+  .drawer-right {
+    @apply fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] rounded-l-md;
+  }
+  .drawer-left {
+    @apply fixed top-0 left-0 z-[60] h-screen overflow-y-auto transition-transform -translate-x-full w-[75vw] sm:w-[50vw] rounded-r-md;
+  }
+  .drawer-bottom {
+    @apply fixed bottom-0 left-0 right-0 z-[60] w-full max-w-7xl mx-auto overflow-y-auto transition-transform translate-y-full h-[75vh] sm:h-[50vh] rounded-t-md;
+  }
+  .drawer-top {
+    @apply fixed top-0 left-0 right-0 z-[60] w-full max-w-7xl  overflow-y-auto transition-transform -translate-y-full h-[75vh] sm:h-[50vh] rounded-b-md;
   }
 }
 
@@ -363,7 +437,6 @@
       animation: gradient-x  15s ease infinite;
     }
 
-
     /* ----------------------- */
 
     .wellcome-before {
@@ -409,17 +482,18 @@
     }
 
     /* End Scroller */
-  
 }
 
 .hideMe {
   animation: cssAnimation 6s forwards;
 }
+
 @keyframes cssAnimation {
   0%   {opacity: 1;}
   90%  {opacity: 1;}
   100% {opacity: 0;}
 }
+
 .move-animation {
   transition: transform 4s ease-in-out; /* Adjust duration as needed */
 }
@@ -453,7 +527,6 @@
   color: hsl(227, 91%, 59%);
 }
 
-
 /* automate_svg animation */
 .path-base {
   stroke-dasharray: 1000;
@@ -478,4 +551,16 @@
   100% {
     stroke-dashoffset: 0; /* Holds position for the remaining time */
   }
+}
+
+/* Hide input number arrows */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; 
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
 }

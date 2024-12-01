@@ -1,5 +1,22 @@
 console.log("js loaded");
 
+function copyPlainText(id) {
+  const codeElement = document.getElementById(id);
+
+  // Get the plain text content (stripping all HTML tags)
+  const text = codeElement.innerText.trim();
+
+  // Copy the text to clipboard
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      console.log("Text copied to clipboard: " + text);
+    })
+    .catch((err) => {
+      console.error("Error copying text: ", err);
+    });
+}
+
 function swapDivBtn(id1, id2) {
   const btn1 = document.getElementById(id1 + "-btn");
   const btn2 = document.getElementById(id2 + "-btn");
@@ -685,18 +702,19 @@ function getNumberOfLines(id) {
 }
 
 const modals = {};
-function openModel(id, backdrop = "dynamic", animated = false) {
+function openModel(id, animated = true, backClose = true) {
   const modalElement = document.querySelector("#" + id);
+
+  let backdrop = "dynamic";
+  if (!backClose) backdrop = "static";
 
   const modalOptions = {
     onHide: () => {
       document.querySelector("html").style.overflowY = "unset";
       if (animated) {
         modalElement.classList.remove("scale-100"); // Remove full scale on hide
-        modalElement.classList.add("scale-0"); // Scale down when hiding
-        setTimeout(() => {
-          modalElement.classList.add("hidden"); // Hide after the scale transition
-        }, 200); // Match this duration with the transition duration
+        // modalElement.classList.add("scale-0"); // Scale down when hiding
+        // modalElement.classList.add("hidden");
       }
     },
     backdrop: backdrop,
@@ -730,20 +748,23 @@ function openModel(id, backdrop = "dynamic", animated = false) {
     modals[id] = modal;
     modal.show();
   }
+  return true;
 }
 
 function hideModel(id) {
   if (modals[id]) modals[id].hide();
   delete modals[id];
+
+  return true;
 }
 
 const drawers = {};
 
-function openDrawer(id) {
+function openDrawer(id, placement = "right") {
   const draweli = document.querySelector("#" + id);
 
   const drawerOptions = {
-    placement: "right",
+    placement: placement,
 
     backdrop: true,
     bodyScrolling: true,
@@ -769,11 +790,14 @@ function openDrawer(id) {
   }
 
   document.querySelector("html").style.overflowY = "hidden";
+  return true;
 }
 
 function hideDrawer(id) {
   if (drawers[id]) drawers[id].hide();
   delete drawers[id];
+
+  return true;
 }
 
 function openPopupWindow(url, name = "windowChart") {

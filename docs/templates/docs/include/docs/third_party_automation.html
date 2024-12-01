@@ -1,0 +1,49 @@
+<article class="docs">
+
+    <section>
+        <h1>Automate your alerts</h1>
+  
+        <p>
+          You have the option to automate your alerts and send them to any broker
+          of your choice for trade execution, allowing you to start generating
+          profits. <br />
+          You'll need to use one of the available TradingView automation softwares
+          that will be provided by a third-party application. <br /><br />
+          These are some companies that you can use
+        </p>
+  
+        <div>{% include "include/docs/automation_sites.html" %}</div>
+      </section>
+      <section>
+        <h1>Alert messages</h1>
+  
+        <p>
+          Each automation company will provide you with the types of messages that
+          you will need to automate the trades. The messages will be for entry and
+          exit signals. <br />Checkout
+          <a  href='{% url "docs_alerts" %}'
+            >the alerts page</a
+          >
+          to see where you can add the alert messages and create the TradingView
+          alert.
+        </p>
+      </section>
+      <section>
+        <h1>Webhook URL</h1>
+  
+        <p>
+          The final step is to copy the webhook URL that you'll get from the
+          automation company and paste it into the webhook URL field in
+          TradingView when you create the alert.
+        </p>
+  
+        <img
+          src="https://isalgotest.s3.amazonaws.com/docs/webhook_url_tv.png"
+        />
+  
+        <p>
+          After pasting the webhook, simply click 'Save,' and you'll be ready to
+          go. Once an alert fires, check your broker to see your trade active.
+        </p>
+      </section>
+</article>

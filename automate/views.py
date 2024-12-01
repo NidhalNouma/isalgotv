@@ -6,9 +6,12 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 from django.views.decorators.csrf import csrf_exempt
 
 from .functions.binance import check_binance_credentials
+from .functions.alerts_logs_trades import manage_alert
 from .models import *
 from .forms import *
-import requests
+
+from collections import defaultdict
+from django.utils.timezone import localtime
 
 
 def context_accounts_by_user(request):
@@ -59,20 +62,16 @@ def add_crypto_broker(request, broker_type):
                 
                 else: 
                     context = {'error': valid.get('error')}
-                    print(form.errors)
                     response = render(request, "include/errors.html", context=context)
                     return retarget(response, f'#add-{broker_type}-form-errors')
                 
             else:
                 context = {'error': form.errors}
-                print(form.errors)
                 response = render(request, "include/errors.html", context=context)
                 return retarget(response, f'#add-{broker_type}-form-errors')
 
     except Exception as e:
-        print(e)
-        # context = {'error': e}
-        context = {'error': "An error occurred while adding this account."}
+        context = {'error': e}
         response = render(request, "include/errors.html", context=context)
         return retarget(response, f'#add-{broker_type}-form-errors')
 
@@ -107,20 +106,16 @@ def edit_crypto_broker(request, pk):
                 
                 else: 
                     context = {'error': valid.get('error')}
-                    print(form.errors)
                     response = render(request, "include/errors.html", context=context)
                     return retarget(response, f'#edit-{account.id}_{account.broker_type}-form-errors')
                 
             else:
                 context = {'error': form.errors}
-                print(form.errors)
                 response = render(request, "include/errors.html", context=context)
                 return retarget(response, f'#edit-{account.id}_{account.broker_type}-form-errors')
 
     except Exception as e:
-        print(e)
-        # context = {'error': e}
-        context = {'error': "An error occurred while editing this account."}
+        context = {'error': e}
         response = render(request, "include/errors.html", context=context)
         return retarget(response, f'#edit-{account.id}_{account.broker_type}-form-errors')
 
@@ -147,12 +142,28 @@ def delete_crypto_broker(request, pk):
     context = context_accounts_by_user(request)
     return render(request, 'include/accounts_list.html', context=context)
 
+@require_http_methods([ "POST"])
+def get_crypto_broker_logs(request, pk):
+    logs_list = CryptoLogMessage.objects.filter(account_id=pk).order_by('-created_at')
+    grouped_logs = defaultdict(list)
+
+    for log in logs_list:
+        log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
+        grouped_logs[log_date].append(log)
+
+    context = {
+        'grouped_logs': dict(grouped_logs),
+        'logs': logs_list,
+        'id': pk
+    }
+    
+    return render(request, 'include/account_logs.html', context=context)
+
 
 @require_http_methods([ "POST"])
 @csrf_exempt
 def handle_webhook_crypto(request, custom_id):
     try:
-
         account = CryptoBrokerAccount.objects.get(custom_id=custom_id)
         # Serialize the account object (convert to a dictionary)
         account_data = {
@@ -166,7 +177,13 @@ def handle_webhook_crypto(request, custom_id):
             'status': 'success',
             "IP": request.server_ip
         }
+
+        text_data = request.body.decode('utf-8')  # Decode the bytes object to string
+
+        manage_alert_response = manage_alert(text_data, account)
+
         return JsonResponse(response_data, status=200)
+    
     except CryptoBrokerAccount.DoesNotExist:
         return JsonResponse({'error': 'Account not found', "IP": request.server_ip}, status=404)
     

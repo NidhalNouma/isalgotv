@@ -1,0 +1,96 @@
+<article class="docs">
+    <p class="par mb-4">
+        This guide will walk you through setting up automated alerts on TradingView, helping you streamline your trading process and save time.
+    </p>
+    
+    <section>
+        <h1 class=" ">Getting Started</h1>
+        <p class="">
+        Visit
+        <a
+            href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591"
+            target="_blank"
+            class=""
+        >
+            TradingView
+        </a>
+        and open a chart from the
+        <span class="">Product -> Supercharts</span>
+        section. To automate your alerts, use a strategy or indicator that supports built-in alerts. We recommend the IsAlgo strategy for its integrated alert system.
+        </p>
+    </section>
+    
+    <section>
+        <h1>Step 1: Configure Your Chart</h1>
+        <p >
+        <strong>1. Select the Asset:</strong> Choose the asset to trade (e.g., BTCUSD, NAS100) and ensure the correct timeframe is displayed.
+        </p>
+        <p >
+        <strong>2. Add the Strategy:</strong> Apply your strategy to the chart. Test it thoroughly before automating your alerts.
+        </p>
+    </section>
+    
+    <section>
+        <h1 >Step 2: Writing Alerts</h1>
+        <p >
+        Alerts require specific inputs. Here’s how to structure them:
+        </p>
+    
+        <h2 >Entry Alerts</h2>
+        <p>
+        Inputs for entry alerts:
+        <br />
+        • D: Direction (Buy or Sell) <br />
+        • A: Asset name (e.g., BTCUSD, NAS100) <br />
+        • V: Volume or trade amount <br />
+        • ID: Trade ID (use <code> {{ "{{ID}" }}}</code> with IsAlgo) <br />
+        </p>
+        <p >
+        Example Entry Alerts: <br />
+        • Long: <code>D=Buy A=BTCUSD V=10 ID={{ "{{ID}" }}}</code> <br />
+        • Short: <code>D=Sell A=BTCUSD V=10 ID={{ "{{ID}" }}}</code>
+        </p>
+    
+        <h2 >Exit Alerts</h2>
+        <p >
+        Inputs for exit alerts:
+        <br />
+        • X: Trade type to exit (Buy or Sell) <br />
+        • A: Asset name <br />
+        • P: Partial close percentage (use <code>{{ "{{partial_close}" }}}</code> with IsAlgo) <br />
+        • ID: Trade ID (use <code>{{ "{{ID}" }}}</code> with IsAlgo) <br />
+        </p>
+        <p>
+        Example Exit Alerts: <br />
+        • Long Exit: <code>X=Buy A=BTCUSD P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}}</code> <br />
+        • Short Exit: <code>X=Sell A=BTCUSD P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}}</code>
+        </p>
+    </section>
+    
+    <section>
+        <h1>Step 3: Paste Alerts</h1>
+        <p >
+        If using IsAlgo, paste the alert messages into the relevant input fields: Entry Long, Entry Short, Exit Long, Exit Short. Click OK to save.
+        </p>
+    </section>
+    
+    <section >
+        <h1 >Step 4: Create a TradingView Alert</h1>
+        <p >
+        To create a TradingView alert:
+        </p>
+        <ol>
+        <li>Click the Alert icon (bell) in the chart toolbar.</li>
+        <li>Select <strong>Create Alert</strong>.</li>
+        <li>In <strong>Condition</strong>, choose your strategy/indicator and select <code>alert() function calls only</code>.</li>
+        <li>Give the alert a descriptive name.</li>
+        <li>Go to the <strong>Notifications</strong> tab, enable <strong>Webhook URL</strong>, and paste your Webhook URL.</li>
+        <li>Click <strong>Create</strong>.</li>
+        </ol>
+
+        <p >
+        <strong>Note:</strong> Alerts are tied to the current asset and timeframe. Changing these or modifying strategy inputs requires recreating the alert.
+        </p>
+    </section>
+
+  </article>

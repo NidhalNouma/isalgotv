@@ -4,7 +4,7 @@
   enctype="multipart/form-data"
 >
   {% csrf_token %}
-  <label for="email" class="block mb-2 text-sm font-medium text-text"
+  <label for="email" class="input-label"
     >Email</label
   >
   <div class="relative mb-6 ">
@@ -35,7 +35,7 @@
       placeholder="name@company.com"
     />
   </div>
-  <label for="subject" class="block mb-2 text-sm font-medium text-text"
+  <label for="subject" class="input-label"
     >Subject</label
   >
   <div class="relative mb-6">
@@ -63,7 +63,7 @@
     />
   </div>
   <div class="relative mb-6">
-    <label for="subject" class="block mb-2 text-sm font-medium text-text"
+    <label for="subject" class="input-label"
       >Message</label
     >
     <textarea

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CryptoBrokerAccount
+from .models import CryptoBrokerAccount, CryptoLogMessage
 
 # Register your models here.
 
@@ -9,3 +9,4 @@ class CryptoBrokerAccountAdmin(admin.ModelAdmin):
     search_fields = ['name', 'custom_id'] 
 
 admin.site.register(CryptoBrokerAccount, CryptoBrokerAccountAdmin)
+# admin.site.register(CryptoLogMessage)

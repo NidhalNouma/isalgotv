@@ -1,39 +1,22 @@
-
-from binance.spot import Spot as Client
+from binance.spot import Spot 
 from binance.cm_futures import CMFutures
 from binance.um_futures import UMFutures
 
+from binance.error import ClientError
 
-def check_binance_credentials(api_key, api_secret, trade_type="spot"):
-    """
-    Checks API credentials by attempting a test order on Binance.
 
-    Args:
-        api_key (str): User's Binance API key.
-        api_secret (str): User's Binance API secret.
-        symbol (str): Trading pair symbol, e.g., 'BTCUSDT'.
-        trade_type (str): Type of trading ('spot', 'usdm', 'coinm').
-
-    """
+def check_binance_credentials(api_key, api_secret, trade_type="S"):
 
     try:
         if trade_type == "S": #Spot
-            client = Client(api_key, api_secret)
+            client = Spot(api_key, api_secret)
             client.account()
-            # client.new_order_test(
-            #     symbol=symbol,
-            #     side=Client.SIDE_BUY,
-            #     type=Client.ORDER_TYPE_MARKET,
-            #     quantity=0.01  # Small quantity for test
-            # )
         elif trade_type == "U": #USDM
             client = UMFutures(api_key, api_secret)
-            # USD-M Futures test order
             client.account()
 
         elif trade_type == "C": #COINM
             client = CMFutures(api_key, api_secret)
-            # Coin-M Futures test order
             client.account()
 
         else:
@@ -43,118 +26,81 @@ def check_binance_credentials(api_key, api_secret, trade_type="spot"):
         r = {'message': "API credentials are valid.", "valid": True}
         return r
     
-    except Exception as e:
-        r = {'error': "API credentials are not valid", "valid": False, "Exception": str(e)}
-        return r
-
-
-
-def open_trade(binance_account, symbol: str, side: str, quantity: float, trade_type: str = "spot", custom_id: str = None):
-    """
-    Opens a trade and logs it with a custom ID.
-
-    Args:
-        symbol (str): Trading pair symbol, e.g., 'BTCUSDT'.
-        side (str): 'BUY' or 'SELL'.
-        quantity (float): Quantity to trade.
-        trade_type (str): 'spot', 'usdm', or 'coinm'.
-        custom_id (str): Custom identifier for the trade.
-
-    Returns:
-        dict: Binance API response.
-    """
-    try:
-        client = Client(api_key=binance_account.BINANCE_API_KEY, api_secret=binance_account.BINANCE_SECRET_KEY)
-
-        if trade_type == "spot":
-            order_params = {
-                "symbol": symbol,
-                "side": side,
-                "type": "MARKET",
-                "quantity": quantity,
-            }
-            if custom_id:
-                order_params["newClientOrderId"] = custom_id
-
-            response = client.create_order(**order_params)
-
-        elif trade_type == "usdm":
-            response = client.futures_create_order(
-                symbol=symbol,
-                side=side,
-                type="MARKET",
-                quantity=quantity
-            )
-        elif trade_type == "coinm":
-            response = client.futures_coin_create_order(
-                symbol=symbol,
-                side=side,
-                type="MARKET",
-                quantity=quantity
-            )
-        else:
-            raise ValueError("Invalid trade_type. Use 'spot', 'usdm', or 'coinm'.")
-
-        # Log the trade with your custom ID
-        # log_trade(response, custom_id)
-
-        return response
-
-    except Exception as e:
+    except ClientError as e:   
+        return {"error": e.error_message}
+    
+    except Exception as e:   
         return {"error": str(e)}
 
 
 
-# def close_trade(binance_account, custom_id: str):
-#     """
-#     Closes a trade based on the custom ID.
+def open_trade(binance_account, symbol: str, side: str, quantity: float, custom_id: str = None):
 
-#     Args:
-#         custom_id (str): Custom identifier for the trade to close.
+    try:
+        trade_type = binance_account.type
+        order_params = {
+            "symbol": symbol,
+            "side": str.upper(side),
+            "type": "MARKET",
+            "quantity": quantity,
+        }
 
-#     Returns:
-#         dict: Binance API response.
-#     """
-#     try:
-#         # Fetch the trade details from your database or storage
-#         # trade_details = fetch_trade_by_custom_id(custom_id)
+        if trade_type == "S":
+            client = Spot(api_key=binance_account.apiKey, api_secret=binance_account.secretKey)
+            response = client.new_order(**order_params)
 
-#         client = Client(api_key=binance_account.BINANCE_API_KEY, api_secret=binance_account.BINANCE_SECRET_KEY)
-#         if not trade_details:
-#             return {"error": f"No trade found with custom ID: {custom_id}"}
+        elif trade_type == "U":
+            client = UMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
+            response = client.new_order(**order_params)
 
-#         # Extract necessary details
-#         symbol = trade_details["symbol"]
-#         side = "SELL" if trade_details["side"] == "BUY" else "BUY"
-#         quantity = trade_details["quantity"]
-#         trade_type = trade_details["trade_type"]
+        elif trade_type == "C":
+            client = CMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
+            response = client.new_order(**order_params)
 
-#         # Place the opposite order to close the trade
-#         if trade_type == "spot":
-#             response = client.create_order(
-#                 symbol=symbol,
-#                 side=side,
-#                 type="MARKET",
-#                 quantity=quantity
-#             )
-#         elif trade_type == "usdm":
-#             response = client.futures_create_order(
-#                 symbol=symbol,
-#                 side=side,
-#                 type="MARKET",
-#                 quantity=quantity
-#             )
-#         elif trade_type == "coinm":
-#             response = client.futures_coin_create_order(
-#                 symbol=symbol,
-#                 side=side,
-#                 type="MARKET",
-#                 quantity=quantity
-#             )
-#         else:
-#             raise ValueError("Invalid trade_type. Use 'spot', 'usdm', or 'coinm'.")
+        else:
+            raise ValueError("Invalid trade type. Use 'spot', 'usdm', or 'coinm'.")
 
-#         return response
+        return response
 
-#     except Exception as e:
-#         return {"error": str(e)}
+    except ClientError as e:   
+        raise ValueError(e.error_message)
+
+    except Exception as e:   
+        raise ValueError(str(e))
+
+
+
+def close_trade(binance_account, trade_type, symbol, side, quantity):
+    try:
+        t_side = "SELL" if side == "B" else "BUY"
+
+        order_params = {
+            "symbol": symbol,
+            "side": str.upper(t_side),
+            "type": "MARKET",
+            "quantity": quantity,
+        }
+
+        # Place the opposite order to close the trade
+        if trade_type == "S":
+            client = Spot(api_key=binance_account.apiKey, api_secret=binance_account.secretKey)
+            response = client.new_order(**order_params)
+
+        elif trade_type == "U":
+            client = UMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
+            response = client.new_order(**order_params)
+
+        elif trade_type == "M":
+            client = CMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
+            response = client.new_order(**order_params)
+
+        else:
+            raise ValueError("Invalid trade_type. Use 'spot', 'usdm', or 'coinm'.")
+
+        return response
+
+    except ClientError as e:   
+        raise ValueError(e.error_message)
+
+    except Exception as e:   
+        raise ValueError(str(e))
