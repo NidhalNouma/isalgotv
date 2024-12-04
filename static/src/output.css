@@ -2854,6 +2854,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-width: 20rem;
 }
 
+.max-w-\[80\%\] {
+  max-width: 80%;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }

@@ -6,7 +6,7 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 from django.views.decorators.csrf import csrf_exempt
 
 from .functions.binance import check_binance_credentials
-from .functions.alerts_logs_trades import manage_alert
+from .functions.alerts_logs_trades import manage_alert, check_credentials
 from .models import *
 from .forms import *
 
@@ -41,13 +41,14 @@ def add_crypto_broker(request, broker_type):
                 'apiKey': request.POST.get(f'{broker_type}_apiKey'),
                 'secretKey': request.POST.get(f'{broker_type}_secretKey'),
                 'type': request.POST.get(f'{broker_type}_type'),
+                'pass_phrase': request.POST.get(f'{broker_type}_pass_phrase'),
                 'created_by' : request.user.user_profile,
                 'broker_type': broker_type
             }
             form = AddCryptoBrokerAccountForm(form_data) 
 
             if form.is_valid():
-                valid = check_binance_credentials(form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('type'))
+                valid = check_credentials(broker_type ,form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('pass_phrase'), form_data.get('type'))
                 print(valid)
 
                 if valid.get('valid') == True:

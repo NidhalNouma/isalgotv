@@ -16,6 +16,7 @@ def generate_short_unique_id(prefix, id):
 class CryptoBrokerAccount(models.Model):
     BROKER_TYPES = [
         ("binance", "Binance"),
+        ("binanceus", "Binance US"),
         ("bitget", "Bitget"),
         ("bybit", "Bybit"),
         ("bingx", "Bingx"),

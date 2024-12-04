@@ -1,5 +1,19 @@
 from ..models import *
 from .binance import * 
+from .binance_us import *
+from .bitget import *
+
+def check_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
+    if broker_type == 'binance':
+        return check_binance_credentials(api_key, api_secret, trade_type)
+    if broker_type == 'binanceus':
+        return check_binance_us_credentials(api_key, api_secret)
+    elif broker_type == 'bitget':
+        return check_bitget_credentials(api_key, api_secret, phrase)
+    else:
+        raise Exception("Unsupported broker type.")
+
+    
 
 def manage_alert(alert_message, account):
     try:
@@ -33,7 +47,7 @@ def manage_alert(alert_message, account):
 
         if broker_type == 'binance':
             if action == 'Entry':
-                trade = open_trade(account, symbol, side, volume, custom_id)
+                trade = open_binance_trade(account, symbol, side, volume, custom_id)
                 trade =save_new_trade(custom_id, trade.order_id, trade.symbol, side, trade.origQty, trade.price, account)
                 save_log("S", alert_message, 'Order placed successfully.', account, trade)
                 print(trade)
@@ -45,7 +59,7 @@ def manage_alert(alert_message, account):
                 volume_to_close = volume
                 if partial:
                     volume_to_close = trade_to_close.volume * float(partial) / 100
-                closed_trade = close_trade(account, trade_to_close.trade_type, symbol, side, volume_to_close)
+                closed_trade = close_binance_trade(account, trade_to_close.trade_type, symbol, side, volume_to_close)
 
                 trade = update_trade_after_close(trade_to_close, volume_to_close, closed_trade.price)
                 save_log("S", alert_message, 'Order was closed successfully.', account, trade)

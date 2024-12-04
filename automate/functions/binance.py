@@ -34,7 +34,7 @@ def check_binance_credentials(api_key, api_secret, trade_type="S"):
 
 
 
-def open_trade(binance_account, symbol: str, side: str, quantity: float, custom_id: str = None):
+def open_binance_trade(binance_account, symbol: str, side: str, quantity: float, custom_id: str = None):
 
     try:
         trade_type = binance_account.type
@@ -70,7 +70,7 @@ def open_trade(binance_account, symbol: str, side: str, quantity: float, custom_
 
 
 
-def close_trade(binance_account, trade_type, symbol, side, quantity):
+def close_binance_trade(binance_account, trade_type, symbol, side, quantity):
     try:
         t_side = "SELL" if side == "B" else "BUY"
 
