@@ -11,6 +11,7 @@ module.exports = {
     "./automate/templates/**/*.html",
     "./docs/templates/**/*.html",
     "./aichat/src/**/*.js",
+    "./static/js/**/*.js",
     "./aichat/src/components/**/*.js",
 
     "./node_modules/flowbite/**/*.js",

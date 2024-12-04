@@ -33,7 +33,7 @@
         >{{broker_type}}
         <button
           class="ml-1"
-          onclick="openDrawer('drawer-Performance')"
+          onclick="openDrawer('drawer-add-docs-account-{{broker_type}}')"
           type="button"
         >
           <svg
@@ -265,3 +265,10 @@
     </form>
   </div>
 </div>
+
+
+
+{% load custom_tags %}
+{% render_template "include/docs/automate/add_"|add:broker_type|add:"_account.html" as add_account_content %}
+
+{% include "include/drawer_modal.html" with drawer_id="drawer-add-docs-account-"|add:broker_type title="Link account" body=add_account_content %}

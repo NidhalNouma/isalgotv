@@ -1,39 +1,25 @@
 <!-- Main modal -->
 <div
-  id="modal-images"
+  id="modal-images-{{id}}"
   data-modal-backdrop="static"
   tabindex="-1"
   aria-hidden="true"
-  class="fixed z-50 hidden overflow-hidden inset-0 h-full w-full max-h-full p-4"
+  class="fixed z-[70] hidden overflow-hidden inset-0 h-full w-full max-h-full p-0"
 >
-        <button
-          type="button"
-          class="absolute top-4 right-3.5 btn-icon"
-          onclick="hideModel('modal-images')"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
+
       <!-- Modal body -->
-      <div class="h-[90%] bg-background p-1 rounded-lg w-full my-auto">
+      <div class="h-[100%] bg-background w-full my-auto relative">
+        <div class="h-full w-full fixed inset-0 modal-backdrop !z-0" ></div>
+
+
         <div
-          id="controls-carousel"
+          id="controls-carousel-{{id}}"
           class="relative w-full h-full"
           data-carousel="static"
         >
           <!-- Carousel wrapper -->
           <div
-            id="images-carousel"
+            id="images-carousel-{{id}}"
             class="relative h-full overflow-hidden rounded-lg"
           >
             <!-- Item 1 -->
@@ -53,7 +39,7 @@
             type="button"
             class="absolute top-0 -left-8 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
             data-carousel-prev
-            id="prev-button-carousel"
+            id="prev-button-carousel-{{id}}"
           >
             <span
               class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-background brightness-150 group-focus:outline-none opacity-40 hover:opacity-100"
@@ -80,7 +66,7 @@
             type="button"
             class="absolute top-0 -right-8 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
             data-carousel-next
-            id="next-button-carousel"
+            id="next-button-carousel-{{id}}"
           >
             <span
               class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-background brightness-150 group-focus:outline-none opacity-40 hover:opacity-100"
@@ -103,6 +89,25 @@
               <span class="sr-only">Next</span>
             </span>
           </button>
+
+          <button
+            type="button"
+            class="absolute top-4 right-3.5 btn-icon"
+            onclick="hideModel('modal-images-{{id}}')"
+            >
+            <svg
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+         </button>
         </div>
       </div>
 </div>

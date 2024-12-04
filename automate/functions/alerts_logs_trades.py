@@ -47,7 +47,8 @@ def manage_alert(alert_message, account):
                     volume_to_close = trade_to_close.volume * float(partial) / 100
                 closed_trade = close_trade(account, trade_to_close.trade_type, symbol, side, volume_to_close)
 
-                update_trade_after_close(trade_to_close, volume_to_close, closed_trade.price)
+                trade = update_trade_after_close(trade_to_close, volume_to_close, closed_trade.price)
+                save_log("S", alert_message, 'Order was closed successfully.', account, trade)
                 print(closed_trade)
     
     except Exception as e:   
@@ -115,3 +116,5 @@ def update_trade_after_close(trade, closed_volume, price):
     trade.remaining_volume = trade.volume - closed_volume
     trade.status = 'P'
     trade.save()
+
+    return trade

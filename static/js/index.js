@@ -260,12 +260,12 @@ function showSelectImgs(id) {
   input.click();
 }
 
-function showModalImages(images, imgId, id = "modal-images") {
+function showModalImages(images, imgId, id = "") {
   // console.log(images);
   // const modal = document.getElementById(id);
   // modal.classList.remove("hidden");
 
-  openModel(id);
+  openModel("modal-images-" + id);
 
   let currentIndex = 0;
 
@@ -281,21 +281,30 @@ function showModalImages(images, imgId, id = "modal-images") {
   };
 
   document
-    .getElementById("prev-button-carousel")
+    .getElementById("prev-button-carousel-" + id)
     .addEventListener("click", () => {
       currentIndex = (currentIndex - 1 + images.length) % images.length;
       showImage(currentIndex);
     });
 
   document
-    .getElementById("next-button-carousel")
+    .getElementById("next-button-carousel-" + id)
     .addEventListener("click", () => {
       currentIndex = (currentIndex + 1) % images.length;
       showImage(currentIndex);
     });
 
-  const carouselControl = document.getElementById("controls-carousel");
-  const carouselContainer = document.getElementById("images-carousel");
+  if (images.length <= 1) {
+    document
+      .getElementById("prev-button-carousel-" + id)
+      .classList.add("hidden");
+    document
+      .getElementById("next-button-carousel-" + id)
+      .classList.add("hidden");
+  }
+
+  const carouselControl = document.getElementById("controls-carousel-" + id);
+  const carouselContainer = document.getElementById("images-carousel-" + id);
   while (carouselContainer.firstChild) {
     carouselContainer.removeChild(carouselContainer.firstChild);
   }
@@ -307,8 +316,8 @@ function showModalImages(images, imgId, id = "modal-images") {
     imgElement.classList.add(
       "object-scale-down",
       "absolute",
-      "max-w-[95%]",
-      "max-h-[99%]",
+      "max-w-[90%]",
+      "max-h-[90%]",
       "aspect-auto",
       "block",
       "-translate-x-1/2",

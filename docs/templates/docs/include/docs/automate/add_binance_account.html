@@ -1,0 +1,66 @@
+{% load static %}
+<article class="docs">
+
+    <section>
+        <h1>Link a binance account</h1>
+        <ol>
+            <li>
+                Create a Binance Account: If you don’t have a Binance account, 
+                <a href="https://www.binance.com/en/register" target="_blank">sign up here</a>.
+            </li>
+            <li>
+                Log In to Your Binance Account: Log in using your credentials.
+            </li>
+            <li>
+                Access API Management: Click on the profile icon in the top-right corner, 
+                then select "Account" from the dropdown menu.
+                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step3-image-src.png" %}"}], "b1")' 
+                     src='{% static "images/docs/automate/binance/step3-image-src.png" %}' 
+                     alt="Access API Management" />
+            </li>
+            <li>
+                Create an API Key: Click "Create API," choose "System generated," and give your new API key a descriptive name.
+                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step4-image-src.png" %}"}], "b1")' 
+                     src='{% static "images/docs/automate/binance/step4-image-src.png" %}' 
+                     alt="Create API Key" />
+            </li>
+            <li>
+                Configure API Settings:
+                <ul>
+                    <li>Select "Restrict access to trusted IPs only."</li>
+                    <li>Add your server's IP address <span>{{server_ip}}</span>.</li>
+                    <li>Click "Confirm."</li>
+                </ul>
+                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step5-image-src.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/binance/step5-image-src.png" %}' 
+                    alt="Configure API Settings" />
+            </li>
+            <li>
+                Set Permissions: Enable "Spot & Margin Trading" and "Futures." Click "Save" to confirm your settings.
+
+                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step6-image-src.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/binance/step6-image-src.png" %}' 
+                    alt="Set Permissions" />
+            </li>
+            <li>
+                Integrate API with Your Website:
+                <ul>
+                    <li>Copy the API Key and Secret Key.</li>
+                    <li>Paste them into the appropriate form fields on your website.</li>
+                </ul>
+
+                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step7-image-src.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/binance/step7-image-src.png" %}' 
+                    alt="Integrate API with Website" />
+            </li>
+            <li>
+                Select Trading Preferences: Choose between Spot, USDⓈ-M Futures, or Coin-M Futures, then click "Save."
+                {% comment %} <img src="step8-image-src.jpg" alt="Select Trading Preferences"> {% endcomment %}
+            </li>
+            <li>
+                Finalize and Test: Ensure the integration works. If you encounter any issues, contact our support team.
+                {% comment %} <img src="step9-image-src.jpg" alt="Finalize and Test"> {% endcomment %}
+            </li>
+        </ol>
+    </section>
+</article>

@@ -162,7 +162,7 @@
   }
 
   .docs section img {
-    @apply max-w-sm mt-2 rounded;
+    @apply max-w-md mt-2 rounded cursor-pointer;
   }
 
   .docs section span {
@@ -451,7 +451,7 @@
       scrollbar-width: none; /* Firefox */
     }
 
-    [modal-backdrop] {
+    [modal-backdrop], .modal-backdrop{
       @apply bg-title/70 grayscale brightness-[0.1] z-40 absolute top-0 w-screen h-full left-0
     }
 
