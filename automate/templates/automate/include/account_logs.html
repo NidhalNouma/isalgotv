@@ -1,6 +1,6 @@
 <!-- Logs account  -->
 
-<section id="logs-crypto-{{ id }}" class="">
+<section id="logs-{{broker_type}}-{{ id }}" class="">
     {% if logs is not None %}
       {% if logs %}
           {% for date, logs in grouped_logs.items %}

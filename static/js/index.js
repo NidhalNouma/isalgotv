@@ -54,7 +54,13 @@ function openLoader(title, id = "-pay-submit-", className = "block") {
 
   if (document.getElementById("error" + id + title))
     document.getElementById("error" + id + title).style.display = "none";
+
+  let form_errors = id + title + "-form-errors";
+  if (form_errors.startsWith("-")) form_errors = form_errors.substring(1);
+  if (document.getElementById(form_errors))
+    document.getElementById(form_errors).innerHTML = "";
 }
+
 function closeLoader(title, id = "-pay-submit-", className = "block") {
   let spinner = document.getElementById("spinner" + id + title);
   if (spinner) spinner.style.display = "none";

@@ -103,29 +103,52 @@ def add_broker(request, broker_type):
         return retarget(response, f'#add-{broker_type}-form-errors')
 
 @require_http_methods([ "POST"])
-def edit_crypto_broker(request, broker_type, pk):
+def edit_broker(request, broker_type, pk):
     try:
         if request.method == 'POST':
 
-            account = CryptoBrokerAccount.objects.get(pk=pk)
+            crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+            forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
-            form_data = {
-                'name': request.POST.get(f'{account.id}_{account.broker_type}_name'),
-                'apiKey': request.POST.get(f'{account.id}_{account.broker_type}_apiKey'),
-                'secretKey': request.POST.get(f'{account.id}_{account.broker_type}_secretKey'),
-                'type': request.POST.get(f'{account.id}_{account.broker_type}_type'),
-                'created_by' : request.user.user_profile,
-                'broker_type': account.broker_type
-            }
-            form = AddCryptoBrokerAccountForm(form_data, instance=account) 
+            if broker_type in crypto_broker_types:
+                account = CryptoBrokerAccount.objects.get(pk=pk)
+
+                form_data = {
+                    'name': request.POST.get(f'{account.id}_{account.broker_type}_name'),
+                    'apiKey': request.POST.get(f'{account.id}_{account.broker_type}_apiKey'),
+                    'secretKey': request.POST.get(f'{account.id}_{account.broker_type}_secretKey'),
+                    'pass_phrase': request.POST.get(f'{broker_type}_pass_phrase'),
+                    'type': request.POST.get(f'{account.id}_{account.broker_type}_type'),
+                    'created_by' : request.user.user_profile,
+                    'broker_type': account.broker_type
+                }
+                form = AddCryptoBrokerAccountForm(form_data, instance=account) 
+
+            elif broker_type in forex_broker_types:
+                account = ForexBrokerAccount.objects.get(pk=pk)
+                form_data = {
+                    'name': request.POST.get(f'{account.id}_{account.broker_type}_name'),
+                    'username': request.POST.get(f'{account.id}_{account.broker_type}_username'),
+                    'password': request.POST.get(f'{account.id}_{account.broker_type}_password'),
+                    'server': request.POST.get(f'{account.id}_{account.broker_type}_server'),
+                    'type': request.POST.get(f'{account.id}_{account.broker_type}_type'),
+                    'created_by' : request.user.user_profile,
+                    'broker_type': broker_type
+                }
+                form = AddForexBrokerAccountForm(form_data, instance=account) 
+            else:
+                raise Exception("Invalid Broker Type")
 
             if form.is_valid():
-                valid = check_crypto_credentials(form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('type'))
-                print(valid)
+                if broker_type in crypto_broker_types:
+                    valid = check_crypto_credentials(broker_type, form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('pass_phrase'), form_data.get('type'))
+
+                elif broker_type in forex_broker_types:
+                    valid = check_forex_credentials(broker_type, form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
 
                 if valid.get('valid') == True:
-                    crypto_account = form.save(commit=False)
-                    crypto_account.save()
+                    account = form.save(commit=False)
+                    account.save()
 
                     context = context_accounts_by_user(request)
                     context["trigger_modal"] = f'edit-{pk}-{account.broker_type}-modal'
@@ -147,7 +170,7 @@ def edit_crypto_broker(request, broker_type, pk):
         return retarget(response, f'#edit-{account.id}_{account.broker_type}-form-errors')
 
 @require_http_methods([ "POST"])
-def toggle_crypto_broker(request, broker_type, pk):
+def toggle_broker(request, broker_type, pk):
 
     try:
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
@@ -160,10 +183,6 @@ def toggle_crypto_broker(request, broker_type, pk):
         else:
             raise Exception("Invalid Broker Type")
 
-        # context = {'error': "An error occurred while editing this account.", 'close': f'crypto-account-activate-{pk}' }
-        # response = render(request, "include/errors.html", context=context)
-        # return retarget(response, f'#crypto-account-activate-{pk}-form-errors')
-
         model_instance.active = not model_instance.active
         model_instance.save()
 
@@ -173,23 +192,22 @@ def toggle_crypto_broker(request, broker_type, pk):
     except Exception as e:
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
-        return False
-        # return retarget(response, f'#edit-{account.id}_{account.broker_type}-form-errors')
+        return retarget(response, f'#{broker_type}-account-activate-{pk}-form-errors')
 
 @require_http_methods([ "POST"])
-def delete_crypto_broker(request, broker_type, pk):
+def delete_broker(request, broker_type, pk):
     try:
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
         if broker_type in crypto_broker_types:
-            response = CryptoBrokerAccount.objects.delete(pk=pk) 
+            obj = CryptoBrokerAccount.objects.get(pk=pk)
+            obj.delete()  
         elif broker_type in forex_broker_types:
-            response = ForexBrokerAccount.objects.delete(pk=pk) 
+            obj = ForexBrokerAccount.objects.get(pk=pk)
+            obj.delete()
         else:
             raise Exception("Invalid Broker Type")
-
-        # print(response)
 
         context = context_accounts_by_user(request)
         return render(request, 'include/accounts_list.html', context=context)
@@ -197,24 +215,44 @@ def delete_crypto_broker(request, broker_type, pk):
     except Exception as e:
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
-        return False
+        return retarget(response, f'#{broker_type}-account-activate-{pk}-form-errors')
 
 @require_http_methods([ "POST"])
-def get_crypto_broker_logs(request, pk):
-    logs_list = CryptoLogMessage.objects.filter(account_id=pk).order_by('-created_at')
-    grouped_logs = defaultdict(list)
+def get_broker_logs(request, broker_type, pk):
+    try:
 
-    for log in logs_list:
-        log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
-        grouped_logs[log_date].append(log)
+        crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+        forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
-    context = {
-        'grouped_logs': dict(grouped_logs),
-        'logs': logs_list,
-        'id': pk
-    }
+        if broker_type in crypto_broker_types:
+            logs_list = CryptoLogMessage.objects.filter(account_id=pk).order_by('-created_at')
+            grouped_logs = defaultdict(list)
+
+        elif broker_type in forex_broker_types:
+
+            raise Exception("Invalid Broker Type logs ...")
+            logs_list = CryptoLogMessage.objects.filter(account_id=pk).order_by('-created_at')
+            grouped_logs = defaultdict(list)
+
+        else:
+            raise Exception("Invalid Broker Type")
+
+        for log in logs_list:
+            log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
+            grouped_logs[log_date].append(log)
+
+        context = {
+            'grouped_logs': dict(grouped_logs),
+            'logs': logs_list,
+            'id': pk
+        }
+        
+        return render(request, 'include/account_logs.html', context=context)
     
-    return render(request, 'include/account_logs.html', context=context)
+    except Exception as e:
+        context = {'error': e}
+        response = render(request, "include/errors.html", context=context)
+        return response
 
 
 @require_http_methods([ "POST"])

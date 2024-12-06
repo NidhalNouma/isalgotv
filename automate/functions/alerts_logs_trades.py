@@ -6,6 +6,7 @@ from .bitget import *
 from .trade_locker import *
 
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
+    print("Checking crypto credentials for " + broker_type)
     if broker_type == 'binance':
         return check_binance_credentials(api_key, api_secret, trade_type)
     if broker_type == 'binanceus':

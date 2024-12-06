@@ -32,12 +32,12 @@
                 {% endif %}
             </div>
             <div class="flex items-center gap-x-1">
-                <form hx-post="{% url 'toggle_crypto_broker' account.broker_type account.id %}" hx-target="#at-accounts" hx-wait="swap" >
+                <form hx-post="{% url 'toggle_broker' account.broker_type account.id %}" hx-target="#at-accounts" hx-wait="swap" >
                     {% csrf_token %}
                     <button 
                         type="submit"
-                        onclick="openLoader('', '-crypto-account-activate-{{account.id}}')"
-                        id="btn-crypto-account-activate-{{account.id}}"
+                        onclick="openLoader('', '-{{account.broker_type}}-account-activate-{{account.id}}')"
+                        id="btn-{{account.broker_type}}-account-activate-{{account.id}}"
                         {% if account.active %}
                         class="p-1.5 hover:bg-success/10 text-success/80 hover:text-success/60 rounded-full transition-all"
                         {% else %}
@@ -48,7 +48,7 @@
                         <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
                     </button>
                     <button 
-                        id="spinner-crypto-account-activate-{{account.id}}"
+                        id="spinner-{{account.broker_type}}-account-activate-{{account.id}}"
                         disabled
                         {% if account.active %}
                         class="p-1.5 transition-all hidden"
@@ -118,7 +118,7 @@
 
     </div>
 
-    <div id="crypto-account-activate-{{account.id}}-form-errors" class="mb-4"></div>
+    <div id="{{account.broker_type}}-account-activate-{{account.id}}-form-errors" class="mb-4"></div>
 
     <div class="space-y-4">
       <div
@@ -188,13 +188,13 @@
 
     <div class="mt-6 flex items-center justify-around gap-3 text-text/20">
 
-      <button class="btn-a gap-1.5" onclick="openDrawer('drawer-crypto-account-{{account.id}}')">
+      <button class="btn-a gap-1.5" onclick="openDrawer('drawer-crypto-guide-{{account.id}}')">
         <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H3"/><path d="M10 12H3"/><path d="M10 18H3"/><circle cx="17" cy="15" r="3"/><path d="m21 19-1.9-1.9"/></svg>
         <span>Guide</span>
     </button>
     <span>|</span>
       
-    <form hx-post="{% url 'get_crypto_logs' account.id %}" hx-target="#logs-crypto-{{account.id}}" hx-swap="outerHTML">
+    <form hx-post="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
         type="submit"
@@ -267,7 +267,7 @@
           </div>
           <!-- Modal body -->
           <form
-            hx-post="{% url 'delete_crypto_broker' account.broker_type account.id %}"
+            hx-post="{% url 'delete_broker' account.broker_type account.id %}"
             hx-target="#at-accounts"
             class="max-w-md p-6 pt-1  mx-auto mt-1"
           >
@@ -304,11 +304,11 @@
 
 {% load custom_tags %}
 {% render_template "include/docs/alerts_playground.html" webhook_url=webhook_url id=account_id_str as setuo_alert_content %}
-{% render_template "include/account_logs.html" id=account.id as logs_content %}
+{% render_template "include/account_logs.html" broker_type=account.broker_type id=account.id as logs_content %}
 
 
 
-  {% include "include/drawer_modal.html" with drawer_id="drawer-crypto-account-"|add:account_id_str title="Alert Creation Playground" body=setuo_alert_content %}
+  {% include "include/drawer_modal.html" with drawer_id="drawer-crypto-guide-"|add:account_id_str title="Alert Creation Playground" body=setuo_alert_content %}
 
   {% include "include/drawer_modal.html" with drawer_id="crypto-broker-logs-"|add:account_id_str title="Logs ("|add:account.name|add:")" body=logs_content side="bottom" class="h-[75vh]" %}
   
