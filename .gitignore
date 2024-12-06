@@ -146,3 +146,5 @@ GitHub.sublime-settings
 /static/CACHE
 /bin
 pyvenv.cfg
+
+/venv_etv

@@ -13,6 +13,8 @@ def generate_short_unique_id(prefix, id):
     return f"{prefix}{id}x{short_id}"
 
 
+# Crypto brokers ----------------------------------------------------------------
+
 class CryptoBrokerAccount(models.Model):
     BROKER_TYPES = [
         ("binance", "Binance"),
@@ -45,12 +47,6 @@ class CryptoBrokerAccount(models.Model):
     active = models.BooleanField(default=True)
 
     pass_phrase = models.CharField(max_length=150, blank=True, null=True)  # Optional for brokers that need it
-
-    # default_symbol = models.CharField(max_length=30, default="")
-    # default_volume = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    # trades = GenericRelation(TradeDetails) 
-    # logs = GenericRelation(LogMessage) 
 
     custom_id = models.CharField(max_length=30, default="")
     
@@ -126,3 +122,49 @@ class CryptoLogMessage(models.Model):
     # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
     # object_id = models.PositiveIntegerField()
     # content_object = GenericForeignKey('content_type', 'object_id')
+
+
+
+# Forex brokers ----------------------------------------------------------------
+
+class ForexBrokerAccount(models.Model):
+    BROKER_TYPES = [
+        ("tradelocker", "TradeLocker"),
+        ("metatrader", "Metatrader"),
+        ("dxtrade", "DXTrade"),
+    ]
+
+    TYPE = [
+        ("D", "Demo"),
+        ("L", "Live"),
+    ]
+
+    broker_type = models.CharField(max_length=20, choices=BROKER_TYPES)
+
+    type = models.CharField(max_length=1, choices=TYPE, default="D")
+
+
+    name = models.CharField(max_length=100)
+    username = models.CharField(max_length=150, blank=True, null=True) 
+    password = models.CharField(max_length=150)
+    server = models.CharField(max_length=150)
+
+
+
+
+    
+    custom_id = models.CharField(max_length=30, default="")
+    active = models.BooleanField(default=True)
+    created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def save(self, *args, **kwargs):
+        # Save the instance first to get an ID if it's a new record
+        creating = self._state.adding  # True if the instance is being created
+        super(ForexBrokerAccount, self).save(*args, **kwargs)
+
+        # Only generate a custom_id if it's a new record and custom_id is not set
+        if creating and self.custom_id == "":
+            self.custom_id = generate_short_unique_id(self.broker_type, self.id)
+            super(ForexBrokerAccount, self).save(*args, **kwargs) 

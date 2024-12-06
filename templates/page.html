@@ -17,32 +17,31 @@
     {% block head_description%}
     <meta name="description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game.">
     {% endblock head_description %}
+   
     
     <!-- This is for search engines and won't affect the actual URL directly, but it's a good practice to ensure your slug is reflected in the URL structure managed by your server or CMS -->
-    <link rel="canonical" href="https:www.//isalgo.com/easy-trading-strategies-for-all-levels">
+    <link rel="canonical" href="https:www.//isalgo.com/easy-trading-strategies-for-all-levels" />
     <link rel="icon" href="{% static 'images/logo.png' %}" type="image/x-icon" />
-    <link rel="icon" sizes="16x16" href="{% static 'images/logo_img_16_16.png' %}" type="image/png">
-    <link rel="icon" sizes="32x32" href="{% static 'images/logo_img_32_32.png' %}" type="image/png">
-    <link rel="icon" type="image/png" sizes="48x48" href="{% static 'images/logo_img_48_48.png' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/logo_img_180_180.png' %}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="{% static 'mages/logo_img_144_144.png' %}">
-
-
+    <link rel="icon" sizes="16x16" href="{% static 'images/logo_img_16_16.png' %}" />
+    <link rel="icon" sizes="32x32" href="{% static 'images/logo_img_32_32.png' %}" />
+    <link rel="icon" sizes="48x48" href="{% static 'images/logo_img_48_48.png' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/logo_img_180_180.png' %}" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="{{ request.build_absolute_uri|slice:':-1' }}{% static 'images/seo-meta-img.png' %}" />
 
     <!-- Open Graph / Facebook meta tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="IsAlgo">
-    <meta property="og:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game.">
-    <meta property="og:url" content="https://www.isalgo.com">
-    <meta property="og:image" content="{% static 'images/logo.png' %}">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="IsAlgo" />
+    <meta property="og:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game." />
+    <meta property="og:url" content="https://www.isalgo.com" />
+    <meta name="og:image" content="{{ request.build_absolute_uri|slice:':-1' }}{% static 'images/seo-meta-img.png' %}" />
     
     <!-- Twitter Card meta tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="IsAlgo">
-    <meta name="twitter:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game.">
-    <meta name="twitter:url" content="https://www.isalgo.com">
-    <meta name="twitter:image" content="{% static 'images/logo.png' %}">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="IsAlgo" />
+    <meta name="twitter:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game." />
+    <meta name="twitter:url" content="https://www.isalgo.com" />
+    <meta name="twitter:image" content="{{ request.build_absolute_uri|slice:':-1' }}{% static 'images/seo-meta-img.png' %}" />
 
     {% block head %} {% endblock head %}
     {% compress css %}

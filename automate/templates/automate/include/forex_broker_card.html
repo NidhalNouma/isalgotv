@@ -1,0 +1,314 @@
+
+{% with webhook_url=request.scheme|add:'://'|add:request.get_host|add:'/automate/f/'|add:account.custom_id %}
+<div class="w-full h-fit max-w-2xl bg-gradient-to-tr from-background via-text/10 to-background rounded-md overflow-hidden">
+  <div class="p-2 sm:p-3">
+    <div
+      class=" justify-between mb-2 gap-4"
+    >
+      <div class="w-full">
+        <div class="flex flex-wrap items-center gap-3 mb-2">
+          <h2 class="text-sm sm:text-base font-bold text-title/80">
+            {{account.name}}
+          </h2>
+          <span
+            class="px-1 bg-text dark:bg-text/10 text-[#e8bb41] text-sm font-medium rounded capitalize"
+          >
+            {{account.broker_type}}
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center w-full gap-4">
+            <div class="">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-title/10 tracking-wider text-title mr-1">
+                    {% if account.type == "D" %} Demo {% elif account.type == "L" %} Live {% else %} Unknown Type {% endif%}
+                </span>
+
+                {% if account.active %}
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-success/10 tracking-wider text-success/80">Active</span>
+                {% else %}
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-text/10 tracking-wider text-text/80">Inactive</span>
+                {% endif %}
+            </div>
+            <div class="flex items-center gap-x-1">
+                <form hx-post="{% url 'toggle_crypto_broker' account.broker_type account.id %}" hx-target="#at-accounts" hx-wait="swap" >
+                    {% csrf_token %}
+                    <button 
+                        type="submit"
+                        onclick="openLoader('', '-forex-account-activate-{{account.id}}')"
+                        id="btn-forex-account-activate-{{account.id}}"
+                        {% if account.active %}
+                        class="p-1.5 hover:bg-success/10 text-success/80 hover:text-success/60 rounded-full transition-all"
+                        {% else %}
+                        class="p-1.5 hover:bg-text/10 text-text/80 hover:text-text/60 rounded-full transition-all"
+                        {% endif %}
+                        title="Activate/Deactivate Account"
+                        >
+                        <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
+                    </button>
+                    <button 
+                        id="spinner-forex-account-activate-{{account.id}}"
+                        disabled
+                        {% if account.active %}
+                        class="p-1.5 transition-all hidden"
+                        {% else %}
+                        class="p-1.5 transition-all hidden"
+                        {% endif %}
+                        >
+                        <svg
+                        aria-hidden="true"
+                        role="status"
+                        class="h-4 aspect-square ml-1.5 text-text animate-spin"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        >
+                        <path
+                            class="fill-text/60"
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentColor"
+                        />
+                        </svg>
+                    </button>
+                </form>
+                <button
+                    onclick="openModel('edit-{{account.id}}-{{account.broker_type}}-modal');"
+                    class="p-1.5 hover:bg-text/10 text-text/80 hover:text-text/60 rounded-full transition-all"
+                    title="Edit Account"
+                    >
+                    <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+                </button>
+                <button 
+                    id="btn-forex-account-delete-{{account.id}}"
+                    onclick="openModel('forex-account-delete-{{account.id}}')"
+                    class="p-1.5 hover:bg-error/10 text-error/80 hover:text-error/60 rounded-full transition-all  "
+                    title="Delete Account">
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                </button>
+                <button 
+                id="spinner-forex-account-delete-{{account.id}}"
+                disabled
+                class="p-1.5 transition-all hidden"
+                >
+                <svg
+                aria-hidden="true"
+                role="status"
+                class="h-4 aspect-square ml-1.5 text-text animate-spin"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                    class="fill-text/60"
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                />
+                <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentColor"
+                />
+                </svg>
+            </button>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="crypto-account-activate-{{account.id}}-form-errors" class="mb-4"></div>
+
+    <div class="space-y-4">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center justify-between p-1.5 bg-background rounded-lg"
+      >
+        <div class="flex items-center space-x-3 mb-2 sm:mb-0">
+          <svg
+            class="w-4 h-4 text-text/60 flex-shrink-0"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-key"
+          >
+            <path
+              d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"
+            />
+            <path d="m21 2-9.6 9.6" />
+            <circle cx="7.5" cy="15.5" r="5.5" />
+          </svg>
+          <div>
+            <p class="text-sm text-text/60">Account</p>
+            <p class="font-mono text-sm font-medium text-text mt-1">
+              {{account.username|slice:":10"}}•••••
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="flex flex-row items-center justify-between p-1.5 bg-background rounded-lg cursor-pointer"
+        onclick="navigator.clipboard.writeText('{{webhook_url}}');"
+      >
+        <div class="flex items-center space-x-3 mb-2 sm:mb-0">
+          <div>
+            <p class="text-sm text-text/60">Webhook URL</p>
+            <p class="text-sm font-medium text-text mt-1 line-clamp-1 overflow-hidden">
+                ...{{ webhook_url|slice:"22:42" }}...
+            </p>
+          </div>
+        </div>
+        <button
+          onclick="navigator.clipboard.writeText('{{webhook_url}}');"
+          class="self-end sm:self-auto p-2 text-text/80 hover:text-text/60 rounded-full transition-all"
+          title="Copy Webhook URL"
+        >
+          <svg
+            class="w-4 h-4 "
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+          </svg>
+        </button>
+      </div>
+      
+    </div>
+
+    <div class="mt-6 flex items-center justify-around gap-3 text-text/20">
+
+      <button class="btn-a gap-1.5" onclick="openDrawer('drawer-forex-account-{{account.id}}')">
+        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H3"/><path d="M10 12H3"/><path d="M10 18H3"/><circle cx="17" cy="15" r="3"/><path d="m21 19-1.9-1.9"/></svg>
+        <span>Guide</span>
+    </button>
+    <span>|</span>
+      
+    <form hx-post="{% url 'get_crypto_logs' account.id %}" hx-target="#logs-crypto-{{account.id}}" hx-swap="outerHTML">
+      {% csrf_token %}
+      <button
+        type="submit"
+        onclick="openDrawer('crypto-forex-logs-{{account.id}}', 'bottom')"
+        class="btn-a gap-1.5"
+      >
+        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M13 12h8"/><path d="M13 18h8"/><path d="M13 6h8"/><path d="M3 12h1"/><path d="M3 18h1"/><path d="M3 6h1"/><path d="M8 12h1"/><path d="M8 18h1"/><path d="M8 6h1"/></svg>
+        <span>Logs</span>
+      </button>
+    </form>
+      <!-- <span>|</span>
+      <button
+        class="btn-a hover:text-primary/80 text-primary gap-x-1.5"
+      >
+        <svg
+          class="w-3.5 h-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-chart-line"
+        >
+          <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+          <path d="m19 9-5 5-4-4-3 3" />
+        </svg>
+        <span>Activity</span>
+      </button> -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    <!-- Delete account modal -->
+    <div
+      id="forex-account-delete-{{account.id}}"
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-lg max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-background rounded-lg shadow">
+          <!-- Modal header -->
+          <div class="flex items-center justify-between p-4 rounded-t">
+            <h3 class="text-xl font-semibold text-title">Delete Account</h3>
+            <button
+              onclick="hideModel('forex-account-delete-{{account.id}}')"
+              type="button"
+              class="text-title/70 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <form
+            hx-post="{% url 'delete_crypto_broker' account.broker_type account.id %}"
+            hx-target="#at-accounts"
+            class="max-w-md p-6 pt-1  mx-auto mt-1"
+          >
+            {% csrf_token %}
+
+            <p class="text-text/80 text-sm text-center mb-6">This action cannot be undone. All trading data and settings will be permanently removed.</p>
+   
+            <div class="mt-6 flex items-center justify-around">
+              <button
+                type="submit"
+                class="text-error hover:text-error/80 transition-all font-normal text-sm"
+                onclick="openLoader('', '-forex-account-delete-{{account.id}}'); hideModel('forex-account-delete-{{account.id}}');"
+              >
+                Delete
+              </button>
+              <button
+                onclick="hideModel('forex-account-delete-{{account.id}}')"
+                type="button"
+                class="text-text hover:text-text/80 transition-all  font-normal text-sm"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+{% comment %} {% include 'include/edit_crypto_broker_modal.html' with account=account %} {% endcomment %}
+
+{% with account_id_str=account.id|stringformat:"s" %}
+
+{% load custom_tags %}
+{% render_template "include/docs/alerts_playground.html" webhook_url=webhook_url id=account_id_str as setuo_alert_content %}
+{% render_template "include/account_logs.html" id=account.id as logs_content %}
+
+
+
+  {% include "include/drawer_modal.html" with drawer_id="drawer-forex-account-"|add:account_id_str title="Alert Creation Playground" body=setuo_alert_content %}
+
+  {% include "include/drawer_modal.html" with drawer_id="crypto-forex-logs-"|add:account_id_str title="Logs ("|add:account.name|add:")" body=logs_content side="bottom" class="h-[75vh]" %}
+  
+  {% endwith %}
+  {% endwith %}

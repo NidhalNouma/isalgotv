@@ -32,7 +32,7 @@
                 {% endif %}
             </div>
             <div class="flex items-center gap-x-1">
-                <form hx-post="{% url 'toggle_crypto_broker' account.id %}" hx-target="#at-accounts" hx-wait="swap" >
+                <form hx-post="{% url 'toggle_crypto_broker' account.broker_type account.id %}" hx-target="#at-accounts" hx-wait="swap" >
                     {% csrf_token %}
                     <button 
                         type="submit"
@@ -267,7 +267,7 @@
           </div>
           <!-- Modal body -->
           <form
-            hx-post="{% url 'delete_crypto_broker' account.id %}"
+            hx-post="{% url 'delete_crypto_broker' account.broker_type account.id %}"
             hx-target="#at-accounts"
             class="max-w-md p-6 pt-1  mx-auto mt-1"
           >

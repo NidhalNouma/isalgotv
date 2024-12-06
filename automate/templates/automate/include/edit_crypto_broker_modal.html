@@ -60,7 +60,7 @@
     <form
       class="relative p-6 pt-2 w-full max-w-md mx-auto flex flex-col gap-y-4"
       id="add-{{account.id}}_{{account.broker_type}}-form"
-      hx-post="{% url 'edit_crypto_broker_account' account.id %}"
+      hx-post="{% url 'edit_crypto_broker_account' account.broker_type account.id %}"
       hx-target="#at-accounts"
       hx-wait="swap"
     >

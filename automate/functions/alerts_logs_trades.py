@@ -3,13 +3,22 @@ from .binance import *
 from .binance_us import *
 from .bitget import *
 
-def check_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
+from .trade_locker import *
+
+def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
     if broker_type == 'binance':
         return check_binance_credentials(api_key, api_secret, trade_type)
     if broker_type == 'binanceus':
         return check_binance_us_credentials(api_key, api_secret)
     elif broker_type == 'bitget':
         return check_bitget_credentials(api_key, api_secret, phrase)
+    else:
+        raise Exception("Unsupported broker type.")
+
+def check_forex_credentials(broker_type, username, password, server, type="D"):
+    
+    if broker_type == 'tradelocker':
+        return check_tradelocker_credentials(username, password, server, type)
     else:
         raise Exception("Unsupported broker type.")
 

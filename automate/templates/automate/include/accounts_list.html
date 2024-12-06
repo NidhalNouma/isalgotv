@@ -4,6 +4,10 @@
     {% for account in crypto_accounts %} 
     {% include "include/crypto_broker_card.html" with account=account %} 
     {% endfor %}
+    <span class="col-span-full"></span>
+    {% for account in forex_accounts %} 
+    {% include "include/forex_broker_card.html" with account=account %} 
+    {% endfor %}
    </div>
   {% endif %}
 </div>

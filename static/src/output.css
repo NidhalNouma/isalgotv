@@ -1955,6 +1955,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   z-index: 9;
 }
 
+.col-span-full {
+  grid-column: 1 / -1;
+}
+
+.row-start-1 {
+  grid-row-start: 1;
+}
+
 .float-left {
   float: left;
 }
@@ -2809,6 +2817,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-width: 50%;
 }
 
+.max-w-\[80\%\] {
+  max-width: 80%;
+}
+
 .max-w-\[90\%\] {
   max-width: 90%;
 }
@@ -2852,10 +2864,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-w-xs {
   max-width: 20rem;
-}
-
-.max-w-\[80\%\] {
-  max-width: 80%;
 }
 
 .flex-1 {
