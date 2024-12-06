@@ -4,8 +4,6 @@ amqp==5.2.0
 asgiref==3.7.2
 async-timeout==4.0.3
 attrs==23.2.0
-aws-lambda-wsgi==0.0.6
-awslambdaric==2.0.10
 billiard==4.2.0
 binance-connector==3.9.0
 binance-futures-connector==4.1.0
