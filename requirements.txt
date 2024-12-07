@@ -4,6 +4,8 @@ amqp==5.2.0
 asgiref==3.7.2
 async-timeout==4.0.3
 attrs==23.2.0
+aws-lambda-wsgi==0.0.6
+awslambdaric==2.0.10
 billiard==4.2.0
 binance-connector==3.9.0
 binance-futures-connector==4.1.0
@@ -34,6 +36,7 @@ django-storages==1.14.2
 Faker==23.3.0
 frozenlist==1.4.1
 gunicorn==21.2.0
+h11==0.14.0
 idna==3.6
 jmespath==1.0.1
 jsonschema==4.21.1
@@ -77,6 +80,7 @@ tradelocker==0.49.1
 typing_extensions==4.10.0
 tzdata==2024.1
 urllib3==1.26.18
+uvicorn==0.32.1
 vine==5.1.0
 wcwidth==0.2.13
 websocket-client==1.8.0

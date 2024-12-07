@@ -1959,10 +1959,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   grid-column: 1 / -1;
 }
 
-.row-start-1 {
-  grid-row-start: 1;
-}
-
 .float-left {
   float: left;
 }
@@ -2550,6 +2546,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[1\.125rem\] {
+  height: 1.125rem;
+}
+
+.h-\[1\.2rem\] {
+  height: 1.2rem;
 }
 
 .max-h-64 {
@@ -3587,6 +3591,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-yellow-600 {
   --tw-border-opacity: 1;
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
+}
+
+.border-text\/10 {
+  border-color: hsl(var(--color-text) / 0.1);
+}
+
+.border-text\/80 {
+  border-color: hsl(var(--color-text) / 0.8);
 }
 
 .\!bg-background {

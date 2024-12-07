@@ -1,0 +1,21 @@
+{% if broker_type == 'binance' %}
+{% include 'svg/binance.html' with class=class %}
+{% elif broker_type == 'binanceus' %}
+{% include 'svg/binance_us.html' with class=class %}
+{% elif broker_type == 'bitget' %}
+{% include 'svg/bitgate.html' with class=class %}
+{% elif broker_type == 'bybit' %}
+{% include 'svg/bybit.html' with class=class %}
+{% elif broker_type == 'bingx' %}
+{% include 'svg/bingx.html' with class=class %}
+{% elif broker_type == 'bitmex' %}
+{% include 'svg/bitmex.html' with class=class %}
+{% elif broker_type == 'bitmart' %}
+{% include 'svg/bitmart.html' with class=class %}
+{% elif broker_type == 'mexc' %}
+{% include 'svg/mexc.html' with class=class %}
+
+
+{% elif broker_type == 'tradelocker' %}
+{% include 'svg/tradelocker.html' with class=class %}
+{% endif %}

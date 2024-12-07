@@ -6,15 +6,11 @@
       class=" justify-between mb-2 gap-4"
     >
       <div class="w-full">
-        <div class="flex flex-wrap items-center gap-3 mb-2">
+        <div class=" mb-2">
+          {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class="h-3 aspect-auto fill-text/80 mb-2" %}
           <h2 class="text-sm sm:text-base font-bold text-title/80">
             {{account.name}}
           </h2>
-          <span
-            class="px-1 bg-text dark:bg-text/10 text-[#e8bb41] text-sm font-medium rounded capitalize"
-          >
-            {{account.broker_type}}
-          </span>
         </div>
 
         <div class="flex justify-between items-center w-full gap-4">
@@ -121,7 +117,7 @@
     <div id="{{account.broker_type}}-account-activate-{{account.id}}-form-errors" class="mb-4"></div>
 
     <div class="space-y-4">
-      <div
+      {% comment %} <div
         class="flex flex-col sm:flex-row sm:items-center justify-between p-1.5 bg-background rounded-lg"
       >
         <div class="flex items-center space-x-3 mb-2 sm:mb-0">
@@ -149,7 +145,7 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
 
       <div
         class="flex flex-row items-center justify-between p-1.5 bg-background rounded-lg cursor-pointer"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CryptoBrokerAccount, ForexBrokerAccount
+from .models import *
 
 # Register your models here.
 
@@ -14,4 +14,7 @@ class ForexBrokerAccountAdmin(admin.ModelAdmin):
 
 admin.site.register(CryptoBrokerAccount, CryptoBrokerAccountAdmin)
 admin.site.register(ForexBrokerAccount, ForexBrokerAccountAdmin)
+
+admin.site.register(LogMessage)
+admin.site.register(TradeDetails)
 # admin.site.register(CryptoLogMessage)

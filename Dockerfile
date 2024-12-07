@@ -100,5 +100,8 @@ EXPOSE 8000
 # Command to run the application
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", "--access-logfile", "-", "--error-logfile", "-"]
 
+# For async-heavy apps
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", " -w", "4", "-k", "uvicorn.workers.UvicornWorker", "--access-logfile", "-", "--error-logfile", "-"]
+
 
 

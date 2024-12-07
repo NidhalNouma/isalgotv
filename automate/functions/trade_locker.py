@@ -26,8 +26,17 @@ def open_tradelocker_trade(account, symbol, side, quantity):
             return {'error': f"Symbol {symbol} not found."}
         # Create a market order
         order_id = tl.create_order(instrument_id, quantity=quantity, side=side.lower(), type_="market")
+        
         if order_id:
-            return {'message': f"Trade opened with order ID {order_id}.", 'order_id': order_id}
+            position_id = tl.get_position_id_from_order_id(order_id)
+            if position_id:
+                trade_details = get_trade_info_by_id(tl, order_id)
+                # entry_price = trade_details.get('entry_price')  # Adjust the key based on API response structure
+                return {
+                    'message': f"Trade opened with order ID {position_id}.",
+                    'order_id': position_id,
+                    'price': 12
+                }
         else:
             return {'error': "Failed to open trade."}
     except Exception as e:
@@ -35,13 +44,43 @@ def open_tradelocker_trade(account, symbol, side, quantity):
 
 def close_tradelocker_trade(account, id, quantity):
     try:
-        # Close the position associated with the given order ID
-
         tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
-        result = tl.close_position(position_id = int(id), close_quantity = 0)
-        if result:
-            return {'message': f"Trade closed for order ID {id}."}
-        else:
-            return {'error': "Failed to close trade."}
+        trade_details = get_trade_info_by_id(tl, id)
+        if not trade_details:
+            return {'error': f"Trade details not found for order ID {id}."}
+        
+        result = tl.close_position(order_id = int(id), close_quantity = float(quantity))
+
+
+        return {'message': f"Trade closed for order ID {id}.", id: id}
+    
     except Exception as e:
         return {'error': str(e)}
+    
+
+def get_trade_info_by_id(tl, trade_id):
+    orders = tl.get_all_positions()  # Assuming this returns a pandas DataFrame
+    # print('orders', orders) 
+
+    if 'id' not in orders.columns:
+        print("Column 'orderId' not found in orders")
+        return None
+
+    # Locate the row matching the trade ID
+    trade_info = orders.loc[orders['id'] == int(trade_id)]
+
+    # print('info', trade_info)
+
+    if not trade_info.empty:
+        # Extract relevant trade details (assuming these columns exist in the DataFrame)
+        trade_details = {
+            'symbol': trade_info['symbol'].values[0],
+            'price': trade_info['price'].values[0],
+            'quantity': trade_info['quantity'].values[0],
+            'side': trade_info['side'].values[0],
+            'status': trade_info['status'].values[0],
+            'timestamp': trade_info['timestamp'].values[0]
+        }
+        return trade_details
+    else:
+        return None

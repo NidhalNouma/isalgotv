@@ -18,13 +18,6 @@ module.exports = {
   ],
   theme: {
     colors: {
-      // primary : { dark: "hsl(265, 100%, 35%);", light: "hsl(265, 100%, 35%);" },
-      // secondary : { dark: "hsl(178, 97.9%, 26.7%);" , light: "hsl(178, 97.9%, 26.7%);" },
-      // accent : { dark: "hsl(58, 75%, 40%);", light: "hsl(58, 75%, 40%);" },
-      // background : { dark: "hsl(188, 16%, 17%);", light: "hsl(188, 16%, 92%);" },
-      // text : { dark: "hsl(0, 0%, 90%);", light: "hsl(0, 0%, 20%);" },
-      // title : { dark: "hsl(0, 0%, 100%);", light: "hsl(0, 0%, 0%);" },
-
       primary: "hsl(var(--color-primary) / <alpha-value>)",
       secondary: "hsl(var(--color-secondary) / <alpha-value>)",
       accent: "hsl(var(--color-accent) / <alpha-value>)",
