@@ -2101,6 +2101,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: auto;
 }
 
+.my-1\.5 {
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+}
+
 .-ml-1 {
   margin-left: -0.25rem;
 }
@@ -2341,6 +2346,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .mt-auto {
   margin-top: auto;
+}
+
+.-mt-4 {
+  margin-top: -1rem;
+}
+
+.-mt-8 {
+  margin-top: -2rem;
+}
+
+.-mt-6 {
+  margin-top: -1.5rem;
 }
 
 .box-border {
@@ -3833,6 +3850,37 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(114 59 19 / 0.1);
 }
 
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(63 131 248 / var(--tw-bg-opacity));
+}
+
+.bg-green-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 250 247 / var(--tw-bg-opacity));
+}
+
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(235 245 255 / var(--tw-bg-opacity));
+}
+
+.bg-primary\/10 {
+  background-color: hsl(var(--color-primary) / 0.1);
+}
+
+.bg-primary\/20 {
+  background-color: hsl(var(--color-primary) / 0.2);
+}
+
+.bg-primary\/30 {
+  background-color: hsl(var(--color-primary) / 0.3);
+}
+
+.bg-error\/20 {
+  background-color: hsl(var(--color-loss) / 0.2);
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -4315,6 +4363,21 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-bottom: 0.1rem;
 }
 
+.py-\[0\.2rem\] {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.py-\[0rem\] {
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+}
+
+.py-\[0\.05rem\] {
+  padding-top: 0.05rem;
+  padding-bottom: 0.05rem;
+}
+
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -4481,6 +4544,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[0\.6rem\] {
+  font-size: 0.6rem;
 }
 
 .\!font-semibold {
@@ -4747,6 +4814,35 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-yellow-600 {
   --tw-text-opacity: 1;
   color: rgb(159 88 10 / var(--tw-text-opacity));
+}
+
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+.text-green-500 {
+  --tw-text-opacity: 1;
+  color: rgb(14 159 110 / var(--tw-text-opacity));
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(240 82 82 / var(--tw-text-opacity));
+}
+
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(63 131 248 / var(--tw-text-opacity));
+}
+
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+.text-primary\/80 {
+  color: hsl(var(--color-primary) / 0.8);
 }
 
 .underline {
@@ -5699,6 +5795,14 @@ input[type=number] {
   color: hsl(var(--color-title) / var(--tw-text-opacity));
 }
 
+.hover\:text-text\/20:hover {
+  color: hsl(var(--color-text) / 0.2);
+}
+
+.hover\:text-primary\/60:hover {
+  color: hsl(var(--color-primary) / 0.6);
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -6042,6 +6146,10 @@ input[type=number] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -6054,8 +6162,16 @@ input[type=number] {
     align-items: center;
   }
 
+  .sm\:items-baseline {
+    align-items: baseline;
+  }
+
   .sm\:gap-3 {
     gap: 0.75rem;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
   }
 
   .sm\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
@@ -6362,5 +6478,9 @@ input[type=number] {
 @media (min-width: 1280px) {
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

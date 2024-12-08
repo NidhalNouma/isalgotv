@@ -76,8 +76,8 @@ def home(request):
         res_num = 8
         new_strategies = Strategy.objects.filter(is_live=True).order_by('-created_at')[:res_num]
         most_viewed_strategies = Strategy.objects.filter(is_live=True).order_by('-view_count')[:res_num]
-        new_results = StrategyResults.objects.all().order_by('-created_at')[:res_num]
-        best_results = StrategyResults.objects.all().order_by('-profit_factor')[:res_num]
+        new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
+        best_results = StrategyResults.objects.all().order_by('-profit_factor')[:6]
         new_ideas = StrategyComments.objects.all().order_by('-created_at')[:res_num]
 
         context['new_strategies'] = new_strategies

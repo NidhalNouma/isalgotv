@@ -727,13 +727,12 @@
 
             <div
               id="modal-result-error-message"
-              class="hidden mx-4 p-4 mb-2 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-900 dark:text-red-200"
-              role="alert"
+              class="hidden mx-4 p-4 mb-2 mt-2 text-sm text-error rounded-lg bg-error/20"
             ></div>
 
             <button
               onclick='nextResultStep("add-result-modal-result", "add-result-modal-post", "add-result-modal-result")'
-              class="btn-text mb-4 w-fit mx-auto font-medium px-4"
+              class="btn-text mb-4 w-full mt-4 max-w-xs mx-auto font-medium px-4"
               type="button"
             >
               Next
@@ -880,7 +879,7 @@
 
           <div
             id="modal-result-error-message-settings"
-            class="hidden mx-4 p-4 mb-2 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-900 dark:text-red-200"
+            class="hidden mx-4 p-4 mb-2 mt-2 text-sm text-error rounded-lg bg-error/20"
             role="alert"
           ></div>
 
@@ -889,7 +888,7 @@
           <button
             type="button"
             onclick="validateSettings()"
-            class="btn-text mb-4 w-fit mx-auto font-medium px-4"
+            class="btn-text mb-4 w-full max-w-xs mx-auto font-medium px-4"
           >
             Next
             <svg class="h-4 aspect-square ml-0.5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-width="2" d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8"></path></svg>
@@ -1020,7 +1019,7 @@
 
           <div
             id="modal-result-error-message-post"
-            class="hidden mx-4 p-4 mb-2 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-900 dark:text-red-200"
+            class="hidden mx-4 p-4 mb-2 mt-2 text-sm text-error rounded-lg bg-error/20"
             role="alert"
           ></div>
 
@@ -1028,12 +1027,12 @@
 
           <button
             onclick="post()"
-            class="btn-secondary mb-4 w-fit mx-auto font-medium px-4"
+            class="btn-secondary mb-4 py-1 w-full max-w-xs mx-auto font-medium px-4"
             type="submit"
             id="btn-result-post"
           >
             Post
-            <svg class="ml-0.5 h-4 aspect-square" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <svg class="ml-1 h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"/><path d="M6 12h16"/></svg>
           </button>
 
           <button

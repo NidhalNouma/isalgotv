@@ -21,14 +21,14 @@
     
     {% if results|length > 0 %}
         
-    {% if pairs|length > 7 %}
-    <section class="flex items-center mb-6 py-4 px-1 sticky top-14 sm:top-16 bg-background cursor-pointer overflow-y-auto scrollbar-hide">
+    {% if pairs|length > 4 %}
+    <section class="flex items-center -mt-6 mb-3 py-4 px-1 sticky top-14 sm:top-16 bg-background cursor-pointer overflow-y-auto scrollbar-hide">
         {% if selected_pair %}
         <a class=" mr-2 " href="{% url 'results' %}">
-            <span class="text-background bg-text hover:bg-text px-2 py-0.5 rounded-full text-sm font-medium truncate  whitespace-nowrap flex items-center">
+            <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-full text-sm font-semibold truncate  whitespace-nowrap flex items-center transition-all">
                 {{ selected_pair }}
 
-                <svg class="h-4 w-4 ml-1.5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <svg class="h-4 w-4 ml-1.5 hover:text-primary/80 transition-all" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
                 </svg>
             </span>
@@ -37,7 +37,7 @@
         {% for pair in pairs %}
         {% if pair != selected_pair %}
         <a class=" mr-2 " href="{% url 'results' %}?pair={{pair}}">
-            <span class="text-background bg-text/60 hover:bg-text px-2 py-0.5 rounded-full text-sm font-medium truncate  whitespace-nowrap">
+            <span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-full text-sm font-semibold truncate  whitespace-nowrap flex items-center transition-all">
                 {{ pair }}
             </span>
         </a>
@@ -46,10 +46,10 @@
     </section>
     {% endif %}
 
-    <section class=" grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+    <section class=" grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         {% for result in results %}
             <div class="w-full mb-3 p-2">
-                {% include "include/result_result_page.html" with result=result %}
+                {% include "include/quick_result.html" with result=result %}
             </div>
         {% endfor %}
     </section>

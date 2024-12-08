@@ -1,63 +1,92 @@
 {% load custom_filters %}
 
-<div class="w-full mb-3 p-2">
-  <div class="flex items-center">
-    <a class="" href="{% url 'results' %}?pair={{result.pair}}">
-      <span
-        class="text-background bg-text px-1.5 rounded-full text-sm font-semibold mr-2 whitespace-nowrap"
-        >{{result.pair}}</span
-      >
+<div class="overflow-hidden">
+  <div class="flex items-center gap-2 mb-3">
+    <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-full text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{result.pair}}">
+      {{result.pair}}
     </a>
+    {% if not hide_title %}
     <a class="grow" href="{% url 'strategy' slug=result.strategy.slug %}">
-      <h6 class="text-xs text-title underline truncate">
+      <h6 class="text-sm text-text font-medium underline truncate line-clamp-1">
         {{result.strategy.name}}
       </h6>
     </a>
+    {% endif %}
   </div>
 
-  <div class="w-full bg-text/30 rounded-xl border-primary border my-1">
-    <div
-      class="bg-text text-xs text-[0.7rem] py-0.5 font-medium text-background text-center p-0.25 leading-none rounded-full"
-      style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
-    >
-      {% comment %} {{ result.test_start_at|period_in_months_years:result.test_end_at }} {% endcomment %}
+
+  <div class="mb-3">
+    <div class="flex items-center gap-2 mb-1.5">
+      <svg class="w-4 h-4 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+      <span class="text-xs text-text/60">Test Duration</span>
+    </div>
+
+    <div class="w-full bg-text/20 rounded-xl my-1">
+      <div
+        class="bg-text/40 text-xs py-[0.1rem] font-semibold text-background text-center px-0.25 leading-none rounded-full"
+        style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
+      >
+        {{ result.test_start_at|period_in_months_years:result.test_end_at }}
+      </div>
     </div>
   </div>
 
-  <div class="text-xs font-medium my-2 text-text/70">
-    <h6 class="text-profit flex items-center">
-      <svg
-        class="w-4 h-4 fill-current stroke-current mr-1.5"
-        stroke-width="0"
-        viewBox="0 0 256 256"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M236,208a12,12,0,0,1-12,12H32a12,12,0,0,1-12-12V48a12,12,0,0,1,24,0v99l43.51-43.52a12,12,0,0,1,17,0L128,127l43-43H160a12,12,0,0,1,0-24h40a12,12,0,0,1,12,12v40a12,12,0,0,1-24,0V101l-51.51,51.52a12,12,0,0,1-17,0L96,129,44,181v15H224A12,12,0,0,1,236,208Z"
-        ></path>
-      </svg>
-      {{result.net_profit}}
-      <span class="text-lg font-semibold ml-1">{{result.net_profit_percentage}}%</span>
-    </h6>
-    <h6 class="text-loss flex items-center">
-      <svg
-        class="w-4 h-4 fill-current stroke-current mr-1.5"
-        stroke-width="0"
-        viewBox="0 0 256 256"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M236,208a12,12,0,0,1-12,12H32a12,12,0,0,1-12-12V48a12,12,0,0,1,24,0V59l52,52,23.51-23.52a12,12,0,0,1,17,0L188,139V128a12,12,0,0,1,24,0v40q0,.6-.06,1.2c0,.16-.05.33-.07.49s-.06.45-.1.67-.09.38-.14.56-.09.39-.15.58l-.19.54c-.07.19-.13.38-.21.56s-.15.34-.23.5-.17.38-.27.57-.18.3-.27.45-.21.38-.33.56-.24.32-.36.47-.22.32-.34.47-.46.53-.71.78l-.08.1-.1.08c-.25.25-.51.48-.78.71l-.46.34c-.16.12-.32.25-.48.36s-.37.22-.55.33-.3.19-.46.27-.37.18-.56.27-.33.16-.51.23l-.54.21-.57.19a4.92,4.92,0,0,1-.55.14l-.58.15-.64.09-.53.08A11.51,11.51,0,0,1,200,180H160a12,12,0,0,1,0-24h11l-43-43-23.51,23.52a12,12,0,0,1-17,0L44,93V196H224A12,12,0,0,1,236,208Z"
-        ></path>
-      </svg>
-      {{result.max_drawdown}}
-      <span class="text-lg font-semibold ml-1">{{result.max_drawdown_percentage}}%</span>
-    </h6>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+    <div class="p-1.5 rounded-lg bg-profit/10">
+      <div class="flex items-center gap-2 mb-2">
+        <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        <span class="text-xs font-medium text-text/80">Profit</span>
+      </div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
+        <span class="text-lg font-bold text-profit whitespace-nowrap">
+          {{result.net_profit_percentage|format_profit|safe}}%
+        </span>
+      </div>
+    </div>
+
+    <div class="p-1.5 rounded-lg bg-loss/10">
+      <div class="flex items-center gap-2 mb-2">
+        <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+        <span class="text-xs font-medium text-text/80">Drawdown</span>
+      </div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
+        <span class="text-lg font-bold text-loss whitespace-nowrap">
+          {{result.max_drawdown_percentage|format_profit|safe}}%
+        </span>
+      </div>
+    </div>
   </div>
+
+  <div class="mb-3 p-3 rounded-lg bg-primary/10">
+    <div class="flex items-center gap-2 mb-2">
+      <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+      <span class="text-xs font-medium text-text/80">Trades</span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div class="text-center">
+        <span class="text-sm font-semibold text-text">{{result.total_trade|safe}}</span>
+        <p class="text-xs text-text/70">Total</p>
+      </div>
+      <div class="text-center">
+        <span class="text-sm font-semibold text-primary">{{result.profitable_percentage|format_profit|safe}}%</span>
+        <p class="text-xs text-text/70">Win Rate</p>
+      </div>
+      <div class="text-center">
+        <span class="text-sm font-semibold text-profit">{{result.winning_total_trade|safe}}</span>
+        <p class="text-xs text-text/70">Wins</p>
+      </div>
+      <div class="text-center">
+        <span class="text-sm font-semibold text-loss">{{result.losing_total_trade|safe}}</span>
+        <p class="text-xs text-text/70">Losses</p>
+      </div>
+    </div>
+  </div>
+
 
   <a
     href="{% url 'strategy' slug=result.strategy.slug %}?result={{result.id}}"
-    class="w-fit flex items-center px-1 bg-secondary text-xs rounded font-medium text-background"
+    class="w-full flex items-center justify-center px-1 py-2 bg-secondary text-sm rounded font-semibold text-background"
   >
     Check and vote
     <svg
