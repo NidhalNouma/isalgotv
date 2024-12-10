@@ -17,6 +17,34 @@ function copyPlainText(id) {
     });
 }
 
+function handleThreeSection(clickedButton, id1, id2, id3, btnClass) {
+  let section1 = document.getElementById("section-" + id1);
+  let section2 = document.getElementById("section-" + id2);
+  let section3 = document.getElementById("section-" + id3);
+
+  let btn1 = document.getElementById("btn-" + id1);
+  let btn2 = document.getElementById("btn-" + id2);
+  let btn3 = document.getElementById("btn-" + id3);
+
+  // Reset all buttons and sections
+  [btn1, btn2, btn3].forEach((btn) => btn.classList.remove(btnClass));
+  [section1, section2, section3].forEach((section) =>
+    section.classList.add("hidden")
+  );
+
+  // Apply class to clicked button and related section
+  if (clickedButton === btn1) {
+    btn1.classList.add(btnClass);
+    section1.classList.remove("hidden");
+  } else if (clickedButton === btn2) {
+    btn2.classList.add(btnClass);
+    section2.classList.remove("hidden");
+  } else if (clickedButton === btn3) {
+    btn3.classList.add(btnClass);
+    section3.classList.remove("hidden");
+  }
+}
+
 function swapDivBtn(id1, id2) {
   const btn1 = document.getElementById(id1 + "-btn");
   const btn2 = document.getElementById(id2 + "-btn");
@@ -699,6 +727,59 @@ function handleResultsCsvFileSelect(event) {
           document.getElementById("losing_trades_long").value = longUSD;
         if (document.getElementById("losing_trades_short"))
           document.getElementById("losing_trades_short").value = shortUSD;
+      } else if (key === "Avg Trade") {
+        if (document.getElementById("avg_trade"))
+          document.getElementById("avg_trade").value = allUSD;
+        if (document.getElementById("avg_trade_long"))
+          document.getElementById("avg_trade_long").value = longUSD;
+        if (document.getElementById("avg_trade_short"))
+          document.getElementById("avg_trade_short").value = shortUSD;
+        if (document.getElementById("avg_trade_percentage"))
+          document.getElementById("avg_trade_percentage").value = allPerc;
+        if (document.getElementById("avg_trade_percentage_long"))
+          document.getElementById("avg_trade_percentage_long").value = longPerc;
+        if (document.getElementById("avg_trade_percentage_short"))
+          document.getElementById("avg_trade_percentage_short").value =
+            shortPerc;
+      } else if (key === "Avg Winning Trade") {
+        if (document.getElementById("avg_winning_trade"))
+          document.getElementById("avg_winning_trade").value = allUSD;
+        if (document.getElementById("avg_winning_trade_long"))
+          document.getElementById("avg_winning_trade_long").value = longUSD;
+        if (document.getElementById("avg_winning_trade_short"))
+          document.getElementById("avg_winning_trade_short").value = shortUSD;
+        if (document.getElementById("avg_winning_trade_percentage"))
+          document.getElementById("avg_winning_trade_percentage").value =
+            allPerc;
+        if (document.getElementById("avg_winning_trade_percentage_long"))
+          document.getElementById("avg_winning_trade_percentage_long").value =
+            longPerc;
+        if (document.getElementById("avg_winning_trade_percentage_short"))
+          document.getElementById("avg_winning_trade_percentage_short").value =
+            shortPerc;
+      } else if (key === "Avg Losing Trade") {
+        if (document.getElementById("avg_losing_trade"))
+          document.getElementById("avg_losing_trade").value = allUSD;
+        if (document.getElementById("avg_losing_trade_long"))
+          document.getElementById("avg_losing_trade_long").value = longUSD;
+        if (document.getElementById("avg_losing_trade_short"))
+          document.getElementById("avg_losing_trade_short").value = shortUSD;
+        if (document.getElementById("avg_losing_trade_percentage"))
+          document.getElementById("avg_losing_trade_percentage").value =
+            allPerc;
+        if (document.getElementById("avg_losing_trade_percentage_long"))
+          document.getElementById("avg_losing_trade_percentage_long").value =
+            longPerc;
+        if (document.getElementById("avg_losing_trade_percentage_short"))
+          document.getElementById("avg_losing_trade_percentage_short").value =
+            shortPerc;
+      } else if (key === "Ratio Avg Win / Avg Loss") {
+        if (document.getElementById("ratio_trade"))
+          document.getElementById("ratio_trade").value = allUSD;
+        if (document.getElementById("ratio_trade_long"))
+          document.getElementById("ratio_trade_long").value = longUSD;
+        if (document.getElementById("ratio_trade_short"))
+          document.getElementById("ratio_trade_short").value = shortUSD;
       }
     });
 

@@ -76,11 +76,11 @@ def get_strategy(request, slug):
 
         Strategy.objects.filter(slug=slug).update(view_count=F('view_count') + 1)
         
-        random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
+        # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
     except Strategy.DoesNotExist:
         raise Http404("The object does not exist.")
     
-    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': random_results}
+    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': results}
     return render(request, 'strategy.html', context)
 
 def get_strategy_id(request, id):
@@ -157,12 +157,6 @@ def add_result(request, id):
                     settings_data[setting_name] = value_list[0:] 
 
             settings = strategy.settings
-
-            # for setting in settings['objects']:
-            #     setting_name = setting['name']
-            #     if setting_name in settings_data:
-            #         setting['default_value'] = settings_data[setting_name]
-
             for item in settings:
                 group_key = item['key']
                 group_value = item['value']
@@ -175,68 +169,29 @@ def add_result(request, id):
                             if setting_name not in settings_data:
                                 set['default_value'] = 'false'
 
-            # print(settings_data)
-            # print(settings)
-            # return
+
+            performance_data = {}
+            for key, value in request.POST.items():
+                if key.startswith("performance_"):
+                    # Remove "performance_" prefix from the key
+                    performance_key = key[len("performance_"):]
+                    print('performance_key', performance_key)
+                    performance_data[performance_key] = value
+
 
             form_data = {
-                'description': request.POST.get('description'),
-                'pair': request.POST.get('pair'),
-                'broker': request.POST.get('broker'),
-                'initial_capital': request.POST.get('initial_capital'),
+                'pair': request.POST.get('performance_pair'),
+                'broker': request.POST.get('performance_broker'),
+                'initial_capital': request.POST.get('performance_initial_capital'),
 
-                'total_trade': request.POST.get('total_trades'),
-                'total_trade_long': request.POST.get('total_trades_long'),
-                'total_trade_short': request.POST.get('total_trades_short'),
+                'test_start_at': request.POST.get('performance_start_at'),
+                'test_end_at': request.POST.get('performance_end_at'),
+                'time_frame_int': request.POST.get('performance_time_frame_int'),
+                'time_frame': request.POST.get('performance_time_frame'),
 
-                'winning_total_trade': request.POST.get('winning_trades'),
-                'winning_total_trade_long': request.POST.get('winning_trades_long'),
-                'winning_total_trade_short': request.POST.get('winning_trades_short'),
-
-                'losing_total_trade': request.POST.get('losing_trades'),
-                'losing_total_trade_long': request.POST.get('losing_trades_long'),
-                'losing_total_trade_short': request.POST.get('losing_trades_short'),
-
-                'net_profit': request.POST.get('net_profit'),
-                'net_profit_long': request.POST.get('net_profit_long'),
-                'net_profit_short': request.POST.get('net_profit_short'),
-
-                'net_profit_percentage': request.POST.get('net_profit_percentage'),
-                'net_profit_percentage_long': request.POST.get('net_profit_percentage_long'),
-                'net_profit_percentage_short': request.POST.get('net_profit_percentage_short'),
-
-                'max_drawdown': request.POST.get('max_dd'),
-                'max_drawdown_percentage': request.POST.get('max_dd_percentage'),
-
-                'profit_factor': request.POST.get('profit_factor'),
-                'profit_factor_long': request.POST.get('profit_factor_long'),
-                'profit_factor_short': request.POST.get('profit_factor_short'),
-
-                'profitable_percentage': request.POST.get('profitable_percentage'),
-                'profitable_percentage_long': request.POST.get('profitable_percentage_long'),
-                'profitable_percentage_short': request.POST.get('profitable_percentage_short'),
-
-                'gross_profit': request.POST.get('gross_profit'),
-                'gross_profit_long': request.POST.get('gross_profit_long'),
-                'gross_profit_short': request.POST.get('gross_profit_short'),
-
-                'gross_profit_percentage': request.POST.get('gross_profit_percent'),
-                'gross_profit_percentage_long': request.POST.get('gross_profit_percent_long'),
-                'gross_profit_percentage_short': request.POST.get('gross_profit_percent_short'),
-
-                'gross_loss': request.POST.get('gross_loss'),
-                'gross_loss_long': request.POST.get('gross_loss_long'),
-                'gross_loss_short': request.POST.get('gross_loss_short'),
-
-                'gross_loss_percentage': request.POST.get('gross_loss_percent'),
-                'gross_loss_percentage_long': request.POST.get('gross_loss_percent_long'),
-                'gross_loss_percentage_short': request.POST.get('gross_loss_percent_short'),
-
-                'test_start_at': request.POST.get('start_at'),
-                'test_end_at': request.POST.get('end_at'),
-                'time_frame_int': request.POST.get('time_frame'),
-                'time_frame': request.POST.get('time_frame_period'),
                 'settings': settings,
+                'performance': performance_data,
+                'description': request.POST.get('description'),
             }
             # print(request.POST)
             form = StrategyResultForm(form_data, request.FILES)  # Allow file uploads

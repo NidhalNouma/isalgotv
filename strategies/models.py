@@ -69,6 +69,100 @@ def update_names(data):
     recurse(data)
     return data
 
+def performance_validator_json(value):
+    required_keys = [
+        # Net profit keys
+        "net_profit",
+        "net_profit_long",
+        "net_profit_short",
+        "net_profit_percentage",
+        "net_profit_percentage_long",
+        "net_profit_percentage_short",
+
+        # Gross profit keys
+        "gross_profit",
+        "gross_profit_long",
+        "gross_profit_short",
+        "gross_profit_percentage",
+        "gross_profit_percentage_long",
+        "gross_profit_percentage_short",
+
+        # Gross loss keys
+        "gross_loss",
+        "gross_loss_long",
+        "gross_loss_short",
+        "gross_loss_percentage",
+        "gross_loss_percentage_long",
+        "gross_loss_percentage_short",
+
+        # Max drawdown
+        "max_drawdown",
+        "max_drawdown_percentage",
+
+        # Profit factor
+        "profit_factor",
+        "profit_factor_long",
+        "profit_factor_short",
+
+        # Profitable percentage
+        "profitable_percentage",
+        "profitable_percentage_long",
+        "profitable_percentage_short",
+
+        # Total trade keys
+        "total_trade",
+        "total_trade_long",
+        "total_trade_short",
+
+        # Winning and losing trades
+        "winning_total_trade",
+        "winning_total_trade_long",
+        "winning_total_trade_short",
+        "losing_total_trade",
+        "losing_total_trade_long",
+        "losing_total_trade_short",
+
+        # Average trade keys
+        "avg_trade",
+        "avg_trade_long",
+        "avg_trade_short",
+        "avg_trade_percentage",
+        "avg_trade_percentage_long",
+        "avg_trade_percentage_short",
+
+        # Average win trade keys
+        "avg_win_trade",
+        "avg_win_trade_long",
+        "avg_win_trade_short",
+        "avg_win_trade_percentage",
+        "avg_win_trade_percentage_long",
+        "avg_win_trade_percentage_short",
+
+        # Average win trade keys
+        "avg_loss_trade",
+        "avg_loss_trade_long",
+        "avg_loss_trade_short",
+        "avg_loss_trade_percentage",
+        "avg_loss_trade_percentage_long",
+        "avg_loss_trade_percentage_short",
+
+        # Ratio Avg Win / Avg Loss
+        "win_loss_avg",
+        "win_loss_avg_long",
+        "win_loss_avg_short",
+    ]
+
+    # Check for missing keys
+    missing_keys = [key for key in required_keys if key not in value]
+    if missing_keys:
+        raise ValidationError(f"Missing required keys: {', '.join(missing_keys)}")
+
+    
+class PerferenceJSONField(models.JSONField):
+    def __init__(self, *args, **kwargs):
+        kwargs['validators'] = [performance_validator_json]
+        super().__init__(*args, **kwargs)
+
 
 class StrategyImages(models.Model):
     def photo_path(instance, filename):
@@ -168,6 +262,7 @@ class StrategyResults(models.Model):
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     settings =  SettingsJSONField()
+    performance =  PerferenceJSONField()
     description = models.TextField()
 
     version = models.CharField(max_length=10, default="1.0")
@@ -187,59 +282,13 @@ class StrategyResults(models.Model):
 
     test_start_at = models.DateTimeField()
     test_end_at = models.DateTimeField()
+    
     time_frame_int = models.IntegerField(default=1)
     time_frame = models.CharField(max_length=8, choices=TIME_FRAME, default="minutes")
 
     pair = models.CharField(max_length=100, default='')
     broker = models.CharField(max_length=100, default='')
     initial_capital = models.CharField(max_length=100, default='')
-
-    net_profit = models.DecimalField(decimal_places=3, max_digits=10, default=0)
-    net_profit_long = models.DecimalField(decimal_places=3, max_digits=10, default=0)
-    net_profit_short = models.DecimalField(decimal_places=3, max_digits=10, default=0)
-
-    net_profit_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    net_profit_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    net_profit_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    gross_profit = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_profit_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_profit_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    gross_profit_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_profit_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_profit_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    gross_loss = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_loss_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_loss_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    gross_loss_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_loss_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    gross_loss_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    max_drawdown = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    max_drawdown_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    profit_factor = models.DecimalField(decimal_places=5, max_digits=12, default=0)
-    profit_factor_long = models.DecimalField(decimal_places=5, max_digits=12, default=0)
-    profit_factor_short = models.DecimalField(decimal_places=5, max_digits=12, default=0)
-
-    profitable_percentage = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    profitable_percentage_long = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    profitable_percentage_short = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
-    total_trade = models.IntegerField(default=0)
-    total_trade_long = models.IntegerField(default=0)
-    total_trade_short = models.IntegerField(default=0)
-
-    winning_total_trade = models.IntegerField(default=0)
-    winning_total_trade_long = models.IntegerField(default=0)
-    winning_total_trade_short = models.IntegerField(default=0)
-
-    losing_total_trade = models.IntegerField(default=0)
-    losing_total_trade_long = models.IntegerField(default=0)
-    losing_total_trade_short = models.IntegerField(default=0)
 
     images = GenericRelation(StrategyImages) 
     replies = GenericRelation(Replies) 

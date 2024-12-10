@@ -3,6 +3,13 @@ from dateutil.relativedelta import relativedelta
 
 register = template.Library()
 
+@register.filter
+def to_float(value):
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return 0.0 
+    
 @register.filter(name='subtract')
 def subtract(value, arg):
     return value - arg

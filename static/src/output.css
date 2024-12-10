@@ -3306,6 +3306,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .divide-y > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-y-reverse: 0;
   border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
@@ -3618,6 +3630,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-text) / 0.8);
 }
 
+.border-profit\/20 {
+  border-color: hsl(var(--color-profit) / 0.2);
+}
+
 .\!bg-background {
   --tw-bg-opacity: 1 !important;
   background-color: hsl(var(--color-background) / var(--tw-bg-opacity)) !important;
@@ -3879,6 +3895,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-error\/20 {
   background-color: hsl(var(--color-loss) / 0.2);
+}
+
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -4471,6 +4492,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   text-align: start;
 }
 
+.align-baseline {
+  vertical-align: baseline;
+}
+
 .align-top {
   vertical-align: top;
 }
@@ -4843,6 +4868,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .text-primary\/80 {
   color: hsl(var(--color-primary) / 0.8);
+}
+
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
+.text-blue-900 {
+  --tw-text-opacity: 1;
+  color: rgb(35 56 118 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -5710,6 +5745,10 @@ input[type=number] {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-text\/50:hover {
+  background-color: hsl(var(--color-text) / 0.5);
+}
+
 .hover\:fill-text:hover {
   fill: hsl(var(--color-text) / 1);
 }
@@ -6190,6 +6229,12 @@ input[type=number] {
     --tw-space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
+  }
+
+  .sm\:space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1rem * var(--tw-space-y-reverse));
   }
 
   .sm\:self-auto {
