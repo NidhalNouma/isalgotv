@@ -495,18 +495,19 @@ function scrollToResultOrComment(type, id) {
 
     if (id) {
       // Add a highlight class
-      resultElement.classList.add("brightness-125");
-      resultElement.classList.add("transition");
+      resultElement.classList.add("bg-text/10");
+      resultElement.classList.add("transition-all");
       resultElement.classList.add("ease-in-out");
-      resultElement.classList.add("duration-1000");
+      resultElement.classList.add("duration-250");
+      resultElement.classList.add("rounded-lg");
 
       // Remove the highlight after a certain time (e.g., 3 seconds)
       setTimeout(() => {
-        resultElement.classList.remove("brightness-125");
+        resultElement.classList.remove("bg-text/10");
         // resultElement.classList.remove("transition");
         // resultElement.classList.remove("ease-in-out");
         // resultElement.classList.remove("duration-1000");
-      }, 3000);
+      }, 1000);
     }
   }
 }

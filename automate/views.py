@@ -266,6 +266,9 @@ async def handle_webhook_crypto(request, custom_id):
     try:
         # Fetch the account asynchronously
         account = await sync_to_async(CryptoBrokerAccount.objects.get)(custom_id=custom_id)
+
+        if not account.active:
+            return JsonResponse({'error': 'Account is not active', "IP": request.META.get('REMOTE_ADDR')}, status=400)
         
         # Serialize the account object
         account_data = {
@@ -297,6 +300,9 @@ async def handle_webhook_forex(request, custom_id):
     try:
         # Fetch the account asynchronously
         account = await sync_to_async(ForexBrokerAccount.objects.get)(custom_id=custom_id)
+
+        if not account.active:
+            return JsonResponse({'error': 'Account is not active', "IP": request.META.get('REMOTE_ADDR')}, status=400)
 
         # Serialize the account object
         account_data = {

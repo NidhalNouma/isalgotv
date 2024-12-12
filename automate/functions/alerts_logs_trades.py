@@ -1,10 +1,10 @@
 from django.contrib.contenttypes.models import ContentType
 from ..models import *
-from .binance import * 
-from .binance_us import *
-from .bitget import *
+from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
+from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
+from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
 
-from .trade_locker import *
+from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
 
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
     print("Checking crypto credentials for " + broker_type)
@@ -25,12 +25,45 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
         raise Exception("Unsupported broker type.")
 
     
+def open_trade_by_account(account, symbol, side, volume, custom_id):
+    try:
+        broker_type = account.broker_type
+        if broker_type == 'binance':
+            return open_binance_trade(account, symbol, side, volume, custom_id)
+        elif broker_type == 'binanceus':
+            return open_binance_us_trade(account, symbol, side, volume, custom_id)
+        elif broker_type == 'bitget':
+            return open_bitget_trade(account, symbol, side, volume)
+        elif broker_type == 'tradelocker':
+            return open_tradelocker_trade(account, symbol, side, volume)
+        else:
+            raise Exception("Unsupported broker type.")
+    except Exception as e:
+        print('open trade error: ', str(e))
+        raise e
+    
+
+def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
+    try:
+        broker_type = account.broker_type
+        if broker_type == 'binance':
+            return close_binance_trade(account, trade_to_close.trade_type, symbol, side, volume_close)
+        elif broker_type == 'binanceus':
+            return close_binance_us_trade(account, trade_to_close.trade_type, symbol, side, volume_close)
+        elif broker_type == 'bitget':
+            return close_bitget_trade(account, trade_to_close.trade_type, symbol, side, volume_close)
+        elif broker_type == 'tradelocker':
+            return close_tradelocker_trade(account, trade_to_close.order_id, volume_close)
+        else:
+            raise Exception("Unsupported broker type.")
+    except Exception as e:
+        print('close trade error: ', str(e))
+        raise e
 
 def manage_alert(alert_message, account):
     try:
         print("Webhook request for account #" + str(account.id) + ": " + alert_message)
         alert_data = extract_alert_data(alert_message)
-        broker_type = account.broker_type
         
         action = alert_data.get('Action')
         custom_id = alert_data.get('ID')
@@ -56,53 +89,26 @@ def manage_alert(alert_message, account):
         if not volume and action == 'Entry':
             raise Exception("No volume found in alert message.")
 
-        if broker_type == 'binance':
-            if action == 'Entry':
-                trade = open_binance_trade(account, symbol, side, volume, custom_id)
-                trade = save_new_trade(custom_id, trade.order_id, trade.symbol, side, trade.origQty, trade.price, account)
-                save_log("S", alert_message, 'Order placed successfully.', account, trade)
-                print(trade)
+        if action == 'Entry':
+            trade = open_trade_by_account(account, symbol, side, volume, custom_id)
+            if trade.get('error') is not None:
+                raise Exception(trade.get('error'))
+            trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), account)
+            save_log("S", alert_message, 'Order placed successfully.', account, trade)
 
-            elif action == 'Exit':
-                trade_to_close = get_trade(custom_id, symbol, side, account)
-                if not trade_to_close:
-                    raise Exception(f"No trade found to close with ID: {custom_id}")
-                volume_to_close = volume
-                if partial:
-                    volume_to_close = trade_to_close.volume * float(partial) / 100
-                closed_trade = close_binance_trade(account, trade_to_close.trade_type, symbol, side, volume_to_close)
+        elif action == 'Exit':
+            trade_to_close = get_trade(custom_id, symbol, side, account)
+            if not trade_to_close:
+                raise Exception(f"No trade found to close with ID: {custom_id}")
 
-                trade = update_trade_after_close(trade_to_close, volume_to_close, closed_trade.price)
-                save_log("S", alert_message, 'Order was closed successfully.', account, trade)
-                print(closed_trade)
+            volume_close = volume_to_close(trade_to_close, partial)
+            closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
 
-        elif broker_type == 'tradelocker':
-            if action == 'Entry':
-                trade = open_tradelocker_trade(account, symbol, side, quantity=volume)
-                print(trade)
-                trade = save_new_trade(custom_id, trade['order_id'], symbol, side, volume, trade['price'], account)
-                save_log("S", alert_message, 'Order placed successfully.', account, trade)
-                print(trade)
+            trade = update_trade_after_close(trade_to_close, volume_close, closed_trade.get('price', 0))
+            save_log("S", alert_message, 'Order was closed successfully.', account, trade)
 
-            elif action == 'Exit':
-                trade_to_close = get_trade(custom_id, symbol, side, account)
-                if not trade_to_close:
-                    raise Exception(f"No trade found to close with ID: {custom_id}")
-                
-                volume_to_close = volume
-                if partial:
-                    volume_to_close = float(trade_to_close.volume) * float(partial) / 100
-                closed_trade = close_tradelocker_trade(account, trade_to_close.order_id, volume_to_close)
-
-                if closed_trade['error']:
-                    raise Exception(f"Error closing trade: {closed_trade['error']}")
-
-                if closed_trade:
-                    trade = update_trade_after_close(trade_to_close, volume_to_close, '0')
-                    save_log("S", alert_message, 'Order was closed successfully.', account, trade)
-    
     except Exception as e:   
-        print('webhook error: %s' % e)
+        print('API Error: %s' % e)
         save_log("E", alert_message, str(e), account)
         return {"error": str(e)}
 
@@ -170,6 +176,7 @@ def save_new_trade(custom_id, order_id, symbol, side, volume, price, account):
             symbol=symbol,
             side=t_side,
             volume=volume,
+            remaining_volume=volume,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id
@@ -196,8 +203,20 @@ def get_trade(custom_id, symbol, side, account):
 
 def update_trade_after_close(trade, closed_volume, price):
     trade.exit_price = price
-    trade.remaining_volume = float(trade.volume) - float(closed_volume)
-    trade.status = 'P'
+    trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
+    if float(trade.remaining_volume) <= 0:
+        trade.status = 'C'
+    else:
+        trade.status = 'P'
     trade.save()
 
     return trade
+
+def volume_to_close(trade, partial):
+    if partial:
+        volume_to_close = float(trade.volume) * float(partial) / 100
+        if volume_to_close > float(trade.remaining_volume):
+            volume_to_close = float(trade.remaining_volume)
+        return volume_to_close
+    else:
+        return float(trade.volume)

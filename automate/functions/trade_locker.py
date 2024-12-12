@@ -30,13 +30,17 @@ def open_tradelocker_trade(account, symbol, side, quantity):
         if order_id:
             position_id = tl.get_position_id_from_order_id(order_id)
             if position_id:
-                trade_details = get_trade_info_by_id(tl, order_id)
+                trade_details = get_trade_info_by_id(tl, position_id, order_id)
+                print('trade_details', trade_details)
+                order_id = position_id
                 # entry_price = trade_details.get('entry_price')  # Adjust the key based on API response structure
-                return {
-                    'message': f"Trade opened with order ID {position_id}.",
-                    'order_id': position_id,
-                    'price': 12
-                }
+            return {
+                'message': f"Trade opened with order ID {order_id}.",
+                'order_id': order_id,
+                'symbol': symbol,
+                'price': None,
+                'qty': trade_details.get('qty', quantity),
+            }
         else:
             return {'error': "Failed to open trade."}
     except Exception as e:
@@ -44,43 +48,46 @@ def open_tradelocker_trade(account, symbol, side, quantity):
 
 def close_tradelocker_trade(account, id, quantity):
     try:
-        tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
-        trade_details = get_trade_info_by_id(tl, id)
-        if not trade_details:
-            return {'error': f"Trade details not found for order ID {id}."}
+        if(float(quantity) < 0.01):
+            raise ValueError("Quantity must be greater than 0.01.")
         
-        result = tl.close_position(order_id = int(id), close_quantity = float(quantity))
-
-
-        return {'message': f"Trade closed for order ID {id}.", id: id}
+        tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
+        result = tl.close_position(position_id = int(id), close_quantity = float(quantity))
+        # trade_details = get_trade_info_by_id(tl, id)
+        return {'message': f"Trade closed for order ID {id}.", "id": id}
     
     except Exception as e:
+        print("An error occurred:", str(e))
         return {'error': str(e)}
     
 
-def get_trade_info_by_id(tl, trade_id):
-    orders = tl.get_all_positions()  # Assuming this returns a pandas DataFrame
-    # print('orders', orders) 
+def get_trade_info_by_id(tl, position_id, order_id):
+    try:
+        positions = tl.get_all_positions()  # Assuming this returns a pandas DataFrame
+        # orders = tl.get_all_orders(history=True)
 
-    if 'id' not in orders.columns:
-        print("Column 'orderId' not found in orders")
-        return None
+        # print('orders', orders) 
 
-    # Locate the row matching the trade ID
-    trade_info = orders.loc[orders['id'] == int(trade_id)]
+        if 'id' not in positions.columns:
+            print("Column 'orderId' not found in orders")
+            return None
 
-    # print('info', trade_info)
+        # Locate the row matching the trade ID
+        trade_info = positions.loc[positions['id'] == int(position_id)]
 
-    if not trade_info.empty:
-        # Extract relevant trade details (assuming these columns exist in the DataFrame)
-        trade_details = {
-            'symbol': trade_info['symbol'].values[0],
-            'price': trade_info['price'].values[0],
-            'quantity': trade_info['quantity'].values[0],
-            'side': trade_info['side'].values[0],
-            'status': trade_info['status'].values[0],
-            'timestamp': trade_info['timestamp'].values[0]
-        }
-        return trade_details
-    else:
+        if not trade_info.empty:
+            # Extract relevant trade details (assuming these columns exist in the DataFrame)
+            trade_details = {
+                'qty': trade_info['qty'].values[0].item(),
+                # 'price': trade_info['price'].values[0],
+                # 'quantity': trade_info['quantity'].values[0],
+                # 'side': trade_info['side'].values[0],
+                # 'status': trade_info['status'].values[0],
+                # 'timestamp': trade_info['timestamp'].values[0]
+            }
+            return trade_details
+        else:
+            return None
+    except Exception as e:
+        print("An error occurred:", str(e))
         return None

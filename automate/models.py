@@ -70,7 +70,8 @@ class CryptoBrokerAccount(models.Model):
 class ForexBrokerAccount(models.Model):
     BROKER_TYPES = [
         ("tradelocker", "TradeLocker"),
-        ("metatrader", "Metatrader"),
+        ("metatrader4", "Metatrader 4"),
+        ("metatrader5", "Metatrader 5"),
         ("dxtrade", "DXTrade"),
     ]
 

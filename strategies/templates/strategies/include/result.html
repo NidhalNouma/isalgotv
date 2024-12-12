@@ -2,7 +2,7 @@
 {% load custom_filters %}
 <div
   id="result-{{result.id}}"
-  class="mb-2 py-2 bg-background rounded-xl flex flex-col w-full max-w-full"
+  class="mb-2 py-2 flex flex-col w-full max-w-full"
 >
   <div class="flex flex-row justify-between items-center mb-3">
     <div class="mr-2.5 flex items-center gap-2">
@@ -74,17 +74,7 @@
           class="bg-primary text-background text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full"
         >
           Properties and Performance
-          <svg
-            stroke-width="0"
-            viewBox="0 0 16 16"
-            class="w-4 h-4 fill-current stroke-current ml-1"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z"
-            ></path>
-          </svg>
+          <svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="6" x="5" y="4" rx="1"/><rect width="8" height="6" x="11" y="14" rx="1"/></svg>
         </button>
         {%include "include/result_and_settings_modal.html"%}
       </div>
@@ -160,7 +150,7 @@
 
   <p
     id="paragraph-result-{{result.id}}"
-    class="text-text/70 text-sm pb-0 break-all line-clamp-3i"
+    class="text-text/70 text-sm pb-0 break-all"
   >
     {{result.description|linebreaksbr}}
   </p>

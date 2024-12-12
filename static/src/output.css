@@ -2573,6 +2573,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   height: 1.2rem;
 }
 
+.h-\[1rem\] {
+  height: 1rem;
+}
+
 .max-h-64 {
   max-height: 16rem;
 }
@@ -4397,6 +4401,21 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .py-\[0\.05rem\] {
   padding-top: 0.05rem;
   padding-bottom: 0.05rem;
+}
+
+.\!py-0 {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.\!py-0\.5 {
+  padding-top: 0.125rem !important;
+  padding-bottom: 0.125rem !important;
+}
+
+.\!py-1 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
 }
 
 .pb-0 {

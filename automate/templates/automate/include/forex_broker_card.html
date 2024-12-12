@@ -31,7 +31,7 @@
                     <button 
                         type="submit"
                         onclick="openLoader('', '-{{account.broker_type}}-account-activate-{{account.id}}')"
-                        id="btn-forex-account-activate-{{account.id}}"
+                        id="btn-{{account.broker_type}}-account-activate-{{account.id}}"
                         {% if account.active %}
                         class="p-1.5 hover:bg-success/10 text-success/80 hover:text-success/60 rounded-full transition-all"
                         {% else %}
@@ -42,7 +42,7 @@
                         <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
                     </button>
                     <button 
-                        id="spinner-forex-account-activate-{{account.id}}"
+                        id="spinner-{{account.broker_type}}-account-activate-{{account.id}}"
                         disabled
                         {% if account.active %}
                         class="p-1.5 transition-all hidden"
