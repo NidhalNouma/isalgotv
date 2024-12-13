@@ -56,7 +56,7 @@ setInterval(() => {
       <h6 class="text-text text-base tracking-wide font-medium mt-4 bg-transparent max-w-md">
         We offer top-notch backtestable trading strategies that are optimized for the <a href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank" class="bg-accent text-background truncate">TradingView platform</a>
       </h6> 
-      <div class="flex flex-row items-center  rounded justify-center gap-4 w-full max-w-fit  my-6 md:my-8 ">
+      <div class="flex flex-row items-center  rounded justify-center gap-4 w-full max-w-fit  mt-6 md:mt-8 ">
         <a
           href="{% url 'register' %}"
           class="btn-primary-landing sm:text-xl my-0 mx-0"
@@ -77,8 +77,18 @@ setInterval(() => {
         </a>
       </div>
 
-      <!-- <h6 onclick="openModel('money-back-modal')" class="text-text/80 font-semibold text-sm rounded-md pl-2 pr-1 py-1 bg-accent/10 cursor-pointer hover:bg-accent/20 transition-all">30-Day Money-Back Guarantee<svg class="w-4 aspect-square inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg></h6> -->
-      <a href="{% url 'register' %}" class="text-text tracking-wide font-medium text-sm rounded-md pl-2 pr-1 py-1 bg-title/20 cursor-pointer hover:bg-title/30 transition-all">Start today with <span class="text-sm font-semibold">20% off</span> <svg class="w-4 aspect-square inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg></a>
+      <h6 class="text-title/80 text-sm font-medium text-center mt-6 tracking-wider">Start today with 
+        <div class="relative font-semibold inline-block text-title tracking-wider pl-0.5">20% Off
+          <div class="absolute top-[90%] w-full">
+            <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <a class=" inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
+          <svg class=" w-4 fill-text bg-text/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
+        </a>
+      </h6>
 
   </div>
 
@@ -549,16 +559,18 @@ setInterval(() => {
     <span class="bg-secondary text-background">Select your preferred plan</span>
   </h2>
 
-  <h2 class="text-text text-sm font-semibold text-center mt-6 tracking-wider">
-     <div class="relative inline-block text-title text-sm  ">30-Day
+  <h6 class="text-text/60 text-lg font-medium mt-4 text-center">Start today with 
+    <div class="relative inline-block text-title tracking-wider">20% Off
       <div class="absolute top-[90%] w-full">
         <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
-     Money-Back Guarantee <svg onclick="openModel('money-back-modal')" class="bg-accent/40 fill-title p-0 rounded-full w-4 aspect-square inline align-middle cursor-pointer" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
-  </h2>
+    <a class=" inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
+      <svg class=" w-5 fill-text bg-title/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
+    </a>
+  </h6>
 
   <div class="mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
     {% include "include/price_item.html" with title="MONTHLY" %}
@@ -877,5 +889,4 @@ setInterval(() => {
 
 
 </script>
-{% include "include/money_back_modal.html" %} 
 {% endblock page %}
