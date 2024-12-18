@@ -1,4 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
+
+from decimal import Decimal
+
 from ..models import *
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
@@ -47,11 +50,11 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
     try:
         broker_type = account.broker_type
         if broker_type == 'binance':
-            return close_binance_trade(account, trade_to_close.trade_type, symbol, side, volume_close)
+            return close_binance_trade(account, symbol, side, volume_close)
         elif broker_type == 'binanceus':
-            return close_binance_us_trade(account, trade_to_close.trade_type, symbol, side, volume_close)
+            return close_binance_us_trade(account, symbol, side, volume_close)
         elif broker_type == 'bitget':
-            return close_bitget_trade(account, trade_to_close.trade_type, symbol, side, volume_close)
+            return close_bitget_trade(account, symbol, side, volume_close)
         elif broker_type == 'tradelocker':
             return close_tradelocker_trade(account, trade_to_close.order_id, volume_close)
         else:
@@ -103,6 +106,9 @@ def manage_alert(alert_message, account):
 
             volume_close = volume_to_close(trade_to_close, partial)
             closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
+
+            if closed_trade.get('error') is not None:
+                raise Exception(closed_trade.get('error'))
 
             trade = update_trade_after_close(trade_to_close, volume_close, closed_trade.get('price', 0))
             save_log("S", alert_message, 'Order was closed successfully.', account, trade)
@@ -177,6 +183,7 @@ def save_new_trade(custom_id, order_id, symbol, side, volume, price, account):
             side=t_side,
             volume=volume,
             remaining_volume=volume,
+            entry_price=price,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id
@@ -197,7 +204,7 @@ def get_trade(custom_id, symbol, side, account):
         side=t_side,
         content_type=content_type,
         object_id=account.id
-    ).first()
+    ).last()
 
     return trade
 
@@ -214,9 +221,17 @@ def update_trade_after_close(trade, closed_volume, price):
 
 def volume_to_close(trade, partial):
     if partial:
-        volume_to_close = float(trade.volume) * float(partial) / 100
-        if volume_to_close > float(trade.remaining_volume):
-            volume_to_close = float(trade.remaining_volume)
-        return volume_to_close
+        volume_to_close = Decimal(trade.volume) * Decimal(partial) / Decimal(100)
+        print("Volume to close:", volume_to_close, 'from', trade.remaining_volume)
+        
+        if volume_to_close > Decimal(trade.remaining_volume):
+            volume_to_close = Decimal(trade.remaining_volume)
+        
+        if Decimal(trade.remaining_volume) <= 0:
+            raise Exception("No volume left to close.")
+        
+        # Return as a fixed-point decimal string
+        return format(volume_to_close, 'f')
     else:
-        return float(trade.volume)
+        # Return the full volume as a fixed-point decimal string
+        return format(Decimal(trade.volume), 'f')

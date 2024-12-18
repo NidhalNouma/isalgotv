@@ -33,4 +33,7 @@ urlpatterns = [
     path('strategies/', include('strategies.urls')) ,
     path('automate/', include('automate.urls')) ,
     path('docs/', include('docs.urls')),
+
+# For Apple Pay
+    path('.well-known/apple-developer-merchantid-domain-association', serve_apple_pay_verification),
 ]

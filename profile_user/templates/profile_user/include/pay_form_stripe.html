@@ -1,3 +1,4 @@
+{% comment %} TODO: Adding apple pay and google pay {% endcomment %}
 <form
   {% if user_profile.subscription_id and subscription_status != 'canceled' %}
   hx-post="{% url 'membership-update' %}?plan={{ title }}"

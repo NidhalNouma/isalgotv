@@ -276,17 +276,20 @@ async def handle_webhook_crypto(request, custom_id):
             'name': account.name,
             'custom_id': account.custom_id,
         }
-        response_data = {
-            'account': account_data,
-            'status': 'success',
-            "IP": request.META.get('REMOTE_ADDR')
-        }
 
         # Decode the request body asynchronously
-        text_data = await request.body.decode('utf-8')
+        text_data = request.body.decode('utf-8')
 
         # Call manage_alert asynchronously if it supports async (or use sync_to_async)
         manage_alert_response = await sync_to_async(manage_alert)(text_data, account)
+
+        response_data = {
+            'account': account_data,
+            'status': 'success',
+            "IP": request.META.get('REMOTE_ADDR'),
+            "Server IP": request.server_ip,
+            'response': manage_alert_response
+        }
 
         return JsonResponse(response_data, status=200)
     
@@ -310,17 +313,20 @@ async def handle_webhook_forex(request, custom_id):
             'name': account.name,
             'custom_id': account.custom_id,
         }
-        response_data = {
-            'account': account_data,
-            'status': 'success',
-            "IP": request.META.get('REMOTE_ADDR')
-        }
 
         # Decode the request body asynchronously
         text_data = request.body.decode('utf-8')
 
         # Call manage_alert asynchronously
         manage_alert_response = await sync_to_async(manage_alert)(text_data, account)
+
+        response_data = {
+            'account': account_data,
+            'status': 'success',
+            "IP": request.META.get('REMOTE_ADDR'),
+            "Server IP": request.server_ip,
+            'response': manage_alert_response
+        }
 
         return JsonResponse(response_data, status=200)
 

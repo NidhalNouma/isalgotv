@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User_Profile, Notification
 from strategies.models import Strategy
+
 from .forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django.db.models import Max
@@ -800,29 +801,30 @@ def stripe_webhook(request):
         event = stripe.Webhook.construct_event(
             payload, sig_header, stripe_wh_secret
         )
+
+        if event['type'] == 'customer.subscription.deleted':
+            print("Strip-Webhook: Subscription deleted ...")
+            subscription = event['data']['object']
+
+            remove_access(subscription.id)
+
+        elif event['type'] == 'customer.subscription.updated':
+            print("Strip-Webhook: Subscription updated ...")
+            subscription = event['data']['object']
+            if subscription.status == "canceld":
+                remove_access(subscription.id)
+            elif subscription.status == "past_due":
+                remove_access(subscription.id, False)
+
+        else:
+            print('Unhandled event type {}'.format(event['type']))
+
+        return HttpResponse(status=200)
+
     except ValueError as e:
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
         return HttpResponse(status=400)
-
-    if event['type'] == 'customer.subscription.deleted':
-        print("Strip-Webhook: Subscription deleted ...")
-        subscription = event['data']['object']
-
-        remove_access(subscription.id)
-
-    elif event['type'] == 'customer.subscription.updated':
-        print("Strip-Webhook: Subscription updated ...")
-        subscription = event['data']['object']
-        if subscription.status == "canceld":
-            remove_access(subscription.id)
-        elif subscription.status == "past_due":
-            remove_access(subscription.id, False)
-
-    else:
-      print('Unhandled event type {}'.format(event['type']))
-
-    return HttpResponse(status=200)
 
 
 def remove_access(subscription_id, cancel_email = True):
@@ -838,3 +840,5 @@ def remove_access(subscription_id, cancel_email = True):
                 
         if cancel_email:
             access_removed_email_task(user.email)
+
+        profile_user.deactivate_all_accounts()

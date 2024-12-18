@@ -134,13 +134,13 @@ class TradeDetails(models.Model):
     order_id = models.CharField(max_length=20)
 
     symbol = models.CharField(max_length=12)
-    volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-    remaining_volume = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    volume = models.DecimalField(decimal_places=10, max_digits=30, default=0)
+    remaining_volume = models.DecimalField(decimal_places=10, max_digits=30, default=0)
 
-    entry_price = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-    exit_price = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    entry_price = models.DecimalField(decimal_places=10, max_digits=30, default=0)
+    exit_price = models.DecimalField(decimal_places=10, max_digits=30, default=0)
 
-    profit = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    profit = models.DecimalField(decimal_places=4, max_digits=30, default=0)
 
     side = models.CharField(max_length=1, choices=TYPE)
  

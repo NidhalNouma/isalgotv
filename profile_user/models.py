@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db import transaction
+
 
 # Create your models here.
 
@@ -24,6 +26,12 @@ class User_Profile(models.Model):
         if self.tradingview_username:
             return self.tradingview_username
         return self.user.username
+
+    def deactivate_all_accounts(self):
+        from automate.models import CryptoBrokerAccount, ForexBrokerAccount
+        with transaction.atomic():
+            CryptoBrokerAccount.objects.filter(created_by=self).update(active=False)
+            ForexBrokerAccount.objects.filter(created_by=self).update(active=False)
 
 class Notification(models.Model):
     user = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
