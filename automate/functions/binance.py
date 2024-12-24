@@ -52,35 +52,59 @@ def get_account_balance(binance_account, asset: str):
     except Exception as e:
         raise ValueError(str(e))
 
-def adjust_trade_quantity(binance_account, symbol, quote_order_qty):
+def adjust_trade_quantity(binance_account, symbol, side ,quote_order_qty):
     try:
         # Fetch balance based on the trade type
-        if binance_account.trade_type == "S":  # Spot
-            base_asset, quote_asset = symbol.split("/")
+        if binance_account.type == "S":  # Spot
+            # base_asset, quote_asset = symbol.split("/")
+            base_asset, quote_asset = symbol[:-4], symbol[-4:]
             base_balance = get_account_balance(binance_account, base_asset)["balance"]
             quote_balance = get_account_balance(binance_account, quote_asset)["balance"]
 
-            if base_balance < quote_order_qty:
-                return base_balance
-            elif quote_balance < quote_order_qty:
-                raise ValueError("Insufficient funds in the quote asset balance.")
+            print("Base asset:", base_asset)
+            print("Quote asset:", quote_asset)
 
+            print("Base balance:", base_balance)
+            print("Quote balance:", quote_balance)
+
+            if side.upper() == "BUY":
+                if quote_balance < quote_order_qty:
+                    return quote_balance
+                elif quote_balance <= 0:
+                    raise ValueError("Insufficient quote balance.")
+                
+            elif side.upper() == "SELL":
+                if base_balance < quote_order_qty:
+                    return base_balance
+                elif quote_balance <= 0:
+                    raise ValueError("Insufficient base balance.")
+                
             return quote_order_qty
-        elif binance_account.trade_type in ["U", "C"]:  # USDM or COINM Futures
-            # Futures balances are assumed to be in the margin account
-            margin_balance = get_account_balance(binance_account, "USDT")["balance"]
-            if margin_balance < quote_order_qty:
-                return margin_balance
-            return quote_order_qty
+        
+        # elif binance_account.type in ["U", "C"]:  # USDM or COINM Futures
+        #     # Futures balances are assumed to be in the margin account
+
+        #     base_asset, quote_asset = symbol[:-4], symbol[-4:]
+        #     # margin_balance = get_account_balance(binance_account, "USDT")["balance"]
+        #     margin_balance = get_account_balance(binance_account, base_asset)["balance"]
+
+        #     print("Base asset:", base_asset, margin_balance)
+
+        #     if side.upper() == "SELL":
+        #         if margin_balance < quote_order_qty:
+        #             return margin_balance
+        #         return quote_order_qty
+        #     return quote_order_qty
         else:
-            raise ValueError("Invalid trade type. Use 'spot', 'usdm', or 'coinm'.")
+            return quote_order_qty
     
     except Exception as e:
         raise ValueError(str(e))
 
 def open_binance_trade(binance_account, symbol: str, side: str, quantity: float, custom_id: str = None):
     try:
-        adjusted_quantity = adjust_trade_quantity(binance_account, symbol, float(quantity))
+        adjusted_quantity =  adjust_trade_quantity(binance_account, symbol, side, float(quantity))
+        print("Adjusted quantity:", adjusted_quantity)
         trade_type = binance_account.type
 
         order_params = {
@@ -101,13 +125,15 @@ def open_binance_trade(binance_account, symbol: str, side: str, quantity: float,
             response = client.new_order(**order_params)
         else:
             raise ValueError("Invalid trade type. Use 'spot', 'usdm', or 'coinm'.")
+        
+        print(response)
 
         return {
             "order_id": response["orderId"],
             "symbol": response["symbol"],
             "side": response["side"],
             "price": response.get("fills", [{}])[0].get("price", "0"),
-            "quantity": response["origQty"],
+            "qty": response["origQty"],
         }
     
     except ClientError as e:
@@ -117,8 +143,9 @@ def open_binance_trade(binance_account, symbol: str, side: str, quantity: float,
 
 def close_binance_trade(binance_account, symbol: str, side: str, quantity: float):
     try:
-        adjusted_quantity = adjust_trade_quantity(binance_account, symbol, float(quantity))
         t_side = "SELL" if side.upper() == "BUY" else "BUY"
+        adjusted_quantity = adjust_trade_quantity(binance_account, symbol, t_side, float(quantity))
+
         order_params = {
             "symbol": symbol,
             "side": str.upper(t_side),
@@ -144,7 +171,7 @@ def close_binance_trade(binance_account, symbol: str, side: str, quantity: float
             "symbol": response["symbol"],
             "side": response["side"],
             "price": response.get("fills", [{}])[0].get("price", "0"),
-            "quantity": response["origQty"],
+            "qty": response["origQty"],
         }
     
     except ClientError as e:

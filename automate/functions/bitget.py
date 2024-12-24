@@ -28,12 +28,13 @@ def send_request(method, endpoint, api_key, secret_key, passphrase, body=None):
 
 def check_bitget_credentials(api_key, secret_key, passphrase, trade_type="S"):
     try:
-        endpoint = '/api/spot/v1/account/accounts'
+        endpoint = '/api/v2/spot/account/info'
         if trade_type == "F":
-            endpoint = '/api/mix/v1/account/accounts'
+            endpoint = '/api/v2/mix/account/accounts?productType=USDT-FUTURES'
 
         response = send_request('GET', endpoint, api_key, secret_key, passphrase)
-        if 'code' in response and response['code'] != '0':
+        print(trade_type, response)
+        if 'code' in response and int(response['code']) != 0:
             return {'error': response['msg'], "valid": False}
         return {'message': "API credentials are valid.", "valid": True}
     except Exception as e:
@@ -41,9 +42,9 @@ def check_bitget_credentials(api_key, secret_key, passphrase, trade_type="S"):
 
 def open_bitget_trade(account, symbol, side, quantity):
     try:
-        endpoint = '/api/spot/v1/orders'
+        endpoint = '/api/v2/spot/orders'
         if account.type == "F":
-            endpoint = '/api/mix/v1/order/placeOrder'
+            endpoint = '/api/v2/mix/order/placeOrder'
             
         body = {
             "symbol": symbol,

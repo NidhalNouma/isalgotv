@@ -121,7 +121,7 @@ def edit_broker(request, broker_type, pk):
                     'name': request.POST.get(f'{account.id}_{account.broker_type}_name'),
                     'apiKey': request.POST.get(f'{account.id}_{account.broker_type}_apiKey'),
                     'secretKey': request.POST.get(f'{account.id}_{account.broker_type}_secretKey'),
-                    'pass_phrase': request.POST.get(f'{broker_type}_pass_phrase'),
+                    'pass_phrase': request.POST.get(f'{account.id}_{broker_type}_pass_phrase'),
                     'type': request.POST.get(f'{account.id}_{account.broker_type}_type'),
                     'created_by' : request.user.user_profile,
                     'broker_type': account.broker_type

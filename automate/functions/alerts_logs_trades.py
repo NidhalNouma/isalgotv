@@ -6,6 +6,7 @@ from ..models import *
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
+from .bybit import check_bybit_credentials
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
 
@@ -16,7 +17,9 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_typ
     if broker_type == 'binanceus':
         return check_binance_us_credentials(api_key, api_secret)
     elif broker_type == 'bitget':
-        return check_bitget_credentials(api_key, api_secret, phrase)
+        return check_bitget_credentials(api_key, api_secret, phrase, trade_type)
+    elif broker_type == 'bybit':
+        return check_bybit_credentials(api_key, api_secret, trade_type)
     else:
         raise Exception("Unsupported broker type.")
 
@@ -66,7 +69,12 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
 def manage_alert(alert_message, account):
     try:
         print("Webhook request for account #" + str(account.id) + ": " + alert_message)
-        alert_data = extract_alert_data(alert_message)
+        
+        extra_symbol = ""
+        if account.broker_type == 'binance' and account.type == "C":
+            extra_symbol = "_PERP"
+
+        alert_data = extract_alert_data(alert_message, extra_symbol)
         
         action = alert_data.get('Action')
         custom_id = alert_data.get('ID')
@@ -118,7 +126,7 @@ def manage_alert(alert_message, account):
         save_log("E", alert_message, str(e), account)
         return {"error": str(e)}
 
-def extract_alert_data(alert_message):
+def extract_alert_data(alert_message, extra_symbol=""):
     data = {}
     parts = alert_message.split()
     
@@ -133,7 +141,7 @@ def extract_alert_data(alert_message):
             data['Action'] = 'Exit'
             data['Type'] = value
         elif key == 'A':
-            data['Asset'] = value
+            data['Asset'] = value + extra_symbol
         elif key == 'V':
             data['Volume'] = value
         elif key == 'P':

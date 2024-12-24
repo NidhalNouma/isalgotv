@@ -109,6 +109,21 @@
           value="{{account.secretKey}}"
         />
       </div>
+      {% if account.broker_type == "bitget" %}
+      <div class="w-full">
+        <label for="{{broker_type}}_passphrase" class="input-label"
+          >Pass phrase</label
+        >
+        <input
+          type="text"
+          id="{{account.id}}_{{account.broker_type}}_passphrase"
+          name="{{account.id}}_{{account.broker_type}}_pass_phrase"
+          class="input-text w-full"
+          placeholder="phrase"
+          value="{{account.pass_phrase}}"
+        />
+      </div>
+      {% endif %}
       <div class="w-full">
         <label for="type" class="input-label">Type</label>
 
@@ -132,7 +147,25 @@
               </label>
             </div>
           </li>
-
+          {% if account.broker_type == "binance" %}
+          <li class="w-full">
+            <div class="flex items-center ps-3">
+              <input
+                id="{{account.id}}_{{account.broker_type}}-type-M"
+                type="radio"
+                value="U"
+                name="{{account.id}}_{{account.broker_type}}_type"
+                class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+                {% if account.type == "U" %}checked{% endif %}
+              />
+              <label
+                for="{{account.id}}_{{account.broker_type}}-type-M"
+                class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
+                >USD@M</label
+              >
+            </div>
+          </li>
+          {% endif %} 
           {% if account.broker_type == "binance" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
@@ -151,25 +184,8 @@
               >
             </div>
           </li>
-          {% endif %} {% if account.broker_type == "binance" %}
-          <li class="w-full">
-            <div class="flex items-center ps-3">
-              <input
-                id="{{account.id}}_{{account.broker_type}}-type-M"
-                type="radio"
-                value="U"
-                name="{{account.id}}_{{account.broker_type}}_type"
-                class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
-                {% if account.type == "U" %}checked{% endif %}
-              />
-              <label
-                for="{{account.id}}_{{account.broker_type}}-type-M"
-                class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
-                >USD@M</label
-              >
-            </div>
-          </li>
-          {% endif %} {% if account.broker_type == "bitget" %}
+          {% endif %} 
+          {% if account.broker_type == "bitget" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
@@ -187,7 +203,8 @@
               >
             </div>
           </li>
-          {% endif %} {% if account.broker_type == "bybit" %}
+          {% endif %} 
+          {% if account.broker_type == "bybit" %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input

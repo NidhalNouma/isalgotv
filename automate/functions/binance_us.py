@@ -47,10 +47,11 @@ def adjust_trade_quantity(account, symbol, quote_order_qty, trade_type):
     try:
         base_asset, quote_asset = symbol[:-4], symbol[-4:]  # Assumes symbols are like BTCUSDT
         if trade_type.upper() == "BUY":
-            available_balance = get_account_balance(account, quote_asset)
-            print("Available balance:", available_balance)
-            if available_balance < quote_order_qty:
-                return available_balance  # Use the maximum available balance
+            pass
+            # available_balance = get_account_balance(account, quote_asset)
+            # print("Available balance:", available_balance)
+            # if available_balance < quote_order_qty:
+            #     return available_balance  # Use the maximum available balance
         elif trade_type.upper() == "SELL":
             available_balance = get_account_balance(account, base_asset)
 
