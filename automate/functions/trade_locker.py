@@ -54,7 +54,11 @@ def close_tradelocker_trade(account, id, quantity):
         tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
         result = tl.close_position(position_id = int(id), close_quantity = float(quantity))
         # trade_details = get_trade_info_by_id(tl, id)
-        return {'message': f"Trade closed for order ID {id}.", "id": id}
+        return {
+            'message': f"Trade closed for order ID {id}.", 
+            "id": id,
+            'qty': quantity,
+            }
     
     except Exception as e:
         print("An error occurred:", str(e))

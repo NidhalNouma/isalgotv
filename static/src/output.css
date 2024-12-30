@@ -3560,6 +3560,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
 }
 
+.border-text\/10 {
+  border-color: hsl(var(--color-text) / 0.1);
+}
+
 .\!bg-background {
   --tw-bg-opacity: 1 !important;
   background-color: hsl(var(--color-background) / var(--tw-bg-opacity)) !important;

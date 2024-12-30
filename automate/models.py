@@ -33,12 +33,13 @@ class CryptoBrokerAccount(models.Model):
         ("S", "Spot"),
         ("U", "USD@M"),
         ("C", "COIN@M"),
+        ("UC", "USD@C"),
     ]
 
 
     broker_type = models.CharField(max_length=20, choices=BROKER_TYPES)
 
-    type = models.CharField(max_length=1, choices=TYPE, default="S")
+    type = models.CharField(max_length=2, choices=TYPE, default="S")
 
     name = models.CharField(max_length=100)
     apiKey = models.CharField(max_length=150)

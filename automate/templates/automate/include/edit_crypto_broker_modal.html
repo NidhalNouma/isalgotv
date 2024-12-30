@@ -191,15 +191,49 @@
               <input
                 id="{{account.id}}_{{account.broker_type}}-type-F"
                 type="radio"
-                value="F"
+                value="U"
                 name="{{account.id}}_{{account.broker_type}}_type"
+                {% if account.type == "U" %}checked{% endif %}
                 class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
-                {% if account.type == "F" %}checked{% endif %}
               />
               <label
                 for="{{account.id}}_{{account.broker_type}}-type-F"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
-                >Futures</label
+                >USDT-M</label
+              >
+            </div>
+          </li>
+          <li class="w-full">
+            <div class="flex items-center ps-3">
+              <input
+                id="{{account.id}}_{{account.broker_type}}-type-C"
+                type="radio"
+                value="C"
+                name="{{account.id}}_{{account.broker_type}}_type"
+                {% if account.type == "C" %}checked{% endif %}
+                class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+              />
+              <label
+                for="{{account.id}}_{{account.broker_type}}-type-C"
+                class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
+                >COIN-M</label
+              >
+            </div>
+          </li>
+          <li class="w-full">
+            <div class="flex items-center ps-3">
+              <input
+                id="{{account.id}}_{{account.broker_type}}-type-Uc"
+                type="radio"
+                value="UC"
+                name="{{account.id}}_{{account.broker_type}}_type"
+                {% if account.type == "UC" %}checked{% endif %}
+                class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
+              />
+              <label
+                for="{{account.id}}_{{account.broker_type}}-type-Uc"
+                class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
+                >USDC-M</label
               >
             </div>
           </li>

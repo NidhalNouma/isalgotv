@@ -6,7 +6,7 @@ from ..models import *
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
-from .bybit import check_bybit_credentials
+from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
 
@@ -40,6 +40,8 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
             return open_binance_us_trade(account, symbol, side, volume, custom_id)
         elif broker_type == 'bitget':
             return open_bitget_trade(account, symbol, side, volume)
+        elif broker_type == 'bybit':
+            return open_bybit_trade(account, symbol, side, volume)
         elif broker_type == 'tradelocker':
             return open_tradelocker_trade(account, symbol, side, volume)
         else:
@@ -58,6 +60,8 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
             return close_binance_us_trade(account, symbol, side, volume_close)
         elif broker_type == 'bitget':
             return close_bitget_trade(account, symbol, side, volume_close)
+        elif broker_type == 'bybit':
+            return close_bybit_trade(account, symbol, side, volume_close)
         elif broker_type == 'tradelocker':
             return close_tradelocker_trade(account, trade_to_close.order_id, volume_close)
         else:
@@ -117,8 +121,10 @@ def manage_alert(alert_message, account):
 
             if closed_trade.get('error') is not None:
                 raise Exception(closed_trade.get('error'))
+            
+            closed_volume = closed_trade.get('qty', volume_close)
 
-            trade = update_trade_after_close(trade_to_close, volume_close, closed_trade.get('price', 0))
+            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade.get('price', 0))
             save_log("S", alert_message, 'Order was closed successfully.', account, trade)
 
     except Exception as e:   
@@ -217,7 +223,7 @@ def get_trade(custom_id, symbol, side, account):
     return trade
 
 def update_trade_after_close(trade, closed_volume, price):
-    trade.exit_price = price
+    trade.exit_price = float(price)
     trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
     if float(trade.remaining_volume) <= 0:
         trade.status = 'C'
