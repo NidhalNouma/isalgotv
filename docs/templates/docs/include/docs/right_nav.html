@@ -1,0 +1,36 @@
+<nav class="sticky top-24 max-h-[50vh] hidden xl:block w-24">
+    <h4 class="text-sm font-semibold text-title/40 mb-2.5">On this page</h4>
+    <ul class="space-y-2 text-sm font-medium">
+        {% for item in nav_items %}
+            <li>
+                <a href="{{ item.href }}" class="text-left text-title/60 hover:text-title/80 transition-colors">
+                    {{ item.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        function scrollToElement() {
+            const hash = window.location.hash;
+            if (hash) {
+                const targetElement = document.querySelector(hash);
+                if (targetElement) {
+                    const elementRect = targetElement.getBoundingClientRect();
+                    const absoluteElementTop = elementRect.top + window.pageYOffset;
+                    const offsetTop = 80; // 1 rem = 16px
+                    const position = absoluteElementTop - offsetTop;
+                    window.scrollTo({
+                        top: position,
+                       // behavior: 'smooth'
+                    });
+                }
+            }
+        }
+
+        scrollToElement(); // Call on page load if there's a hash in the URL
+        window.addEventListener('hashchange', scrollToElement); // Call on hash change
+    });
+</script>

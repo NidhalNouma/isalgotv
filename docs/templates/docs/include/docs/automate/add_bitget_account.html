@@ -1,0 +1,99 @@
+{% load static %}
+<article class="docs">
+    <section>
+        <h1>Bitget API Keys</h1>
+    </section>
+
+    <div class="mb-4">
+        {% include 'include/warnings.html' with warning="Never share your API keys with anyone. We use industry-standard encryption to secure your credentials." %}
+    </div>
+
+    
+    <section>
+        <aside>
+            <h3><span>1</span> Create a Bitget Account</h3>
+            <div>
+                <p>
+                    If you don’t already have a Bitget account, please sign up <a href="https://partner.bitget.com/bg/VT1JM4" target="_blank">here</a>.
+                </p>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>2</span> Navigate to API Keys</h3>
+            <div>
+                <ol>
+                    <li>Log in to your Bitget account.</li>
+                    <li>Click on your profile icon in the top-right corner.
+                        <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitget/step-1.png" %}"}], "b1")' src='{% static "images/docs/automate/bitget/step-1.png" %}' alt="Access API Management" />
+                    </li>
+                    <li>Select "API Keys" from the dropdown menu.
+                        <img class="!-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitget/step-2.png" %}"}], "b1")' src='{% static "images/docs/automate/bitget/step-2.png" %}' alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>3</span> Create API Key</h3>
+            <div>
+                <ol>
+                    <li>
+                        Click "Create API Key"
+                    </li>
+                    <li>
+                        Choose "System generated"
+                        <img class="!-ml-4 mb-2" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitget/step-3.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bitget/step-3.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                    <li>
+                        Give your API key a descriptive name in the Note.
+                    </li>
+                    <li>
+                        Set a Passphrase.
+
+                        <img class="!-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitget/step-4.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bitget/step-4.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>4</span> Configure Security Settings</h3>
+            <div>
+                <ol>
+                    <li>
+                        Under "Permissions" select "Read-write"
+                    </li>
+                    <li>
+                        Under "Permission Type" tick "Name"
+                        <img class="!-ml-4 mb-2" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitget/step-5.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bitget/step-5.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                    <li>
+                        Scroll down and Add the server's IP address: <span>{{server_ip}}</span>
+                        <img class="!-ml-4 mb-2" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitget/step-6.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bitget/step-6.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+
+                    <li>
+                       Click "Next" to get your API Keys.
+                    </li>
+                </ol>
+                <p class="font-semibold pt-2">IMPORTANT: Ensure you copy your secret key before clicking Confirm.</p>
+            </div>
+        </aside>
+    </section>
+
+</article>

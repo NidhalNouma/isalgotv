@@ -8,16 +8,13 @@
 <meta name="description" content="Become part of a community where trading success is the norm. Discover strategies results, insights, and support to thrive in any market. Your journey towards profitability starts here.">
 {% endblock head_description %}
 
-
 {% block page %} 
-
 
 {% if has_subscription %}
 <div class=" flex items-baseline gap-2 sm:gap-3">
     <h1 class="main-title">Automate </h1>
     <button onclick="openModel('add-broker-modal');" class="btn-text -translate-y-1 pr-3 pl-2 text-sm font-semibold inline-flex items-center justify-center"><svg class="h-4 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Broker</button>
-</div>
-    
+</div> 
 
 <main id="at-accounts" class="mt-8 mb-16 ">
     {% include 'include/accounts_list.html' %}
@@ -34,10 +31,8 @@
 
 {% include 'include/add_forex_broker_modal.html' with broker_type="tradelocker" %}
 
-
 {% else %}
 <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Automate Your Trading </br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">with any broker<span></h1>
-
 
 <div class="mt-6 mb-8 max-w-xl mx-auto px-4">
     <h2 class=" text-center text-text/60 text-lg sm:text-xl font-medium">Connect TradingView alerts to multiple brokers and execute trades in <span class="text-primary">milliseconds</span></h2>
@@ -58,8 +53,6 @@
     </a>
     {% endif %}
 </div>
-
-
     {% include "svg/automate_svg.html" %}
 
 {% endif %}

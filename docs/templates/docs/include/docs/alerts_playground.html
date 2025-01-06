@@ -1,77 +1,131 @@
+{% load static %}
 <article class="docs">
+    <section>
+        <aside>
+            <h3>Playground</h3>
+            <p>
+                This playground is designed to assist you in creating alerts for any <span>IsAlgo</span> strategy or indicator. Simply follow the steps below to configure your alerts. 
+                {% comment %} <br/>If you’re using a strategy or indicator from an external source, <a href="">click here</a> for detailed instructions on how to set up your alerts. {% endcomment %}
+            </p>
+            <h3 class="mt-6">Preparation Checklist:</h3>
+            <p>
+            <ul>
+                <li>Ensure you are on the correct chart with the desired asset and timeframe.</li>
+                <li>Add the strategy/indicator to the chart and confirm it's the tested setup.</li>
+                <li>Test your strategy/indicator to verify its performance before proceeding.</li>
+            </ul>
+            </p>
+        </aside>
+    </section>
+
     <div class="mb-4">
         {% include 'include/infos.html' with info="Ensure you thoroughly test the strategy or indicator you plan to automate before initiating the automation process." %}
     </div>
-    <section>
-        <p>
-            This playground is designed to assist you in creating alerts for any <span>IsAlgo</span> strategy or indicator. Simply follow the steps below to configure your alerts. 
-            <br/>If you’re using a strategy or indicator from an external source, <a href="">click here</a> for detailed instructions on how to set up your alerts.
-        </p>
-    </section>
-      
-    <section>
-        <h1>Preparation Checklist:</h1>
-        <p>
-          <ul>
-            <li>• Ensure you are on the correct chart with the desired asset and timeframe.</li>
-            <li>• Add the strategy/indicator to the chart and confirm it's the tested setup.</li>
-            <li>• Test your strategy/indicator to verify its performance before proceeding.</li>
-          </ul>
-        </p>
-        
-        <p>
-            <label class="block mb-1">Enter the Asset Name: (leave empty to use strategy-defined asset)</label>
-            <input class="input-text" id="symbol-input-{{id}}" type="text" placeholder="e.g., BTCUSD, NAS100" />
-            <br />
-            <label class="block mt-2 mb-1">Enter Your Volume/Amount Per Trade: (leave empty to use strategy-defined volume)</label>
-            <input class="input-text" id="volume-input-{{id}}" type="number" placeholder="e.g., 10 " />
-        </p>
-    </section>
-      
-    <section>
-        <h2>Alert Messages:</h2>
 
-        <p>
-            Long Entry:
-            <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{exchange}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-            <br/>
-            Short Entry:
-            <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{exchange}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-            <br/>
-            Long Exit:
-            <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-            <br/>
-            Short Exit:
-            <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-        </p>
-        
-        <p>
-         Copy and paste these alerts into the <span>strategy/indicator's Alerts section</span> in the settings and <span>click OK</span>.
-        </p>
-    </section>
+    {% comment %} <div class="mb-4">
+        {% include 'include/infos.html' with info="Ensure you thoroughly test the strategy or indicator you plan to automate before initiating the automation process." %}
+    </div> {% endcomment %}
 
     <section>
-      
-        <h1>Webhook URL:</h1>
-        <p class="mb-4"><code id="url-{{id}}" onclick="copyPlainText('url-{{id}}')">{{webhook_url}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code></p>
-      
-        {% comment %} <h2>Next Steps:</h2> {% endcomment %}
-        <p>
-          <ol>
-            <li>Copy the Webhook URL.</li>
-            <li>Click the Alert icon (bell symbol) in the top right corner of the chart.</li>
-            <li>Select Create Alert.</li>
-            <li>In the Condition dropdown, choose your strategy/indicator and select <span>alert() function calls only</span>.</li>
-            <li>Provide a name for the alert.</li>
-            <li>Go to the Notifications tab, enable the Webhook URL option, and paste your Webhook URL.</li>
-            <li>Click Create to finalize the alert.</li>
-          <ol>
-        </p>
+        <aside>
+            <h3>Alert Messages:</h3>
+
+            <p class="mb-3">
+                The alert messages are the message that will be sent on evry action taken by the strategy/indicator, whether closiing or opening a trade.
+                <br/>
+                <br/>
+                By default the alerts will have the asset name of the tradingview chart and the volume that you set in the strategy/indicator, but you can override them.
+            </p>
+
+        
+            <p class="pb-5">
+                <label class="block mb-1">Asset Name:</label>
+                <input class="input-text block w-full max-w-lg" id="symbol-input-{{id}}" type="text" placeholder="e.g., BTCUSD, NAS100" />
+                <span class="text-xs !text-text/40">leave empty to use strategy-defined asset</span>
+                <br />
+                <label class="block mt-2 mb-1">Volume/Amount Per Trade:</label>
+                <input class="input-text block w-full max-w-lg" id="volume-input-{{id}}" type="number" placeholder="e.g., 10 " />
+                <span class="text-xs !text-text/40">leave empty to use strategy-defined volume</span>
+            </p>
+
+            <p>
+                Long Entry:
+                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{exchange}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <br/>
+                Short Entry:
+                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{exchange}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <br/>
+                Long Exit:
+                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <br/>
+                Short Exit:
+                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+            </p>
+
+            <p class="pt-4">
+                Copy and paste these alerts into the <span>strategy/indicator's Alerts section</span> in the settings and <span>click OK</span>.
+            </p>
+
+            <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/strategy-alerts.png" %}"}], "b1")' 
+                src='{% static "images/docs/automate/strategy-alerts.png" %}' 
+                alt="Access API Management" />
+        </aside>
     </section>
 
     <div class="mb-4">
+        {% include 'include/infos.html' with info="When changing the asset or volume settings, there is no need to add a new broker. Each broker, once added can handle all available assets and volumes." %}
+    </div>
+      
+      
+    <section>
+        <aside>
+            <h3>Creating TradingView alert</h3>
+            <ul>
+                <li>Make sure your strategy/indicator are in the <span>TradingView</span> chart.</li>
+                <li>Click on the Alert icon (bell symbol) in the top right corner of the chart.
+                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-chart.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-chart.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>Select Create Alert.                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-alert-section.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-alert-section.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>In the Condition dropdown, choose your strategy/indicator and select <span>alert() function calls only</span>.
+                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-create-alert.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-create-alert.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>Provide a name for the alert.</li>
+                <li>Go to the Notifications tab, enable the Webhook URL option, and paste your Webhook URL.
+                    {% if webhook_url %}
+                        <p class="!text-xs !text-text/40">This is your webhook URL releated to <span class="!text-text/80">{{webhook_name}}</span></p>
+                        <p class="pb-2"><code id="url-{{id}}" onclick="copyPlainText('url-{{id}}')">{{webhook_url}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code></p>
+                    {% endif %}
+                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-webhook-alert.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-webhook-alert.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>Click Create to finalize the alert.</li>
+            </ul>
+
+            <p class="pt-4 font-semibold">
+                IMPORTANT: The alert will be created based on the current settings of the strategy/indicator. To make it work on the new settings, you need to create a new alert and delete the old one if it's no longer needed. <br/>Changing the strategy/indicator settings after the alert is created will not update the existing alert; it will continue to function based on the settings that were active when it was created.
+            </p>
+        </aside>
+    </section>
+
+    <div>
         {% include 'include/warnings.html' with warning="Keep your webhook URL private to ensure the security of your alerts and avoid any disruptions. Sharing it could lead to missed or unauthorized alerts." %}
     </div>
+
+    <section class="mt-4">
+        <aside>
+            <h3>Need help?</h3>
+
+                <p>If you encounter any issues during the integration process, our support team is here to help. Contact us <a href="{% url 'docs_contactus' %}" target="_blank">here</a>.</p>
+        </aside>
+    </section> 
 </article>
 
 <script>

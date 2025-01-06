@@ -1,0 +1,95 @@
+{% load static %}
+<article class="docs">
+    <section>
+        <h1>Bybit API Keys</h1>
+    </section>
+
+    <div class="mb-4">
+        {% include 'include/warnings.html' with warning="Never share your API keys with anyone. We use industry-standard encryption to secure your credentials." %}
+    </div>
+
+    <section>
+        <aside>
+            <h3><span>1</span> Create a Bybit Account</h3>
+            <div>
+                <p>
+                    If you don’t already have a Bybit account, please sign up <a href="https://www.bybit.com/en/register" target="_blank">here</a>.
+                </p>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>2</span> Navigate to API Key</h3>
+            <div>
+                <ol>
+                    <li>Log in to your Bybit account.</li>
+                    <li>Click on your profile icon in the top-right corner.
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bybit/step-1.png" %}"}], "b1")' src='{% static "images/docs/automate/bybit/step-1.png" %}' alt="Access API Management" />
+                    </li>
+                    <li>Select "API" from the dropdown menu.
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bybit/step-2.png" %}"}], "b1")' src='{% static "images/docs/automate/bybit/step-2.png" %}' alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>3</span> Create API Key</h3>
+            <div>
+                <ol>
+                    <li>
+                        Click "Create New Key"
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bybit/step-3.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bybit/step-3.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                    <li>
+                        Choose "System generated API Keys"
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bybit/step-4.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bybit/step-4.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>4</span> Configure API Settings</h3>
+            <div>
+                <ol>
+                    <li>
+                        Set the API key permissions to "Read-Write".
+                    </li>
+                    <li>
+                        Enable "Only IPs with permissions granted are allowed to access the OpenAPI".
+                    </li>
+                    <li>
+                        Past the server's IP address: <span>{{server_ip}}</span>
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bybit/step-5.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bybit/step-5.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                    <li>
+                        Scroll down and enable "Unified Trading".
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bybit/step-7.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/bybit/step-6.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+
+                    <li>
+                        Click "Submit" to see your API Keys.
+                    </li>
+                </ol>
+
+                <p class="font-semibold pt-2">IMPORTANT: Ensure you copy your secret key before clicking Understood.</p>
+            </div>
+        </aside>
+    </section>
+
+</article>

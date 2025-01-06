@@ -1,8 +1,8 @@
 {% extends 'page.html' %} {% load static %} {% block page %}
 
-<main class="relative flex justify-between my-6 sm:my-12">
+<main class="docs-main">
   {% include 'include/docs/side_nav.html' %}
-  <div class="text-text flex-auto">
+  <div class="docs-container">
     <section class="">
       <h1 class="text-2xl font-bold text-title tracking-tight">Contact us</h1>
 
@@ -11,19 +11,13 @@
       </div>
 
       <div class="mt-2 flex lg:flex-row flex-col justify-center items-center max-w-full">
-        <div class=" flex items-center justify-center my-6">
-          <div class="grid grid-cols-2 items-center gap-2 ">
+        {% comment %} <div class=" flex items-center justify-center my-6 w-fit">
+          <div class="grid lg:grid-cols-1 grid-cols-2 items-center gap-1.5 w-full">
               <h6 class="p-4 aspect-square w-fit flex flex-col items-center justify-center  rounded-full  bg-text/10 text-text text-sm truncate"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0 1 30.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1 0 80 0 40 40 0 1 0-80 0z"></path></svg>Have a question</h6>
               <h6 class="p-4 aspect-square w-fit flex flex-col items-center justify-center  rounded-full  bg-text/10 text-text text-sm truncate"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>Have an idea</h6>
               <h6 class="p-4 aspect-square w-fit flex flex-col items-center justify-center  rounded-full  bg-text/10 text-text text-sm truncate"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M85.57 446.25h340.86a32 32 0 0 0 28.17-47.17L284.18 82.58c-12.09-22.44-44.27-22.44-56.36 0L57.4 399.08a32 32 0 0 0 28.17 47.17z"></path><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m250.26 195.39 5.74 122 5.73-121.95a5.74 5.74 0 0 0-5.79-6h0a5.74 5.74 0 0 0-5.68 5.95z"></path><path d="M256 397.25a20 20 0 1 1 20-20 20 20 0 0 1-20 20z"></path></svg>Report a bug</h6>
               <h6 class="p-4 aspect-square w-fit flex flex-col items-center justify-center  rounded-full  bg-text/10 text-text text-sm truncate"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg"><g id="Circle_More"><g><circle cx="12.001" cy="12" r="1"></circle><circle cx="16.001" cy="12" r="1"></circle><circle cx="8.001" cy="12" r="1"></circle><path d="M12,21.932A9.934,9.934,0,1,1,21.934,12,9.944,9.944,0,0,1,12,21.932ZM12,3.065A8.934,8.934,0,1,0,20.934,12,8.944,8.944,0,0,0,12,3.065Z"></path></g></g></svg>Need some help</h6>
           </div>
-           {% comment %} <svg xmlns="http://www.w3.org/2000/svg" class="h-48 w-48 stroke-accent" viewBox="0 0 23 23" fill="none" style="max-width: 100%; max-height: 100%;">
-            <path d="M11.5 14H6V7H17V8.5" stroke-dasharray="0,0,0,25"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,25;            0,12.5,12.5,0;            25,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></path>
-            <path d="M6.49609 7.5L11.4961 10.5L16.4961 7.5" stroke-dasharray="0,0,0,11.661911964416504"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,11.661911964416504;            0,5.830955982208252,5.830955982208252,0;            11.661911964416504,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></path>
-            <path d="M17.6609 9.98535L13.5459 14.0804L12.8599 16.1384L14.9169 15.4524L19.0329 11.3364L17.6609 9.98535Z" stroke-dasharray="0,0,0,17.889543533325195"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,17.889543533325195;            0,8.944771766662598,8.944771766662598,0;            17.889543533325195,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></path>
-            <circle cx="11.5" cy="11.5" r="11" stroke-dasharray="0,0,0,68.66966247558594"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,68.66966247558594;            0,34.33483123779297,34.33483123779297,0;            68.66966247558594,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></circle>
-          </svg>  {% endcomment %}
         </div>
         
         <svg xmlns="http://www.w3.org/2000/svg" class="lg:block hidden max-w-[50%] w-48 pointer-events-none h-16 m-4 stroke-primary" viewBox="0 0 290 26" fill="none" style="max-width: 100%; max-height: 100%;">
@@ -31,9 +25,9 @@
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" class="lg:hidden block max-w-[50%] w-48i pointer-events-none h-16 m-4 stroke-primary" viewBox="0 0 26 290" fill="none" style="max-width: 100%; max-height: 100%;">
           <path d="M13.7544 1.57071C13.7544 91.3376 13.7544 181.104 13.7543 270.871C13.7543 274.521 13.7543 278.171 13.7543 281.82C13.7543 284.273 14.9263 281.503 15.331 280.813C19.4576 273.773 19.5565 264.321 22.4259 256.725C25.7453 247.939 21.9899 259.52 21.2434 262.506C19.9823 267.551 18.878 272.603 17.696 277.66C17.0879 280.261 15.8913 285.598 14.1485 287.689C11.1347 291.305 1.92947 264.728 1.92947 260.141" stroke-width="8" stroke-linecap="round" stroke-dasharray="0,0,0,379.6339416503906"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,379.6339416503906;            0,189.8169708251953,189.8169708251953,0;            379.6339416503906,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"/></path>
-        </svg>
+        </svg> {% endcomment %}
         
-        <div class="max-w-lg w-full " id="contact_us_mail">
+        <div class="w-full " id="contact_us_mail">
           {% include "include/docs/contact_us_form.html" %}
         </div>
       </div>

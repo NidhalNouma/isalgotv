@@ -1,8 +1,11 @@
 {% extends 'page.html' %} {% load static %} {% block page %}
 
-<main class="relative flex justify-between my-6 sm:my-12">
+<main class="docs-main">
   {% include 'include/docs/side_nav.html' %}
-  {% include 'include/docs/third_party_automation.html' %}
+  <div class="docs-container">
+    {% include 'include/docs/third_party_automation.html' %}
+  </div>
+  {% comment %} {% include 'include/docs/automate/add_binance_account.html' %} {% endcomment %}
 </main>
 
 {% endblock page %}

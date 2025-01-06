@@ -129,6 +129,34 @@
     @apply text-text flex-auto;
   }
 
+  .docs-main {
+    @apply relative flex justify-between my-6;
+  }
+
+  .docs-container {
+    @apply max-w-3xl w-full mx-auto text-text;
+  }
+
+  .docs section aside {
+    @apply p-4 rounded bg-text/10 my-2 w-full overflow-hidden;
+  }
+
+  .docs section aside:first-of-type {
+    @apply !mt-0;
+  }
+
+  .docs section aside div:first-of-type {
+    @apply pl-8;
+  }
+
+  .docs section aside h3 {
+    @apply text-lg font-semibold mb-2 text-text flex items-center gap-2;
+  }
+  .docs section aside h3 span {
+    @apply  w-6 h-6 text-sm bg-text/60 text-background rounded-full flex items-center justify-center font-semibold;
+  }
+
+
   .docs section {
     @apply mb-4;
   }
@@ -150,7 +178,7 @@
   }
 
   .docs section ul {
-    @apply ml-4 my-2 par;
+    @apply list-disc ml-4 my-2 par;
   }
 
   .docs section a {
@@ -162,7 +190,11 @@
   }
 
   .docs section img {
-    @apply max-w-md mt-2 rounded cursor-pointer;
+    @apply max-w-md mt-2 rounded cursor-pointer object-contain;
+  }
+
+  .docs section aside div li img {
+    @apply -ml-8;
   }
 
   .docs section span {

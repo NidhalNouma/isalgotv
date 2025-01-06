@@ -2,65 +2,133 @@
 <article class="docs">
 
     <section>
-        <h1>Link a binance account</h1>
-        <ol>
-            <li>
-                Create a Binance Account: If you don’t have a Binance account, 
-                <a href="https://www.binance.com/en/register" target="_blank">sign up here</a>.
-            </li>
-            <li>
-                Log In to Your Binance Account: Log in using your credentials.
-            </li>
-            <li>
-                Access API Management: Click on the profile icon in the top-right corner, 
-                then select "Account" from the dropdown menu.
-                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step3-image-src.png" %}"}], "b1")' 
-                     src='{% static "images/docs/automate/binance/step3-image-src.png" %}' 
-                     alt="Access API Management" />
-            </li>
-            <li>
-                Create an API Key: Click "Create API," choose "System generated," and give your new API key a descriptive name.
-                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step4-image-src.png" %}"}], "b1")' 
-                     src='{% static "images/docs/automate/binance/step4-image-src.png" %}' 
-                     alt="Create API Key" />
-            </li>
-            <li>
-                Configure API Settings:
-                <ul>
-                    <li>Select "Restrict access to trusted IPs only."</li>
-                    <li>Add your server's IP address <span>{{server_ip}}</span>.</li>
-                    <li>Click "Confirm."</li>
-                </ul>
-                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step5-image-src.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/binance/step5-image-src.png" %}' 
-                    alt="Configure API Settings" />
-            </li>
-            <li>
-                Set Permissions: Enable "Spot & Margin Trading" and "Futures." Click "Save" to confirm your settings.
-
-                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step6-image-src.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/binance/step6-image-src.png" %}' 
-                    alt="Set Permissions" />
-            </li>
-            <li>
-                Integrate API with Your Website:
-                <ul>
-                    <li>Copy the API Key and Secret Key.</li>
-                    <li>Paste them into the appropriate form fields on your website.</li>
-                </ul>
-
-                <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step7-image-src.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/binance/step7-image-src.png" %}' 
-                    alt="Integrate API with Website" />
-            </li>
-            <li>
-                Select Trading Preferences: Choose between Spot, USDⓈ-M Futures, or Coin-M Futures, then click "Save."
-                {% comment %} <img src="step8-image-src.jpg" alt="Select Trading Preferences"> {% endcomment %}
-            </li>
-            <li>
-                Finalize and Test: Ensure the integration works. If you encounter any issues, contact our support team.
-                {% comment %} <img src="step9-image-src.jpg" alt="Finalize and Test"> {% endcomment %}
-            </li>
-        </ol>
+        <h1>Binance API Keys</h1>
     </section>
+
+    <div class="mb-4">
+        {% include 'include/warnings.html' with warning="Never share your API keys with anyone. Our platform uses industry-standard encryption to protect your credentials." %}
+    </div>
+
+    <section>
+        <aside>
+            <h3><span>1</span> Create a Binance Account</h3>
+            <div>
+                <p>
+                    Sign up for a Binance account if you don't have one.
+                    <a href="https://www.binance.com/en/register" target="_blank">Sign up here</a>.
+                </p>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>2</span> Access API Management</h3>
+            <div>
+                <ol>
+                    <li>
+                        Log in to your Binance account
+                    </li>
+                    <li>
+                        Click on your profile icon in the top-right corner
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step-1.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/binance/step-1.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                    <li>
+                        Select "API Management" from the dropdown menu
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step-2.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/binance/step-2.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>3</span> Create API Key</h3>
+            <div>
+                <ol>
+                    <li>
+                        Click "Create API"
+                    </li>
+                    <li>
+                        Choose "System generated"
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step-3.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/binance/step-3.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                    <li>
+                        Give your API key a descriptive name.
+
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step-4.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/binance/step-4.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>4</span> Configure Security Settings</h3>
+            <div>
+                <ol>
+                    <li>
+                        Enable "Restrict access to trusted IPs only"
+                    </li>
+                    <li>
+                        Add the server's IP address: <span>{{server_ip}}</span>
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step-5.png" %}"}], "b1")' 
+                        src='{% static "images/docs/automate/binance/step-5.png" %}' 
+                        alt="Access API Management" />
+                    </li>
+                </ol>
+            </div>
+        </aside>
+    </section>
+
+    <section>
+        <aside>
+            <h3><span>5</span> Set Trading Permissions</h3>
+            <div>
+                <p>Enable the following permissions based on your needs:</p>
+                <ul>
+                    <li>
+                        Spot & Margin Trading
+                    </li>
+                    <li>
+                        Futures Trading
+                        <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/binance/step-6.png" %}"}], "b1")' 
+                            src='{% static "images/docs/automate/binance/step-6.png" %}' 
+                            alt="Access API Management" />
+                    </li>
+                </ul>
+
+                <p class="font-semibold">IMPORTANT: Make sure to copy your secret key before clicking save.</p>
+
+            </div>
+        </aside>
+    </section>
+
+    {% comment %} <section>
+        <aside>
+            <h3><span>6</span> Complete Integration</h3>
+            <div>
+                <p>Copy your API credentials and paste them in the add Binance form.</p>
+            </div>
+        </aside>
+    </section> {% endcomment %}
+
+    {% comment %} <section>
+        <aside>
+            <h3>Need help?</h3>
+
+                <p>If you encounter any issues during the integration process, our support team is here to help. Contact us <a href="{% url 'docs_contactus' %}" target="_blank">here</a>.</p>
+        </aside>
+    </section> {% endcomment %}
+
 </article>

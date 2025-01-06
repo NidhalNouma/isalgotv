@@ -1,74 +1,82 @@
 <article class="docs">
-<section class="">
-  <h1 >Adding username</h1>
+<section id="add-username">
+  <aside>
+    <h3>Adding username</h3>
 
-  <p>
-    After selecting your preferred
-    <a
-      href="{% url 'membership' %}"
-      >plan</a
-    >, you'll need to provide us with your
-    <a
-      href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591"
-      target="_blank"
-      >TradingView</a
+    <p>
+      After selecting your preferred
+      <a
+        href="{% url 'membership' %}"
+        >plan</a
+      >, you'll need to provide us with your
+      <a
+        href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591"
+        target="_blank"
+        >TradingView</a
+      >
+      username.
+      <br />The video below demonstrates where you can locate your username.
+    </p>
+    <video
+      muted=""
+      controls="controls"
     >
-    username.
-    <br />The video below demonstrates where you can locate your username.
-  </p>
-  <video
-    muted=""
-    controls="controls"
-  >
-    <source
-      src="https://isalgotest.s3.amazonaws.com/docs/copy_username.mp4"
-      type="video/mp4"
-    />
-  </video>
+      <source
+        src="https://isalgotest.s3.amazonaws.com/docs/copy_username.mp4"
+        type="video/mp4"
+      />
+    </video>
+  </aside>
+</section>
+
+<section id="find-strategies">
+  <aside>
+    <h3>Find the strategies</h3>
+
+    <p >
+      After submitting your username, please go to TradingView -> Products ->
+      Supercharts. You will find the availble strategies under the 'Invite Only
+      Scripts' section.
+      <br />The video below demonstrates how to do that.
+    </p>
+    <video
+      muted=""
+      controls="controls"
+    >
+      <source
+        src="https://isalgotest.s3.amazonaws.com/docs/find_strategies.mp4"
+        type="video/mp4"
+      />
+    </video>
+  </aside>
+</section>
+
+<section id="get-new-strategies">
+  <aside>
+    <h3>Get the new strategies</h3>
+
+    <p >
+      We release new strategies every month. To gain access to them, simply visit
+      the strategy page and click
+      <span >'Get Access'</span>. If you're a
+      member, you will receive access to the new strategies at no additional cost.
+    </p>
+  </aside>
 </section>
 
 <section>
-  <h1 >Find the strategies</h1>
+  <aside>
+    <h3>Having a trouble</h3>
 
-  <p >
-    After submitting your username, please go to TradingView -> Products ->
-    Supercharts. You will find the availble strategies under the 'Invite Only
-    Scripts' section.
-    <br />The video below demonstrates how to do that.
-  </p>
-  <video
-    muted=""
-    controls="controls"
-  >
-    <source
-      src="https://isalgotest.s3.amazonaws.com/docs/find_strategies.mp4"
-      type="video/mp4"
-    />
-  </video>
-</section>
-
-<section >
-  <h1 >Get the new strategies</h1>
-
-  <p >
-    We release new strategies every month. To gain access to them, simply visit
-    the strategy page and click
-    <span >'Get Access'</span>. If you're a
-    member, you will receive access to the new strategies at no additional cost.
-  </p>
-</section>
-
-<section >
-  <h1 >Having a trouble</h1>
-
-  <p c>
-    If you've subscribed and encounter any issues with adding your TradingView
-    username or accessing the strategies, please click
-    <a
-      href="{% url 'membership' %}"
-      >here</a
-    >
-    to contact us for assistance.
-  </p>
+    <p c>
+      If you've subscribed and encounter any issues with adding your TradingView
+      username or accessing the strategies, please click
+      <a
+        href="{% url 'membership' %}"
+        >here</a
+      >
+      to contact us for assistance.
+    </p>
+  </aside>
 </section>
 </article>

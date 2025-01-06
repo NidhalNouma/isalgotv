@@ -1,24 +1,23 @@
 {% extends 'page.html' %} {% load static %} {% block page %}
 
-<main class="relative flex justify-between my-6 sm:my-12">
+<main class="docs-main">
   {% include 'include/docs/side_nav.html' %}
-  <div class="text-text flex-auto">
+  <div class="docs-container">
     {% include "include/docs/write_alerts.html" %}
-    <dl class="flex pt-6 mt-8 border-t border-text/30">
-      <div class="ml-auto text-right">
-        <dt class="text-sm font-sans font-normal tracking-tight">Next</dt>
+    {% comment %} {% include "include/docs/alerts_playground.html" %} {% endcomment %}
 
-        <dd class="mt-1">
-          <a
-            href="{% url 'docs_automate' %}"
-            class="text-base font-semibold hover:underline"
-          >
-            How to automate the alerts?
-          </a>
-        </dd>
-      </div>
-    </dl>
+
+    {% url 'docs_automate' as next_url %}
+    {% include "include/docs/next_link.html" with text="How to automate alerts?" href=next_url %}
   </div>
+
+
+  {% load custom_tags %}
+  {% with nav_json="[{'name': 'Alerts', 'href': '#intro'}, {'name': 'Placeholders', 'href': '#offering'}, {'name': 'Create alert', 'href': '#community'}]" %}
+      {% with nav_items=nav_json|load_json %}
+          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+      {% endwith %}
+  {% endwith %}
 </main>
 
 {% endblock page %}
