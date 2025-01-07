@@ -1,0 +1,25 @@
+<div class="relative md:hidden mb-6">
+    <button onclick="toggleNavigation()" class="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-title/80 bg-background border border-text/40 rounded-md shadow-sm focus:outline-none">
+      <span>{{title}}</span>
+      <div class="w-4 h-4 text-title/40 flex items-center" id="chevron">▼</div> <!-- Simple dropdown icon -->
+    </button>
+  
+    <div id="navigationDropdown" class="absolute z-10 w-full mt-1 bg-background border border-text/40 rounded-md shadow-lg hidden py-1">
+
+      {% include "include/docs/side_nav_urls.html" with li_class="flex items-center gap-2 px-4 py-2 text-sm text-title/80 hover:bg-text/10" %}
+    </div>
+  </div>
+  
+  <script>
+  function toggleNavigation() {
+    var navigationDropdown = document.getElementById('navigationDropdown');
+    var chevron = document.getElementById('chevron');
+    if (navigationDropdown.classList.contains('hidden')) {
+      navigationDropdown.classList.remove('hidden');
+      chevron.innerHTML = '▲';
+    } else {
+      navigationDropdown.classList.add('hidden');
+      chevron.innerHTML = '▼';
+    }
+  }
+  </script>

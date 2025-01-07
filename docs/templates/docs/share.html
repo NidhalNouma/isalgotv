@@ -3,6 +3,8 @@
 <main class="docs-main">
   {% include 'include/docs/side_nav.html' %}
   <div class="docs-container">
+    {% include 'include/docs/side_nav_mobile.html' with title="Share" %}
+
     {% include "include/docs/share_archivement.html" %}
 
     {% url 'docs_alerts' as next_url %}

@@ -1,0 +1,58 @@
+<ul class="">
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_index' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_index' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Introduction</a
+      >
+    </li>
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_instalation' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_instalation' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Instalation</a
+      >
+    </li>
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_setup' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_setup' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Setup</a
+      >
+    </li>
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_share' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_share' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Share</a
+      >
+    </li>
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_alerts' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_alerts' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Alerts</a
+      >
+    </li>
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_automate' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_automate' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Automation</a
+      >
+    </li>
+     <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_questions' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_questions' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >FAQ</a
+      >
+    </li> 
+    <li class="{{ li_class }}">
+      <a
+        href="{% url 'docs_contactus' %}"
+        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_contactus' %} font-semibold text-title {% else %} text-text {% endif %}"
+        >Contacts</a
+      >
+    </li>
+  </ul>
