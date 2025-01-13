@@ -1,0 +1,25 @@
+{% extends 'page.html' %} {% load static %} {% block page %}
+
+<main class="docs-main">
+  {% include 'include/docs/side_nav.html' %}
+  <div class="docs-container">
+    {% include 'include/docs/side_nav_mobile.html' with title="Automate" %}
+
+    {% comment %} {% include "include/docs/alerts_intro.html" %} {% endcomment %}
+    {% include "include/docs/alerts_playground.html" %}
+
+
+    {% url 'docs_automate_notes' as next_url %}
+    {% include "include/docs/next_link.html" with text="Important notes" href=next_url %}
+  </div>
+
+
+  {% load custom_tags %}
+  {% with nav_json="[{'name': 'Playground', 'href': '#intro-playground'}, {'name': 'Alert Messages', 'href': '#alert-messages-playground'}]" %}
+      {% with nav_items=nav_json|load_json %}
+          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+      {% endwith %}
+  {% endwith %}
+</main>
+
+{% endblock page %}

@@ -17,8 +17,35 @@ def share(request):
 def alerts(request):
     return render(request, "docs/alerts.html")
 
+def alerts_placeholders(request):
+    return render(request, "docs/alerts_placeholders.html")
+
+def alerts_create(request):
+    return render(request, "docs/alerts_create.html")
+
 def automate(request):
     return render(request, "docs/automate.html")
+
+def automate_playground(request):
+    return render(request, "docs/automate_playground.html")
+
+def automate_notes(request):
+    return render(request, "docs/automate_notes.html")
+
+def automate_binance(request):
+    return render(request, "docs/automate_binance.html")
+
+def automate_binanceus(request):
+    return render(request, "docs/automate_binanceus.html")
+
+def automate_bitget(request):
+    return render(request, "docs/automate_bitget.html")
+
+def automate_bybit(request):
+    return render(request, "docs/automate_bybit.html")
+
+def automate_tradelocker(request):
+    return render(request, "docs/automate_tradelocker.html")
 
 def question(request):
     return render(request, "docs/question.html")

@@ -1,20 +1,5 @@
 <article class="docs">
-    <section>
-      <aside>
-          <h3>Alerts</h3>
-    
-          <p>
-            Each strategy will come with a minimum of four built-in alerts, designed
-            for both entry and exit signals. These alerts serve the dual purpose of
-            keeping you informed about every action the strategy takes and enabling
-            automation if you wish to implement alert-based automation.
-          </p>
-    
-          <img src="https://isalgotest.s3.amazonaws.com/docs/find_strategies_alerts.png"/>
-        </aside>
-      </section>
-  
-      <section>
+    <section id=alert-placeholders>
         <aside>
           <h3>Placeholders</h3>
     
@@ -22,10 +7,12 @@
             These placeholders can be used in the alert message, and they will be
             replaced with dynamic values when the alert is triggered. They are the
             sole method for including dynamic values that can vary from bar to bar.
-            <br/>The placeholders need to be enclosed within double curly braces. Below are the placeholders you can use:
+            <br/><span>The placeholders need to be enclosed within double curly braces.</span> Below are the placeholders you can use:
           </p>
     
           <p>
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{ID}}" description='The unique ID of the trade.' %}
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{No}}" description='The trade number.' %}
             {% include "include/docs/alert_placeholder.html" with placeholder="{{type}}" description='The type of action can be either Entry, Exit, Stop Loss (SL) hit, Take Profit (TP) hit, hard close, or x candle close.' %}
             {% include "include/docs/alert_placeholder.html" with placeholder="{{order_type}}" description='The type of the order can be either BUY or SELL.' %}
             {% include "include/docs/alert_placeholder.html" with placeholder="{{entry_price}}" description='The entry price of the order.' %}
@@ -41,41 +28,74 @@
     
             {% include "include/docs/alert_placeholder.html" with placeholder="{{exchange}}" description='Exchange of the symbol used in the alert (NASDAQ, NYSE, MOEX, etc.). Note that for delayed symbols, the exchange will end with “_DL” or “_DLY.” For example, “NYMEX_DL.”' %}
             {% include "include/docs/alert_placeholder.html" with placeholder="{{interval}}" description='Returns the timeframe of the chart the alert is created on. Note that Range charts are calculated based on 1m data, so the placeholder will always return “1” on any alert created on a Range chart.' %}
-            {% include "include/docs/alert_placeholder.html" with placeholder="{{open}}, {{high}}, {{low}}, {{close}}, {{volume}}" description='Corresponding values of the bar on which the alert has been triggered.' %}
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{open}}" description='Opening price of the triggering bar.' %}
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{close}}" description='Closing price of the triggering bar.' %}
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{high}}" description='Highest price of the triggering bar' %}
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{low}}" description='Lowest price of the triggering bar.' %}
+            {% include "include/docs/alert_placeholder.html" with placeholder="{{volume}}" description='Volume of the triggering bar.' %}
             {% include "include/docs/alert_placeholder.html" with placeholder="{{time}}" description='Returns the time at the beginning of the bar. Time is UTC, formatted as yyyy-MM-ddTHH:mm:ssZ, so for example: 2019-08-27T09:56:00Z.' %}
             {% include "include/docs/alert_placeholder.html" with placeholder="{{timenow}}" description=' Current time when the alert triggers, formatted in the same way as {{time}}. The precision is to the nearest second, regardless of the chart’s timeframe.' %}
           </p>
         </aside>
       </section>
-  
-      <!-- <section class="mt-8">
-        <h1 class="text-2xl font-bold tracking-tight">Examples</h1>
-  
-        <p class="mt-2 text-base">
-          Here are a few examples of how to compose alerts using placeholders:
-        </p>
-      </section> -->
-  
-  
-      <section>
+
+
+    <section id="alert-examples">
         <aside>
-          <h3>Add TradingView alert</h3>
+          <h3>Examples</h3>
     
           <p>
-            <span >After setting up the alert message on the strategy you're using,</span> to start receiving alert messages on TradingView, you'll need to add one. With our strategies, you'll only need to create one, and it will send alerts on any entry as well as on any exit, one alert per strategy. <br/>The video below will show you how to add one.
+            Here are some practical examples of how to use placeholders in your alert messages. These templates demonstrate common use cases and can be customized to fit your needs.
           </p>
-          <video
-          muted=""
-          controls="controls"
-        >
-          <source
-            src="https://isalgotest.s3.amazonaws.com/docs/add_alert_tv.mp4"
-            type="video/mp4"
-          />
-        </video>
+
+          <p>
+            A simple alert for entering a trade with basic information:
+            {% comment %} <br /> {% endcomment %}
+            <h6 class="mt-2">Template:</h6>
+            <code>
+              {% verbatim %}
+              {{type}} - {{order_type}} at {{entry_price}} (ID: {{ID}}) No:{{No}}
+              {% endverbatim %}
+            </code>
+            {% comment %} <br /> {% endcomment %}
+            <h6 class="mt-2">Example Output:</h6>
+            <code>
+                Entry - BUY at 50000.00 (ID: Long 123) No:96
+            </code>
+          </p>
+
+          <p class="pt-4">
+            A comprehensive alert including entry price and targets:
+            {% comment %} <br /> {% endcomment %}
+            <h6 class="mt-2">Template:</h6>
+            <code>
+              {% verbatim %}
+                {{order_type}} {{exchange}} at {{entry_price}} SL: {{SL}} | TP1: {{TP1}} | TP2: {{TP2}} Time: {{timenow}}
+              {% endverbatim %}
+            </code>
+            {% comment %} <br /> {% endcomment %}
+            <h6 class="mt-2">Example Output:</h6>
+            <code>
+                BUY NASDAQ at 50000.00 SL: 100 | TP1: 150 | TP2: 300 Time: 2024-01-20T14:30:00Z
+            </code>
+          </p>
+
+          <p class="pt-4">
+            An alert showing current market conditions:
+            {% comment %} <br /> {% endcomment %}
+            <h6 class="mt-2">Template:</h6>
+            <code>
+              {% verbatim %}
+              {{exchange}} {{interval}} Update O: {{open}} H: {{high}} L: {{low}} C: {{close}} Volume: {{volume}}
+              {% endverbatim %}
+            </code>
+            {% comment %} <br /> {% endcomment %}
+            <h6 class="mt-2">Example Output:</h6>
+            <code>
+                NASDAQ 5m Update O: 49800.00 H: 50100.00 L: 49750.00 C: 50000.00 Volume: 1234567
+            </code>
+          </p>
       </aside>
-  
+      
     </section>
-    <div class=""> {% include 'include/infos.html' with info='After changing the strategy inputs or properties, or after changing the timeframe or the chart, make sure to add the alert related to the new change. The old alert will keep working with your old settings.' %} </div>
-  
 </article>

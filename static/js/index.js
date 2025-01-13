@@ -17,6 +17,42 @@ function copyPlainText(id) {
     });
 }
 
+function toggleDropdown(dropdownId) {
+  var dropdown = document.getElementById(dropdownId);
+  
+  if (dropdown.classList.contains("hidden")) {
+    dropdown.classList.remove("hidden");
+    dropdown.classList.add("block");
+    var arrow = document.getElementById(dropdownId + "-arrow");
+    if (arrow) {
+      arrow.style.transform = "rotate(180deg)";function toggleDropdown(dropdownId) {
+  var dropdown = document.getElementById(dropdownId);
+  
+  if (dropdown.classList.contains("hidden")) {
+    dropdown.classList.remove("hidden");
+    var arrow = document.getElementById(dropdownId + "-arrow");
+    if (arrow) {
+      arrow.style.transform = "rotate(180deg)";
+    }
+  } else {
+    dropdown.classList.add("hidden");
+    var arrow = document.getElementById(dropdownId + "-arrow");
+    if (arrow) {
+      arrow.style.transform = "rotate(0deg)";
+    }
+  }
+}
+    }
+  } else {
+    dropdown.classList.add("hidden");
+    dropdown.classList.remove("block");
+    var arrow = document.getElementById(dropdownId + "-arrow");
+    if (arrow) {
+      arrow.style.transform = "rotate(0deg)";
+    }
+  }
+}
+
 function handleThreeSection(clickedButton, id1, id2, id3, btnClass) {
   let section1 = document.getElementById("section-" + id1);
   let section2 = document.getElementById("section-" + id2);

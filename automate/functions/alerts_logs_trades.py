@@ -152,7 +152,7 @@ def extract_alert_data(alert_message, extra_symbol=""):
             data['Volume'] = value
         elif key == 'P':
             data['Partial'] = value
-        elif key == 'ID':
+        elif key == 'ID' or key == 'NUM':
             data['ID'] = value
     
     return data

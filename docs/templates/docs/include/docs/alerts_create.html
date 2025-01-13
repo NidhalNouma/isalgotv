@@ -1,0 +1,78 @@
+{% load static %}
+<article class="docs">
+    <section id="create-alert">
+        <aside>
+          <h3>Create TradingView alert</h3>
+    
+          <p>
+            <span >After setting up the alert message on the strategy you're using,</span> to start receiving alert messages on TradingView, you'll need to add one. With our strategies, you'll only need to create one, and it will send alerts on any entry as well as on any exit, one alert per strategy. <br/>The video below will show you how to add one.
+          </p>
+          <video
+          muted=""
+          controls="controls"
+        >
+          <source
+            src="https://isalgotest.s3.amazonaws.com/docs/add_alert_tv.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </aside>
+      
+    </section>
+
+    <div class="mb-4"> {% include 'include/infos.html' with info='After changing the strategy inputs or properties, or after changing the timeframe or the chart, make sure to add the alert related to the new change. The old alert will keep working with your old settings.' %} </div>
+
+    <section id="create-steps">
+        <aside>
+            <h3>Steps</h3>
+            <ol>
+                <li>Make sure your strategy/indicator are in the <span>TradingView</span> chart.</li>
+                <li>Click on the Alert icon (bell symbol) in the top right corner of the chart.
+                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-chart.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-chart.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>Select Create Alert.                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-alert-section.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-alert-section.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>In the Condition dropdown, choose your strategy/indicator and select <span>alert() function calls only</span>.
+                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-create-alert.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-create-alert.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>Provide a name for the alert.</li>
+                <li>Go to the Notifications tab, enable the Webhook URL option, and paste your Webhook URL.
+                    {% if webhook_url %}
+                        <p class="!text-xs !text-text/40">This is your webhook URL releated to <span class="!text-text/80">{{webhook_name}}</span></p>
+                        <p class="pb-2"><code id="url-{{id}}" onclick="copyPlainText('url-{{id}}')">{{webhook_url}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code></p>
+                    {% endif %}
+                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-webhook-alert.png" %}"}], "b1")' 
+                    src='{% static "images/docs/automate/tv-webhook-alert.png" %}' 
+                    alt="Access API Management" />
+                </li>
+                <li>Click Create to finalize the alert.</li>
+            </ol>
+        </aside>
+    </section>
+
+    <section id="important-notes">
+        <aside>
+            <p class="font-semibold">
+                IMPORTANT: The alert will be created based on the current settings of the strategy/indicator. To make it work on the new settings, you need to create a new alert and delete the old one if it's no longer needed. <br/>Changing the strategy/indicator settings after the alert is created will not update the existing alert; it will continue to function based on the settings that were active when it was created.
+            </p>
+        </aside>
+    </section>
+
+    <div>
+        {% include 'include/warnings.html' with warning="Keep your webhook URL private to ensure the security of your alerts and avoid any disruptions. Sharing it could lead to missed or unauthorized alerts." %}
+    </div>
+
+    <section class="mt-4">
+        <aside>
+            <h3>Need help?</h3>
+
+                <p>If you encounter any issues during the integration process, our support team is here to help. Contact us <a href="{% url 'docs_contactus' %}" target="_blank">here</a>.</p>
+        </aside>
+    </section> 
+</article>

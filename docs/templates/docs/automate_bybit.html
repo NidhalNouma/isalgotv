@@ -3,13 +3,14 @@
 <main class="docs-main">
   {% include 'include/docs/side_nav.html' %}
   <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Share" %}
+    {% include 'include/docs/side_nav_mobile.html' with title="Automate" %}
 
-    {% include "include/docs/share_archivement.html" %}
+    {% include 'include/docs/automate/add_bybit_account.html' %}
   </div>
+  
 
   {% load custom_tags %}
-  {% with nav_json="[{'name': 'Inputs', 'href': '#share-inputs'}, {'name': 'Perfermance', 'href': '#share-perfermance'}, {'name': 'Description', 'href': '#share-description'}]" %}
+  {% with nav_json="[{'name': 'What is Bybit?', 'href': '#what-is-bybit'}, {'name': 'API Setup', 'href': '#api-bybit'}, {'name': 'Complete Integration', 'href': '#complete-bybit'}]" %}
       {% with nav_items=nav_json|load_json %}
           {% include "include/docs/right_nav.html" with nav_items=nav_items %}
       {% endwith %}

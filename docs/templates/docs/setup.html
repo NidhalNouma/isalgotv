@@ -7,13 +7,17 @@
 
     {% include "include/docs/adding_strategy_to_chart.html" %}
 
-    {% url 'docs_share' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to share your results?" href=next_url %}
+    {% comment %} {% url 'docs_share' as next_url %}
+    {% include "include/docs/next_link.html" with text="How to share your results?" href=next_url %} {% endcomment %}
+
+    {% url 'docs_alerts' as next_url %}
+    {% include "include/docs/next_link.html" with text="How to write alerts?" href=next_url %}
+
   </div>
 
 
   {% load custom_tags %}
-  {% with nav_json="[{'name': 'Add to chart', 'href': '#intro'}, {'name': 'Manuel strategies', 'href': '#offering'}, {'name': 'Add to favorite', 'href': '#community'}]" %}
+  {% with nav_json="[{'name': 'Add to chart', 'href': '#add-to-chart'}, {'name': 'Manual strategies', 'href': '#manual-strategies'}, {'name': 'Add to favorite', 'href': '#add-favorite'}]" %}
       {% with nav_items=nav_json|load_json %}
           {% include "include/docs/right_nav.html" with nav_items=nav_items %}
       {% endwith %}

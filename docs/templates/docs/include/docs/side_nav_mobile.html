@@ -4,9 +4,9 @@
       <div class="w-4 h-4 text-title/40 flex items-center" id="chevron">▼</div> <!-- Simple dropdown icon -->
     </button>
   
-    <div id="navigationDropdown" class="absolute z-10 w-full mt-1 bg-background border border-text/40 rounded-md shadow-lg hidden py-1">
+    <div id="navigationDropdown" class="absolute z-10 w-full mt-1 bg-background border border-text/40 rounded-md max-h-[50vh] no-scrollbar overflow-y-scroll shadow-lg hidden py-1">
 
-      {% include "include/docs/side_nav_urls.html" with li_class="flex items-center gap-2 px-4 py-2 text-sm text-title/80 hover:bg-text/10" %}
+      {% include "include/docs/side_nav_urls.html" with id="mobile" li_class="flex flex-col gap-2 px-4 py-2 text-sm text-title/80 hover:bg-text/10 rounded-md" %}
     </div>
   </div>
   

@@ -1,6 +1,6 @@
 {% load static %}
 <article class="docs">
-    <section>
+    <section id="intro-playground">
         <aside>
             <h3>Playground</h3>
             <p>
@@ -26,7 +26,7 @@
         {% include 'include/infos.html' with info="Ensure you thoroughly test the strategy or indicator you plan to automate before initiating the automation process." %}
     </div> {% endcomment %}
 
-    <section>
+    <section id="alert-messages-playground">
         <aside>
             <h3>Alert Messages:</h3>
 
@@ -50,16 +50,16 @@
 
             <p>
                 Long Entry:
-                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{exchange}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{exchange}" }}} V={{ "{{qty}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
                 <br/>
                 Short Entry:
-                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{exchange}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{exchange}" }}} V={{ "{{qty}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
                 <br/>
                 Long Exit:
-                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
                 <br/>
                 Short Exit:
-                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
             </p>
 
             <p class="pt-4">
@@ -69,63 +69,25 @@
             <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/strategy-alerts.png" %}"}], "b1")' 
                 src='{% static "images/docs/automate/strategy-alerts.png" %}' 
                 alt="Access API Management" />
+
+            
+            <p class="pt-2">
+                After setting up the alets messages in the strategy/indicator the last step is to create the alert, <a href="">Click here</a> to see how.
+            </p>
         </aside>
     </section>
 
     <div class="mb-4">
         {% include 'include/infos.html' with info="When changing the asset or volume settings, there is no need to add a new broker. Each broker, once added can handle all available assets and volumes." %}
     </div>
-      
-      
-    <section>
-        <aside>
-            <h3>Creating TradingView alert</h3>
-            <ul>
-                <li>Make sure your strategy/indicator are in the <span>TradingView</span> chart.</li>
-                <li>Click on the Alert icon (bell symbol) in the top right corner of the chart.
-                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-chart.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/tv-chart.png" %}' 
-                    alt="Access API Management" />
-                </li>
-                <li>Select Create Alert.                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-alert-section.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/tv-alert-section.png" %}' 
-                    alt="Access API Management" />
-                </li>
-                <li>In the Condition dropdown, choose your strategy/indicator and select <span>alert() function calls only</span>.
-                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-create-alert.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/tv-create-alert.png" %}' 
-                    alt="Access API Management" />
-                </li>
-                <li>Provide a name for the alert.</li>
-                <li>Go to the Notifications tab, enable the Webhook URL option, and paste your Webhook URL.
-                    {% if webhook_url %}
-                        <p class="!text-xs !text-text/40">This is your webhook URL releated to <span class="!text-text/80">{{webhook_name}}</span></p>
-                        <p class="pb-2"><code id="url-{{id}}" onclick="copyPlainText('url-{{id}}')">{{webhook_url}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code></p>
-                    {% endif %}
-                    <img onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/tv-webhook-alert.png" %}"}], "b1")' 
-                    src='{% static "images/docs/automate/tv-webhook-alert.png" %}' 
-                    alt="Access API Management" />
-                </li>
-                <li>Click Create to finalize the alert.</li>
-            </ul>
 
-            <p class="pt-4 font-semibold">
-                IMPORTANT: The alert will be created based on the current settings of the strategy/indicator. To make it work on the new settings, you need to create a new alert and delete the old one if it's no longer needed. <br/>Changing the strategy/indicator settings after the alert is created will not update the existing alert; it will continue to function based on the settings that were active when it was created.
-            </p>
-        </aside>
-    </section>
-
-    <div>
-        {% include 'include/warnings.html' with warning="Keep your webhook URL private to ensure the security of your alerts and avoid any disruptions. Sharing it could lead to missed or unauthorized alerts." %}
-    </div>
-
-    <section class="mt-4">
+    {% comment %} <section class="mt-4">
         <aside>
             <h3>Need help?</h3>
 
                 <p>If you encounter any issues during the integration process, our support team is here to help. Contact us <a href="{% url 'docs_contactus' %}" target="_blank">here</a>.</p>
         </aside>
-    </section> 
+    </section>  {% endcomment %}
 </article>
 
 <script>

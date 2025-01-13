@@ -3,13 +3,14 @@
 <main class="docs-main">
   {% include 'include/docs/side_nav.html' %}
   <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Share" %}
+    {% include 'include/docs/side_nav_mobile.html' with title="Automate" %}
 
-    {% include "include/docs/share_archivement.html" %}
+    {% include 'include/docs/automate/add_tradelocker_account.html' %}
   </div>
+  
 
   {% load custom_tags %}
-  {% with nav_json="[{'name': 'Inputs', 'href': '#share-inputs'}, {'name': 'Perfermance', 'href': '#share-perfermance'}, {'name': 'Description', 'href': '#share-description'}]" %}
+  {% with nav_json="[{'name': 'What is TradeLocker', 'href': '#what-is-tradelocker'}, {'name': 'Login details', 'href': '#api-tradelocker'}, {'name': 'Complete Integration', 'href': '#complete-tradelocker'}]" %}
       {% with nav_items=nav_json|load_json %}
           {% include "include/docs/right_nav.html" with nav_items=nav_items %}
       {% endwith %}

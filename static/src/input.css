@@ -201,7 +201,7 @@
     @apply font-semibold text-title;
   }
 
-  .docs section p code{
+  .docs section p code, .docs section aside code {
     @apply bg-title/10 px-1.5 py-0.5 rounded-sm cursor-pointer text-sm text-text/80 hover:text-text/60 transition-all;
   }
 

@@ -1,0 +1,68 @@
+{% load static %}
+<article class="docs">
+
+    <section id="strategy-testing-notes">
+        <aside>
+            <h3>Strategy Testing</h3>
+            <p>Before enabling automation, thoroughly test your strategy to ensure it performs as expected. We recommend: </p>
+            <ul>
+                <li>Back-testing with historical data.</li>
+                <li>Paper trading to validate performance.</li>
+                <li>Starting with small position sizes when going live.</li>
+                <li>Monitoring initial trades closely.</li>
+            </ul>
+        </aside>
+    </section>
+
+    <section id="automation-setup-notes">
+        <aside>
+            <h3>Automation Setup Process</h3>
+            <p>Follow these steps to properly set up your automation: </p>
+
+            <ol class="pl-2 pt-2">
+                <li><span>Link Your Broker</span>
+                    <p>Connect your broker in the Automate page to receive your webhook URL. <a href="{% url 'docs_automate' %}">See how</a></p>
+                </li>
+                <li class="mt-4"><span>Prepare Alert Messages</span>
+                    <p>Configure your alert messages in the Strategy/indicator alerts section. <a href="{% url 'docs_automate_playground' %}">Learn more</a></p>
+                </li>
+                <li class="mt-4"><span>Set Up TradingView Alerts</span>
+                    <p>Create alerts in TradingView to start receiving trade signals. <a href="{% url 'docs_alerts_create' %}">View guide</a></p>
+                </li>
+            </ol>
+        </aside>
+    </section>
+
+    <section id="webhook-flexibility-notes">
+        <aside>
+            <h3>Webhook Flexibility</h3>
+            <p>A single webhook URL from our platform is versatile and can handle:</p>
+            <ul>
+                <li>Multiple assets.</li>
+                <li>Different timeframes.</li>
+                <li>Various strategy settings.</li>
+                <li>Multiple TradingView alerts.</li>
+            </ul>
+            <p>Simply use the same webhook URL across different TradingView alerts for seamless integration.</p>
+        </aside>
+    </section>
+
+    <section id="security-warnings-notes">
+        <aside>
+            <h3>Security Warnings</h3>
+            <ul>
+                <li>Never share your webhook URL with anyone - it provides direct access to your trading automation.</li>
+                <li>Keep your API keys and credentials private - sharing them compromises your account security.</li>
+            </ul>
+        </aside>
+    </section>
+
+
+    <section>
+        <aside>
+            <h3>Need help?</h3>
+
+                <p>If you encounter any issues or you have a question, our support team is here to help. Contact us <a href="{% url 'docs_contactus' %}" target="_blank">here</a>.</p>
+        </aside>
+    </section> 
+</article>
