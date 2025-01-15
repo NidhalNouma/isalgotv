@@ -12,9 +12,8 @@
     {% include "include/docs/next_link.html" with text="How to share your results?" href=next_url %}
   </div>
 
-
   {% load custom_tags %}
-  {% with nav_json="[{'name': 'Strategy testing', 'href': '#strategy-testing-notes'}, {'name': 'Automation setup', 'href': '#automation-setup-notes'}, {'name': 'Webhook flexibility', 'href': '#webhook-flexibility-notes'}, {'name': 'Warnings', 'href': '#security-warnings-notes'}]" %}
+  {% with nav_json="[{'name': 'Strategy testing', 'href': '#strategy-testing-notes'}, {'name': 'Automation setup', 'href': '#automation-setup-notes'}, {'name': 'Webhook flexibility', 'href': '#webhook-flexibility-notes'}, {'name': 'Crypto Trading', 'href': '#crypto-trading-notes'}, {'name': 'Warnings', 'href': '#security-warnings-notes'}]" %}
       {% with nav_items=nav_json|load_json %}
           {% include "include/docs/right_nav.html" with nav_items=nav_items %}
       {% endwith %}

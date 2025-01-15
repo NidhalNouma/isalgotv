@@ -484,7 +484,7 @@
                             <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title whitespace-nowrap">{{ set.display_name }}</label>
                           
                           {% if set.type != 'boolean'  %}
-                            <span class="ml-2 bg-text text-sm font-semibold text-background px-1.5 rounded">{{ set.default_value|escape }}</span>
+                            <span class="ml-2 bg-background border border-title/30 text-sm font-semibold text-text px-2.5 py-1 rounded">{{ set.default_value|escape }}</span>
                           {% endif %}
                           <span class="text-text">
                           </span>

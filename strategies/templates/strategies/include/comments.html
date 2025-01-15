@@ -1,4 +1,41 @@
 {% include "include/add_comment.html" %} {% for comment in comments reversed %}
 {% include "include/comment.html" with comment=comment %} {% empty %}
-<p class="text-text text-sm">No comments yet.</p>
+
+<div class="mt-4 bg-text/05 rounded-xl p-6 border text-text border-title/20">
+    <div class="border-b border-title/20 pb-6">
+      <div class="flex items-center gap-3 text-sm">
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-5 h-5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Waiting for your first comment...</span>
+      </div>
+    </div>
+
+    {% if has_subscription %}
+    <h3 class="font-medium mb-4 mt-4">Your Feedback Matters</h3>
+    <p class="text-sm">We value your feedback! Let us know your thoughts and suggestions to help improve this strategy.</p>
+
+    <button
+      class="btn-secondary text-sm font-semibold mt-5 mx-auto"
+      id="add-comment-btn"
+      onclick='toggleForm("add-comment-btn", "add-comment-form")'
+    >
+        Submit Your Thoughts
+    </button> 
+
+    {% else %}
+    <p class="text-sm mt-4 ">
+        Want to share your thoughts? Join us to unlock commenting and more features!
+    </p>
+    <a
+          href="{% url 'membership' %}"
+          class="btn-primary text-sm font-semibold mx-auto mt-3"
+      >
+          Join Us Now
+          <svg class="h-5 w-5 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+      </a>
+      <p class="text-xs mt-2 text-text/60">
+          Already a member? <a href="{% url 'login' %}" class="text-primary font-semibold">Log in</a>
+      </p>
+    {% endif %}
+
+  </div>
 {% endfor %}

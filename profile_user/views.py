@@ -392,7 +392,8 @@ def create_subscription_stripeform(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
-        price = float(PRICES.get(plan_id, 0))  * 100
+        orig_price = float(PRICES.get(plan_id, 0))  * 100
+        price = orig_price
         
         payment_method = data['pm_id']
         coupon_id = data['coupon']
@@ -411,6 +412,10 @@ def create_subscription_stripeform(request):
                     price = round(price - (price * coupon.percent_off / 100), 2)
                 elif coupon.amount_off:
                     price = round(price - coupon.amount_off, 2)
+                
+                if plan_id == "LIFETIME":
+                    if coupon_id.find("BETA") >= 0:
+                        price = orig_price
 
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
@@ -550,8 +555,10 @@ def update_subscription_stripeform(request):
             # return render(request, 'include/pay_form_stripe.html', context)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
+        
 
-        price = float(PRICES.get(plan_id, 0))  * 100
+        orig_price = float(PRICES.get(plan_id, 0))  * 100
+        price = orig_price
         
         payment_method = data['pm_id']
         coupon_id = data['coupon']
@@ -565,6 +572,10 @@ def update_subscription_stripeform(request):
                     price = round(price - (price * coupon.percent_off / 100), 2)
                 elif coupon.amount_off:
                     price = round(price - coupon.amount_off, 2)
+
+                if plan_id == "LIFETIME":
+                    if coupon_id.find("BETA") >= 0:
+                        price = orig_price
 
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)

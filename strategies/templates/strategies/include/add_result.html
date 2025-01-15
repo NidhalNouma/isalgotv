@@ -1,26 +1,21 @@
 <div class="mb-2">
-  {% if user.is_authenticated and has_subscription %}
-  <button
-    class="btn-secondary text-sm font-semibold underlinei"
-    id="add-result-btn"
-    onclick="openModel('add-result-modal')"
-  >
-    Share your results
-  </button> 
-  {% elif user.is_authenticated and not has_subscription %}
-  <button
-    class="btn-secondary text-sm font-semibold underlinei"
-    onclick="openModel('upgrade-modal')"
-  >
-    Share your results
-  </button> 
- 
-  {% comment %} {% else %} <a
-    class="btn-secondary text-sm font-semibold underlinei"
-    href="{% url 'login' %}"
-  >
-    Share your result
-  </a> {% endcomment %}
+  {% if results|length > 0 %}
+    {% if user.is_authenticated and has_subscription %}
+    <button
+      class="btn-secondary text-sm font-semibold underlinei"
+      id="add-result-btn"
+      onclick="openModel('add-result-modal')"
+    >
+      Submit your results
+    </button> 
+    {% elif user.is_authenticated and not has_subscription %}
+    <button
+      class="btn-secondary text-sm font-semibold underlinei"
+      onclick="openModel('upgrade-modal')"
+    >
+      Submit your results
+    </button> 
+    {% endif %}
   {% endif %}
   <form
     class="flex flex-col"
@@ -32,11 +27,6 @@
     novalidate
   >
     {% csrf_token %}
-
-    {% load custom_tags %}
-    {% render_template "include/docs/share_archivement.html" as info_content %}
-
-    {% include "include/drawer_modal.html" with drawer_id="drawer-Performance" title="Share" body=info_content %}
 
     <div
       id="add-result-modal-result"

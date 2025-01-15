@@ -1,5 +1,86 @@
-  {% for result in results reversed %}
-  {% include "include/result.html" with result=result %} 
-  {% empty %}
-  <p class="text-text text-sm">No results yet.</p>
-  {% endfor %}
+{% for result in results reversed %}
+{% include "include/result.html" with result=result %} 
+{% empty %}
+
+<div class="mt-4 bg-text/05 rounded-xl p-6 border text-text border-title/20">
+  <div class="border-b border-title/20 pb-6">
+    <div class="flex items-center gap-3 text-sm">
+      <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-5 h-5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      <span>Waiting for your first trading results...</span>
+    </div>
+  </div>
+
+  {% if has_subscription %}
+  <h3 class="font-medium mb-4 mt-4">Quick Start Guide</h3>
+  <div class="space-y-4">
+    <div class="flex items-start gap-4">
+      <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+        <span class="text-primary font-medium">1</span>
+      </div>
+      <div>
+        <p class="font-medium mb-1">Test the Strategy</p>
+        <p class="text-sm text-text/60">
+          Run the strategy extensively to ensure it performs well and aligns with your goals.
+        </p>
+      </div>
+    </div>
+    <div class="flex items-start gap-4">
+      <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+        <span class="text-primary font-medium">2</span>
+      </div>
+      <div>
+        <p class="font-medium mb-1">Download the Required Files</p>
+        <p class="text-sm text-text/60">
+          Download the performance and properties CSS files for easy results uploading.
+        </p>
+      </div>
+    </div>
+    <div class="flex items-start gap-4">
+      <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+        <span class="text-primary font-medium">3</span>
+      </div>
+      <div>
+        <p class="font-medium mb-1">Upload Your Results</p>
+        <p class="text-sm text-text/60">
+          <span onclick="openDrawer('drawer-Performance')" class="cursor-pointer text-primary font-semibold">Click here</span> to see how to upload your results and get insights and community interaction to maximize this strategy.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="btn-secondary text-sm font-semibold mt-5 mx-auto"
+    id="add-result-btn"
+    onclick="openModel('add-result-modal')"
+  >
+    Submit your results
+  </button> 
+
+  {% else %}
+  <div class="mt-4">
+    <p class="text-sm mb-3">
+        Become a member today and unlock full access to this strategy and many more. Gain insights, share your performance, and engage with a vibrant trading community to reach your full potential!
+    </p>
+    <a
+          href="{% url 'membership' %}"
+          class="btn-primary text-sm font-semibold mx-auto"
+      >
+          Join Us Now
+          <svg class="h-5 w-5 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+      </a>
+      <p class="text-xs mt-2 text-text/60">
+          Already a member? <a href="{% url 'login' %}" class="text-primary font-semibold">Log in</a>
+      </p>
+  </div>
+  {% endif %}
+</div>
+{% endfor %}
+
+
+{% load custom_tags %}
+{% render_template "include/docs/share_archivement.html" as info_content %}
+
+{% include "include/drawer_modal.html" with drawer_id="drawer-Performance" title="Share" body=info_content %}

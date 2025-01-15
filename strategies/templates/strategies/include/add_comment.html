@@ -1,27 +1,22 @@
 <div class="mb-2">
-  {% if user.is_authenticated and has_subscription %}
-  <button
-    class="btn-secondary text-sm font-semibold underlinei"
-    id="add-comment-btn"
-    onclick='toggleForm("add-comment-btn", "add-comment-form")'
-  >
-    Share your thoughts
-  </button>
-  {% elif user.is_authenticated and not has_subscription %}
-  <button
-    class="btn-secondary text-sm font-semibold underlinei"
-    onclick="openModel('upgrade-modal', false);"
-  >
-    Share your thoughts
-  </button>
-  {% else %} {% comment %}
-  <a
-    class="btn-secondary text-sm font-semibold underlinei"
-    href="{% url 'login' %}"
-  >
-    Share your idea
-  </a>
-  {% endcomment %} {% endif %}
+  {% if comments|length > 0 %}
+    {% if user.is_authenticated and has_subscription %}
+    <button
+      class="btn-secondary text-sm font-semibold underlinei"
+      id="add-comment-btn"
+      onclick='toggleForm("add-comment-btn", "add-comment-form")'
+    >
+      Submit Your Thoughts
+    </button>
+    {% elif user.is_authenticated and not has_subscription %}
+    <button
+      class="btn-secondary text-sm font-semibold underlinei"
+      onclick="openModel('upgrade-modal', false);"
+    >
+      Submit Your Thoughts
+    </button>
+    {% endif %}
+  {% endif %}
   <form
     class="hidden"
     id="add-comment-form"
