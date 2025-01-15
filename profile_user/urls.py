@@ -11,6 +11,7 @@ urlpatterns = [
     path('membership/create/', create_subscription_stripeform, name="membership-create"),
     path('membership/update/', update_subscription_stripeform, name="membership-update"),
     path('membership/cancel/', cancel_subscription, name="membership-cancel"),
+    path('membership/coupon/', check_coupon, name="membership-coupon"),
     path('stripe/webhook/', stripe_webhook, name="stripe-webhook"),
     path('profile/', get_profile, name='profile'),
     path('profile/update/tradingview_username', edit_tradingview_username, name='update-tradingview-username'),

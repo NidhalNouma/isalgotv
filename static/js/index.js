@@ -242,6 +242,10 @@ async function onPayFormStripeSubmit(title) {
   const errorDiv = document.getElementById("stripe-error-" + title);
   if (errorDiv) errorDiv.innerHTML = "";
 
+  let coupon = document.getElementById("stripe-pay-coupon-" + title);
+  let coupon_val = document.getElementById("coupon-" + title).value;
+  if (coupon) coupon.value = coupon_val;
+
   if (
     pmValue.value.length === 0 ||
     pmValue.value === "None" ||
@@ -435,21 +439,27 @@ htmx.on("htmx:afterRequest", (evt) => {
     }
   }
 
-  if (evt?.detail?.target.id.includes("stripe-next-")) {
-    console.log("next ...");
-    const title = evt?.detail?.target.id.replace("stripe-next-", "");
-    closeLoader(title);
+  // if (evt?.detail?.target.id.includes("coupon-pay-")) {
+  //   const title = evt?.detail?.target.id.replace("coupon-pay-", "");
+  //   // closeLoader(title);
 
-    changeHidden("submit-btn-sub-" + title, "submit-btn-next-" + title, "flex");
+  // }
 
-    const pmValue = document.getElementById("pm-" + title);
-    if (pmValue) {
-      const id1 = "payment-card-list-" + title;
-      if (document.getElementById(id1)?.classList?.contains("hidden")) {
-        pmValue.value = "None";
-      }
-    }
-  }
+  // if (evt?.detail?.target.id.includes("stripe-next-")) {
+  //   console.log("next ...");
+  //   const title = evt?.detail?.target.id.replace("stripe-next-", "");
+  //   closeLoader(title);
+
+  //   changeHidden("submit-btn-sub-" + title, "submit-btn-next-" + title, "flex");
+
+  //   const pmValue = document.getElementById("pm-" + title);
+  //   if (pmValue) {
+  //     const id1 = "payment-card-list-" + title;
+  //     if (document.getElementById(id1)?.classList?.contains("hidden")) {
+  //       pmValue.value = "None";
+  //     }
+  //   }
+  // }
 
   if (evt?.detail?.target.id === "setting-payment_methods") {
     let title = "payment_methods";

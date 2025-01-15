@@ -375,13 +375,109 @@ def setdefault_payment_method(request):
         except Exception as e:
             context["error"] = 'Attached payment to customer '+str(e)
 
+def check_coupon_fn(coupon_id, plan_id, price):
+    try:
+        orig_price = price
+
+        coupon = stripe.Coupon.retrieve(coupon_id)
+
+        if coupon.percent_off:
+            price = round(price - (price * coupon.percent_off / 100), 2)
+
+            coupon_off = str(-coupon.percent_off) + "%"
+        elif coupon.amount_off:
+            price = round(price - coupon.amount_off, 2)
+
+            coupon_off = str(-coupon.amount_off) + '$'
+        
+        if coupon_id.find("QUAT") >= 0:
+            if plan_id != "QUARTERLY":
+                raise Exception("Coupon code is not valid for this plan.")
+        elif coupon_id.find("MN") >= 0:
+            if plan_id != "MONTHLY":
+                raise Exception("Coupon code is not valid for this plan.")
+        if plan_id == "LIFETIME":
+            if coupon_id.find("BETA") >= 0:
+                price = orig_price
+                raise Exception("This is a beta plan, you cannot use it on lifetime plan.")
+            
+        return (price, coupon_off)
+    except Exception as e:
+        raise e
+
+@require_http_methods([ "POST"])
+def check_coupon(request):
+    if request.method == 'POST':
+        data = request.POST
+
+        plan_id = request.GET.get('plan','')
+        price_id = PRICE_LIST.get(plan_id, '')
+
+        context = {"error": '', 'title': plan_id}
+        context["coupon_val"] = ""
+
+        if not price_id:
+            context["error"] = 'No plan has been specified, please refresh the page and try again.'
+            # return render(request, 'include/pay_form_stripe.html', context)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#"+context['title']+"-coupon-form-errors")
+
+        orig_price = float(PRICES.get(plan_id, 0))  * 100
+        price = orig_price
+        
+        coupon_id = data['coupon']
+
+        if coupon_id:
+            try:
+                price, coupon_off = check_coupon_fn(coupon_id, plan_id, price)
+
+            except Exception as e:
+                context["error"] = 'Invalid coupon code '+str(e)
+
+                context["coupon_val"] = coupon_id
+                context["base_price"] = str(orig_price / 100)
+                context["final_price"] = str(orig_price / 100)
+
+                response = render(request, 'include/pay_form_coupon.html', context)
+                # response["hx-swap"] = "outerHTML" 
+                return retarget(response, "#coupon-pay-"+context['title'])
+                # response = render(request, 'include/errors.html', context)
+                # return retarget(response, "#"+context['title']+"-coupon-form-errors")
+
+            
+            trial_days = 0
+            trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
+            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
+                trial_ends = None
+            
+            context["staertime"] = trial_ends
+            # context["price"] = txt_price
+            # context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
+
+            context["succes"] = 'Coupon code is valid.'
+            context["plan"] = plan_id  
+            context["coupon_val"] = coupon_id
+            context["coupon_off"] = coupon_off
+
+            context["base_price"] = str(orig_price / 100)
+            context["final_price"] = str(price / 100)
+
+            # print(context)
+            response = render(request, 'include/pay_form_coupon.html', context)
+            # response["HX-Swap"] = "outerHTML" 
+            return retarget(response, "#coupon-pay-"+context['title'])
+        
+        context["error"] = 'Invalid coupon code.'
+        
+        response = render(request, 'include/errors.html', context)
+        return retarget(response, "#"+context['title']+"-coupon-form-errors")
+
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
     if request.method == 'POST':
         data = request.POST
 
         plan_id = request.GET.get('plan','')
-        is_checking = data.get('check', "true")
         price_id = PRICE_LIST.get(plan_id, '')
 
         context = {"error": '', 'title': plan_id}
@@ -397,7 +493,6 @@ def create_subscription_stripeform(request):
         
         payment_method = data['pm_id']
         coupon_id = data['coupon']
-        coupon = None
 
         # trial_days = 3
         trial_days = 0
@@ -406,33 +501,24 @@ def create_subscription_stripeform(request):
 
         if coupon_id:
             try:
-                coupon = stripe.Coupon.retrieve(coupon_id)
-
-                if coupon.percent_off:
-                    price = round(price - (price * coupon.percent_off / 100), 2)
-                elif coupon.amount_off:
-                    price = round(price - coupon.amount_off, 2)
-                
-                if plan_id == "LIFETIME":
-                    if coupon_id.find("BETA") >= 0:
-                        price = orig_price
+                price, price_off = check_coupon_fn(coupon_id, plan_id, price)
 
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
             
-        if is_checking == "true":
-            trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
-            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
-                trial_ends = None
-            txt_price = str(price / 100)
-            context["check"] = "false"
-            context["staertime"] = trial_ends
-            context["price"] = txt_price
-            context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
-            response = render(request, 'include/pay_next.html', context)
-            return retarget(response, "#stripe-next-"+context['title'])
+        # if is_checking == "true":
+        #     trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
+        #     if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
+        #         trial_ends = None
+        #     txt_price = str(price / 100)
+        #     context["check"] = "false"
+        #     context["staertime"] = trial_ends
+        #     context["price"] = txt_price
+        #     context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
+        #     response = render(request, 'include/pay_next.html', context)
+        #     return retarget(response, "#stripe-next-"+context['title'])
 
 
         if not payment_method or payment_method == "None":
@@ -531,7 +617,6 @@ def update_subscription_stripeform(request):
         data = request.POST
 
         plan_id = request.GET.get('plan','')
-        is_checking = data.get('check', "true")
         
         price_id = PRICE_LIST.get(plan_id, '')
 
@@ -562,37 +647,15 @@ def update_subscription_stripeform(request):
         
         payment_method = data['pm_id']
         coupon_id = data['coupon']
-        coupon = None
 
         if coupon_id:
             try:
-                coupon = stripe.Coupon.retrieve(coupon_id)
-
-                if coupon.percent_off:
-                    price = round(price - (price * coupon.percent_off / 100), 2)
-                elif coupon.amount_off:
-                    price = round(price - coupon.amount_off, 2)
-
-                if plan_id == "LIFETIME":
-                    if coupon_id.find("BETA") >= 0:
-                        price = orig_price
+                price, price_off = check_coupon_fn(coupon_id, plan_id, price)
 
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
-            
-        if is_checking == "true":
-            if trial_ends == 'now':
-                trial_ends = None
-                
-            txt_price = str(price / 100)
-            context["check"] = "false"
-            context["staertime"] = trial_ends
-            context["price"] = txt_price
-            context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
-            response = render(request, 'include/pay_next.html', context)
-            return retarget(response, "#stripe-next-"+context['title'])
 
 
         if not payment_method or payment_method == "None":
