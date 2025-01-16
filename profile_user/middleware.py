@@ -40,6 +40,8 @@ def check_user_and_stripe_middleware(get_response):
         stripe_customer = None
         has_subscription = False
         subscription_canceled = False
+
+        total_amount_due = 0.0
         # notifications = None
 
         if current_user.is_authenticated:
@@ -81,9 +83,30 @@ def check_user_and_stripe_middleware(get_response):
                     subscription_active = subscription.plan.active
                     subscription_status = subscription.status
                     subscription_price_id = subscription.plan.id
-                    for key, val in PRICE_LIST.items():  
-                        if val == subscription_price_id: 
-                            subscription_plan = key
+
+                    subscription_product_id = subscription.plan.product
+                    subscription_interval = subscription.plan.interval
+                    subscription_interval_count = subscription.plan.interval_count
+
+                    if subscription_interval == "year":
+                        subscription_plan = list(PRICE_LIST.keys())[2]
+
+                    elif subscription_interval == "month":
+                        if subscription_interval_count == 1:
+                            subscription_plan = list(PRICE_LIST.keys())[0]
+                        elif subscription_interval_count == 3:
+                            subscription_plan = list(PRICE_LIST.keys())[1]
+                        elif subscription_interval_count == 12:
+                            subscription_plan = list(PRICE_LIST.keys())[2]
+
+
+                    # readable_date = datetime.datetime.fromtimestamp(next_payment_date).strftime('%Y-%m-%d %H:%M:%S')
+
+                    # print(next_payment_date, total_amount_due, readable_date)
+
+                    # for key, val in PRICE_LIST.items():  
+                    #     if val == subscription_price_id: 
+                    #         subscription_plan = key
 
                     # subscription_status = 'past_due'
 
@@ -100,6 +123,14 @@ def check_user_and_stripe_middleware(get_response):
 
                     if subscription.cancel_at_period_end:
                         subscription_canceled = True
+
+                    # Get the upcoming invoice for the subscription
+                    upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
+
+                    # Extract the next payment details
+                    # next_payment_date = upcoming_invoice["next_payment_attempt"]
+                    if upcoming_invoice:
+                        total_amount_due = upcoming_invoice["amount_due"]/100
 
                     # print(subscription_status, has_subscription)
                 except Exception as e:
@@ -123,6 +154,7 @@ def check_user_and_stripe_middleware(get_response):
         request.subscription_active = subscription_active
         request.subscription_status = subscription_status
         request.subscription_price_id = subscription_price_id
+        request.subscription_next_payment_amount = total_amount_due
         request.subscription_plan = subscription_plan
         request.payment_methods = payment_methods
         # request.notifications = notifications
