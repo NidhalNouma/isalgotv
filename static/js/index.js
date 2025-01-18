@@ -232,6 +232,11 @@ function paymentMethodSelected(pmId, inputId) {
 
 async function onPayFormStripeSubmit(title) {
   openLoader(title, "-pay-submit-", "flex");
+  
+  // hide coupon errors
+  if(document.getElementById(title+"-coupon-form-errors"))
+    document.getElementById(title+"-coupon-form-errors").innerHTML = "";
+
   const nameInput = document.getElementById("cardName-" + title);
 
   const pmValue = document.getElementById("pm-" + title);

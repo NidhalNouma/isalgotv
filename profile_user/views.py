@@ -375,11 +375,57 @@ def setdefault_payment_method(request):
         except Exception as e:
             context["error"] = 'Attached payment to customer '+str(e)
 
-def check_coupon_fn(coupon_id, plan_id, price):
+def check_coupon_fn(coupon_id, plan_id, price, customer_id):
+    # print(coupon_id, plan_id, price)
     try:
         orig_price = price
 
-        coupon = stripe.Coupon.retrieve(coupon_id)
+        promotion_codes = stripe.PromotionCode.list(code=coupon_id, active=True)
+
+        # Check if any promotion codes were returned
+        if not promotion_codes.data:
+            # print("No promotion codes found with the given code.")
+            raise Exception("No promotion codes found with the given code.")
+        else:
+            # Use the first matching promotion code (if multiple, adjust logic as needed)
+            promo_code = promotion_codes.data[0]
+                # Step 2: Validate general properties
+            is_active = promo_code.active
+            expires_at = promo_code.expires_at
+            max_redemptions = promo_code.max_redemptions
+            times_redeemed = promo_code.times_redeemed
+            restrictions = promo_code.restrictions
+
+            # Validation logic for general properties
+            if not is_active:
+                raise Exception("Promotion code is inactive.")
+            elif expires_at and expires_at < datetime.now().timestamp():
+                raise Exception("Promotion code has expired.")
+            elif max_redemptions and times_redeemed >= max_redemptions:
+                raise Exception("Promotion code has reached its redemption limit.")
+
+            # Step 3: Check customer-specific restrictions
+            if restrictions.get("first_time_transaction", False):
+                # If first-time transaction restriction is set, check if customer has transactions
+                invoices = stripe.Invoice.list(customer=customer_id)
+                if any(invoice.paid for invoice in invoices.auto_paging_iter()):
+                    raise Exception("Promotion code is restricted to first-time transactions, and the customer is not eligible.")
+                else:
+                    print("Customer is eligible under first-time transaction restriction.")
+
+            # Step 4: Check if the customer has already used the promotion code
+            invoices = stripe.Invoice.list(customer=customer_id)
+            has_used_promo_code = any(
+                invoice.discount and invoice.discount.promotion_code == promo_code.id
+                for invoice in invoices.auto_paging_iter()
+            )
+
+            if has_used_promo_code:
+                raise Exception("Customer has already used this promotion code.")
+
+            coupon = promo_code.coupon
+
+        promo_id = promo_code.id
 
         if coupon.percent_off:
             price = round(price - (price * coupon.percent_off / 100), 2)
@@ -401,8 +447,9 @@ def check_coupon_fn(coupon_id, plan_id, price):
                 price = orig_price
                 raise Exception("This is a beta plan, you cannot use it on lifetime plan.")
             
-        return (price, coupon_off)
+        return (price, coupon_off, promo_id)
     except Exception as e:
+        # print(e)
         raise e
 
 @require_http_methods([ "POST"])
@@ -429,10 +476,10 @@ def check_coupon(request):
 
         if coupon_id:
             try:
-                price, coupon_off = check_coupon_fn(coupon_id, plan_id, price)
+                price, coupon_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
 
             except Exception as e:
-                context["error"] = 'Invalid coupon code '+str(e)
+                context["error"] = str(e)
 
                 context["coupon_val"] = coupon_id
                 context["base_price"] = str(orig_price / 100)
@@ -467,10 +514,15 @@ def check_coupon(request):
             # response["HX-Swap"] = "outerHTML" 
             return retarget(response, "#coupon-pay-"+context['title'])
         
-        context["error"] = 'Invalid coupon code.'
+        context["error"] = ''
+        context["empty"] = True
+
+        context["base_price"] = str(orig_price / 100)
+        context["final_price"] = str(orig_price / 100)
+        context["coupon_val"] = coupon_id
         
-        response = render(request, 'include/errors.html', context)
-        return retarget(response, "#"+context['title']+"-coupon-form-errors")
+        response = render(request, 'include/pay_form_coupon.html', context)
+        return retarget(response, "#coupon-pay-"+context['title'])
 
 @require_http_methods([ "POST"])
 def create_subscription_stripeform(request):
@@ -501,12 +553,14 @@ def create_subscription_stripeform(request):
 
         if coupon_id:
             try:
-                price, price_off = check_coupon_fn(coupon_id, plan_id, price)
+                price, price_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
 
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
+        else:
+            promo_id = None
             
         # if is_checking == "true":
         #     trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
@@ -585,7 +639,8 @@ def create_subscription_stripeform(request):
                     'price': price_id,
                 }],
                 payment_behavior="error_if_incomplete",
-                coupon=coupon_id,
+                # coupon=coupon_id,
+                promotion_code=promo_id,
                 trial_period_days=trial_days,
                 trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
             )
@@ -650,12 +705,14 @@ def update_subscription_stripeform(request):
 
         if coupon_id:
             try:
-                price, price_off = check_coupon_fn(coupon_id, plan_id, price)
+                price, price_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
 
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
+        else:
+            promo_id = None
 
 
         if not payment_method or payment_method == "None":
@@ -734,7 +791,8 @@ def update_subscription_stripeform(request):
                     'price': price_id,
                 }],
                 payment_behavior="error_if_incomplete",
-                coupon=coupon_id,
+                # coupon=coupon_id,
+                promotion_code=promo_id,
                 trial_end=trial_ends,
                 trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
             )

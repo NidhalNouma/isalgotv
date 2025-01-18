@@ -1,5 +1,5 @@
 <div class="" id="at-accounts-list" trigger-modal="{{ trigger_modal }}" trigger-btn="{{ trigger_btn }}" >
-  {% if crypto_accounts %}
+  {% if crypto_accounts or forex_accounts %}
   <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-4 w-full items-start">
     {% for account in crypto_accounts %} 
     {% include "include/crypto_broker_card.html" with account=account %} 
@@ -9,5 +9,70 @@
     {% include "include/forex_broker_card.html" with account=account %} 
     {% endfor %}
    </div>
+   {% else %}
+   
+   <div class="border border-title/20 text-text rounded-lg p-6 max-w-2xl mx-auto">
+        <div class=" mb-6">
+          <h3 class="font-medium">Are you ready to automate any strategy?</h3>
+          {% comment %} <p class="text-text/80 text-sm mt-1">Follow these steps to set up your automated trading system</p> {% endcomment %}
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+              <span class="text-primary font-medium">1</span>
+            </div>
+            <div>
+              <p class="font-medium mb-1">Link Your Broker</p>
+              <p class="text-sm text-text/60">
+                <button onclick="openModel('add-broker-modal');" class="cursor-pointer text-primary font-semibold">Click here</button> to connect your preferred broker. We support various crypto and forex brokers with secure API integration.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+              <span class="text-primary font-medium">2</span>
+            </div>
+            <div>
+              <p class="font-medium mb-1">Get Your Webhook URL</p>
+              <p class="text-sm text-text/60">
+                Obtain your unique webhook URL by adding a broker. This URL will receive and process your TradingView alerts.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+              <span class="text-primary font-medium">3</span>
+            </div>
+            <div>
+              <p class="font-medium mb-1">Configure Alert Messages</p>
+              <p class="text-sm text-text/60">
+                Set up your strategy/indicator alert messages in the format required by our automation system. You can generate the correct format using our <a class="text-primary font-semibold" href="{% url 'docs_automate_playground' %}">Alert Playground</a>.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
+              <span class="text-primary font-medium">4</span>
+            </div>
+            <div>
+              <p class="font-medium mb-1">Create a TradingView alert</p>
+              <p class="text-sm text-text/60">
+                Create a <a href="{% url 'docs_alerts_create' %}" class="text-primary font-semibold">new TradingView alert</a> with your configured webhook URL. Save your alert and start automating your trading strategy.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 mt-8">
+          <a href="{% url 'docs_automate' %}" class="btn-a font-semibold ml-auto">
+           Need more help?
+          </a>
+          <button onclick="openModel('add-broker-modal');" class="btn-primary font-semibold">
+            Add Broker
+          </button>
+        </div>
+    </div>
+
   {% endif %}
+
 </div>
