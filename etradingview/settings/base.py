@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "django_htmx",
     'storages',
     'compressor', 
+    'django_cryptography',
 ]
 
 MIDDLEWARE = [
@@ -218,6 +219,9 @@ PRICE_LIST = {
     'QUARTERLY': env('STRIPE_PRICE_3MN_ID'),
     'YEARLY': env('STRIPE_PRICE_Y_ID'),
     'LIFETIME': env('STRIPE_PRICE_LT_ID'),
+
+    'CRYPTO': env('STRIPE_AUTOMATE_PRICE_ID_CRYPTO'),
+    'FOREX': env('STRIPE_AUTOMATE_PRICE_ID_FOREX'),
 }
 
 PRICES = {

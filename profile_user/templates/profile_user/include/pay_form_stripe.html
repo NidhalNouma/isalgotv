@@ -66,19 +66,19 @@
     <div class="relative">
       <div
         id="card-element-{{title}}"
-        class="block w-full py-3 input-text"
+        class="block w-full py-2.5 input-text"
       ></div>
     </div>
   </div>
 
   {% if payment_methods|length > 0 %} 
-  <button type="button" class="font-semibold btn-icon" onclick="changeHidden('payment-card-list-{{title}}', 'payment-card-new-{{title}}')">&larr; Back</button>
+  <button type="button" class="font-semibold btn-icon" onclick="document.getElementById('pm-{{title}}').value='{{stripe_customer.invoice_settings.default_payment_method}}'; document.getElementById('span-' + document.getElementById('pm-{{title}}').value + '-pm-{{title}}')?.classList?.remove('hidden'); changeHidden('payment-card-list-{{title}}', 'payment-card-new-{{title}}')">&larr; Back</button>
   {% endif %}
 </div>
 
   <div id="payment-card-list-{{title}}" class="mb-5  {% if payment_methods|length == 0 %} hidden {% endif %}">
     {% include 'include/payment_methods.html' with to_select=True inputId="pm-"|add:title %}
-    <button type="button" class="font-semibold mt-2 btn-icon" onclick="document.getElementById('span-' + document.getElementById('pm-{{title}}').value + '-pm-{{title}}')?.classList?.add('hidden');document.getElementById('pm-{{title}}').value='';changeHidden('payment-card-new-{{title}}', 'payment-card-list-{{title}}')">Add new +</button>
+    <button type="button" class="font-semibold mt-2 btn-icon" onclick="document.getElementById('span-' + document.getElementById('pm-{{title}}').value + '-pm-{{title}}')?.classList?.add('hidden'); document.getElementById('pm-{{title}}').value='';changeHidden('payment-card-new-{{title}}', 'payment-card-list-{{title}}')">Add new +</button>
   </div>
 
 

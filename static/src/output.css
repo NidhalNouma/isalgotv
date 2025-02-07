@@ -2170,6 +2170,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-left: -0.25rem;
 }
 
+.-mt-2 {
+  margin-top: -0.5rem;
+}
+
 .-mt-6 {
   margin-top: -1.5rem;
 }
@@ -2368,6 +2372,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: 0.5rem;
 }
 
+.mt-2\.5 {
+  margin-top: 0.625rem;
+}
+
 .mt-24 {
   margin-top: 6rem;
 }
@@ -2388,6 +2396,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: 1rem;
 }
 
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
 }
@@ -2402,18 +2414,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .mt-auto {
   margin-top: auto;
-}
-
-.mt-5 {
-  margin-top: 1.25rem;
-}
-
-.-mt-2 {
-  margin-top: -0.5rem;
-}
-
-.mt-2\.5 {
-  margin-top: 0.625rem;
 }
 
 .box-border {
@@ -3113,6 +3113,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.scale-90 {
+  --tw-scale-x: .9;
+  --tw-scale-y: .9;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .scale-y-105 {
   --tw-scale-y: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -3120,6 +3126,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .scale-y-150 {
   --tw-scale-y: 1.5;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-y-90 {
+  --tw-scale-y: .9;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3179,6 +3190,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   resize: both;
 }
 
+.scroll-mb-4 {
+  scroll-margin-bottom: 1rem;
+}
+
+.scroll-p-4 {
+  scroll-padding: 1rem;
+}
+
 .list-disc {
   list-style-type: disc;
 }
@@ -3215,14 +3234,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   flex-direction: column;
 }
 
-.\!flex-col {
-  flex-direction: column !important;
-}
-
-.flex-col-reverse {
-  flex-direction: column-reverse;
-}
-
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -3245,10 +3256,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .justify-start {
   justify-content: flex-start;
-}
-
-.\!justify-start {
-  justify-content: flex-start !important;
 }
 
 .justify-end {
@@ -3406,10 +3413,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .overflow-x-hidden {
   overflow-x: hidden;
-}
-
-.overflow-y-hidden {
-  overflow-y: hidden;
 }
 
 .overflow-x-clip {
@@ -3678,34 +3681,13 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-title) / 0.2);
 }
 
-.border-yellow-600 {
-  --tw-border-opacity: 1;
-  border-color: rgb(159 88 10 / var(--tw-border-opacity));
-}
-
-.border-gray-700\/50 {
-  border-color: rgb(55 65 81 / 0.5);
-}
-
-.border-primary\/30 {
-  border-color: hsl(var(--color-primary) / 0.3);
-}
-
-.border-secondary\/30 {
-  border-color: hsl(var(--color-secondary) / 0.3);
-}
-
-.border-accent\/30 {
-  border-color: hsl(var(--color-accent) / 0.3);
-}
-
 .border-title\/30 {
   border-color: hsl(var(--color-title) / 0.3);
 }
 
-.border-gray-700 {
+.border-yellow-600 {
   --tw-border-opacity: 1;
-  border-color: rgb(55 65 81 / var(--tw-border-opacity));
+  border-color: rgb(159 88 10 / var(--tw-border-opacity));
 }
 
 .\!bg-background {
@@ -3927,41 +3909,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(114 59 19 / 0.1);
 }
 
-.bg-gray-800\/50 {
-  background-color: rgb(31 41 55 / 0.5);
-}
-
-.bg-indigo-500\/10 {
-  background-color: rgb(104 117 245 / 0.1);
-}
-
-.bg-pink-500\/10 {
-  background-color: rgb(231 70 148 / 0.1);
-}
-
-.bg-purple-500\/10 {
-  background-color: rgb(144 97 249 / 0.1);
-}
-
-.bg-text\/0 {
-  background-color: hsl(var(--color-text) / 0);
-}
-
 .bg-text\/5 {
   background-color: hsl(var(--color-text) / 0.05);
-}
-
-.bg-blue-500\/10 {
-  background-color: rgb(63 131 248 / 0.1);
-}
-
-.bg-gray-800\/80 {
-  background-color: rgb(31 41 55 / 0.8);
-}
-
-.bg-warning {
-  --tw-bg-opacity: 1;
-  background-color: rgb(202 138 4 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -4003,6 +3952,12 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .\!from-\[\#7289da\] {
   --tw-gradient-from: #7289da var(--tw-gradient-from-position) !important;
   --tw-gradient-to: rgb(114 137 218 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.\!from-background {
+  --tw-gradient-from: hsl(var(--color-background) / 1) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: hsl(var(--color-background) / 0) var(--tw-gradient-to-position) !important;
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
 }
 
@@ -4090,12 +4045,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.\!from-background {
-  --tw-gradient-from: hsl(var(--color-background) / 1) var(--tw-gradient-from-position) !important;
-  --tw-gradient-to: hsl(var(--color-background) / 0) var(--tw-gradient-to-position) !important;
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
-}
-
 .via-accent\/30 {
   --tw-gradient-to: hsl(var(--color-accent) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -4123,6 +4072,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .\!to-\[\#7289da\] {
   --tw-gradient-to: #7289da var(--tw-gradient-to-position) !important;
+}
+
+.\!to-background {
+  --tw-gradient-to: hsl(var(--color-background) / 1) var(--tw-gradient-to-position) !important;
 }
 
 .to-accent {
@@ -4171,10 +4124,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .to-transparent {
   --tw-gradient-to: transparent var(--tw-gradient-to-position);
-}
-
-.\!to-background {
-  --tw-gradient-to: hsl(var(--color-background) / 1) var(--tw-gradient-to-position) !important;
 }
 
 .bg-\[length\:200\%_200\%\] {
@@ -4488,6 +4437,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-bottom: 1.25rem;
 }
 
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+
 .pl-0 {
   padding-left: 0px;
 }
@@ -4559,14 +4512,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .pt-\[0\.05rem\] {
   padding-top: 0.05rem;
-}
-
-.\!pl-0 {
-  padding-left: 0px !important;
-}
-
-.pb-6 {
-  padding-bottom: 1.5rem;
 }
 
 .text-left {
@@ -4799,9 +4744,19 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(5 122 85 / var(--tw-text-opacity));
 }
 
+.text-indigo-400 {
+  --tw-text-opacity: 1;
+  color: rgb(141 162 251 / var(--tw-text-opacity));
+}
+
 .text-loss {
   --tw-text-opacity: 1;
   color: hsl(var(--color-loss) / var(--tw-text-opacity));
+}
+
+.text-pink-400 {
+  --tw-text-opacity: 1;
+  color: rgb(241 126 184 / var(--tw-text-opacity));
 }
 
 .text-primary {
@@ -4812,6 +4767,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-profit {
   --tw-text-opacity: 1;
   color: hsl(var(--color-profit) / var(--tw-text-opacity));
+}
+
+.text-purple-400 {
+  --tw-text-opacity: 1;
+  color: rgb(172 148 250 / var(--tw-text-opacity));
 }
 
 .text-purple-500 {
@@ -4934,45 +4894,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(159 88 10 / var(--tw-text-opacity));
 }
 
-.text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-}
-
-.text-indigo-400 {
-  --tw-text-opacity: 1;
-  color: rgb(141 162 251 / var(--tw-text-opacity));
-}
-
-.text-pink-400 {
-  --tw-text-opacity: 1;
-  color: rgb(241 126 184 / var(--tw-text-opacity));
-}
-
-.text-purple-400 {
-  --tw-text-opacity: 1;
-  color: rgb(172 148 250 / var(--tw-text-opacity));
-}
-
-.text-yellow-500 {
-  --tw-text-opacity: 1;
-  color: rgb(194 120 3 / var(--tw-text-opacity));
-}
-
-.text-blue-500 {
-  --tw-text-opacity: 1;
-  color: rgb(63 131 248 / var(--tw-text-opacity));
-}
-
-.text-primary\/60 {
-  color: hsl(var(--color-primary) / 0.6);
-}
-
-.text-green-400 {
-  --tw-text-opacity: 1;
-  color: rgb(49 196 141 / var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -5019,6 +4940,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .opacity-60 {
   opacity: 0.6;
+}
+
+.opacity-80 {
+  opacity: 0.8;
 }
 
 .shadow {
@@ -6203,18 +6128,6 @@ input[type=number] {
 
   .sm\:flex-row {
     flex-direction: row;
-  }
-
-  .sm\:flex-row-reverse {
-    flex-direction: row-reverse;
-  }
-
-  .sm\:\!flex-col {
-    flex-direction: column !important;
-  }
-
-  .sm\:\!items-start {
-    align-items: flex-start !important;
   }
 
   .sm\:items-center {

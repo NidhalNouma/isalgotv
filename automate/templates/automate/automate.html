@@ -8,9 +8,13 @@
 <meta name="description" content="Become part of a community where trading success is the norm. Discover strategies results, insights, and support to thrive in any market. Your journey towards profitability starts here.">
 {% endblock head_description %}
 
+{% block head %}
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock head %}
+
 {% block page %} 
 
-{% if has_subscription %}
+{% if user.is_authenticated %}
 <div class=" flex items-baseline gap-2 sm:gap-3">
     <h1 class="main-title">Automate </h1>
     <button onclick="openModel('add-broker-modal');" class="btn-text -translate-y-1 pr-3 pl-2 text-sm font-semibold inline-flex items-center justify-center"><svg class="h-4 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Broker</button>

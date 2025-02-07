@@ -172,7 +172,10 @@ function validateNumberInput(input, maxLength) {
 let stripe, cardElement, elements;
 
 function mountStripeElement(id) {
-  const lbl = document.getElementById("lbl-card-element-" + id);
+  // unmount previous element
+  if (cardElement) cardElement.unmount();
+
+  const lbl = document.getElementById("cardName-" + id);
   if (!stripe) {
     // const stripe_key = document
     //   .getElementById("contextData")
@@ -181,9 +184,11 @@ function mountStripeElement(id) {
   }
 
   let color = "#fff";
+  let placeholderColor = "rgb(156 163 175)";
   if (lbl) {
     color = lbl.style.color;
     let style = window.getComputedStyle(lbl);
+    placeholderColor = window.getComputedStyle(lbl, "::placeholder").color;
     color = style.getPropertyValue("color");
   }
 
@@ -198,12 +203,13 @@ function mountStripeElement(id) {
         "font-size": "0.875rem",
         "line-height": "1.25rem",
 
-        iconColor: "rgb(156 163 175)",
+        iconColor: color,
         "::placeholder": {
-          color: "rgb(156 163 175)",
+          color: placeholderColor,
         },
         ":focus": {
-          "border-color": "hsl(229, 76%, 72%);",
+          "border": "1px solid hsl(229, 76%, 72%);",
+          "border-color": placeholderColor,
         },
       },
     },
@@ -248,8 +254,10 @@ async function onPayFormStripeSubmit(title) {
   if (errorDiv) errorDiv.innerHTML = "";
 
   let coupon = document.getElementById("stripe-pay-coupon-" + title);
-  let coupon_val = document.getElementById("coupon-" + title).value;
-  if (coupon) coupon.value = coupon_val;
+  if (coupon) {
+    let coupon_val = document.getElementById("coupon-" + title).value;
+    coupon.value = coupon_val;
+  }
 
   if (
     pmValue.value.length === 0 ||
@@ -279,6 +287,52 @@ async function onPayFormStripeSubmit(title) {
   form.dispatchEvent(new Event("submit"));
 
   // closeLoader(title);
+  return true;
+}
+
+async function onAutomateAccountAdd(title, event) {
+  event.preventDefault();
+  
+  openLoader("", "-add-" + title, "flex");
+  document.getElementById("add-" + title + "-form-errors").innerHTML = ""; 
+  
+  const nameInput = document.getElementById("cardName-" + title);
+  const pmValue = document.getElementById("pm-" + title);
+
+  const paymentsList = document.getElementById("payment-card-list-" + title);
+  console.log("Checking card for " + title + " ... " + pmValue.value);
+
+  const errorDiv = document.getElementById("stripe-error-" + title);
+  if (errorDiv) errorDiv.innerHTML = "";
+
+  if (
+    pmValue.value.length === 0 ||
+    pmValue.value === "None" ||
+    (paymentsList && paymentsList.classList.contains("hidden"))
+  ) {
+    const result = await stripe.createPaymentMethod({
+      elements,
+      params: {
+        billing_details: {
+          name: nameInput.value,
+        },
+      },
+    });
+    if (result.error) {
+      // let errorMsg = result.error.message + "\nNo payment method found!";
+      // let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
+      // if (errorDiv) errorDiv.innerHTML = errorHtml;
+      closeLoader(title, "-add-", 'flex');
+      return false;
+    } else {
+      pmValue.value = result.paymentMethod.id;
+    }
+  }
+
+
+  let form = document.getElementById("add-" + title + "-form");
+  form.dispatchEvent(new Event("submit"));
+
   return true;
 }
 

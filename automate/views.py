@@ -15,6 +15,17 @@ from django.utils.timezone import localtime
 
 from asgiref.sync import sync_to_async, async_to_sync
 
+import environ
+env = environ.Env()
+
+import stripe
+stripe.api_key = env('STRIPE_API_KEY')
+stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
+
+from django.conf import settings
+PRICE_LIST = settings.PRICE_LIST
+PRICES = settings.PRICES
+
 
 
 def context_accounts_by_user(request):
@@ -44,6 +55,12 @@ def add_broker(request, broker_type):
 
             crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+            payment_method = request.POST.get('pm_id')
+
+            if not payment_method or payment_method == "None":
+                response = render(request, 'include/errors.html', {'error': 'No payment method has been detected.'})
+                return retarget(response, f'#add-{broker_type}-form-errors')
 
             if broker_type in crypto_broker_types:
                 form_data = {
@@ -82,7 +99,39 @@ def add_broker(request, broker_type):
 
                 print(valid)
                 if valid.get('valid') == True:
+                    # Add a subscription
+                    profile_user = request.user_profile
+                    customer_id = profile_user.customer_id
+
+                    stripe.PaymentMethod.attach(
+                        payment_method,
+                        customer=customer_id,
+                    )
+
+                    price_id = PRICE_LIST.get('CRYPTO', '')
+                    if broker_type in forex_broker_types:
+                        price_id = PRICE_LIST.get('FOREX', '')
+
+                    metadata = {
+                        "profile_user_id": str(profile_user.id), 
+                        "broker_type": broker_type,
+                    }
+                    
+                    subscription = stripe.Subscription.create(
+                        customer=customer_id,
+                        items=[{
+                            'price': price_id,
+                        }],
+                        default_payment_method=payment_method,
+                        payment_behavior="error_if_incomplete",
+                        trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+                        metadata=metadata
+                    )
+
+
                     account = form.save(commit=False)
+                    account.subscription_id = subscription.id
+
                     account.save()
 
                     context = context_accounts_by_user(request)
@@ -188,6 +237,20 @@ def toggle_broker(request, broker_type, pk):
             raise Exception("Invalid Broker Type")
 
         model_instance.active = not model_instance.active
+        if model_instance.subscription_id:
+            if not model_instance.active:
+                # Pause the subscription by setting the status to "paused"
+                stripe.Subscription.modify(
+                    model_instance.subscription_id,
+                    pause_collection={"behavior": "keep_as_draft"}
+                )
+            else:
+                # Resume by setting it back to "active"
+                stripe.Subscription.modify(
+                    model_instance.subscription_id,
+                    pause_collection=''
+                )
+
         model_instance.save()
 
         context = context_accounts_by_user(request)
@@ -206,9 +269,19 @@ def delete_broker(request, broker_type, pk):
 
         if broker_type in crypto_broker_types:
             obj = CryptoBrokerAccount.objects.get(pk=pk)
+            if obj.subscription_id:
+                stripe.Subscription.modify(
+                    obj.subscription_id,
+                    cancel_at_period_end=True  # Subscription will be canceled but remain active until the next billing cycle
+                )
             obj.delete()  
         elif broker_type in forex_broker_types:
             obj = ForexBrokerAccount.objects.get(pk=pk)
+            if obj.subscription_id:
+                stripe.Subscription.modify(
+                    obj.subscription_id,
+                    cancel_at_period_end=True 
+                )
             obj.delete()
         else:
             raise Exception("Invalid Broker Type")
@@ -220,6 +293,24 @@ def delete_broker(request, broker_type, pk):
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
         return retarget(response, f'#{broker_type}-account-activate-{pk}-form-errors')
+    
+# TODO: Send Email when account is turned off
+def account_subscription_failed(broker_type, subscription_id):
+    try:
+        crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+        forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+        if broker_type in crypto_broker_types:
+            obj = CryptoBrokerAccount.objects.get(subscription_id=subscription_id)
+            obj.active = False
+        elif broker_type in forex_broker_types:
+            obj = ForexBrokerAccount.objects.get(subscription_id=subscription_id)
+            obj.active = False
+        else:
+            raise Exception("Invalid Broker Type")
+
+    except Exception as e:
+        print(e)
 
 @require_http_methods([ "POST"])
 def get_broker_logs(request, broker_type, pk):

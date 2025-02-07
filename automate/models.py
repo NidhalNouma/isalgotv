@@ -1,7 +1,7 @@
-
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django_cryptography.fields import encrypt
 
 from django.contrib.auth.models import User
 from profile_user.models import User_Profile
@@ -43,7 +43,7 @@ class CryptoBrokerAccount(models.Model):
 
     name = models.CharField(max_length=100)
     apiKey = models.CharField(max_length=150)
-    secretKey = models.CharField(max_length=150)
+    secretKey = encrypt(models.CharField(max_length=150))
 
     active = models.BooleanField(default=True)
 
@@ -54,8 +54,12 @@ class CryptoBrokerAccount(models.Model):
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    subscription_id = models.CharField(max_length=100, blank=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):        # Ensure subscription_id is provided
+        if not self.subscription_id:
+            raise ValueError("Subscription is required to create a Crypto Broker Account.")
+        
         # Save the instance first to get an ID if it's a new record
         creating = self._state.adding  # True if the instance is being created
         super(CryptoBrokerAccount, self).save(*args, **kwargs)
@@ -88,12 +92,8 @@ class ForexBrokerAccount(models.Model):
 
     name = models.CharField(max_length=100)
     username = models.CharField(max_length=150, blank=True, null=True) 
-    password = models.CharField(max_length=150)
+    password = encrypt(models.CharField(max_length=150))
     server = models.CharField(max_length=150)
-
-
-
-
     
     custom_id = models.CharField(max_length=30, default="")
     active = models.BooleanField(default=True)
@@ -101,7 +101,13 @@ class ForexBrokerAccount(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+    subscription_id = models.CharField(max_length=100, blank=True)
+
+
     def save(self, *args, **kwargs):
+        if not self.subscription_id:
+            raise ValueError("Subscription is required to create a Forex Broker Account.")
+        
         # Save the instance first to get an ID if it's a new record
         creating = self._state.adding  # True if the instance is being created
         super(ForexBrokerAccount, self).save(*args, **kwargs)
@@ -170,7 +176,7 @@ class LogMessage(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    trade = models.ForeignKey(TradeDetails, on_delete=models.DO_NOTHING, related_name="Trade", blank=True, null=True)
+    trade = models.ForeignKey(TradeDetails, on_delete=models.CASCADE, related_name="Trade", blank=True, null=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True)
     object_id = models.PositiveIntegerField()

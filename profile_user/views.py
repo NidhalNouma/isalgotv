@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User_Profile, Notification
 from strategies.models import Strategy
+from automate.views import account_subscription_failed
 
 from .forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
@@ -632,6 +633,10 @@ def create_subscription_stripeform(request):
                 
                 return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
                 
+            
+            metadata = {
+                "profile_user_id": str(profile_user.id), 
+            }
 
             subscription = stripe.Subscription.create(
                 customer=customer_id,
@@ -639,10 +644,12 @@ def create_subscription_stripeform(request):
                     'price': price_id,
                 }],
                 payment_behavior="error_if_incomplete",
+                default_payment_method=payment_method,
                 # coupon=coupon_id,
                 promotion_code=promo_id,
                 trial_period_days=trial_days,
                 trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+                metadata=metadata,
             )
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
@@ -934,22 +941,41 @@ def stripe_webhook(request):
             payload, sig_header, stripe_wh_secret
         )
 
-        if event['type'] == 'customer.subscription.deleted':
-            print("Strip-Webhook: Subscription deleted ...")
-            subscription = event['data']['object']
+        subscription = event['data']['object']
 
-            remove_access(subscription.id)
+        metadeta = event['data']['object']['metadata']
 
-        elif event['type'] == 'customer.subscription.updated':
-            print("Strip-Webhook: Subscription updated ...")
-            subscription = event['data']['object']
-            if subscription.status == "canceld":
-                remove_access(subscription.id)
-            elif subscription.status == "past_due":
-                remove_access(subscription.id, False)
+        if metadeta is not None and metadeta['broker_type'] is not None:
+            if event['type'] == 'customer.subscription.deleted':
+                account_subscription_failed(metadeta['broker_type'], subscription.id)
+                
+            elif event['type'] == 'customer.subscription.updated':
+                print("Strip-Webhook: Subscription updated ...")
+
+                if subscription.status == "canceld":
+                    account_subscription_failed(metadeta['broker_type'], subscription.id)
+                elif subscription.status == "past_due":
+                    account_subscription_failed(metadeta['broker_type'], subscription.id)
+
+            else:
+                print('Unhandled event type {}'.format(event['type']))
 
         else:
-            print('Unhandled event type {}'.format(event['type']))
+            if event['type'] == 'customer.subscription.deleted':
+                print("Strip-Webhook: Subscription deleted ...")
+
+                remove_access(subscription.id)
+
+            elif event['type'] == 'customer.subscription.updated':
+                print("Strip-Webhook: Subscription updated ...")
+
+                if subscription.status == "canceld":
+                    remove_access(subscription.id)
+                elif subscription.status == "past_due":
+                    remove_access(subscription.id, False)
+
+            else:
+                print('Unhandled event type {}'.format(event['type']))
 
         return HttpResponse(status=200)
 
@@ -973,4 +999,4 @@ def remove_access(subscription_id, cancel_email = True):
         if cancel_email:
             access_removed_email_task(user.email)
 
-        profile_user.deactivate_all_accounts()
+        # profile_user.deactivate_all_accounts()

@@ -21,7 +21,7 @@ PRICE_LIST = settings.PRICE_LIST
 
 def check_user_and_stripe_middleware(get_response):
     # One-time configuration and initialization.
-
+    
     def middleware(request):
         # print("stripe midl")
         # Code to be executed for each request before
@@ -64,9 +64,11 @@ def check_user_and_stripe_middleware(get_response):
                     )
                 # print(customer)
                 if customer.id:
-                    user_profile = User_Profile.objects.get(user=current_user)
+                    # user_profile = User_Profile.objects.get(user=current_user)
                     user_profile.customer_id = customer.id
                     user_profile.save()
+            
+            # print("stripe customer, " , user_profile.customer_id)
 
             request.user_profile = user_profile
 

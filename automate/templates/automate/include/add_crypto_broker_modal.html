@@ -5,7 +5,7 @@
   class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
 >
   <div
-    class="relative w-full max-w-xl max-h-full bg-background rounded-lg shadow flex flex-col"
+    class="relative w-full max-w-xl max-h-full overflow-y-scroll no-scrollbar  bg-background rounded-lg shadow flex flex-col"
   >
     <!-- Modal header -->
     <div
@@ -256,6 +256,8 @@
 
       {% csrf_token %} 
       {% include "include/infos.html" with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class=" w-full" %}
+      
+      {% include "include/broker_payment.html" with title=broker_type price='3.98' %}
 
       <div id="add-{{broker_type}}-form-errors" class=""></div>
 
@@ -264,7 +266,7 @@
           id="btn-add-{{broker_type}}"
           type="submit"
           class="btn-primary mb-2 w-full mx-auto"
-          onclick='document.getElementById("add-{{broker_type}}-form-errors").innerHTML = "";  openLoader("", "-add-{{broker_type}}", "flex");'
+          onclick="onAutomateAccountAdd('{{broker_type}}', event)"
         >
           Save
           <svg

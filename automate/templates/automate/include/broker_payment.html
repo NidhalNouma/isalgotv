@@ -1,0 +1,69 @@
+{% with default_pm_id=stripe_customer.invoice_settings.default_payment_method %}
+<section class=" p-2 rounded border border-text/10 bg-text/5">
+    <p class="text-sm text-text/80">By adding this broker you'll be cherged with <span class="text-text">${{price}}</span>/Month.</p>
+   
+    <div id="payment-card-list-{{title}}" class="{% if payment_methods|length == 0 %} hidden {% endif %}">
+        <h3 class="text-text mt-2 font-semibold">Select a payment method</h3>
+        <div class="opacity-80 scale-y-90">
+            {% include 'include/payment_methods.html' with to_select=True inputId="pm-"|add:title %}
+        </div>
+        <button id="" type="button" class="font-semibold btn-icon" onclick="document.getElementById('span-' + document.getElementById('pm-{{title}}').value + '-pm-{{title}}')?.classList?.add('hidden'); document.getElementById('pm-{{title}}').value=''; changeHidden('payment-card-new-{{title}}', 'payment-card-list-{{title}}');">Add Credit/Debit card +</button>
+    </div> 
+    <div id="payment-card-new-{{title}}" class="mt-2 {% if payment_methods|length > 0 %} hidden {% endif %}">
+        <h3 class="text-text mb-2 font-semibold">Add a payment method</h3>
+        <div class="mb-3">
+         
+          <label
+            for="cardName"
+            class="input-label"
+            >Name on card</label
+          >
+          <div class="relative mb-3">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-title/40"
+                fill="currentColor"
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M373 411c-28.5 0-51.7 23.3-51.7 52s23.2 52 51.7 52 51.7-23.3 51.7-52-23.2-52-51.7-52zm555-251H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zM608 420c0-4.4 1-8 2.3-8h123.4c1.3 0 2.3 3.6 2.3 8v48c0 4.4-1 8-2.3 8H610.3c-1.3 0-2.3-3.6-2.3-8v-48zm-86 253h-43.9c-4.2 0-7.6-3.3-7.9-7.5-3.8-50.5-46-90.5-97.2-90.5s-93.4 40-97.2 90.5c-.3 4.2-3.7 7.5-7.9 7.5H224a8 8 0 01-8-8.4c2.8-53.3 32-99.7 74.6-126.1a111.8 111.8 0 01-29.1-75.5c0-61.9 49.9-112 111.4-112s111.4 50.1 111.4 112c0 29.1-11 55.5-29.1 75.5 42.7 26.5 71.8 72.8 74.6 126.1.4 4.6-3.2 8.4-7.8 8.4zm278.9-53H615.1c-3.9 0-7.1-3.6-7.1-8v-48c0-4.4 3.2-8 7.1-8h185.7c3.9 0 7.1 3.6 7.1 8v48h.1c0 4.4-3.2 8-7.1 8z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              name="cardName"
+              id="cardName-{{title}}"
+              class="block w-full pl-10 input-text"
+              placeholder="John Smith"
+            />
+          </div>
+        </div>
+      
+        <div class="mb-0">
+          <label
+            id="lbl-card-element-{{title}}"
+            for="card-element-{{title}}"
+            class="input-label"
+            >Card details</label
+          >
+          <div class="relative">
+            <div
+              id="card-element-{{title}}"
+              class="block w-full py-2.5 input-text"
+            ></div>
+          </div>
+        </div>
+        {% if payment_methods|length > 0 %}
+            <button id="" type="button" class="font-semibold mt-4 btn-icon" onclick="document.getElementById('pm-{{title}}').value='{{default_pm_id}}'; document.getElementById('span-' + document.getElementById('pm-{{title}}').value + '-pm-{{title}}')?.classList?.remove('hidden'); changeHidden('payment-card-list-{{title}}', 'payment-card-new-{{title}}');">&#8701; Select a payment method</button>
+        {% endif %}
+
+    </div>
+
+    <input id="pm-{{title}}" type="hidden" name="pm_id" value="{{default_pm_id}}" />
+</section>
+{% endwith %}
