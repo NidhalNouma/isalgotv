@@ -14,6 +14,10 @@
 {% include 'svg/bitmart.html' with class=class %}
 {% elif broker_type == 'mexc' %}
 {% include 'svg/mexc.html' with class=class %}
+{% elif broker_type == 'metatrader4' %}
+{% include 'svg/metatrader4.html' with class=class %}
+{% elif broker_type == 'metatrader5' %}
+{% include 'svg/metatrader5.html' with class=class %}
 
 
 {% elif broker_type == 'tradelocker' %}

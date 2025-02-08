@@ -7,35 +7,23 @@
   class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
 >
   <div
-    class="relative w-full max-w-xl max-h-full bg-background rounded-lg shadow flex flex-col"
+    class="relative w-full max-w-xl max-h-full overflow-y-scroll no-scrollbar  bg-background rounded-lg shadow flex flex-col"
   >
     <!-- Modal header -->
     <div
       class="flex items-center justify-between p-4 sticky top-0 bg-background z-50 rounded-t-lg"
     >
-      <h3 class="text-xl font-semibold text-title flex items-center capitalize">
-        Edit Account
-        <!-- <button
-          class="ml-1"
-          onclick="openDrawer('drawer-Performance')"
-          type="button"
+      <h3 class="text-xl font-semibold text-title flex items-center capitalize space-x-3">
+        <span id="add-{{account.id}}_{{account.broker_type}}-form-btn" class="pointer-events-none" onclick='swapDivBtn("edit-{{account.id}}_{{account.broker_type}}-sub", "add-{{account.id}}_{{account.broker_type}}-form")'>Edit Account</span>
+        <span class="">|</span>
+        <form 
+          hx-post="{% url 'get_subscription_data' account.broker_type account.id account.subscription_id %}" 
+          hx-target="#edit-{{account.id}}_{{account.broker_type}}-sub"
+          hx-wait="swap"
         >
-          <svg
-            class="text-text hover:text-title h-5 aspect-square transition-all"
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"
-            ></path>
-            <path
-              d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
-            ></path>
-          </svg>
-        </button> -->
+          {% csrf_token %}
+          <button type="submit" id="edit-{{account.id}}_{{account.broker_type}}-sub-btn" class="text-title/80 cursor-pointer hover:text-title/60 transition-all" onclick='swapDivBtn("add-{{account.id}}_{{account.broker_type}}-form", "edit-{{account.id}}_{{account.broker_type}}-sub")'>Subscription</button>
+        </form>
       </h3>
       <button
         type="button"
@@ -57,6 +45,9 @@
         </svg>
       </button>
     </div>
+    <section id="edit-{{account.id}}_{{account.broker_type}}-sub" class="hidden relative p-6 pt-2 w-full max-w-md mx-auto flex-col gap-y-4">
+      {% include "include/edit_broker_membership.html" with id=account.id broker_type=account.broker_type %}
+    </section>
     <form
       class="relative p-6 pt-2 w-full max-w-md mx-auto flex flex-col gap-y-4"
       id="add-{{account.id}}_{{account.broker_type}}-form"

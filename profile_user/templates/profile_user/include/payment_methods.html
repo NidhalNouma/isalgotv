@@ -69,7 +69,7 @@
     <h6 class="text-sm">**** {{pm.card.last4}}</h6>
     <h6 class="text-xs">
       Expire on: {{pm.card.exp_month}}/{{pm.card.exp_year}}
-      {% if stripe_customer.invoice_settings.default_payment_method == pm.id and to_select is None %}
+      {% if stripe_customer.invoice_settings.default_payment_method == pm.id and to_select is None and hide_default is None %}
             <span class="ml-1 text-background text-xs bg-accent px-1 py-0.5 font-semibold rounded">default</span>
       {% endif %}
       {% if to_select == True %}

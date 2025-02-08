@@ -1,6 +1,8 @@
 {% with default_pm_id=stripe_customer.invoice_settings.default_payment_method %}
 <section class=" p-2 rounded border border-text/10 bg-text/5">
+    {% if not hide_header %}
     <p class="text-sm text-text/80">By adding this broker you'll be cherged with <span class="text-text">${{price}}</span>/Month.</p>
+    {% endif %}
    
     <div id="payment-card-list-{{title}}" class="{% if payment_methods|length == 0 %} hidden {% endif %}">
         <h3 class="text-text mt-2 font-semibold">Select a payment method</h3>

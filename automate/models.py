@@ -122,7 +122,6 @@ class ForexBrokerAccount(models.Model):
 # Trades and Logs ----------------------------------------------------------------
 
 
-
 class TradeDetails(models.Model):
 
     TYPE = [
