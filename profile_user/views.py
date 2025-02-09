@@ -337,6 +337,14 @@ def delete_payment_method(request):
         customer_id = profile_user.customer_id
 
         try:
+            subscriptions = stripe.Subscription.list(customer=customer_id, status="active")
+
+            # Check if the payment method is used in any active subscription
+            for subscription in subscriptions.auto_paging_iter():
+                if subscription.default_payment_method == payment_method:
+                    context["error"] = "This payment method is currently associated with an active subscription and cannot be deleted."
+                    response = render(request, 'include/errors.html', context)
+                    return retarget(response, "#stripe-error-delete-payment_methods")
             
             stripe.PaymentMethod.detach(payment_method)
             context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
@@ -346,6 +354,8 @@ def delete_payment_method(request):
         
         except Exception as e:
             context["error"] = 'Attached payment to customer '+str(e)
+
+            return retarget(response, "#stripe-error-delete-payment_methods")
 
 @require_http_methods([ "POST"])
 def setdefault_payment_method(request):

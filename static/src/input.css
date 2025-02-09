@@ -94,7 +94,7 @@
   }
 
   .btn-icon {
-    @apply text-title/80 hover:text-title/60 bg-transparent rounded-lg text-sm px-1 ml-auto inline-flex items-center transition-all 
+    @apply text-title/80 hover:text-title/60 bg-transparent rounded text-sm px-1 ml-auto inline-flex items-center transition-all 
   }
 
   .input-label {

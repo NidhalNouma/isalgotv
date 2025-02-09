@@ -1333,7 +1333,7 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-left: auto;
   display: inline-flex;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background-color: transparent;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -4175,6 +4175,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .fill-transparent {
   fill: transparent;
+}
+
+.fill-background\/60 {
+  fill: hsl(var(--color-background) / 0.6);
 }
 
 .stroke-accent {

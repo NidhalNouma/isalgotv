@@ -110,6 +110,16 @@ function swapDivBtn(id1, id2) {
   div2.classList.remove("hidden");
 }
 
+function changeHidden(id1, id2, className) {
+  document.getElementById(id1)?.classList?.remove("hidden");
+  document.getElementById(id2)?.classList?.add("hidden");
+
+  if (className) {
+    document.getElementById(id1)?.classList?.add(className);
+    document.getElementById(id2)?.classList?.remove(className);
+  }
+}
+
 function openLoader(title, id = "-pay-submit-", className = "block") {
   let spinner = document.getElementById("spinner" + id + title);
   if (spinner) spinner.style.display = className;
@@ -133,16 +143,6 @@ function closeLoader(title, id = "-pay-submit-", className = "block") {
 
   if (document.getElementById("error" + id + title))
     document.getElementById("error" + id + title).style.display = "none";
-}
-
-function changeHidden(id1, id2, className) {
-  document.getElementById(id1)?.classList?.remove("hidden");
-  document.getElementById(id2)?.classList?.add("hidden");
-
-  if (className) {
-    document.getElementById(id1)?.classList?.add(className);
-    document.getElementById(id2)?.classList?.remove(className);
-  }
 }
 
 function customDropdownBtnClick(newValue, textId, inputId, buttonId) {
@@ -294,7 +294,9 @@ async function onAutomateAccountAdd(title, event) {
   event.preventDefault();
   
   openLoader("", "-add-" + title, "flex");
-  document.getElementById("add-" + title + "-form-errors").innerHTML = ""; 
+
+  if(document.getElementById("add-" + title + "-form-errors"))
+    document.getElementById("add-" + title + "-form-errors").innerHTML = ""; 
   
   const nameInput = document.getElementById("cardName-" + title);
   const pmValue = document.getElementById("pm-" + title);

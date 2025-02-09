@@ -17,7 +17,7 @@
         <span id="add-{{account.id}}_{{account.broker_type}}-form-btn" class="pointer-events-none" onclick='swapDivBtn("edit-{{account.id}}_{{account.broker_type}}-sub", "add-{{account.id}}_{{account.broker_type}}-form")'>Edit Account</span>
         <span class="">|</span>
         <form 
-          hx-post="{% url 'get_subscription_data' account.broker_type account.id account.subscription_id %}" 
+          hx-post="{% url 'get_account_subscription_data' account.broker_type account.id account.subscription_id %}" 
           hx-target="#edit-{{account.id}}_{{account.broker_type}}-sub"
           hx-wait="swap"
         >

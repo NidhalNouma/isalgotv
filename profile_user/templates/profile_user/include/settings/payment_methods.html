@@ -22,6 +22,9 @@
     <div>
       {% include 'include/payment_methods.html' %}
     </div>
+    <div class="" id="stripe-error-delete-payment_methods">
+      {% include 'include/errors.html' with error=error %}
+    </div>
     {% endif %}
   </div>
 

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
@@ -295,36 +296,70 @@ def delete_broker(request, broker_type, pk):
         return retarget(response, f'#{broker_type}-account-activate-{pk}-form-errors')
 
 
+def account_subscription_context(broker_type, pk, subscription_id):
+    subscription = stripe.Subscription.retrieve(subscription_id)
+
+    payment_method = None
+    if subscription.default_payment_method:
+        payment_method = stripe.PaymentMethod.retrieve(subscription.default_payment_method)
+        payment_method = [payment_method]
+    
+    end_timestamp = subscription.current_period_end * 1000
+    next_payment_date = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
+    subscription_active = subscription.plan.active
+    subscription_status = subscription.status
+
+    subscription_paused = False  
+    if subscription.pause_collection:
+        subscription_paused = True if subscription.pause_collection.behavior == 'keep_as_draft' else False
+
+    context = {
+        'account_subscription': subscription,
+        'pm': payment_method,
+        'subscription_paused': subscription_paused,
+        'subscription_active': subscription_active,
+        'subscription_status': subscription_status,
+        'next_payment_date': next_payment_date,
+        'subscription_next_payment_amount': subscription.plan.amount / 100,
+        'broker_type': broker_type,
+        'id': str(pk),
+    }
+    return context
+
+
 @require_http_methods([ "POST"])
-def account_subscription_data(request, broker_type, pk, subscription_id):
+def account_subscription_data(request, broker_type, pk, account_subscription_id):
     try:
-        subscription = stripe.Subscription.retrieve(subscription_id)
+        context = account_subscription_context(broker_type, pk, account_subscription_id)
 
-        if subscription.default_payment_method:
-            payment_method = stripe.PaymentMethod.retrieve(subscription.default_payment_method)
+        return render(request, 'include/edit_broker_membership.html', context=context)
+    except Exception as e:
+        context = {'error': e}
+        response = render(request, "include/errors.html", context=context)
         
-        end_timestamp = subscription.current_period_end * 1000
-        next_payment_date = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
-        subscription_active = subscription.plan.active
-        subscription_status = subscription.status
+        return retarget(response, f'#edit-{pk}_{broker_type}-sub-errors') 
 
-        subscription_paused = False  
-        if subscription.pause_collection:
-            subscription_paused = True if subscription.pause_collection.behavior == 'keep_as_draft' else False
 
-        context = {
-            'account_subscription': subscription,
-            'pm': [payment_method],
-            'subscription_paused': subscription_paused,
-            'subscription_active': subscription_active,
-            'subscription_status': subscription_status,
-            'next_payment_date': next_payment_date,
-            'subscription_next_payment_amount': subscription.plan.amount / 100,
-            'broker_type': broker_type,
-            'id': str(pk),
-        }
+@require_http_methods([ "POST"])
+def change_account_subscription_payment(request, broker_type, pk, account_subscription_id):
+    try:
+        new_payment_method = request.POST.get("pm_id")  
+        if not new_payment_method:
+            raise Exception("No payment method provided.")
 
-        # print(subscription)
+        subscription = stripe.Subscription.retrieve(account_subscription_id)
+        
+        stripe.PaymentMethod.attach(
+            new_payment_method,
+            customer=subscription.customer,
+        )
+
+        stripe.Subscription.modify(
+            account_subscription_id,
+            default_payment_method=new_payment_method,
+        )
+
+        context = account_subscription_context(broker_type, pk, account_subscription_id)
 
         return render(request, 'include/edit_broker_membership.html', context=context)
     except Exception as e:
