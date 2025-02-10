@@ -273,7 +273,7 @@ async function onPayFormStripeSubmit(title) {
       },
     });
     if (result.error) {
-      let errorMsg = result.error.message + "\nNo payment method found!";
+      let errorMsg = result.error.message + "\nNo payment method found or selected!";
       let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
       if (errorDiv) errorDiv.innerHTML = errorHtml;
       closeLoader(title);
@@ -290,7 +290,7 @@ async function onPayFormStripeSubmit(title) {
   return true;
 }
 
-async function onAutomateAccountAdd(title, event) {
+async function onAutomateAccountAdd(title, errorDivName, event) {
   event.preventDefault();
   
   openLoader("", "-add-" + title, "flex");
@@ -304,7 +304,7 @@ async function onAutomateAccountAdd(title, event) {
   const paymentsList = document.getElementById("payment-card-list-" + title);
   console.log("Checking card for " + title + " ... " + pmValue.value);
 
-  const errorDiv = document.getElementById("stripe-error-" + title);
+  const errorDiv = document.getElementById(errorDivName);
   if (errorDiv) errorDiv.innerHTML = "";
 
   if (
@@ -321,9 +321,10 @@ async function onAutomateAccountAdd(title, event) {
       },
     });
     if (result.error) {
-      // let errorMsg = result.error.message + "\nNo payment method found!";
-      // let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
-      // if (errorDiv) errorDiv.innerHTML = errorHtml;
+      let errorMsg = result.error.message + "\nNo payment method found or selected!";
+      let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
+      if (errorDiv) errorDiv.innerHTML = errorHtml;
+
       closeLoader(title, "-add-", 'flex');
       return false;
     } else {
