@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .functions.alerts_logs_trades import manage_alert, check_crypto_credentials, check_forex_credentials
 from .models import *
 from .forms import *
+from .tasks import *
 
 from collections import defaultdict
 from django.utils.timezone import localtime
@@ -271,18 +272,20 @@ def delete_broker(request, broker_type, pk):
         if broker_type in crypto_broker_types:
             obj = CryptoBrokerAccount.objects.get(pk=pk)
             if obj.subscription_id:
-                stripe.Subscription.modify(
-                    obj.subscription_id,
-                    cancel_at_period_end=True  # Subscription will be canceled but remain active until the next billing cycle
-                )
+                stripe.Subscription.cancel(obj.subscription_id)
+                # stripe.Subscription.modify(
+                #     obj.subscription_id,
+                #     cancel_at_period_end=True  # Subscription will be canceled but remain active until the next billing cycle
+                # )
             obj.delete()  
         elif broker_type in forex_broker_types:
             obj = ForexBrokerAccount.objects.get(pk=pk)
             if obj.subscription_id:
-                stripe.Subscription.modify(
-                    obj.subscription_id,
-                    cancel_at_period_end=True 
-                )
+                stripe.Subscription.cancel(obj.subscription_id)
+                # stripe.Subscription.modify(
+                #     obj.subscription_id,
+                #     cancel_at_period_end=True 
+                # )
             obj.delete()
         else:
             raise Exception("Invalid Broker Type")
@@ -369,17 +372,33 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
         return retarget(response, f'#edit-{pk}_{broker_type}-sub-errors') 
     
 # TODO: Send Email when account is turned off
-def account_subscription_failed(broker_type, subscription_id):
+def account_subscription_failed(email ,broker_type, subscription_id, send_mail=True):
     try:
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
         if broker_type in crypto_broker_types:
-            obj = CryptoBrokerAccount.objects.get(subscription_id=subscription_id)
-            obj.active = False
+            obj = CryptoBrokerAccount.objects.filter(subscription_id=subscription_id).first()
+            if obj:
+                obj.active = False
+                obj.save()
+                if send_mail and email:
+                    send_broker_account_access_removed_task(email, obj.name)
+            else:
+                print(f"No CryptoBrokerAccount found for subscription_id {subscription_id}")
+                if send_mail and email:
+                    send_broker_account_deleted_task(email)
         elif broker_type in forex_broker_types:
-            obj = ForexBrokerAccount.objects.get(subscription_id=subscription_id)
-            obj.active = False
+            obj = ForexBrokerAccount.objects.filter(subscription_id=subscription_id).first()
+            if obj:
+                obj.active = False
+                obj.save()
+                if send_mail and email:
+                    send_broker_account_access_removed_task(email, obj.name)
+            else:
+                print(f"No ForexBrokerAccount found for subscription_id {subscription_id}")
+                if send_mail and email:
+                    send_broker_account_deleted_task(email)
         else:
             raise Exception("Invalid Broker Type")
 
@@ -415,7 +434,6 @@ def get_broker_logs(request, broker_type, pk):
             'id': pk,
             'broker_type': broker_type
         }
-        
         return render(request, 'include/account_logs.html', context=context)
     
     except Exception as e:

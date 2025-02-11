@@ -877,7 +877,7 @@ def cancel_subscription(request):
 def preview_email(request):
     # Dummy data for template context
     context = {'user_name': 'Test User'}
-    return render(request, 'emails/overdue_access_removed.html', context)
+    return render(request, 'emails/broker_access_removed.html', context)
 
 def send_email(request):
     if request.method == 'POST':
@@ -956,16 +956,26 @@ def stripe_webhook(request):
         metadeta = event['data']['object']['metadata']
 
         if metadeta is not None and metadeta['broker_type'] is not None:
+            profile_user_id = metadeta['profile_user_id']
+
+            email = None
+            try:
+                profile_user = User_Profile.objects.get(id=int(profile_user_id))
+                user = profile_user.user
+                email = user.email
+            except Exception as e:
+                print(e)
+
             if event['type'] == 'customer.subscription.deleted':
-                account_subscription_failed(metadeta['broker_type'], subscription.id)
+                account_subscription_failed(email, metadeta['broker_type'], subscription.id)
                 
             elif event['type'] == 'customer.subscription.updated':
                 print("Strip-Webhook: Subscription updated ...")
 
                 if subscription.status == "canceld":
-                    account_subscription_failed(metadeta['broker_type'], subscription.id)
+                    account_subscription_failed(email, metadeta['broker_type'], subscription.id)
                 elif subscription.status == "past_due":
-                    account_subscription_failed(metadeta['broker_type'], subscription.id)
+                    account_subscription_failed(email, metadeta['broker_type'], subscription.id)
 
             else:
                 print('Unhandled event type {}'.format(event['type']))
