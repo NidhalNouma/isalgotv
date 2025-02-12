@@ -10,6 +10,7 @@ class User_Profile(models.Model):
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
     bio = models.TextField(max_length=1000, blank=True)
     tradingview_username = models.CharField(max_length=100, blank=True)
+    discord_username = models.CharField(max_length=50, blank=True)
     strategies = models.ManyToManyField(to='strategies.Strategy', blank=True)
 
     subscription_id = models.CharField(max_length=100, blank=True)

@@ -126,13 +126,15 @@ def check_user_and_stripe_middleware(get_response):
                     if subscription.cancel_at_period_end:
                         subscription_canceled = True
 
-                    # Get the upcoming invoice for the subscription
-                    upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
 
-                    # Extract the next payment details
-                    # next_payment_date = upcoming_invoice["next_payment_attempt"]
-                    if upcoming_invoice:
-                        total_amount_due = upcoming_invoice["amount_due"]/100
+                    if not subscription_canceled:
+                        # Get the upcoming invoice for the subscription
+                        upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
+
+                        # Extract the next payment details
+                        # next_payment_date = upcoming_invoice["next_payment_attempt"]
+                        if upcoming_invoice:
+                            total_amount_due = upcoming_invoice["amount_due"]/100
 
                     # print(subscription_status, has_subscription)
                 except Exception as e:

@@ -29,6 +29,8 @@ import environ
 env = environ.Env()
 
 from .utils.tradingview import *
+from .utils.discord import get_discord_user_id, add_role_to_user, remove_role_from_user
+
 
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
@@ -264,6 +266,37 @@ def edit_tradingview_username(request):
         error = "Username is required."
         response = render(request, 'include/errors.html', context = {"error": error})
         return retarget(response, "#tradingview_username_submit_error")
+
+@require_http_methods([ "POST"])
+def edit_discord_username(request):
+    try:
+        discord_username = request.POST.get('discord_username')
+
+        if discord_username and request.user.is_authenticated:
+
+            discord_user_id = get_discord_user_id(discord_username)
+            if not discord_user_id:
+                raise Exception("User not found on Discord")
+                
+            profile_user = request.user_profile
+            if profile_user.discord_username:
+                remove_role_from_user(profile_user.discord_username, profile_user.is_lifetime)
+
+            if add_role_to_user(discord_user_id, profile_user.is_lifetime):
+                profile_user.discord_username = discord_username
+                profile_user.save()
+
+                response = render(request, 'include/settings/discord.html', {'succes': 'User granted access!'})
+                return trigger_client_event(response, 'hide-animate')
+            else:
+                raise Exception("Failed to add role.")
+
+        else:
+            raise Exception("Username is required.")
+    
+    except Exception as e:
+        response = render(request, 'include/errors.html', context = {"error": e})
+        return retarget(response, "#discord-form-errors")
 
 @require_http_methods([ "POST"])
 def get_access(request, strategy_id):
@@ -1015,6 +1048,9 @@ def remove_access(subscription_id, cancel_email = True):
         if profile_user.tradingview_username and profile_user.is_lifetime == False:
             for strategy in strategies:
                 access_response = give_access(strategy.id, profile_user.id, False)
+
+        if profile_user.discord_username:
+            remove_role_from_user(profile_user.discord_username)
                 
         if cancel_email:
             access_removed_email_task(user.email)

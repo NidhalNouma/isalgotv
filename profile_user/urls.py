@@ -15,6 +15,7 @@ urlpatterns = [
     path('stripe/webhook/', stripe_webhook, name="stripe-webhook"),
     path('profile/', get_profile, name='profile'),
     path('profile/update/tradingview_username', edit_tradingview_username, name='update-tradingview-username'),
+    path('profile/update/discord_username', edit_discord_username, name='update-discord-username'),
     path('notifications/', notifications_page, name='notifications'),
     path('settings/', settings_page, name='settings'),
     path('access/', access_page, name='access'),

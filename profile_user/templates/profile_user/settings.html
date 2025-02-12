@@ -12,6 +12,12 @@
     >
       {% include 'include/settings/tradingview.html' %}
     </div>
+    <div
+      id="discord-setting"
+      hx-on="hide-animate: setTimeout(function(){hideAll_hideMe();}, 1000);"
+    >
+      {% include 'include/settings/discord.html' %}
+    </div>
       {% include 'include/settings/payment_methods.html' %}
     <div id="setting-membership">
       {% include 'include/settings/membership.html' %}
