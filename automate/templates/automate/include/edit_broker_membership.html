@@ -4,12 +4,16 @@
 
       {% if subscription_paused %}
       <span class="bg-text/10 text-text rounded px-1 py-0 font-semibold">paused</span>
-      {% else %}
+      {% elif subscription_status == "active"  %}
       <span class="bg-success/10 text-success rounded px-1 py-0 font-semibold">{{subscription_status}}</span>
+      {% elif subscription_status == "canceled"  %}
+      <span class="bg-error/10 text-error rounded px-1 py-0 font-semibold">{{subscription_status}}</span>
+      {% else  %}
+      <span class="bg-text/10 text-text rounded px-1 py-0 font-semibold">{{subscription_status}}</span>
       {% endif %}
     </p>
 
-    {% if not subscription_paused %}
+    {% if not subscription_paused and subscription_status != "canceled" %}
     <div class="bg-text/10 rounded-md p-4 my-3 text-text">
       <div class="flex justify-between items-center mb-2">
         <span class="text-text">Next Payment</span>
@@ -32,16 +36,24 @@
 
     <div class="bg-text/10 rounded-md p-4 my-3 text-text">
       <div class="flex justify-between items-center mb-2">
-        <span class="text-text">Payment Method</span>
+        <span class="text-text">
+          {% if subscription_status == "canceled"  %}
+           Reactivate subscription
+          {% else %}
+           Payment Method
+          {% endif %}
+        </span>
       </div>
 
-      {% if pm %}
+      {% if pm and subscription_status != "canceled" %}
         {% include "include/payment_methods.html" with payment_methods=pm hide_default=True %}
       {% endif %}
 
       {% with title=broker_type|add:'-account_subscription_pm'|add:id %}
         <button id="change-pm-{{title}}-btn" class="mt-3 btn-text" onclick="mountStripeElement('{{title}}'); changeHidden('add-{{title}}-form', 'change-pm-{{title}}-btn');">
-          {% if pm %}
+          {% if subscription_status == "canceled"  %}
+            Reactivate the subscription
+          {% elif pm %}
             Change Payment Method
             {% else %}
             Select Payment Method
@@ -54,6 +66,11 @@
               hx-wait="swap"
         >
           {% include 'include/broker_payment.html' with title=title hide_header=True %}
+
+          <div
+          id="add-{{title}}-form-errors"
+          class="my-2"
+          ></div>
           {% csrf_token %}
           <div class="flex items-center justify-between gap-2 mt-2">
             <button type="button" class="btn-icon w-full justify-center border border-text/60 py-1" onclick="unmountStripeElement('{{title}}'); changeHidden('change-pm-{{title}}-btn', 'add-{{title}}-form');">Cancel</button>
@@ -82,7 +99,7 @@
                 />
               </svg>
             </button>
-            <button id="btn-add-{{title}}" onclick='onAutomateAccountAdd("{{title}}", "edit-{{id}}_{{broker_type}}-sub-errors", event)' type="submit" class="btn-text w-full">Save</button>
+            <button id="btn-add-{{title}}" onclick='onAutomateAccountAdd("{{title}}", "add-{{title}}-form-errors", event)' type="submit" class="btn-text w-full">Save</button>
           </div>
         </form>
 

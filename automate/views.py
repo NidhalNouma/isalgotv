@@ -327,6 +327,8 @@ def account_subscription_context(broker_type, pk, subscription_id):
         'broker_type': broker_type,
         'id': str(pk),
     }
+
+    # print(context)
     return context
 
 
@@ -357,10 +359,53 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
             customer=subscription.customer,
         )
 
-        stripe.Subscription.modify(
-            account_subscription_id,
-            default_payment_method=new_payment_method,
-        )
+        if subscription.status == "canceled":
+            # stripe.Subscription.create
+
+            profile_user = request.user_profile
+            customer_id = profile_user.customer_id
+
+            stripe.PaymentMethod.attach(
+                new_payment_method,
+                customer=customer_id,
+            )
+
+            crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+            forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+            price_id = PRICE_LIST.get('CRYPTO', '')
+            if broker_type in forex_broker_types:
+                broker = ForexBrokerAccount.objects.get(subscription_id=account_subscription_id)
+                price_id = PRICE_LIST.get('FOREX', '')
+            else:
+                broker = CryptoBrokerAccount.objects.get(subscription_id=account_subscription_id)
+                price_id = PRICE_LIST.get('CRYPTO', '')
+
+            metadata = {
+                "profile_user_id": str(profile_user.id), 
+                "broker_type": broker_type,
+            }
+            
+            subscription = stripe.Subscription.create(
+                customer=customer_id,
+                items=[{
+                    'price': price_id,
+                }],
+                default_payment_method=new_payment_method,
+                payment_behavior="error_if_incomplete",
+                trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+                metadata=metadata
+            )
+            account_subscription_id = subscription.id
+            broker.subscription_id = account_subscription_id
+            broker.save()
+
+        else:
+            # Update the default payment method for the subscription
+            stripe.Subscription.modify(
+                account_subscription_id,
+                default_payment_method=new_payment_method,
+            )
 
         context = account_subscription_context(broker_type, pk, account_subscription_id)
 
@@ -369,7 +414,7 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
         
-        return retarget(response, f'#edit-{pk}_{broker_type}-sub-errors') 
+        return retarget(response, f'#add-{broker_type}-account_subscription_pm{pk}-form-errors') 
     
 # TODO: Send Email when account is turned off
 def account_subscription_failed(email ,broker_type, subscription_id, send_mail=True):
