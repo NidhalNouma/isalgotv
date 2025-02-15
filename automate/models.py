@@ -136,10 +136,10 @@ class TradeDetails(models.Model):
 
     ]
 
-    custom_id = models.CharField(max_length=20)
-    order_id = models.CharField(max_length=20)
+    custom_id = models.CharField(max_length=30)
+    order_id = models.CharField(max_length=30)
 
-    symbol = models.CharField(max_length=12)
+    symbol = models.CharField(max_length=30)
     volume = models.DecimalField(decimal_places=10, max_digits=30, default=0)
     remaining_volume = models.DecimalField(decimal_places=10, max_digits=30, default=0)
 

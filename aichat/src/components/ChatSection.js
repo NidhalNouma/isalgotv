@@ -1,22 +1,40 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import EmptyState from "./EmptyState";
 import ChatState from "./ChatState";
 
+import { useUser } from "../contexts/UserContext";
 import { useChat } from "../contexts/ChatsContext";
+import { useChatHook } from "../hooks/useChat";
 
 function ChatSection() {
+  const { user } = useUser();
   const {
     chats,
-    setChats,
+    messages,
+
     currentChat,
     setCurrentChat,
-    createNewChat,
-    deleteChat,
-    createNewChatMessage,
+
+    displayChats,
+    setDisplayChats,
+    dislayedMessages,
+    setDisplayedMessages,
+
+    createFBChat,
+    sendFBMessage,
+    getChatsByUser,
+
+    isTyping,
+    setIsTyping,
   } = useChat();
 
-  const [isTyping, setIsTyping] = useState(false);
+  const getCurrentChat = () => chats.find((chat) => chat.id === currentChat);
+  const currentChatData = getCurrentChat();
+
+  const { sendMessage, loading, error } = useChatHook();
+
+  // const [loading, setLoading] = useState(false);
   const [currentTypingMessage, setCurrentTypingMessage] = useState(null);
 
   const handleSendMessage = (content, files) => {
@@ -28,70 +46,76 @@ function ChatSection() {
     }
 
     if (!currentChat) {
-      createNewChatMessage(messageContent);
-    } else {
       const newMessage = {
-        id: chats.length,
+        id: "0",
         role: "user",
-        content: messageContent,
+        question: messageContent,
       };
 
-      setChats((prev) =>
-        prev.map((chat) => {
-          if (chat.id === currentChat) {
-            return {
-              ...chat,
-              messages: [...chat.messages, newMessage],
-            };
-          }
-          return chat;
-        })
-      );
+      setDisplayedMessages((prev) => [...prev, newMessage]);
+
+      let title  = messageContent.slice(0, 30) + "..."
+      const newChat = {
+        id: chats.length + "-chat",
+        title,
+      };
+
+      setCurrentChat(newChat.id);
+      simulateResponse(messageContent, title);
+    } else {
+      const newMessage = {
+        id: chats.length + 1,
+        role: "user",
+        question: messageContent,
+      };
+
+      setDisplayedMessages((prev) => [...prev, newMessage]);
+      simulateResponse(messageContent);
     }
 
-    simulateResponse(messageContent);
   };
 
-  const simulateResponse = async (userMessage) => {
+  const simulateResponse = async (userMessage, title) => {
     setIsTyping(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const newMessage = await sendMessage(userMessage, messages || [])
+    // await new Promise((resolve) => setTimeout(resolve, 3000));    
 
-    const response = `IsalGo AI is a powerful AI tool that will be available soon.`;
-
-    const newMessage = {
-      id: chats.length,
-      role: "assistant",
-      content: response,
-    };
-
+    // const newMessage = " await sendMessage(userMessage, messages || [])"
     setCurrentTypingMessage(newMessage);
+
+    if (title) {
+      let chatId = await createFBChat(user?.id, title, userMessage, newMessage)
+      await getChatsByUser(user?.id)
+      setCurrentChat(chatId);
+    } else sendFBMessage(currentChat, userMessage, newMessage)
   };
 
-  const handleTypingComplete = () => {
+  const handleTypingComplete = async () => {
     if (currentTypingMessage) {
-      setChats((prev) =>
+      const newAnswer = {
+        id: displayChats.length,
+        answer: currentTypingMessage,
+      }
+
+      setDisplayChats((prev) =>
         prev.map((chat) => {
           if (chat.id === currentChat) {
             return {
               ...chat,
-              title:
-                chat.messages[chat.messages.length - 1].content.slice(0, 30) +
-                "...",
-              messages: [...chat.messages, currentTypingMessage],
+              // messages: [...chat.messages, currentTypingMessage],
             };
           }
           return chat;
         })
       );
+
+      setDisplayedMessages((prev) => [...prev, newAnswer]);
+
       setCurrentTypingMessage(null);
       setIsTyping(false);
     }
   };
-
-  const getCurrentChat = () => chats.find((chat) => chat.id === currentChat);
-
-  const currentChatData = getCurrentChat();
 
   return (
     <Fragment>
@@ -99,9 +123,10 @@ function ChatSection() {
         <EmptyState onSendMessage={handleSendMessage} />
       ) : (
         <ChatState
-          messages={currentChatData?.messages || []}
+          messages={dislayedMessages || []}
           typingMessage={currentTypingMessage}
           isTyping={isTyping}
+          loading={loading}
           onSendMessage={handleSendMessage}
           onTypingComplete={handleTypingComplete}
         />

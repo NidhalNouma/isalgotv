@@ -2460,6 +2460,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   display: inline;
 }
 
+.\!inline {
+  display: inline !important;
+}
+
 .\!flex {
   display: flex !important;
 }
@@ -3164,6 +3168,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   animation: spin 1s linear infinite;
 }
 
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 .cursor-default {
   cursor: default;
 }
@@ -3190,6 +3204,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .list-none {
   list-style-type: none;
+}
+
+.list-decimal {
+  list-style-type: decimal;
 }
 
 .grid-cols-1 {
@@ -3542,6 +3560,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-top-width: 1px;
 }
 
+.border-l-4 {
+  border-left-width: 4px;
+}
+
 .border-none {
   border-style: none;
 }
@@ -3674,6 +3696,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-yellow-600 {
   --tw-border-opacity: 1;
   border-color: rgb(159 88 10 / var(--tw-border-opacity));
+}
+
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(63 131 248 / var(--tw-border-opacity));
 }
 
 .\!bg-background {
@@ -3897,6 +3924,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .bg-yellow-800\/10 {
   background-color: rgb(114 59 19 / 0.1);
+}
+
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -4504,6 +4536,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   padding-top: 0.05rem;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -4638,6 +4674,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .capitalize {
   text-transform: capitalize;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .leading-6 {
@@ -4884,6 +4924,16 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: rgb(159 88 10 / var(--tw-text-opacity));
 }
 
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -5029,6 +5079,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .brightness-75 {
   --tw-brightness: brightness(.75);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.invert {
+  --tw-invert: invert(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -5518,6 +5573,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   a-z-a--z: \-;
 }
 
+.\[-\:\=\] {
+  -: =;
+}
+
 .hideMe {
   animation: cssAnimation 6s forwards;
 }
@@ -5619,6 +5678,14 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance:textfield;
   /* Firefox */
+}
+
+.placeholder\:text-text\/40::-moz-placeholder {
+  color: hsl(var(--color-text) / 0.4);
+}
+
+.placeholder\:text-text\/40::placeholder {
+  color: hsl(var(--color-text) / 0.4);
 }
 
 .before\:\!bg-none::before {

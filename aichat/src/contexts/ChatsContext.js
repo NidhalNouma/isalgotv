@@ -1,10 +1,44 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
+import { useUser } from "./UserContext";
+import { useFirebaseChat } from "../hooks/useFirebaseChat";
+
+
 const ChatsContext = createContext();
 
 export const ChatsProvider = ({ children }) => {
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  const { user } = useUser();
+
+  const { chats, messages, getChatsByUser, getMessagesByChat, sendMessage: sendFBMessage, createChat: createFBChat, deleteChat: deleteFBChat, loading } = useFirebaseChat();
+
+
+  const [dislayedMessages, setDisplayedMessages] = useState(messages);
+
+  useEffect(() => {
+    setDisplayedMessages(messages);
+  }, [messages]);
+
+  const [displayChats, setDisplayChats] = useState(chats);
+  useEffect(() => {
+    setDisplayChats(chats);
+  }, [chats]);
+  
+
+  useEffect(() => {
+    if(user)
+       getChatsByUser(user.id);
+  }, [user]);
+
+  async function deleteChat(chatId) {
+    if (!chatId || !user) return;
+    await deleteFBChat(chatId);
+    await getChatsByUser(user.id); 
+
+    setCurrentChat(null);
+  }
+
 
   const createNewChat = () => {
     // if (currentChat) {
@@ -12,6 +46,7 @@ export const ChatsProvider = ({ children }) => {
     //   if (c && c.messages?.length === 0) return;
     // }
     setCurrentChat(null);
+    setDisplayedMessages([]);
     // const newChat = {
     //   id: chats.length + "-chat",
     //   title: "New chat",
@@ -21,57 +56,38 @@ export const ChatsProvider = ({ children }) => {
     // setCurrentChat(newChat.id);
   };
 
-  const createNewChatMessage = (messageContent) => {
-    if (currentChat) {
-      const c = chats.find((c) => c.id === currentChat);
-      if (c && c.messages?.length === 0) return;
-    }
-
-    const newMessage = {
-      id: "0",
-      role: "user",
-      content: messageContent,
-    };
-    const newChat = {
-      id: chats.length + "-chat",
-      title: "New chat",
-      messages: [newMessage],
-    };
-
-    setChats((prev) => [...prev, newChat]);
-    setCurrentChat(newChat.id);
-  };
-
-  const deleteChat = (id) => {
-    setChats((prev) => prev.filter((chat) => chat.id !== id));
-    if (currentChat === id) {
-      setCurrentChat(chats[0]?.id || null);
-    }
-  };
-
-  const selectChat = (id) => {
+  const selectChat = async (id) => {
     if (currentChat !== id) {
       setCurrentChat(id);
+      await getMessagesByChat(id);
     }
   };
 
-  //   useEffect(() => {
-  //     if (chats.length === 0) {
-  //       createNewChat();
-  //     }
-  //   }, [chats.length]);
+
+  const [isTyping, setIsTyping] = useState(false);
 
   return (
     <ChatsContext.Provider
       value={{
         chats,
-        setChats,
+        messages,
         currentChat,
         setCurrentChat,
         createNewChat,
-        createNewChatMessage,
         selectChat,
         deleteChat,
+        displayChats,
+        setDisplayChats,
+        dislayedMessages,
+        setDisplayedMessages,
+        createContext,
+
+        createFBChat,
+        sendFBMessage,
+        getChatsByUser,
+
+        isTyping,
+        setIsTyping,
       }}
     >
       {children}

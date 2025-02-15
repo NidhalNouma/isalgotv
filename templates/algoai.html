@@ -34,12 +34,14 @@
         user-is-lifetime="{{user_profile.is_lifetime}}"
         user-has-subscription="{{has_subscription}}"
         user-subscription-plan="{{subscription_plan}}"
+        ai-key={{ai_key}}
+        db-key={{db_key}}
       ></div>
 
       {% if IS_PRODUCTION %}
       <script src="{% static 'js/aichatReact.js' %}" defer></script>
       {% else %}
-      <script src="http://localhost:3001/static/js/bundle.js"></script>
+      <script src="http://localhost:3000/static/js/bundle.js"></script>
       {% endif %}
 
       <script>

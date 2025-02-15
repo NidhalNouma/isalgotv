@@ -82,6 +82,8 @@ jobs:
           --build-arg AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" \
           --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
           --build-arg DISCORD_BOT_ACCESS_TOKEN="${{ secrets.DISCORD_BOT_ACCESS_TOKEN }}" \
+          --build-arg AI_KEY="${{ secrets.AI_KEY }}" \
+          --build-arg FIREBASE_KEY="${{ secrets.FIREBASE_KEY }}" \
           --build-arg REDIS_ENDPOINT="${{ secrets.REDIS_ENDPOINT }}" \
           --build-arg COUPON_CODE="${{ secrets.COUPON_CODE }}" \
           --build-arg COUPON_OFF="${{ secrets.COUPON_OFF }}" \

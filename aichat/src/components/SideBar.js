@@ -4,13 +4,13 @@ import { MessageSquare, X, Search } from "lucide-react";
 import { useChat } from "../contexts/ChatsContext";
 
 function SideBar({ onClose }) {
-  const { chats, currentChat, createNewChat, deleteChat, selectChat } =
+  const { chats, currentChat, deleteChat, selectChat } =
     useChat();
 
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredChats = chats.filter((chat) =>
-    chat.title.toLowerCase().includes(searchQuery.toLowerCase())
+    chat.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -38,18 +38,18 @@ function SideBar({ onClose }) {
       <div className="flex-1 overflow-y-auto">
         {filteredChats?.map((chat) => (
           <div
+            onClick={() => selectChat(chat.id)}
             key={chat.id}
             className={`group flex items-center gap-3 px-3 py-3 mx-2 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
               chat.id === currentChat ? "bg-text/10" : ""
             }`}
           >
-            <button
-              onClick={() => selectChat(chat.id)}
+            <h3
               className="flex items-center gap-3 text-text/80 flex-1 min-w-0"
             >
               <MessageSquare className="w-4 h-4 flex-shrink-0" />
               <span className="truncate text-sm">{chat.title}</span>
-            </button>
+            </h3>
             <button
               onClick={(e) => {
                 e.stopPropagation();

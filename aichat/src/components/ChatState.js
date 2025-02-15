@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 
@@ -6,6 +6,7 @@ export default function ChatState({
   messages,
   typingMessage,
   isTyping,
+  loading,
   onSendMessage,
   onTypingComplete,
 }) {
@@ -25,12 +26,23 @@ export default function ChatState({
         className="flex-1 overflow-y-auto scrollbar-hide scroll-smooth"
       >
         {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} />
+          <Fragment key={message.id}>
+            { message.question && <ChatMessage message={message.question} isUser={true} /> }
+            { message.answer && <ChatMessage message={message.answer} isUser={false} /> }
+          </Fragment>
         ))}
+        {loading && (
+          <ChatMessage
+              key="loading"
+              isUser={false}
+              loading={loading}
+            />
+         )} 
         {typingMessage && (
           <ChatMessage
+            isUser={false}
             message={typingMessage}
-            isTyping={true}
+            isTyping={isTyping}
             onComplete={onTypingComplete}
           />
         )}

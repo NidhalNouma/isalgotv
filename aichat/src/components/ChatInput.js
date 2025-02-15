@@ -77,7 +77,7 @@ export default function ChatInput({
                 placeholder="Message IsalGo AI..."
                 disabled={disabled}
                 rows={1}
-                className="flex-1 text-text p-4 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
+                className="flex-1 text-text placeholder:text-text/40 p-4 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}
               />
               <div className="flex items-center self-start p-2 mt-auto">

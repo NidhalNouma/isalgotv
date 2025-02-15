@@ -7,7 +7,7 @@ import { PanelLeft, X, MessageSquarePlus, LogOut } from "lucide-react";
 function Navbar({ className, onMenuClick, onMenuHover }) {
   const { user } = useUser();
 
-  const { createNewChat } = useChat();
+  const { createNewChat, isTyping } = useChat();
 
   let isSidebarOpen = false;
   return (
@@ -22,6 +22,7 @@ function Navbar({ className, onMenuClick, onMenuHover }) {
           {user && (
             <Fragment>
               <button
+                disabled={isTyping}
                 onClick={onMenuClick}
                 onMouseEnter={onMenuHover}
                 className="p-2 btn-icon rounded-md transition-colors"
@@ -34,6 +35,7 @@ function Navbar({ className, onMenuClick, onMenuHover }) {
                 )}
               </button>
               <button
+                disabled={isTyping}
                 onClick={createNewChat}
                 className="p-2 btn-icon rounded-md transition-colors"
                 aria-label="New Chat"
