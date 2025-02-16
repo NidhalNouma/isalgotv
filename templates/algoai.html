@@ -28,14 +28,14 @@
       <div
         class="h-full w-full max-h-full my-auto bg-background rounded-xl relative flex flex-col overflow-hidden"
         id="isalgo-ai"
-        user-email="{{user_profile}}"
-        user-id="{{user_profile.id}}"
-        user-tv-username="{{user_profile.tradingview_username}}"
-        user-is-lifetime="{{user_profile.is_lifetime}}"
-        user-has-subscription="{{has_subscription}}"
-        user-subscription-plan="{{subscription_plan}}"
-        ai-key={{ai_key}}
-        db-key={{db_key}}
+        user-email="{{ user_profile }}"
+        user-id="{{ user_profile.id }}"
+        user-tv-username="{{ user_profile.tradingview_username }}"
+        user-is-lifetime="{{ user_profile.is_lifetime }}"
+        user-has-subscription="{{ has_subscription }}"
+        user-subscription-plan="{{ subscription_plan }}"
+        ai-key="{{ ai_key }}"
+        db-key="{{ db_key }}"
       ></div>
 
       {% if IS_PRODUCTION %}

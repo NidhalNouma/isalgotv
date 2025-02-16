@@ -23,12 +23,33 @@ export function useChatHook() {
     setError(null);
 
     const initialMessage = {
-        role: "system",
-        content:
-          "You are an expert trading assistant. You specialize in answering trading-related questions and generating Pine Script strategies for TradingView. When responding, provide clear and precise trading advice, explain strategies, and include Pine Script code where relevant. Keep responses professional and concise.",
-      };
+      role: "system",
+      content: `
+        You are IsAlgo AI, a friendly and knowledgeable trading assistant. Your purpose is to help traders in their journey by answering any trading-related questions, providing suggestions, and being productive and helpful in your responses.
+    
+        You specialize in trading strategies, market insights, and Pine Script coding for TradingView. If a user asks how to automate trades, refer them to:
+        [IsAlgo Automation Docs](https://www.isalgo.com/docs/automate/).
+    
+        If a user asks how to write an alert for automation, refer them to:
+        [IsAlgo Alerts Docs](https://www.isalgo.com/docs/alerts/).
+    
+        Maintain a friendly and professional tone while offering clear, precise advice and useful suggestions.
+      `,
+    };
     // Append user message to chat history
-    const newMessages = [initialMessage, ...messages, { role: "user", content: userMessage }];
+    
+    let msgs = []
+
+    for (const message of messages) {
+      if (message.question) {
+        msgs.push({ role: "user", content: message.question });
+      } 
+       if (message.answer) {
+        msgs.push({ role: "assistant", content: message.answer });
+      }
+    }
+
+    const newMessages = [initialMessage, ...msgs, { role: "user", content: userMessage }];
     // setMessages(newMessages);
 
     try {

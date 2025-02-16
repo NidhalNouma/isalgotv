@@ -42,7 +42,7 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
           )}
         </div>
         {!isUser && isTyping ? (
-          <div className=" max-w-none text-text flex-1 p-1">
+          <div className=" max-w-full text-text flex-1 p-1">
             <TypewriterEffect
               content={message}
               onComplete={onComplete}
@@ -52,14 +52,18 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
           <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text flex-1 ">
             {message}
           </div>
-        ) : (
-          <div className=" max-w-none text-text flex-1 p-1">
+        ) : !loading && (
+          <div className=" max-w-full text-text flex-1 p-1">
             <AiResponseMarkdown message={message} />
           </div>
         )}
         {
           loading && (
-            <div className="w-full h-8 rounded-full bg-text/20 animate-pulse"></div>
+            <div className="w-full">
+              <div className="w-full h-8 rounded-lg bg-text/20 animate-pulse"></div>
+              {/* <div className="w-full h-8 rounded-lg bg-text/20 animate-pulse mt-2"></div> */}
+              <div className="w-3/5 h-8 rounded-lg bg-text/20 animate-pulse mt-2"></div>
+            </div>
           )
         }
       </div>

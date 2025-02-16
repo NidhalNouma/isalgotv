@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import AiResponseMarkdown from "./AiResponseMarkdown";
 
 export default function TypewriterEffect({ content, onComplete }) {
   const [displayedContent, setDisplayedContent] = useState("");
@@ -28,5 +29,7 @@ export default function TypewriterEffect({ content, onComplete }) {
     }
   }, [content, currentIndex, onComplete]);
 
-  return <div ref={containerRef}>{displayedContent}</div>;
+  return <div ref={containerRef}>
+    <AiResponseMarkdown message={displayedContent} />
+  </div>;
 }

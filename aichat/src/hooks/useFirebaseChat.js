@@ -48,7 +48,7 @@ export function useFirebaseChat() {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(chatsList)
+    //   console.log(chatsList)
       setChats(chatsList);
       return chatsList;
     } catch (err) {
