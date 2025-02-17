@@ -6,7 +6,7 @@ import TypewriterEffect from "./TypewriterEffect";
 export default function ChatMessage({ message, isUser, isTyping, loading, onComplete }) {
   return (
     <div className={`py-4 `}>
-      <div className="max-w-3xl mx-auto flex gap-2 px-4">
+      <div className="max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5">
         <div className="w-8 h-8 flex-shrink-0">
           {isUser ? (
             <Fragment></Fragment>
@@ -42,7 +42,7 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
           )}
         </div>
         {!isUser && isTyping ? (
-          <div className=" max-w-full text-text flex-1 p-1">
+          <div className="max-w-full text-text flex-shrink p-1 overflow-hidden">
             <TypewriterEffect
               content={message}
               onComplete={onComplete}
@@ -53,7 +53,7 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
             {message}
           </div>
         ) : !loading && (
-          <div className=" max-w-full text-text flex-1 p-1">
+          <div className="max-w-full text-text flex-shrink p-1 overflow-hidden">
             <AiResponseMarkdown message={message} />
           </div>
         )}

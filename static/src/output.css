@@ -2016,6 +2016,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   grid-column: 1 / -1;
 }
 
+.float-right {
+  float: right;
+}
+
 .float-left {
   float: left;
 }
@@ -2944,6 +2948,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-width: 20rem;
 }
 
+.max-w-\[85\%\] {
+  max-width: 85%;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -3432,6 +3440,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   align-self: flex-end;
 }
 
+.self-center {
+  align-self: center;
+}
+
 .self-stretch {
   align-self: stretch;
 }
@@ -3454,6 +3466,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .overflow-x-clip {
   overflow-x: clip;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
 
 .overflow-y-scroll {
@@ -3751,6 +3767,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-gray-700 {
   --tw-border-opacity: 1;
   border-color: rgb(55 65 81 / var(--tw-border-opacity));
+}
+
+.border-error {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--color-loss) / var(--tw-border-opacity));
 }
 
 .\!bg-background {
@@ -6470,6 +6491,11 @@ input[type=number] {
     padding-bottom: 0.5rem;
   }
 
+  .sm\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   .sm\:text-5xl {
     font-size: 3rem;
     line-height: 1;
@@ -6527,6 +6553,11 @@ input[type=number] {
   .md\:my-16 {
     margin-top: 4rem;
     margin-bottom: 4rem;
+  }
+
+  .md\:mx-2 {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 
   .md\:ml-0 {

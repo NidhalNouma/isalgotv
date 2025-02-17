@@ -1,69 +1,49 @@
 import { useState } from "react";
-import OpenAI from "openai";
 
-// Store API Key in environment variables for security
-const openai = new OpenAI({
-  apiKey: document.getElementById("isalgo-ai").getAttribute("ai-key"),
-  dangerouslyAllowBrowser: true, // Required for client-side use
-});
-document.getElementById("isalgo-ai").removeAttribute("ai-key");
+const csrf_token = document.getElementById("isalgo-ai").getAttribute("csrf-token");
 
 export function useChatHook() {
-//   const [messages, setMessages] = useState([]); // Includes system message
-
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [limit, setLimit] = useState(false);
 
   const sendMessage = async (userMessage, messages) => {
-    if (!userMessage.trim()) return;
-
+    console.log(userMessage)
+    if (!userMessage) return;
+    if (!userMessage?.trim()) return;
 
     setLoading(true);
     setError(null);
-
-    const initialMessage = {
-      role: "system",
-      content: `
-        You are IsAlgo AI, a friendly and knowledgeable trading assistant. Your purpose is to help traders in their journey by answering any trading-related questions, providing suggestions, and being productive and helpful in your responses.
-    
-        You specialize in trading strategies, market insights, and Pine Script coding for TradingView. If a user asks how to automate trades, refer them to:
-        [IsAlgo Automation Docs](https://www.isalgo.com/docs/automate/).
-    
-        If a user asks how to write an alert for automation, refer them to:
-        [IsAlgo Alerts Docs](https://www.isalgo.com/docs/alerts/).
-    
-        Maintain a friendly and professional tone while offering clear, precise advice and useful suggestions.
-      `,
-    };
-    // Append user message to chat history
-    
-    let msgs = []
-
-    for (const message of messages) {
-      if (message.question) {
-        msgs.push({ role: "user", content: message.question });
-      } 
-       if (message.answer) {
-        msgs.push({ role: "assistant", content: message.answer });
-      }
-    }
-
-    const newMessages = [initialMessage, ...msgs, { role: "user", content: userMessage }];
-    // setMessages(newMessages);
+    setLimit(false);
 
     try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-4-turbo", // Use GPT-4 for better responses
-        messages: newMessages, // Send entire conversation history, including system prompt
-        max_tokens: 500,
+      const response = await fetch("/p/ai/chat/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf_token,  // Include CSRF token here
+        },
+        credentials: "include",  // Ensure cookies are sent
+        body: JSON.stringify({ 
+          userMessage, 
+          messages,
+          csrfmiddlewaretoken: csrf_token  // Include CSRF token in the body
+        }),
       });
 
-      const aiResponse = response.choices[0].message.content;
+      console.log(response)
 
-      // Append AI response to chat history
-      //   setMessages([...newMessages, { role: "assistant", content: aiResponse }]);
-      return aiResponse;
+      if (!response.ok) {
+        throw new Error("Failed to get response");
+      }
+
+      const data = await response.json();
+
+      if(data.todat_limit_hit) {
+        setLimit(true);
+        return null;
+      }
+      return data.response;
     } catch (err) {
       console.error("Error fetching response:", err);
       setError("Failed to get response");
@@ -72,5 +52,5 @@ export function useChatHook() {
     }
   };
 
-  return {sendMessage, loading, error };
+  return { sendMessage, loading, error, limit };
 }

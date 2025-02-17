@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -15,7 +15,7 @@ function AiResponseMarkdown({ message }) {
   };
 
   return (
-    <div className="prose prose-invert max-w-none">
+    <Fragment>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -40,7 +40,7 @@ function AiResponseMarkdown({ message }) {
               <div className="relative group">
                 <button
                   onClick={() => handleCopyCode(code)}
-                  className="absolute right-2 top-2 p-2 rounded bg-background/40 transition-colors backdrop-blur-sm z-10"
+                  className="absolute right-2 top-2 p-2 rounded bg-background/40 transition-colors z-10"
                   title="Copy code"
                 >
                   {copiedCode === code ? (
@@ -131,7 +131,7 @@ function AiResponseMarkdown({ message }) {
       >
         {message}
       </ReactMarkdown>
-    </div>
+    </Fragment>
   );
 }
 

@@ -29,16 +29,19 @@ function ChatSection() {
     setIsTyping,
   } = useChat();
 
-  const getCurrentChat = () => chats.find((chat) => chat.id === currentChat);
-  const currentChatData = getCurrentChat();
+  // const getCurrentChat = () => chats.find((chat) => chat.id === currentChat);
+  // const currentChatData = getCurrentChat();
 
-  const { sendMessage, loading, error } = useChatHook();
+  const { sendMessage, loading, error, limit } = useChatHook();
 
   // const [loading, setLoading] = useState(false);
   const [currentTypingMessage, setCurrentTypingMessage] = useState(null);
 
-  const handleSendMessage = (content, files) => {
-    let messageContent = content;
+  const handleSendMessage = (messageContent, files) => {
+
+    if(error && dislayedMessages?.length > 0 && !messageContent) {
+      messageContent = dislayedMessages[dislayedMessages.length - 1].question;
+    }
 
     if (files?.length) {
       const fileNames = files.map((file) => file.name).join(", ");
@@ -80,15 +83,16 @@ function ChatSection() {
 
     const newMessage = await sendMessage(userMessage, messages || [])
     // await new Promise((resolve) => setTimeout(resolve, 3000));    
-
     // const newMessage = " await sendMessage(userMessage, messages || [])"
-    setCurrentTypingMessage(newMessage);
+    if(newMessage) {
+      setCurrentTypingMessage(newMessage);
 
-    if (title) {
-      let chatId = await createFBChat(user?.id, title, userMessage, newMessage)
-      await getChatsByUser(user?.id)
-      setCurrentChat(chatId);
-    } else sendFBMessage(currentChat, userMessage, newMessage)
+      if (title) {
+        let chatId = await createFBChat(user?.id, title, userMessage, newMessage)
+        await getChatsByUser(user?.id)
+        setCurrentChat(chatId);
+      } else sendFBMessage(currentChat, userMessage, newMessage)
+    } else setIsTyping(false);
   };
 
   const handleTypingComplete = async () => {
@@ -127,6 +131,8 @@ function ChatSection() {
           typingMessage={currentTypingMessage}
           isTyping={isTyping}
           loading={loading}
+          error={error}
+          limit={limit}
           onSendMessage={handleSendMessage}
           onTypingComplete={handleTypingComplete}
         />

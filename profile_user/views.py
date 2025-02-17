@@ -32,6 +32,13 @@ from .utils.tradingview import *
 from .utils.discord import get_discord_user_id, add_role_to_user, remove_role_from_user
 
 
+import json
+from openai import OpenAI
+
+ai_client = OpenAI(
+    api_key= env('AI_KEY'),  
+)
+
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
 stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
@@ -1055,4 +1062,69 @@ def remove_access(subscription_id, cancel_email = True):
         if cancel_email:
             access_removed_email_task(user.email)
 
-        # profile_user.deactivate_all_accounts()
+# profile_user.deactivate_all_accounts()
+
+def ai_chat_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            user_message = data.get("userMessage", "").strip()
+            messages = data.get("messages", [])
+            
+            user_profile = request.user_profile
+            if not user_profile:
+                return JsonResponse({"error": "User not found"}, status=404)
+
+            if not user_message:
+                return JsonResponse({"error": "Message cannot be empty"}, status=400)
+            
+            if user_profile.ai_tokens_used_today > 550:# and not request.has_subscription:
+                return JsonResponse({"todat_limit_hit": True})
+
+            chat_history = [
+                {"role": "system", "content": " You are IsAlgo AI, a friendly and knowledgeable trading assistant. Your purpose is to help traders in their journey by answering any trading-related questions, providing suggestions, and being productive and helpful in your responses. You specialize in trading strategies, market insights, and Pine Script coding for TradingView. If a user asks how to automate trades, refer them to: [IsAlgo Automation Docs](https://www.isalgo.com/docs/automate/). If a user asks how to write an alert for automation, refer them to: [IsAlgo Alerts Docs](https://www.isalgo.com/docs/alerts/). Maintain a friendly and professional tone while offering clear, precise advice and useful suggestions."}
+            ]
+
+            for msg in messages:
+                if "question" in msg:
+                    chat_history.append({"role": "user", "content": msg["question"]})
+                if "answer" in msg:
+                    chat_history.append({"role": "assistant", "content": msg["answer"]})
+
+            chat_history.append({"role": "user", "content": user_message})
+
+            response = ai_client.chat.completions.create(
+                model="gpt-4-turbo",
+                messages=chat_history,
+                max_tokens=500
+            )
+
+            ai_response = response.choices[0].message.content
+
+            prompt_tokens = response.usage.prompt_tokens
+            completion_tokens = response.usage.completion_tokens
+            total_tokens = response.usage.total_tokens
+
+            print(f"Prompt Tokens: {prompt_tokens}, Completion Tokens: {completion_tokens}, Total Tokens: {total_tokens}")
+
+            user_profile.reset_token_usage_if_needed()
+
+            user_profile.ai_tokens_used_today += total_tokens
+            user_profile.save()
+
+            print(f"User Profile: {user_profile.ai_tokens_used_today}")
+
+            return JsonResponse({
+                "response": ai_response,
+                "prompt_tokens": prompt_tokens,
+                "completion_tokens": completion_tokens,
+                "total_tokens": total_tokens
+            })
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+        except Exception as e:
+            print(f"Error: {e}")
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
