@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 
 export default function ChatState({
+  user,
   messages,
   typingMessage,
   isTyping,
@@ -17,6 +18,7 @@ export default function ChatState({
   useEffect(() => {
     const element = messagesRef.current;
     if (element) {
+      element.style.scrollBehavior = "auto";
       element.scrollTop = element.scrollHeight;
     }
   }, [messages, typingMessage]);
@@ -53,12 +55,21 @@ export default function ChatState({
         {limit && (
           <aside className="mx-auto md:px-2 px-0 max-w-3xl">
             <div className="text-text bg-text/10 px-4 py-2 rounded overflow-hidden">
-              <p className="text-sm inline">
-                You have reached the limit of the day, subscribe to continue using the service without limits.
-                <span className="float-right">
-                  <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">Subscribe here</a>
-                </span>
-              </p>
+              {user.hasSubscription ? 
+                <p className="text-sm inline">
+                  You have reached the limit of the day, You can buy some more tokens to continue using our AI tools.
+                  <span className="float-right">
+                    <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">Buy here</a>
+                  </span>
+                </p>
+              :
+                <p className="text-sm inline">
+                  You have reached the limit of the day, subscribe to continue using the service without limits.
+                  <span className="float-right">
+                    <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">Subscribe here</a>
+                  </span>
+                </p>
+              }
             </div>
           </aside>
         )}

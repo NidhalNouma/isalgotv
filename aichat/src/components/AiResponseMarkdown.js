@@ -50,7 +50,6 @@ function AiResponseMarkdown({ message }) {
                   )}
                 </button>
                 <div className="relative">
-                  {/* <div className="absolute inset-0 bg-gradient-to-r from-text/10 to-text/5 rounded-lg" /> */}
                   <SyntaxHighlighter
                     style={atomDark}
                     language={language}

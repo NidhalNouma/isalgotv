@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 
 import EmptyState from "./EmptyState";
 import ChatState from "./ChatState";
@@ -29,12 +29,7 @@ function ChatSection() {
     setIsTyping,
   } = useChat();
 
-  // const getCurrentChat = () => chats.find((chat) => chat.id === currentChat);
-  // const currentChatData = getCurrentChat();
-
   const { sendMessage, loading, error, limit } = useChatHook();
-
-  // const [loading, setLoading] = useState(false);
   const [currentTypingMessage, setCurrentTypingMessage] = useState(null);
 
   const handleSendMessage = (messageContent, files) => {
@@ -107,7 +102,6 @@ function ChatSection() {
           if (chat.id === currentChat) {
             return {
               ...chat,
-              // messages: [...chat.messages, currentTypingMessage],
             };
           }
           return chat;
@@ -127,6 +121,7 @@ function ChatSection() {
         <EmptyState onSendMessage={handleSendMessage} />
       ) : (
         <ChatState
+          user={user}
           messages={dislayedMessages || []}
           typingMessage={currentTypingMessage}
           isTyping={isTyping}

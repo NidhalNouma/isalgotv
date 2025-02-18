@@ -7,12 +7,10 @@ import { useFirebaseChat } from "../hooks/useFirebaseChat";
 const ChatsContext = createContext();
 
 export const ChatsProvider = ({ children }) => {
-  // const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const { user } = useUser();
 
   const { chats, messages, getChatsByUser, getMessagesByChat, sendMessage: sendFBMessage, createChat: createFBChat, deleteChat: deleteFBChat, loading } = useFirebaseChat();
-
 
   const [dislayedMessages, setDisplayedMessages] = useState(messages);
 
@@ -37,6 +35,7 @@ export const ChatsProvider = ({ children }) => {
     await getChatsByUser(user.id); 
 
     setCurrentChat(null);
+    setDisplayedMessages([]);
   }
 
 

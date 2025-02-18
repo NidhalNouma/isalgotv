@@ -1064,15 +1064,25 @@ def remove_access(subscription_id, cancel_email = True):
 
 # profile_user.deactivate_all_accounts()
 
+from asgiref.sync import sync_to_async
+
+@sync_to_async
+def update_user_tokens(user_profile, total_tokens):
+    """ Update user AI token usage safely in async context. """
+    user_profile.ai_tokens_used_today += total_tokens
+    user_profile.save()  # ORM operation inside sync_to_async
+
 async def ai_chat_view(request):
     if request.method == "POST":
         try:
-            daily_token = 550
+            daily_token = 1200
+            if request.has_subscription:
+                daily_token = 20000
             
             data = json.loads(request.body)
             user_message = data.get("userMessage", "").strip()
             messages = data.get("messages", [])
-            
+
             user_profile = request.user_profile
             if not user_profile:
                 return JsonResponse({"error": "User not found"}, status=404)
@@ -1080,7 +1090,7 @@ async def ai_chat_view(request):
             if not user_message:
                 return JsonResponse({"error": "Message cannot be empty"}, status=400)
 
-            user_profile.reset_token_usage_if_needed()
+            await sync_to_async(user_profile.reset_token_usage_if_needed)()
             if user_profile.ai_tokens_used_today > daily_token:
                 return JsonResponse({"todat_limit_hit": True})
 
@@ -1109,8 +1119,8 @@ async def ai_chat_view(request):
             completion_tokens = response.usage.completion_tokens
             total_tokens = response.usage.total_tokens
 
-            user_profile.ai_tokens_used_today += total_tokens
-            await user_profile.asave()  # Use async save method
+            # Async ORM update
+            await update_user_tokens(user_profile, total_tokens)
 
             return JsonResponse({
                 "response": ai_response,

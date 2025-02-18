@@ -20,8 +20,8 @@ export const UserProvider = ({ children }) => {
             email,
             id,
             tradingviewUsername,
-            isLifetime,
-            hasSubscription,
+            isLifetime: isLifetime === "True",
+            hasSubscription: hasSubscription === "True",
             subscriptionPlan,
           }
         : null;

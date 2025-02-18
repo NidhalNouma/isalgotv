@@ -53,16 +53,17 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
             {message}
           </div>
         ) : !loading && (
-          <div className="max-w-full text-text flex-shrink p-1 overflow-hidden">
+          <div className="max-w-full w-full text-text flex-shrink p-1 overflow-hidden">
             <AiResponseMarkdown message={message} />
           </div>
         )}
         {
           loading && (
-            <div className="w-full">
-              <div className="w-full h-8 rounded-lg bg-text/20 animate-pulse"></div>
-              {/* <div className="w-full h-8 rounded-lg bg-text/20 animate-pulse mt-2"></div> */}
-              <div className="w-3/5 h-8 rounded-lg bg-text/20 animate-pulse mt-2"></div>
+            <div className="max-w-full w-full text-text flex-shrink p-1">
+
+              <div className="w-full">
+                <div className="w-full h-7 rounded-xl animate-pulse btn-ai"></div>
+              </div>
             </div>
           )
         }
