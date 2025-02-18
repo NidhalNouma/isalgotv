@@ -33,9 +33,9 @@ from .utils.discord import get_discord_user_id, add_role_to_user, remove_role_fr
 
 
 import json
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 
-ai_client = OpenAI(
+ai_client = AsyncOpenAI(
     api_key= env('AI_KEY'),  
 )
 
@@ -1064,9 +1064,11 @@ def remove_access(subscription_id, cancel_email = True):
 
 # profile_user.deactivate_all_accounts()
 
-def ai_chat_view(request):
+async def ai_chat_view(request):
     if request.method == "POST":
         try:
+            daily_token = 550
+            
             data = json.loads(request.body)
             user_message = data.get("userMessage", "").strip()
             messages = data.get("messages", [])
@@ -1077,8 +1079,9 @@ def ai_chat_view(request):
 
             if not user_message:
                 return JsonResponse({"error": "Message cannot be empty"}, status=400)
-            
-            if user_profile.ai_tokens_used_today > 550:# and not request.has_subscription:
+
+            user_profile.reset_token_usage_if_needed()
+            if user_profile.ai_tokens_used_today > daily_token:
                 return JsonResponse({"todat_limit_hit": True})
 
             chat_history = [
@@ -1093,7 +1096,8 @@ def ai_chat_view(request):
 
             chat_history.append({"role": "user", "content": user_message})
 
-            response = ai_client.chat.completions.create(
+            # Make an asynchronous API call
+            response = await ai_client.chat.completions.create(
                 model="gpt-4-turbo",
                 messages=chat_history,
                 max_tokens=500
@@ -1105,14 +1109,8 @@ def ai_chat_view(request):
             completion_tokens = response.usage.completion_tokens
             total_tokens = response.usage.total_tokens
 
-            print(f"Prompt Tokens: {prompt_tokens}, Completion Tokens: {completion_tokens}, Total Tokens: {total_tokens}")
-
-            user_profile.reset_token_usage_if_needed()
-
             user_profile.ai_tokens_used_today += total_tokens
-            user_profile.save()
-
-            print(f"User Profile: {user_profile.ai_tokens_used_today}")
+            await user_profile.asave()  # Use async save method
 
             return JsonResponse({
                 "response": ai_response,

@@ -49,15 +49,35 @@
 
       <button class="btn-ai mr-2 md:mr-4 " onclick="openModel('modal-algoai')" >  
         <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">IsalGo AI
-          <span class="ml-0.5 text-text dark:text-background opacity-60 text-sm font-normal inline-flex items-center">
-            {% if request.is_mac %}
-            <svg class="h-3 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-command"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></svg> K
-            {% elif request.is_windows %}
-            <svg class="h-3 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up"><path d="m18 15-6-6-6 6"/></svg> K
-            {% endif %}
-          </span> 
+          <span id="ai-os-icon" class="hidden ml-0.5 text-text dark:text-background opacity-60 text-sm font-normal items-center">
+            <svg id="mac-icon" class="h-3 aspect-square hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>
+            </svg>
+            <svg id="windows-icon" class="h-3 aspect-square hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m18 15-6-6-6 6"/>
+            </svg> K
+          </span>
         </span>
       </button>
+      
+      <script type="text/javascript">
+        {% comment %} document.addEventListener("DOMContentLoaded", function () { {% endcomment %}
+          var spanIcon = document.getElementById("ai-os-icon");
+          var macIcon = document.getElementById("mac-icon");
+          var windowsIcon = document.getElementById("windows-icon");
+      
+          if (navigator.userAgent.indexOf("Mac") !== -1) {
+            macIcon.classList.remove("hidden");
+            spanIcon.classList.remove("hidden");
+            spanIcon.classList.add("inline-flex");
+          } else if (navigator.userAgent.indexOf("Windows") !== -1)  {
+            windowsIcon.classList.remove("hidden");
+            spanIcon.classList.remove("hidden");
+            spanIcon.classList.add("inline-flex");
+          }
+        {% comment %} }); {% endcomment %}
+      </script>
+      
       <button
         type="button"
         class="flex mr-2 ml-1  text-sm rounded-full md:mr-0 md:ml-0 focus:ring-4 focus:ring-text/40"

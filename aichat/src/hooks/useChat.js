@@ -8,8 +8,6 @@ export function useChatHook() {
   const [limit, setLimit] = useState(false);
 
   const sendMessage = async (userMessage, messages) => {
-    console.log(userMessage)
-    if (!userMessage) return;
     if (!userMessage?.trim()) return;
 
     setLoading(true);

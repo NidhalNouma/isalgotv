@@ -50,8 +50,30 @@ export default function ChatState({
         )}
       </div>
       <div className="">
-        {limit && <aside className="mx-auto md:px-2 px-0 max-w-3xl"><div className="text-text bg-text/10 px-4 py-2 rounded flex items-end justify-between"><p className="text-sm inline">You have reached the limit of the day, subscribe to continue using the service without limits.</p><a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap" href="/p/membership/">Subscribe here</a></div></aside>}
-        {error && <aside className="mx-auto md:px-2 px-0 max-w-3xl"><div className="text-error bg-error/10 px-4 py-2 rounded "><p className="text-sm inline">{error}</p><button className="float-right text-xs border border-error py-0.5 px-2 rounded" onClick={() => onSendMessage()}>Retry</button></div></aside>}
+        {limit && (
+          <aside className="mx-auto md:px-2 px-0 max-w-3xl">
+            <div className="text-text bg-text/10 px-4 py-2 rounded overflow-hidden">
+              <p className="text-sm inline">
+                You have reached the limit of the day, subscribe to continue using the service without limits.
+                <span className="float-right">
+                  <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">Subscribe here</a>
+                </span>
+              </p>
+            </div>
+          </aside>
+        )}
+        {error && (
+          <aside className="mx-auto md:px-2 px-0 max-w-3xl">
+            <div className="text-error bg-error/10 px-4 py-2 rounded overflow-hidden">
+              <p className="text-sm inline">
+                {error}
+                <span className="float-right">
+                  <button className="text-xs border border-error/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() => onSendMessage()}>Retry</button>
+                </span>
+              </p>
+            </div>
+          </aside>
+        )}
         <ChatInput onSend={onSendMessage} disabled={isTyping} />
       </div>
     </div>

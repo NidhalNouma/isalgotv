@@ -2428,6 +2428,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-left: 1.5rem;
 }
 
+.ms-4 {
+  -webkit-margin-start: 1rem;
+          margin-inline-start: 1rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -3772,6 +3777,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .border-error {
   --tw-border-opacity: 1;
   border-color: hsl(var(--color-loss) / var(--tw-border-opacity));
+}
+
+.border-error\/60 {
+  border-color: hsl(var(--color-loss) / 0.6);
 }
 
 .\!bg-background {
