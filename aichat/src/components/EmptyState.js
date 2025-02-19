@@ -19,7 +19,7 @@ export default function EmptyState({ onSendMessage }) {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center md:px-4 px-1 h-full">
-      <h1 className="text-4xl font-semibold mb-8 text-title ">
+      <h1 className="text-4xl font-semibold mb-8 text-title text-center">
         {/* What can I help with? */}
         <Typewriter
           onInit={(typewriter) => {

@@ -33,12 +33,6 @@ from .utils.discord import get_discord_user_id, add_role_to_user, remove_role_fr
 
 
 import json
-from openai import OpenAI, AsyncOpenAI
-
-ai_client = AsyncOpenAI(
-    api_key= env('AI_KEY'),  
-)
-
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
 stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
@@ -1065,6 +1059,12 @@ def remove_access(subscription_id, cancel_email = True):
 # profile_user.deactivate_all_accounts()
 
 from asgiref.sync import sync_to_async
+from openai import OpenAI, AsyncOpenAI
+
+ai_client = AsyncOpenAI(
+    api_key= env('AI_KEY'),  
+)
+
 
 @sync_to_async
 def update_user_tokens(user_profile, total_tokens):
