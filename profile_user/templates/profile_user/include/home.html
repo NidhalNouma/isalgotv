@@ -9,7 +9,7 @@
             <a href="{% url 'strategies' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
             </h6>
 
-            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6">
             {% for strategy in new_strategies %}
 
             <a href="{% url 'strategy' slug=strategy.slug %}" class="">
@@ -72,7 +72,7 @@
             <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
             </h6>
 
-            <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+            <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
             {% for result in new_results %}
                 <div class="">
                     {% include "include/quick_result.html" with result=result %}
@@ -88,7 +88,7 @@
             <a href="{% url 'strategies' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
             </h6>
 
-            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6">
             {% for strategy in most_viewed_strategies %}
 
             <a href="{% url 'strategy' slug=strategy.slug %}" class="">
@@ -126,7 +126,7 @@
             <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
             </h6>
 
-            <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+            <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
             {% for result in best_results %}
                 <div class="">
                     {% include "include/quick_result.html" with result=result %}

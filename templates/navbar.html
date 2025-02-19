@@ -2,10 +2,11 @@
 
 <nav
   id="nav-bar"
-  class="bg-background backdrop-brightness-150 sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2"
+  class=" sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2"
 >
+  <div class="absolute top-0 bottom-0 w-full scale-x-150  bg-background -z-10"></div>
   <div
-    class="flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2"
+    class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2"
   >
     <div class="flex ">
       <a href="/" class="flex items-center">
@@ -44,8 +45,8 @@
         <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">IsalGo AI</span>
       </button> -->
     </div>
-    {% if user.is_authenticated %}
     <div class="flex items-center md:order-2">
+      {% if user.is_authenticated %}
 
       <button class="btn-ai before:hover:scale-105 mr-2 md:mr-4 " onclick="openModel('modal-algoai')" >  
         <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">IsalGo AI
@@ -245,32 +246,8 @@
           </li>
         </ul>
       </div>
-      <button
-        data-collapse-toggle="mobile-menu-2"
-        type="button"
-        class="inline-flex items-center p-y2 ml-1 text-sm text-text rounded-lg lg:hidden ocus:outline-none transition-all"
-        aria-controls="mobile-menu-2"
-        aria-expanded="false"
-      >
-        <span class="sr-only">Open main menu</span>
-        <svg
-          class="w-6 h-6"
-          aria-hidden="true"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </button>
-    </div>
-    {% else %}
-    <div class="flex md:order-2">
-      <button class="btn-ai mr-2 md:mr-4 " onclick="openModel('modal-algoai')" >  
+      {% else %}
+      <button class="btn-ai mr-2 lg:mr-4 " onclick="openModel('modal-algoai')" >  
         <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">IsalGo AI
 
         </span> 
@@ -278,7 +255,7 @@
       <a
         type="button"
         href="{% url 'login' %}"
-        class="btn-secondary mr-2 md:mr-0"
+        class="btn-secondary mr-2 lg:mr-0"
         >Sign In
         <svg
           stroke="currentColor"
@@ -294,7 +271,10 @@
           ></path>
         </svg>
       </a>
+
+      {% endif %}
       <button
+        id="menu-toggle-mobile"
         data-collapse-toggle="mobile-menu-2"
         type="button"
         class="inline-flex items-center py-2 text-sm text-text rounded-lg lg:hidden transition-all"
@@ -303,7 +283,8 @@
       >
         <span class="sr-only">Open main menu</span>
         <svg
-          class="w-6 h-6"
+          id="menu-icon"
+          class="w-6 h-6 transition-transform duration-300"
           aria-hidden="true"
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -315,16 +296,31 @@
             clip-rule="evenodd"
           ></path>
         </svg>
+      
+        <!-- Hidden Close (X) Icon -->
+        <svg
+          id="close-icon"
+          class="w-6 h-6 hidden transition-transform duration-300"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
       </button>
     </div>
-    {% endif %}
 
     <div
-      class="items-center justify-between hidden w-full lg:flex md:w-auto md:order-1"
+      class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
       id="mobile-menu-2"
     >
       <ul
-        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-title/10 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0"
+        class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-title/10 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0"
       >
         <li>
           <a
@@ -425,3 +421,28 @@
   </div>
 </div>
 {% endwith %} {% endif %} {% endcomment %}
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle-mobile");
+    const menuIcon = document.getElementById("menu-icon");
+    const closeIcon = document.getElementById("close-icon");
+    const menu = document.getElementById("mobile-menu-2");
+    
+    menuToggle.addEventListener("click", function () {
+      const isMenuOpen = menu.classList.contains("hidden");
+  
+      // Toggle visibility of icons with animation
+      if (isMenuOpen) {
+        menuIcon.classList.add("hidden");
+        closeIcon.classList.remove("hidden");
+      } else {
+        closeIcon.classList.add("hidden");
+        menuIcon.classList.remove("hidden");
+      }
+  
+      // Toggle menu visibility
+      menu.classList.toggle("hidden");
+    });
+  });
+</script>

@@ -65,12 +65,12 @@
   }
   
   .btn-ai {
-    @apply relative text-primary tracking-wide bg-background/60 backdrop-blur-md border-0 border-primary/70 font-semibold text-sm px-5 py-1.5 text-center inline-flex  justify-center items-center transition-all 
+    @apply relative text-primary tracking-wide bg-transparent backdrop-blur-md border-0 border-primary/70 font-semibold text-sm px-5 py-1.5 text-center inline-flex  justify-center items-center transition-all 
   }
 
   .btn-ai::before {
     content: "";
-    @apply animate-rotateGradientFast bg-[length:200%_200%] hover:bg-[length:100%_100%] absolute inset-0 bg-gradient-to-br from-text-light to-primary blur-[8px] -z-10 rounded-xl scale-100 transition-all duration-700
+    @apply animate-rotateGradientFast bg-[length:200%_200%] hover:bg-[length:100%_100%] absolute inset-0 bg-gradient-to-br from-text-light to-primary blur-[8px] -z-10 rounded-xl scale-100 transition-all duration-700 
   }
 
   .btn-primary {
