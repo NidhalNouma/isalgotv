@@ -1,5 +1,5 @@
 {% load static %}
-<h1 class="main-title">Home</h1>
+{% comment %} <h1 class="main-title">Home</h1> {% endcomment %}
 
 <main class="mt-4 mb-16 md:flex block justify-between ">
     <section class="md:w-9/12">
@@ -158,6 +158,13 @@
     
         <svg class="h-full absolute right-0 top-0 fill-text/10 scale-110" v stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path></svg>
       </div>
+
+    {% comment %} <div class="w-full p-2 rounded bg-primary/10 relative mb-2 overflow-hidden">    
+        <p class="text-text text-xs font-medium">You got the right settings? Start automating your strategy.</p>  
+        <a href="{% url 'docs_alerts' %}" class="btn-primary mt-2 text-xs font-semibold">Click here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
+    
+        <svg class="h-full absolute right-0 top-0 fill-text/10 scale-110" v stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path></svg>
+    </div> {% endcomment %}
 
     {% for comment in new_ideas %}
         <div class="py-2 mb-4">

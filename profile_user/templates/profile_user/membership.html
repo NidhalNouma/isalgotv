@@ -1,10 +1,6 @@
 {% extends 'page.html' %}
 {% load custom_tags %}
 
-{% block head %}
-<script src="https://js.stripe.com/v3/"></script>
-{% endblock head %}
-
 {% block page %}
 
     {% if user_profile.is_lifetime %}

@@ -34,12 +34,13 @@ def profile_context(request):
         'has_subscription': getattr(request, 'has_subscription', False),
         'subscription_canceled': getattr(request, 'subscription_canceled', False),
 
+        'prices': getattr(request, 'prices', None),
+
         'notifications': getattr(request, 'notifications', False),
         'coupon': coupon,
 
         'server_ip': server_ip,
 
-        'ai_key':  env('AI_KEY'),
         'db_key':  env('FIREBASE_KEY'),
 
         "stripe_public_key": env('STRIPE_API_PUBLIC_KEY'),

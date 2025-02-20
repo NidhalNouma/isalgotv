@@ -26,7 +26,7 @@ def get_strategies(request):
     
     # print(strategies)
 
-    context =  {'strategies': strategies}
+    context =  {'strategies': strategies, 'show_banner': True}
     return render(request, 'strategies.html', context)
 
 def get_results(request):
@@ -43,7 +43,7 @@ def get_results(request):
     
     # print(strategies)
 
-    context =  {'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name}
+    context =  {'show_banner': True, 'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name}
     return render(request, 'results.html', context)
 
 def get_ideas(request):

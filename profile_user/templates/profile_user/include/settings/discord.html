@@ -60,13 +60,14 @@ class="btn-primary mt-4 mb-2 w-full"
 Save
 </button>
 {% else %}
-  <a
+  <button
+    type="button"
     id="btn-discord"
+    onclick="toggleGetStarted()"
     class="btn-primary mt-4 mb-2 w-full"
-    href="{% url 'membership' %}"
   >
     Choose a plan
-  </a>
+  </button>
   {% endif %}
   <button
     id="spinner-discord"

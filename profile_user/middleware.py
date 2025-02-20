@@ -184,22 +184,16 @@ def check_user_and_stripe_middleware(get_response):
     return middleware
 
 
-class DetectOSMiddleware:
+from django.conf import settings
+PRICE_LIST = settings.PRICE_LIST
+PRICES = settings.PRICES
+
+class MemberShipPricingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        # Check the User-Agent header for "Mac" or "Windows"
-        user_agent = request.META.get("HTTP_USER_AGENT", "").lower()
-        if "mac" in user_agent:
-            request.is_mac = True
-            request.is_windows = False
-        elif "win" in user_agent:
-            request.is_mac = False
-            request.is_windows = True
-        else:
-            request.is_mac = False
-            request.is_windows = False
+        request.prices = PRICES
 
         response = self.get_response(request)
         return response

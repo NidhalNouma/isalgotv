@@ -583,6 +583,18 @@ htmx.on("htmx:afterRequest", (evt) => {
 
     hideModel("add-broker-modal");
   }
+
+  const id = evt?.detail?.target.id;
+  if(document.getElementById(id)){
+    const modalId = document.getElementById(id).hasAttribute("hide-backdrop");
+    if (modalId) {
+      const backdropDiv = document.querySelector('div[modal-backdrop]');
+      if (backdropDiv) {
+        backdropDiv.remove();
+        document.documentElement.style.overflowY = "unset";
+      }
+    }
+  }
 });
 
 function scrollToResultOrComment(type, id) {

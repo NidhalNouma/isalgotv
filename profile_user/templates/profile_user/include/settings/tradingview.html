@@ -62,13 +62,14 @@ class="btn-primary mt-4 mb-2 w-full"
 Save
 </button>
 {% else %}
-  <a
+  <button
     id="btn-tv"
+    type="button"
+    onclick="toggleGetStarted()"
     class="btn-primary mt-4 mb-2 w-full"
-    href="{% url 'membership' %}"
   >
     Choose a plan
-  </a>
+  </button>
   {% endif %}
   <button
     id="spinner-tv"

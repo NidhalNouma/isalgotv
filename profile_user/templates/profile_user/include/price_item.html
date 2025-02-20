@@ -202,7 +202,7 @@
       <!-- Modal body -->
       <!-- Profits -->
       <div class="max-w-md p-6 mx-auto mt-1">
-          {% include "include/pay_form_stripe.html" with base_price=prices|get_item:price_key final_price=prices|get_item:price_key %}
+          {% include "include/pay_form_stripe.html" with base_price=prices|get_item:price_key final_price=prices|get_item:price_key  get_started=get_started %}
       </div>
     </div>
   </div>

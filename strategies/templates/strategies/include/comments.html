@@ -25,14 +25,23 @@
     <p class="text-sm mt-4 ">
         Want to share your thoughts? Join us to unlock commenting and more features!
     </p>
-    <a
-          href="{% url 'membership' %}"
-          class="btn-primary text-sm font-semibold mx-auto mt-3"
+
+      {% if user.is_authenticated %}
+      <button
+        onclick="toggleGetStarted()"
+        class="btn-primary text-sm font-semibold mx-auto mt-3"
       >
-          Join Us Now
-          <svg class="h-5 w-5 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+        Join Us Now
+        <svg class="h-5 w-5 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+      </button>
+      {% else %}
+      <a
+        href="{% url 'membership' %}"
+        class="btn-primary text-sm font-semibold mx-auto mt-3"
+      >
+        Join Us Now
+        <svg class="h-5 w-5 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
       </a>
-      {% if not user.is_authenticated %}
       <p class="text-xs mt-2 text-text/60">
           Already a member? <a href="{% url 'login' %}" class="text-primary font-semibold">Log in</a>
       </p>

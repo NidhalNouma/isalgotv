@@ -50,46 +50,49 @@ def send_welcome_email_allauth(request, user, **kwargs):
 
 @login_required(login_url='login')
 def home(request):
-    step = 1
-    user_profile = False
+    # step = 1
+    # user_profile = False
 
-    if request.has_subscription == None:
-        step = 1
-    else:
-        if request.has_subscription == True and request.subscription_status != 'past_due':
-            step = 2
-        if request.user_profile:
-            user_profile = request.user_profile
+    # if request.has_subscription == None:
+    #     step = 1
+    # else:
+    #     if request.has_subscription == True and request.subscription_status != 'past_due':
+    #         step = 2
+    #     if request.user_profile:
+    #         user_profile = request.user_profile
             
-            if user_profile.tradingview_username:
-                if 'step' in request.GET:
-                    if request.GET.get('step') == '3':
-                        step = 3
+    #         if user_profile.tradingview_username:
+    #             if 'step' in request.GET:
+    #                 if request.GET.get('step') == '3':
+    #                     step = 3
                 
-                else:
-                    step = 4
+    #             else:
+    #                 step = 4
 
-    congrate = False
-    if 'sub' in request.GET:
-        if request.GET.get('sub') == 'True':
-            congrate = True
-            step = 2
+    # congrate = False
+    # if 'sub' in request.GET:
+    #     if request.GET.get('sub') == 'True':
+    #         congrate = True
+    #         step = 2
 
-    context = {"congrate": congrate, 'step':step , 'prices': settings.PRICES}
+    show_get_started = False
+    if (request.has_subscription == None or request.has_subscription == False) and not request.subscription_status:
+        show_get_started = True
 
-    if step == 4:
-        res_num = 8
-        new_strategies = Strategy.objects.filter(is_live=True).order_by('-created_at')[:res_num]
-        most_viewed_strategies = Strategy.objects.filter(is_live=True).order_by('-view_count')[:res_num]
-        new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
-        best_results = StrategyResults.objects.all().order_by('-created_at')[:6]
-        new_ideas = StrategyComments.objects.all().order_by('-created_at')[:res_num]
+    context = {'show_get_started': show_get_started, 'show_banner': True}
 
-        context['new_strategies'] = new_strategies
-        context['most_viewed_strategies'] = most_viewed_strategies
-        context['new_results'] = new_results
-        context['best_results'] = best_results
-        context['new_ideas'] = new_ideas
+    res_num = 8
+    new_strategies = Strategy.objects.filter(is_live=True).order_by('-created_at')[:res_num]
+    most_viewed_strategies = Strategy.objects.filter(is_live=True).order_by('-view_count')[:res_num]
+    new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
+    best_results = StrategyResults.objects.all().order_by('-created_at')[:6]
+    new_ideas = StrategyComments.objects.all().order_by('-created_at')[:res_num]
+
+    context['new_strategies'] = new_strategies
+    context['most_viewed_strategies'] = most_viewed_strategies
+    context['new_results'] = new_results
+    context['best_results'] = best_results
+    context['new_ideas'] = new_ideas
 
     return render(request,'home.html', context)
 
@@ -101,7 +104,7 @@ def membership(request):
         if request.GET.get('sub') == 'True':
             congrate = True
 
-    context = {"payment_form": payment_form, 'prices': settings.PRICES, "congrate": congrate}
+    context = {"payment_form": payment_form, "congrate": congrate}
     
     return render(request, 'membership.html', context)
 
@@ -121,7 +124,8 @@ def settings_page(request):
 def access_page(request):
     strategies = Strategy.objects.filter(is_live=True)
     context = {
-        "strategies": strategies
+        "strategies": strategies,
+        # 'show_banner': True
     }
     return render(request, 'access.html', context)
 
@@ -258,7 +262,12 @@ def edit_tradingview_username(request):
         #     return retarget(response, "#tradingview_username_submit_error")
 
         if not page:
-            return HttpResponseClientRedirect(reverse('home') + '?step=3')
+            context = {}
+            context["step"] = 3
+
+            response = render(request, 'include/home_get_started.html', context)
+            return retarget(response, "#home-get-started")
+            # return HttpResponseClientRedirect(reverse('home') + '?step=3')
         else:
             response = render(request, 'include/settings/tradingview.html', {'succes': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')
@@ -709,6 +718,17 @@ def create_subscription_stripeform(request):
                 send_new_member_email_task(request.user.email)
 
             # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
+
+            
+            from_get_started = request.GET.get('get_started','')
+            if from_get_started == "true":
+                context["step"] = 2
+                context["congrate"] = True
+
+                response = render(request, 'include/home_get_started.html', context)
+                return retarget(response, "#home-get-started")
+        
+
             return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
 
         except Exception as e:
