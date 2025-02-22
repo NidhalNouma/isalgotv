@@ -1,0 +1,63 @@
+
+<div class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-6">
+    <div class="flex items-center justify-between w-full mb-6">
+        <h5 class="text-title font-semibold">IsAlgo AI Tokens</h5>
+
+        <button onclick="openAITokensModalSettings()" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512">
+                <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="space-y-6">
+        <div class="bg-text/5 rounded-lg p-6">
+            <div class="flex items-center gap-3 mb-2">
+                <svg class="w-4 h-4 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="8" cy="8" r="6"/>
+                    <path d="M18.09 10.37A6 6 0 1 1 10.34 18"/>
+                    <path d="M7 6h1v4"/>
+                    <path d="m16.71 13.88.7.71-2.82 2.82"/>
+                </svg>
+                <h2 class="text-sm font-medium text-text">Available Tokens</h2>
+            </div>
+            <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_available }}</p>
+        </div>
+
+        <div class="bg-text/5 rounded-xl p-6">
+            <div class="flex items-center gap-3 mb-2">
+                <svg class="w-4 h-4 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/>
+                    <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/>
+                    <path d="m2 16 6 6"/>
+                    <circle cx="16" cy="9" r="2.9"/>
+                    <circle cx="6" cy="5" r="3"/>
+                </svg>
+                <h2 class="text-sm font-medium text-text">Free Used Daily Tokens</h2>
+            </div>
+            {% if user_profile.has_subscription %}
+                {% with max_daily_token=100000 %}
+                    <div class="space-y-3">
+                        <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_used_today }}/{{ max_daily_token }}</p>
+                        <div class="w-full bg-text/10 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-text to-title h-2 rounded-full"
+                                style="width: {% widthratio user_profile.ai_tokens_used_today max_daily_token 100 %}%">
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% else %}
+                {% with max_daily_token=5000 %}
+                    <div class="space-y-3">
+                        <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_used_today }}/{{ max_daily_token }}</p>
+                        <div class="w-full bg-text/10 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-text to-title h-2 rounded-full"
+                                style="width: {% widthratio user_profile.ai_tokens_used_today max_daily_token 100 %}%">
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -838,23 +838,6 @@ def update_subscription_stripeform(request):
                     return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
                 
                 return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
-                
-
-            # subscription = stripe.Subscription.modify(
-            #     old_subscription_id,
-            #     cancel_at_period_end=False,
-            #     # customer=customer_id,
-            #     items=[{
-            #         'id': old_subscription['items']['data'][0].id,
-            #         'price': price_id,
-            #     }],
-            #     payment_behavior="error_if_incomplete",
-            #     coupon=coupon_id,
-            #     billing_cycle_anchor="now",
-            #     proration_behavior='always_invoice',
-            #     # trial_end=subscription_period_end,
-            #     trial_end='now',
-            # )
 
             subscription = stripe.Subscription.create(
                 customer=customer_id,
@@ -875,17 +858,6 @@ def update_subscription_stripeform(request):
             cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
             print("Old Subscription has been canceled ...")
 
-
-            # if len(old_subscription_id) > 0:
-            #     if request.subscription_status != 'canceled':
-            #         cancel_subscription = stripe.Subscription.delete(old_subscription_id)
-            #         print("Old subscription has been canceled ... ")
-
-            #     return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
-            # else:
-            #     send_new_member_email_task(request.user.email)
-
-            # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
             return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
 
         except Exception as e:
@@ -1087,17 +1059,21 @@ ai_client = AsyncOpenAI(
 
 
 @sync_to_async
-def update_user_tokens(user_profile, total_tokens):
+def update_user_tokens(user_profile, total_tokens, daily_token_remaining):
     """ Update user AI token usage safely in async context. """
-    user_profile.ai_tokens_used_today += total_tokens
+
+    if daily_token_remaining <= 0:
+        user_profile.ai_tokens_available -= total_tokens
+    else:
+        user_profile.ai_tokens_used_today += total_tokens
     user_profile.save()  # ORM operation inside sync_to_async
 
 async def ai_chat_view(request):
     if request.method == "POST":
         try:
-            daily_token = 1200
+            daily_token = 5000
             if request.has_subscription:
-                daily_token = 20000
+                daily_token = 100000
             
             data = json.loads(request.body)
             user_message = data.get("userMessage", "").strip()
@@ -1110,8 +1086,15 @@ async def ai_chat_view(request):
             if not user_message:
                 return JsonResponse({"error": "Message cannot be empty"}, status=400)
 
-            await sync_to_async(user_profile.reset_token_usage_if_needed)()
-            if user_profile.ai_tokens_used_today > daily_token:
+            # await sync_to_async(user_profile.reset_token_usage_if_needed)() This was done by the middleware
+
+            daily_token_remaining = daily_token - user_profile.ai_tokens_used_today
+            
+            availble_tokens = daily_token_remaining + user_profile.ai_tokens_available
+            # print("Total Tokens: ", availble_tokens)
+            # availble_tokens = 0
+
+            if availble_tokens <= 0:
                 return JsonResponse({"todat_limit_hit": True})
 
             chat_history = [
@@ -1126,11 +1109,15 @@ async def ai_chat_view(request):
 
             chat_history.append({"role": "user", "content": user_message})
 
+            max_token = 1000
+            if max_token > availble_tokens:
+                max_token = availble_tokens
+
             # Make an asynchronous API call
             response = await ai_client.chat.completions.create(
                 model="gpt-4-turbo",
                 messages=chat_history,
-                max_tokens=500
+                max_tokens=max_token
             )
 
             ai_response = response.choices[0].message.content
@@ -1140,7 +1127,7 @@ async def ai_chat_view(request):
             total_tokens = response.usage.total_tokens
 
             # Async ORM update
-            await update_user_tokens(user_profile, total_tokens)
+            await update_user_tokens(user_profile, total_tokens, daily_token_remaining)
 
             return JsonResponse({
                 "response": ai_response,
@@ -1156,3 +1143,85 @@ async def ai_chat_view(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@require_http_methods([ "POST"])
+def buy_ai_tokens(request):
+    if request.method == 'POST':
+        data = request.POST
+
+        token_amount = data.get('amount', '')
+        payment_method = data.get('pm_id', '')
+
+        plan_id = 'ai-tokens'
+
+        context = {"error": '', 'title': plan_id}
+
+        if not token_amount:
+            context["error"] = 'No token amount has been specified, please try again.'
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#add-"+context['title']+"-form-errors")
+
+        if int(token_amount) < 100000:
+            context["error"] = 'Minimum token amount is 500,000.'
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#add-"+context['title']+"-form-errors")
+
+        price_per_token = 10 / 100000  # $10 per 100,000 tokens
+        price = int(token_amount) * price_per_token * 100  # Convert to cents for Stripe
+   
+        if not payment_method or payment_method == "None":
+            context["error"] = 'No payment method has been detected.'
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#add-"+context['title']+"-form-errors")
+
+        profile_user = request.user_profile
+        customer_id = profile_user.customer_id
+
+        try:
+            stripe.PaymentMethod.attach(
+                payment_method,
+                customer=customer_id,
+            )
+        except Exception as e:
+            context["error"] = 'Attached payment to customer '+str(e)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#add-"+context['title']+"-form-errors")
+
+        try:
+            metadata = {
+                "profile_user_id": str(profile_user.id), 
+            }
+
+            payment_intent = stripe.PaymentIntent.create(
+                amount=int(price),
+                currency="usd",
+                payment_method=payment_method,
+                confirm=True,
+                customer=customer_id,
+                description="Lifetime subscription.",
+                automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
+                metadata=metadata,
+            )          
+
+            user_profile = request.user_profile 
+
+            new_available_token = user_profile.ai_tokens_available + int(token_amount)
+
+            user_profile.ai_tokens_available = new_available_token
+            user_profile.save()
+
+            is_settings = request.GET.get('settings', '') == 'true'
+            print("GET Parameters:", request.GET.dict(), "Settings:", is_settings)
+
+            if is_settings:
+                response = render(request, 'include/settings/ai_tokens.html', context)
+                return retarget(response, "#setting-ai-tokens")
+            
+            response = render(request, 'include/ai_tokens_modal.html', context)
+            return retarget(response, "#div-ai_tokens_modal")
+            
+
+        except Exception as e:
+            context["error"] = str(e)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#add-"+context['title']+"-form-errors")

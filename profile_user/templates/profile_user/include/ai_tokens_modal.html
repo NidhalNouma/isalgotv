@@ -1,0 +1,83 @@
+
+<form 
+    id="add-{{ title }}-form"
+    hx-post="{% url 'buy_ai_tokens' %}" 
+    {% comment %} hx-target="#edit-{{id}}_{{broker_type}}-sub" {% endcomment %}
+    hx-wait="swap"
+>
+    {% csrf_token %}
+
+    <div class="mb-4">
+        {% include 'include/infos.html' with info="AI tokens are used to process AI-powered requests. Each request consumes a variable number of tokens depending on its complexity. <br/>The pricing is set at <span class='font-semibold text-title'>$10</span> per <span class='font-semibold text-title'>100,000</span> tokens. <br/>You can select a predefined amount or enter a custom value based on your needs." %}
+    </div>
+
+    <section class="mb-4 p-2 rounded border border-text/10 bg-text/5">
+        <div class="">
+            <h3 class="text-text mt-2 font-semibold">Select token amount</h3>
+            <div id="" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+                <button id="btn-{{title}}-500K" onclick='amountBtnClick("btn-{{title}}-500K", 500000, event)' type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">500K</button>
+                <button id="btn-{{title}}-1M" onclick='amountBtnClick("btn-{{title}}-1M", 1000000, event)' type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">1M</button>
+                <button id="btn-{{title}}-2M" onclick='amountBtnClick("btn-{{title}}-2M", 2000000, event)' type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">2M</button>
+                <button id="btn-{{title}}-5M" onclick='amountBtnClick("btn-{{title}}-5M", 5000000, event)' type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">5M</button>
+                <button id="btn-{{title}}-10M" onclick='amountBtnClick("btn-{{title}}-10M", 10000000, event)' type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">10M</button>
+                <button id="btn-{{title}}-other" onclick='amountBtnClick("btn-{{title}}-other", 0, event)' type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">Other</button>
+            </div>
+
+            <div id="div-amount-{{title}}" class="hidden mt-4">
+                <label
+                    for="cardName"
+                    class="input-label"
+                    >Type your amount</label
+                >
+                <div class="relative mb-3">
+                    <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                    >
+                    <svg class="w-4 h-4 text-title/40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"></circle><path d="M18.09 10.37A6 6 0 1 1 10.34 18"></path><path d="M7 6h1v4"></path><path d="m16.71 13.88.7.71-2.82 2.82"></path></svg>
+                    </div>
+                    <input
+                        type="number"
+                        name="amount"
+                        id="amount-{{title}}"
+                        class="block w-full pl-10 input-text"
+                        placeholder="4 000 000"
+                    />
+                </div>
+            </div>
+        </div> 
+    </section>
+
+    {% include 'include/broker_payment.html' with title=title hide_header=True %}
+
+    <div id="add-{{title}}-form-errors" class="my-3"></div>
+
+    <div class="flex items-center justify-between gap-2 mt-2">
+        <button
+            id="spinner-add-{{title}}"
+            disabled
+            type="button"
+            class="btn-text w-full hidden"
+        >
+            Adding
+            <svg
+            aria-hidden="true"
+            role="status"
+            class="h-4 aspect-square ml-1.5 text-current animate-spin"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                class="fill-background/60"
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            />
+            <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentColor"
+            />
+            </svg>
+        </button>
+        <button id="btn-add-{{title}}" onclick='onAutomateAccountAdd("{{title}}", "add-{{title}}-form-errors", event)' type="submit" class="btn-text w-full">Add <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-3.5 aspect-square ml-1" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></button>
+    </div>
+</form>
+ 

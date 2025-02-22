@@ -30,6 +30,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name="profile_user/auth/reset_password_confirm.html"), name='password_reset_confirm'),
     path('reset-password-done', auth_views.PasswordResetCompleteView.as_view(template_name="profile_user/auth/reset_password_done.html"), name='password_reset_complete'),
     
+    path('ai/buy-tokens/', buy_ai_tokens, name='buy_ai_tokens'),
     path('ai/chat/', ai_chat_view, name='ai_chat'),
 
 

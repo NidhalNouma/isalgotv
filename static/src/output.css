@@ -3788,6 +3788,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-color: hsl(var(--color-primary) / 0.5);
 }
 
+.border-gray-600\/50 {
+  border-color: rgb(75 85 99 / 0.5);
+}
+
 .\!bg-background {
   --tw-bg-opacity: 1 !important;
   background-color: hsl(var(--color-background) / var(--tw-bg-opacity)) !important;
@@ -4036,6 +4040,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-primary) / 0.2);
 }
 
+.bg-gray-600\/50 {
+  background-color: rgb(75 85 99 / 0.5);
+}
+
+.bg-gray-700\/30 {
+  background-color: rgb(55 65 81 / 0.3);
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -4226,6 +4238,18 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
 }
 
+.from-purple-400 {
+  --tw-gradient-from: #AC94FA var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(172 148 250 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-text {
+  --tw-gradient-from: hsl(var(--color-text) / 1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .via-accent\/30 {
   --tw-gradient-to: hsl(var(--color-accent) / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--color-accent) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -4380,6 +4404,14 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .to-primary\/10 {
   --tw-gradient-to: hsl(var(--color-primary) / 0.1) var(--tw-gradient-to-position);
+}
+
+.to-pink-400 {
+  --tw-gradient-to: #F17EB8 var(--tw-gradient-to-position);
+}
+
+.to-title {
+  --tw-gradient-to: hsl(var(--color-title) / 1) var(--tw-gradient-to-position);
 }
 
 .bg-\[length\:200\%_200\%\] {

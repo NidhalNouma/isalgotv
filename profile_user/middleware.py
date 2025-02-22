@@ -70,6 +70,8 @@ def check_user_and_stripe_middleware(get_response):
             
             # print("stripe customer, " , user_profile.customer_id)
 
+            user_profile.reset_token_usage_if_needed()
+
             request.user_profile = user_profile
 
             if user_profile.is_lifetime:

@@ -475,6 +475,37 @@ function showModalImages(images, imgId, id = "") {
   });
 }
 
+function openAITokensModalSettings(){
+  openModel('staticModal-ai-tokens');
+  mountStripeElement('ai-tokens');
+
+  const form = document.getElementById("add-ai-tokens-form"); 
+
+  let newParam = "settings=true";
+  let currentHxPost = form.getAttribute("hx-post");
+  let newHxPost = currentHxPost + "?" + newParam
+
+  form.setAttribute("hx-post", newHxPost);
+  htmx.process(form);
+}
+
+function closeAITokensModalSettings(){
+  hideModel('staticModal-ai-tokens');
+  unmountStripeElement('ai-tokens');
+
+  closeLoader('ai-tokens', "-add-", 'flex');
+
+  const form = document.getElementById("add-ai-tokens-form");
+
+  if (form) {
+      let currentHxPost = form.getAttribute("hx-post");
+      let cleanHxPost = currentHxPost.split("?")[0];
+
+      form.setAttribute("hx-post", cleanHxPost);
+      htmx.process(form);
+  }
+}
+
 htmx.on("htmx:afterRequest", (evt) => {
   if (evt?.detail?.target.id === "resultsDiv") {
     clearResultForm();
@@ -522,6 +553,15 @@ htmx.on("htmx:afterRequest", (evt) => {
   //     }
   //   }
   // }
+
+  if (evt?.detail?.target.id.includes("setting-ai-tokens")) {
+    closeAITokensModalSettings();
+  }
+
+  if (evt?.detail?.target.id.includes("div-ai_tokens_modal")) {
+    closeAITokensModalSettings();
+    openModel('modal-algoai');
+  }
 
   if (evt?.detail?.target.id === "setting-payment_methods") {
     let title = "payment_methods";

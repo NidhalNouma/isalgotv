@@ -21,6 +21,7 @@ class User_Profile(models.Model):
     lifetime_num = models.IntegerField(default=0)
     lifetime_intent = models.CharField(default="", max_length=100, blank=True)
     
+    ai_tokens_available = models.IntegerField(default=0, blank=True)  
     ai_tokens_used_today = models.IntegerField(default=0, blank=True)  
     last_token_reset = models.DateField(default=now, blank=True) 
 

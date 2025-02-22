@@ -12,6 +12,12 @@
             document.getElementById("{{main_id}}").classList.remove("flex");
             document.getElementById("{{main_id}}").classList.add("hidden");
             window.scrollTo({ top: 0 });
+
+
+            {% if show_get_started %}
+                const now = new Date();
+                localStorage.setItem("lastShowGetStarted", now.toISOString());
+            {% endif %}
         } else {
             document.getElementById("{{main_id}}").classList.remove("hidden");
             document.getElementById("{{main_id}}").classList.add("flex");
@@ -21,7 +27,17 @@
         }
     }
 
-    {% if show_get_started %}toggleGetStarted();{% endif %}
+    {% if show_get_started %}
+        const lastShowGetStarted = localStorage.getItem("lastShowGetStarted");
+        
+        if (lastShowGetStarted) {
+            const storedDate = new Date(lastShowGetStarted);
+            const now = new Date();
+            const differenceInDays = (now - storedDate) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+    
+            if(differenceInDays > 7) toggleGetStarted();
+        } else toggleGetStarted();
+    {% endif %}
 </script>
 
 <main class="my-16 flex flex-col relative" >

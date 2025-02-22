@@ -59,16 +59,21 @@ export default function ChatState({
                 <p className="text-sm inline">
                   You have reached the limit of the day, You can buy some more tokens to continue using our AI tools.
                   <span className="float-right">
-                    <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">Buy here</a>
+                    <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() =>  window.buyAiToken()}>Buy here</button>
                   </span>
                 </p>
               :
-                <p className="text-sm inline">
-                  You have reached the limit of the day, subscribe to continue using the service without limits.
-                  <span className="float-right">
-                    <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">Subscribe here</a>
-                  </span>
-                </p>
+              <p className="text-sm inline">
+                You’ve reached your daily usage limit. To continue using our AI services, you can either subscribe to increase your limit <span className="font-semibold text-title">10 times</span> or purchase additional tokens.
+                <span className="">
+                  <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() => window.buyAiToken()}>
+                    Get Tokens
+                  </button>
+                  <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">
+                    Subscribe Now
+                  </a>
+                </span>
+              </p>
               }
             </div>
           </aside>
