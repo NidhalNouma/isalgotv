@@ -758,8 +758,10 @@ def update_subscription_stripeform(request):
 
 
         trial_ends = subscription_period_end
-        if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME" or subscription_status == 'past_due':
-            trial_ends = 'now'
+
+        if trial_ends:
+            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME" or subscription_status == 'past_due':
+                trial_ends = 'now'
 
         if not price_id:
             context["error"] = 'No plan has been specified, please refresh the page and try again.'
@@ -855,8 +857,19 @@ def update_subscription_stripeform(request):
 
             print("Subscription has been updated ...")
 
-            cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
-            print("Old Subscription has been canceled ...")
+            try: 
+                cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
+                print("Old Subscription has been canceled ...")
+            except Exception as e:
+                print("Old Subscription has not been canceled ...")
+
+            from_get_started = request.GET.get('get_started','')
+            if from_get_started == "true":
+                context["step"] = 2
+                context["congrate"] = True
+
+                response = render(request, 'include/home_get_started.html', context)
+                return retarget(response, "#home-get-started")
 
             return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
 
@@ -1071,9 +1084,9 @@ def update_user_tokens(user_profile, total_tokens, daily_token_remaining):
 async def ai_chat_view(request):
     if request.method == "POST":
         try:
-            daily_token = 5000
+            daily_token = 2000
             if request.has_subscription:
-                daily_token = 100000
+                daily_token = 20000
             
             data = json.loads(request.body)
             user_message = data.get("userMessage", "").strip()
@@ -1198,7 +1211,7 @@ def buy_ai_tokens(request):
                 payment_method=payment_method,
                 confirm=True,
                 customer=customer_id,
-                description="Lifetime subscription.",
+                description=str(token_amount) + "| AI Tokens",
                 automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
                 metadata=metadata,
             )          

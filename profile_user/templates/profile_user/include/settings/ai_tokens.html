@@ -35,8 +35,8 @@
                 </svg>
                 <h2 class="text-sm font-medium text-text">Free Used Daily Tokens</h2>
             </div>
-            {% if user_profile.has_subscription %}
-                {% with max_daily_token=100000 %}
+            {% if has_subscription %}
+                {% with max_daily_token=20000 %}
                     <div class="space-y-3">
                         <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_used_today }}/{{ max_daily_token }}</p>
                         <div class="w-full bg-text/10 rounded-full h-2">
@@ -47,7 +47,7 @@
                     </div>
                 {% endwith %}
             {% else %}
-                {% with max_daily_token=5000 %}
+                {% with max_daily_token=2000 %}
                     <div class="space-y-3">
                         <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_used_today }}/{{ max_daily_token }}</p>
                         <div class="w-full bg-text/10 rounded-full h-2">

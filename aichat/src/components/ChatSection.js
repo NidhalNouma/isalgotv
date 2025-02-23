@@ -34,7 +34,7 @@ function ChatSection() {
 
   const handleSendMessage = (messageContent, files) => {
 
-    if(error && dislayedMessages?.length > 0 && !messageContent) {
+    if((error || limit) && dislayedMessages?.length > 0 && !messageContent) {
       messageContent = dislayedMessages[dislayedMessages.length - 1].question;
     }
 

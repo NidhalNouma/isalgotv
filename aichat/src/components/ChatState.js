@@ -57,21 +57,25 @@ export default function ChatState({
             <div className="text-text bg-text/10 px-4 py-2 rounded overflow-hidden">
               {user.hasSubscription ? 
                 <p className="text-sm inline">
-                  You have reached the limit of the day, You can buy some more tokens to continue using our AI tools.
-                  <span className="float-right">
-                    <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() =>  window.buyAiToken()}>Buy here</button>
-                  </span>
+                You’ve reached your daily usage limit. To continue using our AI services, you can purchase additional AI tokens.
+                <span className="">
+                  <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() => window.buyAiToken()}>
+                    Get Tokens
+                  </button>
+                  <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() => onSendMessage()}>Retry</button>
+                </span>
                 </p>
               :
               <p className="text-sm inline">
-                You’ve reached your daily usage limit. To continue using our AI services, you can either subscribe to increase your limit <span className="font-semibold text-title">10 times</span> or purchase additional tokens.
+                You’ve reached your daily usage limit. To continue using our AI services, you can either subscribe to increase your limit <span className="font-semibold text-title">10 times</span> or purchase additional AI tokens.
                 <span className="">
                   <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() => window.buyAiToken()}>
                     Get Tokens
                   </button>
                   <a className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" href="/p/membership/">
-                    Subscribe Now
+                    Subscribe here
                   </a>
+                  <button className="text-xs border border-text/60 py-0.5 px-2 rounded whitespace-nowrap ms-2" onClick={() => onSendMessage()}>Retry</button>
                 </span>
               </p>
               }

@@ -4048,6 +4048,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: rgb(55 65 81 / 0.3);
 }
 
+.bg-\[\#7289da\]\/30 {
+  background-color: rgb(114 137 218 / 0.3);
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -4489,6 +4493,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .fill-transparent {
   fill: transparent;
+}
+
+.fill-\[\#7289da\]\/80 {
+  fill: rgb(114 137 218 / 0.8);
 }
 
 .stroke-accent {
