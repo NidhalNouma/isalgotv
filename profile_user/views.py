@@ -1211,7 +1211,7 @@ def buy_ai_tokens(request):
                 payment_method=payment_method,
                 confirm=True,
                 customer=customer_id,
-                description=str(token_amount) + "| AI Tokens",
+                description=str(token_amount) + " | AI Tokens",
                 automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
                 metadata=metadata,
             )          
