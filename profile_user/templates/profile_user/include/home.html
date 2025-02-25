@@ -2,7 +2,7 @@
 {% comment %} <h1 class="main-title">Home</h1> {% endcomment %}
 
 <main class="mt-4 md:flex block justify-between ">
-    <section class="md:w-9/12">
+    <section class="">
         <section class="grid xl:grid-cols-3 md:grid-cols-1 gap-6 mb-4">
             <div class="group relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]" ></div>
@@ -81,33 +81,6 @@
                     </button>
                 </div>
             </div>
-                
-            {% comment %} <div class="p-4 rounded bg-primary/30 flex flex-col">
-                <h6 class="text-title text-lg font-semibold">Discover and test</h6>
-                <p class="text-text text-sm mt-1">Discover and test our strategies and get your best settings.</p>
-                <div class="flex items-end justify-between mt-auto">
-                    <button class="btn-accent">Discover</button>
-                    <svg class="h-16 aspect-auto fill-accent stroke-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-telescope"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/></svg>
-                </div>
-            </div>
-
-            <div class="p-4 rounded bg-success/30 flex flex-col">
-                <h6 class="text-title text-lg font-semibold">Automate your settings</h6>
-                <p class="text-text text-sm mt-1">Create your alerts and automate your strategy with your best settings.</p>
-                <div class="flex items-end justify-between mt-auto">
-                    <button class="btn-accent">Learn how</button>
-                    <svg class="h-16 aspect-auto fill-accent stroke-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-telescope"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/></svg>
-                </div>
-            </div>
-
-            <div class="p-4 rounded bg-accent/30 flex flex-col">
-                <h6 class="text-title text-lg font-semibold">Create your custom strategy</h6>
-                <p class="text-text text-sm mt-1">Ask our AI on how you can create and automate your own strategy.</p>
-                <div class="flex items-end justify-between mt-auto">
-                    <button class="btn-accent">Ask here</button>
-                    <svg class="h-16 aspect-auto fill-accent stroke-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-telescope"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/></svg>
-                </div>
-            </div> {% endcomment %}
         </section>
 
         <section class="">
@@ -161,7 +134,41 @@
             </div>
         </section>
 
-        {% if new_results|length >= 2 %}
+        <div class="group relative overflow-hidden mt-8">
+            <div class="absolute inset-0 bg-gradient-to-br from-text/10 to-text/5 rounded-md" ></div>
+            <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500" ></div>
+            
+            <div class="relative p-6 flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center gap-4 mb-4 md:mb-0">
+                    <div class="relative">
+                        <div class="p-3 rounded-full bg-title/5 backdrop-blur">
+                            <svg class="h-6 w-6 text-title" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell h-6 w-6 text-white"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+                        </div>
+                        <span class="absolute top-0 right-0 h-3 w-3">
+                            <span class="animate-ping absolute top-1.5 inline-flex h-full w-full rounded-full bg-title/80 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-title/60"></span>
+                        </span>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-title mb-1">
+                            Get notified on every action
+                        </h3>
+                        <p class="text-text text-sm">
+                            Set up TradingView alerts for your trading strategies
+                        </p>
+                    </div>
+                </div>
+
+
+                <a href="{% url 'docs_alerts' %}" target="_blank" class="btn-accent w-full max-w-xs md:w-fit">
+                    <span class="font-medium">See how</span>
+                    <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </a>
+            </div>
+          </div>
+
+        {% if new_results|length >= 3 %}
         <section class="mt-8">
             <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
             Checkout these reuslts
@@ -215,55 +222,74 @@
 
 
 
-        {% if best_results|length >= 6 %}
-        <section class="mt-8">
-            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
-                Best results so far
-            <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
-            </h6>
-
-            <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-            {% for result in best_results %}
-                <div class="">
-                    {% include "include/quick_result.html" with result=result %}
+        <div class="group relative overflow-hidden mt-8">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 rounded-md" ></div>
+            <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500" ></div>
+            
+            <div class="relative p-6 flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center gap-4 mb-4 md:mb-0">
+                    <div class="relative">
+                        <div class="p-3 rounded-full bg-primary/5 backdrop-blur">
+                            <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
+                            {% comment %} <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap h-6 w-6 text-amber-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> {% endcomment %}
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-title mb-1">
+                            Automate alerts once ready
+                        </h3>
+                        <p class="text-text text-sm">
+                            Set up your alerts and let automation handle the rest
+                        </p>
+                    </div>
                 </div>
-            {% endfor %}
+
+
+                <a href="{% url 'automate' %}" class="btn-accent w-full max-w-xs md:w-fit">
+                    <span class="font-medium">Start now</span>
+                    <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </a>
             </div>
-        </section>
+          </div>
+
+
+        {% if best_results|length >= 4 %}
+            <section class="mt-8">
+                <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
+                    Best results so far
+                <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
+                </h6>
+
+                <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                {% for result in best_results %}
+                    <div class="">
+                        {% include "include/quick_result.html" with result=result %}
+                    </div>
+                {% endfor %}
+                </div>
+            </section>
         {% endif %}
 
-       
-
-        <!-- <section class="mt-8">
-            <h6 class="text-left text-title text-lg font-semibold flex items-center justify-between">
-            Checkout these ideas
-            </h6>
-
-            <div class="mt-2 grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-            {% for comment in new_ideas %}
-
-                {% include "include/comment_comment_page.html" with comment=comment %}
-
-            {% endfor %}
-            </div>
-        </section> -->
     </section>
 
-  <section class="w-[20%] hidden md:flex flex-col ">
-    <div class="w-full p-2 rounded bg-text/10 relative mb-2 overflow-hidden">    
-        <p class="text-text text-xs font-medium">See how you can write alerts to get notified on every action.</p>  
-        <a href="{% url 'docs_alerts' %}" class="btn-text mt-2 text-xs font-semibold">Click here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
-    
-        <svg class="h-full absolute right-0 top-0 fill-text/10 scale-110" v stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path></svg>
-      </div>
+  <section class="w-5/12 hidden lg:flex flex-col ml-10">
 
-    {% comment %} <div class="w-full p-2 rounded bg-primary/10 relative mb-2 overflow-hidden">    
-        <p class="text-text text-xs font-medium">You got the right settings? Start automating your strategy.</p>  
-        <a href="{% url 'docs_alerts' %}" class="btn-primary mt-2 text-xs font-semibold">Click here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
-    
-        <svg class="h-full absolute right-0 top-0 fill-text/10 scale-110" v stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path></svg>
-    </div> {% endcomment %}
+    <aside class="mb-6 flex flex-col items-center p-4 bg-title/5 rounded-md">
+        <div class="flex items-center text-title gap-2">
+            <svg class="h-6 aspect-auto" viewBox="0 0 36 28" xmlns="http://www.w3.org/2000/svg"><path d="M14 22H7V11H0V4h14v18zM28 22h-8l7.5-18h8L28 22z" fill="currentColor"></path><circle cx="20" cy="8" r="4" fill="currentColor"></circle></svg>
+            <svg class="h-6 aspect-auto" viewBox="0 0 147 28" xmlns="http://www.w3.org/2000/svg"><path d="M4.793 22.024h3.702V7.519h4.843V4.02H0v3.5h4.793v14.504zM13.343 22.024h3.474v-6.06c0-2.105 1.09-3.373 2.74-3.373.582 0 1.039.101 1.571.279V9.345a3.886 3.886 0 00-1.166-.152c-1.42 0-2.713.938-3.145 2.18V9.346h-3.474v12.679zM27.796 22.303c1.75 0 3.068-.888 3.652-1.7v1.42h3.474V9.346h-3.474v1.42c-.584-.811-1.902-1.699-3.652-1.699-3.372 0-5.959 3.043-5.959 6.618 0 3.576 2.587 6.619 5.96 6.619zm.736-3.17c-1.928 0-3.196-1.445-3.196-3.448 0-2.004 1.268-3.45 3.196-3.45 1.927 0 3.195 1.446 3.195 3.45 0 2.003-1.268 3.448-3.195 3.448zM43.193 22.303c1.75 0 3.068-.888 3.651-1.7v1.42h3.474V3.007h-3.474v7.76c-.583-.812-1.901-1.7-3.651-1.7-3.373 0-5.96 3.043-5.96 6.618 0 3.576 2.587 6.619 5.96 6.619zm.735-3.17c-1.927 0-3.195-1.445-3.195-3.448 0-2.004 1.268-3.45 3.195-3.45 1.927 0 3.195 1.446 3.195 3.45 0 2.003-1.268 3.448-3.195 3.448zM55.166 7.412a2.213 2.213 0 002.232-2.206A2.213 2.213 0 0055.166 3a2.224 2.224 0 00-2.206 2.206 2.224 2.224 0 002.206 2.206zm-1.724 14.612h3.474V9.49h-3.474v12.533zM59.998 22.024h3.474v-6.187c0-2.435 1.192-3.601 2.815-3.601 1.445 0 2.232 1.116 2.232 2.941v6.847h3.474v-7.43c0-3.296-1.826-5.528-4.894-5.528-1.649 0-2.942.71-3.627 1.724V9.345h-3.474v12.679zM80.833 18.65c-1.75 0-3.22-1.319-3.22-3.246 0-1.952 1.47-3.246 3.22-3.246 1.75 0 3.22 1.294 3.22 3.246 0 1.927-1.47 3.246-3.22 3.246zm-.406 8.85c3.88 0 6.822-1.978 6.822-6.543V9.268h-3.474v1.42C83.09 9.7 81.72 8.99 80.098 8.99c-3.322 0-5.985 2.84-5.985 6.415 0 3.55 2.663 6.39 5.985 6.39 1.623 0 2.992-.735 3.677-1.673v.862c0 2.029-1.344 3.474-3.398 3.474-1.42 0-2.84-.482-3.956-1.572l-1.902 2.586c1.445 1.395 3.702 2.029 5.908 2.029zM94.594 22.024h3.27L105.32 4.02h-4.057l-5.021 12.501L91.145 4.02h-3.981l7.43 18.004zM108.508 7.266a2.213 2.213 0 002.231-2.206 2.213 2.213 0 00-2.231-2.206c-1.192 0-2.207.988-2.207 2.206 0 1.217 1.015 2.206 2.207 2.206zm-1.725 14.758h3.474V9.345h-3.474v12.679zM119.248 22.303c2.662 0 4.691-1.116 5.883-2.84l-2.587-1.927c-.583.887-1.673 1.597-3.271 1.597-1.673 0-3.169-.938-3.372-2.637h9.483c.076-.533.051-.888.051-1.192 0-4.133-2.916-6.238-6.238-6.238-3.854 0-6.669 2.865-6.669 6.618 0 4.007 2.942 6.619 6.72 6.619zm-3.221-8.165c.33-1.547 1.775-2.207 3.069-2.207 1.293 0 2.561.685 2.865 2.207h-5.934zM138.45 22.024h3.449l4.184-12.679h-3.728l-2.383 8.114-2.587-8.114h-2.662l-2.561 8.114-2.409-8.114h-3.703l4.21 12.679h3.448l2.359-7.202 2.383 7.202z" fill="currentColor"></path></svg>
+        </div>
 
+        <p class="text-title text-base text-center mt-3 mb-4">
+            The fastest way to <br/>follow markets
+        </p>
+
+        <a class="btn-accent w-full rounded-md font-bold" href="https://www.tradingview.com/chart/?aff_id=134591&utm_source=creative&utm_lang=EN" target="_blank">
+            Launch Chart
+        </a>
+    </aside>
+		
     {% for comment in new_ideas %}
         <div class="py-2 mb-4">
             {% include "include/comment_comment_page.html" with comment=comment %}
