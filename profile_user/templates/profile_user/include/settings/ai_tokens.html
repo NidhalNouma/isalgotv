@@ -1,7 +1,7 @@
 
 <div class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-6">
     <div class="flex items-center justify-between w-full mb-6">
-        <h5 class="text-title font-semibold">IsAlgo AI Tokens</h5>
+        <h5 class="text-title font-semibold">IsalGo AI Tokens</h5>
 
         <button onclick="openAITokensModalSettings()" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
             <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512">
@@ -36,7 +36,7 @@
                 <h2 class="text-sm font-medium text-text">Free Used Daily Tokens</h2>
             </div>
             {% if has_subscription %}
-                {% with max_daily_token=20000 %}
+                {% with max_daily_token=500000 %}
                     <div class="space-y-3">
                         <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_used_today }}/{{ max_daily_token }}</p>
                         <div class="w-full bg-text/10 rounded-full h-2">
@@ -47,7 +47,7 @@
                     </div>
                 {% endwith %}
             {% else %}
-                {% with max_daily_token=2000 %}
+                {% with max_daily_token=50000 %}
                     <div class="space-y-3">
                         <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_used_today }}/{{ max_daily_token }}</p>
                         <div class="w-full bg-text/10 rounded-full h-2">

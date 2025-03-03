@@ -148,3 +148,5 @@ GitHub.sublime-settings
 pyvenv.cfg
 
 /venv_etv
+
+isalgo_finetune.jsonl

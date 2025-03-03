@@ -296,15 +296,16 @@
         <div class="py-2 mb-6">
             {% include "include/comment_comment_page.html" with comment=comment %}
         </div>
+
+        {% if forloop.counter == 2 %}
+            {% with numbers="1,2,3"|cut:"," %}
+                {% with random_number=numbers|random|add:0 %}
+                    {% include "ads.html" with ads=random_number %}
+                {% endwith %}
+            {% endwith %}
+        {% endif %}
         
     {% endfor %}
-
-
-    {% with numbers="1,2,3"|cut:"," %}
-        {% with random_number=numbers|random|add:0 %}
-            {% include "ads.html" with ads=random_number %}
-        {% endwith %}
-    {% endwith %}
 
   </section>
 </main>

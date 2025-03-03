@@ -87,16 +87,16 @@ const QuickActionsArray = [
       "Explain how to use moving averages in trading strategies.",
     ],
   },
-  {
-    label: "Market News Updates",
-    icon: (className) => <Newspaper className={` ${className}`} />,
-    options: [
-      "How do geopolitical tensions affect commodity prices?",
-      "What is the impact of the latest Fed meeting on the markets?",
-      "How do employment reports influence forex trading?",
-      "Analyze the market reaction to the latest earnings season.",
-    ],
-  },
+  // {
+  //   label: "Market News Updates",
+  //   icon: (className) => <Newspaper className={` ${className}`} />,
+  //   options: [
+  //     "How do geopolitical tensions affect commodity prices?",
+  //     "What is the impact of the latest Fed meeting on the markets?",
+  //     "How do employment reports influence forex trading?",
+  //     "Analyze the market reaction to the latest earnings season.",
+  //   ],
+  // },
   {
     label: "Risk Management",
     icon: (className) => <Calculator className={` ${className}`} />,
@@ -127,16 +127,16 @@ const QuickActionsArray = [
       "Assist me in coding a MACD histogram indicator in Pine Script.",
     ],
   },
-  {
-    label: "Cryptocurrency Trading",
-    icon: (className) => <Bitcoin className={` ${className}`} />,
-    options: [
-      "What’s the current trend in Bitcoin prices?",
-      "How can I trade Ethereum effectively?",
-      "Explain the risks involved in cryptocurrency trading.",
-      "What are the best indicators for crypto technical analysis?",
-    ],
-  },
+  // {
+  //   label: "Cryptocurrency Trading",
+  //   icon: (className) => <Bitcoin className={` ${className}`} />,
+  //   options: [
+  //     "What’s the current trend in Bitcoin prices?",
+  //     "How can I trade Ethereum effectively?",
+  //     "Explain the risks involved in cryptocurrency trading.",
+  //     "What are the best indicators for crypto technical analysis?",
+  //   ],
+  // },
 ];
 
 function QuickActions({ setQuuickActionMsg }) {
@@ -175,7 +175,7 @@ function QuickActions({ setQuuickActionMsg }) {
     <Fragment>
       <div
         ref={divRef}
-        className="grid grid-cols-1 gap-4 max-w-3xl w-full mx-auto px-6"
+        className="grid grid-cols-1 gap-4 max-w-2xl w-full mx-auto px-6"
       >
         {options.map((v, i) => (
           <div
@@ -198,7 +198,7 @@ function QuickActions({ setQuuickActionMsg }) {
     </Fragment>
   ) : (
     <Fragment>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl w-full">
         {QuickActionsArray.map((v, i) => (
           <ActionButton
             key={i}

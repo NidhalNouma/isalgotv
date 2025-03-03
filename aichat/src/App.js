@@ -23,7 +23,7 @@ function App() {
           onMenuHover={() => setIsHovering(true)}
           className="mx-4 pb-4 pt-6"
         />
-        <div className="p-4 relative flex flex-col grow w-full overflow-y-scroll scrollbar-hide">
+        <div className="p-4 pb-2 relative flex flex-col grow w-full overflow-y-scroll scrollbar-hide">
           <ChatSection />
         </div>
 

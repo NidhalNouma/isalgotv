@@ -62,7 +62,7 @@ def home(request):
     new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
     best_results = StrategyResults.objects.all().order_by('-created_at')[:6]
 
-    comments = StrategyComments.objects.all().order_by('-created_at')[:3]
+    comments = StrategyComments.objects.all().order_by('-created_at')[:4]
 
     context['new_strategies'] = new_strategies
     context['most_viewed_strategies'] = most_viewed_strategies
@@ -1040,29 +1040,29 @@ def remove_access(subscription_id, cancel_email = True):
 # profile_user.deactivate_all_accounts()
 
 from asgiref.sync import sync_to_async
-from openai import OpenAI, AsyncOpenAI
-
-ai_client = AsyncOpenAI(
-    api_key= env('AI_KEY'),  
-)
+from .utils.ai import get_ai_response
 
 
 @sync_to_async
-def update_user_tokens(user_profile, total_tokens, daily_token_remaining):
+def update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token):
     """ Update user AI token usage safely in async context. """
+    tokens = total_tokens - daily_token_remaining
 
-    if daily_token_remaining <= 0:
-        user_profile.ai_tokens_available -= total_tokens
+    if tokens > 0:
+        user_profile.ai_tokens_available -= tokens
+        user_profile.ai_tokens_used_today = daily_token
     else:
-        user_profile.ai_tokens_used_today += total_tokens
+        user_profile.ai_tokens_used_today += daily_token_remaining
+
     user_profile.save()  # ORM operation inside sync_to_async
+
 
 async def ai_chat_view(request):
     if request.method == "POST":
         try:
-            daily_token = 2000
+            daily_token = 50000
             if request.has_subscription:
-                daily_token = 20000
+                daily_token = 500000
             
             data = json.loads(request.body)
             user_message = data.get("userMessage", "").strip()
@@ -1086,37 +1086,14 @@ async def ai_chat_view(request):
             if availble_tokens <= 0:
                 return JsonResponse({"todat_limit_hit": True})
 
-            chat_history = [
-                {"role": "system", "content": " You are IsAlgo AI, a friendly and knowledgeable trading assistant. Your purpose is to help traders in their journey by answering any trading-related questions, providing suggestions, and being productive and helpful in your responses. You specialize in trading strategies, market insights, and Pine Script coding for TradingView. If a user asks how to automate trades, refer them to: [IsAlgo Automation Docs](https://www.isalgo.com/docs/automate/). If a user asks how to write an alert for automation, refer them to: [IsAlgo Alerts Docs](https://www.isalgo.com/docs/alerts/). Maintain a friendly and professional tone while offering clear, precise advice and useful suggestions."}
-            ]
-
-            for msg in messages:
-                if "question" in msg:
-                    chat_history.append({"role": "user", "content": msg["question"]})
-                if "answer" in msg:
-                    chat_history.append({"role": "assistant", "content": msg["answer"]})
-
-            chat_history.append({"role": "user", "content": user_message})
-
-            max_token = 1000
+            max_token = 3000
             if max_token > availble_tokens:
                 max_token = availble_tokens
 
-            # Make an asynchronous API call
-            response = await ai_client.chat.completions.create(
-                model="gpt-4-turbo",
-                messages=chat_history,
-                max_tokens=max_token
-            )
-
-            ai_response = response.choices[0].message.content
-
-            prompt_tokens = response.usage.prompt_tokens
-            completion_tokens = response.usage.completion_tokens
-            total_tokens = response.usage.total_tokens
+            ai_response, prompt_tokens, completion_tokens, total_tokens = await get_ai_response(user_message, messages, max_token)
 
             # Async ORM update
-            await update_user_tokens(user_profile, total_tokens, daily_token_remaining)
+            await update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token)
 
             return JsonResponse({
                 "response": ai_response,

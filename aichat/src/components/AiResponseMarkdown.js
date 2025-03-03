@@ -37,7 +37,7 @@ function AiResponseMarkdown({ message }) {
             }
 
             return (
-              <div className="relative group">
+              <div className="relative group my-2">
                 <button
                   onClick={() => handleCopyCode(code)}
                   className="absolute right-2 top-2 p-2 rounded bg-background/40 transition-colors z-10"
@@ -66,16 +66,16 @@ function AiResponseMarkdown({ message }) {
             )
           },
           h1: ({ children }) => (
-            <h1 className="text-3xl font-bold mt-8 mb-6 text-transparent bg-clip-text bg-gradient-to-r from-title to-text/80">{children}</h1>
+            <h1 className="text-3xl font-bold mt-8 mb-6 text-title">{children}</h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-2xl font-semibold mt-6 mb-4 text-transparent bg-clip-text bg-gradient-to-r from-title to-text/80">{children}</h2>
+            <h2 className="text-2xl font-semibold mt-6 mb-4 text-title/90">{children}</h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-xl font-semibold mt-5 mb-3 text-transparent bg-clip-text bg-gradient-to-r from-title to-text/80">{children}</h3>
+            <h3 className="text-xl font-semibold mt-5 mb-3 text-title/80">{children}</h3>
           ),
           p: ({ children }) => (
-            <p className="text-text leading-relaxed mb-2 text-[15px]">{children}</p>
+            <p className="text-text leading-relaxed mb-2  text-[15px]">{children}</p>
           ),
           ul: ({ children }) => (
             <ul className="list-disc ml-6 my-4 text-text space-y-2 marker:text-title">{children}</ul>
@@ -87,7 +87,7 @@ function AiResponseMarkdown({ message }) {
             <li className="text-text/80 pl-2">{children}</li>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="relative my-6 pl-6 pr-4 py-4 border-l-2 border-text/40 bg-gradient-to-r from-text/20 to-transparent rounded-r-lg">
+            <blockquote className="relative my-6 pl-6 pr-4 py-4 border-l-2 border-text/40 bg-gradient-to-r from-text/10 to-transparent rounded-r-lg">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/3 to-transparent rounded-r-lg" />
               <div className="relative text-text italic">
                 {children}
@@ -125,6 +125,9 @@ function AiResponseMarkdown({ message }) {
           ),
           td: ({ children }) => (
             <td className="px-6 py-4 text-sm text-text/80 whitespace-nowrap">{children}</td>
+          ),
+          hr: ({ children }) => (
+            <hr className="my-2.5"/>
           ),
         }}
       >

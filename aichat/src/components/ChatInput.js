@@ -119,9 +119,9 @@ export default function ChatInput({
               </div>
             </div>
           </div>
-          {/* <p className="text-xs text-center text-text/60 mt-2">
-          ChatGPT can make mistakes. Consider checking important information.
-        </p> */}
+          {/* <p className="text-xs text-center text-text/50 mt-2 mb-0">
+            IsalGo AI can make mistakes. Consider checking important information.
+          </p> */}
         </form>
       </div>
     </Fragment>
