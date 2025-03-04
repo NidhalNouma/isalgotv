@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from functools import lru_cache
 from asgiref.sync import sync_to_async
 
-from strategies.models import Strategy
+from strategies.models import Strategy, StrategyResults
 
 import environ
 env = environ.Env()
@@ -14,11 +14,40 @@ ai_client = AsyncOpenAI(
 )
 ai_client.system_content = None
 
+from bs4 import BeautifulSoup
+
+def extract_text_with_media(html_content):
+    soup = BeautifulSoup(html_content, "html.parser")
+    # Replace images with [image](URL)
+    for img in soup.find_all("img"):
+        src = img.get("src")
+        if src:
+            img.replace_with(f"![image]({src})")
+
+    # Replace videos with [video](URL)
+    for video in soup.find_all("video"):
+        for source in video.find_all("source"):
+            src = source.get("src")
+            if src:
+                video.replace_with(f"[Whatch video]({src})")
+
+    # Extract text with replacements
+    return soup.get_text(separator="\n", strip=True)
+
 
 def get_system_content():
-    # ✅ Get all live strategies
-    strategies = Strategy.objects.filter(is_live=True).values('name', 'slug', 'content')
-    strategies_list = "\n".join([f"- [{strategy['name']}](https://www.isalgo.com/strategies/{strategy['slug']}/): {strategy['content']}" for strategy in strategies]) if strategies else "No active strategies available."
+    strategies = Strategy.objects.filter(is_live=True)
+
+    strategies_list = "\n".join([
+        f"- [{strategy.name}](https://www.isalgo.com/strategies/{strategy.slug}/): {strategy.content} \n\n Strategy settings:\n {strategy.settings_to_text()}"
+        for strategy in strategies
+    ]) if strategies else "No active strategies available."
+
+    best_results = StrategyResults.objects.all().order_by('-created_at')[:4]
+    best_results_list = "\n".join([
+        f"- [Result for {result.strategy.name}](https://www.isalgo.com/strategies/{result.strategy.slug}/?result={result.id}):  \n\n Result performance:\n {result.performance_to_text()} \n\n Result settings:\n {result.settings_to_text()}"
+        for result in best_results
+    ]) if best_results else "No results available." 
 
     docs_instalation = render_to_string('docs/include/docs/find_username.html')
     docs_setup = render_to_string('docs/include/docs/adding_strategy_to_chart.html')
@@ -60,6 +89,13 @@ def get_system_content():
     Below are the **live strategies available on IsAlgo**, along with their descriptions and URLs:
 
     {strategies_list}
+
+    ---
+
+    ### 📌 **🔥 Best Strategies results**
+    Below are the **best strategies results available on IsAlgo**, along with their performance and settings and URLs:
+
+    {best_results_list}
 
     ---
 
@@ -155,9 +191,7 @@ def get_system_content():
     Provide **creative and complex scripts** rather than basic ones, unless specifically requested otherwise.
     """
 
-    return system_content
-
-
+    return extract_text_with_media(system_content)
 
 async def get_ai_response(user_message, messages, max_token) -> tuple:
 

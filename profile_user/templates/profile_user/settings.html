@@ -11,25 +11,30 @@
     >
       {% include 'include/settings/tradingview.html' %}
     </div>
+    
     <div
       id="discord-setting"
       hx-on="hide-animate: setTimeout(function(){hideAll_hideMe();}, 1000);"
     >
       {% include 'include/settings/discord.html' %}
     </div>
-      {% include 'include/settings/payment_methods.html' %}
+
+    {% include 'include/settings/payment_methods.html' %}
+
     <div id="setting-membership">
       {% include 'include/settings/membership.html' %}
     </div>
+
     <div id="setting-ai-tokens">
       {% include 'include/settings/ai_tokens.html' %}
     </div>
-    {% include 'include/settings/password.html' %}
 
+    {% include 'include/settings/password.html' %}
+    
     {% if user.is_superuser %}
-    <div id="setting-ai-system-content" class="mt-8">
-      {% include 'include/settings/ai_system_content.html' %}
-    </div>
+      <div id="setting-ai-system-content" class="mt-8">
+        {% include 'include/settings/ai_system_content.html' %}
+      </div>
     {% endif %}
   </div>
   

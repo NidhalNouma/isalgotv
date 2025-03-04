@@ -226,6 +226,25 @@ class Strategy(models.Model):
                 self.settings = update_names(self.settings)
             
         super(Strategy, self).save(*args, **kwargs)
+    
+    def settings_to_text(self):
+        """Converts the settings JSON into a structured text format."""
+        if not self.settings:
+            return "No settings available."
+
+        text_output = ""
+        for section in self.settings:
+            section_title = section.get("key", "Unnamed Section")
+            text_output += f"\n{section_title}\n" + "=" * len(section_title) + "\n"
+
+            for entry in section.get("value", []):
+                for setting in entry:
+                    name = setting.get("display_name", "Unnamed Setting")
+                    default_value = setting.get("default_value", "N/A")
+
+                    text_output += f"- {name} => default value: {default_value}\n"
+        
+        return text_output
 
 
 class Replies(models.Model):
@@ -292,4 +311,33 @@ class StrategyResults(models.Model):
 
     images = GenericRelation(StrategyImages) 
     replies = GenericRelation(Replies) 
+
+    def performance_to_text(self):
+        performance_data = self.performance
+        formatted_output = []
+
+        for key, value in performance_data.items():
+            if key in performance_data:
+                formatted_output.append(f"{key}: {value}")
+
+        return "; ".join(formatted_output)
+
+    def settings_to_text(self):
+        """Converts the settings JSON into a structured text format."""
+        if not self.settings:
+            return "No settings available."
+
+        text_output = ""
+        for section in self.settings:
+            section_title = section.get("key", "Unnamed Section")
+            text_output += f"\n{section_title}\n" + "=" * len(section_title) + "\n"
+
+            for entry in section.get("value", []):
+                for setting in entry:
+                    name = setting.get("display_name", "Unnamed Setting")
+                    default_value = setting.get("default_value", "N/A")
+
+                    text_output += f"- {name} => Value: {default_value}\n"
+        
+        return text_output
     
