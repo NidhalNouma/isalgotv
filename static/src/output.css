@@ -2693,6 +2693,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-height: 100%;
 }
 
+.max-h-80 {
+  max-height: 20rem;
+}
+
 .min-h-\[56px\] {
   min-height: 56px;
 }

@@ -8,6 +8,8 @@ import {
   Brain,
   Code,
   Bitcoin,
+  Workflow, 
+  Bell
 } from "lucide-react";
 
 import Typewriter from "typewriter-effect";
@@ -61,82 +63,82 @@ const QuickActionsArray = [
     label: "Trading Ideas",
     icon: (className) => <Lightbulb className={` ${className}`} />,
     options: [
-      "Suggest a promising stock to watch this week.",
-      "What are some potential short-selling opportunities in the market?",
-      "Provide a trading idea based on recent market volatility.",
-      "Are there any undervalued stocks in the tech sector?",
+      "Suggest a profitable trading strategy for the current market conditions.",
+      "What are some high-probability trade setups for this week?",
+      "Analyze recent market volatility and suggest a trading opportunity.",
+      "Are there any undervalued assets that could offer good returns?",
     ],
   },
   {
     label: "Technical Analysis",
     icon: (className) => <ChartNoAxesColumn className={` ${className}`} />,
     options: [
-      "Analyze the chart of Apple Inc. (AAPL) using technical indicators.",
-      "What does the RSI indicate for Tesla stock?",
-      "Is there a head and shoulders pattern forming in the S&P 500?",
-      "Can you perform a Fibonacci retracement analysis on Amazon stock?",
+      "Perform a detailed technical analysis on Apple Inc. (AAPL).",
+      "How does the RSI indicator look for Tesla stock right now?",
+      "Identify any key support and resistance levels in the S&P 500.",
+      "Can you provide a Fibonacci retracement analysis for Amazon?",
     ],
   },
   {
     label: "Learning Strategies",
     icon: (className) => <LibraryBig className={` ${className}`} />,
     options: [
-      "Suggest a day trading strategy for volatile markets.",
-      "How can I implement a swing trading strategy?",
-      "What’s a good scalping strategy for forex trading?",
-      "Explain how to use moving averages in trading strategies.",
+      "Explain a robust day trading strategy for high-volatility markets.",
+      "How do I develop a systematic swing trading strategy?",
+      "What’s an effective scalping strategy for forex trading?",
+      "Break down the use of moving averages in trading strategies.",
     ],
   },
-  // {
-  //   label: "Market News Updates",
-  //   icon: (className) => <Newspaper className={` ${className}`} />,
-  //   options: [
-  //     "How do geopolitical tensions affect commodity prices?",
-  //     "What is the impact of the latest Fed meeting on the markets?",
-  //     "How do employment reports influence forex trading?",
-  //     "Analyze the market reaction to the latest earnings season.",
-  //   ],
-  // },
   {
     label: "Risk Management",
     icon: (className) => <Calculator className={` ${className}`} />,
     options: [
-      "How can I manage risk in my trading portfolio?",
-      "What is the importance of stop-loss orders?",
-      "Explain position sizing and its role in risk management.",
-      "How do I calculate the risk-reward ratio for a trade?",
+      "How do I manage risk effectively in my trading portfolio?",
+      "Why are stop-loss orders crucial in trading?",
+      "Explain the concept of position sizing in risk management.",
+      "How can I calculate and optimize the risk-reward ratio for my trades?",
     ],
   },
   {
     label: "Trading Psychology",
     icon: (className) => <Brain className={` ${className}`} />,
     options: [
-      "How can I overcome fear and greed in trading?",
-      "Tips for maintaining discipline in trading.",
-      "How does emotional bias affect trading decisions?",
-      "Strategies to manage stress in high-frequency trading.",
+      "What are the best techniques to overcome fear and greed in trading?",
+      "How can I develop more discipline in my trading approach?",
+      "Explain how emotional bias affects trading decisions.",
+      "What strategies can I use to manage stress in high-frequency trading?",
     ],
   },
   {
     label: "Pine Script Wizardry",
     icon: (className) => <Code className={` ${className}`} />,
     options: [
-      "Help me code a custom moving average crossover strategy in Pine Script.",
+      "Help me code a moving average crossover strategy in Pine Script v6.",
       "How do I create an RSI indicator with alerts in Pine Script?",
       "Can you write a Pine Script for a Bollinger Bands breakout strategy?",
-      "Assist me in coding a MACD histogram indicator in Pine Script.",
+      "Assist me in coding a MACD histogram indicator with custom settings.",
     ],
   },
-  // {
-  //   label: "Cryptocurrency Trading",
-  //   icon: (className) => <Bitcoin className={` ${className}`} />,
-  //   options: [
-  //     "What’s the current trend in Bitcoin prices?",
-  //     "How can I trade Ethereum effectively?",
-  //     "Explain the risks involved in cryptocurrency trading.",
-  //     "What are the best indicators for crypto technical analysis?",
-  //   ],
-  // },
+  {
+    label: "Automating Trades",
+    icon: (className) => <Workflow className={` ${className}`} />,
+    options: [
+      "How do I automate my TradingView strategy using IsAlgo Automate?",
+      "Can you format a TradingView alert message for IsAlgo automation?",
+      "What placeholders should I use in IsAlgo Alerts?",
+      "How does the Automation Playground help in testing my alerts?",
+    ],
+  },
+  {
+    label: "Writing Alerts",
+    icon: (className) => <Bell className={` ${className}`} />,
+    options: [
+      "Can you generate a TradingView alert message using IsAlgo Alerts Placeholders?",
+      "Format an alert message for a buy signal using IsAlgo Alerts.",
+      "How do I structure an alert message for automated trading?",
+      "Can you give me an example of a stop-loss alert using IsAlgo placeholders?",
+    ],
+  },
 ];
 
 function QuickActions({ setQuuickActionMsg }) {
@@ -175,7 +177,7 @@ function QuickActions({ setQuuickActionMsg }) {
     <Fragment>
       <div
         ref={divRef}
-        className="grid grid-cols-1 gap-4 max-w-2xl w-full mx-auto px-6"
+        className="grid grid-cols-1 gap-4 max-w-3xl w-full mx-auto px-6"
       >
         {options.map((v, i) => (
           <div
@@ -198,7 +200,7 @@ function QuickActions({ setQuuickActionMsg }) {
     </Fragment>
   ) : (
     <Fragment>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl w-full">
         {QuickActionsArray.map((v, i) => (
           <ActionButton
             key={i}

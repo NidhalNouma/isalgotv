@@ -32,6 +32,7 @@ urlpatterns = [
     
     path('ai/buy-tokens/', buy_ai_tokens, name='buy_ai_tokens'),
     path('ai/chat/', ai_chat_view, name='ai_chat'),
+    path('ai/system-content/', get_ai_system_content, name='ai_system_content'),
 
 
     # path('preview-email/', preview_email, name='preview_email'),

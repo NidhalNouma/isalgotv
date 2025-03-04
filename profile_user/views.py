@@ -1040,8 +1040,18 @@ def remove_access(subscription_id, cancel_email = True):
 # profile_user.deactivate_all_accounts()
 
 from asgiref.sync import sync_to_async
-from .utils.ai import get_ai_response
+from .utils.ai import get_ai_response, get_system_content
 
+def get_ai_system_content(request):
+    if request.method == "POST":
+        if request.user.is_authenticated and request.user.is_superuser:
+            system_content = get_system_content()
+            context = {
+                "system_content": system_content,
+            }
+
+            response = render(request, 'include/settings/ai_system_content.html', context)
+            return response
 
 @sync_to_async
 def update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token):

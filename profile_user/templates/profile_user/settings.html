@@ -24,7 +24,13 @@
     <div id="setting-ai-tokens">
       {% include 'include/settings/ai_tokens.html' %}
     </div>
-      {% include 'include/settings/password.html' %}
+    {% include 'include/settings/password.html' %}
+
+    {% if user.is_superuser %}
+    <div id="setting-ai-system-content" class="mt-8">
+      {% include 'include/settings/ai_system_content.html' %}
+    </div>
+    {% endif %}
   </div>
   
 </main>
