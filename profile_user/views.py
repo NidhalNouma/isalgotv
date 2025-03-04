@@ -1047,12 +1047,17 @@ from .utils.ai import get_ai_response
 def update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token):
     """ Update user AI token usage safely in async context. """
     tokens = total_tokens - daily_token_remaining
+     
+    print("Total Tokens: ", total_tokens, "Daily Token Remaining: ", daily_token_remaining, "Tokens: ", tokens) 
 
     if tokens > 0:
-        user_profile.ai_tokens_available -= tokens
+        new_available_tokens = user_profile.ai_tokens_available - tokens
+        if new_available_tokens < 0:
+            new_available_tokens = 0
+        user_profile.ai_tokens_available = new_available_tokens
         user_profile.ai_tokens_used_today = daily_token
     else:
-        user_profile.ai_tokens_used_today += daily_token_remaining
+        user_profile.ai_tokens_used_today += total_tokens
 
     user_profile.save()  # ORM operation inside sync_to_async
 
@@ -1090,7 +1095,8 @@ async def ai_chat_view(request):
             if max_token > availble_tokens:
                 max_token = availble_tokens
 
-            ai_response, prompt_tokens, completion_tokens, total_tokens = await get_ai_response(user_message, messages, max_token)
+            response_data = await get_ai_response(user_message, messages, max_token)  # ✅ Await once
+            ai_response, prompt_tokens, completion_tokens, total_tokens = response_data  # ✅ Unpack
 
             # Async ORM update
             await update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token)
@@ -1132,7 +1138,7 @@ def buy_ai_tokens(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#add-"+context['title']+"-form-errors")
 
-        price_per_token = 10 / 100000  # $10 per 100,000 tokens
+        price_per_token = 1 / 100000  # $1 per 100,000 tokens
         price = int(token_amount) * price_per_token * 100  # Convert to cents for Stripe
    
         if not payment_method or payment_method == "None":

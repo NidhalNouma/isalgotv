@@ -12,9 +12,9 @@ env = environ.Env()
 ai_client = AsyncOpenAI(
     api_key=env('AI_KEY'),  
 )
+ai_client.system_content = None
 
-@lru_cache(maxsize=1)
-@sync_to_async
+
 def get_system_content():
     # ✅ Get all live strategies
     strategies = Strategy.objects.filter(is_live=True).values('name', 'slug', 'content')
@@ -158,9 +158,15 @@ def get_system_content():
     return system_content
 
 
+
 async def get_ai_response(user_message, messages, max_token) -> tuple:
 
-    system_content = await get_system_content()
+    system_content = ai_client.system_content
+
+    if not system_content:
+        system_content = await sync_to_async(get_system_content)()
+        # print(system_content)
+        ai_client.system_content = system_content 
 
     chat_history = [
         {"role": "system", "content": system_content},
