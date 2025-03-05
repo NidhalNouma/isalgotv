@@ -475,18 +475,24 @@ function showModalImages(images, imgId, id = "") {
   });
 }
 
-function openAITokensModalSettings(){
+function openAITokensModalSettings(fromIsalgoAI = false){
   openModel('staticModal-ai-tokens');
   mountStripeElement('ai-tokens');
 
-  const form = document.getElementById("add-ai-tokens-form"); 
+  if (fromIsalgoAI === true) {
+    const form = document.getElementById("add-ai-tokens-form"); 
+    htmx.process(form);
+  } else {
+    const form = document.getElementById("add-ai-tokens-form"); 
 
-  let newParam = "settings=true";
-  let currentHxPost = form.getAttribute("hx-post");
-  let newHxPost = currentHxPost + "?" + newParam
+    let newParam = "settings=true";
+    let currentHxPost = form.getAttribute("hx-post");
+    let newHxPost = currentHxPost + "?" + newParam
 
-  form.setAttribute("hx-post", newHxPost);
-  htmx.process(form);
+    form.setAttribute("hx-post", newHxPost);
+    htmx.process(form);
+  }
+
 }
 
 function closeAITokensModalSettings(){

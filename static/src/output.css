@@ -2045,6 +2045,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin: 1rem;
 }
 
+.m-6 {
+  margin: 1.5rem;
+}
+
 .\!mx-auto {
   margin-left: auto !important;
   margin-right: auto !important;
@@ -4503,6 +4507,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
 }
 
 .\!py-1 {
