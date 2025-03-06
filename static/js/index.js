@@ -678,7 +678,7 @@ function scrollToResultOrComment(type, id) {
   }
 }
 
-function handleSettingCsvFileSelect(event) {
+function handleXlsxFileSelect(event) {
   const fileInput = event.target;
   const file = fileInput.files[0];
 
@@ -689,271 +689,185 @@ function handleSettingCsvFileSelect(event) {
   const reader = new FileReader();
 
   reader.onload = function (e) {
-    const contents = e.target.result;
-    const lines = contents.split("\n");
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
 
-    let previousKey = "";
-    let startKey = "";
-    let cnt = 0;
+    // Process settings (Properties tab)
+    if (workbook.Sheets["Properties"]) {
+      const propertiesSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Properties"], { header: 1 });
+      fillSettingsFromSheet(propertiesSheet);
+    }
 
-    lines.forEach((line, index) => {
-      let [key, value] = line.split(",");
+    // Process results (Performance tab)
+    if (workbook.Sheets["Performance"]) {
+      const performanceSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Performance"], { header: 1 });
+      fillResultsFromSheet(performanceSheet);
+    }
 
-      value = value.replace(/(\r\n|\n|\r)/gm, "");
-      key = key.replace(/(\r\n|\n|\r)/gm, "");
+    // Process results (Performance tab)
+    if (workbook.Sheets["Trades analysis"]) {
+      const performanceSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Trades analysis"], { header: 1 });
+      fillResultsFromSheet(performanceSheet);
+    }
 
-      const originalKey = key;
-
-      if (startKey) key = startKey;
-
-      let keyNumber = key + "_" + cnt;
-
-      const input = document.getElementById("id_settings_" + keyNumber);
-      if (input) {
-        cnt = cnt + 1;
-        if (startKey === "") startKey = key;
-
-        if (input.type == "checkbox") {
-          if (value === "On") {
-            input.checked = true;
-            input.value = "true";
-          } else {
-            input.checked = false;
-            input.value = "false";
-          }
-        } else if (input.type == "text") {
-          const dropdown = document.getElementById(
-            "dropdown_text_" + keyNumber
-          );
-          if (dropdown) dropdown.innerHTML = value;
-          input.value = value;
-        }
-      } else {
-        if (originalKey === "Symbol" && document.getElementById("pair")) {
-          const [broker, symbol] = value.split(":");
-          document.getElementById("pair").value = symbol;
-          document.getElementById("broker").value = broker;
-        } else if (originalKey === "Trading range") {
-          const [start, end] = value.split(" — ");
-
-          if (document.getElementById("start_at")) {
-            const time = new Date(start);
-            time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
-            document.getElementById("start_at").value = time
-              .toISOString()
-              .slice(0, 16);
-          }
-          if (document.getElementById("end_at")) {
-            const time = new Date(end);
-            time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
-            document.getElementById("end_at").value = time
-              .toISOString()
-              .slice(0, 16);
-          }
-        } else if (originalKey === "Timeframe") {
-          const [num, str] = value.split(" ");
-
-          if (document.getElementById("time_frame"))
-            document.getElementById("time_frame").value = num;
-          if (document.getElementById("time_frame_period")) {
-            let val = str.replace(/(\r\n|\n|\r)/gm, "");
-
-            if (val.toLowerCase().indexOf("second") !== -1) val = "seconds";
-            else if (val.toLowerCase().indexOf("minute") !== -1)
-              val = "minutes";
-            else if (val.toLowerCase().indexOf("hour") !== -1) val = "hours";
-            else if (val.toLowerCase().indexOf("day") !== -1) val = "days";
-            else if (val.toLowerCase().indexOf("week") !== -1) val = "weeks";
-            else if (val.toLowerCase().indexOf("month") !== -1) val = "months";
-            else if (val.toLowerCase().indexOf("year") !== -1) val = "years";
-
-            document.getElementById("time_frame_period").value = val;
-          }
-        } else if (originalKey === "Initial capital") {
-          if (document.getElementById("initial_capital"))
-            document.getElementById("initial_capital").value = value;
-        }
-      }
-
-      previousKey = key;
-    });
+    // Process results (Performance tab)
+    if (workbook.Sheets["Risk performance ratios"]) {
+      const performanceSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Risk performance ratios"], { header: 1 });
+      fillResultsFromSheet(performanceSheet);
+    }
 
     fileInput.value = null;
   };
 
-  reader.readAsText(file);
+  reader.readAsArrayBuffer(file);
 }
 
-function handleResultsCsvFileSelect(event) {
-  const fileInput = event.target;
-  const file = fileInput.files[0];
+function fillSettingsFromSheet(sheetData) {
+  let cnt = 0;
+  let startKey = "";
 
-  if (!file) {
-    return;
-  }
+  sheetData.forEach((row) => {
+    let [key, value] = row;
 
-  const reader = new FileReader();
+    key = key.toString().trim();
+    value = value.toString().trim();
 
-  reader.onload = function (e) {
-    const contents = e.target.result;
-    const lines = contents.split("\n");
+    let inputKey = key;
+    if (startKey) inputKey = startKey;
 
-    let previousKey = "";
-    lines.forEach((line, index) => {
-      let [key, allUSD, allPerc, longUSD, longPerc, shortUSD, shortPerc] =
-        line.split(",");
+    let keyNumber = inputKey + "_" + cnt;
+    const input = document.getElementById("id_settings_" + keyNumber);
 
-      key = key.replace(/(\r\n|\n|\r)/gm, "");
-      allUSD = allUSD.replace(/(\r\n|\n|\r)/gm, "");
-      allPerc = allPerc.replace(/(\r\n|\n|\r)/gm, "");
-      longUSD = longUSD.replace(/(\r\n|\n|\r)/gm, "");
-      longPerc = longPerc.replace(/(\r\n|\n|\r)/gm, "");
-      shortUSD = shortUSD.replace(/(\r\n|\n|\r)/gm, "");
-      shortPerc = shortPerc.replace(/(\r\n|\n|\r)/gm, "");
+    if (input) {
+      cnt++;
+      if (!startKey) startKey = key;
 
-      if (key === "Net Profit") {
-        if (document.getElementById("net_profit"))
-          document.getElementById("net_profit").value = allUSD;
-        if (document.getElementById("net_profit_long"))
-          document.getElementById("net_profit_long").value = longUSD;
-        if (document.getElementById("net_profit_short"))
-          document.getElementById("net_profit_short").value = shortUSD;
-        if (document.getElementById("net_profit_percentage"))
-          document.getElementById("net_profit_percentage").value = allPerc;
-        if (document.getElementById("net_profit_percentage_long"))
-          document.getElementById("net_profit_percentage_long").value =
-            longPerc;
-        if (document.getElementById("net_profit_percentage_short"))
-          document.getElementById("net_profit_percentage_short").value =
-            shortPerc;
-      } else if (key === "Gross Profit") {
-        if (document.getElementById("gross_profit"))
-          document.getElementById("gross_profit").value = allUSD;
-        if (document.getElementById("gross_profit_long"))
-          document.getElementById("gross_profit_long").value = longUSD;
-        if (document.getElementById("gross_profit_short"))
-          document.getElementById("gross_profit_short").value = shortUSD;
-        if (document.getElementById("gross_profit_percent"))
-          document.getElementById("gross_profit_percent").value = allPerc;
-        if (document.getElementById("gross_profit_percent_long"))
-          document.getElementById("gross_profit_percent_long").value = longPerc;
-        if (document.getElementById("gross_profit_percent_short"))
-          document.getElementById("gross_profit_percent_short").value =
-            shortPerc;
-      } else if (key === "Gross Loss") {
-        if (document.getElementById("gross_loss"))
-          document.getElementById("gross_loss").value = allUSD;
-        if (document.getElementById("gross_loss_long"))
-          document.getElementById("gross_loss_long").value = longUSD;
-        if (document.getElementById("gross_loss_short"))
-          document.getElementById("gross_loss_short").value = shortUSD;
-        if (document.getElementById("gross_loss_percent"))
-          document.getElementById("gross_loss_percent").value = allPerc;
-        if (document.getElementById("gross_loss_percent_long"))
-          document.getElementById("gross_loss_percent_long").value = longPerc;
-        if (document.getElementById("gross_loss_percent_short"))
-          document.getElementById("gross_loss_percent_short").value = shortPerc;
-      } else if (key === "Profit Factor") {
-        if (document.getElementById("profit_factor"))
-          document.getElementById("profit_factor").value = allUSD;
-        if (document.getElementById("profit_factor_long"))
-          document.getElementById("profit_factor_long").value = longUSD;
-        if (document.getElementById("profit_factor_short"))
-          document.getElementById("profit_factor_short").value = shortUSD;
-      } else if (key === "Percent Profitable") {
-        if (document.getElementById("profitable_percentage"))
-          document.getElementById("profitable_percentage").value = allUSD;
-        if (document.getElementById("profitable_percentage_long"))
-          document.getElementById("profitable_percentage_long").value = longUSD;
-        if (document.getElementById("profitable_percentage_short"))
-          document.getElementById("profitable_percentage_short").value =
-            shortUSD;
-      } else if (key === "Max Drawdown") {
-        if (document.getElementById("max_dd"))
-          document.getElementById("max_dd").value = allUSD;
-        if (document.getElementById("max_dd_percentage"))
-          document.getElementById("max_dd_percentage").value = allPerc;
-      } else if (key === "Total Closed Trades") {
-        if (document.getElementById("total_trades"))
-          document.getElementById("total_trades").value = allUSD;
-        if (document.getElementById("total_trades_long"))
-          document.getElementById("total_trades_long").value = longUSD;
-        if (document.getElementById("total_trades_short"))
-          document.getElementById("total_trades_short").value = shortUSD;
-      } else if (key === "Number Winning Trades") {
-        if (document.getElementById("winning_trades"))
-          document.getElementById("winning_trades").value = allUSD;
-        if (document.getElementById("winning_trades_long"))
-          document.getElementById("winning_trades_long").value = longUSD;
-        if (document.getElementById("winning_trades_short"))
-          document.getElementById("winning_trades_short").value = shortUSD;
-      } else if (key === "Number Losing Trades") {
-        if (document.getElementById("losing_trades"))
-          document.getElementById("losing_trades").value = allUSD;
-        if (document.getElementById("losing_trades_long"))
-          document.getElementById("losing_trades_long").value = longUSD;
-        if (document.getElementById("losing_trades_short"))
-          document.getElementById("losing_trades_short").value = shortUSD;
-      } else if (key === "Avg Trade") {
-        if (document.getElementById("avg_trade"))
-          document.getElementById("avg_trade").value = allUSD;
-        if (document.getElementById("avg_trade_long"))
-          document.getElementById("avg_trade_long").value = longUSD;
-        if (document.getElementById("avg_trade_short"))
-          document.getElementById("avg_trade_short").value = shortUSD;
-        if (document.getElementById("avg_trade_percentage"))
-          document.getElementById("avg_trade_percentage").value = allPerc;
-        if (document.getElementById("avg_trade_percentage_long"))
-          document.getElementById("avg_trade_percentage_long").value = longPerc;
-        if (document.getElementById("avg_trade_percentage_short"))
-          document.getElementById("avg_trade_percentage_short").value =
-            shortPerc;
-      } else if (key === "Avg Winning Trade") {
-        if (document.getElementById("avg_winning_trade"))
-          document.getElementById("avg_winning_trade").value = allUSD;
-        if (document.getElementById("avg_winning_trade_long"))
-          document.getElementById("avg_winning_trade_long").value = longUSD;
-        if (document.getElementById("avg_winning_trade_short"))
-          document.getElementById("avg_winning_trade_short").value = shortUSD;
-        if (document.getElementById("avg_winning_trade_percentage"))
-          document.getElementById("avg_winning_trade_percentage").value =
-            allPerc;
-        if (document.getElementById("avg_winning_trade_percentage_long"))
-          document.getElementById("avg_winning_trade_percentage_long").value =
-            longPerc;
-        if (document.getElementById("avg_winning_trade_percentage_short"))
-          document.getElementById("avg_winning_trade_percentage_short").value =
-            shortPerc;
-      } else if (key === "Avg Losing Trade") {
-        if (document.getElementById("avg_losing_trade"))
-          document.getElementById("avg_losing_trade").value = allUSD;
-        if (document.getElementById("avg_losing_trade_long"))
-          document.getElementById("avg_losing_trade_long").value = longUSD;
-        if (document.getElementById("avg_losing_trade_short"))
-          document.getElementById("avg_losing_trade_short").value = shortUSD;
-        if (document.getElementById("avg_losing_trade_percentage"))
-          document.getElementById("avg_losing_trade_percentage").value =
-            allPerc;
-        if (document.getElementById("avg_losing_trade_percentage_long"))
-          document.getElementById("avg_losing_trade_percentage_long").value =
-            longPerc;
-        if (document.getElementById("avg_losing_trade_percentage_short"))
-          document.getElementById("avg_losing_trade_percentage_short").value =
-            shortPerc;
-      } else if (key === "Ratio Avg Win / Avg Loss") {
-        if (document.getElementById("ratio_trade"))
-          document.getElementById("ratio_trade").value = allUSD;
-        if (document.getElementById("ratio_trade_long"))
-          document.getElementById("ratio_trade_long").value = longUSD;
-        if (document.getElementById("ratio_trade_short"))
-          document.getElementById("ratio_trade_short").value = shortUSD;
+      if (input.type == "checkbox") {
+        if (value === "On") {
+          input.checked = true;
+          input.value = "true";
+        } else {
+          input.checked = false;
+          input.value = "false";
+        }
+      } else if (input.type == "text") {
+        const dropdown = document.getElementById(
+          "dropdown_text_" + keyNumber
+        );
+        if (dropdown) dropdown.innerHTML = value;
+        input.value = value;
       }
-    });
+    } else {
+      // Handle special cases for specific settings
+      if (key === "Symbol" && document.getElementById("pair")) {
+        const [broker, symbol] = value.split(":");
+        document.getElementById("pair").value = symbol;
+        document.getElementById("broker").value = broker;
+      } else if (key === "Trading range") {
+        const [start, end] = value.split(" — ");
+        if (document.getElementById("start_at")) {
+          let time = new Date(start);
+          time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
+          document.getElementById("start_at").value = time.toISOString().slice(0, 16);
+        }
+        if (document.getElementById("end_at")) {
+          let time = new Date(end);
+          time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
+          document.getElementById("end_at").value = time.toISOString().slice(0, 16);
+        }
+      } else if (key === "Timeframe") {
+        const [num, period] = value.split(" ");
+        document.getElementById("time_frame").value = num;
+        document.getElementById("time_frame_period").value = convertTimeframePeriod(period);
+      } else if (key === "Initial capital" && document.getElementById("initial_capital")) {
+        document.getElementById("initial_capital").value = value + document.getElementById("initial_capital").value;
+      } else if (key === "Currency" && document.getElementById("initial_capital")) {
+        document.getElementById("initial_capital").value += " " + value;
+      }
+    }
+  });
+}
 
-    fileInput.value = null;
-  };
+function fillResultsFromSheet(sheetData) {
+  sheetData.forEach((row) => {
+    // console.log(row);
+    let [key, allUSD, allPerc, longUSD, longPerc, shortUSD, shortPerc] = row.map((v) => v ? v.toString().trim() : "");
 
-  reader.readAsText(file);
+    key = key.toLowerCase();
+    
+    switch (key) {
+      case "net profit":
+        setResultValues("net_profit", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        break;
+      case "gross profit":
+        setResultValues("gross_profit", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        break;
+      case "gross loss":
+        setResultValues("gross_loss", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        break;
+      case "profit factor":
+        setResultValues("profit_factor", allUSD, longUSD, shortUSD);
+        break;
+      case "percent profitable":
+        setResultValues("profitable_percentage", trimPercentage(allPerc), trimPercentage(longPerc), trimPercentage(shortPerc));
+        break;
+      case "max equity drawdown":
+        document.getElementById("max_dd").value = allUSD;
+        document.getElementById("max_dd_percentage").value = trimPercentage(allPerc);
+        break;
+      case "total trades":
+        setResultValues("total_trades", allUSD, longUSD, shortUSD);
+        break;
+      case "winning trades":
+        setResultValues("winning_trades", allUSD, longUSD, shortUSD);
+        break;
+      case "losing trades":
+        setResultValues("losing_trades", allUSD, longUSD, shortUSD);
+        break;
+      case "avg p&l":
+        setResultValues("avg_trade", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        break;
+      case "avg winning trade":
+        setResultValues("avg_winning_trade", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        break;
+      case "avg losing trade":
+        setResultValues("avg_losing_trade", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        break;
+      case "ratio avg win / avg loss":
+        setResultValues("ratio_trade", allUSD, longUSD, shortUSD);
+        break;
+    }
+  });
+}
+
+// Helper function to set values
+function setResultValues(baseKey, allUSD, longUSD, shortUSD, allPerc = "", longPerc = "", shortPerc = "") {
+  if (document.getElementById(baseKey)) document.getElementById(baseKey).value = allUSD;
+  if (document.getElementById(baseKey + "_long")) document.getElementById(baseKey + "_long").value = longUSD;
+  if (document.getElementById(baseKey + "_short")) document.getElementById(baseKey + "_short").value = shortUSD;
+  if (document.getElementById(baseKey + "_percentage")) document.getElementById(baseKey + "_percentage").value =  trimPercentage(allPerc);
+  if (document.getElementById(baseKey + "_percentage_long")) document.getElementById(baseKey + "_percentage_long").value = trimPercentage(longPerc);
+  if (document.getElementById(baseKey + "_percentage_short")) document.getElementById(baseKey + "_percentage_short").value = trimPercentage(shortPerc);
+}
+
+function trimPercentage(num) {
+  num = parseFloat(num) * 100;
+
+  return num.toFixed(2);
+}
+
+
+// Helper function to convert timeframe period
+function convertTimeframePeriod(val) {
+  val = val.toLowerCase();
+  if (val.includes("second")) return "seconds";
+  if (val.includes("minute")) return "minutes";
+  if (val.includes("hour")) return "hours";
+  if (val.includes("day")) return "days";
+  if (val.includes("week")) return "weeks";
+  if (val.includes("month")) return "months";
+  if (val.includes("year")) return "years";
+  return val;
 }
 
 function getNumberOfLines(id) {

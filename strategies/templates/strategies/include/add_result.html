@@ -94,18 +94,18 @@
                   id="csv_results"
                   class="hidden"
                   type="file"
-                  accept=".csv"
+                  accept=".xlsx"
                   name="csv_results"
-                  onchange="handleResultsCsvFileSelect(event)"
+                  onchange="handleXlsxFileSelect(event)"
                 />
                 <div id="output" class="text-text"></div>
                 <button
                   onclick='showSelectImgs("csv_results")'
                   type="button"
                   class="mx-auto mt-auto btn-icon"
-                >Uplaad csv file
+                >Uplaad xlsx file
                   <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4 fill-current" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3V320c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 53 43 96 96 96H352c53 0 96-43 96-96V352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V352z"/></svg>
-                  <span class="sr-only">Upload csv</span>
+                  <span class="sr-only">Upload xlsx</span>
                 </button>
             </div>
 
@@ -411,13 +411,13 @@
               </div>
               <div>
                 <label
-                  for="gross_profit_percent"
+                  for="gross_profit_percentage"
                   class="input-label"
                   >Gross profit %</label
                 >
                 <input
                   type="number"
-                  id="gross_profit_percent"
+                  id="gross_profit_percentage"
                   name="performance_gross_profit_percentage"
                   class="input-text w-full"
                   placeholder="50%"
@@ -425,13 +425,13 @@
               </div>
               <div>
                 <label
-                  for="gross_profit_percent_long"
+                  for="gross_profit_percentage_long"
                   class="input-label"
                   >Long</label
                 >
                 <input
                   type="number"
-                  id="gross_profit_percent_long"
+                  id="gross_profit_percentage_long"
                   name="performance_gross_profit_percentage_long"
                   class="input-text w-full"
                   placeholder="50%"
@@ -439,13 +439,13 @@
               </div>
               <div>
                 <label
-                  for="gross_profit_percent_short"
+                  for="gross_profit_percentage_short"
                   class="input-label"
                   >Short</label
                 >
                 <input
                   type="number"
-                  id="gross_profit_percent_short"
+                  id="gross_profit_percentage_short"
                   name="performance_gross_profit_percentage_short"
                   class="input-text w-full"
                   placeholder="50%"
@@ -495,13 +495,13 @@
               </div>
               <div>
                 <label
-                  for="gross_loss_percent"
+                  for="gross_loss_percentage"
                   class="input-label"
                   >Gross loss %</label
                 >
                 <input
                   type="number"
-                  id="gross_loss_percent"
+                  id="gross_loss_percentage"
                   name="performance_gross_loss_percentage"
                   class="input-text w-full"
                   placeholder="50%"
@@ -509,13 +509,13 @@
               </div>
               <div>
                 <label
-                  for="gross_loss_percent_long"
+                  for="gross_loss_percentage_long"
                   class="input-label"
                   >Long</label
                 >
                 <input
                   type="number"
-                  id="gross_loss_percent_long"
+                  id="gross_loss_percentage_long"
                   name="performance_gross_loss_percentage_long"
                   class="input-text w-full"
                   placeholder="50%"
@@ -523,13 +523,13 @@
               </div>
               <div>
                 <label
-                  for="gross_loss_percent_short"
+                  for="gross_loss_percentage_short"
                   class="input-label"
                   >Short</label
                 >
                 <input
                   type="number"
-                  id="gross_loss_percent_short"
+                  id="gross_loss_percentage_short"
                   name="performance_gross_loss_percentage_short"
                   class="input-text w-full"
                   placeholder="50%"
@@ -624,14 +624,14 @@
                 <label
                   for="avg_trade"
                   class="input-label"
-                  >Avg Trade</label
+                  >Avg P&L</label
                 >
                 <input
                   type="number"
                   id="avg_trade"
                   name="performance_avg_trade"
                   class="input-text w-full"
-                  placeholder="12%"
+                  placeholder="12"
                 />
               </div>
               <div>
@@ -645,7 +645,7 @@
                   id="avg_trade_long"
                   name="performance_avg_trade_long"
                   class="input-text w-full"
-                  placeholder="12%"
+                  placeholder="12"
                 />
               </div>
               <div>
@@ -659,11 +659,11 @@
                   id="avg_trade_short"
                   name="performance_avg_trade_short"
                   class="input-text w-full"
-                  placeholder="12%"
+                  placeholder="12"
                 />
               </div>
               <div>
-                <label for="avg_trade_percentage" class="input-label">Avg Trade %</label>
+                <label for="avg_trade_percentage" class="input-label">Avg P&L %</label>
                 <input
                   type="number"
                   id="avg_trade_percentage"
@@ -1037,18 +1037,18 @@
                     id="csv_settings"
                     class="hidden"
                     type="file"
-                    accept=".csv"
+                    accept=".xlsx"
                     name="csv_settings"
-                    onchange="handleSettingCsvFileSelect(event)"
+                    onchange="handleXlsxFileSelect(event)"
                   />
                   <div id="output" class="text-text"></div>
                   <button
                     onclick='showSelectImgs("csv_settings")'
                     type="button"
                     class="mt-auto btn-icon mx-auto"
-                  >Uplaad csv file
+                  >Uplaad xlsx file
                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4 fill-current" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3V320c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 53 43 96 96 96H352c53 0 96-43 96-96V352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V352z"/></svg>
-                    <span class="sr-only">Upload csv</span>
+                    <span class="sr-only">Upload xlsx</span>
                   </button>
               </div>
 
@@ -1233,7 +1233,7 @@
               <textarea
                 name="description"
                 rows="3"
-                class="block ml-4 p-2.5 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full ml-2 input-text"
                 placeholder="Comment..."
               ></textarea>
             </div>

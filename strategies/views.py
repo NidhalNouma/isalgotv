@@ -175,7 +175,7 @@ def add_result(request, id):
                 if key.startswith("performance_"):
                     # Remove "performance_" prefix from the key
                     performance_key = key[len("performance_"):]
-                    print('performance_key', performance_key)
+                    # print('performance_key', performance_key)
                     performance_data[performance_key] = value
 
 

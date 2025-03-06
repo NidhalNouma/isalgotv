@@ -163,7 +163,7 @@ def get_system_content():
         - If a user wants to share their trading results, direct them to the Results Sharing Guide.
 
         Always maintain a friendly and professional tone while offering clear, precise advice and creative, advanced Pine Script v6 examples unless a simpler version is requested.
-    """
+    """.strip()
 
     return extract_text_with_media(system_content)
 

@@ -6,27 +6,27 @@
   <section id="share-inputs">
     <aside>
       <h3>
-        Share inputs & properties
+        Share properties & perfermance
       </h3>
 
       <p>
-        The easiest way to share the inputs and properties you used is by
-        downloading the properties file from the TradingView strategy tester.
-        The video below demonstrates how you can do this. While you can add them
-        manually, we highly recommend using the downloaded file for convenience.
+        The easiest way to share the properties and performance you used is by exporting the data from the TradingView strategy tester as an Excel file.<br />
+        To do this, open the strategy tester, click on the strategy name, and select ‘Export Data.’ <br />
+        The video below demonstrates this process. While you can manually enter the details, we highly recommend using the exported file for accuracy and convenience.
+
       </p>
       <video
         muted=""
         controls="controls"
       >
         <source
-          src="https://isalgotest.s3.amazonaws.com/docs/add_properties.mp4"
+          src="https://isalgotest.s3.amazonaws.com/docs/add_properties_performance.mp4"
           type="video/mp4"
         />
       </video>
   </aside>
   </section>
-
+{% comment %} 
   <section id="share-perfermance">
     <aside>
       <h3>Share perfermance</h3>
@@ -46,7 +46,7 @@
         />
       </video>
     </aside>
-  </section>
+  </section> {% endcomment %}
 
   <section id="share-description">
     <aside>
@@ -60,4 +60,9 @@
       </p>
     </aside>
   </section>
+
+  <div class="mt-4" >
+    {% include 'include/infos.html' with info="We only accept profitable results with a minimum of 100 closed trades.<br />All results must be realistic, please ensure that commission and slippage are applied during testing." %}
+  </div>
+
 </article>

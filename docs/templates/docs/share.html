@@ -9,7 +9,7 @@
   </div>
 
   {% load custom_tags %}
-  {% with nav_json="[{'name': 'Inputs', 'href': '#share-inputs'}, {'name': 'Perfermance', 'href': '#share-perfermance'}, {'name': 'Description', 'href': '#share-description'}]" %}
+  {% with nav_json="[{'name': 'Properties & perfermance', 'href': '#share-inputs'}, {'name': 'Description', 'href': '#share-description'}]" %}
       {% with nav_items=nav_json|load_json %}
           {% include "include/docs/right_nav.html" with nav_items=nav_items %}
       {% endwith %}
