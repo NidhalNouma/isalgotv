@@ -726,6 +726,8 @@ function fillSettingsFromSheet(sheetData) {
   let cnt = 0;
   let startKey = "";
 
+  if (document.getElementById("initial_capital")) document.getElementById("initial_capital").value = "";
+
   sheetData.forEach((row) => {
     let [key, value] = row;
 

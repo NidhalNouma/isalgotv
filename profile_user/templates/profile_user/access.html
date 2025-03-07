@@ -11,11 +11,7 @@
 
 
 <main class="mt-0 mb-16 w-full" id="access-main">
-    {% if not user_profile.tradingview_username %}
-    {% include 'include/warnings.html' with warning="No tradingview username found. <a class='underline font-semibold' href='/p/settings/'>Click here</a> to set your username." %}
-    {% else %}
     {% include 'include/access_list.html' %}
-    {% endif %}
 </main>
 
 {% endblock page %}

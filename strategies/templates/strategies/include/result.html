@@ -32,7 +32,7 @@
     </div>
   </div>
   
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-0">
     <div class="space-y-4">
       <div class="flex gap-4">
         <div class="p-4 rounded-lg bg-profit/10 w-full">
@@ -68,8 +68,9 @@
 
 
 
-      <div class="w-full">
+      <div class="w-full ">
         <button
+          id="result-perfermance-{{result.id}}"
           onclick="openModel('result-modal-{{result.id}}')"
           class="bg-primary text-background text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full"
         >
@@ -148,16 +149,18 @@
     </div>
   </div>
 
+  {% if result.description %}
   <p
     id="paragraph-result-{{result.id}}"
-    class="text-text/70 text-sm pb-0 break-all"
+    class="text-text/70 text-sm pb-0 break-all mt-2"
   >
     {{result.description|linebreaksbr}}
   </p>
+  {% endif %}
 
  {% include "include/images.html" with images=result.images.all %}
 
-  <div class="mb-0.5 mt-2 flex items-center">
+  <div class="mb-0.5 mt-1.5 flex items-center">
     <span class="text-text/50 text-xs hover:text-text/80"
       ><a
         class="font-bold"

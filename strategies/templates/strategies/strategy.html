@@ -43,7 +43,7 @@
   </a>
 
   {% if strategy.chart_url %}
-    <div class="mt-2 mb-4 ">
+    <div class="">
       <a
         href="#"
         onClick="openPopupWindow('{{strategy.chart_url}}')"
@@ -55,23 +55,31 @@
     {% endif %}
   </div>
 
-  <div class="my-1">
+  <div class="my-2.5">
     {% if has_subscription and not user_profile.tradingview_username %}
-    <div class="w-full p-2 rounded bg-text/50 relative">    
-      <p class="text-text text-xs font-medium">Add your TradingView username to get access.</p>  
-      <a href="{% url 'settings' %}" class="btn-text mt-2 text-xs font-semibold">Add here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg></a>
-  
-      <svg class="h-full absolute right-0 top-0 fill-text/10  mr-1" viewBox="0 0 246 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.0421406 2.08597L99.3354 2.102L99.8644 127.19L49.6599 126.839L49.6452 51.7831L-0.00524902 51.705L0.0421406 2.08597Z" />
-        <path d="M136.859 50.4942C150.698 50.4942 161.916 39.2729 161.916 25.4306C161.916 11.5884 150.698 0.367027 136.859 0.367027C123.02 0.367027 111.801 11.5884 111.801 25.4306C111.801 39.2729 123.02 50.4942 136.859 50.4942Z" />
-        <path d="M187.607 2.16962L245.454 2.23096L193.058 126.28L135.823 126.157L187.207 2.2693L187.607 2.16962Z" />
-      </svg>
-    </div>
+    <a
+    href="{% url 'access' %}"
+    class="btn-accent font-semibold whitespace-nowrap"
+  >
+    Get access
+    <svg
+      class="h-4 w-4 ml-1"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="1"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
+      ></path>
+    </svg>
+  </a>
   
   {% elif has_subscription and strategy not in user_profile.strategies.all and subscription_status != 'past_due' %}
-  <div id="access-mb" class="w-full flex mb-2">
+  <div id="access-mb" class="w-full flex">
     <form
-    class="inline-flex ml-auto"
+    class="inline-flex"
     hx-post="{% url 'give_access' strategy.id %}?pg=st"
     hx-target="#access-mb"
     hx-swap="outerHTML"
@@ -189,18 +197,23 @@
     {% endif %}
 
     <div id="strategyDiv" class="">
-      {% if strategy.image_url %}
+      {% if strategy.video_url %}
+        <iframe
+          class="rounded-lg w-full max-w-full aspect-video my-2"
+          width="100%"
+          height="100%"
+          src="{{strategy.video_url}}"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
       <!-- <img
         src="{{ strategy.image_url }}"
         alt="Strategy Image"
         class="w-full aspect-video mx-auto rounded-lg object-cover"
       /> -->
-      {% else %}
-      <img
-        src="{% static 'images/chart_nobg.png' %}"
-        alt="Default Image"
-        class="max-w-full max-h-72 mx-auto"
-      />
       {% endif %}
 
 
@@ -376,7 +389,12 @@ id="btn-result-modal-data-hide"
   function showResults(resultParam) {
     const showCommentsBtn = document.getElementById("settingsBtn");
     showCommentsBtn.click();
-    if (resultParam) scrollToResultOrComment("result", resultParam);
+    if (resultParam) {
+      scrollToResultOrComment("result", resultParam);
+
+      const performanceBtn = document.getElementById("result-perfermance-" + resultParam);
+      if(performanceBtn) performanceBtn.click();
+    }
     else scrollToResultOrComment("resultsDiv");
   }
 

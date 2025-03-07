@@ -194,6 +194,11 @@ def edit_tradingview_username(request):
 
     if tv_username and request.user.is_authenticated:
 
+        if  not request.has_subscription:
+            error = "You need to have an active subscription to update your TradingView username."
+            response = render(request, 'include/errors.html', context = {"error": error})
+            return retarget(response, "#tradingview_username_submit_error")
+        
         response_data = username_search(tv_username)
         if response_data == None:
             error = "an error occurred while searching for username. Please try again later."
@@ -218,11 +223,8 @@ def edit_tradingview_username(request):
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#tradingview_username_submit_error")
 
-        
         profile_user = request.user_profile
-
         profile_user.tradingview_username = tv_username
-
         profile_user.save()
 
         if request.has_subscription and request.subscription_status != 'past_due':
@@ -237,6 +239,7 @@ def edit_tradingview_username(request):
         #     response = render(request, 'include/errors.html', context = {"error": error})
         #     return retarget(response, "#tradingview_username_submit_error")
 
+        
         if not page:
             context = {}
             context["step"] = 3
@@ -244,6 +247,16 @@ def edit_tradingview_username(request):
             response = render(request, 'include/home_get_started.html', context)
             return retarget(response, "#home-get-started")
             # return HttpResponseClientRedirect(reverse('home') + '?step=3')
+        elif page == "access":
+            strategies = Strategy.objects.filter(is_live=True)
+            context = {
+                "strategies": strategies,
+                # 'show_banner': True
+            }
+
+            response = render(request, 'include/access_list.html', context)
+            return response
+
         else:
             response = render(request, 'include/settings/tradingview.html', {'succes': 'Username updated succesfully!'})
             return trigger_client_event(response, 'hide-animate')

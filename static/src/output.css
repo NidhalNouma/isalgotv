@@ -2463,6 +2463,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: auto;
 }
 
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
