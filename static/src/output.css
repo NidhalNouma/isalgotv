@@ -1564,10 +1564,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
   margin-right: auto;
-  aspect-ratio: 16 / 9;
   width: 100%;
-  max-width: 42rem;
+  max-width: 36rem;
   border-radius: 0.25rem;
+  -o-object-fit: fill;
+     object-fit: fill;
 }
 
 .docs section img {
@@ -2045,10 +2046,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin: 1rem;
 }
 
-.m-6 {
-  margin: 1.5rem;
-}
-
 .\!mx-auto {
   margin-left: auto !important;
   margin-right: auto !important;
@@ -2139,6 +2136,11 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-bottom: 0.5rem;
 }
 
+.my-2\.5 {
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+
 .my-24 {
   margin-top: 6rem;
   margin-bottom: 6rem;
@@ -2177,16 +2179,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.my-1\.5 {
-  margin-top: 0.375rem;
-  margin-bottom: 0.375rem;
-}
-
-.my-2\.5 {
-  margin-top: 0.625rem;
-  margin-bottom: 0.625rem;
 }
 
 .\!-ml-4 {
@@ -2399,6 +2391,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   margin-top: 0.25rem;
 }
 
+.mt-1\.5 {
+  margin-top: 0.375rem;
+}
+
 .mt-10 {
   margin-top: 2.5rem;
 }
@@ -2461,10 +2457,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .mt-auto {
   margin-top: auto;
-}
-
-.mt-1\.5 {
-  margin-top: 0.375rem;
 }
 
 .box-border {
@@ -2668,8 +2660,8 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   max-height: 16rem;
 }
 
-.max-h-72 {
-  max-height: 18rem;
+.max-h-80 {
+  max-height: 20rem;
 }
 
 .max-h-\[200px\] {
@@ -2699,10 +2691,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .max-h-full {
   max-height: 100%;
-}
-
-.max-h-80 {
-  max-height: 20rem;
 }
 
 .min-h-\[56px\] {
@@ -3537,10 +3525,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   border-radius: 0.25rem;
 }
 
-.rounded-2xl {
-  border-radius: 1rem;
-}
-
 .rounded-3xl {
   border-radius: 1.5rem;
 }
@@ -3833,6 +3817,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   background-color: hsl(var(--color-accent) / 0.4);
 }
 
+.bg-accent\/5 {
+  background-color: hsl(var(--color-accent) / 0.05);
+}
+
 .bg-accent\/60 {
   background-color: hsl(var(--color-accent) / 0.6);
 }
@@ -3844,10 +3832,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .bg-background {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--color-background) / var(--tw-bg-opacity));
-}
-
-.bg-background\/10 {
-  background-color: hsl(var(--color-background) / 0.1);
 }
 
 .bg-background\/20 {
@@ -4164,12 +4148,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-primary\/80 {
-  --tw-gradient-from: hsl(var(--color-primary) / 0.8) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-primary) / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .from-secondary {
   --tw-gradient-from: hsl(var(--color-secondary) / 1) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-secondary) / 0) var(--tw-gradient-to-position);
@@ -4188,12 +4166,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-text\/20 {
-  --tw-gradient-from: hsl(var(--color-text) / 0.2) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .from-text\/60 {
   --tw-gradient-from: hsl(var(--color-text) / 0.6) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
@@ -4203,12 +4175,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .from-text\/80 {
   --tw-gradient-from: hsl(var(--color-text) / 0.8) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--color-text) / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.from-title {
-  --tw-gradient-from: hsl(var(--color-title) / 1) var(--tw-gradient-from-position);
-  --tw-gradient-to: hsl(var(--color-title) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -4274,6 +4240,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   --tw-gradient-to: hsl(var(--color-accent) / 1) var(--tw-gradient-to-position);
 }
 
+.to-accent\/10 {
+  --tw-gradient-to: hsl(var(--color-accent) / 0.1) var(--tw-gradient-to-position);
+}
+
 .to-accent\/5 {
   --tw-gradient-to: hsl(var(--color-accent) / 0.05) var(--tw-gradient-to-position);
 }
@@ -4328,10 +4298,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .to-text\/50 {
   --tw-gradient-to: hsl(var(--color-text) / 0.5) var(--tw-gradient-to-position);
-}
-
-.to-text\/80 {
-  --tw-gradient-to: hsl(var(--color-text) / 0.8) var(--tw-gradient-to-position);
 }
 
 .to-title {
@@ -5155,6 +5121,10 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
   color: hsl(var(--color-title) / 0.8);
 }
 
+.text-title\/90 {
+  color: hsl(var(--color-title) / 0.9);
+}
+
 .text-transparent {
   color: transparent;
 }
@@ -5167,10 +5137,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-title\/90 {
-  color: hsl(var(--color-title) / 0.9);
 }
 
 .underline {
@@ -5379,12 +5345,6 @@ p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
 
 .backdrop-brightness-100 {
   --tw-backdrop-brightness: brightness(1);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-.backdrop-brightness-150 {
-  --tw-backdrop-brightness: brightness(1.5);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -6165,11 +6125,6 @@ input[type=number] {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.focus\:border-blue-500:focus {
-  --tw-border-opacity: 1;
-  border-color: rgb(63 131 248 / var(--tw-border-opacity));
-}
-
 .focus\:fill-text:focus {
   fill: hsl(var(--color-text) / 1);
 }
@@ -6200,11 +6155,6 @@ input[type=number] {
 .focus\:ring-blue-300:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(164 202 254 / var(--tw-ring-opacity));
-}
-
-.focus\:ring-blue-500:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-gray-200:focus {
@@ -6371,16 +6321,6 @@ input[type=number] {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-:is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
-  --tw-placeholder-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-placeholder-opacity));
-}
-
-:is(.dark .dark\:placeholder-gray-400)::placeholder {
-  --tw-placeholder-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-placeholder-opacity));
-}
-
 :is(.dark .dark\:checked\:\!bg-transparent:checked) {
   background-color: transparent !important;
 }
@@ -6422,16 +6362,6 @@ input[type=number] {
 :is(.dark .dark\:hover\:text-white:hover) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-:is(.dark .dark\:focus\:border-blue-500:focus) {
-  --tw-border-opacity: 1;
-  border-color: rgb(63 131 248 / var(--tw-border-opacity));
-}
-
-:is(.dark .dark\:focus\:ring-blue-500:focus) {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
 }
 
 @media (min-width: 640px) {
@@ -6562,6 +6492,10 @@ input[type=number] {
 
   .sm\:gap-8 {
     gap: 2rem;
+  }
+
+  .sm\:gap-12 {
+    gap: 3rem;
   }
 
   .sm\:space-x-4 > :not([hidden]) ~ :not([hidden]) {

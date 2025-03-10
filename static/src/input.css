@@ -186,7 +186,7 @@
   }
 
   .docs section video {
-    @apply aspect-video w-full mr-auto my-3 rounded max-w-2xl;
+    @apply object-fill w-full mr-auto my-3 rounded max-w-xl;
   }
 
   .docs section img {
