@@ -311,6 +311,19 @@ class StrategyResults(models.Model):
 
     images = GenericRelation(StrategyImages) 
     replies = GenericRelation(Replies) 
+    
+    def save(self, *args, **kwargs):
+        # Check if a StrategyResults entry with the same strategy, settings, and performance already exists
+        existing_result = StrategyResults.objects.filter(
+            strategy=self.strategy,
+            settings=self.settings,
+            performance=self.performance
+        ).exists()
+
+        if existing_result:
+            raise ValidationError("A result with the same strategy, settings, and performance already exists.")
+
+        super(StrategyResults, self).save(*args, **kwargs)
 
     def performance_to_text(self):
         performance_data = self.performance

@@ -1,6 +1,6 @@
 {% if errors %}
 <div
-  class="mx-auto text-sm flex p-4 text-red-600 bg-red-800/10  rounded {{class}}"
+  class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}"
   role="alert"
 >
 
@@ -18,9 +18,15 @@ viewBox="0 0 20 20"
 <span class="sr-only">Error!</span>
   <p>
 <ul class="font-medium font-sans">
-  {% for field_errors in errors.values %} {% for error in field_errors %}
-  <li>{{ error }}</li>
-  {% endfor %} {% endfor %}
+  {% for field_errors in errors.values %} 
+    {% for error in field_errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+
+  {% empty %}
+    <li>{{ errors }}</li>  <!-- Default case when there are no errors -->
+  {% endfor %}
+
 </ul>
 </p>
 </div>

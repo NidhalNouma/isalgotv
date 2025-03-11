@@ -59,8 +59,8 @@ def home(request):
     new_strategies = Strategy.objects.filter(is_live=True).order_by('-created_at')[:8]
     most_viewed_strategies = Strategy.objects.filter(is_live=True).order_by('-view_count')[:8]
 
+    best_results = StrategyResults.objects.all().order_by('-created_at')[:3]
     new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
-    best_results = StrategyResults.objects.all().order_by('-created_at')[:6]
 
     comments = StrategyComments.objects.all().order_by('-created_at')[:4]
 

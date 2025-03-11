@@ -226,7 +226,9 @@ def add_result(request, id):
                 return retarget(response, "#add-result-form-errors")
         
         except Exception as e:
-            context = {'errors': "An error occurred!"}
+            error_message = e.messages[0] if isinstance(e.messages, list) else "An error occurred while adding the result." #str(e)
+
+            context = {'errors': error_message}
             response = render(request, "include/st_post_errors.html", context=context)
             return retarget(response, "#add-result-form-errors")
 
