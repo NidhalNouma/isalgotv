@@ -9,6 +9,7 @@ from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import trigger_client_event
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
 
 from .models import User_Profile, Notification
 from strategies.models import Strategy
@@ -56,10 +57,10 @@ def home(request):
 
     context = {'show_get_started': show_get_started, 'show_banner': True}
 
-    new_strategies = Strategy.objects.filter(is_live=True).order_by('-created_at')[:8]
-    most_viewed_strategies = Strategy.objects.filter(is_live=True).order_by('-view_count')[:8]
+    new_strategies = Strategy.objects.order_by('-created_at')[:6]
+    most_viewed_strategies = Strategy.objects.order_by('-view_count')[:6]
 
-    best_results = StrategyResults.objects.all().order_by('-created_at')[:3]
+    best_results =  StrategyResults.objects.annotate(positive_votes_count=Count('positive_votes')).order_by('-positive_votes_count')[:3]
     new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
 
     comments = StrategyComments.objects.all().order_by('-created_at')[:4]
