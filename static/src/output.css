@@ -6776,6 +6776,10 @@ input[type=number] {
     display: none;
   }
 
+  .lg\:max-h-\[calc\(2\*theme\(height\.40\)\)\] {
+    max-height: calc(2 * 10rem);
+  }
+
   .lg\:w-auto {
     width: auto;
   }
@@ -6800,6 +6804,10 @@ input[type=number] {
 
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-rows-2 {
+    grid-template-rows: repeat(2, minmax(0, 1fr));
   }
 
   .lg\:flex-row {
@@ -6850,5 +6858,13 @@ input[type=number] {
 @media (min-width: 1536px) {
   .\32xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .\32xl\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .\32xl\:grid-rows-2 {
+    grid-template-rows: repeat(2, minmax(0, 1fr));
   }
 }
