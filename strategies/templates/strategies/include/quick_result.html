@@ -10,7 +10,7 @@
       <h6 class="group text-sm text-text hover:text-text/80 transition-colors font-medium truncate line-clamp-1">
         <span>{{result.strategy.name}}</span>
         <svg
-          class="inline-flex w-4 h-4 ml-0.5 fill-background bg-primary group-hover:bg-primary/80 rounded-full transition-colors"
+          class="inline-flex w-3.5 aspect-square ml-0.5 fill-background bg-text group-hover:bg-text/80 rounded-full transition-colors"
           stroke-width="0"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -24,73 +24,73 @@
     {% endif %}
   </div>
 
+  <a class="" href="{% url 'strategy' slug=result.strategy.slug %}?result={{result.id}}">
+    <div class="mb-3">
+      <div class="flex items-center gap-2 mb-1.5">
+        <svg class="w-4 h-4 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+        <span class="text-xs text-text/60">Test Duration</span>
+      </div>
 
-  <div class="mb-3">
-    <div class="flex items-center gap-2 mb-1.5">
-      <svg class="w-4 h-4 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
-      <span class="text-xs text-text/60">Test Duration</span>
-    </div>
-
-    <div class="w-full bg-text/20 rounded-md my-1">
-      <div
-        class="bg-text/40 text-xs py-[0.1rem] font-semibold text-background text-center px-0.25 leading-none rounded-md"
-        style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
-      >
-        {{ result.test_start_at|period_in_months_years:result.test_end_at }}
+      <div class="w-full bg-text/20 rounded-md my-1">
+        <div
+          class="bg-text/40 text-xs py-[0.1rem] font-semibold text-background text-center px-0.25 leading-none rounded-md"
+          style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
+        >
+          {{ result.test_start_at|period_in_months_years:result.test_end_at }}
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
-    <div class="p-3 rounded-lg bg-profit/10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+      <div class="p-3 rounded-lg bg-profit/10">
+        <div class="flex items-center gap-2 mb-2">
+          <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <span class="text-xs font-medium text-profit">Profit</span>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
+          <span class="text-lg font-bold text-profit whitespace-nowrap">
+            {{result.performance.net_profit_percentage|format_profit|safe}}%
+          </span>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-lg bg-loss/10">
+        <div class="flex items-center gap-2 mb-2">
+          <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+          <span class="text-xs font-medium text-loss">Drawdown</span>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
+          <span class="text-lg font-bold text-loss whitespace-nowrap">
+            {{result.performance.max_drawdown_percentage|format_profit|safe}}%
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 p-3 rounded-lg bg-primary/10">
       <div class="flex items-center gap-2 mb-2">
-        <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        <span class="text-xs font-medium text-profit">Profit</span>
+        <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        <span class="text-xs font-medium text-primary">Trades</span>
       </div>
-      <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
-        <span class="text-lg font-bold text-profit whitespace-nowrap">
-          {{result.performance.net_profit_percentage|format_profit|safe}}%
-        </span>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="text-center">
+          <span class="text-sm font-semibold text-text">{{result.performance.total_trade|safe}}</span>
+          <p class="text-xs text-text/70">Total</p>
+        </div>
+        <div class="text-center">
+          <span class="text-sm font-semibold text-primary">{{result.performance.profitable_percentage|format_profit|safe}}%</span>
+          <p class="text-xs text-text/70">Win Rate</p>
+        </div>
+        <div class="text-center">
+          <span class="text-sm font-semibold text-profit">{{result.performance.winning_total_trade|safe}}</span>
+          <p class="text-xs text-text/70">Wins</p>
+        </div>
+        <div class="text-center">
+          <span class="text-sm font-semibold text-loss">{{result.performance.losing_total_trade|safe}}</span>
+          <p class="text-xs text-text/70">Losses</p>
+        </div>
       </div>
     </div>
-
-    <div class="p-3 rounded-lg bg-loss/10">
-      <div class="flex items-center gap-2 mb-2">
-        <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
-        <span class="text-xs font-medium text-loss">Drawdown</span>
-      </div>
-      <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
-        <span class="text-lg font-bold text-loss whitespace-nowrap">
-          {{result.performance.max_drawdown_percentage|format_profit|safe}}%
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <div class="mb-3 p-3 rounded-lg bg-primary/10">
-    <div class="flex items-center gap-2 mb-2">
-      <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-      <span class="text-xs font-medium text-primary">Trades</span>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3">
-      <div class="text-center">
-        <span class="text-sm font-semibold text-text">{{result.performance.total_trade|safe}}</span>
-        <p class="text-xs text-text/70">Total</p>
-      </div>
-      <div class="text-center">
-        <span class="text-sm font-semibold text-primary">{{result.performance.profitable_percentage|format_profit|safe}}%</span>
-        <p class="text-xs text-text/70">Win Rate</p>
-      </div>
-      <div class="text-center">
-        <span class="text-sm font-semibold text-profit">{{result.performance.winning_total_trade|safe}}</span>
-        <p class="text-xs text-text/70">Wins</p>
-      </div>
-      <div class="text-center">
-        <span class="text-sm font-semibold text-loss">{{result.performance.losing_total_trade|safe}}</span>
-        <p class="text-xs text-text/70">Losses</p>
-      </div>
-    </div>
-  </div>
-
+  </a>
 </div>

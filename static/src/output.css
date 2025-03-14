@@ -6213,6 +6213,14 @@ input[type=number] {
   background-color: hsl(var(--color-primary) / 0.8);
 }
 
+.group:hover .group-hover\:bg-accent\/80 {
+  background-color: hsl(var(--color-accent) / 0.8);
+}
+
+.group:hover .group-hover\:bg-text\/80 {
+  background-color: hsl(var(--color-text) / 0.8);
+}
+
 .group:hover .group-hover\:text-text {
   --tw-text-opacity: 1;
   color: hsl(var(--color-text) / var(--tw-text-opacity));

@@ -95,17 +95,17 @@ setInterval(() => {
  
 
   <div class="w-full relative max-w-3xl ">
-      <video poster="" class=" shadow-lg rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" autoplay loop muted>
-        <source src="https://isalgotest.s3.amazonaws.com/videos/Timeline+2.mp4" type="video/mp4">
-      </video>
+      <video poster="" class=" shadow-lg rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" muted>
+        <source src="https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4" type="video/mp4">
+      </video> 
       <div onclick="openModel('video-modal-l')" class=" absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-16 aspect-square w-16 rounded-full bg-background dark:bg-title flex items-center justify-center">
           <svg class="h-5 w-5 text-primary" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path></svg>
         </div>
-      </div>
+      </div> 
   </div>
   
-{% include "include/video_modal.html" with id="l" video_url="https://isalgotest.s3.amazonaws.com/videos/Timeline+2.mp4" %} 
+{% include "include/video_modal.html" with id="l" video_url="https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4" %} 
 
 {% comment %} <svg class="stroke-secondary h-full absolute right-0 top-0 bottom-0  scale-y-150 z-0" viewBox="0 0 241 2912" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M2.04915 2910.48C2.04915 2666.02 2.04915 2421.56 2.04915 2177.1C2.04915 1822.61 -4.50356 1480.79 133.709 1148.85C162.702 1079.22 198.312 1010.93 218.036 937.763C249.185 822.211 237.525 692.331 236.534 574.339C234.924 382.803 226.752 192.525 207.699 2" stroke-width="8" stroke-linecap="round"/>
