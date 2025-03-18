@@ -22,6 +22,10 @@
     {% if has_subscription and title != 'LIFETIME' %}
         <p class="mt-2.5 text-xs text-text/80">&#9737; This payment is scheduled for {{ subscription_period_end|date:'M d Y' }}</p>
     {% endif %}
+
+    {% if not has_subscription and not user_profile.subscription_id %}
+      <p class="mt-2.5 text-xs text-text/80">&#9737; This payment is scheduled after the 3 day trial</p>
+    {% endif %}
   </div>
 
 <div id="coupon-input-{{title}}" class="mb-3 -mt-2 {% if not coupon_val and not empty %} hidden {% endif %} ">

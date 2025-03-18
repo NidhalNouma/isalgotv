@@ -72,18 +72,18 @@
         </h2> {% endcomment %}
 
         {% if not user.is_authenticated %}
-        <h6 class="text-text/60 text-lg font-medium mt-2 text-center">Start today with 
-            <div class="relative inline-block text-title tracking-wider ml-0.5">40% Off
+            <h6 class="text-title/60 text-base font-medium mt-4 text-center">Start today with 
+                <div class="relative inline-block text-title tracking-wider  ml-0.5">3 day free trial
                 <div class="absolute top-[90%] w-full">
                     <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round"/>
                     </svg>
                 </div>
-            </div>
+                </div>
                 <a class=" inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
-                    <svg class=" w-5 fill-text bg-text/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
+                <svg class=" w-5 fill-text bg-title/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
                 </a>
-        </h6>
+            </h6>
         {% endif %}
         {% comment %} <h2 class="text-text text-sm font-semibold text-center mt-6 tracking-wider">
             <div class="relative inline-block text-title text-sm  ">30-Day

@@ -480,16 +480,21 @@ def check_coupon_fn(coupon_id, plan_id, price, customer_id):
 
             coupon_off = str(-coupon.amount_off) + '$'
         
-        if coupon_id.find("QUAT") >= 0:
+        if coupon_id.find("QUAT") >= 0 or coupon_id.find("QUAR") >= 0:
             if plan_id != "QUARTERLY":
                 raise Exception("Coupon code is not valid for this plan.")
         elif coupon_id.find("MN") >= 0:
             if plan_id != "MONTHLY":
                 raise Exception("Coupon code is not valid for this plan.")
+        elif coupon_id.find("LIFETIME") >= 0:
+            if plan_id != "LIFETIME":
+                raise Exception("Coupon code is not valid for this plan.")
         if plan_id == "LIFETIME":
             if coupon_id.find("BETA") >= 0:
                 price = orig_price
                 raise Exception("This is a beta plan, you cannot use it on lifetime plan.")
+            elif coupon_id.find("LIFETIME") < 0:
+                raise Exception("Coupon code is not valid for lifetime plan.")
             
         return (price, coupon_off, promo_id)
     except Exception as e:
@@ -590,8 +595,8 @@ def create_subscription_stripeform(request):
         payment_method = data['pm_id']
         coupon_id = data['coupon']
 
-        # trial_days = 3
-        trial_days = 0
+        trial_days = 3
+        # trial_days = 0
         if request.user_profile.subscription_id:
             trial_days = 0
 
@@ -718,8 +723,7 @@ def create_subscription_stripeform(request):
                 response = render(request, 'include/home_get_started.html', context)
                 return retarget(response, "#home-get-started")
         
-
-            return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
+            return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
 
         except Exception as e:
             context["error"] = "Creating subscription "  +str(e)
