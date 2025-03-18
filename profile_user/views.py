@@ -135,6 +135,11 @@ def register(request):
 def logout_user(request):
     logout(request)
 
+    # Clear any stored messages
+    storage = messages.get_messages(request)
+    for _ in storage:
+        pass 
+
     referer_url = request.META.get('HTTP_REFERER')
     return redirect(referer_url if referer_url else 'index')
 
@@ -910,7 +915,7 @@ def cancel_subscription(request):
 def preview_email(request):
     # Dummy data for template context
     context = {'user_name': 'Test User'}
-    return render(request, 'emails/broker_access_removed.html', context)
+    return render(request, 'emails/welcome_email.html', context)
 
 def send_email(request):
     if request.method == 'POST':
