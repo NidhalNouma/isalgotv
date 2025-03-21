@@ -993,8 +993,8 @@ def stripe_webhook(request):
 
         metadeta = event['data']['object']['metadata']
 
-        if metadeta is not None and metadeta['broker_type'] is not None:
-            profile_user_id = metadeta['profile_user_id']
+        if metadeta is not None and metadeta.get('broker_type'):
+            profile_user_id = metadeta.get('profile_user_id', 0)
 
             email = None
             try:
@@ -1005,15 +1005,15 @@ def stripe_webhook(request):
                 print(e)
 
             if event['type'] == 'customer.subscription.deleted':
-                account_subscription_failed(email, metadeta['broker_type'], subscription.id)
+                account_subscription_failed(email, metadeta.get('broker_type'), subscription.id)
                 
             elif event['type'] == 'customer.subscription.updated':
                 print("Strip-Webhook: Subscription updated ...")
 
                 if subscription.status == "canceld":
-                    account_subscription_failed(email, metadeta['broker_type'], subscription.id)
+                    account_subscription_failed(email, metadeta.get('broker_type'), subscription.id)
                 elif subscription.status == "past_due":
-                    account_subscription_failed(email, metadeta['broker_type'], subscription.id)
+                    account_subscription_failed(email, metadeta.get('broker_type'), subscription.id)
 
             else:
                 print('Unhandled event type {}'.format(event['type']))
