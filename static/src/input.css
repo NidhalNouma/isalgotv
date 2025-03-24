@@ -2,123 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-    :root {
-      --color-primary: 227 91% 59%; /* hex - #3861f6 */
-      --color-secondary: 227 91% 59%; /* hex - #3861f6 */
-      --color-accent: 0 0% 0%;  
+  :root {
+    --color-primary: 227 91% 59%; /* hex - #3861f6 */
+    --color-secondary: 227 91% 59%; /* hex - #3861f6 */
+    --color-accent: 0 0% 0%;
 
-      --color-background: 188 16% 92%; /* hex - #e7edee */
-      --color-profit: 178 40% 40%;
-      --color-loss: 343 80% 40%;
-      --color-text: 0 0% 20%;
-      --color-text-light: 0 0% 90%;
-      --color-title: 0 0% 0%;
-      --color-title-light: 0 0% 100%;
-    }
-  
-    :root[class~="dark"] {
-      --color-primary: 227 91% 59%;
-      --color-secondary: 227 91% 59%;
-      /* --color-accent: 226 39% 13%; hex - #141721 */ 
-      --color-accent: 0 0% 100%;  
-    
-      --color-background: 0 0% 0%; 
-      --color-profit: 178 40% 50%;
-      --color-loss: 330 100% 48%;
-      --color-text: 0 0% 80%;
-      --color-text-light: 0 0% 90%;
-      --color-title: 0 0% 100%;
-
-
-
-      ::-webkit-calendar-picker-indicator {
-        filter: invert(1);
-      }
-    }
-
-    *{
-     font-family: "lato","Sora","Manrope", sans-serif; 
-     line-height: 150%;
-    }
-
-    html, h1, h2, h3, h1 span, h2 span, h3 span, h4 span, h5 span{
-      /* font-family: "Bree Serif", serif; */
-      /* letter-spacing: 1.1px; */
-      /* line-height: normal; */
-    }
-    
-    p, span, input, select, textarea, button, p, h4, h5, h6, a , label, th, tr{
-      /* font-family: "Manrope", sans-serif; */
-    }
-
+    --color-background: 188 16% 92%; /* hex - #e7edee */
+    --color-profit: 178 40% 40%;
+    --color-loss: 343 80% 40%;
+    --color-text: 0 0% 20%;
+    --color-text-light: 0 0% 90%;
+    --color-title: 0 0% 0%;
+    --color-title-light: 0 0% 100%;
   }
+
+  :root[class~="dark"] {
+    --color-primary: 227 91% 59%;
+    --color-secondary: 227 91% 59%;
+    /* --color-accent: 226 39% 13%; hex - #141721 */
+    --color-accent: 0 0% 100%;
+
+    --color-background: 0 0% 0%;
+    --color-profit: 178 40% 50%;
+    --color-loss: 330 100% 48%;
+    --color-text: 0 0% 80%;
+    --color-text-light: 0 0% 90%;
+    --color-title: 0 0% 100%;
+
+    ::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
+  }
+
+  p,
+  span,
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  label,
+  th,
+  tr {
+    @apply font-sans leading-relaxed;
+  }
+
+  h1,h2,h3,h4,h5,h6, h2 *, h1 * {
+    @apply font-serif leading-none;
+  }
+}
 
 @layer components {
-  .btn-primary-landing{
+  .btn-primary-landing {
     @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0 transition-all;
   }
-  .btn-primary-landing::before{
+  .btn-primary-landing::before {
     content: "";
     @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-text  to-secondary blur-md -z-10 rounded-lg scale-100 transition-all;
   }
-  
+
   .btn-ai {
-    @apply relative text-primary tracking-wide bg-transparent backdrop-blur-md border-0 border-primary/70 font-semibold text-sm px-5 py-1.5 text-center inline-flex  justify-center items-center transition-all 
+    @apply relative text-primary tracking-wide bg-transparent backdrop-blur-md border-0 border-primary/70 font-semibold text-sm px-5 py-1.5 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-ai::before {
     content: "";
-    @apply animate-rotateGradientFast bg-[length:200%_200%] hover:bg-[length:100%_100%] absolute inset-0 bg-gradient-to-br from-text-light to-primary blur-[8px] -z-10 rounded-xl scale-100 transition-all duration-700 
+    @apply animate-rotateGradientFast bg-[length:200%_200%] hover:bg-[length:100%_100%] absolute inset-0 bg-gradient-to-br from-text-light to-primary blur-[8px] -z-10 rounded-xl scale-100 transition-all duration-700;
   }
 
   .btn-primary {
-    @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all
+    @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-secondary {
-    @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all
+    @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-accent {
-    @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all
+    @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-text {
-    @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all
+    @apply text-background bg-gradient-to-r from-text via-text/90 to-text/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-1 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-a {
-    @apply text-text/80 hover:text-text/60 font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all
+    @apply text-text/80 hover:text-text/60 font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-icon {
-    @apply text-title/80 hover:text-title/60 bg-transparent rounded text-sm px-1 ml-auto inline-flex items-center transition-all 
+    @apply text-title/80 hover:text-title/60 bg-transparent rounded text-sm px-1 ml-auto inline-flex items-center transition-all;
   }
 
   .input-label {
-    @apply block mb-2 text-sm font-medium text-text/80
+    @apply block mb-2 text-sm font-medium text-text/80;
   }
 
-  .input-text{
-    @apply bg-text/10 border border-text/0 outline-none focus:border-text/40 focus:ring-text/50 px-2.5 py-2 text-text text-sm rounded-md  placeholder:text-text/40 transition-all
+  .input-text {
+    @apply bg-text/10 border border-text/0 outline-none focus:border-text/40 focus:ring-text/50 px-2.5 py-2 text-text text-sm rounded-md  placeholder:text-text/40 transition-all;
   }
 
-  .text-dark{
-    @apply text-text dark:text-background
+  .text-dark {
+    @apply text-text dark:text-background;
   }
 
-  .input-checkbox{
-    @apply text-accent bg-background border-title/40 rounded
+  .input-checkbox {
+    @apply text-accent bg-background border-title/40 rounded;
   }
 
   .CKEDITOR img {
-    @apply !aspect-video !h-auto object-cover rounded
+    @apply !aspect-video !h-auto object-cover rounded;
   }
 
   .main-title {
-    @apply mt-4 sm:mt-6 text-left text-3xl sm:text-4xl text-title font-extrabold
+    @apply mt-4 sm:mt-6 text-left text-3xl sm:text-4xl text-title font-extrabold;
   }
 
   .par {
@@ -153,9 +151,8 @@
     @apply text-lg font-semibold mb-2 text-text flex items-center gap-2;
   }
   .docs section aside h3 span {
-    @apply  w-6 h-6 text-sm bg-text/60 text-background rounded-full flex items-center justify-center font-semibold;
+    @apply w-6 h-6 text-sm bg-text/60 text-background rounded-full flex items-center justify-center font-semibold;
   }
-
 
   .docs section {
     @apply mb-4;
@@ -201,19 +198,20 @@
     @apply font-semibold text-title;
   }
 
-  .docs section p code, .docs section aside code {
-    @apply bg-title/10 px-1.5 py-0.5 rounded-sm cursor-pointer text-sm text-text/80 hover:text-text/60 transition-all;
+  .docs section p code,
+  .docs section aside code {
+    @apply font-mono bg-title/10 px-1.5 py-0.5 rounded-sm cursor-pointer text-sm text-text/80 hover:text-text/60 transition-all;
   }
 
-  .docs section p code:hover svg{
+  .docs section p code:hover svg {
     @apply text-text/60;
   }
 
-  .docs section p code svg{
+  .docs section p code svg {
     @apply w-4 aspect-square inline text-text/80 hover:text-text/60 transition-all rounded;
   }
 
-/* Drawer classes */
+  /* Drawer classes */
   .drawer-right {
     @apply fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] rounded-l-md;
   }
@@ -229,296 +227,306 @@
 }
 
 @layer utilities {
+  /* Landing page alerts animation */
 
+  @keyframes slideIn {
+    from {
+      transform: translateY(0%) translateX(100%) scale(0.9); /* Start off-screen to the left */
+      opacity: 1;
+    }
+    to {
+      transform: translateX(0) translateY(0) scale(1); /* Slide into place */
+      opacity: 1;
+    }
+  }
 
-    /* Landing page alerts animation */
-    
-    @keyframes slideIn {
-      from {
-        transform: translateY(0%) translateX(100%) scale(0.9); /* Start off-screen to the left */
-        opacity: 1;
-      }
-      to {
-        transform: translateX(0) translateY(0) scale(1); /* Slide into place */
-        opacity: 1;
-      }
-    }
+  .imgs-alerts img {
+    animation: slideIn 0.5s ease;
+    @apply transition-all duration-1000;
+  }
 
-    .imgs-alerts img {
-      animation: slideIn 0.5s ease;
-      @apply transition-all duration-1000
+  /* Landing page symbols animation */
+  @keyframes flip {
+    0% {
+      transform: rotateX(0deg) scale(1.1);
     }
+    100% {
+      transform: rotateX(0deg) scale(1);
+    }
+  }
 
+  .imgs-syms img {
+    transition: transform 1s;
+    transform-style: preserve-3d; /* Ensure 3D transform works */
+  }
 
+  .flipping {
+    animation: flip 0.5s linear forwards; /* Apply the flip animation */
+  }
 
-    /* Landing page symbols animation */
-    @keyframes flip {
-      0% {
-        transform: rotateX(0deg) scale(1.1);
-      }
-      100% {
-        transform: rotateX(0deg) scale(1); 
-      }
-    }
+  /* Landing page settings animation */
 
-    .imgs-syms img {
-      transition: transform 1s;
-      transform-style: preserve-3d; /* Ensure 3D transform works */
+  @keyframes dropAndFade {
+    0% {
+      opacity: 0; /* Start hidden */
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+        scale(1.2); /* Start off-screen */
     }
+    1% {
+      opacity: 1; /* Start hidden */
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+        scale(1.2);
+    }
+    15% {
+      opacity: 1; /* Appear */
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+        rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+        scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    }
+    80% {
+      opacity: 1; /* Stay visible */
+    }
+    90%,
+    100% {
+      opacity: 1; /* Fade out for all images at the same time */
+    }
+  }
 
-    .flipping {
-      animation: flip 0.5s linear forwards; /* Apply the flip animation */
-    }
+  /* Apply the animation to all images */
+  .imgs-drop img {
+    opacity: 0;
+    animation: dropAndFade 12s ease infinite;
+  }
 
-    /* Landing page settings animation */
+  /* Stagger the start times for each image's animation */
+  .imgs-drop img:nth-child(1) {
+    animation-delay: 0s; /* First image starts immediately */
+  }
+  .imgs-drop img:nth-child(2) {
+    animation-delay: 1s;
+  }
+  .imgs-drop img:nth-child(3) {
+    animation-delay: 2s;
+  }
+  .imgs-drop img:nth-child(4) {
+    animation-delay: 3s;
+  }
+  .imgs-drop img:nth-child(5) {
+    animation-delay: 4s;
+  }
+  .imgs-drop img:nth-child(6) {
+    animation-delay: 5s;
+  }
+  .imgs-drop img:nth-child(7) {
+    animation-delay: 6s;
+  }
+  .imgs-drop img:nth-child(8) {
+    animation-delay: 7s;
+  }
+  .imgs-drop img:nth-child(9) {
+    animation-delay: 8s;
+  }
+  .imgs-drop img:nth-child(10) {
+    animation-delay: 9s;
+  }
 
-    @keyframes dropAndFade {
-      0% {
-        opacity: 0;  /* Start hidden */
-        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.2);  /* Start off-screen */
-      }
-      1% {
-        opacity: 1;  /* Start hidden */
-        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.2);
-      }
-      15% {
-        opacity: 1;  /* Appear */
-        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-      }
-      80% {
-        opacity: 1;  /* Stay visible */
-      }
-      90%, 100% {
-        opacity: 1;  /* Fade out for all images at the same time */
-      }
-    }
-    
-    /* Apply the animation to all images */
-    .imgs-drop img {
-      opacity: 0;
-      animation: dropAndFade 12s ease infinite;
-    }
-    
-    /* Stagger the start times for each image's animation */
-    .imgs-drop img:nth-child(1) {
-      animation-delay: 0s; /* First image starts immediately */
-    }
-    .imgs-drop img:nth-child(2) {
-      animation-delay: 1s;
-    }
-    .imgs-drop img:nth-child(3) {
-      animation-delay: 2s;
-    }
-    .imgs-drop img:nth-child(4) {
-      animation-delay: 3s;
-    }
-    .imgs-drop img:nth-child(5) {
-      animation-delay: 4s;
-    }
-    .imgs-drop img:nth-child(6) {
-      animation-delay: 5s;
-    }
-    .imgs-drop img:nth-child(7) {
-      animation-delay: 6s;
-    }
-    .imgs-drop img:nth-child(8) {
-      animation-delay: 7s;
-    }
-    .imgs-drop img:nth-child(9) {
-      animation-delay: 8s;
-    }
-    .imgs-drop img:nth-child(10) {
-      animation-delay: 9s;
-    }
+  .imgs-bw img {
+    @apply grayscale cursor-pointer transition-all;
+  }
 
-    .imgs-bw img {
-      @apply grayscale cursor-pointer transition-all
-    }
+  /* Landing page result scroll animation */
 
-    .imgs-bw img:hover {
-      @apply grayscale-0
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
     }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 
-    /* Landing page result scroll animation */
+  .animate-scroll {
+    animation: scroll 20s linear infinite;
+  }
 
-    @keyframes scroll {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
+  .animate-scroll-reverse {
+    animation: scroll 20s linear infinite reverse;
+  }
 
-    .animate-scroll {
-      animation: scroll 20s linear infinite;
-    }
-    
+  .animate-scroll-2 {
+    animation: scroll 25s linear infinite;
+  }
 
-    .animate-scroll-reverse {
-      animation: scroll 20s linear infinite reverse;
-    }
-    
-    .animate-scroll-2 {
-      animation: scroll 25s linear infinite;
-    }
+  .animate-scroll img,
+  .animate-scroll-2 img {
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+    @apply grayscale;
+  }
 
-    .animate-scroll img, .animate-scroll-2 img {
-      transform-origin: center center; 
-      transition: transform 0.3s ease-in-out;
-      @apply grayscale
-    }
+  .animate-scroll:hover,
+  .animate-scroll-2:hover {
+    animation-play-state: paused;
+  }
 
-    .animate-scroll:hover,  .animate-scroll-2:hover{
-      animation-play-state: paused;
-    }
+  .animate-scroll img:hover,
+  .animate-scroll-2 img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
+    z-index: 20;
 
-    .animate-scroll img:hover,  .animate-scroll-2 img:hover{
-      transform: scale(1.1); 
-      transition: transform 0.3s ease-in-out;
-      z-index: 20;
+    @apply grayscale-0;
+  }
 
-      @apply grayscale-0
-    }
+  /* Ai chat animation */
 
-    /* Ai chat animation */
+  @keyframes blur-motion-1 {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-8px, 8px);
+    }
+    50% {
+      transform: translate(8px, -8px);
+    }
+    75% {
+      transform: translate(-4px, -4px);
+    }
+  }
 
-    @keyframes blur-motion-1 {
-      0%, 100% {
-        transform: translate(0, 0);
-      }
-      25% {
-        transform: translate(-8px, 8px);
-      }
-      50% {
-        transform: translate(8px, -8px);
-      }
-      75% {
-        transform: translate(-4px, -4px);
-      }
+  @keyframes blur-motion-2 {
+    0%,
+    100% {
+      transform: translate(0, 0);
     }
-    
-    @keyframes blur-motion-2 {
-      0%, 100% {
-        transform: translate(0, 0);
-      }
-      25% {
-        transform: translate(4px, -8px);
-      }
-      50% {
-        transform: translate(-8px, 8px);
-      }
-      75% {
-        transform: translate(8px, 4px);
-      }
+    25% {
+      transform: translate(4px, -8px);
     }
-    
-    @keyframes blur-motion-3 {
-      0%, 100% {
-        transform: translate(0, 0);
-      }
-      25% {
-        transform: translate(-8px, -8px);
-      }
-      50% {
-        transform: translate(8px, 4px);
-      }
-      75% {
-        transform: translate(-4px, 8px);
-      }
+    50% {
+      transform: translate(-8px, 8px);
     }
-    
-    @keyframes blur-motion-4 {
-      0%, 100% {
-        transform: translate(0, 0);
-      }
-      25% {
-        transform: translate(4px, 4px);
-      }
-      50% {
-        transform: translate(-8px, -4px);
-      }
-      75% {
-        transform: translate(8px, -4px);
-      }
+    75% {
+      transform: translate(8px, 4px);
     }
-    
-    .blur-circle {
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-    }
-    
-    .animate-blur-motion-1 {
-      animation: blur-motion-1 5s infinite;
-    }
-    
-    .animate-blur-motion-2 {
-      animation: blur-motion-2 6s infinite;
-    }
-    
-    .animate-blur-motion-3 {
-      animation: blur-motion-3 7s infinite;
-    }
-    
-    .animate-blur-motion-4 {
-      animation: blur-motion-4 8s infinite;
-    }
+  }
 
-
-    @keyframes gradient-x {
-      0%, 100% { background-size: 200% 100%; background-position: left center; }
-      50% { background-size: 200% 100%; background-position: right center; }
+  @keyframes blur-motion-3 {
+    0%,
+    100% {
+      transform: translate(0, 0);
     }
-
-    .animate-gradient-x{
-      animation: gradient-x  15s ease infinite;
+    25% {
+      transform: translate(-8px, -8px);
     }
-
-    /* ----------------------- */
-
-    .wellcome-before {
-      @apply absolute text-title border-r-2 border-title top-[-100%] left-0 w-0 h-[100%] overflow-hidden animate-animate;
+    50% {
+      transform: translate(8px, 4px);
     }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
+    75% {
+      transform: translate(-4px, 8px);
     }
+  }
 
-    .no-scrollbar {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
+  @keyframes blur-motion-4 {
+    0%,
+    100% {
+      transform: translate(0, 0);
     }
-
-    [modal-backdrop], .modal-backdrop{
-      @apply bg-title/70 grayscale brightness-[0.1] z-40 absolute top-0 w-screen h-full left-0
+    25% {
+      transform: translate(4px, 4px);
     }
-
-    [drawer-backdrop] {
-      @apply bg-title/70 grayscale brightness-[0.1] z-50
+    50% {
+      transform: translate(-8px, -4px);
     }
-
-    /* Scroller */
-
-    /* width */
-    ::-webkit-scrollbar {
-      width: 8px;
+    75% {
+      transform: translate(8px, -4px);
     }
+  }
 
-    /* Track */
-    ::-webkit-scrollbar-track {
-      @apply bg-background rounded-full
+  .blur-circle {
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .animate-blur-motion-1 {
+    animation: blur-motion-1 5s infinite;
+  }
+
+  .animate-blur-motion-2 {
+    animation: blur-motion-2 6s infinite;
+  }
+
+  .animate-blur-motion-3 {
+    animation: blur-motion-3 7s infinite;
+  }
+
+  .animate-blur-motion-4 {
+    animation: blur-motion-4 8s infinite;
+  }
+
+  @keyframes gradient-x {
+    0%,
+    100% {
+      background-size: 200% 100%;
+      background-position: left center;
     }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      @apply bg-background rounded-full
+    50% {
+      background-size: 200% 100%;
+      background-position: right center;
     }
+  }
 
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      @apply bg-text/30 scale-x-150
-    }
+  .animate-gradient-x {
+    animation: gradient-x 15s ease infinite;
+  }
 
-    /* End Scroller */
+  /* ----------------------- */
+
+  .wellcome-before {
+    @apply absolute text-title border-r-2 border-title top-[-100%] left-0 w-0 h-[100%] overflow-hidden animate-animate;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  [modal-backdrop],
+  .modal-backdrop {
+    @apply bg-title/70 grayscale brightness-[0.1] z-40 absolute top-0 w-screen h-full left-0;
+  }
+
+  [drawer-backdrop] {
+    @apply bg-title/70 grayscale brightness-[0.1] z-50;
+  }
+
+  /* Scroller */
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-background rounded-full;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-background rounded-full;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text/30 scale-x-150;
+  }
+
+  /* End Scroller */
 }
 
 .hideMe {
@@ -526,9 +534,15 @@
 }
 
 @keyframes cssAnimation {
-  0%   {opacity: 1;}
-  90%  {opacity: 1;}
-  100% {opacity: 0;}
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .move-animation {
@@ -551,12 +565,12 @@
 
 /* For IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Text selection */
-::-moz-selection { 
+::-moz-selection {
   color: hsl(227, 91%, 59%);
 }
 
@@ -594,10 +608,10 @@
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; 
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }

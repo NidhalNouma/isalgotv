@@ -43,6 +43,11 @@ module.exports = {
       indigo: colors.indigo,
       yellow: colors.yellow,
     },
+    fontFamily: {
+      mono: ["Azeret Mono", "ui-sans-serif", "system-ui"],
+      serif: ["Assistant", "ui-serif", "Georgia"],
+      sans: ["Commissioner", "ui-monospace", "SFMono-Regular"],
+    },
     extend: {
       keyframes: {
         "rotate-gradient": {

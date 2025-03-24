@@ -3,54 +3,89 @@
 {% load compress %} {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" class="max-w-screen overflow-x-hidden" >
+<html lang="en" class="max-w-screen overflow-x-hidden">
   <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Manrope:wght@200..800&family=Sora:wght@100..800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    {% block head_title %}<title>IsAlgo | Elevate your trading to the next level</title>{% endblock head_title %}
-    
-    {% block head_description%}
-    <meta name="description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game.">
+    {% block head_title %}
+    <title>IsAlgo | Elevate your trading to the next level</title>
+    {% endblock head_title %} {% block head_description%}
+    <meta
+      name="description"
+      content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game."
+    />
     {% endblock head_description %}
-   
-    
+
     <!-- This is for search engines and won't affect the actual URL directly, but it's a good practice to ensure your slug is reflected in the URL structure managed by your server or CMS -->
-    <link rel="canonical" href="https:www.//isalgo.com/easy-trading-strategies-for-all-levels" />
-    <link rel="icon" href="{% static 'images/logo.png' %}" type="image/x-icon" />
-    <link rel="icon" sizes="16x16" href="{% static 'images/logo_img_16_16.png' %}" />
-    <link rel="icon" sizes="32x32" href="{% static 'images/logo_img_32_32.png' %}" />
-    <link rel="icon" sizes="48x48" href="{% static 'images/logo_img_48_48.png' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/logo_img_180_180.png' %}" />
+    <link
+      rel="canonical"
+      href="https:www.//isalgo.com/easy-trading-strategies-for-all-levels"
+    />
+    <link
+      rel="icon"
+      href="{% static 'images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="{% static 'images/logo_img_16_16.png' %}"
+    />
+    <link
+      rel="icon"
+      sizes="32x32"
+      href="{% static 'images/logo_img_32_32.png' %}"
+    />
+    <link
+      rel="icon"
+      sizes="48x48"
+      href="{% static 'images/logo_img_48_48.png' %}"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'images/logo_img_180_180.png' %}"
+    />
     <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="{% static 'images/seo-meta-img.png' %}" />
+    <meta
+      name="msapplication-TileImage"
+      content="{% static 'images/seo-meta-img.png' %}"
+    />
 
     <!-- Open Graph / Facebook meta tags -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="IsAlgo" />
-    <meta property="og:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game." />
+    <meta
+      property="og:description"
+      content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game."
+    />
     <meta property="og:url" content="https://www.isalgo.com" />
     <meta name="og:image" content="{% static 'images/seo-meta-img.png' %}" />
-    
+
     <!-- Twitter Card meta tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="IsAlgo" />
-    <meta name="twitter:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game." />
+    <meta
+      name="twitter:description"
+      content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game."
+    />
     <meta name="twitter:url" content="https://www.isalgo.com" />
-    <meta name="twitter:image" content="{% static 'images/seo-meta-img.png' %}" />
+    <meta
+      name="twitter:image"
+      content="{% static 'images/seo-meta-img.png' %}"
+    />
 
-    {% block head %} {% endblock head %}
-    {% compress css %}
+    {% block head %} {% endblock head %} {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}
 
     <script src="https://js.stripe.com/v3/"></script>
     <script type="text/javascript">
-      const stripe_public_key = "{{ stripe_public_key }}"; 
+      const stripe_public_key = "{{ stripe_public_key }}";
 
       // Load theme
       if (
@@ -68,215 +103,265 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-WZRB9CDM');</script>
-  <!-- End Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-WZRB9CDM");
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7B05SE08Q7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-7B05SE08Q7"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
 
-      gtag('config', 'G-7B05SE08Q7');
-    </script>
-    <!-- end Google tag -->
+    gtag("config", "G-7B05SE08Q7");
+  </script>
+  <!-- end Google tag -->
 
   <body
     class="bg-background flex flex-col min-h-screen relative max-w-8xl mx-auto overflow-x-clip"
   >
     <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZRB9CDM"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-WZRB9CDM"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     {% block toppage %} {% endblock toppage %}
-    <main id="main-div" class="container mx-auto grow flex flex-col px-3 sm:px-6 relative">
-      {% include 'navbar.html' %} 
-
-      {% if subscription_status == 'past_due' %}
+    <main
+      id="main-div"
+      class="container mx-auto grow flex flex-col px-3 sm:px-6 relative"
+    >
+      {% include 'navbar.html' %} {% if subscription_status == 'past_due' %}
       <div
-          id="alert-{{close}}"
-          class="max-w-full mx-auto text-sm flex p-4 text-warning bg-warning/10 mt-4  rounded {{class}}"
-          role="alert"
+        id="alert-{{close}}"
+        class="max-w-full mx-auto text-sm flex p-4 text-warning bg-warning/10 mt-4  rounded {{class}}"
+        role="alert"
+      >
+        <svg
+          class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
         >
-          <svg
-            class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-            />
-          </svg>
-          <span class="sr-only">warning!</span>
-          <div>
-            <p>We couldn't complete your last payment, and as a result, your access to our trading strategies may be at risk. Please update your payment method to reactivate your membership.{% if request.resolver_match.view_name != 'membership' %}<a href="{% url 'membership' %}" class="px-2 ml-1 rounded border border-warning/60 font-semibold inline-flex items-center">Click here <svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5"></path><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5"></path><path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5"></path><path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47"></path><path d="M5 3l-1 -1"></path><path d="M4 7h-1"></path><path d="M14 3l1 -1"></path><path d="M15 6h1"></path></svg></a>{%else%} Click the "Reactivate" button below to proceed.{%endif%}</p>
-          </div>
+          <path
+            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+          />
+        </svg>
+        <span class="sr-only">warning!</span>
+        <div>
+          <p>
+            We couldn't complete your last payment, and as a result, your access
+            to our trading strategies may be at risk. Please update your payment
+            method to reactivate your membership.
+            {% if request.resolver_match.view_name != 'membership' %}
+            <a
+              href="{% url 'membership' %}"
+              class="px-2 ml-1 rounded border border-warning/60 font-semibold inline-flex items-center"
+              >Click here
+              <svg
+                class="h-4 aspect-square ml-1"
+                stroke="currentColor"
+                fill="none"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5"></path>
+                <path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5"></path>
+                <path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5"></path>
+                <path
+                  d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47"
+                ></path>
+                <path d="M5 3l-1 -1"></path>
+                <path d="M4 7h-1"></path>
+                <path d="M14 3l1 -1"></path>
+                <path d="M15 6h1"></path></svg></a
+            >{%else%} Click the "Reactivate" button below to proceed.{%endif%}
+          </p>
+        </div>
       </div>
       {% endif %}
 
       <div class="min-h-[90vh] flex flex-col relative" id="page-main-div">
-        {% if user.is_authenticated and not has_subscription and show_banner and subscription_status != 'past_due'  %}
-          {% include "include/subscribe_banner.html" %}
-        {% endif %}
+        {% if user.is_authenticated and not has_subscription and show_banner and subscription_status != 'past_due' %} 
+        {% include "include/subscribe_banner.html" %} 
+        {% endif %} 
+        
         {% block page %} {% endblock page %}
       </div>
 
       {% if user.is_authenticated and not has_subscription and request.resolver_match.view_name != 'membership' %}
-        <div class="min-h-[90vh] flex-col relative hidden" id="home-get-started" hide-backdrop>
-          {% include "include/home_get_started.html" with step=1 %}
-        </div>
-      {% endif %}
-
-       {% include 'footer.html' %}
+      <div
+        class="min-h-[90vh] flex-col relative hidden"
+        id="home-get-started"
+        hide-backdrop
+      >
+        {% include "include/home_get_started.html" with step=1 %}
+      </div>
+      {% endif %} {% include 'footer.html' %}
     </main>
-    
+
     {% if user.is_authenticated and not has_subscription and coupon.code %}
     <div
-  id="alert-coupon-code-off-close"
-  class="text-sm flex p-4 dark:text-background text-title fixed bottom-10 mx-6 left-1/2 -translate-x-1/2 bg-accent rounded-md"
-  role="alert"
->
-  <svg
-    class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
-    viewBox="0 0 20 20"
-  >
-    <path
-      d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-    />
-  </svg>
-  <span class="sr-only">info!</span>
-  <div class="mr-5">
-    <p>Use coupon code <span class="font-semibold tracking-wider">{{coupon.code}}</span> at checkout to get a <span class="font-semibold">{{coupon.off}}</span> discount.</p>
-  </div>
-
-  <button
-    type="button"
-    class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg inline-flex items-center justify-center h-8 w-8"
-    data-dismiss-target="#alert-coupon-code-off-close"
-    aria-label="Close"
-  >
-    <span class="sr-only">Close</span>
-    <svg
-      class="w-3 h-3"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 14 14"
+      id="alert-coupon-code-off-close"
+      class="text-sm flex p-4 dark:text-background text-title fixed bottom-10 mx-6 left-1/2 -translate-x-1/2 bg-accent rounded-md"
+      role="alert"
     >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-      />
-    </svg>
-  </button>
-</div>
-    {% endif %}
+      <svg
+        class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+        />
+      </svg>
+      <span class="sr-only">info!</span>
+      <div class="mr-5">
+        <p>
+          Use coupon code
+          <span class="font-semibold tracking-wider">{{coupon.code}}</span> at
+          checkout to get a
+          <span class="font-semibold">{{coupon.off}}</span> discount.
+        </p>
+      </div>
 
-    {% include 'algoai.html' %}
+      <button
+        type="button"
+        class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg inline-flex items-center justify-center h-8 w-8"
+        data-dismiss-target="#alert-coupon-code-off-close"
+        aria-label="Close"
+      >
+        <span class="sr-only">Close</span>
+        <svg
+          class="w-3 h-3"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+          />
+        </svg>
+      </button>
+    </div>
+    {% endif %} {% include 'algoai.html' %} {% include
+    "include/modal_images_main.html" %} {% if user.is_authenticated %}
 
-    {% include "include/modal_images_main.html" %}
-    
-    {% if user.is_authenticated %}
-
-<!-- ai tokens AI modal -->
-      {% with title="ai-tokens" %}
-          <div
-            id="staticModal-{{ title }}"
-            data-modal-backdrop="static"
-            tabindex="-1"
-            aria-hidden="true"
-            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-          >
-            <div class="relative w-full max-w-2xl max-h-full">
-              <!-- Modal content -->
-              <div class="relative bg-background rounded-lg shadow">
-                <!-- Modal header -->
-                <div
-                  class="flex items-center justify-between p-4 rounded-t"
-                >
-                  <h3 class="text-xl font-semibold text-title">
-                    Add AI Tokens
-                  </h3>
-                  <button
-                    id="add-{{ title }}-close-form-btn"
-                    onclick="closeAITokensModalSettings()"
-                    type="button"
-                    class="btn-icon"
-                    data-modal-hide="staticModal-{{ title }}"
-                  >
-                    <svg
-                      class="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-                <div class="max-w-md p-6 pt-2 mx-auto" id="div-ai_tokens_modal">
-                  {% include "include/ai_tokens_modal.html" %}
-                </div>
-              </div>
-            </div>
+    <!-- ai tokens AI modal -->
+    {% with title="ai-tokens" %}
+    <div
+      id="staticModal-{{ title }}"
+      data-modal-backdrop="static"
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-background rounded-lg shadow">
+          <!-- Modal header -->
+          <div class="flex items-center justify-between p-4 rounded-t">
+            <h3 class="text-xl font-semibold text-title">Add AI Tokens</h3>
+            <button
+              id="add-{{ title }}-close-form-btn"
+              onclick="closeAITokensModalSettings()"
+              type="button"
+              class="btn-icon"
+              data-modal-hide="staticModal-{{ title }}"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
           </div>
+          <div class="max-w-md p-6 pt-2 mx-auto" id="div-ai_tokens_modal">
+            {% include "include/ai_tokens_modal.html" %}
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <script type="text/javascript">
-            // Select the tokens amount
-            let lastAiTokenId = ""; 
+    <script type="text/javascript">
+      // Select the tokens amount
+      let lastAiTokenId = "";
 
-            function amountBtnClick(id, amount, event) {
-                event.preventDefault(); // Prevent default button behavior
-            
-                let activeClass = "bg-text/20";
-                let desactiveClass = "bg-text/10";
-            
-                // Highlight the clicked button
-                document.getElementById(id).classList.remove(desactiveClass);
-                document.getElementById(id).classList.add(activeClass);
-            
-                // Remove highlight from the last selected button
-                if (lastAiTokenId && lastAiTokenId !== id) {
-                    document.getElementById(lastAiTokenId).classList.remove(activeClass);
-                    document.getElementById(lastAiTokenId).classList.add(desactiveClass);
-                }
-            
-                // Show input field if "Other" is selected, otherwise set amount
-                let amountInput = document.getElementById("amount-{{title}}");
-                if (Number(amount) <= 0) {
-                    document.getElementById("div-amount-{{title}}").classList.remove("hidden");
-                    amountInput.value = '';
-                    amountInput.focus();
-                } else {
-                    amountInput.value = amount;
-                    document.getElementById("div-amount-{{title}}").classList.add("hidden");
-                }
-            
-                lastAiTokenId = id;
-            }
-          </script>
-        {% endwith %}
-    {% endif %}
+      function amountBtnClick(id, amount, event) {
+        event.preventDefault(); // Prevent default button behavior
 
+        let activeClass = "bg-text/20";
+        let desactiveClass = "bg-text/10";
+
+        // Highlight the clicked button
+        document.getElementById(id).classList.remove(desactiveClass);
+        document.getElementById(id).classList.add(activeClass);
+
+        // Remove highlight from the last selected button
+        if (lastAiTokenId && lastAiTokenId !== id) {
+          document.getElementById(lastAiTokenId).classList.remove(activeClass);
+          document.getElementById(lastAiTokenId).classList.add(desactiveClass);
+        }
+
+        // Show input field if "Other" is selected, otherwise set amount
+        let amountInput = document.getElementById("amount-{{title}}");
+        if (Number(amount) <= 0) {
+          document
+            .getElementById("div-amount-{{title}}")
+            .classList.remove("hidden");
+          amountInput.value = "";
+          amountInput.focus();
+        } else {
+          amountInput.value = amount;
+          document
+            .getElementById("div-amount-{{title}}")
+            .classList.add("hidden");
+        }
+
+        lastAiTokenId = id;
+      }
+    </script>
+    {% endwith %} {% endif %}
 
     <script>
       const hasTouchScreen =

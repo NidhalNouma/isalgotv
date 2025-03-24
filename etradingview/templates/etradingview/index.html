@@ -2,8 +2,6 @@
 {% block head %} 
 {% endblock head %} 
 {% block toppage %}
-<!-- <div class="absolute top-[-12rem] aspect-square w-[36%] bg-primary/50  blur-[80px] rounded-full -z-10"  id="home-blur-3"></div>
-<div class="absolute top-[0] right-[0%] aspect-square w-[36%] bg-secondary/50  blur-[150px] -z-10"  id="home-blur-4"></div> -->
 {% comment %} TODO: Reduce size of images for better loading page {% endcomment %}
 <script type="text/javascript">
   function randomMove(element) {
@@ -45,13 +43,13 @@ setInterval(() => {
 {% block page %} 
   
 
-<main class="max-w-full min-h-[80vh] relative pt-8  flex flex-col lg:flex-row justify-between  items-center" >
+<main class="max-w-full relative pt-8  flex flex-col lg:flex-row min-h-[80vh] items-center" >
+
   <div class="relative  my-auto flex flex-col items-center lg:items-start w-full lg:max-w-[60%]  lg:text-start text-center grow z-30 py-8">
-      <h2 class="text-title text-4xl sm:text-5xl font-extrabold bg-transparent tracking-wide max-w-lg">
-        Elevate your trading prowess with our advanced
-      </h2>
-      <h2 class="text-title text-4xl sm:text-5xl font-extrabold tracking-wide">
-        <span class="bg-secondary text-text-light truncate">trading strategies</span>
+      <h2 class="text-title text-6xl sm:text-8xl font-extrabold ">
+        Elevate Your 
+        <span class="text-primary block uppercase">trading</span>
+        Prowess 
       </h2>
       <h6 class="text-text text-base tracking-wide font-medium mt-4 bg-transparent max-w-md">
         We offer top-notch backtestable trading strategies that are optimized for the <a href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank" class="font-extrabold text-accent truncate">TradingView platform</a>
@@ -105,13 +103,6 @@ setInterval(() => {
   </div>
   
 {% include "include/video_modal.html" with id="l" video_url="https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4" video_poster="https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png" %} 
-
-{% comment %} <svg class="stroke-secondary h-full absolute right-0 top-0 bottom-0  scale-y-150 z-0" viewBox="0 0 241 2912" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M2.04915 2910.48C2.04915 2666.02 2.04915 2421.56 2.04915 2177.1C2.04915 1822.61 -4.50356 1480.79 133.709 1148.85C162.702 1079.22 198.312 1010.93 218.036 937.763C249.185 822.211 237.525 692.331 236.534 574.339C234.924 382.803 226.752 192.525 207.699 2" stroke-width="8" stroke-linecap="round"/>
-</svg>
-<svg  class="stroke-accent h-full absolute left-2/3 top-0 bottom-0  scale-y-150 z-0" viewBox="0 0 599 2826" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M114.24 2C107.484 29.0241 88.7646 55.0606 77.3212 80.0427C32.9166 176.982 8.75177 275.45 3.71803 381.932C-3.03993 524.889 9.20181 667.611 57.2263 803.456C118.736 977.448 240.301 1118.27 340.423 1270.31C417.692 1387.65 477.211 1510.37 519.875 1644.4C570.392 1803.11 588.464 1966.23 594.88 2132.05C598.829 2234.12 597.224 2332.75 576.888 2433.01C550.348 2563.86 538.68 2691.22 530.623 2824.15"  stroke-width="8" stroke-linecap="round"/>
-  </svg> {% endcomment %}
   
 
 
@@ -119,7 +110,7 @@ setInterval(() => {
 
 
 <section class="mx-auto w-full mt-28 relative flex flex-col">
-  <h2 class="text-title text-5xl font-semibold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">for traders</span></h2>
+  <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">For Traders</span></h2>
   <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
 
   <div class="grid md:grid-cols-3 gap-5 mt-12 ">
@@ -152,7 +143,7 @@ setInterval(() => {
 
 
 <section class="mt-36 my-8 ">
-    <h2 class="text-title text-5xl font-semibold text-center mt-0 mb-4">To turn losses <span class="bg-accent text-background  truncate">into gains</span></h2>
+    <h2 class="text-title text-5xl font-bold text-center mt-0 mb-4">To turn losses <span class="bg-success text-title dark:text-background  truncate">Into GAINS</span></h2>
     <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-16 sm:max-w-full max-w-md mx-auto">Reverse losses and maximize profit potential</h2>
     <div id="cr" class="relative w-full sm:w-12/12 aspect-[16/7] as mx-auto cr px-3 rounded-lg md:scale-100 scale-110"  >
       <div class="absolute inset-0 h-full w-full overflow-hidden">
@@ -228,9 +219,9 @@ setInterval(() => {
 
     <div class="relative min-h-[60vh] overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around ">
       <div class="max-w-[100%] md:max-w-[45%] my-6 bg-background py-2 rounded-lg text-center md:text-start ">
-        <h3 class="text-title text-3xl font-semibold">
-          Universal Applicability <span class="bg-text text-background ">Any Symbol, Any Timeframe</span>
-        </h3>
+        <h2 class="text-title text-3xl font-bold">
+          Universal Applicability <br/><span class="bg-text text-background ">Any Symbol, Any Timeframe</span>
+        </h2>
         <h6 class="text-text/80 text-sm mt-2 font-medium">Unlock the full potential of our strategies, tailored to suit any symbol and timeframe. Experience seamless performance on every chart</h6>
       </div>
       <div class=" w-full relative max-w-3xl md:ml-6 flex justify-center gap-3 bg-background imgs-bw imgs-syms">
@@ -310,9 +301,9 @@ setInterval(() => {
 
     <div class="relative min-h-[60vh]  overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row-reverse flex items-center justify-between ">
       <div class="max-w-[100%] md:max-w-[45%] w-full my-6 bg-background py-2 rounded-lg text-center md:text-start ">
-        <h3 class="text-title text-3xl font-semibold">
-          Tailored Settings <span class="bg-accent/80 text-background">for Optimal Results</span>
-        </h3>
+        <h2 class="text-title text-3xl font-bold">
+          Tailored Settings <br/><span class="bg-accent/80 text-background">For Optimal Results</span>
+        </h2>
         <h6 class="text-text/80 text-sm mt-2 font-medium">Every strategy comes with its own customizable settings, allowing you to fine-tune and maximize its effectiveness</h6>
       </div>
 
@@ -359,9 +350,9 @@ setInterval(() => {
 
     <div class="relative min-h-[60vh] overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around ">
       <div class="max-w-[100%] md:max-w-[45%] my-6 bg-background py-2 rounded-lg text-center md:text-start ">
-        <h3 class="text-title text-3xl font-semibold">
-          Stay Informed with <span class="bg-title  text-background">Entry and Exit Alerts</span>
-        </h3>
+        <h2 class="text-title text-3xl font-bold">
+          Stay Informed with <br/><span class="bg-title  text-background">Entry and Exit Alerts</span>
+        </h2>
         <h6 class="text-text/80 text-sm mt-2 font-medium">All our strategies feature built-in alerts to keep you updated on every entry and exit point, ensuring you never miss a crucial moment</h6>
       </div>
       
@@ -417,9 +408,9 @@ setInterval(() => {
 
     <div class="relative  overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col imd:flex-row-reverse flex items-center justify-between ">
       <div class="max-w-[100%] md:max-w-[45%] w-full my-6 bg-background py-2 rounded-lg text-center imd:text-start ">
-        <h3 class="text-title text-3xl font-semibold">
+        <h2 class="text-title text-3xl font-bold">
           Join the <span class="bg-primary text-title dark:text-background">Profits Together</span>
-        </h3>
+        </h2>
         <h6 class="text-text/80 text-sm mt-2 font-medium">Leverage our community-tested results and contribute by sharing your best outcomes for collective success</h6>
       </div>
       <div class="w-full relative  mt-6 bg-background overflow-hidden">
