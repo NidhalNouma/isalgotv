@@ -1,19 +1,22 @@
-<li
-  class="relative flex items-center p-2 py-16 rounded-xl border-0 border-secondary w-fit max-w-xl {% if no == 2 or no == 4 %} ml-auto {% endif %}"
->
-  <span
-    class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 -z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2"
-    >{{no}}</span
-  >
-  <div class="">
-    <h3 class="font-semibold text-3xl text-title">{{h}}</h3>
-    <p class="font-medium text-sm text-text/80 mt-2">{{text}}</p>
+<li class="relative flex items-center p-2 py-16 rounded-xl border-0 border-secondary w-fit max-w-xl {% if no <= 0 %}
+    mx-auto
+  {% elif no == 2 or no == 4 %}
+    ml-auto
+  {% endif %}">
+  {% if no > 0 %}
+    <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 -z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">{{ no }}</span>
+  {% endif %}
+  <div class="{% if no <= 0 %}
+      text-center max-w-xs
+    {% else %}
+      max-w-md
+    {% endif %}">
+    <h3 class="font-semibold text-3xl text-title">{{ h }}</h3>
+    <p class="font-medium text-base text-text/80 mt-2">{{ text }}</p>
   </div>
 
   <div class="stroke-secondary stroke-2 fill-none ml-2 sm:ml-8 relative">
-    <div
-      class="absolute inset-0 bg-secondary scale-75 rounded-full -z-40 blur-[120px]"
-    ></div>
-    {{svg}}
+    <div class="absolute inset-0 bg-secondary scale-75 rounded-full -z-40 blur-[120px]"></div>
+    {{ svg }}
   </div>
 </li>

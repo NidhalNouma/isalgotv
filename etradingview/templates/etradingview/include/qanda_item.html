@@ -1,56 +1,6 @@
-<h2 id="accordion-open-heading-{{id}}">
-  <button
-    type="button"
-    class="flex items-center justify-between w-full px-2 sm:px-5 py-4 font-semibold !text-title  text-lg gap-3 !bg-background/20 {{class}}"
-    data-accordion-target="#accordion-open-body-{{id}}"
-    aria-expanded="false"
-    aria-controls="accordion-open-body-{{id}}"
-  >
-    <span class="inline-flex justify-center items-start text-start font-sans">
-      {%if svg%}
-      <svg
-        class="w-5 aspect-square me-2 shrink-0 translate-y-[0.25rem]"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-          clip-rule="evenodd"
-        ></path>
-      </svg>
-      {%endif%}
-      <span>{{title}}</span></span
-    >
-    {% if svg %}
-    <span class="rotate-180">
-      <svg
-        data-accordion-icon
-        class="w-7 h-7 shrink-0 border-0 p-2 rounded-lg "
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 10 6"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 5 5 1 1 5"
-        />
-      </svg>
-    </span>
-    {% endif %}
-  </button>
-</h2>
-<div
-  id="accordion-open-body-{{id}}"
-  class="{% if svg %}hidden{%endif%} pr-8"
-  aria-labelledby="accordion-open-heading-{{id}}"
->
-  <div class="p-5 {{description_class}}">
-    <p class="text-text">{{description|safe}}</p>
+<div class="">
+  <h6 class="flex items-center justify-between w-full px-2 !pl-0 sm:px-5 py-4 font-semibold !text-title  text-lg gap-3 !bg-background/20 {{ class }}" data-accordion-target="#accordion-open-body-{{ id }}" aria-expanded="false" aria-controls="accordion-open-body-{{ id }}">{{ title }}</h6>
+  <div class=" {{ description_class }}">
+    <p class="text-text">{{ description|safe }}</p>
   </div>
 </div>

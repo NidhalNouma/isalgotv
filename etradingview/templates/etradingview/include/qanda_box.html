@@ -1,0 +1,13 @@
+<div class="bg-title/[0.03] border border-title/10 rounded-lg overflow-hidden transition-all duration-300 hover:bg-title/[0.05] hover:-translate-y-0.5">
+  <div id="accordion-open-heading-{{ id }}" class="">
+    <button data-accordion-target="#accordion-open-body-{{ id }}" aria-expanded="false" aria-controls="accordion-open-body-{{ id }}" class="w-full px-6 py-6 flex items-center justify-between gap-4 text-left !text-title !bg-transparent font-medium cursor-pointer" type="button">
+      <span>{{ title }}</span>
+      <svg data-accordion-icon class="flex-shrink-0 transition-transform duration-300 text-title" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down flex-shrink-0 transition-transform duration-300">
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </button>
+  </div>
+  <div id="accordion-open-body-{{ id }}" aria-labelledby="accordion-open-heading-{{ id }}" class="overflow-hidden transition-all duration-300 bg-background/30 p-5 hidden">
+    <p class="text-title/70 leading-relaxed">{{ description|safe }}</p>
+  </div>
+</div>

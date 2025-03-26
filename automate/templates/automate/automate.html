@@ -1,60 +1,164 @@
-{% extends 'page.html' %} {% load static %} 
+{% extends 'page.html' %} {% load static %}
 
 {% block head_title %}
-<title>IsAlgo | Automate your alerts</title>
-{% endblock head_title %}
+  <title>IsAlgo | Automate your alerts</title>
+{% endblock %}
 
 {% block head_description %}
-<meta name="description" content="Become part of a community where trading success is the norm. Discover strategies results, insights, and support to thrive in any market. Your journey towards profitability starts here.">
-{% endblock head_description %}
+  <meta name="description" content="Become part of a community where trading success is the norm. Discover strategies results, insights, and support to thrive in any market. Your journey towards profitability starts here." />
+{% endblock %}
 
-{% block page %} 
+{% block head %}
+  <style>
+    #dynamic-line {
+      /* Start with a gradient that is entirely the light color */
+      background: linear-gradient(to bottom, hsl(var(--color-title) / 0.8) 100%, hsl(var(--color-title) / 0.2) 0%);
+    }
+  </style>
+{% endblock %}
 
-{% if user.is_authenticated %}
-<div class=" flex items-baseline gap-2 sm:gap-3">
-    <h1 class="main-title">Automate </h1>
-    <button onclick="openModel('add-broker-modal');" class="btn-text -translate-y-1 pr-3 pl-2 text-sm font-semibold inline-flex items-center justify-center"><svg class="h-4 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Broker</button>
-</div> 
+{% block page %}
+  {% if user.is_authenticated %}
+    <div class="flex items-baseline gap-2 sm:gap-3">
+      <h1 class="main-title">Automate</h1>
+      <button onclick="openModel('add-broker-modal');" class="btn-text -translate-y-1 pr-3 pl-2 text-sm font-semibold inline-flex items-center justify-center">
+        <svg class="h-4 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>Broker
+      </button>
+    </div>
 
-<main id="at-accounts" class="mt-8 mb-16 ">
-    {% include 'include/accounts_list.html' %}
-</main>
+    <main id="at-accounts" class="mt-8 mb-16">
+      {% include 'include/accounts_list.html' %}
+    </main>
 
-{% include 'include/add_broker_modal.html' %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="binance" %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="binanceus" %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="bitget" %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="bybit" %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="bingx" %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="bitmex" %}
-{% include 'include/add_crypto_broker_modal.html' with broker_type="bitmart" %}
+    {% include 'include/add_broker_modal.html' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='binance' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='binanceus' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='bitget' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='bybit' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='bingx' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='bitmex' %}
+    {% include 'include/add_crypto_broker_modal.html' with broker_type='bitmart' %}
 
-{% include 'include/add_forex_broker_modal.html' with broker_type="tradelocker" %}
+    {% include 'include/add_forex_broker_modal.html' with broker_type='tradelocker' %}
+  {% else %}
+    <section class="w-full flex flex-col items-center justify-center min-h-[80vh]">
+      <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Automate Your Trading <br /> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">with any broker</span></h1>
 
-{% else %}
-<h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Automate Your Trading </br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">with any broker<span></h1>
+      <div class="mt-6 mb-8 max-w-xl mx-auto px-4">
+        <h2 class="text-center text-text/60 text-lg sm:text-xl font-medium">Connect TradingView alerts to multiple brokers and execute trades in <span class="text-primary">milliseconds</span></h2>
 
-<div class="mt-6 mb-8 max-w-xl mx-auto px-4">
-    <h2 class=" text-center text-text/60 text-lg sm:text-xl font-medium">Connect TradingView alerts to multiple brokers and execute trades in <span class="text-primary">milliseconds</span></h2>
+        {% if user.is_authenticated %}
+          <a href="{% url 'membership' %}" class="btn-primary-landing from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit">
+            Start Automating Now<svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+              <path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path>
+            </svg>
+          </a>
+        {% else %}
+          <a href="{% url 'register' %}" class="btn-primary-landing from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit">
+            Start Automating Now<svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+              <path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+      {% include 'svg/automate_svg.html' %}
+    </section>
 
-    {% if user.is_authenticated %}
-    <a
-        href="{% url 'membership' %}"
-        class="btn-primary-landing from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit "
-        >Start Automating Now
-        <svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path></svg>
-    </a>
-    {% else %}    
-    <a
-        href="{% url 'register' %}"
-        class="btn-primary-landing from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit "
-        >Start Automating Now
-        <svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path></svg>
-    </a>
-    {% endif %}
-</div>
-    {% include "svg/automate_svg.html" %}
+    <section class="mx-auto w-full mt-24 mb-10">
+      <h2 class="text-title text-5xl font-bold text-center mt-12">How it works</h2>
 
-{% endif %}
+      <div class="w-full mt-14 relative">
+        <div class="relative mx-auto text-text p-6">
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-r from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md">
+            <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">1</span>
 
-{% endblock page %}
+            <div class="max-w-md">
+              <h3 class="font-bold text-3xl text-title">Choose a Strategy/Indicator to automate</h3>
+              <p class="font-medium text-base text-text/80 mt-2">
+                Select <strong class="text-text">the ideal</strong> strategy or indicator to automate after <strong class="text-text">thorough testing</strong>. It can be from IsAlgo or any other source.
+              </p>
+            </div>
+          </div>
+
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-l from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md ml-auto">
+            <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">2</span>
+
+            <div class="max-w-md">
+              <h3 class="font-bold text-3xl text-title">Set up the alert messages</h3>
+              <p class="font-medium text-base text-text/80 mt-2">
+                Configure the alert messages so our software can interpret them correctly. Use <a href="{% url 'docs_automate_playground' %}" class="text-text font-bold">the playground</a> for guidance.
+              </p>
+            </div>
+          </div>
+
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-r from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md">
+            <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">3</span>
+
+            <div class="max-w-md">
+              <h3 class="font-bold text-3xl text-title">Link your broker</h3>
+              <p class="font-medium text-base text-text/80 mt-2">
+                Connect your <strong class="text-text">preferred broker</strong> by following the simple steps to obtain the <strong class="text-text">webhook URL</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-l from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md ml-auto">
+            <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">4</span>
+
+            <div class="max-w-md">
+              <h3 class="font-bold text-3xl text-title">Create TradingView alert</h3>
+              <p class="font-medium text-base text-text/80 mt-2">
+                Set up a TradingView alert and <strong class="text-text">enable the alert webhook</strong> to establish the connection.
+              </p>
+            </div>
+          </div>
+
+          <div id="dynamic-line" class="absolute left-1/2 top-0 bottom-0 w-1.5 -z-40 rounded-md -translate-x-1/2 transition-all duration-300"></div>
+        </div>
+
+        <div class="relative flex items-center p-2 py-16 rounded-xl border-0 border-secondary w-fit max-w-xl mx-auto">
+          <div class="text-center max-w-xs">
+            <h3 class="font-bold text-3xl text-title">All Set!</h3>
+            <p class="font-medium text-base text-text/80 mt-2">Everything is set—sit back and watch the trades execute automatically.</p>
+            <a href="{% url 'register' %}" class="btn-primary-landing !text-2xl from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit">
+              Try it Now<svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                <path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script type="text/javascript">
+      // This function recalculates the gradient cutoff based on scroll position.
+      function updateLineGradient() {
+        const line = document.getElementById('dynamic-line')
+        if (!line) return
+      
+        // Get the line's bounding rectangle
+        const rect = line.getBoundingClientRect()
+      
+        // We define the viewport midpoint
+        const viewportMid = window.innerHeight / 2
+      
+        // Calculate how much of the line is above the viewport midpoint.
+        // Ensure we clamp the value between 0 and 100.
+        const cutoffPercentage = Math.max(0, Math.min(100, ((viewportMid - rect.top) / rect.height) * 100))
+      
+        // Set the gradient: above the cutoff -> dark, below -> light
+        line.style.background = `linear-gradient(to bottom, hsl(var(--color-title) / 0.8) ${cutoffPercentage}%, hsl(var(--color-title) / 0.2) ${cutoffPercentage}%)`
+      }
+      
+      // Update on scroll and resize
+      window.addEventListener('scroll', updateLineGradient)
+      window.addEventListener('resize', updateLineGradient)
+      
+      // Initialize the gradient on page load
+      updateLineGradient()
+    </script>
+  {% endif %}
+{% endblock %}
