@@ -145,18 +145,17 @@ setInterval(() => {
 <section class="mt-36 my-8 ">
     <h2 class="text-title text-5xl font-bold text-center mt-0 mb-4">To turn losses <span class="bg-success text-title dark:text-background  truncate">Into GAINS</span></h2>
     <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-16 sm:max-w-full max-w-md mx-auto">Reverse losses and maximize profit potential</h2>
-    <div id="cr" class="relative w-full sm:w-12/12 aspect-[16/7] as mx-auto cr px-3 rounded-lg md:scale-100 scale-110"  >
-      <div class="absolute inset-0 h-full w-full overflow-hidden">
-        <img src="{% static 'images/landingPage/results/image r 1.png'%}" alt="Trading strategy result 1" class="rounded-md border-0 border-profit inset-0 h-full w-full object-nonei image-1" loading="lazy" />
+    <div class="p-2 sm:p-3.5 rounded-lg dark:bg-text/20 bg-text">
+      <div id="cr" class="relative w-full sm:w-12/12 aspect-[16/7] mx-auto ounded-lg "  >
+        <div class="absolute inset-0 h-full w-full overflow-hidden">
+          <img src="{% static 'images/landingPage/results/image r 1.png'%}" alt="Trading strategy result 1" class="rounded-md border-0 border-profit inset-0 h-full w-full object-nonei image-1" loading="lazy" />
+        </div>
+        <div class="absolute inset-0 h-full w-full overflow-hidden">
+          <img src="{% static 'images/landingPage/results/image r l.png' %}" alt="Trading strategy result 2" class="rounded-md border-0 border-loss inset-0 h-full w-full object-nonei image-2 " loading="lazy" />
+        </div>
+        <div id="separator" class="absolute left-0 -translate-x-1/2 h-full w-1 scale-y-105 rounded-full bg-gradient-to-t from-loss/60 to-profit"></div>
+        
       </div>
-      <div class="absolute inset-0 h-full w-full overflow-hidden">
-        <img src="{% static 'images/landingPage/results/image r l.png' %}" alt="Trading strategy result 2" class="rounded-md border-0 border-loss inset-0 h-full w-full object-nonei image-2 " loading="lazy" />
-      </div>
-      <div id="separator" class="absolute left-0 -translate-x-1/2 h-full w-1 scale-y-105 rounded-full bg-gradient-to-t from-loss/60 to-profit"></div>
-      
-      
-      {% comment %} <div class="w-full rounded-md aspect-auto absolute inset-0 bg-gradient-to-r from-loss/30 to-profit/30 blur-xl -z-10"></div> {% endcomment %}
-
     </div>
 
   <script>
@@ -202,17 +201,47 @@ setInterval(() => {
 
 <section class="mx-auto max-w-full mt-28 my-8 relative">
 
-  <svg class="h-full absolute stroke-primary left-1/2 -translate-x-1/2 top-0 bottom-0 scale-y-105 z-0" 
+  <svg id="snake-line" class="h-full stroke-primary absolute left-1/2 -translate-x-1/2 top-0 bottom-0 scale-y-105 z-0" 
      viewBox="0 0 619 2873" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- <defs>
-        <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:hsl(var(--color-primary)); stop-opacity:1" />
-            <stop offset="100%" style="stop-color:hsl(var(--color-accent)); stop-opacity:1" />
-        </linearGradient>
-    </defs> -->
+    <defs>
+      <!-- Define a vertical gradient for the stroke -->
+      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <!-- Both stops start at the same offset -->
+        <stop offset="0%" stop-color="hsl(var(--color-primary))" />
+        <stop offset="0%" stop-color="hsl(var(--color-text) / 0.2)" />
+      </linearGradient>
+    </defs>
     <path d="M295.167 2871C295.167 2830.1 301.203 2789.27 311.104 2748.74C364.352 2530.82 474.862 2319.18 518.662 2100.11C540.509 1990.85 559.186 1878.02 554.81 1767.87C551.854 1693.47 519.201 1632.26 458.027 1566.57C405.55 1510.22 344.498 1460.93 263.295 1416.52C202.639 1383.35 133.887 1355.01 84.4993 1315.76C-16.904 1235.18 -8.93736 1121.09 24.6415 1029.12C75.2651 890.482 206.773 768.855 323.93 645.636C434.758 529.073 518.055 411.377 554.81 280.388C580.714 188.072 593.802 94.5739 617 2" 
-           stroke-width="4" stroke-linecap="round"/>
+           stroke="url(#lineGradient)" stroke-width="4" stroke-linecap="round"/>
   </svg>
+
+
+    <script type="text/javascript">
+      function updateSVGLineGradient() {
+        const svg = document.getElementById('snake-line')
+        if (!svg) return
+      
+        // Get the SVG's bounding rectangle
+        const rect = svg.getBoundingClientRect()
+        const viewportMid = window.innerHeight / 2
+      
+        // Calculate cutoffPercentage relative to the SVG's height
+        const cutoffPercentage = Math.max(0, Math.min(100, ((viewportMid - rect.top) / rect.height) * 100))
+      
+        // Update the gradient stops
+        const gradient = document.getElementById('lineGradient')
+        const stops = gradient.querySelectorAll('stop')
+        stops[0].setAttribute('offset', cutoffPercentage + '%')
+        stops[1].setAttribute('offset', cutoffPercentage + '%')
+      }
+      
+      // Update on scroll and resize
+      window.addEventListener('scroll', updateSVGLineGradient)
+      window.addEventListener('resize', updateSVGLineGradient)
+      
+      // Initialize the gradient on page load
+      updateSVGLineGradient()
+    </script>
 
 
   <div class=" flex flex-col z-10">

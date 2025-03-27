@@ -72,56 +72,72 @@
 
       <div class="w-full mt-14 relative">
         <div class="relative mx-auto text-text p-6">
-          <div class="relative flex items-center p-6 my-16 bg-gradient-to-r from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md">
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-bl from-0% via-70% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-lg">
             <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">1</span>
 
-            <div class="max-w-md">
-              <h3 class="font-bold text-3xl text-title">Choose a Strategy/Indicator to automate</h3>
-              <p class="font-medium text-base text-text/80 mt-2">
+            <div class="">
+              <h3 class="text-sm text-text mb-2">STEP 1</h3>
+              <h3 class="font-bold text-2xl text-title">Choose a Strategy/Indicator to automate</h3>
+              <p class="font-medium text-base text-text/80 mt-4">
                 Select <strong class="text-text">the ideal</strong> strategy or indicator to automate after <strong class="text-text">thorough testing</strong>. It can be from IsAlgo or any other source.
               </p>
             </div>
           </div>
 
-          <div class="relative flex items-center p-6 my-16 bg-gradient-to-l from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md ml-auto">
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-br from-0% via-70% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-lg ml-auto">
             <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">2</span>
 
-            <div class="max-w-md">
-              <h3 class="font-bold text-3xl text-title">Set up the alert messages</h3>
-              <p class="font-medium text-base text-text/80 mt-2">
+            <div class="">
+              <h3 class="text-sm text-text mb-2">STEP 2</h3>
+              <h3 class="font-bold text-2xl text-title">Set up the alert messages</h3>
+              <p class="font-medium text-base text-text/80 mt-4">
                 Configure the alert messages so our software can interpret them correctly. Use <a href="{% url 'docs_automate_playground' %}" class="text-text font-bold">the playground</a> for guidance.
               </p>
             </div>
           </div>
 
-          <div class="relative flex items-center p-6 my-16 bg-gradient-to-r from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md">
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-bl from-0% via-70% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-lg">
             <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">3</span>
 
-            <div class="max-w-md">
-              <h3 class="font-bold text-3xl text-title">Link your broker</h3>
-              <p class="font-medium text-base text-text/80 mt-2">
+            <div class="">
+              <h3 class="text-sm text-text mb-2">STEP 3</h3>
+              <h3 class="font-bold text-2xl text-title">Link your broker</h3>
+              <p class="font-medium text-base text-text/80 mt-4">
                 Connect your <strong class="text-text">preferred broker</strong> by following the simple steps to obtain the <strong class="text-text">webhook URL</strong>.
               </p>
             </div>
           </div>
 
-          <div class="relative flex items-center p-6 my-16 bg-gradient-to-l from-0% via-80% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-md ml-auto">
+          <div class="relative flex items-center p-6 my-16 bg-gradient-to-br from-0% via-70% to-100% from-background via-background to-title/20 rounded-lg w-fit max-w-lg ml-auto">
             <span class="absolute right-1/3 w-28 aspect-square bg-title/80 opacity-10 z-10 rounded-full text-background font-semibold text-8xl flex items-center justify-center mx-2">4</span>
 
-            <div class="max-w-md">
-              <h3 class="font-bold text-3xl text-title">Create TradingView alert</h3>
-              <p class="font-medium text-base text-text/80 mt-2">
+            <div class="">
+              <h3 class="text-sm text-text mb-2">STEP 4</h3>
+              <h3 class="font-bold text-2xl text-title">Create TradingView alert</h3>
+              <p class="font-medium text-base text-text/80 mt-4">
                 Set up a TradingView alert and <strong class="text-text">enable the alert webhook</strong> to establish the connection.
               </p>
             </div>
           </div>
 
           <div id="dynamic-line" class="absolute left-1/2 top-0 bottom-0 w-1.5 -z-40 rounded-md -translate-x-1/2 transition-all duration-300"></div>
+
+          {% comment %} <svg id="snake-line" class="absolute top-0 left-1/2 -translate-x-1/2 bottom-0 h-full -z-40" viewBox="0 0 564 2036" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Define a vertical gradient for the stroke -->
+              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <!-- Both stops start at the same offset -->
+                <stop offset="0%" stop-color="hsl(var(--color-title) / 0.8)" />
+                <stop offset="0%" stop-color="hsl(var(--color-title) / 0.2)" />
+              </linearGradient>
+            </defs>
+            <path d="M294.896 10.5088C294.896 88.2123 295.155 151.252 228.142 199.989C196.408 223.068 166.526 260.476 137.766 287.797C97.7627 325.801 69.7316 357.975 40.715 405.645C10.8954 454.634 -12.4939 564.92 49.958 603.085C127.714 650.603 211.025 674.616 301.058 693.46C323.826 698.226 352.353 711.191 373.461 721.189C396.36 732.036 420.019 740.712 440.473 756.621C458.322 770.503 478.822 785.237 490.025 805.403C501.092 825.324 521.349 852.939 521.349 877.036C521.349 913.844 542.966 984.974 509.538 1013.63C488.143 1031.96 479.508 1052.22 452.027 1065.23C430.657 1075.36 401.929 1090.07 380.137 1096.3C356.304 1103.11 335.233 1115.59 311.328 1124.28C285.877 1133.54 241.442 1147.55 220.953 1165.88C210.528 1175.21 197.23 1178.3 187.575 1187.96C182.115 1193.42 183.883 1209.91 176.792 1219.03C169.596 1228.28 166.374 1243.05 158.306 1251.12C150.348 1259.08 138.182 1267.42 132.118 1276.79C123.806 1289.64 113.657 1294.71 106.443 1309.14C101.914 1318.2 92.1132 1331.38 91.5513 1341.49C90.1252 1367.16 81.3435 1396.08 87.1866 1422.37C100.569 1482.59 149.15 1529.57 209.142 1540.47C243.197 1546.67 277.364 1560.54 312.355 1563.58C362.849 1567.97 417.662 1575.38 464.864 1590.03C500.545 1601.1 536.55 1597.25 544.199 1639.32C549.394 1667.9 554.527 1696.19 553.699 1727.64C551.286 1819.33 445.042 1836.68 391.947 1886.83C352.826 1923.78 304.139 1967.37 304.139 2025.47" stroke="url(#lineGradient)" stroke-width="10" stroke-linecap="round" />
+          </svg> {% endcomment %}
         </div>
 
         <div class="relative flex items-center p-2 py-16 rounded-xl border-0 border-secondary w-fit max-w-xl mx-auto">
           <div class="text-center max-w-xs">
-            <h3 class="font-bold text-3xl text-title">All Set!</h3>
+            <h3 class="font-bold text-2xl text-title">All Set!</h3>
             <p class="font-medium text-base text-text/80 mt-2">Everything is set—sit back and watch the trades execute automatically.</p>
             <a href="{% url 'register' %}" class="btn-primary-landing !text-2xl from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit">
               Try it Now<svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -160,5 +176,32 @@
       // Initialize the gradient on page load
       updateLineGradient()
     </script>
+
+    {% comment %} <script type="text/javascript">
+      function updateSVGLineGradient() {
+        const svg = document.getElementById('snake-line')
+        if (!svg) return
+      
+        // Get the SVG's bounding rectangle
+        const rect = svg.getBoundingClientRect()
+        const viewportMid = window.innerHeight / 2
+      
+        // Calculate cutoffPercentage relative to the SVG's height
+        const cutoffPercentage = Math.max(0, Math.min(100, ((viewportMid - rect.top) / rect.height) * 100))
+      
+        // Update the gradient stops
+        const gradient = document.getElementById('lineGradient')
+        const stops = gradient.querySelectorAll('stop')
+        stops[0].setAttribute('offset', cutoffPercentage + '%')
+        stops[1].setAttribute('offset', cutoffPercentage + '%')
+      }
+      
+      // Update on scroll and resize
+      window.addEventListener('scroll', updateSVGLineGradient)
+      window.addEventListener('resize', updateSVGLineGradient)
+      
+      // Initialize the gradient on page load
+      updateSVGLineGradient()
+    </script> {% endcomment %}
   {% endif %}
 {% endblock %}
