@@ -118,6 +118,11 @@
     @apply text-accent bg-background border-title/40 rounded;
   }
 
+  .CKEDITOR p,
+  .CKEDITOR :is(h1, h2, h3, h4, h5, h6) {
+    @apply mb-4;
+  }
+
   .CKEDITOR img {
     @apply !aspect-video !h-auto object-cover rounded;
   }

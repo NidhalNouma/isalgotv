@@ -88,5 +88,9 @@ module.exports = {
     "drawer-top",
     "drawer-bottom",
   ],
-  plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],
+  plugins: [
+    require("flowbite/plugin"),
+    require("@tailwindcss/line-clamp"),
+    // require("@tailwindcss/typography"),
+  ],
 };

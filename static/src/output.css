@@ -1418,6 +1418,11 @@ h1,
   color: hsl(var(--color-accent) / var(--tw-text-opacity));
 }
 
+.CKEDITOR p,
+  .CKEDITOR :is(h1, h2, h3, h4, h5, h6) {
+  margin-bottom: 1rem;
+}
+
 .CKEDITOR img {
   aspect-ratio: 16 / 9 !important;
   height: auto !important;
@@ -3502,10 +3507,6 @@ h1,
 
 .whitespace-pre-line {
   white-space: pre-line;
-}
-
-.whitespace-break-spaces {
-  white-space: break-spaces;
 }
 
 .break-all {
