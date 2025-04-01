@@ -210,7 +210,6 @@ class Strategy(models.Model):
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     is_live = models.BooleanField(default=False)
-    view_count = models.IntegerField(default=0)
     
     images = GenericRelation(StrategyImages) 
     

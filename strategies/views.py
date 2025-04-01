@@ -74,8 +74,6 @@ def get_strategy(request, slug):
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
 
-        Strategy.objects.filter(slug=slug).update(view_count=F('view_count') + 1)
-        
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
     except Strategy.DoesNotExist:
         raise Http404("The object does not exist.")
