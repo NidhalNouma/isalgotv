@@ -7,6 +7,7 @@ from .binance import check_binance_credentials, open_binance_trade, close_binanc
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
 from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
+from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
 
@@ -20,6 +21,8 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_typ
         return check_bitget_credentials(api_key, api_secret, phrase, trade_type)
     elif broker_type == 'bybit':
         return check_bybit_credentials(api_key, api_secret, trade_type)
+    elif broker_type == 'mexc':
+        return check_mexc_credentials(api_key, api_secret, trade_type)
     else:
         raise Exception("Unsupported broker type.")
 
@@ -42,6 +45,8 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
             return open_bitget_trade(account, symbol, side, volume)
         elif broker_type == 'bybit':
             return open_bybit_trade(account, symbol, side, volume)
+        elif broker_type == 'mexc':
+            return open_mexc_trade(account, symbol, side, volume)
         elif broker_type == 'tradelocker':
             return open_tradelocker_trade(account, symbol, side, volume)
         else:
@@ -62,6 +67,8 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
             return close_bitget_trade(account, symbol, side, volume_close)
         elif broker_type == 'bybit':
             return close_bybit_trade(account, symbol, side, volume_close)
+        elif broker_type == 'mexc':
+            return close_mexc_trade(account, symbol, side, volume_close)
         elif broker_type == 'tradelocker':
             return close_tradelocker_trade(account, trade_to_close.order_id, volume_close)
         else:
