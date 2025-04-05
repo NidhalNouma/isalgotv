@@ -94,10 +94,12 @@ def add_broker(request, broker_type):
             if form.is_valid():
 
                 if broker_type in crypto_broker_types:
-                    valid = check_crypto_credentials(broker_type ,form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('pass_phrase'), form_data.get('type'))
+                    valid = check_crypto_credentials(broker_type ,form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('pass_phrase', ""), form_data.get('type'))
 
                 elif broker_type in forex_broker_types:
                     valid = check_forex_credentials(broker_type ,form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
+                    if valid.get('account_api_id'):
+                        form_data['account_api_id'] = valid.get('account_api_id')
 
                 print(valid)
                 if valid.get('valid') == True:

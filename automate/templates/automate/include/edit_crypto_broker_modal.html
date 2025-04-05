@@ -14,7 +14,7 @@
       class="flex items-center justify-between p-4 sticky top-0 bg-background z-50 rounded-t-lg"
     >
       <h3 class="text-xl font-semibold text-title flex items-center capitalize space-x-3">
-        <span id="add-{{account.id}}_{{account.broker_type}}-form-btn" class="pointer-events-none" onclick='swapDivBtn("edit-{{account.id}}_{{account.broker_type}}-sub", "add-{{account.id}}_{{account.broker_type}}-form")'>Edit Account</span>
+        <span id="add-{{account.id}}_{{account.broker_type}}-form-btn" class="pointer-events-none" onclick="swapDivBtn('edit-{{account.id}}_{{account.broker_type}}-sub', 'add-{{account.id}}_{{account.broker_type}}-form')">Edit Account</span>
         <span class="">|</span>
         <form 
           hx-post="{% url 'get_account_subscription_data' account.broker_type account.id account.subscription_id %}" 
@@ -22,7 +22,7 @@
           hx-wait="swap"
         >
           {% csrf_token %}
-          <button type="submit" id="edit-{{account.id}}_{{account.broker_type}}-sub-btn" class="text-title/80 cursor-pointer hover:text-title/60 transition-all" onclick='swapDivBtn("add-{{account.id}}_{{account.broker_type}}-form", "edit-{{account.id}}_{{account.broker_type}}-sub")'>Subscription</button>
+          <button type="submit" id="edit-{{account.id}}_{{account.broker_type}}-sub-btn" class="text-title/80 cursor-pointer hover:text-title/60 transition-all" onclick="swapDivBtn('add-{{account.id}}_{{account.broker_type}}-form', 'edit-{{account.id}}_{{account.broker_type}}-sub')">Subscription</button>
         </form>
       </h3>
       <button
@@ -248,6 +248,15 @@
             </div>
           </li>
           {% endif %}
+
+          {% if broker_type == 'mexc' %}
+            <li class="w-full">
+              <div class="flex items-center ps-3">
+                <input id="{{ broker_type }}-type-F" type="radio" value="F" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
+                <label for="{{ broker_type }}-type-F" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">Futures</label>
+              </div>
+            </li>
+          {% endif %}
         </ul>
       </div>
 
@@ -263,7 +272,7 @@
           id="btn-edit-{{account.id}}_{{account.broker_type}}"
           type="submit"
           class="btn-primary mb-2 w-full mx-auto"
-          onclick='document.getElementById("edit-{{account.id}}_{{account.broker_type}}-form-errors").innerHTML = "";  openLoader("", "-edit-{{account.id}}_{{account.broker_type}}", "flex");'
+          onclick="document.getElementById('edit-{{account.id}}_{{account.broker_type}}-form-errors').innerHTML = '';  openLoader('', '-edit-{{account.id}}_{{account.broker_type}}', 'flex');"
         >
           Save
           <svg

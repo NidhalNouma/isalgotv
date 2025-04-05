@@ -1,153 +1,249 @@
 <ul class="">
-    <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_index' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_index' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Introduction</a
-      >
-    </li>
-    <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_instalation' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_instalation' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Instalation</a
-      >
-    </li>
-    <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_setup' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_setup' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Setup</a
-      >
-    </li>
-    <li class="{{ li_class }}">
-      {% comment %} <a
-        href="{% url 'docs_alerts' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_alerts' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Alerts</a> {% endcomment %}
+  <li class="{{ li_class }}">
+    <a href="{% url 'docs_index' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_index' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Introduction
+    </a>
+  </li>
+  <li class="{{ li_class }}">
+    <a href="{% url 'docs_instalation' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_instalation' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Instalation
+    </a>
+  </li>
+  <li class="{{ li_class }}">
+    <a href="{% url 'docs_setup' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_setup' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Setup
+    </a>
+  </li>
+  <li class="{{ li_class }}">
+    {% comment %} <a href="{% url 'docs_alerts' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_alerts' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Alerts
+    </a> {% endcomment %}
 
-      <button class="whitespace-nowrap w-full text-start hover:text-title flex items-center justify-between" onclick="toggleDropdown('alerts-dropdown-{{id}}')">
-        <span>Alerts</span> 
-        <svg id="alerts-dropdown-{{id}}-arrow" class="w-2.5 h-2.5 {% if 'docs_alerts' in request.resolver_match.view_name %} rotate-180 {% else %} rotate-0 {% endif %}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="none">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-       </svg>
-      </button>
-        <ul id="alerts-dropdown-{{id}}" class="ml-2 mt-2 {% if 'docs_alerts' in request.resolver_match.view_name %} block {% else %} hidden {% endif %}">
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_alerts' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_alerts' %}">
-                Introduction
-              </a>
-          </li>
-          <li class="{{ li_class }} ">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_alerts_placeholders' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_alerts_placeholders' %}">
-                Placeholders
-              </a>
-          </li>
-          <li class="{{ li_class }} -mb-2">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_alerts_create' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_alerts_create' %}">
-                Create alert
-              </a>
-          </li>
-        </ul>
-    </li>
-    <li class="{{ li_class }}">
-      <button class="whitespace-nowrap w-full text-start hover:text-title flex items-center justify-between" onclick="toggleDropdown('automate-dropdown-{{id}}')">
-        <span>Automate</span> 
-        <svg id="automate-dropdown-{{id}}-arrow" class="w-2.5 h-2.5 {% if 'docs_automate' in request.resolver_match.view_name %} rotate-180 {% else %} rotate-0 {% endif %}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-       </svg>
-      </button>
-        <ul id="automate-dropdown-{{id}}" class="pl-2 mt-2 {% if 'docs_automate' in request.resolver_match.view_name %} block {% else %} hidden {% endif %}">
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate' %}">
-                Get started
-              </a>
-          </li>
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_binance' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_binance' %}">
-                Binance
-              </a>
-          </li>
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_binanceus' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_binanceus' %}">
-                Binance.US
-              </a>
-          </li>
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_bitget' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_bitget' %}">
-                Bitget
-              </a>
-          </li>
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_bybit' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_bybit' %}">
-                Bybit
-              </a>
-          </li>
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_tradelocker' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_tradelocker' %}">
-                TradeLocker
-              </a>
-          </li>
-          <li class="{{ li_class }}">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_playground' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_playground' %}">
-                Playground
-              </a>
-          </li>
-          <li class="{{ li_class }} -mb-2">
-            <a 
-              class="whitespace-nowrap w-full text-start text-sm hover:text-title  {% if request.resolver_match.view_name == 'docs_automate_notes' %} font-semibold text-title {% else %} text-text {% endif %}"
-              href="{% url 'docs_automate_notes' %}">
-                Notes
-              </a>
-          </li>
-        </ul>
-    </li>
-    {% comment %} <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_automate' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_automate' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Automation</a
-      >
-    </li> {% endcomment %}
-    <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_share' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_share' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Share</a
-      >
-    </li>
-     <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_questions' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_questions' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >FAQ</a
-      >
-    </li> 
-    <li class="{{ li_class }}">
-      <a
-        href="{% url 'docs_contactus' %}"
-        class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_contactus' %} font-semibold text-title {% else %} text-text {% endif %}"
-        >Contacts</a
-      >
-    </li>
-  </ul>
+    <button class="whitespace-nowrap w-full text-start hover:text-title flex items-center justify-between" onclick="toggleDropdown('alerts-dropdown-{{ id }}')">
+      <span>Alerts</span>
+      <svg id="alerts-dropdown-{{ id }}-arrow"
+        class="w-2.5 h-2.5 {% if 'docs_alerts' in request.resolver_match.view_name %}
+           rotate-180
+        {% else %}
+           rotate-0
+        {% endif %}"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 10 6"
+        fill="none">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+      </svg>
+    </button>
+    <ul id="alerts-dropdown-{{ id }}"
+      class="ml-2 mt-2 {% if 'docs_alerts' in request.resolver_match.view_name %}
+         block
+      {% else %}
+         hidden
+      {% endif %}">
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_alerts' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_alerts' %}">
+          Introduction
+        </a>
+      </li>
+      <li class="{{ li_class }} ">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_alerts_placeholders' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_alerts_placeholders' %}">
+          Placeholders
+        </a>
+      </li>
+      <li class="{{ li_class }} -mb-2">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_alerts_create' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_alerts_create' %}">
+          Create alert
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li class="{{ li_class }}">
+    <button class="whitespace-nowrap w-full text-start hover:text-title flex items-center justify-between" onclick="toggleDropdown('automate-dropdown-{{ id }}')">
+      <span>Automate</span>
+      <svg id="automate-dropdown-{{ id }}-arrow"
+        class="w-2.5 h-2.5 {% if 'docs_automate' in request.resolver_match.view_name %}
+           rotate-180
+        {% else %}
+           rotate-0
+        {% endif %}"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 10 6">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+      </svg>
+    </button>
+    <ul id="automate-dropdown-{{ id }}"
+      class="pl-2 mt-2 {% if 'docs_automate' in request.resolver_match.view_name %}
+         block
+      {% else %}
+         hidden
+      {% endif %}">
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate' %}">
+          Get started
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_binance' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_binance' %}">
+          Binance
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_binanceus' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_binanceus' %}">
+          Binance.US
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_bitget' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_bitget' %}">
+          Bitget
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_bybit' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_bybit' %}">
+          Bybit
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_crypto' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_crypto' %}">
+          Crypto
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_tradelocker' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_tradelocker' %}">
+          TradeLocker
+        </a>
+      </li>
+      <li class="{{ li_class }}">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_playground' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_playground' %}">
+          Playground
+        </a>
+      </li>
+      <li class="{{ li_class }} -mb-2">
+        <a class="whitespace-nowrap w-full text-start text-sm hover:text-title  {% if request.resolver_match.view_name == 'docs_automate_notes' %}
+             font-semibold text-title
+          {% else %}
+             text-text
+          {% endif %}"
+          href="{% url 'docs_automate_notes' %}">
+          Notes
+        </a>
+      </li>
+    </ul>
+  </li>
+  {% comment %} <li class="{{ li_class }}">
+    <a href="{% url 'docs_automate' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_automate' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Automation
+    </a>
+  </li> {% endcomment %}
+  <li class="{{ li_class }}">
+    <a href="{% url 'docs_share' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_share' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Share
+    </a>
+  </li>
+  <li class="{{ li_class }}">
+    <a href="{% url 'docs_questions' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_questions' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      FAQ
+    </a>
+  </li>
+  <li class="{{ li_class }}">
+    <a href="{% url 'docs_contactus' %}"
+      class="whitespace-nowrap w-full hover:text-title {% if request.resolver_match.view_name == 'docs_contactus' %}
+         font-semibold text-title
+      {% else %}
+         text-text
+      {% endif %}">
+      Contacts
+    </a>
+  </li>
+</ul>

@@ -1031,6 +1031,14 @@ def stripe_webhook(request):
                     remove_access(subscription.id)
                 elif subscription.status == "past_due":
                     remove_access(subscription.id, False)
+             
+            # elif event['type'] == 'invoice.payment_failed':
+            #     print("Stripe-Webhook: Payment failed, subscription marked as past due ...")
+            #     invoice = event['data']['object']
+            #     subscription_id = invoice.get("subscription")
+            #     if subscription_id:
+            #         remove_access(subscription_id, False)
+ 
 
             else:
                 print('Unhandled event type {}'.format(event['type']))
@@ -1059,6 +1067,8 @@ def remove_access(subscription_id, cancel_email = True):
                 
         if cancel_email:
             access_removed_email_task(user.email)
+        else:
+            overdue_access_removed_email_task(user.email)
 
 # profile_user.deactivate_all_accounts()
 

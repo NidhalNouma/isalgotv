@@ -25,6 +25,7 @@ class CryptoBrokerAccount(models.Model):
         ("bingx", "Bingx"),
         ("bitmex", "Bitmex"),
         ("bitmart", "BitMart"),
+        ("crypto", "Crypto.com"),
         # Add other brokers here
     ]
 
@@ -96,7 +97,7 @@ class ForexBrokerAccount(models.Model):
     password = encrypt(models.CharField(max_length=150))
     server = models.CharField(max_length=150)
     
-    # account_api_id = models.CharField(max_length=30, default="")
+    account_api_id = models.CharField(max_length=30, default="")
 
     custom_id = models.CharField(max_length=30, default="")
     active = models.BooleanField(default=True)

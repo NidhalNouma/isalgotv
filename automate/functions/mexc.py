@@ -103,6 +103,10 @@ def open_mexc_trade(mexc_account, symbol: str, side: str, quantity: float, custo
         adjusted_quantity = adjust_trade_quantity(mexc_account, symbol, side, float(quantity))
         print("Adjusted quantity:", adjusted_quantity)
 
+        
+        if mexc_account.type == "F":
+            return open_mexc_futures_trade(mexc_account, symbol, side, adjusted_quantity, custom_id)
+
         order_params = {
             "symbol": symbol,
             "side": side.upper(),
@@ -131,6 +135,9 @@ def close_mexc_trade(mexc_account, symbol: str, side: str, quantity: float):
         t_side = "SELL" if side.upper() == "BUY" else "BUY"
         adjusted_quantity = adjust_trade_quantity(mexc_account, symbol, t_side, float(quantity))
 
+        if mexc_account.type == "F":
+            return close_mexc_futures_trade(mexc_account, symbol, side, adjusted_quantity)
+
         order_params = {
             "symbol": symbol,
             "side": t_side.upper(),
@@ -148,6 +155,86 @@ def close_mexc_trade(mexc_account, symbol: str, side: str, quantity: float):
             "side": t_side.upper(),
             "price": order_data["price"] if "price" in order_data else "0", 
             "qty": adjusted_quantity,
+        }
+    except Exception as e:
+        raise ValueError(str(e))
+
+
+
+FUTURES_BASE_URL = "https://contract.mexc.com"
+
+def get_futures_account_info(api_key, secret):
+    """Retrieve futures account information using MEXC futures API."""
+    endpoint = "/api/v1/private/account"
+    params = {"timestamp": _get_timestamp()}
+    query_string = urlencode(params)
+    signature = create_signature(query_string, secret)
+    params["signature"] = signature
+    headers = {"X-MEXC-APIKEY": api_key}
+    response = requests.get(FUTURES_BASE_URL + endpoint, params=params, headers=headers)
+    return response.json()
+
+
+def new_futures_order(api_key, secret, order_params):
+    """Place a new futures order using MEXC futures API."""
+    endpoint = "/api/v1/private/order"
+    order_params["timestamp"] = _get_timestamp()
+    query_string = urlencode(order_params)
+    signature = create_signature(query_string, secret)
+    order_params["signature"] = signature
+    headers = {
+        "X-MEXC-APIKEY": api_key,
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    response = requests.post(FUTURES_BASE_URL + endpoint, data=order_params, headers=headers)
+    return response.json()
+
+
+def open_mexc_futures_trade(mexc_account, symbol: str, side: str, quantity: float, custom_id: str = None):
+    """Open a new futures trade on MEXC. Note: futures orders may require additional parameters such as leverage and margin type."""
+    try:
+        order_params = {
+            "symbol": symbol,
+            "side": side.upper(),
+            "type": "market",
+            "quantity": quantity,
+        }
+        response = new_futures_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
+        if response.get("code") != 200:
+            raise ValueError(response.get("message", "Futures order placement failed"))
+        order_data = response["data"]
+        return {
+            "order_id": order_data.get("order_id"),
+            "symbol": symbol,
+            "side": side.upper(),
+            "price": order_data.get("price", "0"),
+            "qty": quantity,
+        }
+    except Exception as e:
+        raise ValueError(str(e))
+
+
+def close_mexc_futures_trade(mexc_account, symbol: str, side: str, quantity: float):
+    """Close an existing futures trade on MEXC by placing an opposite order."""
+    try:
+        # Reverse the side for closing the position
+        t_side = "SELL" if side.upper() == "BUY" else "BUY"
+        order_params = {
+            "symbol": symbol,
+            "side": t_side.upper(),
+            "type": "market",
+            "quantity": quantity,
+        }
+        response = new_futures_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
+        if response.get("code") != 200:
+            raise ValueError(response.get("message", "Futures order placement failed"))
+        order_data = response["data"]
+        return {
+            "order_id": order_data.get("order_id"),
+            "symbol": symbol,
+            "side": t_side.upper(),
+            "price": order_data.get("price", "0"),
+            "qty": quantity,
         }
     except Exception as e:
         raise ValueError(str(e))

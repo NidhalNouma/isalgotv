@@ -8,8 +8,10 @@ from .binance_us import check_binance_us_credentials, open_binance_us_trade, clo
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
 from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
 from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
+from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade 
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
+from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade
 
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
     print("Checking crypto credentials for " + broker_type)
@@ -23,6 +25,8 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_typ
         return check_bybit_credentials(api_key, api_secret, trade_type)
     elif broker_type == 'mexc':
         return check_mexc_credentials(api_key, api_secret, trade_type)
+    elif broker_type == 'crypto':
+        return check_cryptocom_credentials(api_key, api_secret, trade_type)
     else:
         raise Exception("Unsupported broker type.")
 
@@ -30,6 +34,10 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
     
     if broker_type == 'tradelocker':
         return check_tradelocker_credentials(username, password, server, type)
+    elif broker_type == 'metatrader4':
+        return add_metatrader_account(username, username, password, server, "mt4")
+    elif broker_type == 'metatrader5':
+        return add_metatrader_account(username, username, password, server, "mt5")
     else:
         raise Exception("Unsupported broker type.")
 
@@ -47,8 +55,12 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
             return open_bybit_trade(account, symbol, side, volume)
         elif broker_type == 'mexc':
             return open_mexc_trade(account, symbol, side, volume)
+        elif broker_type == 'crypto':
+            return open_crypto_trade(account, symbol, side, volume)
         elif broker_type == 'tradelocker':
             return open_tradelocker_trade(account, symbol, side, volume)
+        elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
+            return open_metatrader_trade(account, side.lower(), symbol, volume)
         else:
             raise Exception("Unsupported broker type.")
     except Exception as e:
@@ -69,8 +81,12 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
             return close_bybit_trade(account, symbol, side, volume_close)
         elif broker_type == 'mexc':
             return close_mexc_trade(account, symbol, side, volume_close)
+        elif broker_type == 'crypto':
+            return close_crypto_trade(account, symbol, side, volume_close)
         elif broker_type == 'tradelocker':
             return close_tradelocker_trade(account, trade_to_close.order_id, volume_close)
+        elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
+            return close_metatrader_trade(account, trade_to_close.order_id, volume_close)
         else:
             raise Exception("Unsupported broker type.")
     except Exception as e:

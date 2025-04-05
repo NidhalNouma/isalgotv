@@ -71,19 +71,24 @@
         />
       </div>
       <div class="w-full">
-        <label
-          for="{{account.id}}_{{account.broker_type}}_username"
-          class="input-label"
-          >Email/Username</label
-        >
-        <input
+         {% if account.broker_type == 'tradelocker' %}
+          <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
+          <input 
           type="text"
           id="{{account.id}}_{{account.broker_type}}_username"
           name="{{account.id}}_{{account.broker_type}}_username"
           class="input-text w-full"
           placeholder="Username"
-          value="{{account.username}}"
-        />
+          value="{{account.username}}" />
+        {% else %}
+          <label for="{{ broker_type }}_username" class="input-label">Number</label>
+          <input 
+          type="text"
+          id="{{account.id}}_{{account.broker_type}}_username"
+          name="{{account.id}}_{{account.broker_type}}_username"
+          class="input-text w-full"
+          value="{{account.username}}" placeholder="57849927" />
+        {% endif %}
       </div>
       <div class="w-full">
         <label

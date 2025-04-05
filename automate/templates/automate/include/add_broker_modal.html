@@ -15,11 +15,14 @@
             <button onclick="hideModel('add-broker-modal'); openModel('add-bitget-modal', false); mountStripeElement('bitget');" class="{{ btn_class }}">{% include 'svg/bitget.html' with class='text-current h-4' %}</button>
             <button onclick="hideModel('add-broker-modal'); openModel('add-bybit-modal', false); mountStripeElement('bybit');" class="{{ btn_class }}">{% include 'svg/bybit.html' with class='h-4 aspect-auto fill-current' %}</button>
 
+            <button onclick="hideModel('add-broker-modal'); openModel('add-crypto-modal', false); mountStripeElement('crypto');" class="{{ btn_class }}">{% include 'svg/crypto.html' with class='h-5 aspect-auto fill-current' %}</button>
             <button onclick="hideModel('add-broker-modal'); openModel('add-mexc-modal', false); mountStripeElement('mexc');" class="{{ btn_class }}">{% include 'svg/mexc.html' with class='h-3 aspect-auto fill-current' %}</button>
 
             <span class="col-span-full"></span>
 
             <button onclick="hideModel('add-broker-modal'); openModel('add-tradelocker-modal', false); mountStripeElement('tradelocker');" class="{{ btn_class }} !py-1.5">{% include 'svg/tradelocker.html' with class='h-6 aspect-auto fill-current' %}</button>
+            <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader4-modal', false); mountStripeElement('metatrader4');" class="{{ btn_class }}">{% include 'svg/metatrader4.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
+            <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader5-modal', false); mountStripeElement('metatrader5');" class="{{ btn_class }}">{% include 'svg/metatrader5.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
           </div>
 
           <h2 class="text-title/80 text-base font-semibold mt-8">Coming soon</h2>
@@ -30,8 +33,6 @@
             <button disabled onclick="hideModel('add-broker-modal'); openModel('add-bitmart-modal', false);" class="{{ btn_class }}">{% include 'svg/bitmart.html' with class='h-4 aspect-auto fill-current' %}</button>
             <button disabled class="{{ btn_class }}">{% include 'svg/coinbase.html' with class='h-3 aspect-auto fill-current' %}</button>
             <button disabled class="{{ btn_class }}">{% include 'svg/webull.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
-            <button disabled class="{{ btn_class }}">{% include 'svg/metatrader4.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
-            <button disabled class="{{ btn_class }}">{% include 'svg/metatrader5.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
           </div>
         </div>
       </div>

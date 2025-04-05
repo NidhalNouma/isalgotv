@@ -1,0 +1,113 @@
+{% load static %}
+<article class="docs">
+  <section id="what-is-crypto">
+    <aside>
+      <h3>What's Crypto.com?</h3>
+      <p>Crypto.com is a leading cryptocurrency exchange offering a range of trading services including spot trading and various financial products, all through a user-friendly and secure platform.</p>
+      <ul>
+        <li>Spot and advanced trading</li>
+        <li>Competitive fees</li>
+        <li>Robust security measures</li>
+        <li>User-friendly experience</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="api-crypto">
+    <aside>
+      <h3>API Key Setup Process</h3>
+      <p>Follow the steps below to configure your API keys for Crypto.com.</p>
+    </aside>
+  </section>
+
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your API keys with anyone. We use industry-standard encryption to secure your credentials.' %}
+  </div>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create a Crypto.com Account</h3>
+      <div>
+        <p>
+          If you don’t already have a Crypto.com account, please sign up <a href="https://crypto.com/exch/v5br6728vk" target="_blank">here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>2</span> Navigate to API Management</h3>
+      <div>
+        <ol>
+          <li>Log in to your Crypto.com account.</li>
+          <li>Click on your profile icon in the top-right corner.</li>
+          <li>
+            Select <strong>Manage Account</strong> from the dropdown menu.
+
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-1.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-1.png' %}" alt="Access API Management" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>3</span> Create an API Key</h3>
+      <div>
+        <ol>
+          <li>
+            Go to <strong>API Management</strong>.
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-2.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-2.png' %}" alt="Access API Management" />
+          </li>
+          <li>
+            Click <strong>Create API Key</strong>.
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-3.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-3.png' %}" alt="Access API Management" />
+          </li>
+          <li>
+            Give your API key a descriptive name.
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-4.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-4.png' %}" alt="Access API Management" />
+          </li>
+          <li>
+            Save the provider Secret key; you'll need it later.
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-5.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-5.png' %}" alt="Access API Management" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>4</span> Configure API Settings</h3>
+      <div>
+        <ol>
+          <li>
+            Click <strong>Edit</strong> on the API key that you just created.
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-6.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-6.png' %}" alt="Access API Management" />
+          </li>
+          <li>
+            Enable trading for your API key.
+          </li>
+          <li>
+            Paste our server's IP address in the IP whitelist field: <span>{{ server_ip }}</span>
+            <img onclick="showModalImages([{id: 'b1', name: 'b1', imageUrl: '{% static 'images/docs/automate/crypto/step-7.png' %}'}], 'b1')" src="{% static 'images/docs/automate/crypto/step-7.png' %}" alt="Access API Management" />
+          </li>
+
+          <li>
+            Click <strong>Continue</strong> to complete the setup.
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+
+  <section id="complete-crypto">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your API keys, return to our platform's Automate section and use them to link your Crypto.com account with our automation system. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

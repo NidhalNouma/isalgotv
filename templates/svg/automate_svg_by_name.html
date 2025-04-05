@@ -1,25 +1,25 @@
 {% if broker_type == 'binance' %}
-{% include 'svg/binance.html' with class=class %}
+  {% include 'svg/binance.html' with class=class %}
 {% elif broker_type == 'binanceus' %}
-{% include 'svg/binance_us.html' with class=class %}
+  {% include 'svg/binance_us.html' with class=class %}
 {% elif broker_type == 'bitget' %}
-{% include 'svg/bitget.html' with class=class %}
+  {% include 'svg/bitget.html' with class=class %}
 {% elif broker_type == 'bybit' %}
-{% include 'svg/bybit.html' with class=class %}
+  {% include 'svg/bybit.html' with class=class %}
 {% elif broker_type == 'bingx' %}
-{% include 'svg/bingx.html' with class=class %}
+  {% include 'svg/bingx.html' with class=class %}
 {% elif broker_type == 'bitmex' %}
-{% include 'svg/bitmex.html' with class=class %}
+  {% include 'svg/bitmex.html' with class=class %}
 {% elif broker_type == 'bitmart' %}
-{% include 'svg/bitmart.html' with class=class %}
+  {% include 'svg/bitmart.html' with class=class %}
 {% elif broker_type == 'mexc' %}
-{% include 'svg/mexc.html' with class=class %}
+  {% include 'svg/mexc.html' with class=class %}
+{% elif broker_type == 'crypto' %}
+  {% include 'svg/crypto.html' with class=class %}
 {% elif broker_type == 'metatrader4' %}
-{% include 'svg/metatrader4.html' with class=class %}
+  {% include 'svg/metatrader4.html' with class=class %}
 {% elif broker_type == 'metatrader5' %}
-{% include 'svg/metatrader5.html' with class=class %}
-
-
+  {% include 'svg/metatrader5.html' with class=class %}
 {% elif broker_type == 'tradelocker' %}
-{% include 'svg/tradelocker.html' with class=class %}
+  {% include 'svg/tradelocker.html' with class=class %}
 {% endif %}
