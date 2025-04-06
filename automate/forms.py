@@ -13,4 +13,4 @@ class AddCryptoBrokerAccountForm(forms.ModelForm):
 class AddForexBrokerAccountForm(forms.ModelForm):
     class Meta:
         model = ForexBrokerAccount
-        exclude = ['active', 'custom_id', 'created_at']
+        exclude = ['active', 'custom_id', 'created_at', 'account_api_id']

@@ -12,6 +12,8 @@ from .models import *
 from .forms import *
 from .tasks import *
 
+from .functions.metatrader import delete_metatrader_account, deploy_undeploy_metatrader_account
+
 from collections import defaultdict
 from django.utils.timezone import localtime
 
@@ -98,8 +100,6 @@ def add_broker(request, broker_type):
 
                 elif broker_type in forex_broker_types:
                     valid = check_forex_credentials(broker_type ,form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
-                    if valid.get('account_api_id'):
-                        form_data['account_api_id'] = valid.get('account_api_id')
 
                 print(valid)
                 if valid.get('valid') == True:
@@ -115,6 +115,8 @@ def add_broker(request, broker_type):
                     price_id = PRICE_LIST.get('CRYPTO', '')
                     if broker_type in forex_broker_types:
                         price_id = PRICE_LIST.get('FOREX', '')
+                    if broker_type == 'metatrader4' or broker_type == 'metatrader5':
+                        price_id = PRICE_LIST.get('METATRADER', '')
 
                     metadata = {
                         "profile_user_id": str(profile_user.id), 
@@ -135,6 +137,9 @@ def add_broker(request, broker_type):
 
                     account = form.save(commit=False)
                     account.subscription_id = subscription.id
+
+                    if valid.get('account_api_id'):
+                        account.account_api_id = valid.get('account_api_id')
 
                     account.save()
 
@@ -166,6 +171,10 @@ def edit_broker(request, broker_type, pk):
 
             crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+
+            if broker_type == "metatrader4" or broker_type == "metatrader5":
+                raise Exception("Editing of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed.")
 
             if broker_type in crypto_broker_types:
                 account = CryptoBrokerAccount.objects.get(pk=pk)
@@ -224,7 +233,7 @@ def edit_broker(request, broker_type, pk):
     except Exception as e:
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
-        return retarget(response, f'#edit-{account.id}_{account.broker_type}-form-errors')
+        return retarget(response, f'#edit-{pk}_{broker_type}-form-errors')
 
 @require_http_methods([ "POST"])
 def toggle_broker(request, broker_type, pk):
@@ -241,6 +250,13 @@ def toggle_broker(request, broker_type, pk):
             raise Exception("Invalid Broker Type")
 
         model_instance.active = not model_instance.active
+
+        if broker_type == "metatrader4" or broker_type == "metatrader5":
+            # Undeploy/Deploy the account
+            deploy_undeploy = deploy_undeploy_metatrader_account(model_instance, deploy=model_instance.active)
+            if "error" in deploy_undeploy:
+                raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
+
         if model_instance.subscription_id:
             if not model_instance.active:
                 # Pause the subscription by setting the status to "paused"
@@ -282,12 +298,19 @@ def delete_broker(request, broker_type, pk):
             obj.delete()  
         elif broker_type in forex_broker_types:
             obj = ForexBrokerAccount.objects.get(pk=pk)
+
+            if broker_type == "metatrader4" or broker_type == "metatrader5":
+                delete_response = delete_metatrader_account(obj)
+                if "error" in delete_response:
+                    raise Exception(f"Failed to delete metatrader account: {delete_response['error']}")
+
             if obj.subscription_id:
                 stripe.Subscription.cancel(obj.subscription_id)
                 # stripe.Subscription.modify(
                 #     obj.subscription_id,
                 #     cancel_at_period_end=True 
                 # )
+
             obj.delete()
         else:
             raise Exception("Invalid Broker Type")
@@ -438,6 +461,10 @@ def account_subscription_failed(email ,broker_type, subscription_id, send_mail=T
         elif broker_type in forex_broker_types:
             obj = ForexBrokerAccount.objects.filter(subscription_id=subscription_id).first()
             if obj:
+                if broker_type == "metatrader4" or broker_type == "metatrader5":
+                    # Undeploy the account
+                    deploy_undeploy_metatrader_account(obj, deploy=False)
+
                 obj.active = False
                 obj.save()
                 if send_mail and email:

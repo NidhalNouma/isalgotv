@@ -69,6 +69,7 @@ jobs:
           --build-arg STRIPE_PRICE_LT_ID="${{ secrets.STRIPE_PRICE_LT_ID }}" \
           --build-arg STRIPE_AUTOMATE_PRICE_ID_CRYPTO="${{ secrets.STRIPE_AUTOMATE_PRICE_ID_CRYPTO }}" \
           --build-arg STRIPE_AUTOMATE_PRICE_ID_FOREX="${{ secrets.STRIPE_AUTOMATE_PRICE_ID_FOREX }}" \
+          --build-arg STRIPE_AUTOMATE_PRICE_ID_METATRADER="${{ secrets.STRIPE_AUTOMATE_PRICE_ID_METATRADER }}" \
           --build-arg STRIPE_PRICE_MN_PRICE="${{ secrets.STRIPE_PRICE_MN_PRICE }}" \
           --build-arg STRIPE_PRICE_3MN_PRICE="${{ secrets.STRIPE_PRICE_3MN_PRICE }}" \
           --build-arg STRIPE_PRICE_Y_PRICE="${{ secrets.STRIPE_PRICE_Y_PRICE }}" \

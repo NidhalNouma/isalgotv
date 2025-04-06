@@ -86,6 +86,7 @@ def add_metatrader_account(account_name, account_number, account_password, accou
         "server": account_server,
         "platform": account_type,
         "region": "new-york",
+        'type': "cloud-g2", # cloud-g2 or cloud-g1 for higher performance (costs more)
         "manualTrades": True,
         "metastatsApiEnabled": False,
         "magic": 0,
@@ -107,12 +108,50 @@ def add_metatrader_account(account_name, account_number, account_password, accou
             return {"error": data.get("message"),  "valid": False}
         
         data["valid"] = True
+        data["account_api_id"] = data.get("id", "")
         return data
     except Exception as e:
         print("Error:", e)
         return {"error": str(e), "valid": False}
+    
+def deploy_undeploy_metatrader_account(account, deploy = True):
+    """
+    Deploy/Undeploy an MT API account.
+    Args:
+        account (object): The account object containing account_api_id.
+        deploy (bool): True to deploy, False to undeploy.
+    Returns:
+        dict: API response data or error message.
+    """
 
-def delete_mt_api_account(account_api_id):
+    print("Deploy/Undeploy  MT API account ...")
+    accoount_api_id = str(account.account_api_id).replace(" ", "")
+    
+    url = f"{api_url}/users/current/accounts/{accoount_api_id}/deploy"
+    if not deploy:
+        url = f"{api_url}/users/current/accounts/{accoount_api_id}/undeploy"
+
+    payload = {
+        "executeForAllReplicas": True,
+    }
+    headers = {
+        "auth-token": meta_api_token,
+    }
+    
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+
+        if response.status_code == 204:
+            print("Account deployed successfully.")
+            return {"message": "Account deployed successfully."}
+        else:
+            data = response.json()
+            raise Exception(data.get("message", "Failed to deploy/undeploy account."))
+    except Exception as e:
+        print("Error:", e)
+        return {"error": str(e)}
+
+def delete_metatrader_account(account):
     """
     Delete an MT API account.
     
@@ -122,7 +161,11 @@ def delete_mt_api_account(account_api_id):
     Returns:
         dict: API response data or error message.
     """
+
+    account_api_id = account.account_api_id
     print("Deleting account API ...", account_api_id)
+
+
     url = f"{api_url}/users/current/accounts/{account_api_id}"
     headers = {
         "auth-token": meta_api_token
@@ -130,10 +173,13 @@ def delete_mt_api_account(account_api_id):
     
     try:
         response = requests.delete(url, headers=headers)
-        data = response.json()
-        if data.get("error"):
-            return {"error": data.get("message")}
-        return data
+
+        if response.status_code == 204:
+            print("Account deleted successfully.")
+            return {"message": "Account deleted successfully."}
+        else:
+            data = response.json()
+            raise Exception(data.get("message", "Failed to delete account."))
     except Exception as e:
         print("Error:", e)
         return {"error": str(e)}
@@ -189,31 +235,33 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
             position_type = ""
 
         url = f"{api_data_url}/users/current/accounts/{account_api_id}/trade"
+
         payload = {
             "actionType": position_type,
             "symbol": symbol,
-            "volume": lot_size,
-            # "clientId": client_id,
+            "volume":  round(float(lot_size), 2),
+            "clientId": 'I_S_' + str(account.id),
         }
 
         headers = {
             "auth-token": meta_api_token,
-            "Content-Type": "application/json"
         }
 
         response = requests.post(url, json=payload, headers=headers)
         data = response.json()
-        if data.get("error"):
-            return {"error": data.get("message")}
-        else:
-            order_id = data.get("orderId")
-            return {
-                'message': f"Trade opened with order ID {order_id}.",
-                'order_id': order_id,
-                'symbol': symbol,
-                'price': None,
-                'qty': lot_size,
-            }
+        print("Response status code:", response, data)
+
+        order_id = data.get("orderId")
+        if not order_id:
+            error_message = data.get("message", "Failed to open trade.")
+            return {"error": error_message}
+        return {
+            'message': f"Trade opened with order ID {order_id}.",
+            'order_id': order_id,
+            'symbol': symbol,
+            'price': None,
+            'qty': lot_size,
+        }
 
     except Exception as e:
         print("Error:", e)

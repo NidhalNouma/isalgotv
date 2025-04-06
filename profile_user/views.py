@@ -355,7 +355,7 @@ def create_payment_method(request):
             #     }
             # )
         except Exception as e:
-            context["error"] = 'Attached payment to customer '+str(e)
+            context["error"] = str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-payment_methods")
 
@@ -391,7 +391,7 @@ def delete_payment_method(request):
             return retarget(response, "#setting-payment_methods")
         
         except Exception as e:
-            context["error"] = 'Attached payment to customer '+str(e)
+            context["error"] = str(e)
 
             return retarget(response, "#stripe-error-delete-payment_methods")
 
@@ -731,7 +731,7 @@ def create_subscription_stripeform(request):
             return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
 
         except Exception as e:
-            context["error"] = "Creating subscription "  +str(e)
+            context["error"] = 'Subscription failed. ' + str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
@@ -873,7 +873,7 @@ def update_subscription_stripeform(request):
             return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
 
         except Exception as e:
-            context["error"] = "Creating subscription "  +str(e)
+            context["error"] = "Updating subscription failed. "  +str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
