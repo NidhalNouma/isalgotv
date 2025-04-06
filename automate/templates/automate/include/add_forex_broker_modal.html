@@ -66,7 +66,7 @@
       {% csrf_token %}
       {% comment %} {% include 'include/infos.html' with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class=' w-full' %} {% endcomment %}
 
-      {% if broker_type == 'metatrader4' or broker_type == 'metatrader4' %}
+      {% if broker_type == 'metatrader4' or broker_type == 'metatrader5' %}
         {% include 'include/broker_payment.html' with title=broker_type price='16.98' %}
       {% else %}
         {% include 'include/broker_payment.html' with title=broker_type price='6.98' %}
