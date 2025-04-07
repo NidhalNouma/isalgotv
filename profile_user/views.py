@@ -1018,7 +1018,7 @@ def stripe_webhook(request):
             else:
                 print('Unhandled event type {}'.format(event['type']))
 
-        else:
+        elif metadeta is not None and metadeta.get('profile_user_id'):
             if event['type'] == 'customer.subscription.deleted':
                 print("Strip-Webhook: Subscription deleted ...")
 
@@ -1031,13 +1031,28 @@ def stripe_webhook(request):
                     remove_access(subscription.id)
                 elif subscription.status == "past_due":
                     remove_access(subscription.id, False)
-             
-            # elif event['type'] == 'invoice.payment_failed':
-            #     print("Stripe-Webhook: Payment failed, subscription marked as past due ...")
-            #     invoice = event['data']['object']
-            #     subscription_id = invoice.get("subscription")
-            #     if subscription_id:
-            #         remove_access(subscription_id, False)
+        
+        # TODO: send different email to user if the subscription payment is failed
+        elif event['type'] == 'invoice.payment_failed':
+            print("Stripe-Webhook: Payment failed, subscription marked as past due ...")
+            invoice = event['data']['object']
+
+            subscription_id = invoice.get("subscription")
+            if subscription_id:
+                sub_metadata = invoice.get("subscription_details", {}).get("metadata", {})
+
+                if sub_metadata is not None and sub_metadata.get('broker_type'):
+                    profile_user_id = sub_metadata.get('profile_user_id', 0)
+                    email = None
+                    try:
+                        profile_user = User_Profile.objects.get(id=int(profile_user_id))
+                        user = profile_user.user
+                        email = user.email
+                    except Exception as e:
+                        print(e)
+                    account_subscription_failed(email, sub_metadata.get('broker_type'), subscription_id)
+                else:
+                    remove_access(subscription_id, False)
  
 
             else:

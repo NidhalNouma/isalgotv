@@ -249,7 +249,7 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
 
         response = requests.post(url, json=payload, headers=headers)
         data = response.json()
-        print("Response status code:", response, data)
+        # print("Response status code:", response, data)
 
         order_id = data.get("orderId")
         if not order_id:
@@ -259,7 +259,7 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
             'message': f"Trade opened with order ID {order_id}.",
             'order_id': order_id,
             'symbol': symbol,
-            'price': None,
+            'price':  data.get("price", "0"),
             'qty': lot_size,
         }
 
@@ -287,11 +287,11 @@ def close_metatrader_trade(account, trade_id, partial_close=0):
     
     # Prepare the payload data.
     data = {
-        "actionType": "POSITION_CLOSE_ID",
+        "actionType": "POSITION_PARTIAL",
         "positionId": trade_id,
-        "volume": partial_close,
+        "volume": round(float(partial_close), 2),
     }
-    
+
     url = f"{api_data_url}/users/current/accounts/{account_api_id}/trade"
     headers = {
         "auth-token": meta_api_token,
@@ -306,7 +306,7 @@ def close_metatrader_trade(account, trade_id, partial_close=0):
         else:
             return {
             'message': f"Trade closed for order ID {id}.", 
-            "id": trade_id,
+            "order_id": trade_id,
             'qty': partial_close,
             }
             # return resp_data

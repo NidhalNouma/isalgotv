@@ -45,7 +45,7 @@ def new_order(api_key, secret, order_params):
     return response.json()
 
 
-def check_mexc_credentials(api_key, api_secret):
+def check_mexc_credentials(api_key, api_secret, trade_type="spot"):
     try:
         account_info = get_account_info(api_key, api_secret)
         # Assuming a successful response returns a code of 200

@@ -131,8 +131,8 @@ def manage_alert(alert_message, account):
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
-            trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), account)
-            save_log("S", alert_message, 'Order placed successfully.', account, trade)
+            saved_trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), account)
+            save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
             trade_to_close = get_trade(custom_id, symbol, side, account)
@@ -148,7 +148,7 @@ def manage_alert(alert_message, account):
             closed_volume = closed_trade.get('qty', volume_close)
 
             trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade.get('price', 0))
-            save_log("S", alert_message, 'Order was closed successfully.', account, trade)
+            save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, trade)
 
     except Exception as e:   
         print('API Error: %s' % e)

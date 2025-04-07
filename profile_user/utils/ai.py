@@ -137,6 +137,7 @@ def get_system_content():
         - Link Binance US Account: [Read More]({reverse('docs_automate_binanceus')})
         - Link Bitget Account: [Read More]({reverse('docs_automate_bitget')})
         - Link Bybit Account: [Read More]({reverse('docs_automate_bybit')})
+        - Link Crypto.com Account: [Read More]({reverse('docs_automate_crypto')})
         - Link TradeLocker Account: [Read More]({reverse('docs_automate_tradelocker')})
         - Automation Notes: [Read More]({reverse('docs_automate_notes')})
         - Isalgo Automation Playground: [Read More]({reverse('docs_automate_playground')})
