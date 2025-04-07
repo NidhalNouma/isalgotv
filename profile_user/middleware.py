@@ -125,7 +125,7 @@ def check_user_and_stripe_middleware(get_response):
                     elif subscription.status == "incomplete":
                         has_subscription = False
 
-                    if subscription.cancel_at_period_end:
+                    if subscription.cancel_at_period_end or subscription.status == "canceled":
                         subscription_canceled = True
 
 

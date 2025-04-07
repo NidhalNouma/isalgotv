@@ -546,10 +546,15 @@ def check_coupon(request):
                 # return retarget(response, "#"+context['title']+"-coupon-form-errors")
 
             
-            trial_days = 0
+            trial_days = 3
+            if request.user_profile.subscription_id:
+                trial_days = 0
+                
             trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
             if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
                 trial_ends = None
+            # print("Trial ends ... ", trial_ends)
+
             
             context["staertime"] = trial_ends
             # context["price"] = txt_price
