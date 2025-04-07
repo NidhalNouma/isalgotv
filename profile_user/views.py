@@ -448,7 +448,7 @@ def check_coupon_fn(coupon_id, plan_id, price, customer_id):
             # Validation logic for general properties
             if not is_active:
                 raise Exception("Promotion code is inactive.")
-            elif expires_at and expires_at < datetime.now().timestamp():
+            elif expires_at and expires_at < datetime.datetime.now().timestamp():
                 raise Exception("Promotion code has expired.")
             elif max_redemptions and times_redeemed >= max_redemptions:
                 raise Exception("Promotion code has reached its redemption limit.")
@@ -549,7 +549,7 @@ def check_coupon(request):
             trial_days = 3
             if request.user_profile.subscription_id:
                 trial_days = 0
-                
+
             trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
             if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
                 trial_ends = None
