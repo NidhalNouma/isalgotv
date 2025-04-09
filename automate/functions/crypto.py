@@ -111,15 +111,15 @@ def adjust_trade_quantity(crypto_account, symbol, side, quote_order_qty):
         print("Quote balance:", quote_balance)
 
         if side.upper() == "BUY":
-            if quote_balance < quote_order_qty:
-                return quote_balance
-            elif quote_balance <= 0:
+            if quote_balance <= 0:
                 raise ValueError("Insufficient quote balance.")
+            elif quote_balance < quote_order_qty:
+                return quote_balance
         elif side.upper() == "SELL":
-            if base_balance < quote_order_qty:
-                return base_balance
-            elif base_balance <= 0:
+            if base_balance <= 0:
                 raise ValueError("Insufficient base balance.")
+            elif base_balance < quote_order_qty:
+                return base_balance
         return quote_order_qty
     except Exception as e:
         raise ValueError(str(e))

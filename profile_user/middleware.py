@@ -125,11 +125,11 @@ def check_user_and_stripe_middleware(get_response):
                     elif subscription.status == "incomplete":
                         has_subscription = False
 
-                    if subscription.cancel_at_period_end or subscription.status == "canceled":
+                    if subscription.cancel_at_period_end or subscription.status == "canceled" or subscription.status == "incomplete":
                         subscription_canceled = True
 
 
-                    if not subscription_canceled and subscription.status != "incomplete":
+                    if not subscription_canceled:
                         # Get the upcoming invoice for the subscription
                         upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
 

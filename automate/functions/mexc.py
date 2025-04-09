@@ -25,10 +25,13 @@ def get_account_info(api_key, secret):
     signature = create_signature(query_string, secret)
     params["signature"] = signature
     headers = {
-        "X-MEXC-APIKEY": api_key
+        "X-MEXC-APIKEY": api_key,
+        "Content-Type": "application/json"
     }
     response = requests.get(BASE_URL + endpoint, params=params, headers=headers)
-    return response.json()
+    response_data = response.json()
+    response_data['code'] = response.status_code
+    return response_data
 
 
 def new_order(api_key, secret, order_params):
@@ -39,15 +42,21 @@ def new_order(api_key, secret, order_params):
     order_params["signature"] = signature
     headers = {
         "X-MEXC-APIKEY": api_key,
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
     }
     response = requests.post(BASE_URL + endpoint, data=order_params, headers=headers)
     return response.json()
 
 
-def check_mexc_credentials(api_key, api_secret, trade_type="spot"):
+def check_mexc_credentials(api_key, api_secret, trade_type="S"):
     try:
-        account_info = get_account_info(api_key, api_secret)
+        if trade_type == "S":
+            # Check spot account info
+            account_info = get_account_info(api_key, api_secret)
+        elif trade_type == "F":
+            # Check futures account info
+            account_info = get_futures_account_info(api_key, api_secret)
+
         # Assuming a successful response returns a code of 200
         if account_info.get("code") != 200:
             return {"error": account_info.get("message", "Invalid credentials"), "valid": False}
@@ -64,7 +73,7 @@ def get_account_balance(mexc_account, asset: str):
         balances = {}
         # Expected structure:
         # {"code":200, "data": {"balances": [{"asset": "BTC", "free": "0.1", ...}, ...]}}
-        for balance in account_info["data"]["balances"]:
+        for balance in account_info["balances"]:
             balances[balance["asset"]] = float(balance["free"])
         return {"asset": asset, "balance": balances.get(asset, 0.0)}
     except Exception as e:
@@ -84,15 +93,15 @@ def adjust_trade_quantity(mexc_account, symbol, side, quote_order_qty):
         print("Quote balance:", quote_balance)
 
         if side.upper() == "BUY":
-            if quote_balance < quote_order_qty:
-                return quote_balance
-            elif quote_balance <= 0:
+            if quote_balance <= 0:
                 raise ValueError("Insufficient quote balance.")
+            elif quote_balance < quote_order_qty:
+                return quote_balance
         elif side.upper() == "SELL":
-            if base_balance < quote_order_qty:
-                return base_balance
-            elif base_balance <= 0:
+            if base_balance <= 0:
                 raise ValueError("Insufficient base balance.")
+            elif base_balance < quote_order_qty:
+                return base_balance
         return quote_order_qty
     except Exception as e:
         raise ValueError(str(e))
@@ -100,27 +109,29 @@ def adjust_trade_quantity(mexc_account, symbol, side, quote_order_qty):
 
 def open_mexc_trade(mexc_account, symbol: str, side: str, quantity: float, custom_id: str = None):
     try:
+        if mexc_account.type == "F":
+            return open_mexc_futures_trade(mexc_account, symbol, side, quantity, custom_id)
+        
+
         adjusted_quantity = adjust_trade_quantity(mexc_account, symbol, side, float(quantity))
+        # adjusted_quantity = quantity
         print("Adjusted quantity:", adjusted_quantity)
 
         
-        if mexc_account.type == "F":
-            return open_mexc_futures_trade(mexc_account, symbol, side, adjusted_quantity, custom_id)
-
         order_params = {
             "symbol": symbol,
             "side": side.upper(),
-            "type": "market",  # Using lowercase as per MEXC docs
-            "quantity": adjusted_quantity,
+            "type": "MARKET",  # Using lowercase as per MEXC docs
+            "quoteOrderQty": adjusted_quantity,
         }
         response = new_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
         
         if response.get("code") != 200:
-            raise ValueError(response.get("message", "Order placement failed"))
+            raise ValueError(response.get("msg", "Order placement failed"))
         order_data = response["data"]
         
         return {
-            "order_id": order_data["order_id"],
+            "order_id": order_data["orderId"],
             "symbol": symbol,
             "side": side.upper(),
             "price": order_data["price"] if "price" in order_data else "0",  # Market orders typically don't have a set price
@@ -132,25 +143,25 @@ def open_mexc_trade(mexc_account, symbol: str, side: str, quantity: float, custo
 
 def close_mexc_trade(mexc_account, symbol: str, side: str, quantity: float):
     try:
+        if mexc_account.type == "F":
+            return close_mexc_futures_trade(mexc_account, symbol, side, quantity)
+        
         t_side = "SELL" if side.upper() == "BUY" else "BUY"
         adjusted_quantity = adjust_trade_quantity(mexc_account, symbol, t_side, float(quantity))
-
-        if mexc_account.type == "F":
-            return close_mexc_futures_trade(mexc_account, symbol, side, adjusted_quantity)
 
         order_params = {
             "symbol": symbol,
             "side": t_side.upper(),
-            "type": "market",
-            "quantity": adjusted_quantity,
+            "type": "MARKET",
+            "quoteOrderQty": adjusted_quantity,
         }
         response = new_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
         if response.get("code") != 200:
-            raise ValueError(response.get("message", "Order placement failed"))
+            raise ValueError(response.get("msg", "Order placement failed"))
         order_data = response["data"]
         
         return {
-            "order_id": order_data["order_id"],
+            "order_id": order_data["orderId"],
             "symbol": symbol,
             "side": t_side.upper(),
             "price": order_data["price"] if "price" in order_data else "0", 
@@ -165,49 +176,81 @@ FUTURES_BASE_URL = "https://contract.mexc.com"
 
 def get_futures_account_info(api_key, secret):
     """Retrieve futures account information using MEXC futures API."""
-    endpoint = "/api/v1/private/account"
-    params = {"timestamp": _get_timestamp()}
-    query_string = urlencode(params)
-    signature = create_signature(query_string, secret)
-    params["signature"] = signature
-    headers = {"X-MEXC-APIKEY": api_key}
-    response = requests.get(FUTURES_BASE_URL + endpoint, params=params, headers=headers)
-    return response.json()
+    print("Getting futures account info...")
+    endpoint = "/api/v1/private/account/assets"
+
+    timestamp = str(_get_timestamp())
+    signature_target = api_key + timestamp
+    signature = hmac.new(secret.encode("utf-8"), signature_target.encode("utf-8"), hashlib.sha256).hexdigest()
+    
+    headers = {
+        "ApiKey": api_key,
+        "Request-Time": timestamp,
+        "Signature": signature,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.get(FUTURES_BASE_URL + endpoint, headers=headers)
+
+    response_data = response.json()
+    response_data['code'] = response.status_code
+    
+    return response_data
+
 
 
 def new_futures_order(api_key, secret, order_params):
     """Place a new futures order using MEXC futures API."""
-    endpoint = "/api/v1/private/order"
-    order_params["timestamp"] = _get_timestamp()
-    query_string = urlencode(order_params)
-    signature = create_signature(query_string, secret)
-    order_params["signature"] = signature
+    endpoint = "api/v1/private/order/submit"
+
+    timestamp = str(_get_timestamp())
+    signature_target = api_key + timestamp
+    signature = hmac.new(secret.encode("utf-8"), signature_target.encode("utf-8"), hashlib.sha256).hexdigest()
+    
+
+    # order_params["timestamp"] = timestamp
+    # query_string = urlencode(order_params)
+    # signature = create_signature(query_string, secret)
+    # order_params["signature"] = signature
+ 
     headers = {
-        "X-MEXC-APIKEY": api_key,
-        "Content-Type": "application/x-www-form-urlencoded"
+        "ApiKey": api_key,
+        "Request-Time": timestamp,
+        "Signature": signature,
+        "Content-Type": "application/json"
     }
+
     response = requests.post(FUTURES_BASE_URL + endpoint, data=order_params, headers=headers)
-    return response.json()
+    
+    response_data = response.json()
+    response_data['code'] = response.status_code
+    print("Futures order response:", response_data)
+    
+    return response_data
 
 
 def open_mexc_futures_trade(mexc_account, symbol: str, side: str, quantity: float, custom_id: str = None):
     """Open a new futures trade on MEXC. Note: futures orders may require additional parameters such as leverage and margin type."""
+
+    t_side = 1 if side.upper() == "BUY" else 3
     try:
         order_params = {
             "symbol": symbol,
-            "side": side.upper(),
-            "type": "market",
-            "quantity": quantity,
+            "side": t_side,
+            "type": 5,
+            "vol": quantity,
         }
+        print("Order params:", order_params)
+
         response = new_futures_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
         if response.get("code") != 200:
             raise ValueError(response.get("message", "Futures order placement failed"))
         order_data = response["data"]
         return {
-            "order_id": order_data.get("order_id"),
+            "order_id": order_data,
             "symbol": symbol,
             "side": side.upper(),
-            "price": order_data.get("price", "0"),
+            "price": 0,
             "qty": quantity,
         }
     except Exception as e:
@@ -218,22 +261,22 @@ def close_mexc_futures_trade(mexc_account, symbol: str, side: str, quantity: flo
     """Close an existing futures trade on MEXC by placing an opposite order."""
     try:
         # Reverse the side for closing the position
-        t_side = "SELL" if side.upper() == "BUY" else "BUY"
+        t_side = 4 if side.upper() == "BUY" else 2
         order_params = {
             "symbol": symbol,
-            "side": t_side.upper(),
-            "type": "market",
-            "quantity": quantity,
+            "side": t_side,
+            "type": 5,
+            "vol": quantity,
         }
         response = new_futures_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
         if response.get("code") != 200:
             raise ValueError(response.get("message", "Futures order placement failed"))
         order_data = response["data"]
         return {
-            "order_id": order_data.get("order_id"),
+            "order_id": order_data,
             "symbol": symbol,
             "side": t_side.upper(),
-            "price": order_data.get("price", "0"),
+            "price": 0,
             "qty": quantity,
         }
     except Exception as e:

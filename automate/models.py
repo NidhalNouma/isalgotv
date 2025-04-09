@@ -56,7 +56,7 @@ class CryptoBrokerAccount(models.Model):
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    subscription_id = models.CharField(max_length=100, blank=True)
+    subscription_id = models.CharField(max_length=100, blank=False)
 
     def save(self, *args, **kwargs):        # Ensure subscription_id is provided
         if not self.subscription_id:
@@ -105,7 +105,7 @@ class ForexBrokerAccount(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-    subscription_id = models.CharField(max_length=100, blank=True)
+    subscription_id = models.CharField(max_length=100, blank=False)
 
 
     def save(self, *args, **kwargs):

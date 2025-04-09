@@ -213,7 +213,17 @@ def edit_broker(request, broker_type, pk):
                     valid = check_forex_credentials(broker_type, form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
 
                 if valid.get('valid') == True:
+                    if not account.subscription_id:
+                        raise Exception("No subscription found.")
+                    
+                    subscription = stripe.Subscription.retrieve(account.subscription_id)
+
+                    if not subscription or subscription.status != "active":
+                        raise Exception("Subscription is not active. Please activate your subscription.")
+                    
                     account = form.save(commit=False)
+                    
+                    account.subscription_id = subscription.id
                     account.save()
 
                     context = context_accounts_by_user(request)
