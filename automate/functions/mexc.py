@@ -33,6 +33,20 @@ def get_account_info(api_key, secret):
     response_data['code'] = response.status_code
     return response_data
 
+def get_exchange_info(symbol):
+    endpoint = "/api/v3/exchangeInfo"
+    params = {
+        "timestamp": _get_timestamp(),
+        "symbol": symbol
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    response = requests.get(BASE_URL + endpoint, params=params, headers=headers)
+    response_data = response.json()
+    response_data['code'] = response.status_code
+    return response_data
+
 
 def new_order(api_key, secret, order_params):
     endpoint = "/api/v3/order"
@@ -44,8 +58,13 @@ def new_order(api_key, secret, order_params):
         "X-MEXC-APIKEY": api_key,
         "Content-Type": "application/json"
     }
-    response = requests.post(BASE_URL + endpoint, data=order_params, headers=headers)
-    return response.json()
+    response = requests.post(BASE_URL + endpoint, data=order_params, headers=headers)  
+    print("Order response:", response, response.json())  
+    response_data = response.json()
+
+    if "code" not in response_data:
+        response_data["code"] = response.status_code
+    return response_data
 
 
 def check_mexc_credentials(api_key, api_secret, trade_type="S"):
@@ -82,8 +101,17 @@ def get_account_balance(mexc_account, asset: str):
 
 def adjust_trade_quantity(mexc_account, symbol, side, quote_order_qty):
     try:
-        # Assuming symbol format like 'BTCUSDT' where the last 4 characters denote the quote asset.
-        base_asset, quote_asset = symbol[:-4], symbol[-4:]
+        
+        exchange_info = get_exchange_info(symbol)
+        # print("Exchange info:", exchange_info)
+        if exchange_info.get("code") != 200:
+            raise ValueError("Failed to retrieve exchange info")
+        
+        base_asset, quote_asset = exchange_info["symbols"][0]["baseAsset"], exchange_info["symbols"][0]["quoteAsset"]
+        if not base_asset or not quote_asset:
+            raise ValueError("Invalid symbol format or exchange info not found.")
+        
+        
         base_balance = get_account_balance(mexc_account, base_asset)["balance"]
         quote_balance = get_account_balance(mexc_account, quote_asset)["balance"]
 
@@ -122,13 +150,13 @@ def open_mexc_trade(mexc_account, symbol: str, side: str, quantity: float, custo
             "symbol": symbol,
             "side": side.upper(),
             "type": "MARKET",  # Using lowercase as per MEXC docs
-            "quoteOrderQty": adjusted_quantity,
+            "quantity": adjusted_quantity,
         }
         response = new_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
         
         if response.get("code") != 200:
             raise ValueError(response.get("msg", "Order placement failed"))
-        order_data = response["data"]
+        order_data = response
         
         return {
             "order_id": order_data["orderId"],
@@ -153,12 +181,12 @@ def close_mexc_trade(mexc_account, symbol: str, side: str, quantity: float):
             "symbol": symbol,
             "side": t_side.upper(),
             "type": "MARKET",
-            "quoteOrderQty": adjusted_quantity,
+            "quantity": adjusted_quantity,
         }
         response = new_order(mexc_account.apiKey, mexc_account.secretKey, order_params)
         if response.get("code") != 200:
             raise ValueError(response.get("msg", "Order placement failed"))
-        order_data = response["data"]
+        order_data = response
         
         return {
             "order_id": order_data["orderId"],
@@ -223,7 +251,8 @@ def new_futures_order(api_key, secret, order_params):
     response = requests.post(FUTURES_BASE_URL + endpoint, data=order_params, headers=headers)
     
     response_data = response.json()
-    response_data['code'] = response.status_code
+    if "code" not in response_data:
+        response_data['code'] = response.status_code
     print("Futures order response:", response_data)
     
     return response_data

@@ -23,6 +23,7 @@ urlpatterns = [
     path('automate/bitget', automate_bitget, name='docs_automate_bitget'),
     path('automate/bybit', automate_bybit, name='docs_automate_bybit'),
     path('automate/crypto', automate_crypto, name='docs_automate_crypto'),
+    path('automate/mexc', automate_mexc, name='docs_automate_mexc'),
     path('automate/tradelocker', automate_tradelocker, name='docs_automate_tradelocker'),
 
     path('q&a/', question, name='docs_questions'),

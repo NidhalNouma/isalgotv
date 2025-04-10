@@ -35,7 +35,6 @@ def create_signature(req, secret):
     payload_str = req["method"] + str(req["id"]) + req["api_key"] + param_str + str(req["nonce"])
     return hmac.new(secret.encode('utf-8'), payload_str.encode('utf-8'), hashlib.sha256).hexdigest()
 
-
 def get_account_info(api_key, secret):
     """Retrieve account information from Crypto.com Exchange API using JSON-RPC."""
 
@@ -53,6 +52,23 @@ def get_account_info(api_key, secret):
     response = requests.post(BASE_URL + payload["method"], json=payload, headers=headers)
     return response.json()
 
+def get_exchange_info(symbol):
+    """Retrieve exchange information for a specific symbol from Crypto.com Exchange API."""
+
+    nonce = _get_timestamp()
+    payload = {
+        "id": nonce,
+        "method": "public/get-instruments",
+        "params": {
+            "symbol": symbol
+        },
+        "nonce": nonce
+    }
+
+    headers = {"Content-Type": "application/json"}
+    response = requests.post(BASE_URL + payload["method"], json=payload, headers=headers)
+    return response.json()
+
 
 def new_order(api_key, secret, order_params):
     """Place a new order via the Crypto.com Exchange API using JSON-RPC."""
@@ -64,9 +80,12 @@ def new_order(api_key, secret, order_params):
         "params": order_params,
         "nonce": nonce
     }
+
     payload["sig"] = create_signature(payload, secret)
     headers = {"Content-Type": "application/json"}
+
     response = requests.post(BASE_URL + payload["method"], json=payload, headers=headers)
+    # print("Order Response:", response.json(), response)  # Debugging line to check the response
     return response.json()
 
 
@@ -86,13 +105,19 @@ def get_account_balance(crypto_account, asset: str):
     """Retrieve the balance for a specific asset from Crypto.com account info."""
     try:
         account_info = get_account_info(crypto_account.apiKey, crypto_account.secretKey)
+
         if account_info.get("code") != 0:
             raise ValueError(account_info.get("message", "Failed to retrieve account info"))
         balances = {}
-        # Expected structure: {"code":200, "data": {"balances": [{"asset": "BTC", "free": "0.1", ...}, ...]}}
-        for balance in account_info["data"]["balances"]:
-            balances[balance["asset"]] = float(balance["free"])
+        
+        data = account_info["result"]["data"][0]
+        # print("Balances Data:", data["position_balances"]) 
+        
+        for balance in data["position_balances"]:  # Debugging line to check each balance
+            balances[balance["instrument_name"]] = float(balance["quantity"])
+            
         return {"asset": asset, "balance": balances.get(asset, 0.0)}
+
     except Exception as e:
         raise ValueError(str(e))
 
@@ -101,7 +126,20 @@ def adjust_trade_quantity(crypto_account, symbol, side, quote_order_qty):
     """Adjust the trade quantity based on available balances. Assumes symbol format like 'BTCUSDT'."""
     try:
         # Derive base and quote assets assuming last 4 characters as quote asset
+        # exchange_info = get_exchange_info(symbol)
+        # print("Exchange Info:", exchange_info)  
+
+        # if exchange_info.get("code") != 0:
+        #     raise ValueError(exchange_info.get("message", "Invalid symbol"))
+        
+        # base_asset, quote_asset = exchange_info["data"]["instruments"][0]["base_currency"], exchange_info["data"]["instruments"][0]["quote_currency"]
+
+        # if not base_asset or not quote_asset:
+        #     raise ValueError("Base or quote asset not found in exchange info.")
+
+
         base_asset, quote_asset = symbol[:-4], symbol[-4:]
+
         base_balance = get_account_balance(crypto_account, base_asset)["balance"]
         quote_balance = get_account_balance(crypto_account, quote_asset)["balance"]
 
@@ -129,19 +167,29 @@ def open_crypto_trade(crypto_account, symbol: str, side: str, quantity: float, c
     """Open a new crypto trade via the Crypto.com API."""
     try:
         adjusted_quantity = adjust_trade_quantity(crypto_account, symbol, side, float(quantity))
+        # adjusted_quantity = quantity
         print("Adjusted quantity:", adjusted_quantity)
 
+
+        base_asset, quote_asset = symbol[:-4], symbol[-4:]
+        order_symbol = f"{base_asset}_{quote_asset}"
+
         order_params = {
-            "instrument_name": symbol,
+            "instrument_name": order_symbol,
             "side": side.upper(),
-            "type": "MARKET",  
-            "quantity": adjusted_quantity,
-            "client_oid": custom_id if custom_id else "", 
+            "type": "MARKET", 
+            "quantity": str(adjusted_quantity),
         }
+        if custom_id:
+            order_params["client_oid"] = custom_id
+        # print(order_params)
+
         response = new_order(crypto_account.apiKey, crypto_account.secretKey, order_params)
         if response.get("code") != 0:
             raise ValueError(response.get("message", "Order placement failed"))
-        order_data = response["data"]
+        
+        # print("Order Response:", response)  # Debugging line to check the response
+        order_data = response["result"]
         return {
             "order_id": order_data["order_id"],
             "symbol": symbol,
@@ -159,17 +207,23 @@ def close_crypto_trade(crypto_account, symbol: str, side: str, quantity: float):
         # Reverse the side for closing the position
         t_side = "SELL" if side.upper() == "BUY" else "BUY"
         adjusted_quantity = adjust_trade_quantity(crypto_account, symbol, t_side, float(quantity))
+        # adjusted_quantity = quantity
+
+        base_asset, quote_asset = symbol[:-4], symbol[-4:]
+        order_symbol = f"{base_asset}_{quote_asset}"
         
         order_params = {
-            "instrument_name": symbol,
+            "instrument_name": order_symbol,
             "side": t_side.upper(),
             "type": "MARKET",  
-            "quantity": adjusted_quantity,
+            "quantity": str(adjusted_quantity),
         }
+
         response = new_order(crypto_account.apiKey, crypto_account.secretKey, order_params)
         if response.get("code") != 0:
             raise ValueError(response.get("message", "Order placement failed"))
-        order_data = response["data"]
+        
+        order_data = response["result"]
         return {
             "order_id": order_data["order_id"],
             "symbol": symbol,

@@ -47,6 +47,9 @@ def automate_bybit(request):
 def automate_crypto(request):
     return render(request, "docs/automate_crypto.html")
 
+def automate_mexc(request):
+    return render(request, "docs/automate_mexc.html")
+
 def automate_tradelocker(request):
     return render(request, "docs/automate_tradelocker.html")
 
