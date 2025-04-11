@@ -22,7 +22,8 @@
                 <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-title/10 tracking-wider text-title mr-1">
                     {% if account.type == "S" %} Spot {% elif account.type == "U" %} USD@M
                     {% elif account.type == "C" %} COIN@M {% elif account.type == "D" %} Derivatives 
-                    {% elif account.type == "F" %} Futures {% else %} Unknown Type {% endif%}
+                    {% elif account.type == "F" %} Futures {% elif account.type == "UC" %} USD@C
+                    {% else %} Unknown Type {% endif%}
                 </span>
 
                 {% if account.active %}

@@ -82,6 +82,13 @@ def open_bitget_trade(account, symbol, side, quantity, oc = 'open'):
         precisions = send_request('GET', decimals_endpoint, account.apiKey, account.secretKey, account.pass_phrase)
         
         market_data = send_request('GET', data_endpoint, account.apiKey, account.secretKey, account.pass_phrase)
+        
+        if "msg" in market_data and market_data.get('code') != '00000':
+            raise Exception(response.get('msg'))
+        
+        if not market_data or 'data' not in market_data or not market_data['data']:
+             raise ValueError("Market data is missing or invalid")
+
         current_price = float(market_data['data'][0].get('lastPr', 1))
 
         # Adjust quantity if opening a BUY order with base coin
@@ -110,13 +117,13 @@ def open_bitget_trade(account, symbol, side, quantity, oc = 'open'):
             body["marginCoin"] = "USDT"
             body["tradeSide"] = oc
 
-        print(body)
+        print("body ==> ", body)
 
         # Send the trade request
         response = send_request('POST', endpoint, account.apiKey, account.secretKey, account.pass_phrase, body)
 
 
-        if response.get('msg') is not None and response.get('code') != '00000':
+        if "msg" in response and response.get('code') != '00000':
             raise Exception(response.get('msg'))
         
         # Extract order details
@@ -129,7 +136,7 @@ def open_bitget_trade(account, symbol, side, quantity, oc = 'open'):
         data = send_request('GET', order_url, account.apiKey, account.secretKey, account.pass_phrase)
         data = data.get('data')
 
-        print(data)
+        print("trade data => ", data)
         
         if data is None:
             raise ValueError("No data found in response")
@@ -170,6 +177,7 @@ def open_bitget_trade(account, symbol, side, quantity, oc = 'open'):
         }
     
     except Exception as e:
+        print('error opening bitget trade: ', str(e))
         return {'error': str(e)}
 
 def close_bitget_trade(account, symbol, side, quantity):
