@@ -84,7 +84,7 @@ def open_bitget_trade(account, symbol, side, quantity, oc = 'open'):
         market_data = send_request('GET', data_endpoint, account.apiKey, account.secretKey, account.pass_phrase)
         
         if "msg" in market_data and market_data.get('code') != '00000':
-            raise Exception(response.get('msg'))
+            raise Exception(market_data.get('msg'))
         
         if not market_data or 'data' not in market_data or not market_data['data']:
              raise ValueError("Market data is missing or invalid")
