@@ -1,5 +1,5 @@
 
-{% with webhook_url='https://webhook.'|add:request.get_host|add:'/f/'|add:account.custom_id %}
+{% with webhook_url='https://webhook.'|add:request.get_host|cut:"www."|add:'/f/'|add:account.custom_id %}
 <div class="w-full h-fit max-w-2xl bg-gradient-to-tr from-background via-text/10 to-background rounded-md overflow-hidden">
   <div class="p-2 sm:p-3">
     <div
