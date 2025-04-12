@@ -1,5 +1,17 @@
 console.log("js loaded");
 
+function copyText(text) {
+  // Copy the text to clipboard
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      console.log("Text copied to clipboard: " + text);
+    })
+    .catch((err) => {
+      console.error("Error copying text: ", err);
+    });
+}
+
 function copyPlainText(id) {
   const codeElement = document.getElementById(id);
 
@@ -19,29 +31,30 @@ function copyPlainText(id) {
 
 function toggleDropdown(dropdownId) {
   var dropdown = document.getElementById(dropdownId);
-  
+
   if (dropdown.classList.contains("hidden")) {
     dropdown.classList.remove("hidden");
     dropdown.classList.add("block");
     var arrow = document.getElementById(dropdownId + "-arrow");
     if (arrow) {
-      arrow.style.transform = "rotate(180deg)";function toggleDropdown(dropdownId) {
-  var dropdown = document.getElementById(dropdownId);
-  
-  if (dropdown.classList.contains("hidden")) {
-    dropdown.classList.remove("hidden");
-    var arrow = document.getElementById(dropdownId + "-arrow");
-    if (arrow) {
       arrow.style.transform = "rotate(180deg)";
-    }
-  } else {
-    dropdown.classList.add("hidden");
-    var arrow = document.getElementById(dropdownId + "-arrow");
-    if (arrow) {
-      arrow.style.transform = "rotate(0deg)";
-    }
-  }
-}
+      function toggleDropdown(dropdownId) {
+        var dropdown = document.getElementById(dropdownId);
+
+        if (dropdown.classList.contains("hidden")) {
+          dropdown.classList.remove("hidden");
+          var arrow = document.getElementById(dropdownId + "-arrow");
+          if (arrow) {
+            arrow.style.transform = "rotate(180deg)";
+          }
+        } else {
+          dropdown.classList.add("hidden");
+          var arrow = document.getElementById(dropdownId + "-arrow");
+          if (arrow) {
+            arrow.style.transform = "rotate(0deg)";
+          }
+        }
+      }
     }
   } else {
     dropdown.classList.add("hidden");
@@ -208,7 +221,7 @@ function mountStripeElement(id) {
           color: placeholderColor,
         },
         ":focus": {
-          "border": "1px solid hsl(229, 76%, 72%);",
+          border: "1px solid hsl(229, 76%, 72%);",
           "border-color": placeholderColor,
         },
       },
@@ -238,10 +251,10 @@ function paymentMethodSelected(pmId, inputId) {
 
 async function onPayFormStripeSubmit(title) {
   openLoader(title, "-pay-submit-", "flex");
-  
+
   // hide coupon errors
-  if(document.getElementById(title+"-coupon-form-errors"))
-    document.getElementById(title+"-coupon-form-errors").innerHTML = "";
+  if (document.getElementById(title + "-coupon-form-errors"))
+    document.getElementById(title + "-coupon-form-errors").innerHTML = "";
 
   const nameInput = document.getElementById("cardName-" + title);
 
@@ -273,7 +286,8 @@ async function onPayFormStripeSubmit(title) {
       },
     });
     if (result.error) {
-      let errorMsg = result.error.message + "\nNo payment method found or selected!";
+      let errorMsg =
+        result.error.message + "\nNo payment method found or selected!";
       let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
       if (errorDiv) errorDiv.innerHTML = errorHtml;
       closeLoader(title);
@@ -292,12 +306,12 @@ async function onPayFormStripeSubmit(title) {
 
 async function onAutomateAccountAdd(title, errorDivName, event) {
   event.preventDefault();
-  
+
   openLoader("", "-add-" + title, "flex");
 
-  if(document.getElementById("add-" + title + "-form-errors"))
-    document.getElementById("add-" + title + "-form-errors").innerHTML = ""; 
-  
+  if (document.getElementById("add-" + title + "-form-errors"))
+    document.getElementById("add-" + title + "-form-errors").innerHTML = "";
+
   const nameInput = document.getElementById("cardName-" + title);
   const pmValue = document.getElementById("pm-" + title);
 
@@ -321,17 +335,17 @@ async function onAutomateAccountAdd(title, errorDivName, event) {
       },
     });
     if (result.error) {
-      let errorMsg = result.error.message + "\nNo payment method found or selected!";
+      let errorMsg =
+        result.error.message + "\nNo payment method found or selected!";
       let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
       if (errorDiv) errorDiv.innerHTML = errorHtml;
 
-      closeLoader(title, "-add-", 'flex');
+      closeLoader(title, "-add-", "flex");
       return false;
     } else {
       pmValue.value = result.paymentMethod.id;
     }
   }
-
 
   let form = document.getElementById("add-" + title + "-form");
   form.dispatchEvent(new Event("submit"));
@@ -475,40 +489,39 @@ function showModalImages(images, imgId, id = "") {
   });
 }
 
-function openAITokensModalSettings(fromIsalgoAI = false){
-  openModel('staticModal-ai-tokens');
-  mountStripeElement('ai-tokens');
+function openAITokensModalSettings(fromIsalgoAI = false) {
+  openModel("staticModal-ai-tokens");
+  mountStripeElement("ai-tokens");
 
   if (fromIsalgoAI === true) {
-    const form = document.getElementById("add-ai-tokens-form"); 
+    const form = document.getElementById("add-ai-tokens-form");
     htmx.process(form);
   } else {
-    const form = document.getElementById("add-ai-tokens-form"); 
+    const form = document.getElementById("add-ai-tokens-form");
 
     let newParam = "settings=true";
     let currentHxPost = form.getAttribute("hx-post");
-    let newHxPost = currentHxPost + "?" + newParam
+    let newHxPost = currentHxPost + "?" + newParam;
 
     form.setAttribute("hx-post", newHxPost);
     htmx.process(form);
   }
-
 }
 
-function closeAITokensModalSettings(){
-  hideModel('staticModal-ai-tokens');
-  unmountStripeElement('ai-tokens');
+function closeAITokensModalSettings() {
+  hideModel("staticModal-ai-tokens");
+  unmountStripeElement("ai-tokens");
 
-  closeLoader('ai-tokens', "-add-", 'flex');
+  closeLoader("ai-tokens", "-add-", "flex");
 
   const form = document.getElementById("add-ai-tokens-form");
 
   if (form) {
-      let currentHxPost = form.getAttribute("hx-post");
-      let cleanHxPost = currentHxPost.split("?")[0];
+    let currentHxPost = form.getAttribute("hx-post");
+    let cleanHxPost = currentHxPost.split("?")[0];
 
-      form.setAttribute("hx-post", cleanHxPost);
-      htmx.process(form);
+    form.setAttribute("hx-post", cleanHxPost);
+    htmx.process(form);
   }
 }
 
@@ -566,7 +579,7 @@ htmx.on("htmx:afterRequest", (evt) => {
 
   if (evt?.detail?.target.id.includes("div-ai_tokens_modal")) {
     closeAITokensModalSettings();
-    openModel('modal-algoai');
+    openModel("modal-algoai");
   }
 
   if (evt?.detail?.target.id === "setting-payment_methods") {
@@ -631,10 +644,10 @@ htmx.on("htmx:afterRequest", (evt) => {
   }
 
   const id = evt?.detail?.target.id;
-  if(document.getElementById(id)){
+  if (document.getElementById(id)) {
     const modalId = document.getElementById(id).hasAttribute("hide-backdrop");
     if (modalId) {
-      const backdropDiv = document.querySelector('div[modal-backdrop]');
+      const backdropDiv = document.querySelector("div[modal-backdrop]");
       if (backdropDiv) {
         backdropDiv.remove();
         document.documentElement.style.overflowY = "unset";
@@ -694,25 +707,37 @@ function handleXlsxFileSelect(event) {
 
     // Process settings (Properties tab)
     if (workbook.Sheets["Properties"]) {
-      const propertiesSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Properties"], { header: 1 });
+      const propertiesSheet = XLSX.utils.sheet_to_json(
+        workbook.Sheets["Properties"],
+        { header: 1 }
+      );
       fillSettingsFromSheet(propertiesSheet);
     }
 
     // Process results (Performance tab)
     if (workbook.Sheets["Performance"]) {
-      const performanceSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Performance"], { header: 1 });
+      const performanceSheet = XLSX.utils.sheet_to_json(
+        workbook.Sheets["Performance"],
+        { header: 1 }
+      );
       fillResultsFromSheet(performanceSheet);
     }
 
     // Process results (Performance tab)
     if (workbook.Sheets["Trades analysis"]) {
-      const performanceSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Trades analysis"], { header: 1 });
+      const performanceSheet = XLSX.utils.sheet_to_json(
+        workbook.Sheets["Trades analysis"],
+        { header: 1 }
+      );
       fillResultsFromSheet(performanceSheet);
     }
 
     // Process results (Performance tab)
     if (workbook.Sheets["Risk performance ratios"]) {
-      const performanceSheet = XLSX.utils.sheet_to_json(workbook.Sheets["Risk performance ratios"], { header: 1 });
+      const performanceSheet = XLSX.utils.sheet_to_json(
+        workbook.Sheets["Risk performance ratios"],
+        { header: 1 }
+      );
       fillResultsFromSheet(performanceSheet);
     }
 
@@ -726,7 +751,8 @@ function fillSettingsFromSheet(sheetData) {
   let cnt = 0;
   let startKey = "";
 
-  if (document.getElementById("initial_capital")) document.getElementById("initial_capital").value = "";
+  if (document.getElementById("initial_capital"))
+    document.getElementById("initial_capital").value = "";
 
   sheetData.forEach((row) => {
     let [key, value] = row;
@@ -753,9 +779,7 @@ function fillSettingsFromSheet(sheetData) {
           input.value = "false";
         }
       } else if (input.type == "text") {
-        const dropdown = document.getElementById(
-          "dropdown_text_" + keyNumber
-        );
+        const dropdown = document.getElementById("dropdown_text_" + keyNumber);
         if (dropdown) dropdown.innerHTML = value;
         input.value = value;
       }
@@ -770,20 +794,32 @@ function fillSettingsFromSheet(sheetData) {
         if (document.getElementById("start_at")) {
           let time = new Date(start);
           time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
-          document.getElementById("start_at").value = time.toISOString().slice(0, 16);
+          document.getElementById("start_at").value = time
+            .toISOString()
+            .slice(0, 16);
         }
         if (document.getElementById("end_at")) {
           let time = new Date(end);
           time.setMinutes(time.getMinutes() - time.getTimezoneOffset());
-          document.getElementById("end_at").value = time.toISOString().slice(0, 16);
+          document.getElementById("end_at").value = time
+            .toISOString()
+            .slice(0, 16);
         }
       } else if (key === "Timeframe") {
         const [num, period] = value.split(" ");
         document.getElementById("time_frame").value = num;
-        document.getElementById("time_frame_period").value = convertTimeframePeriod(period);
-      } else if (key === "Initial capital" && document.getElementById("initial_capital")) {
-        document.getElementById("initial_capital").value = value + document.getElementById("initial_capital").value;
-      } else if (key === "Currency" && document.getElementById("initial_capital")) {
+        document.getElementById("time_frame_period").value =
+          convertTimeframePeriod(period);
+      } else if (
+        key === "Initial capital" &&
+        document.getElementById("initial_capital")
+      ) {
+        document.getElementById("initial_capital").value =
+          value + document.getElementById("initial_capital").value;
+      } else if (
+        key === "Currency" &&
+        document.getElementById("initial_capital")
+      ) {
         document.getElementById("initial_capital").value += " " + value;
       }
     }
@@ -793,29 +829,60 @@ function fillSettingsFromSheet(sheetData) {
 function fillResultsFromSheet(sheetData) {
   sheetData.forEach((row) => {
     // console.log(row);
-    let [key, allUSD, allPerc, longUSD, longPerc, shortUSD, shortPerc] = row.map((v) => v ? v.toString().trim() : "");
+    let [key, allUSD, allPerc, longUSD, longPerc, shortUSD, shortPerc] =
+      row.map((v) => (v ? v.toString().trim() : ""));
 
     key = key.toLowerCase();
-    
+
     switch (key) {
       case "net profit":
-        setResultValues("net_profit", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        setResultValues(
+          "net_profit",
+          allUSD,
+          longUSD,
+          shortUSD,
+          allPerc,
+          longPerc,
+          shortPerc
+        );
         break;
       case "gross profit":
-        setResultValues("gross_profit", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        setResultValues(
+          "gross_profit",
+          allUSD,
+          longUSD,
+          shortUSD,
+          allPerc,
+          longPerc,
+          shortPerc
+        );
         break;
       case "gross loss":
-        setResultValues("gross_loss", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        setResultValues(
+          "gross_loss",
+          allUSD,
+          longUSD,
+          shortUSD,
+          allPerc,
+          longPerc,
+          shortPerc
+        );
         break;
       case "profit factor":
         setResultValues("profit_factor", allUSD, longUSD, shortUSD);
         break;
       case "percent profitable":
-        setResultValues("profitable_percentage", trimPercentage(allPerc), trimPercentage(longPerc), trimPercentage(shortPerc));
+        setResultValues(
+          "profitable_percentage",
+          trimPercentage(allPerc),
+          trimPercentage(longPerc),
+          trimPercentage(shortPerc)
+        );
         break;
       case "max equity drawdown":
         document.getElementById("max_dd").value = allUSD;
-        document.getElementById("max_dd_percentage").value = trimPercentage(allPerc);
+        document.getElementById("max_dd_percentage").value =
+          trimPercentage(allPerc);
         break;
       case "total trades":
         setResultValues("total_trades", allUSD, longUSD, shortUSD);
@@ -827,13 +894,37 @@ function fillResultsFromSheet(sheetData) {
         setResultValues("losing_trades", allUSD, longUSD, shortUSD);
         break;
       case "avg p&l":
-        setResultValues("avg_trade", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        setResultValues(
+          "avg_trade",
+          allUSD,
+          longUSD,
+          shortUSD,
+          allPerc,
+          longPerc,
+          shortPerc
+        );
         break;
       case "avg winning trade":
-        setResultValues("avg_winning_trade", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        setResultValues(
+          "avg_winning_trade",
+          allUSD,
+          longUSD,
+          shortUSD,
+          allPerc,
+          longPerc,
+          shortPerc
+        );
         break;
       case "avg losing trade":
-        setResultValues("avg_losing_trade", allUSD, longUSD, shortUSD, allPerc, longPerc, shortPerc);
+        setResultValues(
+          "avg_losing_trade",
+          allUSD,
+          longUSD,
+          shortUSD,
+          allPerc,
+          longPerc,
+          shortPerc
+        );
         break;
       case "ratio avg win / avg loss":
         setResultValues("ratio_trade", allUSD, longUSD, shortUSD);
@@ -843,13 +934,30 @@ function fillResultsFromSheet(sheetData) {
 }
 
 // Helper function to set values
-function setResultValues(baseKey, allUSD, longUSD, shortUSD, allPerc = "", longPerc = "", shortPerc = "") {
-  if (document.getElementById(baseKey)) document.getElementById(baseKey).value = allUSD;
-  if (document.getElementById(baseKey + "_long")) document.getElementById(baseKey + "_long").value = longUSD;
-  if (document.getElementById(baseKey + "_short")) document.getElementById(baseKey + "_short").value = shortUSD;
-  if (document.getElementById(baseKey + "_percentage")) document.getElementById(baseKey + "_percentage").value =  trimPercentage(allPerc);
-  if (document.getElementById(baseKey + "_percentage_long")) document.getElementById(baseKey + "_percentage_long").value = trimPercentage(longPerc);
-  if (document.getElementById(baseKey + "_percentage_short")) document.getElementById(baseKey + "_percentage_short").value = trimPercentage(shortPerc);
+function setResultValues(
+  baseKey,
+  allUSD,
+  longUSD,
+  shortUSD,
+  allPerc = "",
+  longPerc = "",
+  shortPerc = ""
+) {
+  if (document.getElementById(baseKey))
+    document.getElementById(baseKey).value = allUSD;
+  if (document.getElementById(baseKey + "_long"))
+    document.getElementById(baseKey + "_long").value = longUSD;
+  if (document.getElementById(baseKey + "_short"))
+    document.getElementById(baseKey + "_short").value = shortUSD;
+  if (document.getElementById(baseKey + "_percentage"))
+    document.getElementById(baseKey + "_percentage").value =
+      trimPercentage(allPerc);
+  if (document.getElementById(baseKey + "_percentage_long"))
+    document.getElementById(baseKey + "_percentage_long").value =
+      trimPercentage(longPerc);
+  if (document.getElementById(baseKey + "_percentage_short"))
+    document.getElementById(baseKey + "_percentage_short").value =
+      trimPercentage(shortPerc);
 }
 
 function trimPercentage(num) {
@@ -857,7 +965,6 @@ function trimPercentage(num) {
 
   return num.toFixed(2);
 }
-
 
 // Helper function to convert timeframe period
 function convertTimeframePeriod(val) {

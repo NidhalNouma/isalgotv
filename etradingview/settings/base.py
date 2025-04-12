@@ -67,9 +67,12 @@ INSTALLED_APPS = [
     'storages',
     'compressor', 
     'django_cryptography',
+
+    'django_hosts',
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,9 +85,14 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 
     "django_htmx.middleware.HtmxMiddleware",
+
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
 ROOT_URLCONF = 'etradingview.urls'
+
+ROOT_HOSTCONF = 'etradingview.hosts'
+DEFAULT_HOST = 'www'
 
 TEMPLATES = [
     {
