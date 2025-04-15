@@ -1,15 +1,16 @@
 from .models import User_Profile, Notification
 import re
-import environ
 import datetime
 import time
 import requests
 
+import environ
+env = environ.Env()
+
 server_ip_req = requests.get('https://ifconfig.me')
 server_ip = server_ip_req.text
-print("Server IP: " + server_ip)
+print("Webhook server IP address: " + server_ip)
 
-env = environ.Env()
 
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
@@ -196,6 +197,8 @@ class MemberShipPricingMiddleware:
 
     def __call__(self, request):
         request.prices = PRICES
+
+        request.free_trial_days = env('FREE_TRIAL_DAYS')
 
         response = self.get_response(request)
         return response

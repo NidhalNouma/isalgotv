@@ -10,7 +10,6 @@ from django.conf import settings
 
 from allauth.socialaccount.views import SignupView
 
-
 class CustomSocialSignupView(SignupView):
     def get_success_url(self):
         print('Signup successful with Google ...')
@@ -21,7 +20,9 @@ def index(request):
     if request.user.is_authenticated:
         return redirect('home')
     
-    return render(request, "etradingview/index.html", context={'prices': settings.PRICES})
+    context = {'prices': settings.PRICES }
+    
+    return render(request, "etradingview/index.html", context=context)
 
 
 def redirect_to_home(request):

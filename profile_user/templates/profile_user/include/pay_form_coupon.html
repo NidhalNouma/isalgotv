@@ -22,7 +22,9 @@
     {% endif %}
 
     {% if not has_subscription and not user_profile.subscription_id %}
-      <p class="mt-2.5 text-xs text-text/80">&#9737; This payment is scheduled after the 3 day trial</p>
+      <p class="mt-2.5 text-xs text-text/80">
+        &#9737; This payment is scheduled after the <span class="font-semibold text-text/90">{{ free_trial_days }} day trial</span>
+      </p>
     {% endif %}
   </div>
 

@@ -1,9 +1,7 @@
 {% load custom_tags %}
 
-{% with main_id="page-main-div" get_started_id="home-get-started" %}
-
-
-<script type="text/javascript">
+{% with main_id='page-main-div' get_started_id='home-get-started' %}
+  <script type="text/javascript">
     function toggleGetStarted(show=true) {
         if (show) {
             document.getElementById("{{get_started_id}}").classList.remove("hidden");
@@ -40,40 +38,128 @@
     {% endif %}
 </script>
 
-<main class="my-16 flex flex-col relative" >
+  <main class="my-16 flex flex-col relative">
     {% if congrate %}
-    <div
-      class="mb-4  max-w-xl mx-auto"
-    >
-      {% include "include/succes.html" with succes="You have successfully subscribed to our membership." %}
-    </div>
-    {%endif%} 
+      <div class="mb-4 max-w-xl mx-auto">
+        {% include 'include/succes.html' with succes='You have successfully subscribed to our membership.' %}
+      </div>
+    {% endif %}
 
     {% if step <= 1 %}
-        <button onclick="toggleGetStarted(false)" type="button" class="absolute -top-10 right-0 text-sm font-semibold text-text/60 hover:text-text/40 transition-colors">Skip for now</button>
+      <button onclick="toggleGetStarted(false)" type="button" class="absolute -top-10 right-0 text-sm font-semibold text-text/60 hover:text-text/40 transition-colors">Skip for now</button>
     {% endif %}
 
     <div class="mx-auto">
       <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0">
-        <li
-          class="flex items-center {% if step == 1 %} text-secondary {% else %} text-text/60 {% endif %} space-x-2.5"
-        >
-          <span
-            class="flex items-center justify-center w-8 h-8 border {% if step == 1 %} border-secondary {% else %} border-text/60 {% endif %} rounded-full shrink-0"
-          >
+        <li class="flex items-center {% if step == 1 %}
+            
+            
+            
+            
+            
+             text-secondary
+
+
+
+
+
+          {% else %}
+            
+            
+            
+            
+            
+             text-text/60
+
+
+
+
+
+          {% endif %} space-x-2.5">
+          <span class="flex items-center justify-center w-8 h-8 border {% if step == 1 %}
+              
+              
+              
+              
+              
+               border-secondary
+
+
+
+
+
+            {% else %}
+              
+              
+              
+              
+              
+               border-text/60
+
+
+
+
+
+            {% endif %} rounded-full shrink-0">
             1
           </span>
           <span>
             <h3 class="font-medium leading-tight">Choose a plan</h3>
-            <p class="text-sm">Choose your desire plan to <br />get started</p>
+            <p class="text-sm">
+              Choose your desire plan to <br />get started
+            </p>
           </span>
         </li>
-        <li
-          class="flex items-center {% if step == 2 %} text-secondary {% else %} text-text/60 {% endif %} space-x-2.5"
-        >
-          <span
-            class="flex items-center justify-center w-8 h-8 border {% if step == 2 %} border-secondary {% else %} border-text/60 {% endif %} rounded-full shrink-0"
-          >
+        <li class="flex items-center {% if step == 2 %}
+            
+            
+            
+            
+            
+             text-secondary
+
+
+
+
+
+          {% else %}
+            
+            
+            
+            
+            
+             text-text/60
+
+
+
+
+
+          {% endif %} space-x-2.5">
+          <span class="flex items-center justify-center w-8 h-8 border {% if step == 2 %}
+              
+              
+              
+              
+              
+               border-secondary
+
+
+
+
+
+            {% else %}
+              
+              
+              
+              
+              
+               border-text/60
+
+
+
+
+
+            {% endif %} rounded-full shrink-0">
             2
           </span>
           <span>
@@ -81,12 +167,56 @@
             <p class="text-sm">Set your trading view username</p>
           </span>
         </li>
-        <li
-          class="flex items-center {% if step == 3 %} text-secondary {% else %} text-text/60 {% endif %} space-x-2.5"
-        >
-          <span
-            class="flex items-center justify-center w-8 h-8 border {% if step == 3 %} border-secondary {% else %} border-text/60 {% endif %} rounded-full shrink-0"
-          >
+        <li class="flex items-center {% if step == 3 %}
+            
+            
+            
+            
+            
+             text-secondary
+
+
+
+
+
+          {% else %}
+            
+            
+            
+            
+            
+             text-text/60
+
+
+
+
+
+          {% endif %} space-x-2.5">
+          <span class="flex items-center justify-center w-8 h-8 border {% if step == 3 %}
+              
+              
+              
+              
+              
+               border-secondary
+
+
+
+
+
+            {% else %}
+              
+              
+              
+              
+              
+               border-text/60
+
+
+
+
+
+            {% endif %} rounded-full shrink-0">
             3
           </span>
           <span>
@@ -99,93 +229,75 @@
         </li>
       </ol>
     </div>
-  
-    {%if step == 1%}
-    <section class="mt-14 text-center">
-  
-      {% comment %} <h2 class="text-text text-sm font-semibold text-center mt-2 tracking-wider">
-        Start today with <div class="relative inline-block text-title text-base ">3 day trial
-        <div class="absolute top-[90%] w-full">
-            <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="4.5" stroke-linecap="round"/>
-            </svg>
-        </div>
-        </div>
-      </h2> {% endcomment %}
-      <h4 class="text-text">Select one of our plans to get started.</h4>
-  
-      {% if prices|get_item:"LIFETIME" %}
-  
-      <div class="text-left mt-6 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
-        {% include "include/price_item.html" with title="MONTHLY" get_started="true" %}
-        {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" get_started="true" %}
-        {% include "include/price_item.html" with title="YEARLY" save="Save $197" get_started="true" %}
-        {% include "include/price_item.html" with title="LIFETIME" save="Pay once" get_started="true" %}
-      </div>
-  
-  
-      <div class="text-left max-w-3xl mx-auto mt-16">
-        {% include "include/infos.html" with info="<span class='font-semibold'>LIFETIME membership</span> is designed to support our company's efforts in improving and developing more trading strategies. Lifetime members will receive priority access to our beta strategies. <br/>LIFETIME membership can expire and may no longer be available at any time." %}
-      </div>
-  
-      {% else %}
-  
-      <div class="text-left mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
-        {% include "include/price_item.html" with title="MONTHLY" get_started="true" %}
-        {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" get_started="true" %}
-        {% include "include/price_item.html" with title="YEARLY" save="Save $197" get_started="true" %}
-      </div>
-  
-      {% endif %}
-    </section>
+
+    {% if step == 1 %}
+      <section class="mt-14 text-center">
+        {% if not has_subscription and not user_profile.subscription_id %}
+          <h2 class="text-text text-sm font-semibold text-center tracking-wider">
+            Start today with<div class="relative inline-block text-title text-base ml-1">
+              {{ free_trial_days }} day trial<div class="absolute top-[90%] w-full">
+                <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="4.5" stroke-linecap="round" />
+                </svg>
+              </div>
+            </div>
+          </h2>
+        {% else %}
+          <h4 class="text-text text-sm font-semibold text-center tracking-wider">Select one of our plans to get started.</h4>
+        {% endif %}
+
+        {% if prices|get_item:'LIFETIME' %}
+          <div class="text-left mt-6 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
+            {% include 'include/price_item.html' with title='MONTHLY' get_started='true' %}
+            {% include 'include/price_item.html' with title='QUARTERLY' save='Save $39' get_started='true' %}
+            {% include 'include/price_item.html' with title='YEARLY' save='Save $197' get_started='true' %}
+            {% include 'include/price_item.html' with title='LIFETIME' save='Pay once' get_started='true' %}
+          </div>
+
+          <div class="text-left max-w-3xl mx-auto mt-16">
+            {% include 'include/infos.html' with info="<span class='font-semibold'>LIFETIME membership</span> is designed to support our company's efforts in improving and developing more trading strategies. Lifetime members will receive priority access to our beta strategies. <br/>LIFETIME membership can expire and may no longer be available at any time." %}
+          </div>
+        {% else %}
+          <div class="text-left mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
+            {% include 'include/price_item.html' with title='MONTHLY' get_started='true' %}
+            {% include 'include/price_item.html' with title='QUARTERLY' save='Save $39' get_started='true' %}
+            {% include 'include/price_item.html' with title='YEARLY' save='Save $197' get_started='true' %}
+          </div>
+        {% endif %}
+      </section>
     {% elif step == 2 %}
       {% include 'include/home_get_started_tv_username.html' %}
     {% elif step == 3 %}
-    <section class="mt-16 text-center">
-      <h4 class="text-title">You're ready to go.</h4>
-      <p class="text-text text-sm text-center mt-2">
+      <section class="mt-16 text-center">
+        <h4 class="text-title">You're ready to go.</h4>
+        <p class="text-text text-sm text-center mt-2">
           Go to your
-          <a
-            class="text-title font-semibold underline"
-            href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591"
-            target="_blank"
-            >TradingView</a
-          >
+          <a class="text-title font-semibold underline" href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank">TradingView</a>
           chart and you will find all of our systems <br />
           under the invite only scripts.
         </p>
-  
+
         <div class="max-w-xl mt-6 mx-auto">
-          <video
-          class="aspect-video w-full mr-auto my-3 rounded max-w-2xl"
-          muted=""
-          controls="controls"
-        >
-          <source
-            src="https://isalgotest.s3.amazonaws.com/docs/find_strategies.mp4"
-            type="video/mp4"
-          />
-        </video>
-          <!-- <img
+          <video class="aspect-video w-full mr-auto my-3 rounded max-w-2xl" muted="" controls="controls">
+            <source src="https://isalgotest.s3.amazonaws.com/docs/find_strategies.mp4" type="video/mp4" />
+          </video>
+          <!--       <img
             class="rounded-xl"
-            src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" /> -->
+            src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" />       -->
         </div>
         <p class="text-text text-sm text-center mt-6">
-          If you encounter any issues, please refer to our <a
-          class="text-title font-medium underline"
-          href="{% url 'docs_index' %}"
-          >documentation</a
-        > for a step-by-step guide.</p>
-        <button
-            onclick="location.reload();"
-            class=" px-6 mx-auto btn-secondary inline-flex mt-6"
-        >
-            All done
-            <svg class="h-4 w-4 ml-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg>
+          If you encounter any issues, please refer to our <a class="text-title font-medium underline" href="{% url 'docs_index' %}">documentation</a> for a step-by-step guide.
+        </p>
+        <button onclick="location.reload();" class="px-6 mx-auto btn-secondary inline-flex mt-6">
+          All done<svg class="h-4 w-4 ml-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
+          </svg>
         </button>
-    </section>
-  
-    {%endif%} 
-    {%if congrate %} {%include "include/congrate.html" %} {%endif %}
+      </section>
+    {% endif %}
+    {% if congrate %}
+      {% include 'include/congrate.html' %}
+    {% endif %}
   </main>
-  {% endwith %}
+{% endwith %}

@@ -35,6 +35,7 @@ def profile_context(request):
         'subscription_canceled': getattr(request, 'subscription_canceled', False),
 
         'prices': getattr(request, 'prices', None),
+        'free_trial_days': getattr(request, 'free_trial_days', None),
 
         'notifications': getattr(request, 'notifications', False),
         'coupon': coupon,

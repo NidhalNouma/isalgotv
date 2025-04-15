@@ -10,6 +10,7 @@ from django.urls import reverse
 from django_htmx.http import trigger_client_event
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
+from django.core.cache import cache
 
 from .models import User_Profile, Notification
 from strategies.models import Strategy
@@ -42,6 +43,7 @@ from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
 PRICES = settings.PRICES
 
+
 from allauth.account.signals import user_signed_up
 from django.dispatch import receiver
 
@@ -52,26 +54,51 @@ def send_welcome_email_allauth(request, user, **kwargs):
 @login_required(login_url='login')
 def home(request):
     show_get_started = False
-    if (request.has_subscription == None or request.has_subscription == False) and not request.subscription_status:
+    if (request.has_subscription is None or request.has_subscription is False) and not request.subscription_status:
         show_get_started = True
 
     context = {'show_get_started': show_get_started, 'show_banner': True}
 
-    new_strategies = Strategy.objects.order_by('-created_at')[:6]
-    most_viewed_strategies =  Strategy.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:6]
+    cash_timeout = 3600
 
-    best_results =  StrategyResults.objects.annotate(positive_votes_count=Count('positive_votes')).order_by('-positive_votes_count')[:3]
-    new_results = StrategyResults.objects.all().order_by('-created_at')[:6]
-
-    comments = StrategyComments.objects.all().order_by('-created_at')[:4]
-
+    # Cache key names for each query
+    new_strategies = cache.get('new_strategies')
+    if new_strategies is None:
+        new_strategies = list(Strategy.objects.order_by('-created_at')[:6])
+        cache.set('new_strategies', new_strategies, timeout=cash_timeout)
     context['new_strategies'] = new_strategies
+
+    most_viewed_strategies = cache.get('most_viewed_strategies')
+    if most_viewed_strategies is None:
+        most_viewed_strategies = list(
+            Strategy.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:6]
+        )
+        cache.set('most_viewed_strategies', most_viewed_strategies, timeout=cash_timeout)
     context['most_viewed_strategies'] = most_viewed_strategies
-    context['new_results'] = new_results
+
+    best_results = cache.get('best_results')
+    if best_results is None:
+        best_results = list(
+            StrategyResults.objects.annotate(
+                positive_votes_count=Count('positive_votes')
+            ).order_by('-positive_votes_count')[:3]
+        )
+        cache.set('best_results', best_results, timeout=cash_timeout)
     context['best_results'] = best_results
+
+    new_results = cache.get('new_results')
+    if new_results is None:
+        new_results = list(StrategyResults.objects.all().order_by('-created_at')[:6])
+        cache.set('new_results', new_results, timeout=cash_timeout)
+    context['new_results'] = new_results
+
+    comments = cache.get('comments')
+    if comments is None:
+        comments = list(StrategyComments.objects.all().order_by('-created_at')[:4])
+        cache.set('comments', comments, timeout=cash_timeout)
     context['comments'] = comments
 
-    return render(request,'home.html', context)
+    return render(request, 'home.html', context)
 
 def membership(request):
     payment_form = PaymentCardForm()
@@ -546,7 +573,7 @@ def check_coupon(request):
                 # return retarget(response, "#"+context['title']+"-coupon-form-errors")
 
             
-            trial_days = 3
+            trial_days = request.free_trial_days
             if request.user_profile.subscription_id:
                 trial_days = 0
 
@@ -605,7 +632,7 @@ def create_subscription_stripeform(request):
         payment_method = data['pm_id']
         coupon_id = data['coupon']
 
-        trial_days = 3
+        trial_days = request.free_trial_days
         # trial_days = 0
         if request.user_profile.subscription_id:
             trial_days = 0
