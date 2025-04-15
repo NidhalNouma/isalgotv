@@ -87,6 +87,7 @@ jobs:
           --build-arg AI_KEY="${{ secrets.AI_KEY }}" \
           --build-arg FIREBASE_KEY="${{ secrets.FIREBASE_KEY }}" \
           --build-arg REDIS_ENDPOINT="${{ secrets.REDIS_ENDPOINT }}" \
+          --build-arg FREE_TRIAL_DAYS="${{ secrets.FREE_TRIAL_DAYS }}" \
           --build-arg COUPON_CODE="${{ secrets.COUPON_CODE }}" \
           --build-arg COUPON_OFF="${{ secrets.COUPON_OFF }}" \
             -t $ECR_URI:$IMAGE_TAG .
