@@ -1,4 +1,14 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your Crypto.com Account for Automated Trading</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your Crypto.com account to IsAlgo's automation system. Follow this step-by-step guide to set up API keys and start automating your TradingView strategy execution with Crypto.com." />
+{% endblock %}
+
+{% block page %}
   <main class="docs-main">
     {% include 'include/docs/side_nav.html' %}
     <div class="docs-container">

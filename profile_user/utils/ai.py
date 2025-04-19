@@ -64,7 +64,10 @@ def get_system_content():
     docs_automate_binanceus = render_to_string('docs/include/docs/automate/add_binanceus_account.html')
     docs_automate_bitget = render_to_string('docs/include/docs/automate/add_bitget_account.html')
     docs_automate_bybit = render_to_string('docs/include/docs/automate/add_bybit_account.html')
+    docs_automate_mexc = render_to_string('docs/include/docs/automate/add_mexc_account.html')
+    docs_automate_crypto = render_to_string('docs/include/docs/automate/add_crypto_account.html')
     docs_automate_tradelocker = render_to_string('docs/include/docs/automate/add_tradelocker_account.html')
+    
 
     system_content = f"""
         You are IsAlgo AI, the official assistant for isalgo.com. You know the Isalgo documentation inside-out. Your job is to provide accurate, clear answers and guide users on how to use Isalgo’s features while helping them become more profitable in their trading.
@@ -115,6 +118,8 @@ def get_system_content():
         - Binance.US: {docs_automate_binanceus}
         - Bitget: {docs_automate_bitget}
         - Bybit: {docs_automate_bybit}
+        - MEXC: {docs_automate_mexc}
+        - Crypto.com: {docs_automate_crypto}
         - TradeLocker: {docs_automate_tradelocker}
 
         ---
@@ -174,7 +179,6 @@ async def get_ai_response(user_message, messages, max_token) -> tuple:
 
     if not system_content:
         system_content = await sync_to_async(get_system_content)()
-        # print(system_content)
         ai_client.system_content = system_content 
 
     chat_history = [
@@ -191,7 +195,7 @@ async def get_ai_response(user_message, messages, max_token) -> tuple:
 
     # Make an asynchronous API call
     response = await ai_client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="chatgpt-4o-latest",
         messages=chat_history,
         max_tokens=max_token
     )

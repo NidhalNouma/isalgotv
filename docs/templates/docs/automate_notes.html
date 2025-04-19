@@ -1,23 +1,30 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Automate" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | Important Notes for Automation Setup</title>
+{% endblock %}
 
-    {% include "include/docs/automate/notes.html" %}
+{% block head_description %}
+  <meta name="description" content="Review important notes and best practices for setting up and managing your automated TradingView strategies with IsAlgo. Ensure smooth operation, security, and optimal trading performance." />
+{% endblock %}
 
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Automate' %}
 
-    {% url 'docs_share' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to share your results?" href=next_url %}
-  </div>
+      {% include 'include/docs/automate/notes.html' %}
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'Strategy testing', 'href': '#strategy-testing-notes'}, {'name': 'Automation setup', 'href': '#automation-setup-notes'}, {'name': 'Webhook flexibility', 'href': '#webhook-flexibility-notes'}, {'name': 'Crypto Trading', 'href': '#crypto-trading-notes'}, {'name': 'Warnings', 'href': '#security-warnings-notes'}]" %}
+      {% url 'docs_share' as next_url %}
+      {% include 'include/docs/next_link.html' with text='How to share your results?' href=next_url %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'Strategy testing', 'href': '#strategy-testing-notes'}, {'name': 'Automation setup', 'href': '#automation-setup-notes'}, {'name': 'Webhook flexibility', 'href': '#webhook-flexibility-notes'}, {'name': 'Crypto Trading', 'href': '#crypto-trading-notes'}, {'name': 'Warnings', 'href': '#security-warnings-notes'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

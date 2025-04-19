@@ -28,8 +28,9 @@ urlpatterns = [
     path('admin/login/', redirect_admin_login, name="redirect_admin_login"),
     path('admin/logout/', redirect_admin_logout, name="redirect_admin_logout"),
     path('', index, name='index'),
+    
     path('admin/', admin.site.urls),
-    path('p/', include('profile_user.urls')),
+    path('my/', include('profile_user.urls')),
     path('strategies/', include('strategies.urls')) ,
     path('automate/', include('automate.urls')) ,
     path('docs/', include('docs.urls')),

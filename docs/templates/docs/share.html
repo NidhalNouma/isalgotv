@@ -1,19 +1,27 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Share" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | Share Your Strategy Results After Backtesting</title>
+{% endblock %}
 
-    {% include "include/docs/share_archivement.html" %}
-  </div>
+{% block head_description %}
+  <meta name="description" content="Learn how to share your TradingView strategy results after completing a backtest. Showcase your performance, add descriptions, and contribute to the IsAlgo community easily." />
+{% endblock %}
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'Properties & perfermance', 'href': '#share-inputs'}, {'name': 'Description', 'href': '#share-description'}]" %}
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Share' %}
+
+      {% include 'include/docs/share_archivement.html' %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'Properties & perfermance', 'href': '#share-inputs'}, {'name': 'Description', 'href': '#share-description'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

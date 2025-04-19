@@ -1,27 +1,33 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Setup" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | How to Install TradingView Strategies | Step-by-Step Guide</title>
+{% endblock %}
 
-    {% include "include/docs/adding_strategy_to_chart.html" %}
+{% block head_description %}
+  <meta name="description" content="Learn how to quickly add TradingView strategies to your chart and use manual strategies effectively. Follow this simple setup guide and start optimizing your trading with IsAlgo today." />
+{% endblock %}
 
-    {% comment %} {% url 'docs_share' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to share your results?" href=next_url %} {% endcomment %}
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Setup' %}
 
-    {% url 'docs_alerts' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to write alerts?" href=next_url %}
+      {% include 'include/docs/adding_strategy_to_chart.html' %}
 
-  </div>
+      {% comment %} {% url 'docs_share' as next_url %}
+      {% include 'include/docs/next_link.html' with text='How to share your results?' href=next_url %} {% endcomment %}
 
+      {% url 'docs_alerts' as next_url %}
+      {% include 'include/docs/next_link.html' with text='How to write alerts?' href=next_url %}
+    </div>
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'Add to chart', 'href': '#add-to-chart'}, {'name': 'Manual strategies', 'href': '#manual-strategies'}, {'name': 'Add to favorite', 'href': '#add-favorite'}]" %}
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'Add to chart', 'href': '#add-to-chart'}, {'name': 'Manual strategies', 'href': '#manual-strategies'}, {'name': 'Add to favorite', 'href': '#add-favorite'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

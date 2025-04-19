@@ -1,15 +1,21 @@
-{% extends 'page.html' %} {% block page %}
+{% extends 'page.html' %}
 
-<h1 class="main-title">
-  Notifications
-</h1>
+{% block head_title %}
+  <title>IsAlgo | Notifications | Stay Updated on Your Activity</title>
+{% endblock %}
 
-<main class="mt-8 mb-16 w-full">
-  {% if notifications|length > 0 %} 
-  {% include 'include/settings/notifications_list.html' %}
-  {% else %}
-  <p class="text-text text-sm">No notification availble yet.</p>
-  {% endif %}
-</main>
+{% block head_description %}
+  <meta name="description" content="View your latest notifications about strategy updates, trading alerts, membership status, and important system messages. Stay informed and manage your trading activities easily with IsAlgo." />
+{% endblock %}
 
-{% endblock page %}
+{% block page %}
+  <h1 class="main-title">Notifications</h1>
+
+  <main class="mt-8 mb-16 w-full">
+    {% if notifications|length > 0 %}
+      {% include 'include/settings/notifications_list.html' %}
+    {% else %}
+      <p class="text-text text-sm">No notification availble yet.</p>
+    {% endif %}
+  </main>
+{% endblock %}

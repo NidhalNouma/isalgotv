@@ -1,4 +1,14 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your MEXC Account for Automated Trading</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your MEXC account to IsAlgo's automation system. Follow this step-by-step guide to set up API keys and automate your TradingView strategy execution with MEXC easily and securely." />
+{% endblock %}
+
+{% block page %}
   <main class="docs-main">
     {% include 'include/docs/side_nav.html' %}
     <div class="docs-container">

@@ -1,25 +1,31 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Alerts" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | TradingView Alerts Overview | How to Set Up and Use Alerts</title>
+{% endblock %}
 
-    {% include "include/docs/alerts_intro.html" %}
-    {% comment %} {% include "include/docs/alerts_playground.html" %} {% endcomment %}
+{% block head_description %}
+  <meta name="description" content="Learn how TradingView alerts work and how to use them with IsAlgo. Follow this guide to create, customize, and automate alerts for your trading strategies easily. Start optimizing your trades with smart alerts." />
+{% endblock %}
 
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Alerts' %}
 
-    {% url 'docs_alerts_placeholders' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to use placeholders?" href=next_url %}
-  </div>
+      {% include 'include/docs/alerts_intro.html' %}
+      {% comment %} {% include 'include/docs/alerts_playground.html' %} {% endcomment %}
 
+      {% url 'docs_alerts_placeholders' as next_url %}
+      {% include 'include/docs/next_link.html' with text='How to use placeholders?' href=next_url %}
+    </div>
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'TradingView alerts', 'href': '#tradingview-alerts'}, {'name': 'Strategies alerts', 'href': '#strategies-alerts'}, {'name': 'Write alert', 'href': '#write-alerts'}]" %}
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'TradingView alerts', 'href': '#tradingview-alerts'}, {'name': 'Strategies alerts', 'href': '#strategies-alerts'}, {'name': 'Write alert', 'href': '#write-alerts'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

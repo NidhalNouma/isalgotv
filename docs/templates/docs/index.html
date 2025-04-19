@@ -1,145 +1,103 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Introduction" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | Overview of TradingView Strategies, Alerts & Automation</title>
+{% endblock %}
 
-    <article class="docs">
-      <section id="intro">
-        <aside>
-          <h3 >Introduction</h3>
+{% block head_description %}
+  <meta name="description" content="Get a quick overview of IsAlgo's documentation. Learn how to access TradingView strategies, configure alerts, automate trades, and start optimizing your trading setup easily. Find everything you need to get started." />
+{% endblock %}
 
-          <p >
-            Do you want to improve your trading journey? We are here to
-            revolutionize your experience on the
-            <a
-              href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591"
-              target="_blank"
-              >TradingView</a
-            >
-            platform.
-          </p>
-        </aside>
-      </section>
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Introduction' %}
 
-      <section id="offering">
-        <aside>
-          <h3>Offering</h3>
+      <article class="docs">
+        <section id="intro">
+          <aside>
+            <h3>Introduction</h3>
 
-          <p>
-            We offer an extensive collection of trading strategies, tailored to suit
-            a wide range of trading styles and goals. Whether you’re into the
-            fast-paced world of day trading or prefer a more calculated approach to
-            long-term investments, our strategies are designed to meet diverse
-            trading needs.
-          </p>
-        </aside>
-      </section>
+            <p>
+              Do you want to improve your trading journey? We are here to revolutionize your experience on the
+              <a href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591" target="_blank">TradingView</a>
+              platform.
+            </p>
+          </aside>
+        </section>
 
-      <section id="community">
-        <aside>
-          <h3>
-            Community and Collaboration
-          </h3>
+        <section id="offering">
+          <aside>
+            <h3>Offering</h3>
 
-          <p>
-            At the heart of our service is a strong belief in the power of
-            community. We encourage our users to not only utilize these strategies
-            but also to share their own trading experiences and insights. This
-            collaborative approach creates a vibrant learning environment, fostering
-            growth and mutual success among all our members.
-          </p>
-        </aside>
-      </section>
+            <p>We offer an extensive collection of trading strategies, tailored to suit a wide range of trading styles and goals. Whether you’re into the fast-paced world of day trading or prefer a more calculated approach to long-term investments, our strategies are designed to meet diverse trading needs.</p>
+          </aside>
+        </section>
 
-      <section id="invitation">
-        <aside>
-          <h3>Invitation</h3>
+        <section id="community">
+          <aside>
+            <h3>Community and Collaboration</h3>
 
-          <p>
-            Join our journey to elevate your trading experience. Discover strategies
-            that align with your trading style and be a part of a community that
-            values shared success and continuous innovation.
-          </p>
-        </aside>
-      </section>
+            <p>At the heart of our service is a strong belief in the power of community. We encourage our users to not only utilize these strategies but also to share their own trading experiences and insights. This collaborative approach creates a vibrant learning environment, fostering growth and mutual success among all our members.</p>
+          </aside>
+        </section>
 
-      <section id="setup">
-        <aside>
-          <h3>Get set up quickly</h3>
-          <section class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <a
-                href="{% url 'docs_instalation' %}"
-                class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30  !no-underline"
-              >
+        <section id="invitation">
+          <aside>
+            <h3>Invitation</h3>
+
+            <p>Join our journey to elevate your trading experience. Discover strategies that align with your trading style and be a part of a community that values shared success and continuous innovation.</p>
+          </aside>
+        </section>
+
+        <section id="setup">
+          <aside>
+            <h3>Get set up quickly</h3>
+            <section class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <a href="{% url 'docs_instalation' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
                 <h4 class="font-bold tracking-tight">Get access</h4>
 
-                <p class="text-text/60">
-                  What you need to do to get access to our strategies.
-                </p>
+                <p class="text-text/60">What you need to do to get access to our strategies.</p>
               </a>
 
-              <a
-                href="{% url 'docs_setup' %}"
-                class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30  !no-underline" 
-              >
+              <a href="{% url 'docs_setup' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
                 <h4 class="font-bold tracking-tight">Setup your chart</h4>
 
                 <p class="text-text/60">Steps on how to use our stratregies.</p>
               </a>
 
-              <a
-                href="{% url 'docs_alerts' %}"
-                class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30  !no-underline"
-              >
+              <a href="{% url 'docs_alerts' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
                 <h4 class="font-bold tracking-tight">Configure your alerts.</h4>
 
                 <p class="text-text/60">How to get notify on every action.</p>
               </a>
 
-              <a
-                href="{% url 'docs_automate' %}"
-                class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline"
-              >
+              <a href="{% url 'docs_automate' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
                 <h4 class="font-bold tracking-tight">Automate your alerts.</h4>
 
-                <p class="text-text/60">
-                  Link the alerts to your broker and start trading.
-                </p>
+                <p class="text-text/60">Link the alerts to your broker and start trading.</p>
               </a>
-              
-          </section>
-        </aside>
-      </section>
+            </section>
+          </aside>
+        </section>
 
-      <dl class="flex pt-6 mt-8 border-t border-text/30">
-        <div class="ml-auto text-right">
-          <dt class="text-sm font-sans font-normal tracking-tight">Next</dt>
+        <dl class="flex pt-6 mt-8 border-t border-text/30">
+          <div class="ml-auto text-right">
+            <dt class="text-sm font-sans font-normal tracking-tight">Next</dt>
 
-          <dd class="mt-1">
-            <a
-              href="{% url 'docs_instalation' %}"
-              class="text-base font-semibold hover:underline"
-            >
-              How to install our strategies?
-            </a>
-          </dd>
-        </div>
-      </dl>
-    </article>
+            <dd class="mt-1"><a href="{% url 'docs_instalation' %}" class="text-base font-semibold hover:underline">How to install our strategies?</a></dd>
+          </div>
+        </dl>
+      </article>
+    </div>
 
-  </div>
+    {% load custom_tags %}
 
-
-
-  {% load custom_tags %}
-
-  {% with nav_json="[{'name': 'Intro', 'href': '#intro'}, {'name': 'Offering', 'href': '#offering'}, {'name': 'Community', 'href': '#community'}, {'name': 'Invitation', 'href': '#invitation'}, {'name': 'Quick setup', 'href': '#setup'}]" %}
+    {% with nav_json="[{'name': 'Intro', 'href': '#intro'}, {'name': 'Offering', 'href': '#offering'}, {'name': 'Community', 'href': '#community'}, {'name': 'Invitation', 'href': '#invitation'}, {'name': 'Quick setup', 'href': '#setup'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

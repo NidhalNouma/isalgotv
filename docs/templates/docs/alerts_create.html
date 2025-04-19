@@ -1,25 +1,31 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Alerts" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | How to Create TradingView Alerts | Step-by-Step Setup Guide</title>
+{% endblock %}
 
-    {% include "include/docs/alerts_create.html" %}
-    {% comment %} {% include "include/docs/alerts_playground.html" %} {% endcomment %}
+{% block head_description %}
+  <meta name="description" content="Follow this simple guide to create TradingView alerts for your strategies. Learn how to set up, customize, and automate alerts with IsAlgo to improve your trading automation and performance." />
+{% endblock %}
 
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Alerts' %}
 
-    {% url 'docs_automate' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to automate alerts?" href=next_url %}
-  </div>
+      {% include 'include/docs/alerts_create.html' %}
+      {% comment %} {% include 'include/docs/alerts_playground.html' %} {% endcomment %}
 
+      {% url 'docs_automate' as next_url %}
+      {% include 'include/docs/next_link.html' with text='How to automate alerts?' href=next_url %}
+    </div>
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'Creating alerts', 'href': '#create-alert'}, {'name': 'Steps', 'href': '#create-steps'}, {'name': 'Important to know', 'href': '#important-notes'}]" %}
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'Creating alerts', 'href': '#create-alert'}, {'name': 'Steps', 'href': '#create-steps'}, {'name': 'Important to know', 'href': '#important-notes'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

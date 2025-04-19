@@ -1,20 +1,27 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Automate" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your Bitget Account for Automated Trading</title>
+{% endblock %}
 
-    {% include 'include/docs/automate/add_bitget_account.html' %}
-  </div>
-  
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your Bitget account to IsAlgo's automation system. Set up your API keys and automate your TradingView strategy execution with Bitget easily and safely." />
+{% endblock %}
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'What is Bitget?', 'href': '#what-is-bitget'}, {'name': 'API Setup', 'href': '#api-bitget'}, {'name': 'Complete Integration', 'href': '#complete-bitget'}]" %}
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Automate' %}
+
+      {% include 'include/docs/automate/add_bitget_account.html' %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'What is Bitget?', 'href': '#what-is-bitget'}, {'name': 'API Setup', 'href': '#api-bitget'}, {'name': 'Complete Integration', 'href': '#complete-bitget'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

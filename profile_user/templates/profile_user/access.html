@@ -1,17 +1,23 @@
-{% extends 'page.html' %} {% block page %}
+{% extends 'page.html' %}
 
-<h1 class="main-title">Access</h1>
+{% block head_title %}
+  <title>IsAlgo | Request Access to TradingView Strategies | Manage Your Permissions</title>
+{% endblock %}
 
+{% block head_description %}
+  <meta name="description" content="Manage and request access to premium TradingView strategies. View your current permissions, request new strategy access, and start optimizing your trading experience with IsAlgo." />
+{% endblock %}
 
-<div class="my-4">
+{% block page %}
+  <h1 class="main-title">Access</h1>
+
+  <div class="my-4">
     {% if user_profile.tradingview_username %}
-    {% include 'include/infos.html' with xclose="alert_to_red" info="Here's where you can manage access to all of our strategies. We're using your tradingview username to check. <a class='underline font-semibold' href='/p/settings/'>Click here</a> if you want to change it." %}
+      {% include 'include/infos.html' with xclose='alert_to_red' info="Here's where you can manage access to all of our strategies. We're using your tradingview username to check. <a class='underline font-semibold' href='/p/settings/'>Click here</a> if you want to change it." %}
     {% endif %}
-</div>
+  </div>
 
-
-<main class="mt-0 mb-16 w-full" id="access-main">
+  <main class="mt-0 mb-16 w-full" id="access-main">
     {% include 'include/access_list.html' %}
-</main>
-
-{% endblock page %}
+  </main>
+{% endblock %}

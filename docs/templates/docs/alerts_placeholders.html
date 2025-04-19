@@ -1,24 +1,30 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
 
-<main class="docs-main">
-  {% include 'include/docs/side_nav.html' %}
-  <div class="docs-container">
-    {% include 'include/docs/side_nav_mobile.html' with title="Alerts" %}
-    
-    {% include "include/docs/alerts_placeholders.html" %}
+{% block head_title %}
+  <title>IsAlgo Documentation | Alert Placeholders | Customize Strategy Alerts</title>
+{% endblock %}
 
+{% block head_description %}
+  <meta name="description" content="Learn about the TradingView alert placeholders used in IsAlgo strategies. Customize your alerts with dynamic values like price, symbol, timeframe, and order details to automate your trading more effectively." />
+{% endblock %}
 
-    {% url 'docs_alerts_create' as next_url %}
-    {% include "include/docs/next_link.html" with text="How to create alerts?" href=next_url %}
-  </div>
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Alerts' %}
 
+      {% include 'include/docs/alerts_placeholders.html' %}
 
-  {% load custom_tags %}
-  {% with nav_json="[{'name': 'Placeholders', 'href': '#alert-placeholders'}, {'name': 'Examples', 'href': '#alert-examples'}]" %}
+      {% url 'docs_alerts_create' as next_url %}
+      {% include 'include/docs/next_link.html' with text='How to create alerts?' href=next_url %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'Placeholders', 'href': '#alert-placeholders'}, {'name': 'Examples', 'href': '#alert-examples'}]" %}
       {% with nav_items=nav_json|load_json %}
-          {% include "include/docs/right_nav.html" with nav_items=nav_items %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
       {% endwith %}
-  {% endwith %}
-</main>
-
-{% endblock page %}
+    {% endwith %}
+  </main>
+{% endblock %}

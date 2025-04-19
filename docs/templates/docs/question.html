@@ -1,4 +1,14 @@
-{% extends 'page.html' %} {% load static %} {% block page %}
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo | Frequently Asked Questions About IsAlgo</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Find answers to common questions about IsAlgo, TradingView strategies, installation, memberships, and how to get started. Learn everything you need to start trading smarter with IsAlgo." />
+{% endblock %}
+
+{% block page %}
   <main class="docs-main">
     {% include 'include/docs/side_nav.html' %}
     <div class="docs-container">
