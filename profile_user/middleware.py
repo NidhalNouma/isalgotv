@@ -1,4 +1,6 @@
 from .models import User_Profile, Notification
+from django.urls import resolve, reverse
+
 import re
 import datetime
 import time
@@ -7,9 +9,35 @@ import requests
 import environ
 env = environ.Env()
 
-server_ip_req = requests.get('https://ifconfig.me')
-server_ip = server_ip_req.text
-print("Webhook server IP address: " + server_ip)
+server_ip = None
+
+def get_stored_server_ip(request):
+    global server_ip
+
+    if server_ip:
+        return server_ip
+
+    webhook_ip_url = 'https://webhook.isalgo.com/whats-my-ip'
+    # print(request.build_absolute_uri())
+    if request.build_absolute_uri() == webhook_ip_url:
+        return server_ip
+
+    server_ip_req = requests.get('https://ifconfig.me')
+    server_ip = server_ip_req.text
+    
+
+    server_ip_req = requests.get(webhook_ip_url)
+
+    if server_ip_req.status_code != 200:
+        print("Error fetching server IP from webhook service. Using local IP: " + server_ip)
+        return server_ip
+
+    # print("Webhook server IP request status code: " + str(server_ip_req.status_code))
+    server_ip = server_ip_req.json().get('server_ip', server_ip)
+
+    print("Webhook server IP address: " + server_ip)
+
+    return server_ip
 
 
 import stripe
@@ -21,10 +49,10 @@ PRICE_LIST = settings.PRICE_LIST
 # TODO: Adding subscription stripe data to the session
 
 def check_user_and_stripe_middleware(get_response):
-    # One-time configuration and initialization.
     
     def middleware(request):
-        # print("stripe midl")
+        
+        # print("stripe midleware called...")
         # Code to be executed for each request before
         # the view (and later middleware) are called.
 
@@ -171,7 +199,7 @@ def check_user_and_stripe_middleware(get_response):
         request.has_subscription = has_subscription
         request.subscription_canceled = subscription_canceled
 
-        request.server_ip = server_ip,
+        request.server_ip = get_stored_server_ip(request),
 
         response = get_response(request)
 

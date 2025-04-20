@@ -21,8 +21,11 @@ from asgiref.sync import sync_to_async, async_to_sync
 
 import environ
 env = environ.Env()
+
+import requests
 import datetime
 import stripe
+
 stripe.api_key = env('STRIPE_API_KEY')
 stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
 
@@ -599,3 +602,13 @@ async def handle_webhook_forex(request, custom_id):
 
     except ForexBrokerAccount.DoesNotExist:
         return JsonResponse({'error': 'Account not found', "IP": request.META.get('REMOTE_ADDR')}, status=404)
+
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def get_server_ip(request):
+
+    server_ip_req = requests.get('https://ifconfig.me')
+    server_ip = server_ip_req.text
+    return JsonResponse({'server_ip': server_ip}, status=200)
