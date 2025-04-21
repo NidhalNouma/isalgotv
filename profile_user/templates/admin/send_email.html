@@ -1,28 +1,88 @@
-{% extends 'admin/base_site.html' %}
+{% extends 'unfold/layouts/base.html' %}
+
+{% load admin_urls i18n unfold %}
+
+{% block breadcrumbs %}
+  {% if not is_popup %}
+    <div class="px-4 lg:px-8">
+      <div class="container mb-6 mx-auto -my-3 lg:mb-12">
+        <ul class="flex flex-wrap">
+          {% url 'admin:index' as link %}
+          {% trans 'Home' as name %}
+          {% include 'unfold/helpers/breadcrumb_item.html' with link=link name=name %}
+
+          {% url 'admin:formula_driver_changelist' as link %}
+
+          {% trans 'Send email' as name %}
+          {% include 'unfold/helpers/breadcrumb_item.html' with name=name %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
 {% block content %}
-  <h1>Send HTML Email</h1>
+  {% tab_list 'drivers' %}
 
-  <form method="post">
-    {% csrf_token %}
-    <label for="recipient_type">Send to:</label>
-    <select name="recipient_type" id="recipient_type">
-      <option value="all">All users</option>
-      <option value="lifetime">Lifetime users</option>
-      <option value="non_lifetime">Non-lifetime users</option>
-      <option value="subscribers">Subscriber users</option>
-      <option value="non_subscribers">Non-Subscriber users</option>
-    </select>
+  <div class="px-4 lg:px-8">
+    <div class="container mb-6 mx-auto -my-3 lg:mb-12">
+      <form method="post" id="send_email_form" novalidate>
+        <div class="group/row field-row form-row">
+          {% csrf_token %}
+          <div class="field-recipient_type field-line flex-col group/line py-2.5 flex-grow flex px-3">
+            <div class="">
+              <label class="block font-semibold mb-2 text-font-important-light text-sm dark:text-font-important-dark required" for="recipient_type">Send to:</label>
+            </div>
+            <div class="flex-grow">
+              <div class="flex-col items-center w-full">
+                <select name="recipient_type" id="recipient_type" class="border border-base-200 bg-white font-medium placeholder-base-400 rounded shadow-sm text-font-default-light text-sm focus:ring focus:ring-primary-300 focus:border-primary-600 focus:outline-none dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:focus:ring-primary-700 dark:focus:border-primary-600 dark:focus:ring-opacity-50 px-3 py-2 w-full max-w-2xl">
+                  <option value="all">All users</option>
+                  <option value="lifetime">Lifetime users</option>
+                  <option value="non_lifetime">Non-lifetime users</option>
+                  <option value="subscribers">Subscriber users</option>
+                  <option value="non_subscribers">Non-Subscriber users</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <div>
-      <label for="subject">Subject:</label><br />
-      <input type="text" name="subject" id="subject" size="80" value="Newsletter" />
+        <div class="group/row field-row form-row">
+          <div class="field-subject field-line flex-col group/line py-2.5 flex-grow flex px-3">
+            <div class="">
+              <label class="block font-semibold mb-2 text-font-important-light text-sm dark:text-font-important-dark required" for="subject">Subject:</label>
+            </div>
+            <div class="flex-grow">
+              <div class="flex-col items-center w-full">
+                <input type="text" name="subject" id="subject" size="80" value="" class="border border-base-200 bg-white font-medium placeholder-base-400 rounded shadow-sm text-font-default-light text-sm focus:ring focus:ring-primary-300 focus:border-primary-600 focus:outline-none dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:focus:ring-primary-700 dark:focus:border-primary-600 dark:focus:ring-opacity-50 px-3 py-2 w-full max-w-2xl" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="group/row field-row form-row">
+          <div class="field-html_content field-line flex-col group/line py-2.5 flex-grow flex px-3">
+            <div class="">
+              <label class="block font-semibold mb-2 text-font-important-light text-sm dark:text-font-important-dark" for="html_content">HTML Content:</label>
+            </div>
+            <div class="flex-grow">
+              <div class="flex-col items-center w-full">
+                <textarea name="html_content" id="html_content" rows="20" class="border border-base-200 bg-white font-medium placeholder-base-400 rounded shadow-sm text-font-default-light text-sm focus:ring focus:ring-primary-300 focus:border-primary-600 focus:outline-none dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:focus:ring-primary-700 dark:focus:border-primary-600 dark:focus:ring-opacity-50 px-3 py-2 w-full expandable transition transition-height duration-75 ease-in-out"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="submit-row" class="relative lg:mt-16 z-20">
+          <div class="max-w-full lg:bottom-0 lg:fixed lg:left-0 lg:right-0 xl:left-0">
+            <div class="backdrop-blur-sm bg-white/80 pb-4 dark:bg-base-900/80 lg:border-t lg:border-base-200 lg:py-4 relative lg:scrollable-top lg:px-8 dark:border-base-800">
+              <div class="flex flex-col-reverse gap-3 items-center mx-auto">
+                <button type="submit" class="bg-primary-600 block border border-transparent font-medium px-3 py-2 rounded text-white w-full lg:w-auto">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-    <div style="margin-top:1em;">
-      <label for="html_content">HTML Content:</label><br />
-      <textarea name="html_content" id="html_content" rows="20" cols="100"></textarea>
-    </div>
-    <div style="margin-top:1em;">
-      <button type="submit" class="default">Send</button>
-    </div>
-  </form>
+  </div>
 {% endblock %}

@@ -9,6 +9,7 @@ from django.utils.timezone import now
 
 import datetime
 import time
+import json
 
 import environ
 env = environ.Env()
@@ -21,6 +22,9 @@ stripe.api_key = env('STRIPE_API_KEY')
 
 
 # Create your models here.
+class PrettyJSONEncoder(json.JSONEncoder):
+    def __init__(self, *args, indent, sort_keys, **kwargs):
+        super().__init__(*args, indent=4, sort_keys=True, **kwargs)
 
 class User_Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -34,7 +38,7 @@ class User_Profile(models.Model):
     subscription_id = models.CharField(max_length=100, blank=True)
     has_subscription = models.BooleanField(default=False)
     
-    stripe_obj = models.JSONField(blank=True, null=True)
+    stripe_obj = models.JSONField(blank=True, null=True, encoder=PrettyJSONEncoder)
     stripe_last_checked = models.DateTimeField(blank=True, null=True)
 
 

@@ -11,6 +11,12 @@ import jsonschema
 import json
 from django.core.exceptions import ValidationError
 
+
+class PrettyJSONEncoder(json.JSONEncoder):
+    def __init__(self, *args, indent, sort_keys, **kwargs):
+        super().__init__(*args, indent=4, sort_keys=True, **kwargs)
+        
+
 def settings_validator_json(value):
     schema = {
         "type": "array",
@@ -48,6 +54,7 @@ def settings_validator_json(value):
 class SettingsJSONField(models.JSONField):
     def __init__(self, *args, **kwargs):
         kwargs['validators'] = [settings_validator_json]
+        kwargs['encoder'] = PrettyJSONEncoder
         super().__init__(*args, **kwargs)
 
 def update_names(data):
@@ -161,6 +168,7 @@ def performance_validator_json(value):
 class PerferenceJSONField(models.JSONField):
     def __init__(self, *args, **kwargs):
         kwargs['validators'] = [performance_validator_json]
+        kwargs['encoder'] = PrettyJSONEncoder
         super().__init__(*args, **kwargs)
 
 
