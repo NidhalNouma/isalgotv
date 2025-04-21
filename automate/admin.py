@@ -1,20 +1,26 @@
 from django.contrib import admin
-
 from .models import *
 
+from unfold.admin import ModelAdmin
 # Register your models here.
 
-class CryptoBrokerAccountAdmin(admin.ModelAdmin):
+@admin.register(CryptoBrokerAccount)
+class CryptoBrokerAccountAdmin(ModelAdmin):
     list_display = ('name', 'custom_id', 'created_at') 
     search_fields = ['name', 'custom_id'] 
 
-class ForexBrokerAccountAdmin(admin.ModelAdmin):
+@admin.register(ForexBrokerAccount)
+class ForexBrokerAccountAdmin(ModelAdmin):
     list_display = ('name', 'custom_id', 'created_at') 
     search_fields = ['name', 'custom_id', 'username'] 
 
-admin.site.register(CryptoBrokerAccount, CryptoBrokerAccountAdmin)
-admin.site.register(ForexBrokerAccount, ForexBrokerAccountAdmin)
 
-admin.site.register(LogMessage)
-admin.site.register(TradeDetails)
-# admin.site.register(CryptoLogMessage)
+@admin.register(LogMessage)
+class LogMessageAdmin(ModelAdmin):
+    pass
+
+
+@admin.register(TradeDetails)
+class TradeDetailsAdmin(ModelAdmin):
+    pass
+

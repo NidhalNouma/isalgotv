@@ -59,7 +59,7 @@ def home(request):
 
     context = {'show_get_started': show_get_started, 'show_banner': True}
 
-    cash_timeout = 3600
+    cash_timeout = 3600 * 6
 
     # Cache key names for each query
     new_strategies = cache.get('new_strategies')
@@ -361,8 +361,8 @@ def create_payment_method(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-payment_methods")
 
-        profile_user = User_Profile.objects.get(user=request.user)
-        customer_id = profile_user.customer_id
+        user_profile = request.user_profile
+        customer_id = user_profile.customer_id
 
         try:
             print("Adding payment method ...", payment_method, customer_id)
@@ -370,17 +370,14 @@ def create_payment_method(request):
                 payment_method,
                 customer=customer_id,
             )
+
+            user_profile = user_profile.get_with_update_stripe_data(force = True)
             
             context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
 
             response = render(request, 'include/payment_methods.html', context)
             return retarget(response, "#setting-payment_methods")
-            # stripe.Customer.modify(
-            #     customer_id,
-            #     invoice_settings={
-            #         'default_payment_method': payment_method
-            #     }
-            # )
+        
         except Exception as e:
             context["error"] = str(e)
             response = render(request, 'include/errors.html', context)
@@ -398,8 +395,8 @@ def delete_payment_method(request):
         if not payment_method:
             context["error"] = 'No payment method has been detected.'
 
-        profile_user = User_Profile.objects.get(user=request.user)
-        customer_id = profile_user.customer_id
+        user_profile = request.user_profile
+        customer_id = user_profile.customer_id
 
         try:
             subscriptions = stripe.Subscription.list(customer=customer_id, status="active")
@@ -412,6 +409,9 @@ def delete_payment_method(request):
                     return retarget(response, "#stripe-error-delete-payment_methods")
             
             stripe.PaymentMethod.detach(payment_method)
+
+            user_profile = user_profile.get_with_update_stripe_data(force = True)
+
             context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
 
             response = render(request, 'include/payment_methods.html', context)
@@ -433,8 +433,8 @@ def setdefault_payment_method(request):
         if not payment_method:
             context["error"] = 'No payment method has been detected.'
 
-        profile_user = User_Profile.objects.get(user=request.user)
-        customer_id = profile_user.customer_id
+        user_profile = request.user_profile
+        customer_id = user_profile.customer_id
 
         try:
             customer = stripe.Customer.modify(
@@ -444,6 +444,7 @@ def setdefault_payment_method(request):
                     }
                 )            
             context["stripe_customer"] = customer
+            user_profile = user_profile.get_with_update_stripe_data(force = True)
 
             response = render(request, 'include/payment_methods.html', context)
             return retarget(response, "#setting-payment_methods")
@@ -666,8 +667,10 @@ def create_subscription_stripeform(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
-        profile_user = request.user_profile
-        customer_id = profile_user.customer_id
+        user_profile = request.user_profile
+        customer_id = user_profile.customer_id
+
+        print("Creating subscription ...", payment_method, user_profile.customer_id)
 
         try:
             stripe.PaymentMethod.attach(
@@ -681,11 +684,11 @@ def create_subscription_stripeform(request):
                 }
             )
         except Exception as e:
-            context["error"] = 'Attached payment to customer '+str(e)
+            context["error"] = 'Attached payment: '+str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
         try:
-            old_subscription_id = profile_user.subscription_id
+            old_subscription_id = user_profile.subscription_id
 
             if plan_id == "LIFETIME":
 
@@ -707,7 +710,7 @@ def create_subscription_stripeform(request):
 
                 User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
                 print("New lifetime has been created ...")
-                
+
                 send_new_lifetime_email_task(request.user.email)
 
                 if len(old_subscription_id) > 0:
@@ -720,7 +723,7 @@ def create_subscription_stripeform(request):
                 
             
             metadata = {
-                "profile_user_id": str(profile_user.id), 
+                "profile_user_id": str(user_profile.id), 
             }
 
             subscription = stripe.Subscription.create(
@@ -739,6 +742,7 @@ def create_subscription_stripeform(request):
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
             print("New subscription has been created ...")
+
 
             if len(old_subscription_id) > 0:
                 if request.subscription_status != 'canceled':
@@ -779,10 +783,10 @@ def update_subscription_stripeform(request):
 
         context = {"error": '', 'title': plan_id}
 
-        profile_user = request.user_profile
-        customer_id = profile_user.customer_id
+        user_profile = request.user_profile
+        customer_id = user_profile.customer_id
 
-        old_subscription_id = profile_user.subscription_id
+        old_subscription_id = user_profile.subscription_id
         old_subscription = request.subscription
         subscription_period_end = request.subscription_period_end
         subscription_status = request.subscription_status
@@ -913,6 +917,8 @@ def update_subscription_stripeform(request):
 def cancel_subscription(request):
     if request.method == 'POST':
         subscription = request.subscription
+        subscription_id = subscription.get('id', None)
+
         subscription_period_end = request.subscription_period_end
         subscription_plan = request.subscription_plan
         subscription_status = request.subscription_status
@@ -922,9 +928,9 @@ def cancel_subscription(request):
                 'subscription': subscription, 
                 'error': "" } 
 
-        if subscription.id:
+        if subscription_id:
             try:
-                cancel_subscription = stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
+                cancel_subscription = stripe.Subscription.modify(subscription_id, cancel_at_period_end=True)
                 context['subscription'] = cancel_subscription
                 context['subscription_status'] = cancel_subscription.status
                 context['subscription_canceled'] = True
@@ -932,6 +938,8 @@ def cancel_subscription(request):
                 end_timestamp = cancel_subscription.current_period_end * 1000
                 end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
                 context['subscription_period_end'] = end_time
+
+                request.user_profile.get_with_update_stripe_data(force = True)
 
                 send_cancel_membership_email_task(request.user.email)
 
@@ -1102,6 +1110,7 @@ def remove_access(subscription_id, cancel_email = True):
     profile_user = User_Profile.objects.get(subscription_id=subscription_id)
     if profile_user:
         user = profile_user.user
+        profile_user.get_with_update_stripe_data(force = True)
             
         strategies = Strategy.objects.all()
 

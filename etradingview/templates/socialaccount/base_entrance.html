@@ -1,14 +1,14 @@
-{% extends 'page.html' %} {% load custom_tags %} 
+{% extends 'page.html' %} {% load custom_tags %}
 
-{% block head %} 
-<script>
-  function redirectToPage(url) {
-      window.location.href = url; // or use window.location.replace(url);
-  }
-  redirectToPage('/p');
-</script>
-{% endblock head %} 
+{% block head %}
+  <script>
+    function redirectToPage(url) {
+      window.location.href = url // or use window.location.replace(url);
+    }
+    redirectToPage('/my/home/')
+  </script>
+{% endblock %}
 
-{% block page %} 
-<h3 class="text-center text-lg text-text bg-transparent my-auto">Redirecting ...</h3>
- {% endblock page %}
+{% block page %}
+  <h3 class="text-center text-lg text-text bg-transparent my-auto">Redirecting ...</h3>
+{% endblock %}

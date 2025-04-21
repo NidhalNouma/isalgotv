@@ -1,0 +1,28 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+  <h1>Send HTML Email</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="recipient_type">Send to:</label>
+    <select name="recipient_type" id="recipient_type">
+      <option value="all">All users</option>
+      <option value="lifetime">Lifetime users</option>
+      <option value="non_lifetime">Non-lifetime users</option>
+      <option value="subscribers">Subscriber users</option>
+      <option value="non_subscribers">Non-Subscriber users</option>
+    </select>
+
+    <div>
+      <label for="subject">Subject:</label><br />
+      <input type="text" name="subject" id="subject" size="80" value="Newsletter" />
+    </div>
+    <div style="margin-top:1em;">
+      <label for="html_content">HTML Content:</label><br />
+      <textarea name="html_content" id="html_content" rows="20" cols="100"></textarea>
+    </div>
+    <div style="margin-top:1em;">
+      <button type="submit" class="default">Send</button>
+    </div>
+  </form>
+{% endblock %}

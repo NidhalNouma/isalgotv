@@ -48,6 +48,16 @@ INSTALLED_APPS = [
     'strategies',
     'automate',
     'docs',
+    
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
+    "unfold.contrib.simple_history",  # optional, if django-simple-history package is used
+    
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -217,7 +227,7 @@ SOCIALACCOUNT_LOGIN_ON_GET= True
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # or "mandatory" based on your requirement
-LOGIN_REDIRECT_URL = '/p/'  # Ensure it redirects to the home page after login
+LOGIN_REDIRECT_URL = '/my/home'  # Ensure it redirects to the home page after login
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 
 # SOCIALACCOUNT_ADAPTER = 'etradingview.adapters.CustomSocialAccountAdapter'

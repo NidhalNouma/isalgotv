@@ -1,10 +1,25 @@
 from django.contrib import admin
 from .models import Strategy, StrategyImages, StrategyComments, StrategyResults, Replies
 
-# Register your models here.
+from unfold.admin import ModelAdmin
 
-admin.site.register(StrategyImages)
-admin.site.register(Replies)
-admin.site.register(StrategyResults)
-admin.site.register(StrategyComments)
-admin.site.register(Strategy)
+# Register your models here.
+@admin.register(StrategyImages)
+class StrategyImagesAdmin(ModelAdmin):
+    pass
+
+@admin.register(Replies)
+class RepliesAdmin(ModelAdmin):
+    pass
+
+@admin.register(StrategyResults)
+class StrategyResultsAdmin(ModelAdmin):
+    pass
+
+@admin.register(StrategyComments)
+class StrategyCommentsAdmin(ModelAdmin):
+    pass
+
+@admin.register(Strategy)
+class StrategyAdmin(ModelAdmin):
+    pass
