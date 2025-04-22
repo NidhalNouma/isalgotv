@@ -173,38 +173,10 @@ def get_system_content():
 
     return extract_text_with_media(system_content)
 
-from pathlib import Path
-from pathlib import Path
-
-def read_text_file(folder: str, filename: str) -> str:
-    """
-    Read and return the full text of `filename` located in the given project sub‑folder.
-
-    :param folder: Name (or relative path) of the folder under the project root.
-    :param filename: Name of the file (e.g. 'example.txt').
-    :returns: File contents as a string.
-    :raises FileNotFoundError: if the folder or file doesn’t exist.
-    :raises IOError: on other I/O errors.
-    """
-    # Ascend two levels up (from profile_user/utils → profile_user → etradingview)
-    project_root = Path(__file__).resolve().parents[2]
-    file_path = project_root / folder / filename
-
-    # Normalize to an absolute path (and will raise if it doesn’t exist)
-    file_path = file_path.resolve()
-
-    with file_path.open('r', encoding='utf-8') as f:
-        return f.read()
-    
-content = read_text_file('ai_fine_tuning', 'ai_system_content.txt')
-print("AI System Content Loaded Successfully", len(content), "characters.")
-
 
 async def get_ai_response(user_message, messages, max_token) -> tuple:
 
-    # system_content = ai_client.system_content
-    system_content = content
-
+    system_content = ai_client.system_content
 
     if not system_content:
         system_content = await sync_to_async(get_system_content)()
