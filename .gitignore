@@ -149,5 +149,5 @@ pyvenv.cfg
 
 /venv_etv
 
-isalgo_finetune.jsonl
+/ai_fine_tuning
 .qodo

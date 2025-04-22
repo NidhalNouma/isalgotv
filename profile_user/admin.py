@@ -62,8 +62,17 @@ class NotificationAdmin(ModelAdmin):
 
 def send_html_email(request):
     if request.method == 'POST':
-        subject = request.POST.get('subject', 'Newsletter')
+        subject = request.POST.get('subject', '')
         html = request.POST.get('html_content', '')
+        
+        if not subject.strip() or not html.strip():
+            messages.error(request, "Both subject and HTML content are required.")
+            return HttpResponseRedirect(request.path)
+        
+        # Ensure HTML content has at least 300 characters
+        if len(html) < 300:
+            messages.error(request, "HTML content must be at least 300 characters long.")
+            return HttpResponseRedirect(request.path)
 
         recipient_type = request.POST.get('recipient_type', 'all')
 
