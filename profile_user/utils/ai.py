@@ -196,7 +196,7 @@ async def get_ai_response(user_message, messages, max_token) -> tuple:
 
     # Make an asynchronous API call
     response = await ai_client.chat.completions.create(
-        model="o4-mini-2025-04-16",
+        model="gpt-4o-mini",
         messages=chat_history,
         max_tokens=max_token
     )
