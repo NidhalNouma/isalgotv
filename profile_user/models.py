@@ -81,7 +81,7 @@ class User_Profile(models.Model):
             customer = self.stripe_obj.get("customer", None)
             subscription = self.stripe_obj.get("subscription", None)
 
-            if (customer and customer.get("id", None) != self.customer_id) or (not customer and self): 
+            if (customer and customer.get("id", None) != self.customer_id) or (not customer and self.customer_id): 
                 force = True
 
             if (subscription and subscription.get("id", None) != self.subscription_id) or (not subscription and self.subscription_id):
@@ -113,6 +113,8 @@ class User_Profile(models.Model):
             "subscription_interval_count": None,
             "subscription_plan": None,
         }
+
+        self.has_subscription = False
     
         try:
             if self.customer_id:
@@ -140,68 +142,71 @@ class User_Profile(models.Model):
 
             # Retrieve subscription if exists
             if self.subscription_id:
-                subscription = stripe.Subscription.retrieve(self.subscription_id)
-                data["subscription"] = subscription
+                try:
+                    subscription = stripe.Subscription.retrieve(self.subscription_id)
+                    data["subscription"] = subscription
 
 
-                end_timestamp = subscription.current_period_end * 1000
-                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
+                    end_timestamp = subscription.current_period_end * 1000
+                    end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
 
 
-                subscription_status = subscription.status
+                    subscription_status = subscription.status
 
-                subscription_interval = subscription.plan.interval
-                subscription_interval_count = subscription.plan.interval_count
-
-
-                data["subscription_period_end"] = end_time.isoformat()
-                data["subscription_active"] = subscription.plan.active
-                data["subscription_status"] = subscription.status
-                data["subscription_price_id"] = subscription.plan.id
-                data["subscription_product_id"] = subscription.plan.product
-                data["subscription_interval"] = subscription.plan.interval
-                data["subscription_interval_count"] = subscription.plan.interval_count
+                    subscription_interval = subscription.plan.interval
+                    subscription_interval_count = subscription.plan.interval_count
 
 
-                if subscription_interval == "year":
-                    subscription_plan = list(PRICE_LIST.keys())[2]
+                    data["subscription_period_end"] = end_time.isoformat()
+                    data["subscription_active"] = subscription.plan.active
+                    data["subscription_status"] = subscription.status
+                    data["subscription_price_id"] = subscription.plan.id
+                    data["subscription_product_id"] = subscription.plan.product
+                    data["subscription_interval"] = subscription.plan.interval
+                    data["subscription_interval_count"] = subscription.plan.interval_count
 
-                elif subscription_interval == "month":
-                    if subscription_interval_count == 1:
-                        subscription_plan = list(PRICE_LIST.keys())[0]
-                    elif subscription_interval_count == 3:
-                        subscription_plan = list(PRICE_LIST.keys())[1]
-                    elif subscription_interval_count == 12:
+
+                    if subscription_interval == "year":
                         subscription_plan = list(PRICE_LIST.keys())[2]
-                
-                data["subscription_plan"] = subscription_plan
-                
+
+                    elif subscription_interval == "month":
+                        if subscription_interval_count == 1:
+                            subscription_plan = list(PRICE_LIST.keys())[0]
+                        elif subscription_interval_count == 3:
+                            subscription_plan = list(PRICE_LIST.keys())[1]
+                        elif subscription_interval_count == 12:
+                            subscription_plan = list(PRICE_LIST.keys())[2]
+                    
+                    data["subscription_plan"] = subscription_plan
+                    
 
 
-                if subscription_status == 'active' and subscription.current_period_end > time.time():
-                    self.has_subscription = True
-                elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
-                    self.has_subscription = True
-                elif subscription_status == 'past_due' and subscription.current_period_end > time.time():
-                    self.has_subscription = True
-                # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
-                #     has_subscription = True
-                elif subscription_status == "incomplete":
-                    self.has_subscription = False
+                    if subscription_status == 'active' and subscription.current_period_end > time.time():
+                        self.has_subscription = True
+                    elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
+                        self.has_subscription = True
+                    elif subscription_status == 'past_due' and subscription.current_period_end > time.time():
+                        self.has_subscription = True
+                    # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
+                    #     has_subscription = True
+                    elif subscription_status == "incomplete":
+                        self.has_subscription = False
 
-                
-                if subscription.cancel_at_period_end or subscription.status == "canceled" or subscription.status == "incomplete":
-                    data["subscription_canceled"] = True
+                    
+                    if subscription.cancel_at_period_end or subscription.status == "canceled" or subscription.status == "incomplete":
+                        data["subscription_canceled"] = True
 
-                
-                if not data["subscription_canceled"] and self.has_subscription:
-                    # Get the upcoming invoice for the subscription
-                    upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
-                    data["payment_intent"] = upcoming_invoice
+                    
+                    if not data["subscription_canceled"] and self.has_subscription:
+                        # Get the upcoming invoice for the subscription
+                        upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
+                        data["payment_intent"] = upcoming_invoice
 
-                    if upcoming_invoice:
-                        total_amount_due = upcoming_invoice["amount_due"]/100
-                        data["subscription_next_payment_amount"] = total_amount_due
+                        if upcoming_invoice:
+                            total_amount_due = upcoming_invoice["amount_due"]/100
+                            data["subscription_next_payment_amount"] = total_amount_due
+                except Exception as e:
+                    print("Error with getting stripe subscription...", e)
 
 
             if self.customer_id:

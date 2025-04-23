@@ -1,30 +1,17 @@
 <div id="coupon-pay-{{ title }}">
   <div class="bg-text/10 rounded-md p-4 mb-6 text-text">
-    <div class="flex justify-between items-center mb-2">
-      <span class="text-text/60">Subtotal</span>
-      <span>${{ base_price }}</span>
-    </div>
-
-    {% if coupon_off %}
-      <div class="flex justify-between items-center mb-2 text-success">
-        <span>Discount</span>
-        <span>{{ coupon_off }}</span>
-      </div>
-    {% endif %}
-
-    <div class="flex justify-between items-center pt-2 border-t border-title/20 mt-2">
-      <span class="font-medium text-text/60">Total</span>
-      <span class="font-medium text-lg">${{ final_price }}</span>
-    </div>
-
     {% if has_subscription and title != 'LIFETIME' %}
-      <p class="mt-2.5 text-xs text-text/80">&#9737; This payment is scheduled for {{ subscription_period_end|date:'M d Y' }}</p>
-    {% endif %}
-
-    {% if not has_subscription and not user_profile.subscription_id %}
+      {% include 'include/pay_form_price.html' with base_price=base_price coupon_off='-100%' final_price=0 %}
       <p class="mt-2.5 text-xs text-text/80">
-        &#9737; This payment is scheduled after the <span class="font-semibold text-text/90">{{ free_trial_days }} day trial</span>
+        &#9737; A charge of <span class="text-text font-medium">${{ final_price }}</span> will occur on <span class="font-medium text-text/90">{{ subscription_period_end|date:'M d, Y' }}</span>
       </p>
+    {% elif not has_subscription and not user_profile.subscription_id %}
+      {% include 'include/pay_form_price.html' with base_price=base_price coupon_off='-100%' final_price=0 %}
+      <p class="mt-2.5 text-xs text-text/80">
+        &#9737; A charge of <span class="text-text font-medium">${{ final_price }}</span> will occur after the <span class="font-semibold text-text/90">{{ free_trial_days }} day trial</span>
+      </p>
+    {% else %}
+      {% include 'include/pay_form_price.html' with base_price=base_price coupon_off=coupon_off final_price=final_price %}
     {% endif %}
   </div>
 
