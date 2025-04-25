@@ -365,7 +365,7 @@ def create_setup_intent(request):
         to_add = data.get('to_add', False)
 
         if to_add is False:
-            payment_method_types =["card","cashapp"]
+            payment_method_types =["card"]
 
         setup_intent = stripe.SetupIntent.create(
             customer=customer_id,

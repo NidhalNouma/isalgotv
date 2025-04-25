@@ -59,7 +59,20 @@ def check_user_and_stripe_middleware(get_response):
 
 
             user_profile.reset_token_usage_if_needed()
-            user_profile = user_profile.get_with_update_stripe_data()
+
+            get_updated_user_profile = False
+
+            setup_intent = request.GET.get('setup_intent', None)
+            if setup_intent:
+                try:
+                    setup_intent = stripe.SetupIntent.retrieve(setup_intent)
+                    if setup_intent.status == 'succeeded':
+                        # print("payment intent", setup_intent)
+                        get_updated_user_profile = True
+                except stripe.error.StripeError as e:
+                    setup_intent = None
+
+            user_profile = user_profile.get_with_update_stripe_data(force=get_updated_user_profile)
             # print("user profile", user_profile.stripe_obj)
 
             request.user_profile = user_profile
@@ -125,26 +138,9 @@ def check_user_and_stripe_middleware(get_response):
 
         request.server_ip = get_stored_server_ip(request),
 
+
         response = get_response(request)
 
-        setup_intent = request.GET.get('setup_intent', None)
-        if setup_intent:
-            try:
-                setup_intent = stripe.SetupIntent.retrieve(setup_intent)
-                if setup_intent.status == 'succeeded':
-                    print("payment intent", setup_intent)
-                    request.user_profile = user_profile.get_with_update_stripe_data(force =True)
-            except stripe.error.StripeError as e:
-                setup_intent = None
-
-
-
-        # print(subscription)
-        # print(has_subscription)
-        # print(subscription_period_end)
-        # print(subscription_status)
-        # print(subscription_active)
-        # print(stripe_customer)
 
         return response
 
