@@ -1,81 +1,35 @@
+{% load custom_tags %}
 
-<div
-  class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-6"
->
+<div class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-6">
   <div class="flex items-center justify-between w-full mb-6">
-      <h5 class="text-title font-semibold">Payment methods</h5>
+    <h5 class="text-title font-semibold">Payment methods</h5>
 
-      <button 
-       onclick="openModel('staticModal-payment_methods');mountStripeElement('payment_methods');"
-       class="rounded bg-title px-2 py-0.5 hover:bg-title/80"><svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></button>
+    <button onclick="openModel('staticModal-payment_methods');mountStripeElement('payment_methods', true);" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
+      <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512">
+        <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+      </svg>
+    </button>
   </div>
 
   <div class="" id="setting-payment_methods">
     {% if payment_methods|length == 0 %}
-    <p class="text-left text-title text-lg font-semibold">
-        <h6 class="text-sm text-title">
-            Looks like you don't have any payment methods available.
-        </h6>
-    </p>
+      <div class="text-left text-title text-lg font-semibold">
+        <h6 class="text-sm text-title">Looks like you don't have any payment methods available.</h6>
+      </div>
     {% else %}
-
-    <div>
-      {% include 'include/payment_methods.html' %}
-    </div>
-    <div class="" id="stripe-error-delete-payment_methods">
-      {% include 'include/errors.html' with error=error %}
-    </div>
+      <div>
+        {% include 'include/payment_methods.html' %}
+      </div>
+      <div class="" id="stripe-error-delete-payment_methods">
+        {% include 'include/errors.html' with error=error %}
+      </div>
     {% endif %}
   </div>
-
 </div>
-
 
 <!-- payment_methods model -->
-<div
-  id="staticModal-payment_methods"
-  data-modal-backdrop="static"
-  tabindex="-1"
-  aria-hidden="true"
-  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
->
-  <div class="relative w-full max-w-2xl max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-background rounded-lg shadow">
-      <!-- Modal header -->
-      <div
-        class="flex items-center justify-between p-4 rounded-t"
-      >
-        <h3 class="text-xl font-semibold text-title">
-          New payment method
-        </h3>
-        <button
-          id="add-payment_methods-close-form-btn"
-          onclick="hideModel('staticModal-payment_methods');unmountStripeElement('payment_methods');"
-          type="button"
-          class="btn-icon"
-          data-modal-hide="staticModal-payment_methods"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <!-- Modal body -->
-      <div class="max-w-md p-6 mx-auto mt-1">
-        {% include 'include/settings/add_payment_method_form.html' %}
-      </div>
-    </div>
-  </div>
-</div>
 
-
+{% render_template 'include/settings/add_payment_method_form.html' as add_payment_methods_body %}
+{% with header_html="<h3 class='text-xl font-semibold text-title'>New payment method</h3>" %}
+  {% include 'include/modal.html' with modal_id='staticModal-payment_methods' header=header_html body=add_payment_methods_body close_modal_btn_id='add-payment_methods-close-form-btn' stripe_element_id='payment_methods' body_class='px-2 !mt-1' %}
+{% endwith %}

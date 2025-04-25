@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -30,6 +31,7 @@ import datetime
 import environ
 env = environ.Env()
 
+from .utils.stripe import *
 from .utils.tradingview import *
 from .utils.discord import get_discord_user_id, add_role_to_user, remove_role_from_user
 
@@ -348,6 +350,33 @@ def get_access(request, strategy_id):
         return render(request, 'include/access_list.html', context = {"strategies": strategies})
     
 
+@require_http_methods(["POST"])
+@login_required(login_url='login')
+def create_setup_intent(request):
+    """
+    API endpoint to create a Stripe SetupIntent for the logged-in user and return its client_secret.
+    """
+    try:
+        customer_id = request.user_profile.customer_id
+
+        payment_method_types = ["card","cashapp", "link", "amazon_pay"]
+
+        data = json.loads(request.body.decode('utf-8'))
+        to_add = data.get('to_add', False)
+
+        if to_add is False:
+            payment_method_types =["card","cashapp"]
+
+        setup_intent = stripe.SetupIntent.create(
+            customer=customer_id,
+            usage="off_session",
+            payment_method_types=payment_method_types,
+        )
+        return JsonResponse({"clientSecret": setup_intent.client_secret})
+    except Exception as e:
+        print("Error creating setup intent:", e)
+        return JsonResponse({"error": str(e)}, status=400)
+
 @require_http_methods([ "POST"])
 def create_payment_method(request):
     if request.method == 'POST':
@@ -452,88 +481,6 @@ def setdefault_payment_method(request):
         except Exception as e:
             context["error"] = 'Attached payment to customer '+str(e)
 
-def check_coupon_fn(coupon_id, plan_id, price, customer_id):
-    # print(coupon_id, plan_id, price)
-    try:
-        orig_price = price
-
-        promotion_codes = stripe.PromotionCode.list(code=coupon_id, active=True)
-
-        # Check if any promotion codes were returned
-        if not promotion_codes.data:
-            # print("No promotion codes found with the given code.")
-            raise Exception("No promotion codes found with the given code.")
-        else:
-            # Use the first matching promotion code (if multiple, adjust logic as needed)
-            promo_code = promotion_codes.data[0]
-                # Step 2: Validate general properties
-            is_active = promo_code.active
-            expires_at = promo_code.expires_at
-            max_redemptions = promo_code.max_redemptions
-            times_redeemed = promo_code.times_redeemed
-            restrictions = promo_code.restrictions
-
-            # Validation logic for general properties
-            if not is_active:
-                raise Exception("Promotion code is inactive.")
-            elif expires_at and expires_at < datetime.datetime.now().timestamp():
-                raise Exception("Promotion code has expired.")
-            elif max_redemptions and times_redeemed >= max_redemptions:
-                raise Exception("Promotion code has reached its redemption limit.")
-
-            # Step 3: Check customer-specific restrictions
-            if restrictions.get("first_time_transaction", False):
-                # If first-time transaction restriction is set, check if customer has transactions
-                invoices = stripe.Invoice.list(customer=customer_id)
-                if any(invoice.paid for invoice in invoices.auto_paging_iter()):
-                    raise Exception("Promotion code is restricted to first-time transactions, and the customer is not eligible.")
-                else:
-                    print("Customer is eligible under first-time transaction restriction.")
-
-            # Step 4: Check if the customer has already used the promotion code
-            invoices = stripe.Invoice.list(customer=customer_id)
-            has_used_promo_code = any(
-                invoice.discount and invoice.discount.promotion_code == promo_code.id
-                for invoice in invoices.auto_paging_iter()
-            )
-
-            if has_used_promo_code:
-                raise Exception("Customer has already used this promotion code.")
-
-            coupon = promo_code.coupon
-
-        promo_id = promo_code.id
-
-        if coupon.percent_off:
-            price = round(price - (price * coupon.percent_off / 100), 2)
-
-            coupon_off = str(-coupon.percent_off) + "%"
-        elif coupon.amount_off:
-            price = round(price - coupon.amount_off, 2)
-
-            coupon_off = str(-coupon.amount_off) + '$'
-        
-        if coupon_id.find("QUAT") >= 0 or coupon_id.find("QUAR") >= 0:
-            if plan_id != "QUARTERLY":
-                raise Exception("Coupon code is not valid for this plan.")
-        elif coupon_id.find("MN") >= 0:
-            if plan_id != "MONTHLY":
-                raise Exception("Coupon code is not valid for this plan.")
-        elif coupon_id.find("LIFETIME") >= 0:
-            if plan_id != "LIFETIME":
-                raise Exception("Coupon code is not valid for this plan.")
-        if plan_id == "LIFETIME":
-            if coupon_id.find("BETA") >= 0:
-                price = orig_price
-                raise Exception("This is a beta plan, you cannot use it on lifetime plan.")
-            elif coupon_id.find("LIFETIME") < 0:
-                raise Exception("Coupon code is not valid for lifetime plan.")
-            
-        return (price, coupon_off, promo_id)
-    except Exception as e:
-        # print(e)
-        raise e
-
 @require_http_methods([ "POST"])
 def check_coupon(request):
     if request.method == 'POST':
@@ -612,7 +559,7 @@ def check_coupon(request):
         return retarget(response, "#coupon-pay-"+context['title'])
 
 @require_http_methods([ "POST"])
-def create_subscription_stripeform(request):
+def subscription_stripeform(request):
     if request.method == 'POST':
         data = request.POST
 
@@ -623,7 +570,6 @@ def create_subscription_stripeform(request):
 
         if not price_id:
             context["error"] = 'No plan has been specified, please refresh the page and try again.'
-            # return render(request, 'include/pay_form_stripe.html', context)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
@@ -633,33 +579,40 @@ def create_subscription_stripeform(request):
         payment_method = data['pm_id']
         coupon_id = data['coupon']
 
+        user_profile = request.user_profile
+
+        metadata = {
+                "profile_user_id": str(user_profile.id), 
+            }
+
+        customer_id = user_profile.customer_id
+        old_subscription_id = user_profile.subscription_id
+
         trial_days = request.free_trial_days
-        # trial_days = 0
         if request.user_profile.subscription_id:
             trial_days = 0
+
+        trial_ends = 'now'
+        subscription_period_end = request.subscription_period_end
+        subscription_status = request.subscription_status
+
+        if subscription_period_end:
+            trial_ends = subscription_period_end
+
+            if trial_ends:
+                if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME" or subscription_status == 'past_due':
+                    trial_ends = 'now'
+        
 
         if coupon_id:
             try:
                 price, price_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
-
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
         else:
             promo_id = None
-            
-        # if is_checking == "true":
-        #     trial_ends = datetime.datetime.now() + datetime.timedelta(days=trial_days)
-        #     if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME":
-        #         trial_ends = None
-        #     txt_price = str(price / 100)
-        #     context["check"] = "false"
-        #     context["staertime"] = trial_ends
-        #     context["price"] = txt_price
-        #     context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
-        #     response = render(request, 'include/pay_next.html', context)
-        #     return retarget(response, "#stripe-next-"+context['title'])
 
 
         if not payment_method or payment_method == "None":
@@ -667,16 +620,13 @@ def create_subscription_stripeform(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
-        user_profile = request.user_profile
-        customer_id = user_profile.customer_id
-
         print("Creating subscription ...", payment_method, user_profile.customer_id)
 
         try:
-            stripe.PaymentMethod.attach(
-                payment_method,
-                customer=customer_id,
-            )
+            # stripe.PaymentMethod.attach(
+            #     payment_method,
+            #     customer=customer_id,
+            # )
             stripe.Customer.modify(
                 customer_id,
                 invoice_settings={
@@ -687,11 +637,11 @@ def create_subscription_stripeform(request):
             context["error"] = 'Attached payment: '+str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
+        
+        
         try:
-            old_subscription_id = user_profile.subscription_id
 
             if plan_id == "LIFETIME":
-
                 lifetime = stripe.PaymentIntent.create(
                     amount=int(price),
                     currency="usd",
@@ -702,214 +652,90 @@ def create_subscription_stripeform(request):
                     automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
                     metadata={"price_id": price_id}
                 )
-
                 highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
                 lifetime_num = 1
                 if highest_lifetime_num:
                     lifetime_num = lifetime_num + 1
-
                 User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
                 print("New lifetime has been created ...")
-
                 send_new_lifetime_email_task(request.user.email)
-
                 if len(old_subscription_id) > 0:
                     cancel_subscription = stripe.Subscription.delete(old_subscription_id)
                     print("Old subscription has been canceled ... ")
+                    # Handle free-trial UI if requested
+                    from_get_started = request.GET.get('get_started', '')
+                    if from_get_started == "true":
+                        context["step"] = 2
+                        context["congrate"] = True
+                        response = render(request, 'include/home_get_started.html', context)
+                        return retarget(response, "#home-get-started")
+                    return HttpResponseClientRedirect(reverse('membership') + '?sub=True')
+                # Handle free-trial UI if requested
+                from_get_started = request.GET.get('get_started', '')
+                if from_get_started == "true":
+                    context["step"] = 2
+                    context["congrate"] = True
+                    response = render(request, 'include/home_get_started.html', context)
+                    return retarget(response, "#home-get-started")
+                return HttpResponseClientRedirect(reverse('home') + '?sub=True')
 
-                    return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
-                
-                return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
-                
-            
-            metadata = {
-                "profile_user_id": str(user_profile.id), 
-            }
+            if trial_ends != 'now':
+                subscription = stripe.Subscription.create(
+                    customer=customer_id,
+                    items=[{
+                        'price': price_id,
+                    }],
+                    payment_behavior="error_if_incomplete",
+                    # coupon=coupon_id,
+                    promotion_code=promo_id,
+                    trial_end=trial_ends,
+                    trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+                )
 
-            subscription = stripe.Subscription.create(
-                customer=customer_id,
-                items=[{
-                    'price': price_id,
-                }],
-                payment_behavior="error_if_incomplete",
-                default_payment_method=payment_method,
-                # coupon=coupon_id,
-                promotion_code=promo_id,
-                trial_period_days=trial_days,
-                trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
-                metadata=metadata,
-            )
+            else:
+                subscription = stripe.Subscription.create(
+                    customer=customer_id,
+                    items=[{
+                        'price': price_id,
+                    }],
+                    payment_behavior="error_if_incomplete",
+                    default_payment_method=payment_method,
+                    promotion_code=promo_id,
+                    trial_period_days=trial_days,
+                    trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+                    metadata=metadata,
+                )
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
             print("New subscription has been created ...")
-
 
             if len(old_subscription_id) > 0:
                 if request.subscription_status != 'canceled':
                     cancel_subscription = stripe.Subscription.delete(old_subscription_id)
                     print("Old subscription has been canceled ... ")
-
-                return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+                # Handle free-trial UI if requested
+                from_get_started = request.GET.get('get_started', '')
+                if from_get_started == "true":
+                    context["step"] = 2
+                    context["congrate"] = True
+                    response = render(request, 'include/home_get_started.html', context)
+                    return retarget(response, "#home-get-started")
+                return HttpResponseClientRedirect(reverse('membership') + '?sub=True')
             else:
                 send_new_member_email_task(request.user.email)
 
-            # return JsonResponse(subscriptionId=subscription.id, clientSecret=subscription.latest_invoice.payment_intent.client_secret)
-
-            
-            from_get_started = request.GET.get('get_started','')
+            # Handle free-trial UI if requested
+            from_get_started = request.GET.get('get_started', '')
             if from_get_started == "true":
                 context["step"] = 2
                 context["congrate"] = True
-
                 response = render(request, 'include/home_get_started.html', context)
                 return retarget(response, "#home-get-started")
-        
-            return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
+
+            return HttpResponseClientRedirect(reverse('membership') + '?sub=True')
 
         except Exception as e:
             context["error"] = 'Subscription failed. ' + str(e)
-            response = render(request, 'include/errors.html', context)
-            return retarget(response, "#stripe-error-"+context['title'])
-
-@require_http_methods([ "POST"])
-def update_subscription_stripeform(request):
-    # TODO: check the payment form template and so when you close the form everything reset or when adding a coupon code change the button from subscribe to next
-    if request.method == 'POST':
-        data = request.POST
-
-        plan_id = request.GET.get('plan','')
-        
-        price_id = PRICE_LIST.get(plan_id, '')
-
-        context = {"error": '', 'title': plan_id}
-
-        user_profile = request.user_profile
-        customer_id = user_profile.customer_id
-
-        old_subscription_id = user_profile.subscription_id
-        old_subscription = request.subscription
-        subscription_period_end = request.subscription_period_end
-        subscription_status = request.subscription_status
-
-
-        trial_ends = subscription_period_end
-
-        if trial_ends:
-            if trial_ends <= datetime.datetime.now() or plan_id == "LIFETIME" or subscription_status == 'past_due':
-                trial_ends = 'now'
-
-        if not price_id:
-            context["error"] = 'No plan has been specified, please refresh the page and try again.'
-            # return render(request, 'include/pay_form_stripe.html', context)
-            response = render(request, 'include/errors.html', context)
-            return retarget(response, "#stripe-error-"+context['title'])
-        
-
-        orig_price = float(PRICES.get(plan_id, 0))  * 100
-        price = orig_price
-        
-        payment_method = data['pm_id']
-        coupon_id = data['coupon']
-
-        if coupon_id:
-            try:
-                price, price_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
-
-            except Exception as e:
-                context["error"] = 'Invalid coupon code '+str(e)
-                response = render(request, 'include/errors.html', context)
-                return retarget(response, "#stripe-error-"+context['title'])
-        else:
-            promo_id = None
-
-
-        if not payment_method or payment_method == "None":
-            context["error"] = 'No payment method has been detected.'
-            response = render(request, 'include/errors.html', context)
-            return retarget(response, "#stripe-error-"+context['title'])
-
-        try:
-            stripe.PaymentMethod.attach(
-                payment_method,
-                customer=customer_id,
-            )
-            stripe.Customer.modify(
-                customer_id,
-                invoice_settings={
-                    'default_payment_method': payment_method
-                }
-            )
-        except Exception as e:
-            context["error"] = 'Attached payment to customer '+str(e)
-            response = render(request, 'include/errors.html', context)
-            return retarget(response, "#stripe-error-"+context['title'])
-        try:
-
-            if plan_id == "LIFETIME":
-
-                lifetime = stripe.PaymentIntent.create(
-                    amount=int(price),
-                    currency="usd",
-                    payment_method=payment_method,
-                    confirm=True,
-                    customer=customer_id,
-                    description="Lifetime subscription.",
-                    automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
-                    metadata={"price_id": price_id}
-                )
-
-                highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
-                lifetime_num = 1
-                if highest_lifetime_num:
-                    lifetime_num = lifetime_num + 1
-
-                User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
-                print("New lifetime has been created ...")
-                
-                send_new_lifetime_email_task(request.user.email)
-
-                if len(old_subscription_id) > 0:
-                    cancel_subscription = stripe.Subscription.delete(old_subscription_id)
-                    print("Old subscription has been canceled ... ")
-
-                    return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
-                
-                return HttpResponseClientRedirect(reverse('home') + f'?sub=True')
-
-            subscription = stripe.Subscription.create(
-                customer=customer_id,
-                items=[{
-                    'price': price_id,
-                }],
-                payment_behavior="error_if_incomplete",
-                # coupon=coupon_id,
-                promotion_code=promo_id,
-                trial_end=trial_ends,
-                trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
-            )
-
-            User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
-
-            print("Subscription has been updated ...")
-
-            try: 
-                cancel_subscription = stripe.Subscription.modify(old_subscription_id, cancel_at_period_end=True)
-                print("Old Subscription has been canceled ...")
-            except Exception as e:
-                print("Old Subscription has not been canceled ...")
-
-            from_get_started = request.GET.get('get_started','')
-            if from_get_started == "true":
-                context["step"] = 2
-                context["congrate"] = True
-
-                response = render(request, 'include/home_get_started.html', context)
-                return retarget(response, "#home-get-started")
-
-            return HttpResponseClientRedirect(reverse('membership') + f'?sub=True')
-
-        except Exception as e:
-            context["error"] = "Updating subscription failed. "  +str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
@@ -1288,8 +1114,8 @@ def buy_ai_tokens(request):
                 response = render(request, 'include/settings/ai_tokens.html', context)
                 return retarget(response, "#setting-ai-tokens")
             
-            response = render(request, 'include/ai_tokens_modal.html', context)
-            return retarget(response, "#div-ai_tokens_modal")
+            response = render(request, 'include/ai_tokens_form.html', context)
+            return retarget(response, "#div-ai_tokens_form")
             
 
         except Exception as e:

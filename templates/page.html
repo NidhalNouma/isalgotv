@@ -1,6 +1,7 @@
 <!-- templates/_base.html -->
 
 {% load compress %} {% load static %}
+{% load custom_tags %}
 
 <!DOCTYPE html>
 <html lang="en" class="max-w-screen overflow-x-hidden">
@@ -9,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Commissioner:wght@100..900&display=swap" rel="stylesheet" />
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     {% block head_title %}
       <title>IsAlgo | Backtestable Trading Systems for All Skill Levels | TradingView Strategies</title>
@@ -178,25 +179,10 @@
     {% if user.is_authenticated %}
       <!-- ai tokens AI modal -->
       {% with title='ai-tokens' %}
-        <div id="staticModal-{{ title }}" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-          <div class="relative w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="relative bg-background rounded-lg shadow">
-              <!-- Modal header -->
-              <div class="flex items-center justify-between p-4 rounded-t">
-                <h3 class="text-xl font-semibold text-title">Add AI Tokens</h3>
-                <button id="add-{{ title }}-close-form-btn" onclick="closeAITokensModalSettings()" type="button" class="btn-icon" data-modal-hide="staticModal-{{ title }}">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                  </svg>
-                </button>
-              </div>
-              <div class="max-w-md p-6 pt-2 mx-auto" id="div-ai_tokens_modal">
-                {% include 'include/ai_tokens_modal.html' %}
-              </div>
-            </div>
-          </div>
-        </div>
+        {% render_template 'include/ai_tokens_form.html' as ai_tokens_form %}
+        {% with header_html="<h3 class='text-xl font-semibold text-title'>Add AI Tokens</h3>" %}
+          {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn' body_class='px-2 mt-4' %}
+        {% endwith %}
 
         <script type="text/javascript">
           // Select the tokens amount

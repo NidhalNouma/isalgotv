@@ -1,0 +1,13 @@
+{% load custom_tags %}
+
+{% render_template 'include/broker_modal_header.html' broker_type=broker_type as header_html %}
+
+{% if broker == 'forex' %}
+  {% render_template 'include/add_forex_broker_form.html' broker_type=broker_type as broker_modal %}
+{% else %}
+  {% render_template 'include/add_crypto_broker_form.html' broker_type=broker_type as broker_modal %}
+{% endif %}
+{% include 'include/modal.html' with modal_id='add-'|add:broker_type|add:'-modal' header=header_html body=broker_modal class='!max-w-xl' body_class='!mt-2' %}
+
+{% render_template 'include/docs/automate/add_'|add:broker_type|add:'_account.html' as add_account_content %}
+{% include 'include/drawer_modal.html' with drawer_id='drawer-add-docs-account-'|add:broker_type title='Link account' body=add_account_content %}

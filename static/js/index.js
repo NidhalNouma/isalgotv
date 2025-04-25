@@ -1,5 +1,19 @@
 console.log("js loaded");
 
+// Helper to get CSRF token from cookies
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    document.cookie.split(";").forEach((cookie) => {
+      const [key, val] = cookie.trim().split("=");
+      if (key === name) {
+        cookieValue = decodeURIComponent(val);
+      }
+    });
+  }
+  return cookieValue;
+}
+
 function copyText(text) {
   // Copy the text to clipboard
   navigator.clipboard
@@ -27,6 +41,94 @@ function copyPlainText(id) {
     .catch((err) => {
       console.error("Error copying text: ", err);
     });
+}
+
+/**
+ * Retrieves the CSS variable and returns it as a full HSL or color string.
+ * @param {string} varName - CSS variable name (e.g. '--color-primary').
+ * @returns {string} - Resolved color, e.g. 'hsl(227, 91%, 59%)' or '#3861f6'.
+ */
+
+/**
+ * Retrieves the CSS variable and returns it as a full HSL or color string, optionally with alpha.
+ * @param {string} varName - CSS variable name (e.g. '--color-primary').
+ * @param {number|string} [alpha] - Optional alpha value (0-1).
+ * @returns {string} - Resolved color, e.g. 'hsl(227, 91%, 59%)', '#3861f6', or with alpha if requested.
+ */
+function getCssVariableColor(varName, alpha) {
+  const rootStyles = getComputedStyle(document.documentElement);
+  let raw = rootStyles.getPropertyValue(varName);
+  raw = raw.trim();
+
+  // If hex color (e.g. #abc or #aabbcc)
+  if (raw.startsWith("#")) {
+    if (alpha !== undefined && alpha !== null) {
+      // Expand shorthand hex (#abc) to full form (#aabbcc)
+      let hex = raw.slice(1);
+      if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      }
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+    return raw;
+  }
+
+  // If rgb or rgba
+  if (raw.startsWith("rgb(")) {
+    if (alpha !== undefined && alpha !== null) {
+      // Convert rgb to rgba by inserting alpha
+      const rgbBody = raw.slice(4, -1);
+      return `rgba(${rgbBody}, ${alpha})`;
+    }
+    return raw;
+  }
+  if (raw.startsWith("rgba(")) {
+    // Already rgba, optionally override alpha if provided
+    if (alpha !== undefined && alpha !== null) {
+      const parts = raw.slice(5, -1).split(",");
+      if (parts.length >= 3) {
+        const [r, g, b] = parts;
+        return `rgba(${r.trim()},${g.trim()},${b.trim()},${alpha})`;
+      }
+    }
+    return raw;
+  }
+
+  // If hsl or hsla
+  if (raw.startsWith("hsl(")) {
+    if (alpha !== undefined && alpha !== null) {
+      // Convert hsl to hsla
+      const hslBody = raw.slice(4, -1);
+      return `hsla(${hslBody}, ${alpha})`;
+    }
+    return raw;
+  }
+  if (raw.startsWith("hsla(")) {
+    // Already hsla, optionally override alpha if provided
+    if (alpha !== undefined && alpha !== null) {
+      const parts = raw.slice(5, -1).split(",");
+      if (parts.length >= 3) {
+        const [h, s, l] = parts;
+        return `hsla(${h.trim()},${s.trim()},${l.trim()},${alpha})`;
+      }
+    }
+    return raw;
+  }
+
+  // Space-separated H S L parts (e.g. '227 91% 59%')
+  const parts = raw.split(/\s+/);
+  if (parts.length === 3) {
+    const [h, s, l] = parts;
+    if (alpha !== undefined && alpha !== null) {
+      return `hsla(${h}, ${s}, ${l}, ${alpha})`;
+    }
+    return `hsl(${h}, ${s}, ${l})`;
+  }
+
+  return raw;
 }
 
 function toggleDropdown(dropdownId) {
@@ -182,11 +284,19 @@ function validateNumberInput(input, maxLength) {
   input.value = formattedValue.trim();
 }
 
-let stripe, cardElement, elements;
+let stripe, cardElement, elements, paymentElement;
 
-function mountStripeElement(id) {
+function mountStripeCard(id) {
   // unmount previous element
-  if (cardElement) cardElement.unmount();
+  // Unmount any existing elements
+  if (cardElement) {
+    cardElement.unmount();
+    cardElement = null;
+  }
+  if (paymentElement) {
+    paymentElement.unmount();
+    paymentElement = null;
+  }
 
   const lbl = document.getElementById("cardName-" + id);
   if (!stripe) {
@@ -231,8 +341,154 @@ function mountStripeElement(id) {
   cardElement.mount("#card-element-" + id);
 }
 
+function mountStripeElement(id, to_add = false, callback) {
+  // unmount previous element
+  // Unmount any existing elements
+  if (cardElement) {
+    cardElement.unmount();
+    cardElement = null;
+  }
+  if (paymentElement) {
+    paymentElement.unmount();
+    paymentElement = null;
+  }
+
+  if (!stripe) {
+    // const stripe_key = document
+    //   .getElementById("contextData")
+    //   .getAttribute("stripe_public_key");
+    stripe = Stripe(stripe_public_key);
+  }
+
+  // 1) Request a new SetupIntent from your backend
+  fetch("/my/membership/payment-intent/", {
+    method: "POST",
+    body: JSON.stringify({
+      to_add: to_add,
+      id: id,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    credentials: "same-origin", // ensures cookies/session are sent
+  })
+    .then((response) => response.json())
+    .then((payload) => {
+      if (payload.error) {
+        console.error("Failed to get client secret:", payload.error);
+        return;
+      }
+      const clientSecret = payload.clientSecret;
+
+      // print("Stripe client secret: " + clientSecret);
+      const appearance = {
+        theme: "stripe",
+        variables: {
+          fontFamily: '"Gill Sans", sans-serif',
+          fontLineHeight: "1.5",
+          borderRadius: "10px",
+
+          colorBackground: getCssVariableColor("--color-background"),
+
+          colorPrimary: getCssVariableColor("--color-primary"),
+          colorText: getCssVariableColor("--color-text"),
+          colorText: getCssVariableColor("--color-text"),
+
+          borderRadius: "6px",
+          // colorDanger: "#df1b41",
+          accessibleColorOnColorPrimary: "#262626",
+          logoColor: "dark",
+          tabLogoColor: "dark",
+        },
+        rules: {
+          ".Block": {
+            // backgroundColor: "var(--colorBackground)",
+            boxShadow: "none",
+            padding: "12px",
+          },
+          ".Input": {
+            padding: "12px",
+            backgroundColor: getCssVariableColor("--color-text", 0.1),
+          },
+          ".Input:disabled, .Input--invalid:disabled": {
+            color: getCssVariableColor("--color-text", 0.4),
+          },
+          ".Tab": {
+            padding: "10px 12px 8px 12px",
+            border: "none",
+          },
+          ".Tab:hover": {
+            border: "none",
+            boxShadow:
+              "0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 7px rgba(18, 42, 66, 0.04)",
+          },
+          ".Tab--selected, .Tab--selected:focus, .Tab--selected:hover": {
+            border: "none",
+            backgroundColor: "var(--colorPrimary)",
+            boxShadow:
+              "0 0 0 1.5px var(--colorPrimaryText), 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 7px rgba(18, 42, 66, 0.04)",
+          },
+          ".Label": {
+            fontWeight: "500",
+          },
+          ".Input:focus": {
+            boxShadow: "0 0 0 0 transparent",
+            outline: "1px solid transparent",
+            border: "1px solid " + getCssVariableColor("--color-text", 0.4),
+          },
+        },
+      };
+
+      // console.log("Stripe client secret: " + clientSecret, appearance);
+
+      elements = stripe.elements({ clientSecret, appearance, loader: "auto" });
+
+      const paymentElementOptions = {
+        layout: {
+          type: "accordion",
+          defaultCollapsed: false,
+          radios: false,
+          spacedAccordionItems: true,
+        },
+        // Only offer Card and Cash App Pay:
+        // paymentMethodOrder: ["card", "applepay", "googlepay", "cashapp"],
+
+        // Hide the country and postal‐code sub‐fields on the card form:
+        fields: {
+          billingDetails: {
+            address: {
+              postalCode: "never", // never render the ZIP/postal field
+              // country: "never", // never render the country‐select field
+            },
+          },
+        },
+      };
+
+      paymentElement = elements.create("payment", paymentElementOptions);
+
+      paymentElement.mount("#stripe-element-" + id);
+
+      // Invoke callback if provided
+      if (typeof callback === "function") callback();
+    })
+    .catch((err) => {
+      console.error("Error creating SetupIntent:", err);
+    });
+}
+
 function unmountStripeElement(title) {
-  if (cardElement) cardElement.unmount();
+  // unmount previous element
+  // Unmount any existing elements
+  if (cardElement) {
+    cardElement.unmount();
+    cardElement = null;
+  }
+  if (paymentElement) {
+    paymentElement.unmount();
+    paymentElement = null;
+  }
+
   closeLoader(title);
 }
 
@@ -247,6 +503,84 @@ function paymentMethodSelected(pmId, inputId) {
     ?.classList?.remove("hidden");
 
   pmValue.value = pmId;
+}
+
+async function onPayFormStripeElementSubmit(title) {
+  openLoader(title, "-pay-submit-", "flex");
+
+  const errorDiv = document.getElementById("stripe-error-" + title);
+  if (errorDiv) errorDiv.innerHTML = "";
+
+  // hide coupon errors
+  if (document.getElementById(title + "-coupon-form-errors"))
+    document.getElementById(title + "-coupon-form-errors").innerHTML = "";
+
+  let coupon = document.getElementById("stripe-pay-coupon-" + title);
+  if (coupon) {
+    let coupon_val = document.getElementById("coupon-" + title).value;
+    coupon.value = coupon_val;
+  }
+
+  const pmValue = document.getElementById("pm-" + title);
+
+  const paymentsList = document.getElementById("payment-card-list-" + title);
+  console.log("Checking card for " + title + " ... " + pmValue.value);
+
+  if (
+    pmValue.value.length === 0 ||
+    pmValue.value === "None" ||
+    (paymentsList && paymentsList.classList.contains("hidden"))
+  ) {
+    const { error, setupIntent } = await stripe.confirmSetup({
+      //`Elements` instance that was used to create the Payment Element
+      elements,
+      confirmParams: {
+        return_url: window.location.href,
+        payment_method_data: {
+          billing_details: {
+            address: {
+              // country: "US", // supply your ISO country code
+              postal_code: "", // supply or leave empty to satisfy Stripe
+            },
+          },
+        },
+      },
+      redirect: "if_required",
+    });
+
+    if (error) {
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Show error to your customer (for example, payment
+      // details incomplete)
+
+      let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${error.message}</p></div>`;
+      if (errorDiv) errorDiv.innerHTML = errorHtml;
+
+      closeLoader(title);
+      console.error("Stripe error:", error);
+    } else if (
+      setupIntent.payment_method &&
+      setupIntent.status === "succeeded"
+    ) {
+      pmValue.value = setupIntent.payment_method;
+      // SetupIntent succeeded, proceed without redirect
+      // console.log(
+      //   "SetupIntent succeeded:",
+      //   setupIntent.id,
+      //   setupIntent.payment_method
+      // );
+    } else {
+      closeLoader(title);
+      console.error("SetupIntent succeeded but no payment method found.");
+      return;
+    }
+  }
+
+  let form = document.getElementById("form-pay-" + title);
+  form.dispatchEvent(new Event("submit"));
+
+  // closeLoader(title);
+  return true;
 }
 
 async function onPayFormStripeSubmit(title) {
@@ -491,7 +825,7 @@ function showModalImages(images, imgId, id = "") {
 
 function openAITokensModalSettings(fromIsalgoAI = false) {
   openModel("staticModal-ai-tokens");
-  mountStripeElement("ai-tokens");
+  mountStripeCard("ai-tokens");
 
   if (fromIsalgoAI === true) {
     const form = document.getElementById("add-ai-tokens-form");
@@ -577,7 +911,7 @@ htmx.on("htmx:afterRequest", (evt) => {
     closeAITokensModalSettings();
   }
 
-  if (evt?.detail?.target.id.includes("div-ai_tokens_modal")) {
+  if (evt?.detail?.target.id.includes("div-ai_tokens_form")) {
     closeAITokensModalSettings();
     openModel("modal-algoai");
   }

@@ -148,40 +148,20 @@
 
       <p class="mt-4 text-text/50 text-center text-xs">
         {% if title == 'MONTHLY' %}
-           Billed monthly
+          Billed monthly
         {% elif title == 'QUARTERLY' %}
-           Billed every 3 months
+          Billed every 3 months
         {% elif title == 'YEARLY' %}
-           Billed yearly
+          Billed yearly
         {% elif title == 'LIFETIME' %}
-           One time payment
+          One time payment
         {% endif %}
       </p>
     </div>
   </div>
 
-  <!-- Main modal -->
-  <div id="staticModal-{{ title }}" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full rounded-md p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full rounded-md overflow-y-auto no-scrollbar max-w-2xl max-h-full">
-      <!-- Modal content -->
-      <div class="relative bg-background shadow">
-        <!-- Modal header -->
-        <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 bg-background rounded-md">
-          <div class="">
-            <h3 class="text-xl font-semibold text-title">Subscribe to the {{ title }} plan</h3>
-          </div>
-          <button onclick="unmountStripeElement('{{ title }}'); hideModel('staticModal-{{ title }}')" type="button" class="btn-icon" data-modal-hide="staticModal-{{ title }}">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-            </svg>
-          </button>
-        </div>
-        <!-- Modal body -->
-        <!-- Profits -->
-        <div class="max-w-md p-6 mx-auto mt-1">
-          {% include 'include/pay_form_stripe.html' with base_price=prices|get_item:price_key final_price=prices|get_item:price_key get_started=get_started %}
-        </div>
-      </div>
-    </div>
-  </div>
+  {% render_template 'include/pay_form_stripe.html' base_price=prices|get_item:price_key final_price=prices|get_item:price_key get_started=get_started as pay_form_stripe %}
+  {% with header_html="<h3 class='text-xl font-semibold text-title'>Subscribe to "|add:title|add:' plan</h3>' %}
+    {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=pay_form_stripe stripe_element_id=title body_class='px-2 mt-4' %}
+  {% endwith %}
 {% endwith %}

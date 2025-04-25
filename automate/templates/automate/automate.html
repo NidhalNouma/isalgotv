@@ -34,19 +34,19 @@
     </main>
 
     {% include 'include/add_broker_modal.html' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='binance' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='binanceus' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='bitget' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='bybit' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='crypto' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='mexc' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='bingx' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='bitmex' %}
-    {% include 'include/add_crypto_broker_modal.html' with broker_type='bitmart' %}
+    {% include 'include/add_broker.html' with broker_type='binance' %}
+    {% include 'include/add_broker.html' with broker_type='binanceus' %}
+    {% include 'include/add_broker.html' with broker_type='bitget' %}
+    {% include 'include/add_broker.html' with broker_type='bybit' %}
+    {% include 'include/add_broker.html' with broker_type='crypto' %}
+    {% include 'include/add_broker.html' with broker_type='mexc' %}
+    {% include 'include/add_broker.html' with broker_type='bingx' %}
+    {% include 'include/add_broker.html' with broker_type='bitmex' %}
+    {% include 'include/add_broker.html' with broker_type='bitmart' %}
 
-    {% include 'include/add_forex_broker_modal.html' with broker_type='tradelocker' %}
-    {% include 'include/add_forex_broker_modal.html' with broker_type='metatrader4' %}
-    {% include 'include/add_forex_broker_modal.html' with broker_type='metatrader5' %}
+    {% include 'include/add_broker.html' with broker_type='tradelocker' broker='forex' %}
+    {% include 'include/add_broker.html' with broker_type='metatrader4' broker='forex' %}
+    {% include 'include/add_broker.html' with broker_type='metatrader5' broker='forex' %}
   {% else %}
     <section class="w-full flex flex-col items-center justify-center min-h-[80vh]">
       <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Automate Your Trading <br /> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">with any broker</span></h1>
