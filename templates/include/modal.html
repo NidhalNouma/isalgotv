@@ -5,31 +5,51 @@
 {% comment %}stripe_element_id: The ID of the Stripe element to unmount when closing the modal.{% endcomment %}
 {% comment %}class: Additional classes for the modal container.{% endcomment %}
 {% comment %}body_class: Additional classes for the modal body.{% endcomment %}
+{% comment %}content: modal content if it was povided{% endcomment %}
+{% comment %}content_class: Additional classes for the modal content.{% endcomment %}
 
 <!-- Main modal -->
 <div id="{{ modal_id }}" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full rounded-md p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-full">
   <div class="relative w-full rounded-md overflow-y-scroll no-scrollbar max-w-2xl max-h-full {{ class }}">
     <!-- Modal content -->
-    <div class="relative bg-background shadow">
-      <!-- Modal header -->
-      {% if header %}
-        <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 bg-background rounded-md">
-          <div class="">{{ header }}</div>
-          <button onclick="{% if stripe_element_id %}
+    <div class="relative bg-background shadow {{ content_class }}">
+      {% if content %}
+        {{ content }}
+      {% else %}
+        <!-- Modal header -->
+        {% if header %}
+          <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 bg-background rounded-md">
+            <div class="grow mr-4">{{ header }}</div>
+            <button onclick="{% if stripe_element_id %}
+                
+                
+                
+                
+                
+              
+              
               unmountStripeElement('{{ stripe_element_id }}');
-            {% endif %} hideModel('{{ modal_id }}')"
-            type="button"
-            class="btn-icon"
-            id="{{ close_modal_btn_id }}"
-            data-modal-hide="{{ modal_id }}">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-            </svg>
-          </button>
-        </div>
+
+
+
+
+
+
+
+              {% endif %} hideModel('{{ modal_id }}')"
+              type="button"
+              class="btn-icon"
+              id="{{ close_modal_btn_id }}"
+              data-modal-hide="{{ modal_id }}">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+        <!-- Modal body -->
+        <div class="max-w-md mx-auto overflow-hidden mt-4 sm:px-2 px-4 {{ body_class }}">{{ body }}</div>
       {% endif %}
-      <!-- Modal body -->
-      <div class="max-w-md mx-auto overflow-hidden mt-4 sm:px-2 px-4 {{ body_class }}">{{ body }}</div>
       <div class="sticky bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none"></div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <div id="payment-card-new-{{ title }}" class="mb-3 {% if payment_methods|length > 0 %} hidden {% endif %}">
   <div class="relative">
-    <div id="stripe-element-{{ title }}" class=""></div>
+    <div id="stripe-element-{{ title }}" class="w-full min-h-[3rem]"></div>
   </div>
 
   {% if payment_methods|length > 0 %}

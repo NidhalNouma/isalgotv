@@ -47,7 +47,7 @@
     {% endif %}
 
     {% with title=broker_type|add:'-account_subscription_pm'|add:id %}
-      <button id="change-pm-{{ title }}-btn" class="mt-3 btn-text" onclick="mountStripeCard('{{ title }}'); changeHidden('add-{{ title }}-form', 'change-pm-{{ title }}-btn');">
+      <button id="change-pm-{{ title }}-btn" class="mt-3 btn-text" onclick="mountStripeElement('{{ title }}'); changeHidden('add-{{ title }}-form', 'change-pm-{{ title }}-btn');">
         {% if subscription_status == 'canceled' %}
           Reactivate the subscription
         {% elif pm %}

@@ -179,45 +179,10 @@
     {% if user.is_authenticated %}
       <!-- ai tokens AI modal -->
       {% with title='ai-tokens' %}
-        {% render_template 'include/ai_tokens_form.html' as ai_tokens_form %}
+        {% render_template 'include/ai_tokens_form.html' title=title as ai_tokens_form %}
         {% with header_html="<h3 class='text-xl font-semibold text-title'>Add AI Tokens</h3>" %}
           {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn' body_class='px-2 mt-4' %}
         {% endwith %}
-
-        <script type="text/javascript">
-          // Select the tokens amount
-          let lastAiTokenId = ''
-          
-          function amountBtnClick(id, amount, event) {
-            event.preventDefault() // Prevent default button behavior
-          
-            let activeClass = 'bg-text/20'
-            let desactiveClass = 'bg-text/10'
-          
-            // Highlight the clicked button
-            document.getElementById(id).classList.remove(desactiveClass)
-            document.getElementById(id).classList.add(activeClass)
-          
-            // Remove highlight from the last selected button
-            if (lastAiTokenId && lastAiTokenId !== id) {
-              document.getElementById(lastAiTokenId).classList.remove(activeClass)
-              document.getElementById(lastAiTokenId).classList.add(desactiveClass)
-            }
-          
-            // Show input field if "Other" is selected, otherwise set amount
-            let amountInput = document.getElementById('amount-{{title}}')
-            if (Number(amount) <= 0) {
-              document.getElementById('div-amount-{{title}}').classList.remove('hidden')
-              amountInput.value = ''
-              amountInput.focus()
-            } else {
-              amountInput.value = amount
-              document.getElementById('div-amount-{{title}}').classList.add('hidden')
-            }
-          
-            lastAiTokenId = id
-          }
-        </script>
       {% endwith %}
     {% endif %}
 

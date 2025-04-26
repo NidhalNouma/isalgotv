@@ -287,6 +287,14 @@ function validateNumberInput(input, maxLength) {
 let stripe, cardElement, elements, paymentElement;
 
 function mountStripeCard(id) {
+  const objEl = document.getElementById("stripe-element-" + id);
+  const cardEl = document.getElementById("card-element-" + id);
+
+  if (objEl && !cardEl) {
+    mountStripeElement(id);
+    return;
+  }
+
   // unmount previous element
   // Unmount any existing elements
   if (cardElement) {
@@ -342,6 +350,14 @@ function mountStripeCard(id) {
 }
 
 function mountStripeElement(id, to_add = false, callback) {
+  const objEl = document.getElementById("stripe-element-" + id);
+  const cardEl = document.getElementById("card-element-" + id);
+
+  if (!objEl && cardEl) {
+    mountStripeCard(id);
+    return;
+  }
+
   // unmount previous element
   // Unmount any existing elements
   if (cardElement) {
@@ -389,6 +405,7 @@ function mountStripeElement(id, to_add = false, callback) {
           fontLineHeight: "1.5",
           borderRadius: "10px",
 
+          // colorBackground: getCssVariableColor("--color-background"),
           colorBackground: getCssVariableColor("--color-background"),
 
           colorPrimary: getCssVariableColor("--color-primary"),
@@ -1325,6 +1342,8 @@ const modals = {};
 function openModel(id, animated = true, backClose = true) {
   const modalElement = document.querySelector("#" + id);
 
+  if (!modalElement) return false;
+
   let backdrop = "dynamic";
   if (!backClose) backdrop = "static";
 
@@ -1352,6 +1371,7 @@ function openModel(id, animated = true, backClose = true) {
     },
   };
 
+  hideModel(id);
   // Initialize modal if it doesn't exist
   if (modals[id]) {
     modals[id].show();
@@ -1383,6 +1403,8 @@ const drawers = {};
 function openDrawer(id, placement = "right") {
   const draweli = document.querySelector("#" + id);
 
+  if (!draweli) return false;
+
   const drawerOptions = {
     placement: placement,
 
@@ -1393,6 +1415,7 @@ function openDrawer(id, placement = "right") {
     // backdropClasses: "bg-text/80 ",
     onHide: () => {
       document.querySelector("html").style.overflowY = "unset";
+      hideDrawer(id);
     },
     // onShow: () => {
     //   console.log("modal is shown");
@@ -1402,6 +1425,7 @@ function openDrawer(id, placement = "right") {
     // },
   };
 
+  // hideDrawer(id);
   if (drawers[id]) drawers[id].show();
   else {
     const drawer = new Drawer(draweli, drawerOptions);
@@ -1416,6 +1440,87 @@ function openDrawer(id, placement = "right") {
 function hideDrawer(id) {
   if (drawers[id]) drawers[id].hide();
   delete drawers[id];
+
+  return true;
+}
+
+// Custom dropdown open/close with animation and outside click handling
+const customDropdownHandlers = {};
+
+/**
+ * Open a custom dropdown menu by its container ID.
+ * Adds entry animation and sets up outside click listener.
+ * @param {string} id - The dropdown container ID.
+ */
+function openCustomDropdown(id) {
+  const menu = document.getElementById(id);
+  if (!menu) return false;
+
+  // If already open, do nothing
+  if (!menu.classList.contains("hidden")) return false;
+
+  // Apply initial animation styles
+  menu.classList.remove("hidden");
+  menu.classList.add(
+    "opacity-0",
+    "scale-95",
+    "transition",
+    "duration-200",
+    "ease-out"
+  );
+
+  // Trigger reflow then animate to visible
+  requestAnimationFrame(() => {
+    menu.classList.remove("opacity-0", "scale-95");
+    menu.classList.add("opacity-100", "scale-100");
+  });
+
+  // Outside‐click handler
+  function outsideClickListener(e) {
+    if (!menu.contains(e.target)) {
+      closeCustomDropdown(id);
+    }
+  }
+
+  // Store and—importantly—delay attaching the listener until
+  // after the current click event has fully bubbled through.
+  customDropdownHandlers[id] = outsideClickListener;
+  setTimeout(() => {
+    document.addEventListener("click", outsideClickListener);
+  }, 0);
+
+  return true;
+}
+
+/**
+ * Close a custom dropdown menu by its container ID.
+ * Adds exit animation and removes outside click listener.
+ * @param {string} id - The dropdown container ID.
+ */
+function closeCustomDropdown(id) {
+  const menu = document.getElementById(id);
+  if (!menu) return false;
+
+  // If already hidden, do nothing
+  if (menu.classList.contains("hidden")) return false;
+
+  // Animate to hidden state
+  menu.classList.remove("opacity-100", "scale-100");
+  menu.classList.add("opacity-0", "scale-95");
+
+  // After animation ends, hide the element
+  const handler = () => {
+    menu.classList.add("hidden");
+    menu.removeEventListener("transitionend", handler);
+  };
+  menu.addEventListener("transitionend", handler);
+
+  // Remove outside click handler
+  const outsideClickListener = customDropdownHandlers[id];
+  if (outsideClickListener) {
+    document.removeEventListener("click", outsideClickListener);
+    delete customDropdownHandlers[id];
+  }
 
   return true;
 }
