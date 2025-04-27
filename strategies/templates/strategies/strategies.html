@@ -2,34 +2,39 @@
 {% load static %}
 
 {% block head_title %}
-    <title>IsAlgo | TradingView Strategies | Premium Backtestable Systems</title>
-{% endblock head_title %}
+  <title>IsAlgo | TradingView Strategies | Premium Backtestable Systems</title>
+{% endblock %}
 
 {% block head_description %}
-    <meta name="description" content="Access a growing library of expert TradingView strategies. Explore premium, backtestable, and automatable trading systems designed for all markets and skill levels. Start mastering your trades today with IsAlgo.">
-    {% comment %} <meta name="description" content="Explore our exclusive collection of TradingView strategies designed for maximum profitability. Access fully backtestable and automated strategies suitable for all markets, timeframes, and skill levels. Boost your trading edge today with IsAlgo."> {% endcomment %}
-{% endblock head_description %}
+  <meta name="description" content="Access a growing library of expert TradingView strategies. Explore premium, backtestable, and automatable trading systems designed for all markets and skill levels. Start mastering your trades today with IsAlgo." />
+  {% comment %} <meta name="description" content="Explore our exclusive collection of TradingView strategies designed for maximum profitability. Access fully backtestable and automated strategies suitable for all markets, timeframes, and skill levels. Boost your trading edge today with IsAlgo." /> {% endcomment %}
+{% endblock %}
 
 {% block page %}
-
-    {% if has_subscription or strategies|length < 6 %}
+  {% if has_subscription or strategies|length < 6 %}
     <h1 class="main-title">Strategies</h1>
-    {% else %}
-    <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies<span></h1>
-    {% endif %}
+  {% else %}
+    <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">
+      Subscribe today and get access to<br />
+      <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies</span>
+    </h1>
+  {% endif %}
 
-    <main class="mt-8 mb-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
-
-        {% for strategy in strategies %}
-            {% include "include/quick_strategy.html" with strategy=strategy %}
-        {% empty %}
+  <main class="mt-8 mb-16">
+    <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
+      {% for strategy in strategies %}
+        {% include 'include/quick_strategy.html' with strategy=strategy %}
+      {% empty %}
         <p class="text-text text-sm">No strategy availble yet.</p>
-        {% endfor %}
-        {% if strategies|length < 40 %}
-            <div class="h-full w-full flex items-center justify-center">
-                <h2 class=" font-extrabold bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent text-6xl uppercase"><span class="text-accent">More </span></br><span class="text-secondary">coming </span></br><span class="">soon ...</span></h2>
-            </div>
-        {% endif %}
+      {% endfor %}
+    </div>
 
-    </main>
-{% endblock page %}
+    {% if strategies|length < 40 %}
+      <div class="mt-10">
+        <p class="font-extrabold text-6xl text-center uppercase text-accent">
+          More <span class="text-secondary">coming soon ...</span>
+        </p>
+      </div>
+    {% endif %}
+  </main>
+{% endblock %}
