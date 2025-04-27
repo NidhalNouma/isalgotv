@@ -359,7 +359,7 @@ def create_setup_intent(request):
     try:
         customer_id = request.user_profile.customer_id
 
-        payment_method_types = ["card","cashapp", "link", "amazon_pay"]
+        payment_method_types = ["card", "link", "amazon_pay"]
 
         data = json.loads(request.body.decode('utf-8'))
         to_add = data.get('to_add', False)
@@ -400,7 +400,18 @@ def create_payment_method(request):
                 customer=customer_id,
             )
 
+            if len(request.payment_methods) <= 1:
+                # Set the new payment method as default if there are existing payment methods
+                stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        'default_payment_method': payment_method
+                    }
+                )
+
             user_profile = user_profile.get_with_update_stripe_data(force = True)
+
+            request.user_profile = user_profile
             
             context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
 
@@ -1097,7 +1108,7 @@ def buy_ai_tokens(request):
                 customer=customer_id,
                 description=str(token_amount) + " | AI Tokens",
                 automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
-                metadata=metadata,
+                metadata=metadata,            
             )          
 
             user_profile = request.user_profile 

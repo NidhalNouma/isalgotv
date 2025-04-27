@@ -575,6 +575,7 @@ async function onPayFormStripeElementSubmit(title) {
 
       closeLoader(title);
       console.error("Stripe error:", error);
+      return false;
     } else if (
       setupIntent.payment_method &&
       setupIntent.status === "succeeded"
@@ -589,7 +590,7 @@ async function onPayFormStripeElementSubmit(title) {
     } else {
       closeLoader(title);
       console.error("SetupIntent succeeded but no payment method found.");
-      return;
+      return false;
     }
   }
 

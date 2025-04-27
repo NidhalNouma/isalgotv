@@ -161,7 +161,9 @@
   </div>
 
   {% render_template 'include/pay_form_stripe.html' base_price=prices|get_item:price_key final_price=prices|get_item:price_key get_started=get_started as pay_form_stripe %}
-  {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>Unlock premium "|add:title|add:' Access</h3>' %}
-    {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=pay_form_stripe stripe_element_id=title body_class='px-2 mt-3' %}
+  {% with formatted_title=title|lower|capfirst %}
+    {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>Unlock "|add:formatted_title|add:' Access</h3>' %}
+      {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=pay_form_stripe stripe_element_id=title body_class='px-2 mt-3' %}
+    {% endwith %}
   {% endwith %}
 {% endwith %}
