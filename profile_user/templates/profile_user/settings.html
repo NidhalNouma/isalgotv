@@ -46,8 +46,8 @@
           It looks like you signed up using Google Sign-In and don’t have a local password set.
           <a href="{% url 'account_set_password' %}" class="text-primary underline">Create a password</a>
           to secure your account.
-        </p> {% endcomment %}
-      </div>
+        </p> 
+      </div>{% endcomment %}
     {% endif %}
     
     {% if user.is_superuser %}
