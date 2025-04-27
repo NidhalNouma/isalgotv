@@ -400,6 +400,8 @@ def create_payment_method(request):
                 customer=customer_id,
             )
 
+            print("Payment method has been attached to customer ...", len(request.payment_methods) , request.payment_methods)
+
             if len(request.payment_methods) <= 1:
                 # Set the new payment method as default if there are existing payment methods
                 stripe.Customer.modify(
@@ -411,9 +413,9 @@ def create_payment_method(request):
 
             user_profile = user_profile.get_with_update_stripe_data(force = True)
 
-            request.user_profile = user_profile
+            context["user_profile"] = user_profile
             
-            context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
+            context["payment_methods"] = user_profile.stripe_obj.get('payment_methods', None)
 
             response = render(request, 'include/payment_methods.html', context)
             return retarget(response, "#setting-payment_methods")

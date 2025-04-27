@@ -38,7 +38,17 @@
       {% include 'include/settings/ai_tokens.html' %}
     </div>
 
-    {% include 'include/settings/password.html' %}
+    {% if user.has_usable_password %}
+      {% include 'include/settings/password.html' %}
+    {% else %}
+      {% comment %} <div class="mt-6 p-4 max-w-lg mx-auto bg-warning/10 rounded">
+        <p class="text-warning">
+          It looks like you signed up using Google Sign-In and don’t have a local password set.
+          <a href="{% url 'account_set_password' %}" class="text-primary underline">Create a password</a>
+          to secure your account.
+        </p> {% endcomment %}
+      </div>
+    {% endif %}
     
     {% if user.is_superuser %}
       <div id="setting-ai-system-content" class="mt-8">
