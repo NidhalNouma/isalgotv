@@ -15,14 +15,9 @@ from django.db.models import F
 
 def get_strategies(request):
     
-    if request.user.is_staff or request.user.is_superuser:
-        strategies = Strategy.objects.prefetch_related(
-            Prefetch('images', queryset=StrategyImages.objects.all())
-        )
-    else:
-        strategies = Strategy.objects.filter(is_live=True).prefetch_related(
-            Prefetch('images', queryset=StrategyImages.objects.all())
-        )
+    strategies = Strategy.objects.prefetch_related(
+        Prefetch('images', queryset=StrategyImages.objects.all())
+    )
     
     # print(strategies)
 

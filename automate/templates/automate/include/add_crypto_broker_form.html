@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <form class="relative w-full max-w-md mx-auto flex flex-col gap-y-4" id="add-{{ broker_type }}-form" hx-post="{% url 'add_crypto_broker_account' broker_type %}" hx-target="#at-accounts" hx-wait="swap">
   <div class="w-full">
     <label for="{{ broker_type }}_name" class="input-label">Name</label>
@@ -84,7 +85,7 @@
   {% csrf_token %}
   {% include 'include/infos.html' with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class=' w-full' %}
 
-  {% include 'include/broker_payment.html' with title=broker_type price='3.98' %}
+  {% include 'include/broker_payment.html' with title=broker_type price=prices|get_item:'CRYPTO' %}
 
   <div id="add-{{ broker_type }}-form-errors" class=""></div>
 

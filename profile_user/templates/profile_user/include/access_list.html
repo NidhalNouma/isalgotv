@@ -1,115 +1,82 @@
 {% if not user_profile.tradingview_username and has_subscription %}
-
-  {% include 'include/warnings.html' with warning="No tradingview username found. share your tradingview username below to get access." %}
+  {% include 'include/warnings.html' with warning='No tradingview username found. share your tradingview username below to get access.' %}
 
   {% include 'include/home_get_started_tv_username.html' %}
-
 {% else %}
-
-  <section class="w-full max-w-xl mx-auto">
-    {% if  user_profile.tradingview_username %}
-    <h6 class="text-text text-sm">
-      For Username
-      <span class="font-semibold">{{user_profile.tradingview_username}}</span>
-    </h6>
-    {% endif %} 
+  <section class="divide-y divide-text/5">
+    {% if user_profile.tradingview_username %}
+      <h6 class="text-text text-sm">
+        For Username
+        <span class="font-semibold">{{ user_profile.tradingview_username }}</span>
+      </h6>
+    {% endif %}
     {% for strategy in strategies reversed %}
-    <div
-      class="my-6 border-b-[0px] border-text/40 flex justify-between items-center"
-    >
-      <a
-        href="{% url 'strategy' slug=strategy.slug %}"
-        class="text-title text-sm hover:underline"
-        >{{strategy.name}} &rarr;</a
-      >
+      <div class="p-2 sm:p-4 hover:bg-text/5 transition-colors rounded-md">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <span class="text-title truncate">{{ strategy.name }}</span>
+            {% comment %} <ArrowRight className="w-4 h-4 text-zinc-600" /> {% endcomment %}
+          </div>
 
-      <div class="ml-3 sm:ml-6 flex items-center">
-        {% if strategy in user_profile.strategies.all %}
-        <span class="text-green-600 text-xs px-1 rounded-full bg-green-800/10"
-          >Active</span
-        >
-        {% else %}
-        <span class="text-red-600 text-xs px-1 rounded-full bg-red-800/10"
-          >Inactive</span
-        >
-        {% endif %} {% if has_subscription and subscription_status != 'past_due' %}
-        <form
-          class="inline-flex"
-          hx-post="{% url 'give_access' strategy.id %}"
-          hx-target="#access-main"
-        >
-          {% csrf_token %}
-          <button
-            class="btn-text text-xs ml-2 py-0.5"
-            type="submit"
-            id="btn-acc-{{strategy.id}}"
-            onclick="openLoader('', '-acc-{{strategy.id}}', 'flex');"
-          >
-            Recheck
-            <svg
-              class="h-4 w-4 ml-1"
-              stroke="currentColor"
-              fill="none"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path
-                d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747"
-              ></path>
-              <path d="M20 4v5h-5"></path>
-            </svg>
-          </button>
-          <button
-            id="spinner-acc-{{strategy.id}}"
-            disabled
-            type="button"
-            class="btn-text text-xs ml-2 py-0.5 hidden"
-          >
-            Recheck
-            <svg
-              aria-hidden="true"
-              role="status"
-              class="inline w-3.5 h-3.5 ml-1 animate-spin"
-              viewBox="0 0 100 101"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                fill="#E5E7EB"
-              />
-              <path
-                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </form>
-        {% else %}
-        <button onclick="toggleGetStarted()" class="btn-accent text-xs ml-2 py-0.5">
-          Unlock
-          <svg
-            class="h-4 w-4 ml-0.5"
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 4c1.654 0 3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3zm6.002 16H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z"
-            ></path>
-          </svg>
-        </button>
+          <div class="flex-shrink-0 flex items-center justify-center gap-3">
+            {% if strategy in user_profile.strategies.all %}
+              <span class="text-success text-sm">Active</span>
+            {% else %}
+              <span class="text-error text-sm">Inactive</span>
+            {% endif %}
+
+            <form class="inline-block" hx-post="{% url 'give_access' strategy.id %}" hx-target="#access-main">
+              {% csrf_token %}
+              <button class="btn-text py-1" type="submit" id="btn-acc-{{ strategy.id }}" onclick="openLoader('', '-acc-{{ strategy.id }}', 'flex');">
+                Recheck<svg class="h-4 w-4 ml-1.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                  <path d="M21 3v5h-5"></path>
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                  <path d="M8 16H3v5"></path>
+                </svg>
+              </button>
+              <button id="spinner-acc-{{ strategy.id }}" disabled type="button" class="btn-text hidden py-1">
+                Recheck<svg aria-hidden="true" role="status" class="inline w-3.5 h-3.5 ml-1.5 animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+        {% if error and error_id == strategy.id %}
+          {% include 'include/errors.html' with error=error class='mt-1' %}
         {% endif %}
       </div>
-    </div>
+      {% comment %} <div class="my-6 border-b-[0px] border-text/40 flex justify-between items-center">
+        <a href="{% url 'strategy' slug=strategy.slug %}" class="text-title text-sm hover:underline">{{ strategy.name }} &rarr;</a>
+
+        <div class="ml-3 sm:ml-6 flex items-center">
+          {% if strategy in user_profile.strategies.all %}
+            <span class="text-success text-xs px-1 rounded-full bg-success/10">Active</span>
+          {% else %}
+            <span class="text-error text-xs px-1 rounded-full bg-error/10">Inactive</span>
+          {% endif %}
+          <form class="inline-flex" hx-post="{% url 'give_access' strategy.id %}" hx-target="#access-main">
+            {% csrf_token %}
+            <button class="btn-text text-xs ml-2 py-0.5" type="submit" id="btn-acc-{{ strategy.id }}" onclick="openLoader('', '-acc-{{ strategy.id }}', 'flex');">
+              Recheck<svg class="h-4 w-4 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747"></path>
+                <path d="M20 4v5h-5"></path>
+              </svg>
+            </button>
+            <button id="spinner-acc-{{ strategy.id }}" disabled type="button" class="btn-text text-xs ml-2 py-0.5 hidden">
+              Recheck<svg aria-hidden="true" role="status" class="inline w-3.5 h-3.5 ml-1 animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div> {% endcomment %}
     {% empty %}
-    <p class="text-text text-sm">No strategy found.</p>
+      <p class="text-text text-sm">No strategy found.</p>
     {% endfor %}
   </section>
 {% endif %}

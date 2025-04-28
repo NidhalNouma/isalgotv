@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -128,7 +127,7 @@ def settings_page(request):
 
 @login_required(login_url='login')
 def access_page(request):
-    strategies = Strategy.objects.filter(is_live=True)
+    strategies = Strategy.objects.all()
     context = {
         "strategies": strategies,
         # 'show_banner': True
@@ -229,10 +228,10 @@ def edit_tradingview_username(request):
 
     if tv_username and request.user.is_authenticated:
 
-        if  not request.has_subscription:
-            error = "You need to have an active subscription to update your TradingView username."
-            response = render(request, 'include/errors.html', context = {"error": error})
-            return retarget(response, "#tradingview_username_submit_error")
+        # if  not request.has_subscription:
+        #     error = "You need to have an active subscription to update your TradingView username."
+        #     response = render(request, 'include/errors.html', context = {"error": error})
+        #     return retarget(response, "#tradingview_username_submit_error")
         
         response_data = username_search(tv_username)
         if response_data == None:
@@ -262,19 +261,21 @@ def edit_tradingview_username(request):
         profile_user.tradingview_username = tv_username
         profile_user.save()
 
-        if request.has_subscription and request.subscription_status != 'past_due':
+        strategies = Strategy.objects.filter(is_live=True, premium=False)
+        if request.has_subscription:
+            strategies = Strategy.objects.filter(is_live=True)
+        if profile_user.is_lifetime:
             strategies = Strategy.objects.all()
 
-            for strategy in strategies:
-                if strategy.is_live:
-                    access_response = give_access(strategy.id, profile_user.id, True)
+        for strategy in strategies:
+            if strategy.is_live:
+                access_response = give_access(strategy.id, profile_user.id, True)
+                if access_response.get('error'):
 
-        # if access_response == None:
-        #     error = "an error occurred while getting access. Please try again later or contact our support team."
-        #     response = render(request, 'include/errors.html', context = {"error": error})
-        #     return retarget(response, "#tradingview_username_submit_error")
+                    error = access_response.get('error')
+                    response = render(request, 'include/errors.html', context = {"error": error})
+                    return retarget(response, "#tradingview_username_submit_error")
 
-        
         if not page:
             context = {}
             context["step"] = 3
@@ -336,17 +337,32 @@ def edit_discord_username(request):
 def get_access(request, strategy_id):
     pg = request.GET.get('pg')
 
-    if request.user and request.has_subscription and request.subscription_status != 'past_due':
+    if request.user:
         profile_user = request.user_profile
 
         access_response = give_access(strategy_id, profile_user.id, True)
+
+        # print("Access response:", access_response)
+    
+        if access_response.get('error'):
+            error = access_response.get('error')
+
+            if pg == "st":
+                context = access_response
+                response = render(request, 'include/get_access_model.html', context)
+                return response
+                # response = render(request, 'include/errors.html', context = {"error": error})
+                # return retarget(response, "#get-access-errors")
+            else:
+                strategies = Strategy.objects.all()
+                return render(request, 'include/access_list.html', context = {"strategies": strategies, "error_id": strategy_id, "error": error})
 
     if pg == "st":
         context = access_response
         response = render(request, 'include/get_access_model.html', context)
         return response
     else:
-        strategies = Strategy.objects.filter(is_live=True)
+        strategies = Strategy.objects.all()
         return render(request, 'include/access_list.html', context = {"strategies": strategies})
     
 

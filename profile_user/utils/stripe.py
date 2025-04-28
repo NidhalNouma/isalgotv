@@ -89,3 +89,22 @@ def check_coupon_fn(coupon_id, plan_id, price, customer_id):
     except Exception as e:
         # print(e)
         raise e
+
+
+# Helper function to retrieve a Stripe Price by ID
+def get_price_by_id(price_id):
+    """
+    Retrieve a Stripe Price object by its ID.
+    Returns the full Price object.
+    """
+    try:
+        price = stripe.Price.retrieve(price_id)
+        # Calculate amount and remove trailing .0 if present
+        amount = price.unit_amount / 100
+        if isinstance(amount, float) and amount.is_integer():
+            amount = int(amount)
+        print(f"Retrieved price: {price.id} - {amount} {price.currency.upper()}")
+        return amount
+    except Exception as e:
+        # Re-raise to be handled by the caller
+        raise

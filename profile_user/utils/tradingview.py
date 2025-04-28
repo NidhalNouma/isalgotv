@@ -18,6 +18,28 @@ def give_access(strategy_id, profile_id, access):
         profile = User_Profile.objects.get(pk = profile_id)
         strategy = Strategy.objects.get(pk = strategy_id)
 
+        if not profile.tradingview_username:
+            r['error'] = "Please set your TradingView username in your profile settings."
+            return r
+        if not strategy.tradingview_ID:
+            r['error'] = "This strategy does not have a TradingView ID. Please contact support."
+            return r
+        
+        if access:
+          if strategy.premium and not profile.has_subscription:
+              if profile.strategies.filter(pk=strategy_id).exists():
+                  profile.strategies.remove(strategy)
+              r['error'] = "This strategy is premium. Please upgrade your plan to access it."
+              r['upgrade'] = True
+              return r
+          
+          if not strategy.is_live and not profile.is_lifetime:
+              if profile.strategies.filter(pk=strategy_id).exists():
+                  profile.strategies.remove(strategy)
+              r['error'] = "This strategy is not live. only availble for lifetime users."
+              r['upgrade'] = True
+              return r
+
         data = {
           "username_recip": profile.tradingview_username,
           "pine_id": f"PUB;{strategy.tradingview_ID}"
@@ -49,6 +71,10 @@ def give_access(strategy_id, profile_id, access):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
         r['error'] =  "We encountered an error while granting access. Please reach out to us so we can assist you promptly!"
+        return r
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        r['error'] = str(e)
         return r
     
 

@@ -19,6 +19,8 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
+from profile_user.utils.stripe import get_price_by_id
+
 # print(env)
 # print(os.environ)
 
@@ -246,10 +248,14 @@ PRICE_LIST = {
 }
 
 PRICES = {
-    'MONTHLY': env('STRIPE_PRICE_MN_PRICE'),
-    'QUARTERLY': env('STRIPE_PRICE_3MN_PRICE'),
-    'YEARLY': env('STRIPE_PRICE_Y_PRICE'),
-    'LIFETIME': env('STRIPE_PRICE_LT_PRICE'),
+    'MONTHLY': get_price_by_id(env('STRIPE_PRICE_MN_ID')),
+    'QUARTERLY': get_price_by_id(env('STRIPE_PRICE_3MN_ID')),
+    'YEARLY': get_price_by_id(env('STRIPE_PRICE_Y_ID')),
+    'LIFETIME':     get_price_by_id(env('STRIPE_PRICE_LT_ID')),
+
+    'CRYPTO':   get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_CRYPTO')),
+    'FOREX':  get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_FOREX')),
+    'METATRADER':   get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_METATRADER')),
 }
 
 # CKEDITOR Text Editor

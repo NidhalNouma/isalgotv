@@ -22,3 +22,27 @@ def load_json(data):
         return json.loads(data.replace("'", "\""))
     except ValueError:
         return {}
+
+
+
+@register.filter(name='abbrev')
+def abbrev(value):
+    """
+    Abbreviates a number:
+      1k for 1000, 1M for 1000000, etc.
+    """
+    try:
+        n = float(value)
+    except (ValueError, TypeError):
+        return value
+
+    if n < 1000:
+        return str(int(n))
+    elif n < 1000000:
+        return f"{n/1000:.1f}k".rstrip('0').rstrip('.')
+    elif n < 1000000000:
+        return f"{n/1000000:.1f}M".rstrip('0').rstrip('.')
+    elif n < 1000000000000:
+        return f"{n/1000000000:.1f}B".rstrip('0').rstrip('.')
+    else:
+        return f"{n/1000000000000:.1f}T".rstrip('0').rstrip('.')
