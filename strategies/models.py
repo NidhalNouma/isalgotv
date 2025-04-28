@@ -211,6 +211,7 @@ class Strategy(models.Model):
     tradingview_url = models.URLField(blank=True)
     video_url = models.URLField(blank=True)
     image_url = models.URLField(blank=True)
+    short_video_url = models.URLField(blank=True)
     chart_url = models.URLField(blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     settings = SettingsJSONField()
@@ -218,6 +219,7 @@ class Strategy(models.Model):
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     is_live = models.BooleanField(default=False)
+    premium = models.BooleanField(default=True)
     
     images = GenericRelation(StrategyImages) 
     

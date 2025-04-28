@@ -2045,6 +2045,10 @@ h1,
   left: 1rem;
 }
 
+.left-3 {
+  left: 0.75rem;
+}
+
 .\!z-0 {
   z-index: 0 !important;
 }
@@ -4598,6 +4602,10 @@ h1,
 
 .fill-transparent {
   fill: transparent;
+}
+
+.fill-profit {
+  fill: hsl(var(--color-profit) / 1);
 }
 
 .stroke-background {
