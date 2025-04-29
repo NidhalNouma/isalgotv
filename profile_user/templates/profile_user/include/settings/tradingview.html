@@ -1,11 +1,6 @@
-<form hx-post="{% url 'update-tradingview-username' %}?pg=settings" hx-target="#tv-setting" class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-8">
+<form hx-post="{% url 'update-tradingview-username' %}?pg=settings" hx-target="#tv-setting" class="mx-auto rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden w-full py-4 px-6 max-w-lg mb-8">
   <h5 class="text-title font-semibold mb-6">Tradingview</h5>
   {% csrf_token %}
-
-  {% load custom_tags %}
-  {% render_template 'include/docs/find_username.html' as info_content %}
-
-  {% include 'include/drawer_modal.html' with drawer_id='drawer-tv-help' title='Tradingview username' body=info_content %}
 
   <label for="email" class="flex items-center justify-between input-label">
     <span>Tradingview username</span>
@@ -44,3 +39,8 @@
     </svg>Saving...
   </button>
 </form>
+
+{% load custom_tags %}
+{% render_template 'include/docs/find_username.html' as info_content %}
+
+{% include 'include/drawer_modal.html' with drawer_id='drawer-tv-help' title='Tradingview username' body=info_content %}

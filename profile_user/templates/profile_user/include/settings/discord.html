@@ -1,7 +1,7 @@
 <form
   hx-post="{% url 'update-discord-username' %}"
   hx-target="#discord-setting"
-  class="mx-auto w-full border border-text py-4 px-6 rounded-xl max-w-lg mb-8"
+  class="mx-auto w-full rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden py-4 px-6  max-w-lg mb-8"
 >
   <h5 class="text-title font-semibold mb-6">Discord</h5>
   {% csrf_token %}

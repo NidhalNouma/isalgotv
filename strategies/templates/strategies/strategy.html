@@ -81,16 +81,14 @@
         {% if strategy.is_live or not strategy.is_live and user_profile.is_lifetime %}
           {% if has_subscription and strategy.premium or not strategy.premium %}
             {% if user_profile.tradingview_username %}
-              <div class="space-x-1 text-sm text-text/80 -mt-1">
+              <div class="space-x-1 text-sm text-text/80 -mt-0.5">
                 &#10263;<span class="ml-1.5">Connected as</span>
-                <span class="text-text font-medium inline-flex items-center">
+                <a href="{% url 'settings' %}" class="text-text hover:text-text/80 cursor-pointer font-medium inline-flex items-center">
                   {{ user_profile.tradingview_username }}
-                  <a href="{% url 'settings' %}" class="ml-1.5 text-text/80 hover:text-text transition-colors text-sm">
-                    <svg class="h-3 aspect-auto" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h274.9c-2.4-6.8-3.4-14-2.6-21.3l6.8-60.9 1.2-11.1 7.9-7.9 77.3-77.3c-24.5-27.7-60-45.5-99.9-45.5zm45.3 145.3l-6.8 61c-1.1 10.2 7.5 18.8 17.6 17.6l60.9-6.8 137.9-137.9-71.7-71.7-137.9 137.8zM633 268.9L595.1 231c-9.3-9.3-24.5-9.3-33.8 0l-37.8 37.8-4.1 4.1 71.8 71.7 41.8-41.8c9.3-9.4 9.3-24.5 0-33.9z"></path>
-                    </svg>
-                  </a>
-                </span>
+                  <svg class="ml-1 h-3 aspect-auto" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h274.9c-2.4-6.8-3.4-14-2.6-21.3l6.8-60.9 1.2-11.1 7.9-7.9 77.3-77.3c-24.5-27.7-60-45.5-99.9-45.5zm45.3 145.3l-6.8 61c-1.1 10.2 7.5 18.8 17.6 17.6l60.9-6.8 137.9-137.9-71.7-71.7-137.9 137.8zM633 268.9L595.1 231c-9.3-9.3-24.5-9.3-33.8 0l-37.8 37.8-4.1 4.1 71.8 71.7 41.8-41.8c9.3-9.4 9.3-24.5 0-33.9z"></path>
+                  </svg>
+                </a>
               </div>
 
               {% if strategy not in user_profile.strategies.all %}
@@ -112,10 +110,10 @@
                 </div>
               {% endif %}
             {% else %}
-              <div class="text-text/80 space-x-1">
+              <div class="text-text/80 text-sm -mt-0.5 space-x-1">
                 &#10263;<span class="ml-1.5">Set your tradingview username</span>
                 <a href="{% url 'settings' %}" class="text-primary hover:text-primary transition-colors">here</a>
-                <span class="">to get access to the strategy.</span>
+                <span class="">to get access to this strategy.</span>
               </div>
             {% endif %}
           {% endif %}
