@@ -405,7 +405,6 @@ function mountStripeElement(id, to_add = false, callback) {
           fontLineHeight: "1.5",
           borderRadius: "10px",
 
-          // colorBackground: getCssVariableColor("--color-background"),
           colorBackground: getCssVariableColor("--color-background"),
 
           colorPrimary: getCssVariableColor("--color-primary"),
@@ -419,8 +418,13 @@ function mountStripeElement(id, to_add = false, callback) {
           tabLogoColor: "dark",
         },
         rules: {
+          ".AccordionItem": {
+            // border: "none",
+            boxShadow: "none",
+          },
           ".Block": {
-            // backgroundColor: "var(--colorBackground)",
+            backgroundColor: "var(--colorBackground)",
+            border: "none",
             boxShadow: "none",
             padding: "12px",
           },
@@ -465,7 +469,7 @@ function mountStripeElement(id, to_add = false, callback) {
         layout: {
           type: "accordion",
           defaultCollapsed: false,
-          radios: false,
+          // radios: false,
           spacedAccordionItems: true,
         },
         // Only offer Card and Cash App Pay:

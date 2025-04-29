@@ -12,7 +12,7 @@
   </p>
 
   {% if not subscription_paused and subscription_status != 'canceled' %}
-    <div class="bg-text/10 rounded-md p-4 my-3 text-text">
+    <div class="bg-text/5 backdrop-blur-3xl rounded-md p-4 my-3 text-text">
       <div class="flex justify-between items-center mb-2">
         <span class="text-text">Next Payment</span>
       </div>
@@ -31,7 +31,7 @@
     </div>
   {% endif %}
 
-  <div class="bg-text/10 rounded-md p-4 my-3 text-text">
+  <div class="bg-text/5i backdrop-blur-3xl rounded-md p-4 my-3 text-text">
     <div class="flex justify-between items-center mb-2">
       <span class="text-text">
         {% if subscription_status == 'canceled' %}
