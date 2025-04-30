@@ -1,9 +1,10 @@
 
+
 import datetime
+import time
 import environ
 env = environ.Env()
 
-import json
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
 stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
@@ -108,3 +109,144 @@ def get_price_by_id(price_id):
     except Exception as e:
         # Re-raise to be handled by the caller
         raise
+
+
+def get_profile_data(user_profile, PRICE_LIST):
+
+    data = {
+        "customer": None,
+        "subscription": None,
+        "payment_methods": None,
+        "payment_intent": None,
+        "subscription_canceled": False,
+        "subscription_next_payment_amount": None,
+        "subscription_period_end": None,
+        "subscription_active": False,
+        "subscription_status": None,
+        "subscription_price_id": None,
+        "subscription_product_id": None,
+        "subscription_interval": None,
+        "subscription_interval_count": None,
+        "subscription_plan": None,
+        "has_subscription": False,
+    }
+
+
+    try:
+        if user_profile.customer_id:
+            try:
+                stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+                # print("stripe customer, " , stripe_customer)
+            except Exception as e:
+                print("Error with getting stripe customer...", e)
+
+        if not user_profile.customer_id or not stripe_customer or "deleted" in stripe_customer:
+            customer = stripe.Customer.create(
+                    email=user_profile.user.email,
+                    name=user_profile.user.username,
+                )
+            if customer.id:
+                stripe_customer = customer
+                # user_profile = User_Profile.objects.get(user=current_user)
+                user_profile.customer_id = customer.id
+                user_profile.save(update_fields=["customer_id"])
+
+        data["customer"] = stripe_customer
+
+        if user_profile.is_lifetime:
+            data["has_subscription"] = True
+            return data
+
+        # Retrieve subscription if exists
+        if user_profile.subscription_id:
+            try:
+                subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
+                data["subscription"] = subscription
+
+
+                end_timestamp = subscription.current_period_end * 1000
+                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
+
+
+                subscription_status = subscription.status
+
+                subscription_interval = subscription.plan.interval
+                subscription_interval_count = subscription.plan.interval_count
+
+
+                data["subscription_period_end"] = end_time.isoformat()
+                data["subscription_active"] = subscription.plan.active
+                data["subscription_status"] = subscription.status
+                data["subscription_price_id"] = subscription.plan.id
+                data["subscription_product_id"] = subscription.plan.product
+                data["subscription_interval"] = subscription.plan.interval
+                data["subscription_interval_count"] = subscription.plan.interval_count
+
+
+                if subscription_interval == "year":
+                    subscription_plan = list(PRICE_LIST.keys())[2]
+
+                elif subscription_interval == "month":
+                    if subscription_interval_count == 1:
+                        subscription_plan = list(PRICE_LIST.keys())[0]
+                    elif subscription_interval_count == 3:
+                        subscription_plan = list(PRICE_LIST.keys())[1]
+                    elif subscription_interval_count == 12:
+                        subscription_plan = list(PRICE_LIST.keys())[2]
+                
+                data["subscription_plan"] = subscription_plan
+                
+
+
+                if subscription_status == 'active' and subscription.current_period_end > time.time():
+                    data["has_subscription"] = True
+                elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
+                    data["has_subscription"] = True
+                elif subscription_status == 'past_due' and subscription.current_period_end > time.time():
+                    data["has_subscription"] = True
+                # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
+                #     has_subscription = True
+                elif subscription_status == "incomplete":
+                    data["has_subscription"] = False
+
+                
+                if subscription.cancel_at_period_end or subscription.status == "canceled" or subscription.status == "incomplete":
+                    data["subscription_canceled"] = True
+
+                
+                if not data["subscription_canceled"] and data["has_subscription"]:
+                    # Get the upcoming invoice for the subscription
+                    upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
+                    data["payment_intent"] = upcoming_invoice
+
+                    if upcoming_invoice:
+                        total_amount_due = upcoming_invoice["amount_due"]/100
+                        data["subscription_next_payment_amount"] = total_amount_due
+            except Exception as e:
+                print("Error with getting stripe subscription...", e)
+
+
+        if user_profile.customer_id:
+            try:
+                payment_methods = stripe.Customer.list_payment_methods(user_profile.customer_id, limit=100)
+                payment_methods = payment_methods.data
+                data["payment_methods"] = payment_methods
+            except Exception as e:
+                print("Error with getting payment methods ...", e)
+
+    except Exception as e:
+        print("Error with getting stripe data ...", e)
+
+    return data
+
+def delete_customer(user_profile):
+    """
+    Deletes the Stripe customer associated with the user profile.
+    """
+    if user_profile.customer_id:
+        try:
+            print(f"Deleting Stripe customer {user_profile.customer_id} for user {user_profile.user.email}")
+            stripe.Customer.delete(user_profile.customer_id)
+        except stripe.error.StripeError as e:
+            # log or ignore Stripe deletion errors
+            print(f"Error deleting Stripe customer {user_profile.customer_id}: {e}")

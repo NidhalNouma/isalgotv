@@ -7,19 +7,12 @@ from django.dispatch import receiver
 from django.db import transaction
 from django.utils.timezone import now
 
-import datetime
-import time
 import json
 
-import environ
-env = environ.Env()
+from .utils.stripe import get_profile_data, delete_customer
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
-
-import stripe
-stripe.api_key = env('STRIPE_API_KEY')
-
 
 # Create your models here.
 class PrettyJSONEncoder(json.JSONEncoder):
@@ -96,132 +89,12 @@ class User_Profile(models.Model):
 
         print("Fetching Stripe data for user:", self.user.email)
 
-
-        data = {
-            "customer": None,
-            "subscription": None,
-            "payment_methods": None,
-            "payment_intent": None,
-            "subscription_canceled": False,
-            "subscription_next_payment_amount": None,
-            "subscription_period_end": None,
-            "subscription_active": False,
-            "subscription_status": None,
-            "subscription_price_id": None,
-            "subscription_product_id": None,
-            "subscription_interval": None,
-            "subscription_interval_count": None,
-            "subscription_plan": None,
-        }
-
-        self.has_subscription = False
-    
-        try:
-            if self.customer_id:
-                try:
-                    stripe_customer = stripe.Customer.retrieve(self.customer_id)
-                    # print("stripe customer, " , stripe_customer)
-                except Exception as e:
-                    print("Error with getting stripe customer...", e)
-
-            if not self.customer_id or not stripe_customer or "deleted" in stripe_customer:
-                customer = stripe.Customer.create(
-                        email=self.user.email,
-                        name=self.user.username,
-                    )
-                if customer.id:
-                    stripe_customer = customer
-                    # user_profile = User_Profile.objects.get(user=current_user)
-                    self.customer_id = customer.id
-                    self.save(update_fields=["customer_id"])
-
-            data["customer"] = stripe_customer
-
-            if self.is_lifetime:
-                self.has_subscription = True
-
-            # Retrieve subscription if exists
-            if self.subscription_id:
-                try:
-                    subscription = stripe.Subscription.retrieve(self.subscription_id)
-                    data["subscription"] = subscription
-
-
-                    end_timestamp = subscription.current_period_end * 1000
-                    end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
-
-
-                    subscription_status = subscription.status
-
-                    subscription_interval = subscription.plan.interval
-                    subscription_interval_count = subscription.plan.interval_count
-
-
-                    data["subscription_period_end"] = end_time.isoformat()
-                    data["subscription_active"] = subscription.plan.active
-                    data["subscription_status"] = subscription.status
-                    data["subscription_price_id"] = subscription.plan.id
-                    data["subscription_product_id"] = subscription.plan.product
-                    data["subscription_interval"] = subscription.plan.interval
-                    data["subscription_interval_count"] = subscription.plan.interval_count
-
-
-                    if subscription_interval == "year":
-                        subscription_plan = list(PRICE_LIST.keys())[2]
-
-                    elif subscription_interval == "month":
-                        if subscription_interval_count == 1:
-                            subscription_plan = list(PRICE_LIST.keys())[0]
-                        elif subscription_interval_count == 3:
-                            subscription_plan = list(PRICE_LIST.keys())[1]
-                        elif subscription_interval_count == 12:
-                            subscription_plan = list(PRICE_LIST.keys())[2]
-                    
-                    data["subscription_plan"] = subscription_plan
-                    
-
-
-                    if subscription_status == 'active' and subscription.current_period_end > time.time():
-                        self.has_subscription = True
-                    elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
-                        self.has_subscription = True
-                    elif subscription_status == 'past_due' and subscription.current_period_end > time.time():
-                        self.has_subscription = True
-                    # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
-                    #     has_subscription = True
-                    elif subscription_status == "incomplete":
-                        self.has_subscription = False
-
-                    
-                    if subscription.cancel_at_period_end or subscription.status == "canceled" or subscription.status == "incomplete":
-                        data["subscription_canceled"] = True
-
-                    
-                    if not data["subscription_canceled"] and self.has_subscription:
-                        # Get the upcoming invoice for the subscription
-                        upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
-                        data["payment_intent"] = upcoming_invoice
-
-                        if upcoming_invoice:
-                            total_amount_due = upcoming_invoice["amount_due"]/100
-                            data["subscription_next_payment_amount"] = total_amount_due
-                except Exception as e:
-                    print("Error with getting stripe subscription...", e)
-
-
-            if self.customer_id:
-                try:
-                    payment_methods = stripe.Customer.list_payment_methods(self.customer_id, limit=100)
-                    payment_methods = payment_methods.data
-                    data["payment_methods"] = payment_methods
-                except Exception as e:
-                    print("Error with getting payment methods ...", e)
-
-        except Exception as e:
-            print("Error with getting stripe data ...", e)
+        data = get_profile_data(self, PRICE_LIST)
+        has_subscription = data.get("has_subscription", False)
 
         # Cache the result and timestamp
         self.stripe_obj = data
+        self.has_subscription = has_subscription
         self.stripe_last_checked = now()
         self.save(update_fields=["stripe_obj", "stripe_last_checked", "has_subscription"])
         return self
@@ -234,13 +107,7 @@ def cleanup_stripe_on_profile_delete(sender, instance, **kwargs):
     Cancels Stripe subscription and deletes Stripe customer.
     """
     # Delete Stripe customer if exists automatically cancel subscription
-    if instance.customer_id:
-        print(f"Deleting Stripe customer {instance.customer_id} for user {instance.user.email}")
-        try:
-            stripe.Customer.delete(instance.customer_id)
-        except stripe.error.StripeError as e:
-            # log or ignore Stripe deletion errors
-            print(f"Error deleting Stripe customer {instance.customer_id}: {e}")
+    delete_customer(instance)
 
 
 class Notification(models.Model):
