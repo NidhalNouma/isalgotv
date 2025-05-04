@@ -36,7 +36,7 @@ def give_access(strategy_id, profile_id, access):
           if not strategy.is_live and not profile.is_lifetime:
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
-              r['error'] = "This strategy is not live. only availble for lifetime users."
+              r['error'] = "This is a beta strategy. only availble for lifetime users."
               r['upgrade'] = True
               return r
 

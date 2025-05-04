@@ -199,7 +199,6 @@ def add_result(request, id):
                 result.created_by = request.user.user_profile
                 result.save()
 
-
                 # Save images with modified name and URL
                 for index, image in enumerate(request.FILES.getlist('images')):
                     image_name = f'{result.id}_{index}_{image.name}'  

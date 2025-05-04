@@ -205,7 +205,7 @@
         <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
           {% for result in best_results %}
             <div class="">
-              {% include 'include/quick_result.html' with result=result %}
+              {% include 'include/quick_result.html' with result=result id=result.id %}
             </div>
           {% endfor %}
         </div>
