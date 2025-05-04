@@ -1097,6 +1097,20 @@ function handleXlsxFileSelect(event) {
       fillResultsFromSheet(performanceSheet);
     }
 
+    // Process results (Performance tab)
+    if (workbook.Sheets["List of trades"]) {
+      const listOfTrades = XLSX.utils.sheet_to_json(
+        workbook.Sheets["List of trades"],
+        { header: 1 }
+      );
+      // console.log("List of trades:", listOfTrades);
+
+      if (document.getElementById("add-trades-list")) {
+        const tradesTable = document.getElementById("add-trades-list");
+        tradesTable.value = JSON.stringify(listOfTrades);
+      }
+    }
+
     fileInput.value = null;
   };
 
@@ -1106,6 +1120,7 @@ function handleXlsxFileSelect(event) {
 function fillSettingsFromSheet(sheetData) {
   let cnt = 0;
   let startKey = "";
+  let prevKey = "";
 
   if (document.getElementById("initial_capital"))
     document.getElementById("initial_capital").value = "";
@@ -1161,7 +1176,7 @@ function fillSettingsFromSheet(sheetData) {
             .toISOString()
             .slice(0, 16);
         }
-      } else if (key === "Timeframe") {
+      } else if (key === "Timeframe" && prevKey === "Symbol") {
         const [num, period] = value.split(" ");
         document.getElementById("time_frame").value = num;
         document.getElementById("time_frame_period").value =
@@ -1179,6 +1194,8 @@ function fillSettingsFromSheet(sheetData) {
         document.getElementById("initial_capital").value += " " + value;
       }
     }
+
+    prevKey = key;
   });
 }
 
@@ -1324,6 +1341,7 @@ function trimPercentage(num) {
 
 // Helper function to convert timeframe period
 function convertTimeframePeriod(val) {
+  if (!val) return val;
   val = val.toLowerCase();
   if (val.includes("second")) return "seconds";
   if (val.includes("minute")) return "minutes";
@@ -1333,6 +1351,139 @@ function convertTimeframePeriod(val) {
   if (val.includes("month")) return "months";
   if (val.includes("year")) return "years";
   return val;
+}
+
+/**
+ * Transforms a 2D array (first row = header) into an object
+ * with `time` and `profit` arrays, suitable for charting.
+ *
+ * @param {Array[]} data
+ *   - data[0] is the header row
+ *   - data[i][3] is the Date/Time value
+ *   - data[i][6] is the Profit USD value
+ * @returns {{time: number[], profit: number[]}}
+ */
+function transformToTimeProfitForChart(data) {
+  // start balance
+  const startBalance = 0;
+  let cumulative = startBalance;
+
+  // validate
+  if (!data || !Array.isArray(data) || data.length < 2) {
+    console.error("Invalid data for chart transformation.");
+    return { time: [], profit: [startBalance] };
+  }
+
+  // skip header and filter only exit rows
+  const rows = data.slice(1);
+  const exitRows = rows.filter(
+    (row) =>
+      typeof row[1] === "string" && row[1].toLowerCase().startsWith("exit")
+  );
+
+  // console.log("Exit rows:", exitRows);
+
+  // prepare arrays
+  const time = [];
+  const profit = [startBalance];
+
+  // accumulate profit
+  exitRows.forEach((row) => {
+    const t = row[3];
+    const p = parseFloat(row[6]) || 0;
+    cumulative += p;
+    time.push(t);
+    profit.push(cumulative);
+  });
+
+  return { time, profit };
+}
+
+function loadTradesData(result_id) {
+  const rawDiv = document.getElementById("trades-data-" + result_id);
+  if (!rawDiv) return;
+
+  const raw = rawDiv.textContent;
+  const data = JSON.parse(raw);
+  const header = data[0];
+  const rows = data.slice(1).reverse();
+  const skipIndex = header.indexOf("Signal");
+  const tradeIndex = header.indexOf("Trade #");
+  const typeIndex = header.indexOf("Type");
+  const dateIndex = header.indexOf("Date/Time");
+  const priceIndex = header.indexOf("Price JPY");
+
+  const thead = document.getElementById("trades-header-" + result_id);
+  thead.innerHTML = "";
+  header.forEach((text, i) => {
+    if (i === skipIndex) return;
+    const th = document.createElement("th");
+    th.className =
+      "text-left px-4 py-2 text-sm text-title font-semibold truncate";
+    th.textContent = text;
+    thead.appendChild(th);
+  });
+
+  // Group rows by trade number
+  const grouped = {};
+  rows.forEach((row) => {
+    const tradeNum = row[tradeIndex];
+    grouped[tradeNum] = grouped[tradeNum] || [];
+    grouped[tradeNum].push(row);
+  });
+
+  const tbody = document.getElementById("trades-body-" + result_id);
+  tbody.innerHTML = "";
+
+  Object.keys(grouped)
+    .sort((a, b) => b - a)
+    .forEach((tradeNum) => {
+      const pair = grouped[tradeNum];
+      if (pair.length < 2) return;
+      const exitRow = pair[0];
+      const entryRow = pair[1];
+      const tr = document.createElement("tr");
+      tr.classList.add("border-b", "border-text/10", "hover:bg-text/10");
+      header.forEach((_, i) => {
+        if (i === skipIndex) return;
+        const td = document.createElement("td");
+        td.className =
+          "px-4 py-2 text-left truncate space-y-2 rounded-md text-sm";
+        if (header[i].includes("Profit")) {
+          if (exitRow[i] >= 0) td.classList.add("text-profit");
+          else if (exitRow[i] < 0) td.classList.add("text-loss");
+        }
+        if (i === tradeIndex) {
+          td.textContent = tradeNum;
+        } else if (i === typeIndex || i === priceIndex) {
+          // display exit then entry values on separate lines
+          td.innerHTML = `<div>${entryRow[i]}</div><div>${exitRow[i]}</div>`;
+        } else if (i === dateIndex) {
+          // format both dates
+          const formatDate = (cell) => {
+            const d = new Date((cell - 25569) * 86400 * 1000);
+            const datePart = d.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+            });
+            const timePart = d.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            return `<div>${datePart}, ${timePart}</div>`;
+          };
+          td.innerHTML = formatDate(entryRow[i]) + formatDate(exitRow[i]);
+        } else if (header[i].includes("%")) {
+          // Multiply raw percentage by 100 and append '%' sign, showing exit then entry
+          td.innerHTML = `${(exitRow[i] * 100).toFixed(2)}%`;
+        } else {
+          td.textContent = exitRow[i];
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
 }
 
 function getNumberOfLines(id) {

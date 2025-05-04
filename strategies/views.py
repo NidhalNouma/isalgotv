@@ -171,7 +171,9 @@ def add_result(request, id):
                     # print('performance_key', performance_key)
                     performance_data[performance_key] = value
 
-
+            if not request.POST.get('list_of_trades'):
+                raise ValueError("List of trades was not found.")
+            
             form_data = {
                 'pair': request.POST.get('performance_pair'),
                 'broker': request.POST.get('performance_broker'),
@@ -185,6 +187,8 @@ def add_result(request, id):
                 'settings': settings,
                 'performance': performance_data,
                 'description': request.POST.get('description'),
+
+                'list_of_trades': request.POST.get('list_of_trades'),
             }
             # print(request.POST)
             form = StrategyResultForm(form_data, request.FILES)  # Allow file uploads

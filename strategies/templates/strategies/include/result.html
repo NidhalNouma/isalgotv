@@ -1,274 +1,243 @@
 <!-- TODO adding edit and delete -->
 {% load custom_filters %}
-<div
-  id="result-{{result.id}}"
-  class="mb-2 py-2 flex flex-col w-full max-w-full"
->
+{% load custom_tags %}
+
+<div id="result-{{ result.id }}" class="mb-2 py-2 flex flex-col w-full max-w-full">
   <div class="flex flex-row justify-between items-center mb-3">
     <div class="mr-2.5 flex items-center gap-2">
-      <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-full text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{result.pair}}">
-        {{result.performance.pair}}
-      </a>
+      <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-full text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
       <div class="inline-flex items-center gap-1 text-text/80">
-        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
-        <span class="text-sm">{{result.performance.broker}}</span>
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+          <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
+          <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
+          <path d="M10 6h4" />
+          <path d="M10 10h4" />
+          <path d="M10 14h4" />
+          <path d="M10 18h4" />
+        </svg>
+        <span class="text-sm">{{ result.performance.broker }}</span>
       </div>
       <div class="hidden sm:flex items-center gap-1 text-text/80">
-        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="text-sm truncate">{{result.performance.time_frame_int}} {{result.performance.time_frame}}</span>
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        <span class="text-sm truncate">{{ result.performance.time_frame_int }} {{ result.performance.time_frame }}</span>
       </div>
     </div>
-    
+
     <div class="grow">
       <div class="w-full bg-text/20 rounded-md my-1">
-        <div
-          class="flex items-center justify-center truncate gap-1.5 bg-text/40 text-xs py-[0.1rem] font-semibold text-background text-center px-0.25 leading-none rounded-md"
-          style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%"
-          >
-          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+        <div class="flex items-center justify-center truncate gap-1.5 bg-text/40 text-xs py-[0.1rem] font-semibold text-background text-center px-0.25 leading-none rounded-md" style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%">
+          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="10" x2="14" y1="2" y2="2" />
+            <line x1="12" x2="15" y1="14" y2="11" />
+            <circle cx="12" cy="14" r="8" />
+          </svg>
           {{ result.test_start_at|period_in_months_years:result.test_end_at }}
         </div>
       </div>
     </div>
   </div>
-  
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-0">
-    <div class="space-y-4">
-      <div class="flex gap-4">
-        <div class="p-4 rounded-lg bg-profit/10 w-full">
-          <div class="flex items-center gap-2 mb-2">
-            <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-            <span class="text-xs font-medium text-profit">Net Profit</span>
-          </div>
-          <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
-            <span class="text-xl font-bold text-profit whitespace-nowrap">
-              {{result.performance.net_profit|format_profit|safe}}
-            </span>
-            <span class="text-sm font-bold text-profit whitespace-nowrap">
-              {{result.performance.net_profit_percentage|format_profit|safe}}%
-            </span>
-          </div>
-        </div>
 
-        <div class="p-4 rounded-lg bg-loss/10 w-full">
-          <div class="flex items-center gap-2 mb-2">
-            <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
-            <span class="text-xs font-medium text-loss">Max Drawdown</span>
-          </div>
-          <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
-            <span class="text-xl font-bold text-loss whitespace-nowrap">
-              {{result.performance.max_drawdown|format_profit|safe}}
-            </span>
-            <span class="text-sm font-bold text-loss whitespace-nowrap">
-              {{result.performance.max_drawdown_percentage|format_profit|safe}}%
-            </span>
-          </div>
-        </div>
-      </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-0">
+    <div class="mr-0">
+      {% if result.list_of_trades %}
+        {% include 'include/result_chart.html' with result=result %}
+      {% else %}
 
-
-
-      <div class="w-full ">
-        <button
-          id="result-perfermance-{{result.id}}"
-          onclick="openModel('result-modal-{{result.id}}')"
-          class="bg-primary text-background text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full"
-        >
-          Properties and Performance
-          <svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="6" x="5" y="4" rx="1"/><rect width="8" height="6" x="11" y="14" rx="1"/></svg>
-        </button>
-        {%include "include/result_and_settings_modal.html"%}
-      </div>
+      {% endif %}
     </div>
 
     <div class="grid grid-cols-2 gap-4">
-      <div class="p-4 bg-primary/10 rounded-lg">
-        <div class="flex items-center gap-2 mb-3">
-          <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-          <h3 class="text-sm font-medium text-primary">Trade Stats</h3>
+      <div class="space-y-4">
+        <div class="flex flex-col gap-4">
+          <div class="p-4 rounded-lg bg-profit/10 w-full">
+            <div class="flex items-center gap-2 mb-2">
+              <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                <polyline points="16 7 22 7 22 13" />
+              </svg>
+              <span class="text-xs font-medium text-profit">Net Profit</span>
+            </div>
+            <div class="flex flex-row items-baseline gap-1 sm:gap-2">
+              <span class="text-xl font-bold text-profit whitespace-nowrap">{{ result.performance.net_profit|format_profit|safe }}</span>
+              <span class="text-sm font-bold text-profit whitespace-nowrap">{{ result.performance.net_profit_percentage|format_profit|safe }}%</span>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg bg-loss/10 w-full">
+            <div class="flex items-center gap-2 mb-2">
+              <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
+                <polyline points="16 17 22 17 22 11" />
+              </svg>
+              <span class="text-xs font-medium text-loss">Max Drawdown</span>
+            </div>
+            <div class="flex flex-row items-baseline gap-1 sm:gap-2">
+              <span class="text-xl font-bold text-loss whitespace-nowrap">{{ result.performance.max_drawdown|format_profit|safe }}</span>
+              <span class="text-sm font-bold text-loss whitespace-nowrap">{{ result.performance.max_drawdown_percentage|format_profit|safe }}%</span>
+            </div>
+          </div>
         </div>
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-text/60">Total Trades</span>
-            <span class="font-medium text-text">{{result.performance.total_trade}}</span>
-          </div>
-          {% comment %} <div class="flex justify-between items-center">
-            <span class="text-sm text-text/60">Win Trades</span>
-            <span class="font-medium text-profit">{{result.performance.winning_total_trade}}</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-text/60">Loss Trades</span>
-            <span class="font-medium text-loss">{{result.performance.losing_total_trade}}</span>
-          </div> {% endcomment %}
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-text/60">Win Rate</span>
-            <span class="font-medium text-profit">{{result.performance.profitable_percentage|format_profit|safe}}%</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-text/60">Profit Factor</span>
-            <span class="font-medium text-primary">{{result.performance.profit_factor|format_profit|safe}}</span>
-          </div>
+
+        <div class="w-full">
+          <button id="result-perfermance-{{ result.id }}" onclick="openModel('result-modal-{{ result.id }}')" class="bg-primary text-background text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full truncate">
+            <span class="inline md:hidden">P&P</span><span class="hidden md:inline">Properties and Performance</span><svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="8" height="6" x="5" y="4" rx="1" />
+              <rect width="8" height="6" x="11" y="14" rx="1" />
+            </svg>
+          </button>
+          {% include 'include/result_and_settings_modal.html' %}
         </div>
       </div>
 
+      <div class="space-y-4">
+        <div class="p-4 bg-primary/10 rounded-lg">
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" x2="18" y1="20" y2="10" />
+              <line x1="12" x2="12" y1="20" y2="4" />
+              <line x1="6" x2="6" y1="20" y2="14" />
+            </svg>
+            <h3 class="text-sm font-medium text-primary">Trade Stats</h3>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-text/60">Total Trades</span>
+              <span class="font-medium text-text">{{ result.performance.total_trade }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-text/60">Win Trades</span>
+              <span class="font-medium text-profit">{{ result.performance.winning_total_trade }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-text/60">Win Rate</span>
+              <span class="font-medium text-profit">{{ result.performance.profitable_percentage|format_profit|safe }}%</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-text/60">Profit Factor</span>
+              <span class="font-medium text-primary">{{ result.performance.profit_factor|format_profit|safe }}</span>
+            </div>
+          </div>
+        </div>
 
-      <div class="p-4 bg-title/10 rounded-lg">
+        <div class="w-full">
+          <button onclick="loadTradesData('{{ result.id }}') ;openModel('result-trades-list-{{ result.id }}')" class="bg-text/10 text-text text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full">
+            <span class="inline md:hidden">Trades</span><span class="hidden md:inline">List of trades</span><svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list">
+              <path d="M3 12h.01" />
+              <path d="M3 18h.01" />
+              <path d="M3 6h.01" />
+              <path d="M8 12h13" />
+              <path d="M8 18h13" />
+              <path d="M8 6h13" />
+            </svg>
+          </button>
+
+          {% with result_id_str=result.id|stringformat:'s' %}
+            {% render_template 'include/result_trades_list.html' as list_of_trades %}
+            {% with header_html="<h3 class='text-xl font-bold text-title capitalize'> </h3>" %}
+              {% include 'include/modal.html' with header=header_html modal_id='result-trades-list-'|add:result_id_str body=list_of_trades class='!max-w-6xl' body_class='!max-w-full !mt-0' %}
+            {% endwith %}
+          {% endwith %}
+        </div>
+      </div>
+
+      {% comment %} <div class="p-4 bg-title/10 rounded-lg">
         <div class="flex items-center gap-2 mb-3">
-          <svg class="w-4 h-4 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <svg class="w-4 h-4 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" x2="12" y1="2" y2="22" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
           <h3 class="text-sm font-medium text-title">Trade Analysis</h3>
         </div>
         <div class="space-y-2">
           <div class="flex justify-between items-center">
             <span class="text-sm text-text/60">Avg Win</span>
-            <span class="font-medium text-profit">${{result.performance.avg_win_trade|format_profit|safe}}</span>
+            <span class="font-medium text-profit">${{ result.performance.avg_win_trade|format_profit|safe }}</span>
           </div>
           <div class="flex justify-between items-center">
             <span class="text-sm text-text/60">Avg Loss</span>
-            <span class="font-medium text-loss">${{result.performance.avg_loss_trade|format_profit|safe}}</span>
+            <span class="font-medium text-loss">${{ result.performance.avg_loss_trade|format_profit|safe }}</span>
           </div>
           <div class="flex justify-between items-center">
             <span class="text-sm text-text/60">Win/Loss Ratio</span>
-            <span class="font-medium text-primary">
-              {{result.performance.win_loss_avg|format_profit|safe}}
-            </span>
+            <span class="font-medium text-primary">{{ result.performance.win_loss_avg|format_profit|safe }}</span>
           </div>
-          {% comment %} <div class="flex justify-between items-center">
+          <div class="flex justify-between items-center">
             <span class="text-sm text-text/60">Gross Profit</span>
-            <span class="font-medium text-profit">
-              {{result.performance.gross_profit_percentage|format_profit|safe}}%
-            </span>
+            <span class="font-medium text-profit">{{ result.performance.gross_profit_percentage|format_profit|safe }}%</span>
           </div>
           <div class="flex justify-between items-center">
             <span class="text-sm text-text/60">Gross Loss</span>
-            <span class="font-medium text-loss">
-              {{result.performance.gross_loss_percentage|format_profit|safe}}%
-            </span>
-          </div> {% endcomment %}
+            <span class="font-medium text-loss">{{ result.performance.gross_loss_percentage|format_profit|safe }}%</span>
+          </div>
         </div>
-      </div>
+      </div> {% endcomment %}
     </div>
   </div>
 
   {% if result.description %}
-  <p
-    id="paragraph-result-{{result.id}}"
-    class="text-text/70 text-sm pb-0 break-all mt-2"
-  >
-    {{result.description|linebreaksbr}}
-  </p>
+    <p id="paragraph-result-{{ result.id }}" class="text-text/70 text-sm pb-0 break-all mt-2">{{ result.description|linebreaksbr }}</p>
   {% endif %}
 
- {% include "include/images.html" with images=result.images.all %}
+  {% include 'include/images.html' with images=result.images.all %}
 
   <div class="mb-0.5 mt-1.5 flex items-center">
-    <span class="text-text/50 text-xs hover:text-text/80"
-      ><a
-        class="font-bold"
-        target="_blank"
-        href="https://www.tradingview.com/u/{{ result.created_by.get_tradingview_username}}/?aff_id=134591&aff_sub=134591&source=134591"
-        >@{{ result.created_by.get_tradingview_username}}</a
-      ></span
-    >
-    <span class="mx-3 text-text/50 text-xs"
-      >{{ result.created_at|timesince }} ago</span
-    >
+    <span class="text-text/50 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ result.created_by.get_tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ result.created_by.get_tradingview_username }}</a></span>
+    <span class="mx-3 text-text/50 text-xs">{{ result.created_at|timesince }} ago</span>
 
     <div class="">
-      <button
-        id="shareButton-{{ result.id }}"
-        class="text-text/80 flex items-center text-xs px-0 rounded box-border"
-      >
-        <svg
-          class="h-3 aspect-square"
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="0"
-          viewBox="0 0 512 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle
-            cx="128"
-            cy="256"
-            r="48"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          ></circle>
-          <circle
-            cx="384"
-            cy="112"
-            r="48"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          ></circle>
-          <circle
-            cx="384"
-            cy="400"
-            r="48"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          ></circle>
-          <path
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-            d="m169.83 279.53 172.34 96.94m0-240.94-172.34 96.94"
-          ></path>
+      <button id="shareButton-{{ result.id }}" class="text-text/80 flex items-center text-xs px-0 rounded box-border">
+        <svg class="h-3 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="128" cy="256" r="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle>
+          <circle cx="384" cy="112" r="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle>
+          <circle cx="384" cy="400" r="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle>
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m169.83 279.53 172.34 96.94m0-240.94-172.34 96.94"></path>
         </svg>
-        <span
-          id="shareText-{{ result.id }}"
-          class="hidden ml-1.5 transition-all duration-300 border-b border-text/50"
-          >Share result link</span
-        >
+        <span id="shareText-{{ result.id }}" class="hidden ml-1.5 transition-all duration-300 border-b border-text/50">Share result link</span>
       </button>
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const shareButton = document.getElementById(
-          "shareButton-{{ result.id }}"
-        );
-        const shareText = document.getElementById("shareText-{{ result.id }}");
-
+      document.addEventListener('DOMContentLoaded', function () {
+        const shareButton = document.getElementById('shareButton-{{ result.id }}')
+        const shareText = document.getElementById('shareText-{{ result.id }}')
+      
         // Handle mouse enter event
-        shareButton.addEventListener("mouseenter", function () {
-          shareText.classList.remove("hidden");
-        });
-
+        shareButton.addEventListener('mouseenter', function () {
+          shareText.classList.remove('hidden')
+        })
+      
         // Handle mouse leave event
-        shareButton.addEventListener("mouseleave", function () {
-          shareText.classList.add("hidden");
-          shareText.textContent = "Share result link";
-        });
-
+        shareButton.addEventListener('mouseleave', function () {
+          shareText.classList.add('hidden')
+          shareText.textContent = 'Share result link'
+        })
+      
         // Handle click event
-        shareButton.addEventListener("click", function () {
-          shareText.textContent = "Link copied!"; // Change text
-          const url = new URL(window.location.href);
-          const params = url.searchParams;
-
+        shareButton.addEventListener('click', function () {
+          shareText.textContent = 'Link copied!' // Change text
+          const url = new URL(window.location.href)
+          const params = url.searchParams
+      
           // Set 'result' query parameter to '3'
-          params.set("result", "{{ result.id }}");
-          url.search = params.toString();
-
+          params.set('result', '{{ result.id }}')
+          url.search = params.toString()
+      
           // Copy the URL to the clipboard
           navigator.clipboard
             .writeText(url.toString())
-            .then(() => console.log("Link copied to clipboard!"))
-            .catch((err) => console.error("Failed to copy link: ", err));
-        });
-      });
+            .then(() => console.log('Link copied to clipboard!'))
+            .catch((err) => console.error('Failed to copy link: ', err))
+        })
+      })
     </script>
   </div>
 
   <div id="replies-{{ result.id }}-result" class="">
-    {% include "include/result_replies.html" %}
+    {% include 'include/result_replies.html' %}
   </div>
 </div>
 

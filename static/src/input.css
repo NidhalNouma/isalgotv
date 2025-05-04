@@ -91,7 +91,7 @@
   }
 
   .btn-text {
-    @apply text-text backdrop-blur-3xl bg-gradient-to-r from-text/20 via-text/20 to-text/10  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
+    @apply text-text backdrop-blur-3xl bg-gradient-to-r from-text/40 via-text/30 to-text/30  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
   }
 
   .btn-title {

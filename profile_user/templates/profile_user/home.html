@@ -8,6 +8,11 @@
   <meta name="description" content="Discover the best and latest TradingView strategies, verified backtest results, and powerful automation tools. Explore winning strategies, connect to brokers, and start optimizing your trades with IsAlgo. Your smarter trading journey begins here." />
 {% endblock %}
 
+{% block head %}
+  <!-- Load Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
 {% block page %}
   {% include 'include/home.html' %}
 {% endblock %}

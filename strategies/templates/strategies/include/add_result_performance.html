@@ -21,14 +21,14 @@
 
 <!-- Modal body -->
 <div class="h-full w-full my-auto px-4 flex flex-col">
-  <!--     <div class="mb-4">
+  <!--            <div class="mb-4">
             {% include 'include/infos.html' with info="Share your achievements with the community and contribute to their progress. By sharing your results and the settings you utilized, you empower others to benefit from your experiences. Your insights can help enhance strategies and solve challenges collectively." %}
-            </div>     -->
+            </div>            -->
 
   <div class="flex items-center justify-center">
     <input id="csv_results" class="hidden" type="file" accept=".xlsx" name="csv_results" onchange="handleXlsxFileSelect(event)" />
     <div id="output" class="text-text"></div>
-    <button onclick="showSelectImgs('csv_results')" type="button" class="mx-auto mt-auto btn-icon">
+    <button onclick="showSelectImgs('csv_results')" type="button" class="mx-auto mt-auto btn-text">
       Uplaad xlsx file<svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4 fill-current" viewBox="0 0 448 512">
         <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
         <path d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3V320c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 53 43 96 96 96H352c53 0 96-43 96-96V352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V352z" />
@@ -39,7 +39,7 @@
 
   <div class="inline-flex items-center justify-center w-full">
     <hr class="w-full h-px my-8 bg-text/50 border-0" />
-    <span class="absolute px-3 font-medium text-text/50 -translate-x-1/2 left-1/2 bg-background uppercase text-xs">or fill manually</span>
+    <span class="absolute px-3 font-medium text-text/50 -translate-x-1/2 left-1/2 bg-background uppercase text-xs"></span>
   </div>
 
   <div class="grid gap-6 mb-6 md:grid-cols-3">

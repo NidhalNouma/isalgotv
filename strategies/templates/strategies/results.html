@@ -9,6 +9,11 @@
   <meta name="description" content="Explore real trading strategy results shared by our community. Browse verified backtests, analyze performance data, and find strategies that fit your trading style. Start learning and improving with IsAlgo.">
 {% endblock head_description %}
 
+{% block head %}
+  <!-- Load Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
 {% block page %}
 
 {% if has_subscription or user.is_authenticated and results|length < 6 %}

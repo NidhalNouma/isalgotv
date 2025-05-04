@@ -291,6 +291,7 @@ class StrategyResults(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     settings =  SettingsJSONField()
     performance =  PerferenceJSONField()
+    list_of_trades = models.JSONField(blank=True, null=True, default=list)
     description = models.TextField()
 
     version = models.CharField(max_length=10, default="1.0")
