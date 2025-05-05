@@ -17,12 +17,35 @@
   </div>
   <!-- Modal body -->
   <div class="h-full w-full my-auto px-4">
-    <div class="mb-4">
-      {% include 'include/infos.html' with info='Please take your time and provide a brief description of how you used this strategy and how you accomplished this result.' %}
+    <div class="my-4 flex flex-col gap-3 max-w-md mx-auto">
+      {% comment %} {% include 'include/infos.html' with info='Please take your time and provide a brief description of how you used this strategy and how you accomplished this result.' %} {% endcomment %}
+      <div class="flex items-center gap-2">
+        <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+        </svg>
+        <span class="text-title text-sm font-medium">Properties</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+        </svg>
+        <span class="text-title text-sm font-medium">Perfermance</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+        </svg>
+        <span class="text-title text-sm font-medium">List of trades</span>
+      </div>
+      <div id="add-result-comment" class="flex items-center gap-2 mt-2">
+        {% comment %} <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+        </svg> {% endcomment %}
+        <button type="button" onclick="changeHidden('add-result-comment-input', 'add-result-comment', 'flex')" class="btn-icon ml-0 text-sm font-medium">Add a comment</button>
+      </div>
     </div>
 
-    <label for="chat" class="sr-only">Your message</label>
-    <div class="flex px-0 py-3 rounded-lg bg-transparent">
+    <div id="add-result-comment-input" class="hidden px-0 py-3 rounded-lg bg-transparent">
       <div class="self-stretch flex flex-col">
         <input id="add-result-imgs" class="hidden" type="file" accept="image/*" name="images" multiple onchange="showSelectedFiles('add-result-imgs' ,'add-result-imgs-list')" />
         <button onclick="showSelectImgs('add-result-imgs')" type="button" class="mt-auto btn-icon">

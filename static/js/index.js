@@ -682,24 +682,44 @@ async function onAutomateAccountAdd(title, errorDivName, event) {
     pmValue.value === "None" ||
     (paymentsList && paymentsList.classList.contains("hidden"))
   ) {
-    const result = await stripe.createPaymentMethod({
+    const { error, setupIntent } = await stripe.confirmSetup({
+      //`Elements` instance that was used to create the Payment Element
       elements,
-      params: {
-        billing_details: {
-          name: nameInput.value,
+      confirmParams: {
+        return_url: window.location.href,
+        payment_method_data: {
+          billing_details: {
+            address: {
+              // country: "US", // supply your ISO country code
+              postal_code: "", // supply or leave empty to satisfy Stripe
+            },
+          },
         },
       },
+      redirect: "if_required",
     });
-    if (result.error) {
-      let errorMsg =
-        result.error.message + "\nNo payment method found or selected!";
+    if (error) {
+      let errorMsg = error.message + "\nNo payment method found or selected!";
       let errorHtml = `<div class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}" role="alert"><svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg><span class="sr-only">Error!</span><div><p>${errorMsg}</p></div>`;
       if (errorDiv) errorDiv.innerHTML = errorHtml;
 
       closeLoader(title, "-add-", "flex");
       return false;
+    } else if (
+      setupIntent.payment_method &&
+      setupIntent.status === "succeeded"
+    ) {
+      pmValue.value = setupIntent.payment_method;
+      // SetupIntent succeeded, proceed without redirect
+      // console.log(
+      //   "SetupIntent succeeded:",
+      //   setupIntent.id,
+      //   setupIntent.payment_method
+      // );
     } else {
-      pmValue.value = result.paymentMethod.id;
+      closeLoader(title);
+      console.error("SetupIntent succeeded but no payment method found.");
+      return false;
     }
   }
 

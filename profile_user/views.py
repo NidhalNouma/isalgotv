@@ -26,6 +26,7 @@ from django.core.mail import EmailMessage
 
 from .tasks import *
 
+import random
 import datetime
 import environ
 env = environ.Env()
@@ -51,6 +52,41 @@ from django.dispatch import receiver
 @receiver(user_signed_up)
 def send_welcome_email_allauth(request, user, **kwargs):
     print('new user sign up ... ', user.email)
+
+
+# Array of helper questions for home view
+QUESTIONS = [
+    "Do you know that I can help you understand various trading strategies available on Isalgo?",
+    "Do you know that I can guide you through the process of setting up your Isalgo account?",
+    "Do you know that I can assist you in customizing trading strategies to fit your trading style?",
+    "Do you know that I can show you how to install Isalgo strategies in TradingView?",
+    "Do you know that I can explain how to take advantage of backtesting features to evaluate your strategies?",
+    "Do you know that I can walk you through automating your trading with TradingView alerts?",
+    "Do you know that I can help you set up alerts for your strategies to manage trades proactively?",
+    "Do you know that I can provide you with detailed explanations of technical indicators used in trading strategies?",
+    "Do you know that I can assist you in generating detailed trading reports based on your performance?",
+    "Do you know that I can analyze specific trading charts and assets to identify market trends?",
+    "Do you know that I can offer trading suggestions based on analytical data and insights?",
+    "Do you know that I can provide advanced coding examples in Pine Script v6 for TradingView?",
+    "Do you know that I can help you understand risk management techniques within your trading strategies?",
+    "Do you know that I can show you how to use the built-in learning algorithm to enhance your trading decisions?",
+    "Do you know that I can explain the different stop-loss methods available in Isalgo strategies?",
+    "Do you know that I can help you review your trading performance and suggest improvements?",
+    "Do you know that I can demonstrate how to access historical data for backtesting your strategies?",
+    "Do you know that I can provide real-time updates on performance metrics for ongoing trades?",
+    "Do you know that I can help you link your trading accounts to automate your trades?",
+    "Do you know that I can guide you through the process of sharing your trading results with the Isalgo community?",
+    "Do you know that I can provide insights into the best trading days and times based on historical performance?",
+    "Do you know that I can explain how to effectively use trendlines and channels in your trading strategies?",
+    "Do you know that I can support you with troubleshooting any issues you may encounter with Isalgo?",
+    "Do you know that I can help you configure your trading sessions to optimize trade execution?",
+    "Do you know that I can clarify how to utilize dynamic alerts for specific market events?",
+    "Do you know that I can guide you on the significance of position sizing in your trading strategy?",
+    "Do you know that I can help you evaluate which trading strategy might suit your risk tolerance better?",
+    "Do you know that I can provide summaries of the top-performing strategies and their results on Isalgo?",
+    "Do you know that I can assist you in understanding the setting adjustments for optimal strategy performance?",
+    "Do you know that I can answer any specific questions you have about using Isalgo tools and features?"
+]
 
 @login_required(login_url='login')
 def home(request):
@@ -98,6 +134,10 @@ def home(request):
         comments = list(StrategyComments.objects.all().order_by('-created_at')[:4])
         cache.set('comments', comments, timeout=cash_timeout)
     context['comments'] = comments
+
+    # Select a random helper question for the template
+    random_question = random.choice(QUESTIONS)
+    context['random_ai_question'] = random_question
 
     return render(request, 'home.html', context)
 

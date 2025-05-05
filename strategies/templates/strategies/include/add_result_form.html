@@ -97,18 +97,27 @@
       return true
     }
     
-    async function post() {
+    async function post(Event) {
       openLoader('', '-result-post')
     
       const form = document.getElementById('add-result-modal-post')
       const closeform = document.getElementById('add-result-modal-close-btn-post')
       const errorMessageDiv = document.getElementById('modal-result-error-message-post')
+
+      
+
+      const list_of_trades = document.getElementById('add-trades-list')
+      if (!list_of_trades || list_of_trades.value === '') {
+        errorMessageDiv.textContent = 'List of trades is empty. Please attach the required file'
+        errorMessageDiv.classList.remove('hidden')
+        closeLoader('', '-result-post', 'flex')
+        return false
+      }
     
       errorMessageDiv.textContent = ''
       errorMessageDiv.classList.add('hidden')
     
       const mainForm = document.getElementById('add-result-form')
-      //mainForm.dispatchEvent(new Event("submit-result"));
     
       await new Promise((resolve) => {
         mainForm.addEventListener(
