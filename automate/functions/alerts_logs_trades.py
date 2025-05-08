@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from decimal import Decimal
 
 from ..models import *
+
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
@@ -11,7 +12,7 @@ from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
 from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade 
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
-from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade
+from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade, get_metatrader_trade_data
 
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
     print("Checking crypto credentials for " + broker_type)
@@ -93,6 +94,17 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
         print('close trade error: ', str(e))
         raise e
 
+def get_trade_data(account, trade_id):
+    try:
+        broker_type = account.broker_type
+        if broker_type == 'metatrader4' or broker_type == 'metatrader5':
+            return get_metatrader_trade_data(account, trade_id)
+        else:
+            raise Exception("Unsupported broker type.")
+    except Exception as e:
+        print('close trade error: ', str(e))
+        raise e
+
 def manage_alert(alert_message, account):
     try:
         print("Webhook request for account #" + str(account.id) + ": " + alert_message)
@@ -131,7 +143,7 @@ def manage_alert(alert_message, account):
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
-            saved_trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), account)
+            saved_trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), trade.get('time', ''), account)
             save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
@@ -207,7 +219,7 @@ def save_log(response_status, alert_message, response_message, account, trade = 
 
     return log
 
-def save_new_trade(custom_id, order_id, symbol, side, volume, price, account):
+def save_new_trade(custom_id, order_id, symbol, side, volume, price, time, account):
     t_side = "B" if str.lower(side) == "buy" else "S"
     
     if isinstance(account, (CryptoBrokerAccount, ForexBrokerAccount)):
@@ -221,6 +233,7 @@ def save_new_trade(custom_id, order_id, symbol, side, volume, price, account):
             volume=volume,
             remaining_volume=volume,
             entry_price=price,
+            entry_time=time,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id

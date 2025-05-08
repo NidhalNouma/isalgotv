@@ -226,13 +226,19 @@ function swapDivBtn(id1, id2) {
 }
 
 function changeHidden(id1, id2, className) {
-  document.getElementById(id1)?.classList?.remove("hidden");
-  document.getElementById(id2)?.classList?.add("hidden");
+  if (id1) document.getElementById(id1)?.classList?.remove("hidden");
+  if (id2) document.getElementById(id2)?.classList?.add("hidden");
 
   if (className) {
-    document.getElementById(id1)?.classList?.add(className);
-    document.getElementById(id2)?.classList?.remove(className);
+    if (id1) document.getElementById(id1)?.classList?.add(className);
+    if (id2) document.getElementById(id2)?.classList?.remove(className);
   }
+}
+
+function toggleHiddenData(dataKey, key) {
+  document.querySelectorAll(`tr[${dataKey}="${key}"]`).forEach((row) => {
+    row.classList.toggle("hidden");
+  });
 }
 
 function openLoader(title, id = "-pay-submit-", className = "block") {
@@ -1431,7 +1437,8 @@ function loadTradesData(result_id) {
   const tradeIndex = header.indexOf("Trade #");
   const typeIndex = header.indexOf("Type");
   const dateIndex = header.indexOf("Date/Time");
-  const priceIndex = header.indexOf("Price JPY");
+  // Dynamically find the price column (e.g., "Price USD", "Price EUR", etc.)
+  const priceIndex = header.findIndex((text) => text.startsWith("Price "));
 
   const thead = document.getElementById("trades-header-" + result_id);
   thead.innerHTML = "";
@@ -1439,7 +1446,7 @@ function loadTradesData(result_id) {
     if (i === skipIndex) return;
     const th = document.createElement("th");
     th.className =
-      "text-left px-4 py-2 text-sm text-title font-semibold truncate";
+      "text-left px-4 py-2 text-xs text-text/60 font-medium truncate";
     th.textContent = text;
     thead.appendChild(th);
   });
@@ -1468,7 +1475,7 @@ function loadTradesData(result_id) {
         if (i === skipIndex) return;
         const td = document.createElement("td");
         td.className =
-          "px-4 py-2 text-left truncate space-y-2 rounded-md text-sm";
+          "px-4 py-2 text-left truncate space-y-2 rounded-md text-xs";
         if (header[i].includes("Profit")) {
           if (exitRow[i] >= 0) td.classList.add("text-profit");
           else if (exitRow[i] < 0) td.classList.add("text-loss");

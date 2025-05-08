@@ -21,7 +21,11 @@
           <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 bg-background rounded-md">
             <div class="grow mr-4">{{ header }}</div>
             <button onclick="{% if stripe_element_id %}
+                
+                
                 unmountStripeElement('{{ stripe_element_id }}');
+
+
               {% endif %} hideModel('{{ modal_id }}')"
               type="button"
               class="btn-icon"
@@ -33,7 +37,7 @@
           </div>
         {% endif %}
         <!-- Modal body -->
-        <div class="max-w-md mx-auto overflow-hidden mt-4 sm:px-2 px-4 {{ body_class }}">{{ body }}</div>
+        <div class="w-full h-fit max-w-md mx-auto overflow-hidden mt-4 sm:px-2 px-4 {{ body_class }}">{{ body }}</div>
       {% endif %}
       <div class="sticky bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none"></div>
     </div>

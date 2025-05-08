@@ -2,11 +2,20 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django_cryptography.fields import encrypt
+from django.contrib.postgres.fields import JSONField 
+from django.core.exceptions import ValidationError
+from decimal import Decimal, InvalidOperation
 
 from django.contrib.auth.models import User
 from profile_user.models import User_Profile
 
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+
+import json
+from django.utils import timezone
 import shortuuid
+
 
 def generate_short_unique_id(prefix, id):
     short_id = shortuuid.ShortUUID().random(length=14 - len(prefix) - 1)  # Subtract the length of prefix and the hyphen
@@ -125,6 +134,24 @@ class ForexBrokerAccount(models.Model):
 
 # Trades and Logs ----------------------------------------------------------------
 
+def validate_fills(value):
+    """
+    Ensure fills is a list of objects, each containing the required keys.
+    """
+    if not isinstance(value, list):
+        raise ValidationError("Fills must be a list of objects")
+    required_keys = {"close_price", "volume", "close_time", "profit", "fees"}
+
+    for idx, item in enumerate(value):
+        if not isinstance(item, dict):
+            raise ValidationError(f"Fill at index {idx} must be an object")
+        missing = required_keys - item.keys()
+        extra = set(item.keys()) - required_keys
+        if missing:
+            raise ValidationError(f"Fill at index {idx} missing keys: {', '.join(missing)}")
+        if extra:
+            raise ValidationError(f"Fill at index {idx} has unexpected keys: {', '.join(extra)}")
+
 
 class TradeDetails(models.Model):
 
@@ -140,23 +167,28 @@ class TradeDetails(models.Model):
 
     ]
 
-    custom_id = models.CharField(max_length=30)
-    order_id = models.CharField(max_length=30)
+    custom_id = models.CharField(max_length=40)
+    order_id = models.CharField(max_length=40)
 
-    symbol = models.CharField(max_length=30)
-    volume = models.DecimalField(decimal_places=10, max_digits=30, default=0)
-    remaining_volume = models.DecimalField(decimal_places=10, max_digits=30, default=0)
+    symbol = models.CharField(max_length=40)
+    volume = models.DecimalField(decimal_places=10, max_digits=40, default=0)
+    remaining_volume = models.DecimalField(decimal_places=10, max_digits=40, default=0)
 
-    entry_price = models.DecimalField(decimal_places=10, max_digits=30, default=0)
-    exit_price = models.DecimalField(decimal_places=10, max_digits=30, default=0)
+    entry_price = models.DecimalField(decimal_places=10, max_digits=40, default=0)
+    exit_price = models.DecimalField(decimal_places=10, max_digits=40, default=0)
 
-    profit = models.DecimalField(decimal_places=4, max_digits=30, default=0)
+    entry_time = models.DateTimeField(default=timezone.now)
+    exit_time = models.DateTimeField(default=timezone.now)
+
+    fees = models.DecimalField(decimal_places=6, max_digits=40, default=0)
+    profit = models.DecimalField(decimal_places=6, max_digits=40, default=0)
 
     side = models.CharField(max_length=1, choices=TYPE)
  
     trade_type = models.CharField(max_length=1, default="S")
     status = models.CharField(max_length=1, choices=STATUS, default='O')
 
+    fills = models.JSONField(default=list, blank=True, validators=[validate_fills])
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -165,6 +197,70 @@ class TradeDetails(models.Model):
     object_id = models.PositiveIntegerField()
     account = GenericForeignKey('content_type', 'object_id')
 
+    def add_fill(self, fill_data):
+        """
+        Append a new fill entry to the fills JSONField. fill_data can be a dict or JSON string.
+        Updates remaining_volume and status based on the 'volume' field.
+        """
+
+        # Parse JSON string if necessary
+        if isinstance(fill_data, str):
+            try:
+                fill_dict = json.loads(fill_data)
+            except json.JSONDecodeError:
+                raise ValueError("Invalid JSON string for fill_data")
+        elif isinstance(fill_data, dict):
+            fill_dict = fill_data.copy()
+        else:
+            raise TypeError("fill_data must be a dict or JSON string")
+
+        # Ensure timestamp
+        if "timestamp" not in fill_dict or not fill_dict["timestamp"]:
+            fill_dict["timestamp"] = timezone.now().isoformat()
+
+        try:
+            # Append new fill record
+            self.fills = self.fills or []
+            self.fills.append(fill_dict)
+
+            # self.save(update_fields=["fills"])
+        except Exception as e:
+            print("Error saving trade fills ", e)
+
+    def pre_save_adjustments(self):
+        try:
+            if self.status != 'O':
+                from .functions.alerts_logs_trades import get_trade_data
+                trade_data = get_trade_data(self.account, self)
+                # print(trade_data)
+                if trade_data:
+                    self.exit_time = trade_data.get('close_time', timezone.now)
+
+                    close_price = trade_data.get('close_price', 0)
+                    profit = trade_data.get('profit', 0)
+                    fees = trade_data.get('fees', 0)
+
+                    try:
+                        self.exit_price = Decimal(str(close_price))
+                        self.profit = self.profit + Decimal(str(profit))
+                        self.fees = self.fees + Decimal(str(fees))
+                    except (TypeError, ValueError, InvalidOperation):
+                        self.exit_price = Decimal('0')
+                        self.profit = self.profit + Decimal('0')
+                        self.fees = self.fees + Decimal('0')
+                    
+
+                    if self.status == 'P':
+                        self.add_fill(trade_data)
+                
+        except Exception as e:
+            print(e)
+            pass
+
+    def save(self, *args, **kwargs):
+        # Run adjustments before saving
+        self.pre_save_adjustments()
+        super(TradeDetails, self).save(*args, **kwargs)
 
 class LogMessage(models.Model):
     STATUS = [

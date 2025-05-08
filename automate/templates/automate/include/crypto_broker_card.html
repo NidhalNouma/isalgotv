@@ -189,7 +189,7 @@
 
     <div class="mt-6 flex items-center justify-around gap-3 text-text/20">
 
-      <button class="btn-a gap-1.5" onclick="openDrawer('drawer-crypto-guide-{{account.id}}')">
+      <button class="btn-a gap-1" onclick="openDrawer('drawer-crypto-guide-{{account.id}}')">
         <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H3"/><path d="M10 12H3"/><path d="M10 18H3"/><circle cx="17" cy="15" r="3"/><path d="m21 19-1.9-1.9"/></svg>
         <span>Guide</span>
     </button>
@@ -200,18 +200,23 @@
       <button
         type="submit"
         onclick="openDrawer('crypto-broker-logs-{{account.id}}', 'bottom')"
-        class="btn-a gap-1.5"
+        class="btn-a gap-1"
       >
         <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M13 12h8"/><path d="M13 18h8"/><path d="M13 6h8"/><path d="M3 12h1"/><path d="M3 18h1"/><path d="M3 6h1"/><path d="M8 12h1"/><path d="M8 18h1"/><path d="M8 6h1"/></svg>
         <span>Logs</span>
       </button>
     </form>
-      <!-- <span>|</span>
+      <span>|</span>
+
+    <form hx-post="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+      {% csrf_token %}
       <button
-        class="btn-a hover:text-primary/80 text-primary gap-x-1.5"
+        type="submit"
+        class="btn-a hover:text-primary/90 text-primary gap-x-0.5"
+        onclick="openDrawer('crypto-broker-trades-{{account.id}}', 'bottom')"
       >
         <svg
-          class="w-3.5 h-3.5"
+          class="w-3.5 h-3.5 rotate-90"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="none"
@@ -219,13 +224,12 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chart-line"
         >
-          <path d="M3 3v16a2 2 0 0 0 2 2h16" />
-          <path d="m19 9-5 5-4-4-3 3" />
+        <path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/>
         </svg>
-        <span>Activity</span>
-      </button> -->
+        <span>Trades</span>
+      </form>
+      </button> 
     </div>
   </div>
 </div>
@@ -306,12 +310,14 @@
 {% load custom_tags %}
 {% render_template "include/docs/alerts_playground.html" webhook_url=webhook_url webhook_name=account.name id=account_id_str as setuo_alert_content %}
 {% render_template "include/account_logs.html" broker_type=account.broker_type id=account.id as logs_content %}
+{% render_template 'include/account_trades.html' broker_type=account.broker_type id=account.id as trades_content %}
 
 
 
   {% include "include/drawer_modal.html" with drawer_id="drawer-crypto-guide-"|add:account_id_str title="Alert Creation Playground" body=setuo_alert_content %}
 
   {% include "include/drawer_modal.html" with drawer_id="crypto-broker-logs-"|add:account_id_str title="Logs ("|add:account.name|add:")" body=logs_content side="bottom" class="h-[75vh]" %}
+  {% include 'include/drawer_modal.html' with drawer_id='crypto-broker-trades-'|add:account_id_str title='Trades ('|add:account.name|add:')' body=trades_content side='bottom' class='h-[85vh]' body_class="!h-[calc(100%-90px)]" %}
   
   {% endwith %}
   {% endwith %}

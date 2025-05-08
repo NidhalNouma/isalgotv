@@ -2,6 +2,8 @@ import requests
 import random
 import string
 
+from django.utils.dateparse import parse_datetime
+
 import environ
 env = environ.Env()
 meta_api_token = env('META_API_TOKEN')
@@ -209,6 +211,38 @@ def get_account_information(account_api_id):
     except Exception as e:
         print("Error:", e)
         return {"error": str(e)}
+    
+
+def get_trade_data(account_api_id, trade_id):
+        # Prepare the payload data.
+    data = {
+        "actionType": "POSITION_PARTIAL",
+        "positionId": trade_id,
+    }
+
+    url = f"{api_data_url}/users/current/accounts/{account_api_id}/history-deals/position/{trade_id}"
+
+    headers = {
+        "auth-token": meta_api_token,
+        "Content-Type": "application/json"
+    }
+    
+    try:
+        response = requests.get(url, json=data, headers=headers)
+        if response.status_code != 200:
+            raise Exception("Error getting trade data ,")
+        else:
+            resp_data = response.json()
+            
+            if isinstance(resp_data, list) and resp_data:
+                last_trade = resp_data[-1]
+
+            return last_trade
+        
+    except Exception as e:
+        print('get_trade_date ', e)
+        return None
+
 
 
 def open_metatrader_trade(account, action_type, symbol, lot_size):
@@ -252,6 +286,18 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
         # print("Response status code:", response, data)
 
         order_id = data.get("orderId")
+
+        open_price = data.get("price", "0")
+        open_time = ''
+
+        trade_data = get_trade_data(account_api_id, order_id)
+        if trade_data:
+            open_price = trade_data.get("price", 0)
+            open_time = parse_datetime(trade_data.get('time', ''))
+
+            # print(open_price, ' .  ', open_time)
+
+
         if not order_id:
             error_message = data.get("message", "Failed to open trade.")
             return {"error": error_message}
@@ -259,7 +305,8 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
             'message': f"Trade opened with order ID {order_id}.",
             'order_id': order_id,
             'symbol': symbol,
-            'price':  data.get("price", "0"),
+            'price': open_price,
+            'time': open_time,
             'qty': lot_size,
         }
 
@@ -305,11 +352,46 @@ def close_metatrader_trade(account, trade_id, partial_close=0):
             return {"error": resp_data.get("message")}
         else:
             return {
-            'message': f"Trade closed for order ID {id}.", 
-            "order_id": trade_id,
-            'qty': partial_close,
+                'message': f"Trade closed for order ID {id}.", 
+                "order_id": trade_id,
+                'qty': partial_close,
             }
             # return resp_data
     except Exception as e:
         print("Error:", e)
         return {"error": str(e)}
+
+
+def get_metatrader_trade_data(account, trade):
+    trade_id = trade.order_id
+    account_api_id = account.account_api_id 
+    
+    try:
+        last_trade = get_trade_data(account_api_id, trade_id)
+        if last_trade:
+            res = {
+                'symbol': str(last_trade.get('symbol')),
+                'volume': str(last_trade.get('volume')),
+                'side': str(trade.side),
+
+                'open_price': str(trade.entry_price),
+                'close_price': str(last_trade.get('price')),
+
+                'open_time': str(trade.entry_time),
+                'close_time': str(parse_datetime(last_trade.get('time'))), 
+
+                'fees': str(last_trade.get('commission') + last_trade.get('swap')), 
+                'profit': str(last_trade.get('profit')),
+
+                'commission': str(last_trade.get('commission')),
+                'swap': str(last_trade.get('swap')),
+                'broker_time': str(parse_datetime(last_trade.get('brokerTime'))),
+            }
+
+            return res
+
+        return None
+    
+    except Exception as e:
+        print("Error:", e)
+        return None

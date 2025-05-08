@@ -95,3 +95,19 @@ def get_trade_info_by_id(tl, position_id, order_id):
     except Exception as e:
         print("An error occurred:", str(e))
         return None
+
+
+def get_trade_data(tl, order_id):
+    trades = tl.get_all_executions()
+    orders_history = tl.get_all_orders(history=True)
+
+    matching_orders = orders_history[orders_history["id"] == order_id]
+    if len(matching_orders) == 0:
+        return None
+    
+    position_id = int(matching_orders["positionId"].iloc[0])
+    return position_id
+
+
+    return matching_orders
+

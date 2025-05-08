@@ -233,3 +233,28 @@ def close_crypto_trade(crypto_account, symbol: str, side: str, quantity: float):
         }
     except Exception as e:
         raise ValueError(str(e))
+
+
+def get_crypto_order_details(crypto_account, order_id):
+    nonce = _get_timestamp()
+    payload = {
+        "id": nonce,
+        "method": "private/user-balance",
+        "api_key": crypto_account.apiKey,
+        "params": {
+            "order_id": order_id
+        },
+        "nonce": nonce
+    }
+    payload['sig'] = create_signature(payload, crypto_account.secretKey)
+
+    headers = {"Content-Type": "application/json"}
+    response = requests.post(BASE_URL + payload["method"], json=payload, headers=headers)
+    data = response.json()
+
+    if data.get("code") != 0:
+        result = data.get("result")
+        return result
+    
+    return None
+

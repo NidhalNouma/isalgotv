@@ -116,7 +116,7 @@
       </div>
 
       <div class="mt-6 flex items-center justify-around gap-3 text-text/20">
-        <button class="btn-a gap-1.5" onclick="openDrawer('drawer-forex-guide-{{ account.id }}')">
+        <button class="btn-a gap-1" onclick="openDrawer('drawer-forex-guide-{{ account.id }}')">
           <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 6H3" />
             <path d="M10 12H3" />
@@ -130,7 +130,7 @@
 
         <form hx-post="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{ account.broker_type }}-{{ account.id }}" hx-swap="outerHTML">
           {% csrf_token %}
-          <button type="submit" onclick="openDrawer('drawer-forex-logs-{{ account.id }}', 'bottom')" class="btn-a gap-1.5">
+          <button type="submit" onclick="openDrawer('drawer-forex-logs-{{ account.id }}', 'bottom')" class="btn-a gap-1">
             <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M13 12h8" />
               <path d="M13 18h8" />
@@ -145,12 +145,16 @@
             <span>Logs</span>
           </button>
         </form>
-        <!--  <span>|</span>
+        <span>|</span>
+
+    <form hx-post="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+      {% csrf_token %}
       <button
-        class="btn-a hover:text-primary/80 text-primary gap-x-1.5"
+        class="btn-a hover:text-primary/90 text-primary gap-x-0.5"
+        onclick="openDrawer('drawer-forex-trades-{{ account.id }}', 'bottom')"
       >
         <svg
-          class="w-3.5 h-3.5"
+          class="w-3.5 h-3.5 rotate-90"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="none"
@@ -158,13 +162,12 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chart-line"
         >
-          <path d="M3 3v16a2 2 0 0 0 2 2h16" />
-          <path d="m19 9-5 5-4-4-3 3" />
+        <path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/>
         </svg>
-        <span>Activity</span>
-      </button>  -->
+        <span>Trades</span>
+      </button>  
+    </form>
       </div>
     </div>
   </div>
@@ -204,9 +207,11 @@
     {% load custom_tags %}
     {% render_template 'include/docs/alerts_playground.html' webhook_url=webhook_url webhook_name=account.name id=account_id_str as setuo_alert_content %}
     {% render_template 'include/account_logs.html' broker_type=account.broker_type id=account.id as logs_content %}
+    {% render_template 'include/account_trades.html' broker_type=account.broker_type id=account.id as trades_content %}
 
     {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-guide-'|add:account_id_str title='Alert Creation Playground' body=setuo_alert_content %}
 
     {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-logs-'|add:account_id_str title='Logs ('|add:account.name|add:')' body=logs_content side='bottom' class='h-[75vh]' %}
+    {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-trades-'|add:account_id_str title='Trades ('|add:account.name|add:')' body=trades_content side='bottom' class='h-[85vh]' body_class="!h-[calc(100%-90px)]" %}
   {% endwith %}
 {% endwith %}

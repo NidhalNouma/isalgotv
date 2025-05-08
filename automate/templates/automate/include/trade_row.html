@@ -1,0 +1,76 @@
+{% load custom_tags %}
+
+<tr onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="hover:bg-text/10 cursor-pointer transition-colors">
+  <td class="px-4 py-3 text-xs text-text/80 truncate">{{ trade.order_id }}</td>
+  <td class="px-4 py-3 text-xs text-text truncate flex items-center gap-0.5">
+    {% if trade.status == 'O' %}
+      <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
+    {% elif trade.status == 'P' %}
+      <span class="text-text bg-text/10 px-2 py-0.5 rounded-md">Partially Closed</span>
+    {% elif trade.status == 'C' %}
+      <span class="text-accent/60 bg-accent/5 px-2 py-0.5 rounded-md">Closed</span>
+    {% else %}
+      <span class="text-text/80">NA</span>
+    {% endif %}
+
+    {% if trade.fills|length > 0 %}
+      <svg class="h-3 aspect-auto text-text/80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 16 4 4 4-4" />
+        <path d="M7 20V4" />
+        <path d="m21 8-4-4-4 4" />
+        <path d="M17 4v16" />
+      </svg>
+    {% endif %}
+  </td>
+  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.symbol }}</td>
+  <td class="px-4 py-3 text-xs truncate">
+    {% if trade.side == 'B' %}
+      <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-md">BUY</span>
+    {% elif trade.side == 'S' %}
+      <span class="text-accent/80 bg-accent/10 px-2 py-0.5 rounded-md">SELL</span>
+    {% else %}
+      <span class="text-text/80">NA</span>
+    {% endif %}
+  </td>
+  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.volume|trim_zeros }}</td>
+  <td class="px-4 py-3 text-xs font-medium truncate">
+    {% if trade.profit > 0 %}
+      <span class="text-profit">{{ trade.profit|trim_zeros }}</span>
+    {% elif trade.profit < 0 %}
+      <span class="text-loss">{{ trade.profit|trim_zeros }}</span>
+    {% else %}
+      <span class="text-text/80">{{ trade.profit|trim_zeros }}</span>
+    {% endif %}
+  </td>
+  <td class="px-4 py-3 text-xs font-medium text-text truncate">{{ trade.fees|trim_zeros }}</td>
+  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.entry_price|trim_zeros }}</td>
+  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.exit_price|trim_zeros }}</td>
+  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.entry_time|date:'F j, Y H:i:s' }}</td>
+  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.exit_time|date:'F j, Y H:i:s' }}</td>
+</tr>
+
+{% if trade.fills|length > 0 %}
+  {% for subtrade in trade.fills %}
+    <tr sub-trade="sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}" class="hidden hover:bg-text/10 transition-colors">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td class="px-4 py-3 text-xs text-text/80 truncate">{{ subtrade.volume|trim_zeros }}</td>
+      <td class="px-4 py-3 text-xs text-text/80 truncate">
+        {% if subtrade.profit|to_float > 0 %}
+          <span class="text-profit">{{ subtrade.profit|trim_zeros }}</span>
+        {% elif subtrade.profit|to_float < 0 %}
+          <span class="text-loss">{{ subtrade.profit|trim_zeros }}</span>
+        {% else %}
+          <span class="text-text/80">{{ subtrade.profit|trim_zeros }}</span>
+        {% endif %}
+      </td>
+      <td class="px-4 py-3 text-xs text-text/80 truncate">{{ subtrade.fees|trim_zeros }}</td>
+      <td class="px-4 py-3 text-xs text-text truncate">-</td>
+      <td class="px-4 py-3 text-xs text-text truncate">{{ subtrade.close_price|trim_zeros }}</td>
+      <td class="px-4 py-3 text-xs text-text truncate">-</td>
+      <td class="px-4 py-3 text-xs text-text truncate">{{ subtrade.close_time|to_datetime|date:'F j, Y H:i:s' }}</td>
+    </tr>
+  {% endfor %}
+{% endif %}

@@ -528,6 +528,42 @@ def get_broker_logs(request, broker_type, pk):
         response = render(request, "include/errors.html", context=context)
         return response
 
+@require_http_methods([ "POST"])
+def get_broker_trades(request, broker_type, pk):
+    try:
+
+        crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+        forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+        if broker_type in crypto_broker_types:
+            account_model = CryptoBrokerAccount
+        elif broker_type in forex_broker_types:
+            account_model = ForexBrokerAccount
+        else:
+            raise ValueError("Invalid Broker Type")
+
+
+        content_type = ContentType.objects.get_for_model(account_model)
+        trade_list = TradeDetails.objects.filter(content_type=content_type, object_id=pk).order_by('-created_at')
+
+        grouped_logs = defaultdict(list)
+        for log in trade_list:
+            log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
+            grouped_logs[log_date].append(log)
+
+        context = {
+            'grouped_trades': dict(grouped_logs),
+            'trades': trade_list,
+            'id': pk,
+            'broker_type': broker_type
+        }
+        return render(request, 'include/account_trades.html', context=context)
+    
+    except Exception as e:
+        context = {'error': e}
+        response = render(request, "include/errors.html", context=context)
+        return response
+
 
 @require_http_methods(["POST"])
 @csrf_exempt
