@@ -297,6 +297,8 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
 
             # print(open_price, ' .  ', open_time)
 
+        currency = get_trade_currency(account)
+
 
         if not order_id:
             error_message = data.get("message", "Failed to open trade.")
@@ -308,6 +310,7 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
             'price': open_price,
             'time': open_time,
             'qty': lot_size,
+            'currency': currency if currency else '',
         }
 
     except Exception as e:
@@ -360,6 +363,15 @@ def close_metatrader_trade(account, trade_id, partial_close=0):
     except Exception as e:
         print("Error:", e)
         return {"error": str(e)}
+    
+def get_trade_currency(account):
+    try:
+        acc = get_account_information(account.account_api_id)
+        currency = acc.get('currency', None)
+        return currency
+    except Exception as e:
+        return None
+        
 
 
 def get_metatrader_trade_data(account, trade):
@@ -387,6 +399,12 @@ def get_metatrader_trade_data(account, trade):
                 'swap': str(last_trade.get('swap')),
                 'broker_time': str(parse_datetime(last_trade.get('brokerTime'))),
             }
+
+            if not trade.currency:
+                currency = get_trade_currency(account)
+                if currency:
+                    res['currency'] = currency
+
 
             return res
 

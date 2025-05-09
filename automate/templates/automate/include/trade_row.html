@@ -1,7 +1,7 @@
 {% load custom_tags %}
 
 <tr onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="hover:bg-text/10 cursor-pointer transition-colors">
-  <td class="px-4 py-3 text-xs text-text/80 truncate">{{ trade.order_id }}</td>
+  <td class="px-4 py-3 text-xs text-text/80 truncate">{{ trade.order_id }} | {{ trade.custom_id }}</td>
   <td class="px-4 py-3 text-xs text-text truncate flex items-center gap-0.5">
     {% if trade.status == 'O' %}
       <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
@@ -35,9 +35,9 @@
   <td class="px-4 py-3 text-xs text-text truncate">{{ trade.volume|trim_zeros }}</td>
   <td class="px-4 py-3 text-xs font-medium truncate">
     {% if trade.profit > 0 %}
-      <span class="text-profit">{{ trade.profit|trim_zeros }}</span>
+      <span class="text-profit">{{ trade.profit|trim_zeros }} <span class="font-light">{{ trade.currency }}</span></span>
     {% elif trade.profit < 0 %}
-      <span class="text-loss">{{ trade.profit|trim_zeros }}</span>
+      <span class="text-loss">{{ trade.profit|trim_zeros }} <span class="font-light">{{ trade.currency }}</span></span>
     {% else %}
       <span class="text-text/80">{{ trade.profit|trim_zeros }}</span>
     {% endif %}

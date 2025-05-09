@@ -143,7 +143,7 @@ def manage_alert(alert_message, account):
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
-            saved_trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), trade.get('time', ''), account)
+            saved_trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), trade.get('time', ''), trade.get('currency', ''), account)
             save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
@@ -219,7 +219,7 @@ def save_log(response_status, alert_message, response_message, account, trade = 
 
     return log
 
-def save_new_trade(custom_id, order_id, symbol, side, volume, price, time, account):
+def save_new_trade(custom_id, order_id, symbol, side, volume, price, time, currency, account):
     t_side = "B" if str.lower(side) == "buy" else "S"
     
     if isinstance(account, (CryptoBrokerAccount, ForexBrokerAccount)):
@@ -234,6 +234,7 @@ def save_new_trade(custom_id, order_id, symbol, side, volume, price, time, accou
             remaining_volume=volume,
             entry_price=price,
             entry_time=time,
+            currency=currency,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id

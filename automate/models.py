@@ -170,6 +170,8 @@ class TradeDetails(models.Model):
     custom_id = models.CharField(max_length=40)
     order_id = models.CharField(max_length=40)
 
+    currency = models.CharField(max_length=10, default='')
+
     symbol = models.CharField(max_length=40)
     volume = models.DecimalField(decimal_places=10, max_digits=40, default=0)
     remaining_volume = models.DecimalField(decimal_places=10, max_digits=40, default=0)
@@ -249,9 +251,12 @@ class TradeDetails(models.Model):
                         self.profit = self.profit + Decimal('0')
                         self.fees = self.fees + Decimal('0')
                     
+                    self.add_fill(trade_data)
 
-                    if self.status == 'P':
-                        self.add_fill(trade_data)
+                    if not self.currency:
+                        currency = trade_data.get('currency', None)
+                        if currency:
+                            self.currency = currency
                 
         except Exception as e:
             print(e)

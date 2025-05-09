@@ -5093,6 +5093,14 @@ h1,
   line-height: 1rem;
 }
 
+.text-\[0\.65rem\] {
+  font-size: 0.65rem;
+}
+
+.text-\[0\.6rem\] {
+  font-size: 0.6rem;
+}
+
 .\!font-bold {
   font-weight: 700 !important;
 }
