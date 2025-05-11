@@ -169,6 +169,7 @@ class TradeDetails(models.Model):
 
     custom_id = models.CharField(max_length=40)
     order_id = models.CharField(max_length=40)
+    closed_order_id = models.CharField(max_length=40, default='')
 
     currency = models.CharField(max_length=10, default='')
 

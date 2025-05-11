@@ -84,3 +84,54 @@ def to_float(value):
         return float(value)
     except (TypeError, ValueError):
         return 0.0
+
+
+
+CURRENCY_SYMBOLS = {
+    'USD': '$',
+    'EUR': '€',
+    'GBP': '£',
+    'JPY': '¥',
+    'AUD': 'A$',
+    'CAD': 'C$',
+    'CHF': 'CHF',
+    'CNY': '¥',
+    'HKD': 'HK$',
+    'INR': '₹',
+    'KRW': '₩',
+    'NZD': 'NZ$',
+    'SEK': 'kr',
+    'NOK': 'kr',
+    'MXN': 'MX$',
+    'RUB': '₽',
+    'BRL': 'R$',
+    'ZAR': 'R',
+    'TRY': '₺',
+    'SGD': 'S$',
+    'DKK': 'kr',
+    'PLN': 'zł',
+    'TWD': 'NT$',
+    'THB': '฿',
+    'MYR': 'RM',
+    'IDR': 'Rp',
+    'PHP': '₱',
+    'CZK': 'Kč',
+    'HUF': 'Ft',
+    'ILS': '₪',
+    'SAR': '﷼',
+    'AED': 'د.إ',
+    'COP': 'COL$',
+    'CLP': 'CLP$',
+    'ARS': 'AR$',
+}
+
+
+@register.filter(name='currency_symbol')
+def currency_symbol(code):
+    """
+    Convert a currency code (e.g. 'USD', 'EUR') to its symbol.
+    """
+    try:
+        return CURRENCY_SYMBOLS.get(code.upper(), code)
+    except Exception:
+        return code

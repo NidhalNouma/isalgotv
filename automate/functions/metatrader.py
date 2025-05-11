@@ -373,7 +373,6 @@ def get_trade_currency(account):
         return None
         
 
-
 def get_metatrader_trade_data(account, trade):
     trade_id = trade.order_id
     account_api_id = account.account_api_id 

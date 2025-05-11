@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 
 from decimal import Decimal
+from django.utils import timezone
 
 from ..models import *
 
@@ -9,7 +10,7 @@ from .binance_us import check_binance_us_credentials, open_binance_us_trade, clo
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
 from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
 from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
-from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade 
+from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade, get_crypto_order_details 
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
 from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade, get_metatrader_trade_data
@@ -94,11 +95,13 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
         print('close trade error: ', str(e))
         raise e
 
-def get_trade_data(account, trade_id):
+def get_trade_data(account, trade):
     try:
         broker_type = account.broker_type
-        if broker_type == 'metatrader4' or broker_type == 'metatrader5':
-            return get_metatrader_trade_data(account, trade_id)
+        if broker_type == 'crypto':
+            return get_crypto_order_details(account, trade)
+        elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
+            return get_metatrader_trade_data(account, trade)
         else:
             raise Exception("Unsupported broker type.")
     except Exception as e:
@@ -143,7 +146,7 @@ def manage_alert(alert_message, account):
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
-            saved_trade = save_new_trade(custom_id, trade.get('order_id'), trade.get('symbol'), side, trade.get('qty'), trade.get('price', 0), trade.get('time', ''), trade.get('currency', ''), account)
+            saved_trade = save_new_trade(custom_id, side, trade, account)
             save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
@@ -159,7 +162,7 @@ def manage_alert(alert_message, account):
             
             closed_volume = closed_trade.get('qty', volume_close)
 
-            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade.get('price', 0))
+            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade.get('price', 0), closed_trade.get('closed_order_id', ''))
             save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, trade)
 
     except Exception as e:   
@@ -219,7 +222,15 @@ def save_log(response_status, alert_message, response_message, account, trade = 
 
     return log
 
-def save_new_trade(custom_id, order_id, symbol, side, volume, price, time, currency, account):
+def save_new_trade(custom_id, side, opend_trade, account):
+    order_id = opend_trade.get('order_id') 
+    symbol = opend_trade.get('symbol')
+    volume = opend_trade.get('qty')
+    price = opend_trade.get('price', 0)
+    time = opend_trade.get('time', timezone.now())
+    currency = opend_trade.get('currency', '')
+    fees = opend_trade.get('fees', '')
+
     t_side = "B" if str.lower(side) == "buy" else "S"
     
     if isinstance(account, (CryptoBrokerAccount, ForexBrokerAccount)):
@@ -235,10 +246,12 @@ def save_new_trade(custom_id, order_id, symbol, side, volume, price, time, curre
             entry_price=price,
             entry_time=time,
             currency=currency,
+            fees=fees,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id
         )
+
     else:
         raise ValueError(f"Unsupported account model: {type(account)}")
     
@@ -259,8 +272,9 @@ def get_trade(custom_id, symbol, side, account):
 
     return trade
 
-def update_trade_after_close(trade, closed_volume, price):
+def update_trade_after_close(trade, closed_volume, price, closed_order_id):
     trade.exit_price = float(price)
+    trade.closed_order_id = closed_order_id
     trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
     if float(trade.remaining_volume) <= 0:
         trade.status = 'C'
