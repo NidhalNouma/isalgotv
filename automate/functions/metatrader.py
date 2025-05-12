@@ -391,7 +391,8 @@ def get_metatrader_trade_data(account, trade):
                 'open_time': str(trade.entry_time),
                 'close_time': str(parse_datetime(last_trade.get('time'))), 
 
-                'fees': str(last_trade.get('commission') + last_trade.get('swap')), 
+                
+                'fees': str(float(last_trade.get('commission') or 0) + float(last_trade.get('swap') or 0)), 
                 'profit': str(last_trade.get('profit')),
 
                 'commission': str(last_trade.get('commission')),

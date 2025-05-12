@@ -1,4 +1,7 @@
 from tradelocker import TLAPI
+import requests
+from datetime import datetime
+from django.utils import timezone
 
 def get_tradelocker_base_url(type = 'L'):
     if type == 'L':
@@ -31,19 +34,30 @@ def open_tradelocker_trade(account, symbol, side, quantity):
             position_id = tl.get_position_id_from_order_id(order_id)
             if position_id:
                 trade_details = get_trade_info_by_id(tl, position_id, order_id)
-                print('trade_details', trade_details)
+                
+                # print(trade_details)
+
+                if trade_details is None:
+                    raise Exception('Trade has been executed but Position was not found')
                 order_id = position_id
-                # entry_price = trade_details.get('entry_price')  # Adjust the key based on API response structure
-            return {
-                'message': f"Trade opened with order ID {order_id}.",
-                'order_id': order_id,
-                'symbol': symbol,
-                'price': None,
-                'qty': trade_details.get('qty', quantity),
-            }
+
+                account_info = tl.get_trade_accounts()
+                # print(account_info)
+                currency = account_info[0].get('currency', '')
+                return {
+                    'message': f"Trade opened with order ID {order_id}.",
+                    'order_id': order_id,
+                    'symbol': symbol,
+                    'qty': trade_details.get('qty', quantity),
+                    'price': trade_details.get('price', 0),
+                    'time': trade_details.get('time', timezone.now()),
+                    'fees': trade_details.get('fees', 0),
+                    'currency': currency if currency else '',
+                }
         else:
             return {'error': "Failed to open trade."}
     except Exception as e:
+        print("Error:", e)
         return {'error': str(e)}
 
 def close_tradelocker_trade(account, id, quantity):
@@ -67,10 +81,7 @@ def close_tradelocker_trade(account, id, quantity):
 
 def get_trade_info_by_id(tl, position_id, order_id):
     try:
-        positions = tl.get_all_positions()  # Assuming this returns a pandas DataFrame
-        # orders = tl.get_all_orders(history=True)
-
-        # print('orders', orders) 
+        positions = tl.get_all_positions()
 
         if 'id' not in positions.columns:
             print("Column 'orderId' not found in orders")
@@ -79,15 +90,28 @@ def get_trade_info_by_id(tl, position_id, order_id):
         # Locate the row matching the trade ID
         trade_info = positions.loc[positions['id'] == int(position_id)]
 
+        # # Print each column name and its corresponding value for the single row
+        # if not trade_info.empty:
+        #     row = trade_info.iloc[0]
+        #     for col in trade_info.columns:
+        #         print(f"{col}: {row[col]}")
+        # else:
+        #     print("No trade info found")
+
         if not trade_info.empty:
+            row = trade_info.iloc[0]
+            
+            raw_ts = row['openDate']
+            # Assume timestamp is in milliseconds
+            dt_naive = datetime.fromtimestamp(raw_ts / 1000.0)
+            time_dt = timezone.make_aware(dt_naive, timezone.utc)
             # Extract relevant trade details (assuming these columns exist in the DataFrame)
             trade_details = {
-                'qty': trade_info['qty'].values[0].item(),
-                # 'price': trade_info['price'].values[0],
-                # 'quantity': trade_info['quantity'].values[0],
-                # 'side': trade_info['side'].values[0],
-                # 'status': trade_info['status'].values[0],
-                # 'timestamp': trade_info['timestamp'].values[0]
+                'qty': str(trade_info['qty'].values[0].item()),
+                'price': str(trade_info['avgPrice'].values[0].item()),
+                'side': row['side'],
+                'time': time_dt,
+                'fees': str(row.get('fee', 0)),
             }
             return trade_details
         else:
@@ -96,18 +120,140 @@ def get_trade_info_by_id(tl, position_id, order_id):
         print("An error occurred:", str(e))
         return None
 
+def get_closed_orders_by_position_id(tl, position_id, entry_time):
+    try:
 
-def get_trade_data(tl, order_id):
-    trades = tl.get_all_executions()
-    orders_history = tl.get_all_orders(history=True)
+        dt = entry_time
 
-    matching_orders = orders_history[orders_history["id"] == order_id]
-    if len(matching_orders) == 0:
+        # Make sure it's in UTC
+        if timezone.is_naive(dt):
+            # if your `USE_TZ=True` you’ll usually get an aware datetime from Django,
+            # but if not:
+            dt = timezone.make_aware(dt, timezone.utc)
+        else:
+            dt = dt.astimezone(timezone.utc)
+
+        ts_ms = int(dt.timestamp() * 1000)
+        
+        orders_history = tl.get_all_orders(history=True, start_timestamp=ts_ms)
+        # Filter orders for this position_id
+        if not orders_history.empty:
+            records = orders_history.to_dict(orient="records")
+            # Filter for the given position_id
+            matches = [rec for rec in records if str(rec.get("positionId")) == position_id]
+            # Sort so the most recent (highest timestamp) comes first
+            matches.sort(key=lambda r: r.get('lastModified', 0), reverse=True)
+            return matches
+        
+        return []
+    except Exception as e:
         return None
+
+
+def get_closed_trades(tl, position_id = None, entry_time = None):
+    try:
+        route_url = f"{tl.get_base_url()}/trade/reports/close-trades-history"
+        headers = tl._get_headers()
+
+        ts_ms = 0
+        if entry_time:
+            dt = entry_time
+
+            # Make sure it's in UTC
+            if timezone.is_naive(dt):
+                # if your `USE_TZ=True` you’ll usually get an aware datetime from Django,
+                # but if not:
+                dt = timezone.make_aware(dt, timezone.utc)
+            else:
+                dt = dt.astimezone(timezone.utc)
+
+            ts_ms = int(dt.timestamp() * 1000)
+
+        params = {
+            # 'from': ts_ms,
+        }
+
+        response = requests.get(url=route_url, params=params, headers=headers, timeout=tl._TIMEOUT)
+        response_json = tl._get_response_json(response)
+
+        data = response_json.get('data', [])
+
+        # print(data)
+        if not position_id:
+            return data
+        else:
+
+            matches = [rec for rec in data if str(rec.get("positionId")) == position_id]
+            matches.sort(key=lambda r: r.get('closeMilliseconds', 0), reverse=True)
+            return matches
+    except Exception as e:
+        return None
+
+
+def get_tradelocker_trade_data(account, trade):
+
+    tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
+    closed_positions = get_closed_trades(tl, trade.order_id, trade.entry_time)
+
+    last_position = closed_positions[0] if closed_positions else None
+
+    if last_position:
+        # print(last_position)
+
+        raw_ts = last_position.get('closeMilliseconds', 0)
+        # Assume timestamp is in milliseconds
+        dt_naive = datetime.fromtimestamp(int(raw_ts) / 1000.0)
+        time_dt = timezone.make_aware(dt_naive, timezone.utc)
+
+        res = {
+            'volume': str(last_position.get('closeAmount', '')),
+            'side': str(trade.side),
+
+            'open_price': str(trade.entry_price),
+            'close_price': str(last_position.get('closePrice')),
+
+            'open_time': str(trade.entry_time),
+            'close_time': str(time_dt), 
+
+            'fees': str(float(last_position.get('commission') or 0) + float(last_position.get('swap') or 0)), 
+            'profit': str(last_position.get('profit')),
+
+            'commission': str(last_position.get('commission')),
+            'swap': str(last_position.get('swap')),
+
+        }
+
+        return res
+
+    order_history = get_closed_orders_by_position_id(tl, trade.order_id, trade.entry_time)
+
+    last_trade = order_history[0] if order_history else None
+
+    if last_trade:
+        # print(last_trade)
+
+        raw_ts = last_trade['lastModified']
+        # Assume timestamp is in milliseconds
+        dt_naive = datetime.fromtimestamp(raw_ts / 1000.0)
+        time_dt = timezone.make_aware(dt_naive, timezone.utc)
+        
+        res = {
+            'volume': str(last_trade.get('qty')),
+            'side': str(trade.side),
+
+            'open_price': str(trade.entry_price),
+            'close_price': str(last_trade.get('price')),
+
+            'open_time': str(trade.entry_time),
+            'close_time': str(time_dt),
+
+        }
+
+        return res
+
+    return None
+
     
-    position_id = int(matching_orders["positionId"].iloc[0])
-    return position_id
 
 
-    return matching_orders
-
+    # return matching_orders

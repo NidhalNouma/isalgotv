@@ -12,7 +12,7 @@ from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
 from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
 from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade, get_crypto_order_details 
 
-from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade
+from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade, get_tradelocker_trade_data
 from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade, get_metatrader_trade_data
 
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
@@ -100,6 +100,8 @@ def get_trade_data(account, trade):
         broker_type = account.broker_type
         if broker_type == 'crypto':
             return get_crypto_order_details(account, trade)
+        elif broker_type == 'tradelocker':
+            return get_tradelocker_trade_data(account, trade)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
             return get_metatrader_trade_data(account, trade)
         else:
@@ -229,7 +231,7 @@ def save_new_trade(custom_id, side, opend_trade, account):
     price = opend_trade.get('price', 0)
     time = opend_trade.get('time', timezone.now())
     currency = opend_trade.get('currency', '')
-    fees = opend_trade.get('fees', '')
+    fees = opend_trade.get('fees', 0)
 
     t_side = "B" if str.lower(side) == "buy" else "S"
     
