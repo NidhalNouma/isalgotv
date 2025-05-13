@@ -314,7 +314,7 @@ def get_order_details(account, trade_id):
                 # Convert fees from ADA to USDT using avg_price
 
                 if str(result.get('fee_instrument_name')) == sym_info.get('base_ccy'):
-                    print('changing fees ..')
+                    # print('changing fees ..')
                     try:
                         fee_ada = Decimal(str(fees))
                         price_usdt = Decimal(str(result.get('avg_price', '0')))

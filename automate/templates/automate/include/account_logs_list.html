@@ -1,0 +1,52 @@
+{% for log in logs %}
+  <li class="mb-1.5 flex items-start gap-2">
+    <span class="text-xs text-text/60 flex-shrink-0">{{ log.created_at|date:'H:i:s' }}</span>
+    <div class="inline-block flex-1">
+      <div class="flex items-center gap-2">
+        {% if log.response_status == 'E' %}
+          <svg class="h-3.5 shrink-0 aspect-square text-error/80 bg-error/10 rounded-full inline align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m4.9 4.9 14.2 14.2" />
+          </svg>
+        {% elif log.response_status == 'S' %}
+          <svg class="h-3.5 shrink-0 aspect-square text-success/80 bg-success/10 rounded-full inline align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        {% endif %}
+        <p class="text-xs text-text/80 flex-1">{{ log.alert_message }}</p>
+      </div>
+      <div class="flex items-start gap-2">
+        <svg class="w-3.5 aspect-square shrink-0 {% if log.response_status == 'E' %}
+             text-error/80 bg-error/10
+          {% elif log.response_status == 'S' %}
+             text-success/80 bg-success/10
+          {% endif %} rounded-full inline align-top"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-corner-down-right">
+          <polyline points="15 10 20 15 15 20" />
+          <path d="M4 4v7a4 4 0 0 0 4 4h12" />
+        </svg>
+        <p class=" text-sm flex-1 {% if log.response_status == 'E' %}
+             text-error/80
+          {% elif log.response_status == 'S' %}
+             text-success/80
+          {% endif %}">{{ log.response_message }}</p>
+      </div>
+    </div>
+  </li>
+{% endfor %}
+
+{% if next_start is not None %}
+  <li hx-ext="intersect" hx-trigger="intersect once" hx-get="{% url 'get_logs' broker_type id %}?start={{ next_start }}" hx-swap="outerHTML">
+    <span colspan="11" class="py-4 text-center text-text/60 text-xs">Loading more...</span>
+  </li>
+{% endif %}

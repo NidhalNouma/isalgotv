@@ -11,16 +11,21 @@ def create_signature(query_string, secret):
     return hmac.new(secret.encode(), query_string.encode(), hashlib.sha256).hexdigest()
 
 
-def send_request(method, endpoint, api_key, api_secret, params={}):
+def send_request(method, endpoint, api_key, api_secret, params={}, with_signuture = True):
     query_string = '&'.join([f"{key}={value}" for key, value in params.items()])
     timestamp = int(time.time() * 1000)
-    query_string += f"&timestamp={timestamp}"
-    signature = create_signature(query_string, api_secret)
+    
     headers = {
         'X-MBX-APIKEY': api_key,
         'Content-Type': 'application/x-www-form-urlencoded'
     }
-    url = f"{API_URL}{endpoint}?{query_string}&signature={signature}"
+
+    if with_signuture:
+        query_string += f"&timestamp={timestamp}"
+        signature = create_signature(query_string, api_secret)
+        query_string += f"&signature={signature}"
+
+    url = f"{API_URL}{endpoint}?{query_string}"
     response = requests.request(method, url, headers=headers)
     return response.json()
 
@@ -34,6 +39,22 @@ def check_binance_us_credentials(api_key, api_secret):
     except Exception as e:
         return {'error': str(e)}
 
+
+def get_exchange_info(api_key, api_secret, symbol):
+    params = {
+        "symbol": symbol,
+    }
+    response = send_request('GET', '/api/v3/exchangeInfo', api_key, api_secret, params, False)
+    # print(response)
+ 
+    data_list = response.get('symbols', [])
+    
+    target = symbol.upper()
+    for item in data_list:
+        inst = item.get('symbol', '')
+        if inst.replace('_', '').upper() == target or inst == target:
+            return item
+    return None
 
 def get_account_balance(account, asset):
     """Fetch the available balance for a specific asset."""
@@ -68,6 +89,10 @@ def adjust_trade_quantity(account, symbol, quote_order_qty, trade_type):
 
 def open_binance_us_trade(account, symbol, side, quantity, custom_id):
     try:
+
+        symbol_info = get_exchange_info(account.apiKey, account.secretKey, symbol)
+        print(symbol_info)
+
         adjusted_quantity = adjust_trade_quantity(account, symbol, float(quantity), side)
 
         params = {

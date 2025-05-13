@@ -86,9 +86,9 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
         elif broker_type == 'crypto':
             return close_crypto_trade(account, symbol, side, volume_close)
         elif broker_type == 'tradelocker':
-            return close_tradelocker_trade(account, trade_to_close.order_id, volume_close)
+            return close_tradelocker_trade(account, trade_to_close, volume_close)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
-            return close_metatrader_trade(account, trade_to_close.order_id, volume_close)
+            return close_metatrader_trade(account, trade_to_close, volume_close)
         else:
             raise Exception("Unsupported broker type.")
     except Exception as e:
@@ -232,6 +232,7 @@ def save_new_trade(custom_id, side, opend_trade, account):
     time = opend_trade.get('time', timezone.now())
     currency = opend_trade.get('currency', '')
     fees = opend_trade.get('fees', 0)
+    closed_order_id = opend_trade.get('closed_order_id', '')
 
     t_side = "B" if str.lower(side) == "buy" else "S"
     
@@ -249,6 +250,7 @@ def save_new_trade(custom_id, side, opend_trade, account):
             entry_time=time,
             currency=currency,
             fees=fees,
+            closed_order_id=closed_order_id,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id

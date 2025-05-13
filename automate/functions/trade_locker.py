@@ -34,24 +34,23 @@ def open_tradelocker_trade(account, symbol, side, quantity):
             position_id = tl.get_position_id_from_order_id(order_id)
             if position_id:
                 trade_details = get_trade_info_by_id(tl, position_id, order_id)
-                
                 # print(trade_details)
 
                 if trade_details is None:
                     raise Exception('Trade has been executed but Position was not found')
-                order_id = position_id
 
                 account_info = tl.get_trade_accounts()
                 # print(account_info)
                 currency = account_info[0].get('currency', '')
                 return {
                     'message': f"Trade opened with order ID {order_id}.",
-                    'order_id': order_id,
+                    'order_id': position_id,
                     'symbol': symbol,
                     'qty': trade_details.get('qty', quantity),
                     'price': trade_details.get('price', 0),
                     'time': trade_details.get('time', timezone.now()),
                     'fees': trade_details.get('fees', 0),
+                    'closed_order_id': order_id,
                     'currency': currency if currency else '',
                 }
         else:
@@ -60,19 +59,28 @@ def open_tradelocker_trade(account, symbol, side, quantity):
         print("Error:", e)
         return {'error': str(e)}
 
-def close_tradelocker_trade(account, id, quantity):
+def close_tradelocker_trade(account, trade, quantity):
     try:
         if(float(quantity) < 0.01):
             raise ValueError("Quantity must be greater than 0.01.")
         
         tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
-        result = tl.close_position(position_id = int(id), close_quantity = float(quantity))
-        # trade_details = get_trade_info_by_id(tl, id)
-        return {
-            'message': f"Trade closed for order ID {id}.", 
-            "id": id,
-            'qty': quantity,
-            }
+        result = tl.close_position(position_id = int(trade.order_id), close_quantity = float(quantity))
+        trade_details = get_trade_info_by_id(tl, trade.order_id, trade.closed_order_id)
+
+        if trade_details:
+            return {
+                    'message': f"Trade partially closed for order ID {trade.order_id}.", 
+                    "id": trade.order_id,
+                    'qty': quantity,
+                    "closed_order_id": trade_details.get('trade_id', ''),
+                }
+        else:
+            return {
+                    'message': f"Trade closed for order ID {trade.order_id}.", 
+                    "id": trade.order_id,
+                    'qty': trade.volume,
+                }
     
     except Exception as e:
         print("An error occurred:", str(e))
@@ -90,7 +98,7 @@ def get_trade_info_by_id(tl, position_id, order_id):
         # Locate the row matching the trade ID
         trade_info = positions.loc[positions['id'] == int(position_id)]
 
-        # # Print each column name and its corresponding value for the single row
+        # Print each column name and its corresponding value for the single row
         # if not trade_info.empty:
         #     row = trade_info.iloc[0]
         #     for col in trade_info.columns:
@@ -107,6 +115,7 @@ def get_trade_info_by_id(tl, position_id, order_id):
             time_dt = timezone.make_aware(dt_naive, timezone.utc)
             # Extract relevant trade details (assuming these columns exist in the DataFrame)
             trade_details = {
+                'trade_id': row['id'],
                 'qty': str(trade_info['qty'].values[0].item()),
                 'price': str(trade_info['avgPrice'].values[0].item()),
                 'side': row['side'],
@@ -150,7 +159,7 @@ def get_closed_orders_by_position_id(tl, position_id, entry_time):
         return None
 
 
-def get_closed_trades(tl, position_id = None, entry_time = None):
+def get_closed_trades(tl, position_id = None, entry_time = None, lastTradeId = None):
     try:
         route_url = f"{tl.get_base_url()}/trade/reports/close-trades-history"
         headers = tl._get_headers()
@@ -172,6 +181,8 @@ def get_closed_trades(tl, position_id = None, entry_time = None):
         params = {
             # 'from': ts_ms,
         }
+        # if lastTradeId:
+        #     params['lastTradeId'] = lastTradeId
 
         response = requests.get(url=route_url, params=params, headers=headers, timeout=tl._TIMEOUT)
         response_json = tl._get_response_json(response)
@@ -193,37 +204,42 @@ def get_closed_trades(tl, position_id = None, entry_time = None):
 def get_tradelocker_trade_data(account, trade):
 
     tl = TLAPI(environment=get_tradelocker_base_url(account.type), username=account.username, password=account.password, server=account.server)
-    closed_positions = get_closed_trades(tl, trade.order_id, trade.entry_time)
+    closed_positions = get_closed_trades(tl, trade.order_id, trade.entry_time, trade.closed_order_id)
 
     last_position = closed_positions[0] if closed_positions else None
 
     if last_position:
         # print(last_position)
 
-        raw_ts = last_position.get('closeMilliseconds', 0)
-        # Assume timestamp is in milliseconds
-        dt_naive = datetime.fromtimestamp(int(raw_ts) / 1000.0)
-        time_dt = timezone.make_aware(dt_naive, timezone.utc)
+        trade_list = []
 
-        res = {
-            'volume': str(last_position.get('closeAmount', '')),
-            'side': str(trade.side),
+        for trade_data in reversed(closed_positions):
+            raw_ts = trade_data.get('closeMilliseconds', 0)
+            # Assume timestamp is in milliseconds
+            dt_naive = datetime.fromtimestamp(int(raw_ts) / 1000.0)
+            time_dt = timezone.make_aware(dt_naive, timezone.utc)
 
-            'open_price': str(trade.entry_price),
-            'close_price': str(last_position.get('closePrice')),
+            res = {
+                'volume': str(trade_data.get('closeAmount', '')),
+                'side': str(trade.side),
 
-            'open_time': str(trade.entry_time),
-            'close_time': str(time_dt), 
+                'open_price': str(trade.entry_price),
+                'close_price': str(trade_data.get('closePrice')),
 
-            'fees': str(float(last_position.get('commission') or 0) + float(last_position.get('swap') or 0)), 
-            'profit': str(last_position.get('profit')),
+                'open_time': str(trade.entry_time),
+                'close_time': str(time_dt), 
 
-            'commission': str(last_position.get('commission')),
-            'swap': str(last_position.get('swap')),
+                'fees': str(float(trade_data.get('commission') or 0) + float(trade_data.get('swap') or 0)), 
+                'profit': str(trade_data.get('profit')),
 
-        }
+                'commission': str(trade_data.get('commission')),
+                'swap': str(trade_data.get('swap')),
 
-        return res
+            }
+
+            trade_list.append(res)
+
+        return trade_list
 
     order_history = get_closed_orders_by_position_id(tl, trade.order_id, trade.entry_time)
 
@@ -246,6 +262,8 @@ def get_tradelocker_trade_data(account, trade):
 
             'open_time': str(trade.entry_time),
             'close_time': str(time_dt),
+
+            'lastModified': str(last_trade.get('lastModified'))
 
         }
 

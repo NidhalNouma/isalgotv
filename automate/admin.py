@@ -6,12 +6,12 @@ from unfold.admin import ModelAdmin
 
 @admin.register(CryptoBrokerAccount)
 class CryptoBrokerAccountAdmin(ModelAdmin):
-    list_display = ('name', 'custom_id', 'created_at') 
+    list_display = ('name', 'custom_id', 'broker_type', 'created_at') 
     search_fields = ['name', 'custom_id'] 
 
 @admin.register(ForexBrokerAccount)
 class ForexBrokerAccountAdmin(ModelAdmin):
-    list_display = ('name', 'custom_id', 'created_at') 
+    list_display = ('name', 'custom_id', 'broker_type', 'created_at') 
     search_fields = ['name', 'custom_id', 'username'] 
 
 

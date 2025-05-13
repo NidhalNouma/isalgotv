@@ -887,7 +887,7 @@ input:checked + .toggle-bg {
   --color-accent: 0 0% 100%;
   --color-background: 0 0% 0%;
   --color-profit: 178 40% 50%;
-  --color-loss: 330 100% 48%;
+  --color-loss: 330 100% 55%;
   --color-text: 0 0% 80%;
   --color-text-light: 0 0% 90%;
   --color-title: 0 0% 100%;
@@ -2408,6 +2408,10 @@ h1,
   margin-right: 0px;
 }
 
+.mr-0\.5 {
+  margin-right: 0.125rem;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
@@ -2723,8 +2727,8 @@ h1,
   height: 75vh;
 }
 
-.h-\[85vh\] {
-  height: 85vh;
+.h-\[80vh\] {
+  height: 80vh;
 }
 
 .h-\[calc\(100\%-1rem\)\] {

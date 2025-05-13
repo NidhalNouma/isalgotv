@@ -32,7 +32,12 @@
       <span class="text-text/80">NA</span>
     {% endif %}
   </td>
-  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.volume|trim_zeros }}</td>
+  <td class="px-4 py-3 text-xs text-text truncate">
+    {% if trade.remaining_volume > 0 %}
+      <span class="mr-0.5">{{ trade.remaining_volume|trim_zeros }} /</span>
+    {% endif %}
+    {{ trade.volume|trim_zeros }}
+  </td>
   <td class="px-4 py-3 text-xs font-medium truncate">
     {% if trade.status == 'C' %}
       {% if trade.profit > 0 %}

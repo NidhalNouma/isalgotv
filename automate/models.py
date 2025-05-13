@@ -200,31 +200,52 @@ class TradeDetails(models.Model):
     object_id = models.PositiveIntegerField()
     account = GenericForeignKey('content_type', 'object_id')
 
-    def add_fill(self, fill_data):
+    def add_fill(self, trade_data):
         """
         Append a new fill entry to the fills JSONField. fill_data can be a dict or JSON string.
         Updates remaining_volume and status based on the 'volume' field.
         """
 
         # Parse JSON string if necessary
-        if isinstance(fill_data, str):
+        if isinstance(trade_data, str):
             try:
-                fill_dict = json.loads(fill_data)
+                trade_data = json.loads(trade_data)
             except json.JSONDecodeError:
-                raise ValueError("Invalid JSON string for fill_data")
-        elif isinstance(fill_data, dict):
-            fill_dict = fill_data.copy()
+                raise ValueError("Invalid JSON string for fill_data(trade_data)")
+        elif isinstance(trade_data, dict):
+            trade_data = trade_data.copy()
         else:
-            raise TypeError("fill_data must be a dict or JSON string")
+            raise TypeError("trade_data must be a dict or JSON string")
 
         # Ensure timestamp
-        if "timestamp" not in fill_dict or not fill_dict["timestamp"]:
-            fill_dict["timestamp"] = timezone.now().isoformat()
+        if "timestamp" not in trade_data or not trade_data["timestamp"]:
+            trade_data["timestamp"] = timezone.now().isoformat()
 
         try:
+
+            self.exit_time = trade_data.get('close_time', timezone.now)
+
+            close_price = trade_data.get('close_price', 0)
+            profit = trade_data.get('profit', 0)
+            fees = trade_data.get('fees', 0)
+
+            try:
+                self.exit_price = Decimal(str(close_price))
+                self.profit = self.profit + Decimal(str(profit))
+                self.fees = self.fees + Decimal(str(fees))
+            except (TypeError, ValueError, InvalidOperation):
+                self.exit_price = Decimal('0')
+                self.profit = self.profit + Decimal('0')
+                self.fees = self.fees + Decimal('0')
+
             # Append new fill record
             self.fills = self.fills or []
-            self.fills.append(fill_dict)
+            self.fills.append(trade_data)
+
+            if not self.currency:
+                currency = trade_data.get('currency', None)
+                if currency:
+                    self.currency = currency
 
             # self.save(update_fields=["fills"])
         except Exception as e:
@@ -234,30 +255,20 @@ class TradeDetails(models.Model):
         try:
             if self.status != 'O':
                 from .functions.alerts_logs_trades import get_trade_data
-                trade_data = get_trade_data(self.account, self)
-                # print(trade_data)
-                if trade_data:
-                    self.exit_time = trade_data.get('close_time', timezone.now)
+                trade_response = get_trade_data(self.account, self)
+                
+                # print(trade_response)
+                if trade_response:
+                    if isinstance(trade_response, list):
+                        self.fills = []
+                        # trade_data is an “array” of fills or orders
+                        for data in trade_response:
+                            # handle each dict in the list
+                            self.add_fill(data)
 
-                    close_price = trade_data.get('close_price', 0)
-                    profit = trade_data.get('profit', 0)
-                    fees = trade_data.get('fees', 0)
-
-                    try:
-                        self.exit_price = Decimal(str(close_price))
-                        self.profit = self.profit + Decimal(str(profit))
-                        self.fees = self.fees + Decimal(str(fees))
-                    except (TypeError, ValueError, InvalidOperation):
-                        self.exit_price = Decimal('0')
-                        self.profit = self.profit + Decimal('0')
-                        self.fees = self.fees + Decimal('0')
-                    
-                    self.add_fill(trade_data)
-
-                    if not self.currency:
-                        currency = trade_data.get('currency', None)
-                        if currency:
-                            self.currency = currency
+                    else:
+                        trade_data = trade_response 
+                        self.add_fill(trade_data)
                 
         except Exception as e:
             print(e)

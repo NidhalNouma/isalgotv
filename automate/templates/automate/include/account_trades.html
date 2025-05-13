@@ -19,9 +19,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-text/10">
-            {% for trade in trades %}
-              {% include 'include/trade_row.html' with trade=trade %}
-            {% endfor %}
+            {% include 'include/account_trades_tablebody.html' %}
           </tbody>
         </table>
       </div>

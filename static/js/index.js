@@ -1742,8 +1742,11 @@ function openDrawer(id, placement = "right") {
 }
 
 function hideDrawer(id) {
-  if (drawers[id]) drawers[id].hide();
-  delete drawers[id];
+  const drawer = drawers[id];
+  if (drawer) {
+    delete drawers[id];
+    drawer.hide();
+  }
 
   return true;
 }

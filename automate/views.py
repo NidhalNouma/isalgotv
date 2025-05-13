@@ -492,9 +492,12 @@ def account_subscription_failed(email ,broker_type, subscription_id, send_mail=T
     except Exception as e:
         print(e)
 
-@require_http_methods([ "POST"])
+@require_http_methods([ "GET"])
 def get_broker_logs(request, broker_type, pk):
     try:
+        # Pagination parameters
+        start = int(request.GET.get('start', 0))
+        limit = 50
 
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
@@ -508,29 +511,43 @@ def get_broker_logs(request, broker_type, pk):
 
 
         content_type = ContentType.objects.get_for_model(account_model)
-        logs_list = LogMessage.objects.filter(content_type=content_type, object_id=pk).order_by('-created_at')
+        all_logs_list = LogMessage.objects.filter(content_type=content_type, object_id=pk).order_by('-created_at')
+        logs_list = all_logs_list[start:start+limit]
 
         grouped_logs = defaultdict(list)
         for log in logs_list:
             log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
             grouped_logs[log_date].append(log)
 
+        
+        # Determine next start offset for pagination
+        total = all_logs_list.count()
+        next_start = start + limit if start + limit < total else None
+
         context = {
             'grouped_logs': dict(grouped_logs),
             'logs': logs_list,
             'id': pk,
-            'broker_type': broker_type
+            'broker_type': broker_type,
+            'next_start': next_start,
         }
-        return render(request, 'include/account_logs.html', context=context)
+
+        if start == 0:
+            return render(request, 'include/account_logs.html', context=context)
+        else:
+            return render(request, 'include/account_logs_list.html', context=context)
     
     except Exception as e:
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
         return response
 
-@require_http_methods([ "POST"])
+@require_http_methods(["GET"])
 def get_broker_trades(request, broker_type, pk):
     try:
+        # Pagination parameters
+        start = int(request.GET.get('start', 0))
+        limit = 30
 
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
@@ -542,22 +559,30 @@ def get_broker_trades(request, broker_type, pk):
         else:
             raise ValueError("Invalid Broker Type")
 
-
         content_type = ContentType.objects.get_for_model(account_model)
-        trade_list = TradeDetails.objects.filter(content_type=content_type, object_id=pk).order_by('-created_at')
+        all_trades = TradeDetails.objects.filter(content_type=content_type, object_id=pk).order_by('-created_at')
+        trade_list = all_trades[start:start+limit]
 
         grouped_logs = defaultdict(list)
         for log in trade_list:
             log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
             grouped_logs[log_date].append(log)
 
+        # Determine next start offset for pagination
+        total = all_trades.count()
+        next_start = start + limit if start + limit < total else None
+
         context = {
             'grouped_trades': dict(grouped_logs),
             'trades': trade_list,
             'id': pk,
-            'broker_type': broker_type
+            'broker_type': broker_type,
+            'next_start': next_start,
         }
-        return render(request, 'include/account_trades.html', context=context)
+        if start == 0:
+            return render(request, 'include/account_trades.html', context=context)
+        else:
+            return render(request, 'include/account_trades_tablebody.html', context=context)
     
     except Exception as e:
         context = {'error': e}

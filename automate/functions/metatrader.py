@@ -318,7 +318,7 @@ def open_metatrader_trade(account, action_type, symbol, lot_size):
         return {"error": str(e)}
 
 
-def close_metatrader_trade(account, trade_id, partial_close=0):
+def close_metatrader_trade(account, trade, partial_close=0):
     """
     Closes a trade for a given account.
 
@@ -333,12 +333,12 @@ def close_metatrader_trade(account, trade_id, partial_close=0):
     """
 
     account_api_id = account.account_api_id 
-    print("Close a trade ...", account_api_id, trade_id)
+    print("Close a trade ...", account_api_id, trade.order_id)
     
     # Prepare the payload data.
     data = {
         "actionType": "POSITION_PARTIAL",
-        "positionId": trade_id,
+        "positionId": trade.order_id,
         "volume": round(float(partial_close), 2),
     }
 
@@ -356,7 +356,7 @@ def close_metatrader_trade(account, trade_id, partial_close=0):
         else:
             return {
                 'message': f"Trade closed for order ID {id}.", 
-                "order_id": trade_id,
+                "order_id": trade.order_id,
                 'qty': partial_close,
             }
             # return resp_data

@@ -195,7 +195,7 @@
     </button>
     <span>|</span>
       
-    <form hx-post="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+    <form hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
         type="submit"
@@ -208,7 +208,7 @@
     </form>
       <span>|</span>
 
-    <form hx-post="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+    <form hx-get="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
         type="submit"
@@ -317,7 +317,7 @@
   {% include "include/drawer_modal.html" with drawer_id="drawer-crypto-guide-"|add:account_id_str title="Alert Creation Playground" body=setuo_alert_content %}
 
   {% include "include/drawer_modal.html" with drawer_id="crypto-broker-logs-"|add:account_id_str title="Logs ("|add:account.name|add:")" body=logs_content side="bottom" class="h-[75vh]" %}
-  {% include 'include/drawer_modal.html' with drawer_id='crypto-broker-trades-'|add:account_id_str title='Trades ('|add:account.name|add:')' body=trades_content side='bottom' class='h-[85vh]' body_class="!h-[calc(100%-90px)]" %}
+  {% include 'include/drawer_modal.html' with drawer_id='crypto-broker-trades-'|add:account_id_str title='Trades ('|add:account.name|add:')' body=trades_content side='bottom' class='h-[80vh]  max-w-[100vw]' body_class="!h-[calc(100%-90px)]" %}
   
   {% endwith %}
   {% endwith %}
