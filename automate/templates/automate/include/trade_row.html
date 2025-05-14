@@ -74,6 +74,13 @@
       -
     {% endif %}
   </td>
+  <td class="px-4 py-3 text-xs text-text truncate">
+    {% if trade.strategy %}
+      <a href="{% url 'strategy' slug=trade.strategy.slug %}" class="hover:underline">{{ trade.strategy.name }}</a>
+    {% else %}
+      <span class="text-text/60">NA</span>
+    {% endif %}
+  </td>
 </tr>
 
 {% if trade.fills|length > 0 %}
@@ -98,6 +105,7 @@
       <td class="px-4 py-3 text-xs text-text truncate">{{ subtrade.close_price|trim_zeros }}</td>
       <td class="px-4 py-3 text-xs text-text truncate">-</td>
       <td class="px-4 py-3 text-xs text-text truncate">{{ subtrade.close_time|to_datetime|date:'F j, Y H:i:s' }}</td>
+      <td class="px-4 py-3 text-xs text-text truncate"></td>
     </tr>
   {% endfor %}
 {% endif %}

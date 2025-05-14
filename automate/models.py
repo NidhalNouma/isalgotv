@@ -12,6 +12,8 @@ from profile_user.models import User_Profile
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
+from strategies.models import Strategy
+
 import json
 from django.utils import timezone
 import shortuuid
@@ -46,7 +48,6 @@ class CryptoBrokerAccount(models.Model):
         ("C", "COIN@M"),
         ("UC", "USD@C"),
     ]
-
 
     broker_type = models.CharField(max_length=20, choices=BROKER_TYPES)
 
@@ -164,8 +165,15 @@ class TradeDetails(models.Model):
         ("O", "OPEN"),
         ("P", "PARTIALLY_CLOSED"),
         ("C", "CLOSED"),
-
     ]
+
+    strategy = models.ForeignKey(
+        Strategy,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='trades'
+    )
 
     custom_id = models.CharField(max_length=40)
     order_id = models.CharField(max_length=40)

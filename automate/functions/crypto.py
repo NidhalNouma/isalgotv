@@ -218,7 +218,7 @@ def open_crypto_trade(crypto_account, symbol: str, side: str, quantity: float, c
                 'order_id': order_id,
                 'symbol': symbol,
                 "side": side.upper(),
-                'qty': adjusted_quantity,
+                'qty': order_details.get('volume', adjusted_quantity),
                 'price': order_details.get('price', '0'),
                 'time': order_details.get('time', ''),
                 'fees': order_details.get('fees', ''),

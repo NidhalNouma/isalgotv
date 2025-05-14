@@ -23,6 +23,24 @@ def check_binance_credentials(api_key, api_secret, trade_type="S"):
         return {"error": e.error_message}
     except Exception as e:
         return {"error": str(e)}
+    
+def get_exchange_info(api_key, api_secret, trade_type, symbol):
+    try:
+        if trade_type == "S":  # Spot
+            client = Spot(api_key, api_secret)
+            response = client.exchange_info(symbol)
+        elif trade_type == "U":  # USDM
+            client = UMFutures(api_key, api_secret)
+            response = client.exchange_info()
+        elif trade_type == "C":  # COINM
+            client = CMFutures(api_key, api_secret)
+            response = client.exchange_info()
+        else:
+            return {'error': "Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'.", "valid": False}
+    
+    except Exception as e:
+        return {"error": str(e)}
+
 
 def get_account_balance(binance_account, asset: str):
     try:
@@ -58,6 +76,7 @@ def adjust_trade_quantity(binance_account, symbol, side ,quote_order_qty):
         if binance_account.type == "S":  # Spot
             # base_asset, quote_asset = symbol.split("/")
             base_asset, quote_asset = symbol[:-4], symbol[-4:]
+
             base_balance = get_account_balance(binance_account, base_asset)["balance"]
             quote_balance = get_account_balance(binance_account, quote_asset)["balance"]
 
@@ -179,7 +198,6 @@ def close_binance_trade(binance_account, symbol: str, side: str, quantity: float
     except Exception as e:
         raise ValueError(str(e))
         
-
 
 def get_binance_order_details(binance_account, symbol, order_id):
 

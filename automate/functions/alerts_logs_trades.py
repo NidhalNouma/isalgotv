@@ -6,7 +6,7 @@ from django.utils import timezone
 from ..models import *
 
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
-from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade
+from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade, get_binanceus_order_details
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
 from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
 from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
@@ -98,7 +98,9 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
 def get_trade_data(account, trade):
     try:
         broker_type = account.broker_type
-        if broker_type == 'crypto':
+        if broker_type == 'binanceus':
+            return get_binanceus_order_details(account, trade)
+        elif broker_type == 'crypto':
             return get_crypto_order_details(account, trade)
         elif broker_type == 'tradelocker':
             return get_tradelocker_trade_data(account, trade)
@@ -129,6 +131,8 @@ def manage_alert(alert_message, account):
         partial = alert_data.get('Partial')
         volume = alert_data.get('Volume')
 
+        strategy_id = alert_data.get('strategy_ID', None)
+
         if not custom_id:
             raise Exception("No ID found in alert message.")
 
@@ -148,7 +152,7 @@ def manage_alert(alert_message, account):
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
-            saved_trade = save_new_trade(custom_id, side, trade, account)
+            saved_trade = save_new_trade(custom_id, side, trade, account, strategy_id)
             save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
@@ -194,6 +198,8 @@ def extract_alert_data(alert_message, extra_symbol=""):
             data['Partial'] = value
         elif key == 'ID' or key == 'NUM':
             data['ID'] = value
+        elif key == 'ST' or key == 'ST_ID':
+            data['strategy_ID'] = value
     
     return data
 
@@ -224,7 +230,7 @@ def save_log(response_status, alert_message, response_message, account, trade = 
 
     return log
 
-def save_new_trade(custom_id, side, opend_trade, account):
+def save_new_trade(custom_id, side, opend_trade, account, strategy_id):
     order_id = opend_trade.get('order_id') 
     symbol = opend_trade.get('symbol')
     volume = opend_trade.get('qty')
@@ -253,7 +259,8 @@ def save_new_trade(custom_id, side, opend_trade, account):
             closed_order_id=closed_order_id,
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
-            object_id=account.id
+            object_id=account.id,
+            strategy_id=strategy_id
         )
 
     else:
