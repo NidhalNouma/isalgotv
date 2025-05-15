@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from ..models import *
 
-from .binance import check_binance_credentials, open_binance_trade, close_binance_trade
+from .binance import check_binance_credentials, open_binance_trade, close_binance_trade, get_binance_order_details
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade, get_binanceus_order_details
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
 from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
@@ -98,7 +98,9 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
 def get_trade_data(account, trade):
     try:
         broker_type = account.broker_type
-        if broker_type == 'binanceus':
+        if broker_type == 'binance':
+            return get_binance_order_details(account, trade)
+        elif broker_type == 'binanceus':
             return get_binanceus_order_details(account, trade)
         elif broker_type == 'crypto':
             return get_crypto_order_details(account, trade)

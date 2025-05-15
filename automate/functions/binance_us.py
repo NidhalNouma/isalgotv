@@ -49,8 +49,11 @@ def get_exchange_info(api_key, api_secret, symbol):
         "symbol": symbol,
     }
     response = send_request('GET', '/api/v3/exchangeInfo', api_key, api_secret, params, False)
- 
-    data_list = response.get('symbols', [])
+            
+    if isinstance(response, list):
+        data_list = response
+    else:
+        data_list = response.get('symbols', [])
     
     target = symbol.upper()
     for item in data_list:
@@ -249,7 +252,20 @@ def get_order_info(account, symbol, order_id):
         if isinstance(response, dict) and response.get('msg') is not None:
             raise Exception(response.get('msg'))
         
-        trade = response[0]
+        if isinstance(response, list):
+            if not response:
+                return None
+            if len(response) > 1:
+                total_qty = sum(float(t.get('qty', 0)) for t in response)
+                total_commission = sum(float(t.get('commission', 0)) for t in response)
+                # Use the last fill as the base record
+                trade = response[-1]
+                trade['qty'] = str(total_qty)
+                trade['commission'] = str(total_commission)
+            else:
+                trade = response[0]
+        else:
+            trade = response
 
         sym_info = get_exchange_info(account.apiKey, account.secretKey, symbol)
 
@@ -332,9 +348,11 @@ def get_binanceus_order_details(account, trade):
                 'close_time': str(result.get('time')), 
 
                 'fees': str(result.get('fees')), 
-                'fees_currency': str(result.get('fees_currency')), 
 
                 'profit': str(profit),
+
+                'commission': str(result.get('commission')),
+                'commissionAsset': str(result.get('commissionAsset')),
             }
 
             return res
