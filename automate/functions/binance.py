@@ -220,7 +220,7 @@ def open_binance_trade(binance_account, symbol: str, side: str, quantity: float,
                 'message': f"Trade opened with order ID {response.get('orderId')}.",
                 'order_id': response.get('orderId'),
                 'symbol': response.get('symbol', symbol),
-
+                "side": side.upper(),
                 'price': (response['fills'][0].get('price') if response.get('fills') and len(response['fills']) > 0 else response.get('price', '')),
                 # 'fees': response['fills'][0]['commission'],
                 'qty': (
@@ -390,8 +390,6 @@ def get_order_details(binance_account, symbol, order_id):
     except Exception as e:
         raise ValueError(str(e))
 
-
-
 def get_binance_order_details(account, trade):
 
     trade_id = trade.closed_order_id
@@ -410,12 +408,15 @@ def get_binance_order_details(account, trade):
             except (InvalidOperation, ValueError):
                 volume_dec = Decimal('0')
 
-            if not result.get('profit', None):
-                side_upper = trade.side.upper()
-                if side_upper in ("B", "BUY"):
-                    profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-                elif side_upper in ("S", "SELL"):
-                    profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+            if result.get('profit') in (None, '', 'None'):
+                if price_dec != 0:
+                    side_upper = trade.side.upper()
+                    if side_upper in ("B", "BUY"):
+                        profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
+                    elif side_upper in ("S", "SELL"):
+                        profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+                    else:
+                        profit = Decimal("0")
                 else:
                     profit = Decimal("0")
             else:

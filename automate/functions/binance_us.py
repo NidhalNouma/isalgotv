@@ -328,10 +328,14 @@ def get_binanceus_order_details(account, trade):
 
 
             side_upper = trade.side.upper()
-            if side_upper in ("B", "BUY"):
-                profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-            elif side_upper in ("S", "SELL"):
-                profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+
+            if price_dec != 0:
+                if side_upper in ("B", "BUY"):
+                    profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
+                elif side_upper in ("S", "SELL"):
+                    profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+                else:
+                    profit = Decimal("0")
             else:
                 profit = Decimal("0")
 

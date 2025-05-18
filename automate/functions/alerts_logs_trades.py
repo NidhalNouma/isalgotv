@@ -7,7 +7,7 @@ from ..models import *
 
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade, get_binance_order_details
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade, get_binanceus_order_details
-from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade
+from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade, get_bitget_order_details
 from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
 from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
 from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade, get_crypto_order_details 
@@ -102,6 +102,12 @@ def get_trade_data(account, trade):
             return get_binance_order_details(account, trade)
         elif broker_type == 'binanceus':
             return get_binanceus_order_details(account, trade)
+        elif broker_type == 'bitget':
+            return get_bitget_order_details(account, trade)
+        # elif broker_type == 'bybit':
+        #     return get_bybit_order_details(account, trade)
+        # elif broker_type == 'mexc':
+        #     return get_mexc_order_details(account, trade)
         elif broker_type == 'crypto':
             return get_crypto_order_details(account, trade)
         elif broker_type == 'tradelocker':
@@ -117,12 +123,8 @@ def get_trade_data(account, trade):
 def manage_alert(alert_message, account):
     try:
         print("Webhook request for account #" + str(account.id) + ": " + alert_message)
-        
-        extra_symbol = ""
-        if account.broker_type == 'binance' and account.type == "C":
-            extra_symbol = "_PERP"
 
-        alert_data = extract_alert_data(alert_message, extra_symbol)
+        alert_data = extract_alert_data(alert_message)
         
         action = alert_data.get('Action')
         custom_id = alert_data.get('ID')
@@ -134,6 +136,10 @@ def manage_alert(alert_message, account):
         volume = alert_data.get('Volume')
 
         strategy_id = alert_data.get('strategy_ID', None)
+
+        if account.broker_type == 'binance' and account.type == "C":
+            if not symbol.endswith("_PERP"):
+                symbol = symbol + "_PERP"
 
         if not custom_id:
             raise Exception("No ID found in alert message.")
@@ -178,7 +184,7 @@ def manage_alert(alert_message, account):
         save_log("E", alert_message, str(e), account)
         return {"error": str(e)}
 
-def extract_alert_data(alert_message, extra_symbol=""):
+def extract_alert_data(alert_message):
     data = {}
     parts = alert_message.split()
     
@@ -193,7 +199,7 @@ def extract_alert_data(alert_message, extra_symbol=""):
             data['Action'] = 'Exit'
             data['Type'] = value
         elif key == 'A':
-            data['Asset'] = value + extra_symbol
+            data['Asset'] = value 
         elif key == 'V':
             data['Volume'] = value
         elif key == 'P':
