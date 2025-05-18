@@ -8,7 +8,7 @@ from ..models import *
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade, get_binance_order_details
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade, get_binanceus_order_details
 from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade, get_bitget_order_details
-from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade
+from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade, get_bybit_order_details
 from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
 from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade, get_crypto_order_details 
 
@@ -104,8 +104,8 @@ def get_trade_data(account, trade):
             return get_binanceus_order_details(account, trade)
         elif broker_type == 'bitget':
             return get_bitget_order_details(account, trade)
-        # elif broker_type == 'bybit':
-        #     return get_bybit_order_details(account, trade)
+        elif broker_type == 'bybit':
+            return get_bybit_order_details(account, trade)
         # elif broker_type == 'mexc':
         #     return get_mexc_order_details(account, trade)
         elif broker_type == 'crypto':

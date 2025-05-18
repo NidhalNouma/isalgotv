@@ -267,9 +267,21 @@ def close_binance_trade(binance_account, symbol: str, side: str, quantity: float
             response = client.new_order(**order_params)
         elif trade_type == "U":
             client = UMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
+            # TODO: Check if there's an open position to close
+            positions = client.get_position_risk(symbol=symbol)
+            pos = next((p for p in positions if p.get('symbol') == symbol), None)
+            if not pos or float(pos.get('positionAmt', 0)) == 0:
+                # No open position; skip placing an order
+                raise Exception(f"No open {symbol} USDM position to close.")
             response = client.new_order(**order_params)
         elif trade_type == "C":
             client = CMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
+            # TODO: Check if there's an open position to close
+            positions = client.get_position_risk(symbol=symbol)
+            pos = next((p for p in positions if p.get('symbol') == symbol), None)
+            if not pos or float(pos.get('positionAmt', 0)) == 0:
+                # No open position; skip placing an order
+                raise Exception(f"No open {symbol} COINM position to close.")
             response = client.new_order(**order_params)
         else:
             raise ValueError("Invalid trade_type. Use 'spot', 'usdm', or 'coinm'.")
