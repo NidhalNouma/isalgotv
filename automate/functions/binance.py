@@ -177,7 +177,10 @@ def open_binance_trade(binance_account, symbol: str, side: str, quantity: float,
         order_symbol = sys_info.get('symbol')
 
         adjusted_quantity =  adjust_trade_quantity(binance_account, sys_info, side, float(quantity))
+
         print("Adjusted quantity:", adjusted_quantity)
+        if float(adjusted_quantity) <= 0:
+            raise ValueError("Insufficient balance for the trade.")
 
         order_params = {
             "symbol": symbol,
@@ -259,7 +262,7 @@ def close_binance_trade(binance_account, symbol: str, side: str, quantity: float
             "side": str.upper(t_side),
             "type": "MARKET",
             "quantity": adjusted_quantity,
-            # "reduceOnly": "true",
+            "reduceOnly": "true",
         }
 
         if trade_type == "S":
@@ -267,21 +270,21 @@ def close_binance_trade(binance_account, symbol: str, side: str, quantity: float
             response = client.new_order(**order_params)
         elif trade_type == "U":
             client = UMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
-            # TODO: Check if there's an open position to close
-            positions = client.get_position_risk(symbol=symbol)
-            pos = next((p for p in positions if p.get('symbol') == symbol), None)
-            if not pos or float(pos.get('positionAmt', 0)) == 0:
-                # No open position; skip placing an order
-                raise Exception(f"No open {symbol} USDM position to close.")
+            # # TODO: Check if there's an open position to close
+            # positions = client.get_position_risk(symbol=symbol)
+            # pos = next((p for p in positions if p.get('symbol') == symbol), None)
+            # if not pos or float(pos.get('positionAmt', 0)) == 0:
+            #     # No open position; skip placing an order
+            #     raise Exception(f"No open {symbol} USDM position to close.")
             response = client.new_order(**order_params)
         elif trade_type == "C":
             client = CMFutures(key=binance_account.apiKey, secret=binance_account.secretKey)
-            # TODO: Check if there's an open position to close
-            positions = client.get_position_risk(symbol=symbol)
-            pos = next((p for p in positions if p.get('symbol') == symbol), None)
-            if not pos or float(pos.get('positionAmt', 0)) == 0:
-                # No open position; skip placing an order
-                raise Exception(f"No open {symbol} COINM position to close.")
+            # # TODO: Check if there's an open position to close
+            # positions = client.get_position_risk(symbol=symbol)
+            # pos = next((p for p in positions if p.get('symbol') == symbol), None)
+            # if not pos or float(pos.get('positionAmt', 0)) == 0:
+            #     # No open position; skip placing an order
+            #     raise Exception(f"No open {symbol} COINM position to close.")
             response = client.new_order(**order_params)
         else:
             raise ValueError("Invalid trade_type. Use 'spot', 'usdm', or 'coinm'.")

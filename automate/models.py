@@ -262,8 +262,13 @@ class TradeDetails(models.Model):
     def pre_save_adjustments(self):
         try:
             if self.status != 'O':
-                from .functions.alerts_logs_trades import get_trade_data
-                trade_response = get_trade_data(self.account, self)
+                trade = self.closed_trade_details
+
+                if trade:
+                    trade_response = trade
+                else:
+                    from .functions.alerts_logs_trades import get_trade_data
+                    trade_response = get_trade_data(self.account, self)
                 
                 # print(trade_response)
                 if trade_response:

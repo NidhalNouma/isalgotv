@@ -176,7 +176,7 @@ def manage_alert(alert_message, account):
             
             closed_volume = closed_trade.get('qty', volume_close)
 
-            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade.get('price', 0), closed_trade.get('closed_order_id', ''))
+            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
             save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, trade)
 
     except Exception as e:   
@@ -291,7 +291,16 @@ def get_trade(custom_id, symbol, side, account):
 
     return trade
 
-def update_trade_after_close(trade, closed_volume, price, closed_order_id):
+def update_trade_after_close(trade, closed_volume, closed_trade):
+
+    closed_volume = closed_trade.get('qty', closed_volume)
+    price = closed_trade.get('price', 0)
+    closed_order_id = closed_trade.get('closed_order_id', '')
+
+    closed_trade_details = closed_trade.get('trade_details', None)
+
+    trade.closed_trade_details = closed_trade_details
+
     trade.exit_price = float(price)
     trade.closed_order_id = closed_order_id
     trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)

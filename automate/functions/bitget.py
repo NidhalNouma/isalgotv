@@ -212,6 +212,9 @@ def open_bitget_trade(account, symbol, side, quantity, oc = 'open'):
         adjusted_quantity =  adjust_trade_quantity(account, sys_info, side, float(quantity))
         print("Adjusted quantity:", adjusted_quantity)
 
+        if float(adjusted_quantity) <= 0:
+            raise ValueError("Insufficient balance for the trade.")
+
         body = {
             "symbol": order_symbol,
             "side": side.upper(),

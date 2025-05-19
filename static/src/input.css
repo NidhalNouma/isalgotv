@@ -62,11 +62,11 @@
 
 @layer components {
   .btn-primary-landing {
-    @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:bg-gradient-to-bl mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0 transition-all;
+    @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:brightness-90 mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0 transition-all;
   }
   .btn-primary-landing::before {
     content: "";
-    @apply absolute inset-0 bg-gradient-to-tr hover:bg-gradient-to-bl from-text  to-secondary blur-md -z-10 rounded-lg scale-100 transition-all;
+    @apply absolute inset-0 bg-gradient-to-tr hover:brightness-90 from-text  to-secondary blur-md -z-10 rounded-lg scale-100 transition-all;
   }
 
   .btn-ai {
@@ -79,23 +79,28 @@
   }
 
   .btn-primary {
-    @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
+    /* @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
+    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-primary text-text-light font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-secondary {
-    @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
+    /* @apply text-text-light bg-gradient-to-r from-secondary/80 to-secondary  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
+    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-secondary text-text-light font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-accent {
-    @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-normal rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
+    /* @apply text-background bg-gradient-to-r from-accent via-accent/90 to-accent/80  hover:bg-gradient-to-l font-normal rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
+    @apply relative inline-flex justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-accent text-background font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-text {
-    @apply text-text backdrop-blur-3xl bg-gradient-to-r from-text/40 via-text/30 to-text/30  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
+    /* @apply text-text backdrop-blur-3xl bg-gradient-to-r from-text/40 via-text/30 to-text/30  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
+    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-text text-background font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-title {
-    @apply text-background bg-gradient-to-r from-title via-title/90 to-title/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all;
+    /* @apply text-background bg-gradient-to-r from-title via-title/90 to-title/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
+    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-title text-background font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-a {

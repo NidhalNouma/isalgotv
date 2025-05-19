@@ -105,7 +105,12 @@ def get_exchange_info(account, symbol):
             'symbol': symbol,
             'category': category,
         }
+        
         response = send_bybit_request('GET', '/market/instruments-info', account.apiKey, account.secretKey, params)
+        # print('get_exchange_info', symbol, response, params)
+
+        if response['retCode'] != 0:
+            raise Exception(response['retMsg'])
 
         data = response['result']['list'][0]
 
@@ -128,7 +133,6 @@ def get_exchange_info(account, symbol):
             'baseDecimals': base_decimals,
             'quoteDecimals': quote_decimals
         }
-        print(r)
 
         return r
 
@@ -215,7 +219,7 @@ def adjust_trade_quantity(account, symbol_info, side, quote_order_qty):
 
     
 
-def open_bybit_trade(account, symbol, side, quantity):
+def open_bybit_trade(account, symbol, side, quantity, additional_params={}):
     """Place a market order on Bybit."""
     try:
         if account.type == "S":
@@ -233,23 +237,25 @@ def open_bybit_trade(account, symbol, side, quantity):
         order_symbol = sys_info.get('symbol')
 
         adjusted_quantity =  adjust_trade_quantity(account, sys_info, side, float(quantity))
+
         print("Adjusted quantity:", adjusted_quantity)
+        if float(adjusted_quantity) <= 0:
+            raise ValueError("Insufficient balance for the trade.")
 
         endpoint = '/order/create'
         params = {
-            'symbol': symbol,
+            'symbol': order_symbol,
             'side': side.capitalize(),
             'order_type': 'Market',
-            'qty': str(quantity),
+            'qty': str(adjusted_quantity),
             
             'category': category,
 
             'marketUnit': 'baseCoin',
-            'time_in_force': 'IOC'
+            'time_in_force': 'IOC',
+            **additional_params
         }
-        print(params)
-
-        raise ValueError("Invalid quantity")
+            
         response = send_bybit_request('POST', endpoint, account.apiKey, account.secretKey, params)
 
         # print(response)
@@ -258,39 +264,51 @@ def open_bybit_trade(account, symbol, side, quantity):
         
         order_id = response['result']['orderId']
 
-        params = {
-            'orderId': order_id,
-            'symbol': symbol,
-            'side': side.upper(),
-            'category': category,
-        }
-        order = send_bybit_request('GET', '/order/history', account.apiKey, account.secretKey, params)
-        # print(order)
+        order_details = get_order_details(account, order_symbol, order_id)
+
+        if order_details:
+            return {
+                'message': f"Trade opened with order ID {order_id}.",
+                'order_id': order_id,
+                'closed_order_id': order_id,
+                'symbol': symbol,
+                "side": side.upper(),
+                'qty': order_details.get('volume', adjusted_quantity),
+                'price': order_details.get('price', '0'),
+                'time': order_details.get('time', ''),
+                'fees': order_details.get('fees', ''),
+                'currency': currency_asset,
+
+                # 'trade_details': order_details
+            }
         
-        if len(order['result']['list']) > 0:
-            qty = order['result']['list'][0]['qty']
         else:
-            qty = quantity
-        
-        return {
-            'order_id': order_id,
-            'symbol': symbol,
-            'side': side,
-            # 'price': price,
-            'qty': qty
-        }
+            return {
+                'message': f"Trade opened with order ID {order_id}.",
+                'order_id': order_id,
+                'closed_order_id': order_id,
+                'symbol': symbol,
+                "side": side.upper(),
+                'qty': adjusted_quantity,
+                'currency': currency_asset,
+            }
     except Exception as e:
         return {'error': str(e)}
 
 def close_bybit_trade(account, symbol, side, quantity):
     """Close a trade on Bybit."""
-    opposite_side = 'Sell' if side == 'Buy' else 'Buy'
-    return open_bybit_trade(account, symbol, opposite_side, quantity)
+    opposite_side = "sell" if side.lower() == "buy" else "buy"
+
+    additional_params = {
+        'reduceOnly': 'true',
+        'closeOnTrigger': 'true',
+    }
+    return open_bybit_trade(account, symbol, opposite_side, quantity, additional_params)
 
 
 def get_order_details(account, symbol, order_id):
     try:
-        order_endpoint = '/v5/execution/list'
+        endpoint = '/execution/list'
 
         if account.type == "S":
             category = 'spot'
@@ -298,88 +316,58 @@ def get_order_details(account, symbol, order_id):
             category = 'linear'
 
         params = {
+            'category': category,
             'symbol': symbol,
             'orderId': order_id,
-            
-            'category': category,
         }
 
-
-        response = send_bybit_request('GET', order_endpoint, account.apiKey, account.secretKey, params)
-
+        response = send_bybit_request('GET', endpoint, account.apiKey, account.secretKey, params)
         response = response.get('result', {}).get('list', [])
-
-        # print("trade data => ", response) 
+        
         if response is None:
             raise ValueError("No data found in response")
         
-
         if isinstance(response, list):
             if len(response) > 1:
-                total_qty = sum(float(t.get('size', 0)) for t in response)
-                # Use the last fill as the base record
-                trade = response[-1]
-                trade['size'] = str(total_qty)
+                total_qty = sum(float(t.get('execQty', 0)) for t in response)
+                total_commission = sum(float(t.get('execFee', 0)) for t in response)
                 
-                # Sum total_commission across all fills, handling list or dict in feeDetail
-                total_commission = 0.0
-                for t in response:
-                    fd = t.get('feeDetail', {})
-                    if isinstance(fd, list):
-                        for entry in fd:
-                            total_commission += float(entry.get('totalFee', 0))
-                    elif isinstance(fd, dict):
-                        total_commission += float(fd.get('totalFee', 0))
-                fee_detail = trade.get('feeDetail')
-                if not isinstance(fee_detail, dict):
-                    fee_detail = {}
-                fee_detail['totalFee'] = str(total_commission)
-                trade['feeDetail'] = fee_detail
+                trade = response[-1]
+                trade['execFee'] = str(total_commission)
+                trade['execQty'] = str(total_qty)
+
             else:
                 trade = response[0]
         else:
             trade = response
-        
 
         if trade:
 
             sym_info = get_exchange_info(account, symbol)
             # Fallback to 'price' if 'priceAvg' is missing or falsy
-            price_str = trade.get('priceAvg') or trade.get('price', '0')
+            price_str = trade.get('execPrice') or trade.get('orderPrice', '0')
             price_usdt = Decimal(str(price_str))
 
             # Normalize fee detail, which may be a dict or a list of dicts
-            fee_detail = trade.get('feeDetail', {})
-            total_fees = Decimal('0')
+            fees = trade.get('execFee', 0)
+            sym_info = get_exchange_info(account, symbol)
 
-            if isinstance(fee_detail, list):
-                # Sum and convert each fee entry
-                for fd in fee_detail:
-                    amt = Decimal(str(fd.get('totalFee', '0')))
-                    coin = fd.get('feeCoin')
-                    if coin == sym_info.get('baseCoin'):
-                        total_fees += amt * price_usdt
-                    else:
-                        total_fees += amt
-            else:
-                amt = Decimal(str(fee_detail.get('totalFee', '0')))
-                coin = fee_detail.get('feeCoin')
-                if coin == sym_info.get('baseCoin'):
-                    total_fees = amt * price_usdt
-                else:
-                    total_fees = amt
+            try:
+                fees = Decimal(str(fees))
+                if str(trade.get('feeCurrency')) == sym_info.get('baseCoin'):
+                    fees = fees * price_usdt
+            except (InvalidOperation, ValueError):
+                pass
 
-            # Use the computed total_fees
-            fees = total_fees
 
-            ts_s = float(trade.get('cTime')) / 1000  # e.g. 1683474419
+            ts_s = float(trade.get('execTime')) / 1000  # e.g. 1683474419
             dt_naive = datetime.fromtimestamp(ts_s)
             dt_aware = timezone.make_aware(dt_naive, timezone=timezone.utc)
             
             r = {
                 'order_id': str(trade.get('orderId')),
                 'symbol': str(trade.get('symbol')),
-                'volume': str(trade.get('size') or trade.get('baseVolume')),
+                'volume': str(trade.get('execQty') or trade.get('orderQty')),
                 'side': str(trade.get('side')),
                 
                 'time': dt_aware,
@@ -389,7 +377,9 @@ def get_order_details(account, symbol, order_id):
 
                 'fees': str(abs(fees)),
 
-                'feeDetail': str(trade.get('feeDetail')),
+                'execFee': str(trade.get('execFee')),
+                'feeCurrency': str(trade.get('feeCurrency')),
+                'feeRate': str(trade.get('feeRate')),
             }
 
             return r 
@@ -400,5 +390,61 @@ def get_order_details(account, symbol, order_id):
         print('error getting order details: ', str(e))
         return None
 
-def get_bybit_order_details():
-    pass
+def get_bybit_order_details(account, trade):
+    trade_id = trade.closed_order_id or trade.order_id
+
+    try:
+        result = get_order_details(account, trade.symbol, trade_id)
+
+        if result:
+            # Convert price and volume to Decimal for accurate calculation
+            try:
+                price_dec = Decimal(str(result.get('price', '0')))
+            except (InvalidOperation, ValueError):
+                price_dec = Decimal('0')
+            try:
+                volume_dec = Decimal(str(result.get('volume', '0')))
+            except (InvalidOperation, ValueError):
+                volume_dec = Decimal('0')
+
+            if result.get('profit') in (None, '', 'None'):
+                if price_dec != 0:
+                    side_upper = trade.side.upper()
+                    if side_upper in ("B", "BUY"):
+                        profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
+                    elif side_upper in ("S", "SELL"):
+                        profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+                    else:
+                        profit = Decimal("0")
+                else:
+                    profit = Decimal("0")
+            else:
+                profit = result.get('profit')
+
+            res = {
+                'order_id': str(result.get('order_id')),
+                'symbol': str(result.get('symbol')),
+                'volume': str(result.get('volume')),
+                'side': str(result.get('side')),
+
+                'open_price': str(trade.entry_price),
+                'close_price': str(result.get('price')),
+
+                'open_time': str(trade.entry_time),
+                'close_time': str(result.get('time')), 
+
+                'fees': str(result.get('fees')), 
+                'profit': str(profit),
+
+                'execFee': str(result.get('execFee')),
+                'feeCurrency': str(result.get('feeCurrency')),
+                'feeRate': str(result.get('feeRate')),
+            }
+
+            return res
+        
+        return None
+
+    except Exception as e:
+        print("Error:", e)
+        return None
