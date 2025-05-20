@@ -4,6 +4,122 @@ import hashlib
 import requests
 from urllib.parse import urlencode
 
+class MexcClient:
+    BASE_URL = 'https://api.bybit.com/v5'
+
+    def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
+
+        if account is not None:
+            self.api_key = account.apiKey
+            self.api_secret = account.secretKey
+            self.account_type = getattr(account, 'accountType', None) or getattr(account, 'type', None)
+        else:
+            self.api_key = api_key
+            self.api_secret = api_secret
+            self.account_type = account_type
+        self.current_trade = current_trade
+        
+    
+    @staticmethod
+    def check_mexc_credentials(api_key, api_secret, account_type="S"):
+        try:
+            client = MexcClient(api_key=api_key, api_secret=api_secret, account_type=account_type)
+            if account_type == "S":
+                # Check spot account info
+                account_info = client.get_account_info()
+            elif account_type == "F":
+                # Check futures account info
+                account_info = client.get_futures_account_info()
+
+            # Assuming a successful response returns a code of 200
+            if account_info.get("code") != 200:
+                return {"error": account_info.get("message", "Invalid credentials"), "valid": False}
+            return {"message": "API credentials are valid.", "valid": True}
+        except Exception as e:
+            return {"error": str(e)}
+
+        
+    def _get_timestamp(self):
+        return int(time.time() * 1000)
+
+
+    def create_signature(self, query_string):
+        return hmac.new(self.api_secret.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256).hexdigest()
+
+
+    def get_account_info(self):
+        endpoint = "/api/v3/account"
+        params = {
+            "timestamp": _get_timestamp()
+        }
+        query_string = urlencode(params)
+        signature = self.create_signature(query_string)
+        params["signature"] = signature
+        headers = {
+            "X-MEXC-APIKEY": self.api_key,
+            "Content-Type": "application/json"
+        }
+        response = requests.get(BASE_URL + endpoint, params=params, headers=headers)
+        response_data = response.json()
+        response_data['code'] = response.status_code
+        return response_data
+
+    def get_futures_account_info(self):
+        """Retrieve futures account information using MEXC futures API."""
+        print("Getting futures account info...")
+        endpoint = "/api/v1/private/account/assets"
+
+        timestamp = str(_get_timestamp())
+        signature_target = self.api_key + timestamp
+        signature = hmac.new(self.api_secret.encode("utf-8"), signature_target.encode("utf-8"), hashlib.sha256).hexdigest()
+        
+        headers = {
+            "ApiKey": self.api_key,
+            "Request-Time": timestamp,
+            "Signature": signature,
+            "Content-Type": "application/json"
+        }
+
+        response = requests.get(FUTURES_BASE_URL + endpoint, headers=headers)
+
+        response_data = response.json()
+        response_data['code'] = response.status_code
+        
+        return response_data
+
+    def get_exchange_info(self, symbol):
+        endpoint = "/api/v3/exchangeInfo"
+        params = {
+            "timestamp": _get_timestamp(),
+            "symbol": symbol
+        }
+        headers = {
+            "Content-Type": "application/json"
+        }
+        response = requests.get(BASE_URL + endpoint, params=params, headers=headers)
+        response_data = response.json()
+        response_data['code'] = response.status_code
+        return response_data
+    
+
+    def new_order(self, order_params):
+        endpoint = "/api/v3/order"
+        order_params["timestamp"] = self._get_timestamp()
+        query_string = urlencode(order_params)
+        signature = self.create_signature(query_string)
+        order_params["signature"] = signature
+        headers = {
+            "X-MEXC-APIKEY": self.api_key,
+            "Content-Type": "application/json"
+        }
+        response = requests.post(BASE_URL + endpoint, data=order_params, headers=headers)  
+        print("Order response:", response, response.json())  
+        response_data = response.json()
+
+        if "code" not in response_data:
+            response_data["code"] = response.status_code
+        return response_data
+
 
 BASE_URL = "https://api.mexc.com"
 

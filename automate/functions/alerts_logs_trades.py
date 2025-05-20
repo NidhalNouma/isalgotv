@@ -7,10 +7,10 @@ from ..models import *
 
 from .binance import check_binance_credentials, open_binance_trade, close_binance_trade, get_binance_order_details
 from .binance_us import check_binance_us_credentials, open_binance_us_trade, close_binance_us_trade, get_binanceus_order_details
-from .bitget import check_bitget_credentials, open_bitget_trade, close_bitget_trade, get_bitget_order_details
-from .bybit import check_bybit_credentials, open_bybit_trade, close_bybit_trade, get_bybit_order_details
-from .mexc import check_mexc_credentials, open_mexc_trade, close_mexc_trade
-from .crypto import check_crypto_credentials as check_cryptocom_credentials, open_crypto_trade, close_crypto_trade, get_crypto_order_details 
+from .bitget import BitgetClient
+from .bybit import BybitClient
+from .mexc import MexcClient, check_mexc_credentials, open_mexc_trade, close_mexc_trade
+from .crypto import CryptoComClient
 
 from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade, get_tradelocker_trade_data
 from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade, get_metatrader_trade_data
@@ -22,13 +22,13 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_typ
     if broker_type == 'binanceus':
         return check_binance_us_credentials(api_key, api_secret)
     elif broker_type == 'bitget':
-        return check_bitget_credentials(api_key, api_secret, phrase, trade_type)
+        return BitgetClient.check_bitget_credentials(api_key, api_secret, phrase, trade_type)
     elif broker_type == 'bybit':
-        return check_bybit_credentials(api_key, api_secret, trade_type)
+        return BybitClient.check_bybit_credentials(api_key, api_secret, trade_type)
     elif broker_type == 'mexc':
-        return check_mexc_credentials(api_key, api_secret, trade_type)
+        return MexcClient.check_mexc_credentials(api_key, api_secret, trade_type)
     elif broker_type == 'crypto':
-        return check_cryptocom_credentials(api_key, api_secret, trade_type)
+        return CryptoComClient.check_crypto_credentials(api_key, api_secret, trade_type)
     else:
         raise Exception("Unsupported broker type.")
 
@@ -52,13 +52,13 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
         elif broker_type == 'binanceus':
             return open_binance_us_trade(account, symbol, side, volume, custom_id)
         elif broker_type == 'bitget':
-            return open_bitget_trade(account, symbol, side, volume)
+            return BitgetClient(account=account).open_bitget_trade(symbol, side, volume)
         elif broker_type == 'bybit':
-            return open_bybit_trade(account, symbol, side, volume)
+            return BybitClient(account=account).open_bybit_trade(symbol, side, volume)
         elif broker_type == 'mexc':
             return open_mexc_trade(account, symbol, side, volume)
         elif broker_type == 'crypto':
-            return open_crypto_trade(account, symbol, side, volume)
+            return CryptoComClient(account=account).open_crypto_trade(symbol, side, volume)
         elif broker_type == 'tradelocker':
             return open_tradelocker_trade(account, symbol, side, volume)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
@@ -78,13 +78,13 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
         elif broker_type == 'binanceus':
             return close_binance_us_trade(account, symbol, side, volume_close)
         elif broker_type == 'bitget':
-            return close_bitget_trade(account, symbol, side, volume_close)
+            return BitgetClient(account=account, current_trade=trade_to_close).close_bitget_trade(symbol, side, volume_close)
         elif broker_type == 'bybit':
-            return close_bybit_trade(account, symbol, side, volume_close)
+            return BybitClient(account=account, current_trade=trade_to_close).close_bybit_trade(symbol, side, volume_close)
         elif broker_type == 'mexc':
             return close_mexc_trade(account, symbol, side, volume_close)
         elif broker_type == 'crypto':
-            return close_crypto_trade(account, symbol, side, volume_close)
+            return CryptoComClient(account=account, current_trade=trade_to_close).close_crypto_trade(symbol, side, volume_close)
         elif broker_type == 'tradelocker':
             return close_tradelocker_trade(account, trade_to_close, volume_close)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
@@ -103,13 +103,13 @@ def get_trade_data(account, trade):
         elif broker_type == 'binanceus':
             return get_binanceus_order_details(account, trade)
         elif broker_type == 'bitget':
-            return get_bitget_order_details(account, trade)
+            return BitgetClient(account).get_order_details(trade)
         elif broker_type == 'bybit':
-            return get_bybit_order_details(account, trade)
+            return BybitClient(account).get_bybit_order_details(trade)
         # elif broker_type == 'mexc':
         #     return get_mexc_order_details(account, trade)
         elif broker_type == 'crypto':
-            return get_crypto_order_details(account, trade)
+            return CryptoComClient(account).get_crypto_order_details(trade)
         elif broker_type == 'tradelocker':
             return get_tradelocker_trade_data(account, trade)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
@@ -164,7 +164,7 @@ def manage_alert(alert_message, account):
             save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
-            trade_to_close = get_trade(custom_id, symbol, side, account)
+            trade_to_close = get_trade(custom_id, symbol, side, account, strategy_id)
             if not trade_to_close:
                 raise Exception(f"No trade found to close with ID: {custom_id}")
 
@@ -276,7 +276,7 @@ def save_new_trade(custom_id, side, opend_trade, account, strategy_id):
     
     return trade
 
-def get_trade(custom_id, symbol, side, account):
+def get_trade(custom_id, symbol, side, account, strategy_id):
     t_side = "B" if str.lower(side) == "buy" else "S"
 
     content_type = ContentType.objects.get_for_model(account.__class__)
@@ -285,6 +285,7 @@ def get_trade(custom_id, symbol, side, account):
         custom_id=custom_id,
         symbol=symbol,
         side=t_side,
+        strategy_id=strategy_id,
         content_type=content_type,
         object_id=account.id
     ).last()

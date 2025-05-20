@@ -1,7 +1,7 @@
 {% comment %}drawer.html - A reusable drawer component that can appear from different sides (left, right, top, or bottom). Usage example:{% include 'drawer.html' with drawer_id='drawer-id' title='Guide' body='Here goes the body content.' side='left' class='css classes' %}Note: When using the drawer with openDrawer js function addd the side to the function like this: openDrawer("drawer-id", "left") by default it's set to right{% endcomment %}
 
 <div id="{{ drawer_id }}" class="drawer-{{ side|default:'right' }} bg-background {{ class }}" tabindex="-1">
-  <div class="flex items-center justify-between bg-background sticky z-30 top-0 w-full py-5 px-4">
+  <div class="flex items-center justify-between bg-gradient-to-b via-75% from-background via-background sticky z-30 top-0 w-full py-5 px-4">
     <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text">
       <svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />

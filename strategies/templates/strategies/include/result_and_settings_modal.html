@@ -2,20 +2,20 @@
 
 <div
   id="result-modal-{{result.id}}"
-  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  h-[calc(100%-1rem)] max-h-full"
 >
-  <div id="content-result-modal-{{result.id}}" class="relative w-full max-w-xl max-h-full overflow-y-scroll scrollbar-hide">
+  <div id="content-result-modal-{{result.id}}" class="relative w-full max-w-xl max-h-full overflow-y-scroll scrollbar-hide rounded-md">
     <!-- Modal content -->
-    <div class="relative bg-background rounded-lg shadow">
+    <div class="relative bg-background">
       <!-- Modal header -->
       <div
-        class="flex items-center justify-between p-4 rounded-t sticky top-0 bg-background z-50"
+        class="flex items-center justify-between p-4 rounded-t sticky top-0 bg-gradient-to-b via-75% from-background via-background z-50"
       >
         <h3 class="   text-lg sm:text-xl font-semibold text-text">{{result.performance.broker}}:{{result.pair}}</h3>
         <button
           type="button"
           onclick="hideModel('result-modal-{{result.id}}')"
-          class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+          class="btn-icon"
         >
           <svg
             class="w-5 h-5"

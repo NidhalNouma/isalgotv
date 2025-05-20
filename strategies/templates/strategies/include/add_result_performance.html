@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between p-4 sticky top-0 bg-background z-50">
+<div class="flex items-center justify-between p-4 sticky top-0 bg-gradient-to-b via-75% from-background via-background z-50">
   <h3 class="text-xl font-semibold text-title flex items-center justify-center">
     <button type="button" class="mr-2 btn-icon" onclick="nextResultStep('add-result-modal-result', 'add-result-modal')">
       <svg class="w-5 h-5 stroke-current" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -21,9 +21,9 @@
 
 <!-- Modal body -->
 <div class="h-full w-full my-auto px-4 flex flex-col">
-  <!--            <div class="mb-4">
+  <!--             <div class="mb-4">
             {% include 'include/infos.html' with info="Share your achievements with the community and contribute to their progress. By sharing your results and the settings you utilized, you empower others to benefit from your experiences. Your insights can help enhance strategies and solve challenges collectively." %}
-            </div>            -->
+            </div>             -->
 
   <div class="flex items-center justify-center">
     <input id="csv_results" class="hidden" type="file" accept=".xlsx" name="csv_results" onchange="handleXlsxFileSelect(event)" />

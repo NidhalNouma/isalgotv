@@ -95,12 +95,12 @@
 
   .btn-text {
     /* @apply text-text backdrop-blur-3xl bg-gradient-to-r from-text/40 via-text/30 to-text/30  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
-    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-text text-background font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
+    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-text/10 border-2 bg-text/10 backdrop-blur-xl text-text font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-title {
     /* @apply text-background bg-gradient-to-r from-title via-title/90 to-title/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
-    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-title text-background font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
+    @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-2 bg-title text-background font-bold text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 
   .btn-a {

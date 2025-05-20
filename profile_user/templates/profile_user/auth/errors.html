@@ -1,40 +1,32 @@
 {% if messages %}
-<div
-  class="mx-auto text-sm flex p-4 text-error bg-error/10  rounded {{class}}"
-  role="alert"
->
+  <div class="relative mx-auto text-sm flex p-4 text-error bg-background border-2 border-error/20 rounded-md {{ class }}" role="alert">
+    <div class="absolute inset-0 bg-error/5 -z-10 rounded-md"></div>
 
-<svg
-class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]"
-aria-hidden="true"
-xmlns="http://www.w3.org/2000/svg"
-fill="currentColor"
-viewBox="0 0 20 20"
->
-<path
-  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-/>
-</svg>
-<span class="sr-only">Error!</span>
-  <p>
-    <ul class="font-medium font-sans">
-      {% for message in messages %}
-      <li class="">{{ message }}</li>
-      {% endfor %} {% if form.errors %} {% for field in form %}
-      {% if field.errors %}
-      <li class="">
-        {% if field.errors.as_text == "* This field is required." %}
-        {%if field.label == "Username" %}
-        Email
-        {% else %}
-        {{field.label}} 
+    <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+    </svg>
+    <span class="sr-only">Error!</span>
+    <p>
+      <ul class="font-medium font-sans">
+        {% for message in messages %}
+          <li class="">{{ message }}</li>
+        {% endfor %} {% if form.errors %}
+          {% for field in form %}
+            {% if field.errors %}
+              <li class="">
+                {% if field.errors.as_text == '* This field is required.' %}
+                  {% if field.label == 'Username' %}
+                    Email
+                  {% else %}
+                    {{ field.label }}
+                  {% endif %}
+                {% endif %}
+                {{ field.errors.as_text }}
+              </li>
+            {% endif %}
+          {% endfor %}
         {% endif %}
-        {% endif %}
-        {{ field.errors.as_text }}
-      </li>
-      {%endif%}
-      {% endfor %} {% endif %}
-    </ul>
-  </p>
-</div>
+      </ul>
+    </p>
+  </div>
 {% endif %}
