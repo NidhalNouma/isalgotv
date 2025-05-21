@@ -52,14 +52,9 @@ def get_strategy(request, slug):
     results = {}
     
     try:
-        if request.user.is_staff or request.user.is_superuser:
-            strategy = Strategy.objects.select_related('created_by').prefetch_related(
-                    'images',
-                ).get(slug=slug)
-        else:
-            strategy = Strategy.objects.filter(is_live=True).select_related('created_by').prefetch_related(
-                    'images',
-                ).get(slug=slug)
+        strategy = Strategy.objects.select_related('created_by').prefetch_related(
+                'images',
+            ).get(slug=slug)
 
         comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
