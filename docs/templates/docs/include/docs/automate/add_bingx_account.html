@@ -1,0 +1,37 @@
+{% load static %}
+<article class="docs">
+  <section id="what-is-crypto">
+    <aside>
+      <h3>What's BingX?</h3>
+      <p>BingX.com is a leading cryptocurrency exchange offering a range of trading services including spot trading and various financial products, all through a user-friendly and secure platform.</p>
+      <ul>
+        <li>Spot and advanced trading</li>
+        <li>Competitive fees</li>
+        <li>Robust security measures</li>
+        <li>User-friendly experience</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="api-crypto">
+    <aside>
+      <h3>API Key Setup Process</h3>
+      <p>Follow the steps below to configure your API keys for Crypto.com.</p>
+    </aside>
+  </section>
+
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your API keys with anyone. We use industry-standard encryption to secure your credentials.' %}
+  </div>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create a Crypto.com Account</h3>
+      <div>
+        <p>
+          If you don’t already have a Crypto.com account, please sign up <a href="https://bingx.com/invite/TXV3PB/" target="_blank">here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+</article>

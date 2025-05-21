@@ -5,11 +5,11 @@ import requests
 import base64
 import json
 
-from django.utils import timezone
-from datetime import datetime
 from decimal import Decimal, ROUND_DOWN, ROUND_UP
 
-class BitgetClient:
+from .broker import BrokerClient
+
+class BitgetClient(BrokerClient):
 
     BITGET_API_URL = 'https://api.bitget.com'
 
@@ -28,7 +28,7 @@ class BitgetClient:
         self.current_trade = current_trade
 
     @staticmethod
-    def check_bitget_credentials(api_key, api_secret, phrase, account_type="S"):
+    def check_credentials(api_key, api_secret, phrase, account_type="S"):
         """
         Static method to validate Bitget API credentials without instantiation.
         """
@@ -238,7 +238,7 @@ class BitgetClient:
         except Exception as e:
             raise ValueError(str(e))
 
-    def open_bitget_trade(self, symbol, side, quantity, oc = 'open'):
+    def open_trade(self, symbol, side, quantity, oc = 'open'):
         try:
             # Endpoint for placing an order
             endpoint = '/api/v2/spot/trade/place-order'
@@ -308,10 +308,10 @@ class BitgetClient:
                 raise Exception("Order ID not found in response")
             
             if not self.current_trade:
-                order_details = self.get_order_details(order_symbol, order_id)
+                order_details = self.get_order_info(order_symbol, order_id)
                 trade_details = None 
             else :
-                order_details = self.get_bitget_order_details(self.current_trade, order_id)
+                order_details = self.get_final_trade_details(self.current_trade, order_id)
                 trade_details = order_details
 
             if order_details:
@@ -347,13 +347,13 @@ class BitgetClient:
             print('error opening bitget trade: ', str(e))
             return {'error': str(e)}
 
-    def close_bitget_trade(self, symbol, side, quantity):
+    def close_trade(self, symbol, side, quantity):
         if self.account_type == "S":
             opposite_side = "sell" if side.lower() == "buy" else "buy"
         else:
             opposite_side = side.lower()
         try:
-            trade = self.open_bitget_trade(symbol, opposite_side, quantity, oc = 'close')
+            trade = self.open_trade(symbol, opposite_side, quantity, oc = 'close')
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
             return trade
@@ -361,7 +361,7 @@ class BitgetClient:
             return {'error': str(e)}
 
 
-    def get_order_details(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id):
         try:
             order_endpoint = '/api/v2/spot/trade/fills'
 
@@ -452,10 +452,8 @@ class BitgetClient:
 
                 # Use the computed total_fees
                 fees = total_fees
-
-                ts_s = float(trade.get('cTime')) / 1000  # e.g. 1683474419
-                dt_naive = datetime.fromtimestamp(ts_s)
-                dt_aware = timezone.make_aware(dt_naive, timezone=timezone.utc)
+                
+                dt_aware = self.convert_timestamp(trade.get('cTime'))
                 
                 r = {
                     'order_id': str(trade.get('orderId')),
@@ -470,7 +468,7 @@ class BitgetClient:
 
                     'fees': str(abs(fees)),
 
-                    'feeDetail': str(trade.get('feeDetail')),
+                    'additional_info': str(trade.get('feeDetail')),
                 }
 
                 return r 
@@ -481,65 +479,3 @@ class BitgetClient:
             print('error getting order details: ', str(e))
             return None
         
-
-    def get_bitget_order_details(self, trade, order_id=None):
-        if not order_id:
-            trade_id = trade.closed_order_id or trade.order_id
-        else:
-            trade_id = order_id
-
-        try:
-            result = self.get_order_details(trade.symbol, trade_id)
-
-            if result:
-                # Convert price and volume to Decimal for accurate calculation
-                try:
-                    price_dec = Decimal(str(result.get('price', '0')))
-                except Exception as e:
-                    price_dec = Decimal('0')
-                try:
-                    volume_dec = Decimal(str(result.get('volume', '0')))
-                except Exception as e:
-                    volume_dec = Decimal('0')
-
-                if result.get('profit') in (None, '', 'None'):
-                    if price_dec != 0:
-                        side_upper = trade.side.upper()
-                        if side_upper in ("B", "BUY"):
-                            profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-                        elif side_upper in ("S", "SELL"):
-                            profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
-                        else:
-                            profit = Decimal("0")
-                    else:
-                        profit = Decimal("0")
-                else:
-                    profit = result.get('profit')
-
-                res = {
-                    'order_id': str(result.get('order_id')),
-                    'symbol': str(result.get('symbol')),
-                    'volume': str(result.get('volume')),
-                    'side': str(result.get('side')),
-
-                    'open_price': str(trade.entry_price),
-                    'close_price': str(result.get('price')),
-
-                    'open_time': str(trade.entry_time),
-                    'close_time': str(result.get('time')), 
-
-                    'fees': str(result.get('fees')), 
-                    'profit': str(profit),
-
-                    'feeDetail': str(result.get('feeDetail')),
-                }
-
-                return res
-            
-            return None
-
-        except Exception as e:
-            print("Error:", e)
-            return None
-
-

@@ -9,7 +9,9 @@ from datetime import datetime
 from django.utils import timezone
 from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
 
-class CryptoComClient:
+from .broker import BrokerClient
+
+class CryptoComClient(BrokerClient):
 
     BASE_URL = "https://api.crypto.com/exchange/v1/"
 
@@ -26,7 +28,7 @@ class CryptoComClient:
         self.current_trade = current_trade
 
     @staticmethod
-    def check_crypto_credentials(api_key, secret, account_type="S"):
+    def check_credentials(api_key, secret, account_type="S"):
         """Verify Crypto.com API credentials."""
         try:
             client = CryptoComClient(api_key=api_key, api_secret=secret, account_type=account_type)
@@ -185,7 +187,7 @@ class CryptoComClient:
             raise ValueError(str(e))
 
 
-    def open_crypto_trade(self, symbol: str, side: str, quantity: float, custom_id: str = ''):
+    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = ''):
         """Open a new crypto trade via the Crypto.com API."""
         try:
 
@@ -221,7 +223,7 @@ class CryptoComClient:
             order_data = response["result"]
             
             order_id = order_data["order_id"]
-            order_details = self.get_order_details(order_id)
+            order_details = self.get_order_info(order_id)
 
             if order_details:
                 return {
@@ -250,7 +252,7 @@ class CryptoComClient:
         except Exception as e:
             raise ValueError(str(e))
 
-    def close_crypto_trade(self, symbol: str, side: str, quantity: float):
+    def close_trade(self, symbol: str, side: str, quantity: float):
         """Close an existing crypto trade by placing an opposite order via the Crypto.com API."""
         try:
             # Reverse the side for closing the position
@@ -290,7 +292,7 @@ class CryptoComClient:
         except Exception as e:
             raise ValueError(str(e))
 
-    def get_order_details(self, trade_id):
+    def get_order_info(self, trade_id):
         try:
 
             nonce = self._get_timestamp()
@@ -316,9 +318,7 @@ class CryptoComClient:
                 if result:
                     sym_info = self.get_exchange_info(str(result.get('instrument_name')))
 
-                    ts_s = result.get('create_time') / 1000  # e.g. 1683474419
-                    dt_naive = datetime.fromtimestamp(ts_s)
-                    dt_aware = timezone.make_aware(dt_naive, timezone=timezone.utc)
+                    dt_aware = self.convert_timestamp(result.get('create_time'))
 
                     fees = float(result.get('cumulative_fee'))
                     # Convert fees from ADA to USDT using avg_price
@@ -337,14 +337,17 @@ class CryptoComClient:
                         'symbol': str(result.get('instrument_name')),
                         'volume': str(result.get('quantity')),
                         'side': str(result.get('side')),
-                        'order_value': str(result.get('order_value')),
                         'time': dt_aware,
                         'price': str(result.get('avg_price')),
 
                         'fees': str(fees),
-                        'maker_fee_rate': str(result.get('maker_fee_rate')),
-                        'taker_fee_rate': str(result.get('taker_fee_rate')),
-                        'fees_currency': str(result.get('fee_instrument_name')),
+
+                        'additional_info': {
+                            'order_value': str(result.get('order_value')),
+                            'maker_fee_rate': str(result.get('maker_fee_rate')),
+                            'taker_fee_rate': str(result.get('taker_fee_rate')),
+                            'fees_currency': str(result.get('fee_instrument_name')),
+                        }
                     }
                     return r
             
@@ -352,60 +355,4 @@ class CryptoComClient:
             
         except Exception as e:
             print('Error get crypto order details, ', e)
-            return None
-
-    def get_crypto_order_details(self, trade, order_id=None):
-        if not order_id:
-            trade_id = trade.closed_order_id or trade.order_id
-        else:
-            trade_id = order_id
-
-        try:
-            result = self.get_order_details(trade_id)
-
-            if result:
-                # Convert price and volume to Decimal for accurate calculation
-                try:
-                    price_dec = Decimal(str(result.get('price', '0')))
-                except (InvalidOperation, ValueError):
-                    price_dec = Decimal('0')
-                try:
-                    volume_dec = Decimal(str(result.get('volume', '0')))
-                except (InvalidOperation, ValueError):
-                    volume_dec = Decimal('0')
-
-
-                side_upper = trade.side.upper()
-                if side_upper in ("B", "BUY"):
-                    profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-                elif side_upper in ("S", "SELL"):
-                    profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
-                else:
-                    profit = Decimal("0")
-
-
-                res = {
-                    'order_id': str(result.get('order_id')),
-                    'symbol': str(result.get('symbol')),
-                    'volume': str(result.get('volume')),
-                    'side': str(result.get('side')),
-
-                    'open_price': str(trade.entry_price),
-                    'close_price': str(result.get('price')),
-
-                    'open_time': str(trade.entry_time),
-                    'close_time': str(result.get('time')), 
-
-                    'fees': str(result.get('fees')), 
-                    'fees_currency': str(result.get('fees_currency')), 
-
-                    'profit': str(profit),
-                }
-
-                return res
-            
-            return None
-
-        except Exception as e:
-            print("Error:", e)
             return None

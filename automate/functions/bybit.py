@@ -4,11 +4,11 @@ import hashlib
 import requests
 import json
 
-from django.utils import timezone
-from datetime import datetime
 from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
 
-class BybitClient:
+from .broker import BrokerClient
+
+class BybitClient(BrokerClient):
     BYBIT_API_URL = 'https://api.bybit.com/v5'
 
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
@@ -53,7 +53,7 @@ class BybitClient:
         return response.json()
 
     @staticmethod
-    def check_bybit_credentials(api_key, api_secret, account_type="S"):
+    def check_credentials(api_key, api_secret, account_type="S"):
         """Check the validity of the Bybit API credentials without instantiating."""
         try:
             client = BybitClient(api_key=api_key, api_secret=api_secret, account_type=account_type)
@@ -66,17 +66,6 @@ class BybitClient:
         except Exception as e:
             return {'error': str(e), 'valid': False}
         
-
-    def get_decimals_from_step(self, size_str):
-        """
-        Determine the number of decimal places allowed by a step size,
-        stripping any trailing zeros in the step definition.
-        """
-        d = Decimal(size_str)
-        # Normalize to remove any trailing zeros (e.g., '0.10000000' -> '0.1')
-        d_norm = d.normalize()
-        exp = d_norm.as_tuple().exponent
-        return max(-exp, 0)
         
     def get_exchange_info(self, symbol):
         try:
@@ -197,7 +186,7 @@ class BybitClient:
 
         
 
-    def open_bybit_trade(self, symbol, side, quantity, additional_params={}):
+    def open_trade(self, symbol, side, quantity, additional_params={}):
         """Place a market order on Bybit."""
         try:
                 
@@ -210,7 +199,7 @@ class BybitClient:
             base_asset = sys_info.get('baseCoin')
             order_symbol = sys_info.get('symbol')
 
-            adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, float(quantity))
+            adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
@@ -239,10 +228,10 @@ class BybitClient:
             order_id = response['result']['orderId']
 
             if not self.current_trade:
-                order_details = self.get_order_details(order_symbol, order_id)
+                order_details = self.get_order_info(order_symbol, order_id)
                 trade_details = None 
             else :
-                order_details = self.get_bybit_order_details(self.current_trade, order_id)
+                order_details = self.get_final_trade_details(self.current_trade, order_id)
                 trade_details = order_details
 
             if order_details:
@@ -274,7 +263,7 @@ class BybitClient:
         except Exception as e:
             return {'error': str(e)}
 
-    def close_bybit_trade(self, symbol, side, quantity):
+    def close_trade(self, symbol, side, quantity):
         """Close a trade on Bybit."""
         opposite_side = "sell" if side.lower() == "buy" else "buy"
 
@@ -282,10 +271,10 @@ class BybitClient:
             'reduceOnly': 'true',
             'closeOnTrigger': 'true',
         }
-        return self.open_bybit_trade(symbol, opposite_side, quantity, additional_params)
+        return self.open_trade(symbol, opposite_side, quantity, additional_params)
 
 
-    def get_order_details(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id):
         try:
             endpoint = '/execution/list'
 
@@ -334,9 +323,7 @@ class BybitClient:
                     pass
 
 
-                ts_s = float(trade.get('execTime')) / 1000  # e.g. 1683474419
-                dt_naive = datetime.fromtimestamp(ts_s)
-                dt_aware = timezone.make_aware(dt_naive, timezone=timezone.utc)
+                dt_aware = self.convert_timestamp(trade.get('execTime'))
                 
                 r = {
                     'order_id': str(trade.get('orderId')),
@@ -351,9 +338,11 @@ class BybitClient:
 
                     'fees': str(abs(fees)),
 
-                    'execFee': str(trade.get('execFee')),
-                    'feeCurrency': str(trade.get('feeCurrency')),
-                    'feeRate': str(trade.get('feeRate')),
+                    'additional_info': {
+                        'execFee': str(trade.get('execFee')),
+                        'feeCurrency': str(trade.get('feeCurrency')),
+                        'feeRate': str(trade.get('feeRate')),
+                    }
                 }
 
                 return r 
@@ -364,64 +353,3 @@ class BybitClient:
             print('error getting order details: ', str(e))
             return None
 
-    def get_bybit_order_details(self, trade, order_id=None):
-        if not order_id:
-            trade_id = trade.closed_order_id or trade.order_id
-        else:
-            trade_id = order_id
-
-        try:
-            result = self.get_order_details(trade.symbol, trade_id)
-
-            if result:
-                # Convert price and volume to Decimal for accurate calculation
-                try:
-                    price_dec = Decimal(str(result.get('price', '0')))
-                except (InvalidOperation, ValueError):
-                    price_dec = Decimal('0')
-                try:
-                    volume_dec = Decimal(str(result.get('volume', '0')))
-                except (InvalidOperation, ValueError):
-                    volume_dec = Decimal('0')
-
-                if result.get('profit') in (None, '', 'None'):
-                    if price_dec != 0:
-                        side_upper = trade.side.upper()
-                        if side_upper in ("B", "BUY"):
-                            profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-                        elif side_upper in ("S", "SELL"):
-                            profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
-                        else:
-                            profit = Decimal("0")
-                    else:
-                        profit = Decimal("0")
-                else:
-                    profit = result.get('profit')
-
-                res = {
-                    'order_id': str(result.get('order_id')),
-                    'symbol': str(result.get('symbol')),
-                    'volume': str(result.get('volume')),
-                    'side': str(result.get('side')),
-
-                    'open_price': str(trade.entry_price),
-                    'close_price': str(result.get('price')),
-
-                    'open_time': str(trade.entry_time),
-                    'close_time': str(result.get('time')), 
-
-                    'fees': str(result.get('fees')), 
-                    'profit': str(profit),
-
-                    'execFee': str(result.get('execFee')),
-                    'feeCurrency': str(result.get('feeCurrency')),
-                    'feeRate': str(result.get('feeRate')),
-                }
-
-                return res
-            
-            return None
-
-        except Exception as e:
-            print("Error:", e)
-            return None
