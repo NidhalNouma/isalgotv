@@ -1,35 +1,14 @@
-import time
-import hmac
-import hashlib
 import requests
 
-from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
+from .types import *
+from .broker import CryptoBrokerClient
 
-from .broker import BrokerClient
-
-class BinanceUSClient(BrokerClient):
+class BinanceUSClient(CryptoBrokerClient):
     API_URL = 'https://api.binance.us'
-
-    def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
-        if account is not None:
-            self.api_key = account.apiKey
-            self.api_secret = account.secretKey
-            self.passphrase = account.pass_phrase
-            self.account_type = getattr(account, 'type', None)
-        else:
-            self.api_key = api_key
-            self.api_secret = api_secret
-            self.trade_type = account_type
-
-        self.current_trade = current_trade
-
-    def create_signature(self, query_string):
-        return hmac.new(self.api_secret.encode(), query_string.encode(), hashlib.sha256).hexdigest()
-
 
     def send_request(self, method, endpoint, params={}, with_signuture = True):
         query_string = '&'.join([f"{key}={value}" for key, value in params.items()])
-        timestamp = int(time.time() * 1000)
+        timestamp = self._get_timestamp()
         
         headers = {
             'X-MBX-APIKEY': self.api_key,
@@ -57,7 +36,7 @@ class BinanceUSClient(BrokerClient):
         except Exception as e:
             return {'error': str(e)}
         
-    def get_exchange_info(self, symbol):
+    def get_exchange_info(self, symbol) -> ExchangeInfo:
         params = {
             "symbol": symbol,
         }
@@ -72,70 +51,34 @@ class BinanceUSClient(BrokerClient):
         for item in data_list:
             inst = item.get('symbol', '')
             if inst.replace('_', '').upper() == target or inst == target:
-                return item
+                symbol_info = item
+
+                base_asset = symbol_info.get('baseAsset')
+                quote_asset = symbol_info.get('quoteAsset')
+
+                # find the filters
+                price_filter = next(f for f in symbol_info['filters'] if f['filterType']=='PRICE_FILTER')
+                lot_filter   = next(f for f in symbol_info['filters'] if f['filterType']=='LOT_SIZE')
+
+                quote_decimals = self.get_decimals_from_step(price_filter['tickSize'])
+                base_decimals   = self.get_decimals_from_step(lot_filter['stepSize'])
+
+                return {
+                    'symbol': symbol_info.get('symbol'),
+                    'baseAsset': base_asset,
+                    'quoteAsset': quote_asset,
+                    'base_decimals': base_decimals,
+                    'quote_decimals': quote_decimals,
+                }
         return None
 
-    def get_account_balance(self):
+    def get_account_balance(self) -> AccountBalance:
         """Fetch the available balance for a specific asset."""
         response = self.send_request('GET', '/api/v3/account')
-        balances = {item['asset']: float(item['free']) for item in response['balances']}
+        balances = {item['asset']: {'available': float(item['free']), 'locked': 0} for item in response['balances']}
         balances
         
-    def adjust_trade_quantity(self, symbol_info, quote_order_qty, trade_type):
-        """Adjust the trade quantity based on available balance."""
-        try:
-            base_asset = symbol_info.get('baseAsset')
-            quote_asset = symbol_info.get('quoteAsset')
-
-            # find the filters
-            price_filter = next(f for f in symbol_info['filters'] if f['filterType']=='PRICE_FILTER')
-            lot_filter   = next(f for f in symbol_info['filters'] if f['filterType']=='LOT_SIZE')
-
-            quote_decimals = self.get_decimals_from_step(price_filter['tickSize'])
-            base_decimals   = self.get_decimals_from_step(lot_filter['stepSize'])
-
-            balances = self.get_account_balance()
-
-            base_balance = balances.get(base_asset, 0)
-            quote_balance = balances.get(quote_asset, 0)
-
-            # print(symbol_info)
-            # print(base_decimals, price_filter, quote_decimals)
-
-            try:
-                precision = int(base_decimals)
-            except (TypeError, ValueError):
-                precision = 8  # fallback precision
-            quant = Decimal(1).scaleb(-precision)  
-            
-            if trade_type.upper() == "BUY":
-
-                if float(quote_balance) <= 0:
-                    raise ValueError("Insufficient quote balance.")
-                # elif quote_balance < quote_order_qty:
-                #     return quote_balance
-                # Format quantity to max base_decimals and return as string
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            
-            elif trade_type.upper() == "SELL":
-                if float(base_balance) <= 0:
-                    raise ValueError("Insufficient base balance.")
-                elif float(base_balance) < float(quote_order_qty):
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
-                    return format(qty_dec, f'.{precision}f')
-                # Format quantity to max base_decimals and return as string
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            
-            return quote_order_qty
-        except Exception as e:
-            print('adjust trade quantity error: ', str(e))
-            return quote_order_qty
-
-
-    def open_trade(self, symbol, side, quantity, custom_id):
+    def open_trade(self, symbol, side, quantity, custom_id) -> OpenTrade:
         try:
 
             symbol_info = self.get_exchange_info(symbol)
@@ -145,7 +88,7 @@ class BinanceUSClient(BrokerClient):
 
             adjusted_quantity = self.adjust_trade_quantity(symbol_info, float(quantity), side)
 
-            quote_asset = symbol_info.get('quoteAsset')
+            quote_asset = symbol_info.get('quote_asset')
             order_symbol = symbol_info.get('symbol')
 
             params = {
@@ -194,7 +137,7 @@ class BinanceUSClient(BrokerClient):
         except Exception as e:
             return {'error': str(e)}
 
-    def close_trade(self, symbol, side, quantity):
+    def close_trade(self, symbol, side, quantity) -> CloseTrade:
         t_side = "SELL" if side.upper() == "BUY" else "BUY"
         try:
             
@@ -234,7 +177,7 @@ class BinanceUSClient(BrokerClient):
         except Exception as e:        
             return {'error': str(e)}
         
-    def get_order_info(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id) -> OrderInfo:
         try:
 
             params = {
@@ -261,21 +204,10 @@ class BinanceUSClient(BrokerClient):
                     trade = response[0]
             else:
                 trade = response
-
-            sym_info = self.get_exchange_info(symbol)
-
+                
             fees = float(trade.get('commission'))
-            # Convert fees from ADA to USDT using avg_price
+            fees = self.calculate_fees(symbol, trade.get('price', '0'), fees, trade.get('commissionAsset'))
 
-            if str(trade.get('commissionAsset')) == sym_info.get('baseAsset'):
-                try:
-                    fee_ada = Decimal(str(fees))
-                    price_usdt = Decimal(str(trade.get('price', '0')))
-                    fees = fee_ada * price_usdt
-                except (InvalidOperation, ValueError):
-                    pass
-               
-            dt_aware = self.convert_timestamp(trade.get('time'))
             
             r = {
                 'order_id': str(trade.get('orderId')),
@@ -283,7 +215,7 @@ class BinanceUSClient(BrokerClient):
                 'volume': str(trade.get('qty')),
                 'side': str(trade.get('side')),
                 
-                'time': dt_aware,
+                'time': self.convert_timestamp(trade.get('time')),
                 'price': str(trade.get('price')),
 
                 'fees': str(fees),

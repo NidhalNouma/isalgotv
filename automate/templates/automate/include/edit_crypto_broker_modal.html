@@ -138,7 +138,7 @@
               </label>
             </div>
           </li>
-          {% if account.broker_type == "binance" %}
+          {% if account.broker_type == "binance" or account.broker_type == 'bingx' %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
@@ -152,12 +152,12 @@
               <label
                 for="{{account.id}}_{{account.broker_type}}-type-M"
                 class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
-                >USD@M</label
+                >USDT@M</label
               >
             </div>
           </li>
           {% endif %} 
-          {% if account.broker_type == "binance" %}
+          {% if account.broker_type == "binance" or account.broker_type == 'bingx' %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input

@@ -1,31 +1,13 @@
-import time
 import hmac
 import hashlib
 import requests
-from urllib.parse import urlencode
 
-from django.utils.dateparse import parse_datetime
-from datetime import datetime
-from django.utils import timezone
-from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
+from .types import *
+from .broker import CryptoBrokerClient
 
-from .broker import BrokerClient
-
-class CryptoComClient(BrokerClient):
+class CryptoComClient(CryptoBrokerClient):
 
     BASE_URL = "https://api.crypto.com/exchange/v1/"
-
-    def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
-        # Support either a Django account object or explicit credentials
-        if account is not None:
-            self.api_key = account.apiKey
-            self.api_secret = account.secretKey
-            self.account_type = getattr(account, 'type', None)
-        else:
-            self.api_key = api_key
-            self.api_secret = api_secret
-            self.account_type = account_type
-        self.current_trade = current_trade
 
     @staticmethod
     def check_credentials(api_key, secret, account_type="S"):
@@ -39,9 +21,6 @@ class CryptoComClient(BrokerClient):
             return {"message": "API credentials are valid.", "valid": True}
         except Exception as e:
             return {"error": str(e)}
-
-    def _get_timestamp(self):
-        return int(time.time() * 1000)
 
     def create_signature(self, req):
         MAX_LEVEL = 3
@@ -85,7 +64,7 @@ class CryptoComClient(BrokerClient):
         return response.json()
     
 
-    def get_account_balance(self, asset: str):
+    def get_account_balance(self) -> AccountBalance:
         """Retrieve the balance for a specific asset from Crypto.com account info."""
         try:
             account_info = self.get_account_info()
@@ -99,13 +78,17 @@ class CryptoComClient(BrokerClient):
             
             for balance in data["position_balances"]:  # Debugging line to check each balance
                 balances[balance["instrument_name"]] = float(balance["quantity"])
+                balances[balance["instrument_name"]] = {
+                    "available": float(balance["quantity"]),
+                    "locked": 0.0
+                }
                 
-            return {"asset": asset, "balance": balances.get(asset, 0.0)}
+            return balances
 
         except Exception as e:
             raise ValueError(str(e))
 
-    def get_exchange_info(self, symbol):
+    def get_exchange_info(self, symbol) -> ExchangeInfo:
         """Retrieve exchange information for a specific symbol from Crypto.com Exchange API."""
         url = self.BASE_URL + f'public/get-instruments?instrument_name={symbol}'
         response = requests.get(url)
@@ -114,10 +97,23 @@ class CryptoComClient(BrokerClient):
         data_list = res_json.get('result', {}).get('data', [])
         
         target = symbol.upper()
-        for item in data_list:
-            inst = item.get('symbol', '')
+        for sym in data_list:
+            inst = sym.get('symbol', '')
             if inst.replace('_', '').upper() == target or inst == target:
-                return item
+
+                base_asset = sym.get('base_ccy')
+                quote_asset = sym.get('quote_ccy')
+
+                base_decimals = sym.get('quantity_decimals')
+                quote_decimals = sym.get('quote_decimals')
+
+                return {
+                    'symbol': sym.get('symbol'),
+                    'base_asset': base_asset,
+                    'quote_asset': quote_asset,
+                    'base_decimals': base_decimals,
+                    'quote_decimals': quote_decimals,
+                }
         return None
 
 
@@ -140,54 +136,7 @@ class CryptoComClient(BrokerClient):
         return response.json()
 
 
-    def adjust_trade_quantity(self, symbol_info, side, quote_order_qty):
-        """Adjust the trade quantity based on available balances. Assumes symbol format like 'BTCUSDT'."""
-        try:
-            
-            base_asset = symbol_info.get('base_ccy')
-            quote_asset = symbol_info.get('quote_ccy')
-
-            base_decimals = symbol_info.get('quantity_decimals')
-            quote_decimals = symbol_info.get('quote_decimals')
-
-            base_balance = self.get_account_balance(base_asset)["balance"]
-            quote_balance = self.get_account_balance(quote_asset)["balance"]
-
-            print("Base asset:", base_asset)
-            print("Quote asset:", quote_asset)
-            print("Base balance:", base_balance)
-            print("Quote balance:", quote_balance)
-
-            # Determine precision for quantity formatting
-            try:
-                precision = int(base_decimals)
-            except (TypeError, ValueError):
-                precision = 8  # fallback precision
-            quant = Decimal(1).scaleb(-precision)  # smallest step based on precision
-
-            if side.upper() == "BUY":
-                if float(quote_balance) <= 0:
-                    raise ValueError("Insufficient quote balance.")
-                # elif quote_balance < quote_order_qty:
-                #     return quote_balance
-                # Format quantity to max base_decimals and return as string
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            elif side.upper() == "SELL":
-                if float(base_balance) <= 0:
-                    raise ValueError("Insufficient base balance.")
-                elif float(base_balance) < float(quote_order_qty):
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
-                    return format(qty_dec, f'.{precision}f')
-                # Format quantity to max base_decimals and return as string
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-        except Exception as e:
-            raise ValueError(str(e))
-
-
-    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = ''):
+    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = '') -> OpenTrade:
         """Open a new crypto trade via the Crypto.com API."""
         try:
 
@@ -202,7 +151,7 @@ class CryptoComClient(BrokerClient):
 
             print("Adjusted quantity:", adjusted_quantity)
 
-            quote_asset = symbol_info.get('quote_ccy')
+            quote_asset = symbol_info.get('quote_asset')
             order_symbol = symbol_info.get('symbol')
 
             order_params = {
@@ -245,14 +194,13 @@ class CryptoComClient(BrokerClient):
                     "side": side.upper(),
                     'qty': adjusted_quantity,
                     'price': order_data.get('price', '0'),
-                    'time': timezone.now(),
                     'currency': quote_asset,
                 }
         
         except Exception as e:
             raise ValueError(str(e))
 
-    def close_trade(self, symbol: str, side: str, quantity: float):
+    def close_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         """Close an existing crypto trade by placing an opposite order via the Crypto.com API."""
         try:
             # Reverse the side for closing the position
@@ -292,7 +240,7 @@ class CryptoComClient(BrokerClient):
         except Exception as e:
             raise ValueError(str(e))
 
-    def get_order_info(self, trade_id):
+    def get_order_info(self, symbol, trade_id) -> OrderInfo:
         try:
 
             nonce = self._get_timestamp()
@@ -316,28 +264,16 @@ class CryptoComClient(BrokerClient):
                 
                 # print(result)
                 if result:
-                    sym_info = self.get_exchange_info(str(result.get('instrument_name')))
-
-                    dt_aware = self.convert_timestamp(result.get('create_time'))
-
                     fees = float(result.get('cumulative_fee'))
-                    # Convert fees from ADA to USDT using avg_price
+                    fees = self.calculate_fees(str(result.get('instrument_name')), str(result.get('avg_price')), fees, str(result.get('fee_instrument_name')))
 
-                    if str(result.get('fee_instrument_name')) == sym_info.get('base_ccy'):
-                        # print('changing fees ..')
-                        try:
-                            fee_ada = Decimal(str(fees))
-                            price_usdt = Decimal(str(result.get('avg_price', '0')))
-                            fees = fee_ada * price_usdt
-                        except (InvalidOperation, ValueError):
-                            pass
 
                     r = {
                         'order_id': str(result.get('order_id')),
                         'symbol': str(result.get('instrument_name')),
                         'volume': str(result.get('quantity')),
                         'side': str(result.get('side')),
-                        'time': dt_aware,
+                        'time': self.convert_timestamp(result.get('create_time')),
                         'price': str(result.get('avg_price')),
 
                         'fees': str(fees),

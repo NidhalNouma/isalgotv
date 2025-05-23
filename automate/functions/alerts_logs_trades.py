@@ -5,30 +5,33 @@ from django.utils import timezone
 
 from ..models import *
 
-from .binance import BinanceClient
-from .binance_us import BinanceUSClient
-from .bitget import BitgetClient
-from .bybit import BybitClient
-from .mexc import MexcClient
-from .crypto import CryptoComClient
+from .brokers.binance import BinanceClient
+from .brokers.binance_us import BinanceUSClient
+from .brokers.bitget import BitgetClient
+from .brokers.bybit import BybitClient
+from .brokers.mexc import MexcClient
+from .brokers.crypto import CryptoComClient
+from .brokers.bingx import BingxClient
 
-from .trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade, get_tradelocker_trade_data
-from .metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade, get_metatrader_trade_data
+from .brokers.trade_locker import check_tradelocker_credentials, open_tradelocker_trade, close_tradelocker_trade, get_tradelocker_trade_data
+from .brokers.metatrader import add_metatrader_account, open_metatrader_trade, close_metatrader_trade, get_metatrader_trade_data
 
-def check_crypto_credentials(broker_type, api_key, api_secret, phrase, trade_type="S"):
+def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_type="S"):
     print("Checking crypto credentials for " + broker_type)
     if broker_type == 'binance':
-        return BinanceClient.check_credentials(api_key, api_secret, trade_type)
+        return BinanceClient.check_credentials(api_key, api_secret, account_type)
     if broker_type == 'binanceus':
         return BinanceUSClient.check_credentials(api_key, api_secret)
     elif broker_type == 'bitget':
-        return BitgetClient.check_credentials(api_key, api_secret, phrase, trade_type)
+        return BitgetClient.check_credentials(api_key, api_secret, phrase, account_type)
     elif broker_type == 'bybit':
-        return BybitClient.check_credentials(api_key, api_secret, trade_type)
+        return BybitClient.check_credentials(api_key, api_secret, account_type)
     elif broker_type == 'mexc':
-        return MexcClient.check_credentials(api_key, api_secret, trade_type)
+        return MexcClient.check_credentials(api_key, api_secret, account_type)
     elif broker_type == 'crypto':
-        return CryptoComClient.check_credentials(api_key, api_secret, trade_type)
+        return CryptoComClient.check_credentials(api_key, api_secret, account_type)
+    elif broker_type == 'bingx':
+        return BingxClient.check_credentials(api_key, api_secret, account_type)
     else:
         raise Exception("Unsupported broker type.")
 
@@ -59,6 +62,8 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
             return MexcClient(account=account).open_trade(symbol, side, volume)
         elif broker_type == 'crypto':
             return CryptoComClient(account=account).open_trade(symbol, side, volume)
+        elif broker_type == 'bingx':
+            return BingxClient(account=account).open_trade(symbol, side, volume)
         elif broker_type == 'tradelocker':
             return open_tradelocker_trade(account, symbol, side, volume)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
@@ -69,7 +74,6 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
         print('open trade error: ', str(e))
         raise e
     
-
 def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
     try:
         broker_type = account.broker_type
@@ -85,6 +89,8 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
             return MexcClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
         elif broker_type == 'crypto':
             return CryptoComClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
+        elif broker_type == 'bingx':
+            return BingxClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
         elif broker_type == 'tradelocker':
             return close_tradelocker_trade(account, trade_to_close, volume_close)
         elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
@@ -119,98 +125,7 @@ def get_trade_data(account, trade):
     except Exception as e:
         print('close trade error: ', str(e))
         raise e
-
-def manage_alert(alert_message, account):
-    try:
-        print("Webhook request for account #" + str(account.id) + ": " + alert_message)
-
-        alert_data = extract_alert_data(alert_message)
-        
-        action = alert_data.get('Action')
-        custom_id = alert_data.get('ID')
-
-        symbol = alert_data.get('Asset')
-        side = alert_data.get('Type')
-
-        partial = alert_data.get('Partial')
-        volume = alert_data.get('Volume')
-
-        strategy_id = alert_data.get('strategy_ID', None)
-
-        if account.broker_type == 'binance' and account.type == "C":
-            if not symbol.endswith("_PERP"):
-                symbol = symbol + "_PERP"
-
-        if not custom_id:
-            raise Exception("No ID found in alert message.")
-
-        if not action:
-            raise Exception("No action found in alert message.")
-
-        if not symbol:
-            raise Exception("No symbol found in alert message.")
-
-        if not side:
-            raise Exception("No side found in alert message.")
-
-        if not volume and action == 'Entry':
-            raise Exception("No volume found in alert message.")
-
-        if action == 'Entry':
-            trade = open_trade_by_account(account, symbol, side, volume, custom_id)
-            if trade.get('error') is not None:
-                raise Exception(trade.get('error'))
-            saved_trade = save_new_trade(custom_id, side, trade, account, strategy_id)
-            save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
-
-        elif action == 'Exit':
-            trade_to_close = get_trade(custom_id, symbol, side, account, strategy_id)
-            if not trade_to_close:
-                raise Exception(f"No trade found to close with ID: {custom_id}")
-
-            volume_close = volume_to_close(trade_to_close, partial)
-            closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
-
-            if closed_trade.get('error') is not None:
-                raise Exception(closed_trade.get('error'))
-            
-            closed_volume = closed_trade.get('qty', volume_close)
-
-            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
-            save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, trade)
-
-    except Exception as e:   
-        print('API Error: %s' % e)
-        save_log("E", alert_message, str(e), account)
-        return {"error": str(e)}
-
-def extract_alert_data(alert_message):
-    data = {}
-    parts = alert_message.split()
     
-    # Extract other fields from the message
-    for part in parts:
-        key, value = part.split('=')
-        
-        if key == 'D':
-            data['Action'] = 'Entry'
-            data['Type'] = value
-        elif key == 'X':
-            data['Action'] = 'Exit'
-            data['Type'] = value
-        elif key == 'A':
-            data['Asset'] = value 
-        elif key == 'V':
-            data['Volume'] = value
-        elif key == 'P':
-            data['Partial'] = value
-        elif key == 'ID' or key == 'NUM':
-            data['ID'] = value
-        elif key == 'ST' or key == 'ST_ID':
-            data['strategy_ID'] = value
-    
-    return data
-
 def save_log(response_status, alert_message, response_message, account, trade = None):
     if type(account) == CryptoBrokerAccount:
         log = LogMessage.objects.create(
@@ -268,7 +183,7 @@ def save_new_trade(custom_id, side, opend_trade, account, strategy_id):
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id,
-            strategy_id=strategy_id
+            strategy=Strategy.objects.filter(id=strategy_id).first()
         )
 
     else:

@@ -2,26 +2,16 @@ import time
 import hmac
 import hashlib
 import requests
-import json
 
-from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
+from .types import *
 
-from .broker import BrokerClient
+from .broker import CryptoBrokerClient
 
-class BybitClient(BrokerClient):
+class BybitClient(CryptoBrokerClient):
     BYBIT_API_URL = 'https://api.bybit.com/v5'
 
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
-
-        if account is not None:
-            self.api_key = account.apiKey
-            self.api_secret = account.secretKey
-            self.account_type = getattr(account, 'accountType', None) or getattr(account, 'type', None)
-        else:
-            self.api_key = api_key
-            self.api_secret = api_secret
-            self.account_type = account_type
-        self.current_trade = current_trade
+        super().__init__(account=account, api_key=api_key, api_secret=api_secret, account_type=account_type, current_trade=current_trade)
 
         if self.account_type == "S":
             self.category = 'spot'
@@ -67,7 +57,7 @@ class BybitClient(BrokerClient):
             return {'error': str(e), 'valid': False}
         
         
-    def get_exchange_info(self, symbol):
+    def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
             params = {
                 'symbol': symbol,
@@ -95,10 +85,10 @@ class BybitClient(BrokerClient):
 
             r ={
                 'symbol': data['symbol'],
-                'baseCoin': data['baseCoin'],
-                'quoteCoin': data['quoteCoin'],
-                'baseDecimals': base_decimals,
-                'quoteDecimals': quote_decimals
+                'base_asset': data['baseCoin'],
+                'quote_asset': data['quoteCoin'],
+                'base_decimals': base_decimals,
+                'quote_decimals': quote_decimals
             }
 
             return r
@@ -107,7 +97,7 @@ class BybitClient(BrokerClient):
             raise Exception(e)
         
 
-    def get_account_balance(self):
+    def get_account_balance(self) -> AccountBalance:
         """Get the balance of a specific asset on Bybit."""
         try:
             params = {
@@ -124,69 +114,15 @@ class BybitClient(BrokerClient):
             for balance in response['result']['list'][0]['coin']:
                 # if balance['coin'] == coin:
                 b[balance['coin']] = balance['walletBalance']
+                b[balance['coin']] = {
+                    'available': balance['walletBalance'],
+                    'locked': balance['walletBalance'] - balance['availableBalance']
+                }
             return b
         except Exception as e:
             raise Exception(e)
-        
-    def adjust_trade_quantity(self, symbol_info, side, quote_order_qty):
-        try:
-            base_asset = symbol_info.get('baseCoin')
-            quote_asset = symbol_info.get('quoteCoin')
 
-            account_balace = self.get_account_balance()
-            print("Account balance:", account_balace)
-
-            base_balance = account_balace.get(base_asset, 0)
-            quote_balance = account_balace.get(quote_asset, 0)
-
-            base_decimals = symbol_info.get('baseDecimals') 
-            quote_decimals = symbol_info.get('quoteDecimals') 
-
-            print("Base asset:", base_asset, base_decimals)
-            print("Quote asset:", quote_asset, quote_decimals)
-
-            print("Base balance:", base_balance)
-            print("Quote balance:", quote_balance)
-
-            try:
-                precision = int(base_decimals)
-            except (TypeError, ValueError):
-                precision = 8  # fallback precision
-            quant = Decimal(1).scaleb(-precision)  
-
-
-            if self.account_type == "S":  # Spot
-
-                if side.upper() == "BUY":
-                    if float(quote_balance) <= 0:
-                        raise ValueError("Insufficient quote balance.")
-
-                    qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                    return format(qty_dec, f'.{precision}f')
-                
-                elif side.upper() == "SELL":
-                    if float(base_balance) <= 0:
-                        raise ValueError("Insufficient base balance.")
-                    elif float(base_balance) < float(quote_order_qty):
-                        # Format quantity to max base_decimals and return as string
-                        qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
-                        return format(qty_dec, f'.{precision}f')
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                    return format(qty_dec, f'.{precision}f')
-                
-                return quote_order_qty
-            else:  # Futures
-
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-
-        except Exception as e:
-            raise ValueError(str(e))
-
-        
-
-    def open_trade(self, symbol, side, quantity, additional_params={}):
+    def open_trade(self, symbol, side, quantity, additional_params={}) -> OpenTrade:
         """Place a market order on Bybit."""
         try:
                 
@@ -195,8 +131,8 @@ class BybitClient(BrokerClient):
             if not sys_info:
                 raise Exception('Symbol was not found!')
             
-            currency_asset = sys_info.get('quoteCoin')
-            base_asset = sys_info.get('baseCoin')
+            currency_asset = sys_info.get('quote_asset')
+            base_asset = sys_info.get('base_asset')
             order_symbol = sys_info.get('symbol')
 
             adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
@@ -263,7 +199,7 @@ class BybitClient(BrokerClient):
         except Exception as e:
             return {'error': str(e)}
 
-    def close_trade(self, symbol, side, quantity):
+    def close_trade(self, symbol, side, quantity) -> CloseTrade:
         """Close a trade on Bybit."""
         opposite_side = "sell" if side.lower() == "buy" else "buy"
 
@@ -274,7 +210,7 @@ class BybitClient(BrokerClient):
         return self.open_trade(symbol, opposite_side, quantity, additional_params)
 
 
-    def get_order_info(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id) -> OrderInfo:
         try:
             endpoint = '/execution/list'
 
@@ -305,25 +241,12 @@ class BybitClient(BrokerClient):
                 trade = response
 
             if trade:
-
-                sym_info = self.get_exchange_info(symbol)
                 # Fallback to 'price' if 'priceAvg' is missing or falsy
                 price_str = trade.get('execPrice') or trade.get('orderPrice', '0')
-                price_usdt = Decimal(str(price_str))
 
                 # Normalize fee detail, which may be a dict or a list of dicts
                 fees = trade.get('execFee', 0)
-                sym_info = self.get_exchange_info(symbol)
-
-                try:
-                    fees = Decimal(str(fees))
-                    if str(trade.get('feeCurrency')) == sym_info.get('baseCoin'):
-                        fees = fees * price_usdt
-                except (InvalidOperation, ValueError):
-                    pass
-
-
-                dt_aware = self.convert_timestamp(trade.get('execTime'))
+                fees = self.calculate_fees(symbol, price_str, fees, trade.get('feeCurrency'))
                 
                 r = {
                     'order_id': str(trade.get('orderId')),
@@ -331,7 +254,7 @@ class BybitClient(BrokerClient):
                     'volume': str(trade.get('execQty') or trade.get('orderQty')),
                     'side': str(trade.get('side')),
                     
-                    'time': dt_aware,
+                    'time': self.convert_timestamp(trade.get('execTime')),
                     'price': str(price_str),
 
                     'profit': str(trade.get('profit', None)),

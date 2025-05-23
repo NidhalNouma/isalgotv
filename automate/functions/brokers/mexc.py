@@ -1,30 +1,12 @@
-import time
-import hmac
-import hashlib
 import requests
 from urllib.parse import urlencode
 
-from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
+from .broker import CryptoBrokerClient
+from .types import *
 
-
-from .broker import BrokerClient
-
-class MexcClient(BrokerClient):
+class MexcClient(CryptoBrokerClient):
     BASE_URL = 'https://api.mexc.com'
     FUTURES_BASE_URL = 'https://contract.mexc.com'
-
-    def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
-
-        if account is not None:
-            self.api_key = account.apiKey
-            self.api_secret = account.secretKey
-            self.account_type = getattr(account, 'accountType', None) or getattr(account, 'type', None)
-        else:
-            self.api_key = api_key
-            self.api_secret = api_secret
-            self.account_type = account_type
-        self.current_trade = current_trade
-        
     
     @staticmethod
     def check_credentials(api_key, api_secret, account_type="S"):
@@ -43,14 +25,6 @@ class MexcClient(BrokerClient):
             return {"message": "API credentials are valid.", "valid": True}
         except Exception as e:
             return {"error": str(e)}
-
-        
-    def _get_timestamp(self):
-        return int(time.time() * 1000)
-
-
-    def create_signature(self, query_string):
-        return hmac.new(self.api_secret.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256).hexdigest()
 
     def send_request(self, method, endpoint, params=None):
         if params is None:
@@ -90,7 +64,7 @@ class MexcClient(BrokerClient):
 
         timestamp = str(self._get_timestamp())
         signature_target = self.api_key + timestamp
-        signature = hmac.new(self.api_secret.encode("utf-8"), signature_target.encode("utf-8"), hashlib.sha256).hexdigest()
+        signature = self.create_signature(signature_target)
         
         headers = {
             "ApiKey": self.api_key,
@@ -122,7 +96,7 @@ class MexcClient(BrokerClient):
         
         return response_data
 
-    def get_account_balance(self):
+    def get_account_balance(self) -> AccountBalance:
         try:
             account_info = self.get_account_info()
             
@@ -131,6 +105,10 @@ class MexcClient(BrokerClient):
             # {"code":200, "data": {"balances": [{"asset": "BTC", "free": "0.1", ...}, ...]}}
             for balance in account_info["balances"]:
                 balances[balance["asset"]] = float(balance["free"])
+                balances[balance["asset"]] = {
+                    "available": float(balance["free"]),
+                    "locked": float(balance["locked"])
+                }
                 
             return balances
         except Exception as e:
@@ -144,7 +122,7 @@ class MexcClient(BrokerClient):
         response_data = self.send_futures_request('GET', endpoint)
         return response_data
 
-    def get_exchange_info(self, symbol):
+    def get_exchange_info(self, symbol) -> ExchangeInfo:
         params = {
             "symbol": symbol
         }
@@ -165,13 +143,26 @@ class MexcClient(BrokerClient):
                 symbols = response_data.get("symbols")
                 for s in symbols:
                     if s.get("symbol") == symbol:
-                        return s
+
+                        return {
+                            "symbol": symbol,
+                            "base_asset": s.get("baseAsset"),
+                            "quote_asset": s.get("quoteAsset"),
+                            "base_decimals": s.get("baseAssetPrecision"),
+                            "quote_decimals": s.get("quoteAssetPrecision"),
+                        }
                     
     
         if isinstance(response_data, list):
             for s in response_data:
                 if s.get("symbol") == symbol:
-                    return s
+                    return {
+                        "symbol": symbol,
+                        "base_asset": s.get("baseAsset"),
+                        "quote_asset": s.get("quoteAsset"),
+                        "base_decimals": s.get("baseAssetPrecision"),
+                        "quote_decimals": s.get("quoteAssetPrecision"),
+                    }
         
         raise Exception('Symbol was not found!')
         
@@ -194,65 +185,15 @@ class MexcClient(BrokerClient):
         return response_data
         
 
-    def adjust_trade_quantity(self, exchange_info, side, quote_order_qty):
-        try:
-            base_asset, quote_asset = exchange_info.get("baseAsset"), exchange_info.get("quoteAsset")
-            if not base_asset or not quote_asset:
-                raise ValueError("Invalid symbol format or exchange info not found.")
-            
-            balances = self.get_account_balance()
-            
-            base_balance = balances.get(base_asset, 0)
-            quote_balance = balances.get(quote_asset, 0)
-
-            base_decimals = exchange_info.get('baseAssetPrecision') 
-            quote_decimals = exchange_info.get('quoteAssetPrecision') 
-
-            print("Base asset:", base_asset, base_decimals)
-            print("Quote asset:", quote_asset, quote_decimals)
-
-            print("Base balance:", base_balance)
-            print("Quote balance:", quote_balance)
-
-            try:
-                precision = int(base_decimals)
-            except (TypeError, ValueError):
-                precision = 8  # fallback precision
-            quant = Decimal(1).scaleb(-precision)  
-
-
-            if side.upper() == "BUY":
-                if float(quote_balance) <= 0:
-                    raise ValueError("Insufficient quote balance.")
-
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            
-            elif side.upper() == "SELL":
-                if float(base_balance) <= 0:
-                    raise ValueError("Insufficient base balance.")
-                elif float(base_balance) < float(quote_order_qty):
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
-                    return format(qty_dec, f'.{precision}f')
-                # Format quantity to max base_decimals and return as string
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            
-            return quote_order_qty
-        except Exception as e:
-            raise ValueError(str(e))
-
-
-    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None):
+    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None) -> OpenTrade:
         try:
             if self.account_type == "F":
                 return self.open_mexc_futures_trade(symbol, side, quantity, custom_id)
             
             sys_info = self.get_exchange_info(symbol)
             
-            currency_asset = sys_info.get('quoteAsset')
-            base_asset = sys_info.get('baseAsset')
+            currency_asset = sys_info.get('quote_asset')
+            base_asset = sys_info.get('base_asset')
             order_symbol = sys_info.get('symbol')
 
             adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
@@ -311,7 +252,7 @@ class MexcClient(BrokerClient):
             raise ValueError(str(e))
 
 
-    def close_trade(self, symbol: str, side: str, quantity: float):
+    def close_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         try:
             if self.account_type == "F":
                 return self.close_mexc_futures_trade(symbol, side, quantity)
@@ -321,7 +262,7 @@ class MexcClient(BrokerClient):
         except Exception as e:
             raise ValueError(str(e))
 
-    def open_mexc_futures_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None):
+    def open_mexc_futures_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None) -> OpenTrade:
         """Open a new futures trade on MEXC. Note: futures orders may require additional parameters such as leverage and margin type."""
 
         t_side = 1 if side.upper() == "BUY" else 3
@@ -358,7 +299,7 @@ class MexcClient(BrokerClient):
             raise ValueError(str(e))
 
 
-    def close_mexc_futures_trade(self, symbol: str, side: str, quantity: float):
+    def close_mexc_futures_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         """Close an existing futures trade on MEXC by placing an opposite order."""
         try:
             # Reverse the side for closing the position
@@ -385,7 +326,7 @@ class MexcClient(BrokerClient):
             raise ValueError(str(e))
 
         
-    def get_order_info(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id) -> OrderInfo:
         try:
             if self.account_type == "F":
                 return self.get_future_order_info(symbol, order_id)
@@ -416,29 +357,16 @@ class MexcClient(BrokerClient):
             else:
                 trade = response
 
-            sym_info = self.get_exchange_info(symbol)
-
             fees = float(trade.get('commission'))
-            # Convert fees from ADA to USDT using avg_price
+            fees = self.calculate_fees(symbol, trade.get('price', '0'), fees, trade.get('commissionAsset'))
 
-            if str(trade.get('commissionAsset')) == sym_info.get('baseAsset'):
-                try:
-                    fee_ada = Decimal(str(fees))
-                    price_usdt = Decimal(str(trade.get('price', '0')))
-                    fees = fee_ada * price_usdt
-                except (InvalidOperation, ValueError):
-                    pass
-            
-            dt_aware = self.convert_timestamp(trade.get('time'))
-
-            
             r = {
                 'order_id': str(trade.get('orderId')),
                 'symbol': str(trade.get('symbol')),
                 'volume': str(trade.get('qty')),
                 'side': str(trade.get('side')),
                 
-                'time': dt_aware,
+                'time': self.convert_timestamp(trade.get('time')),
                 'price': str(trade.get('price')),
 
                 'fees': str(fees),
@@ -455,7 +383,7 @@ class MexcClient(BrokerClient):
             return None
 
         
-    def get_future_order_info(self, symbol, order_id):
+    def get_future_order_info(self, symbol, order_id) -> OrderInfo:
         try:
             endpoint =f"/api/v1/private/order/get/{order_id}"
 
@@ -483,21 +411,8 @@ class MexcClient(BrokerClient):
             else:
                 trade = response
 
-            sym_info = self.get_exchange_info(symbol)
-
             fees = float(trade.get('takerFee'))
-            # Convert fees from ADA to USDT using avg_price
-
-            if str(trade.get('feeCurrency')) == sym_info.get('baseCoin'):
-                try:
-                    fee_ada = Decimal(str(fees))
-                    price_usdt = Decimal(str(trade.get('price', '0')))
-                    fees = fee_ada * price_usdt
-                except (InvalidOperation, ValueError):
-                    pass
-            
-            
-            dt_aware = self.convert_timestamp(trade.get('createTime'))
+            fees = self.calculate_fees(symbol, trade.get('price', '0'), fees, trade.get('feeCurrency'))
             
             r = {
                 'order_id': str(trade.get('orderId')),
@@ -505,7 +420,7 @@ class MexcClient(BrokerClient):
                 'volume': str(trade.get('vol')),
                 'side': str(trade.get('side')),
                 
-                'time': dt_aware,
+                'time': self.convert_timestamp(trade.get('createTime')),
                 'price': str(trade.get('price')),
 
                 'fees': str(fees),

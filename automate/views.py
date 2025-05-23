@@ -7,12 +7,13 @@ from django.contrib.contenttypes.models import ContentType
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 from django.views.decorators.csrf import csrf_exempt
 
-from .functions.alerts_logs_trades import manage_alert, check_crypto_credentials, check_forex_credentials
+from .functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials
+from .functions.alerts_message import manage_alert
 from .models import *
 from .forms import *
 from .tasks import *
 
-from .functions.metatrader import delete_metatrader_account, deploy_undeploy_metatrader_account
+from .functions.brokers.metatrader import delete_metatrader_account, deploy_undeploy_metatrader_account
 
 from collections import defaultdict
 from django.utils.timezone import localtime

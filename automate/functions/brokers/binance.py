@@ -3,21 +3,12 @@ from binance.cm_futures import CMFutures
 from binance.um_futures import UMFutures
 from binance.error import ClientError
 
-from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
+from .types import *
+from .broker import CryptoBrokerClient
 
-from .broker import BrokerClient
-
-class BinanceClient(BrokerClient):
+class BinanceClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
-        if account is not None:
-            self.api_key = account.apiKey
-            self.api_secret = account.secretKey
-            self.passphrase = account.pass_phrase
-            self.account_type = getattr(account, 'type', None)
-        else:
-            self.api_key = api_key
-            self.api_secret = api_secret
-            self.trade_type = account_type
+        super().__init__(account, api_key, api_secret, account_type, current_trade)
 
         if account_type == "S":  # Spot
             self.client = Spot(api_key, api_secret)
@@ -27,24 +18,25 @@ class BinanceClient(BrokerClient):
             self.client = CMFutures(api_key, api_secret)
         else:
             raise ValueError("Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'.")
-        
-        self.current_trade = current_trade
 
     @staticmethod
-    def check_credentials(api_key, api_secret, trade_type="S"):
+    def check_credentials(api_key, api_secret, account_type="S"):
         try:
 
-            client = BinanceClient(api_key=api_key, api_secret=api_secret, account_type=trade_type).client
+            client = BinanceClient(api_key=api_key, api_secret=api_secret, account_type=account_type).client
             account = client.account()
 
-            return {'message': "API credentials are valid.", "valid": True}
+            if account:
+                return {'message': "API credentials are valid.", "valid": True}
+            else:
+                return {'message': "API credentials are invalid.", "valid": False}
         
         except ClientError as e:
             return {"error": e.error_message}
         except Exception as e:
             return {"error": str(e)}
 
-    def get_exchange_info(self, symbol):
+    def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
             response = self.client.exchange_info(symbol)
             if isinstance(response, list):
@@ -56,7 +48,25 @@ class BinanceClient(BrokerClient):
             for item in data_list:
                 inst = item.get('symbol', '')
                 if inst.replace('_', '').upper() == target or inst == target:
-                    return item
+                    symbol_info = item
+
+                    base_asset = symbol_info.get('baseAsset')
+                    quote_asset = symbol_info.get('quoteAsset')
+
+                    # find the filters
+                    price_filter = next(f for f in symbol_info['filters'] if f['filterType']=='PRICE_FILTER')
+                    lot_filter   = next(f for f in symbol_info['filters'] if f['filterType']=='LOT_SIZE')
+
+                    quote_decimals = self.get_decimals_from_step(price_filter['tickSize'])
+                    base_decimals   = self.get_decimals_from_step(lot_filter['stepSize'])
+
+                    return {
+                        'symbol': symbol_info.get('symbol'),
+                        'baseAsset': base_asset,
+                        'quoteAsset': quote_asset,
+                        'base_decimals': base_decimals,
+                        'quote_decimals': quote_decimals,
+                    }
             
             return None
         
@@ -64,7 +74,7 @@ class BinanceClient(BrokerClient):
             raise Exception(e)
 
             
-    def get_account_balance(self, asset: str):
+    def get_account_balance(self, asset: str) ->AccountBalance:
         try:
             trade_type = self.account_type
             balances = {}
@@ -77,85 +87,22 @@ class BinanceClient(BrokerClient):
                 
                 account_info = self.client.account()
                 for balance in account_info['assets']:
-                    balances[balance['asset']] = float(balance['availableBalance'])
+                    balances[balance['asset']] = {
+                        'available': float(balance['availableBalance']),
+                        'locked': float(balance['maxWithdrawAmount']) - float(balance['availableBalance'])
+                    }
             else:
                 raise ValueError("Invalid trade type. Use 'spot', 'usdm', or 'coinm'.")
 
-            return {"asset": asset, "balance": balances.get(asset, 0.0)}
+            return balances
         
         except ClientError as e:
             raise ValueError(e.error_message)
         except Exception as e:
             raise ValueError(str(e))
 
-        
-    def adjust_trade_quantity(self, symbol_info, side ,quote_order_qty):
-        try:
-            base_asset = symbol_info.get('baseAsset')
-            quote_asset = symbol_info.get('quoteAsset')
-
-            base_balance = self.get_account_balance(base_asset)["balance"]
-            quote_balance = self.get_account_balance(quote_asset)["balance"]
-
-            # find the filters
-            price_filter = next(f for f in symbol_info['filters'] if f['filterType']=='PRICE_FILTER')
-            lot_filter   = next(f for f in symbol_info['filters'] if f['filterType']=='LOT_SIZE')
-
-            quote_decimals = self.get_decimals_from_step(price_filter['tickSize'])
-            base_decimals   = self.get_decimals_from_step(lot_filter['stepSize'])
-
-            print("Base asset:", base_asset, base_decimals)
-            print("Quote asset:", quote_asset, quote_decimals)
-                
-            try:
-                precision = int(base_decimals)
-            except (TypeError, ValueError):
-                precision = 8  # fallback precision
-            quant = Decimal(1).scaleb(-precision)  
-            
-            # Fetch balance based on the trade type
-            if self.account_type == "S":  # Spot
-                print("Base balance:", base_balance)
-                print("Quote balance:", quote_balance)
-
-                if side.upper() == "BUY":
-                    if float(quote_balance) <= 0:
-                        raise ValueError("Insufficient quote balance.")
-                    # elif quote_balance < quote_order_qty:
-                    #     return quote_balance
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                    return format(qty_dec, f'.{precision}f')
-                
-                elif side.upper() == "SELL":
-                    if float(base_balance) <= 0:
-                        raise ValueError("Insufficient base balance.")
-                    elif float(base_balance) < float(quote_order_qty):
-                        # Format quantity to max base_decimals and return as string
-                        qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
-                        return format(qty_dec, f'.{precision}f')
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                    return format(qty_dec, f'.{precision}f')
-                
-                return quote_order_qty
-            
-            elif self.account_type == "U":  # USDM Futures
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            
-            elif self.account_type == "C":  # COINM Futures
-                quant = 0
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-            else:
-                return quote_order_qty
-        
-        except Exception as e:
-            raise ValueError(str(e))
-
-        
-    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None):
+       
+    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None) -> OpenTrade:
         try:
             trade_type = self.account_type
             sys_info = self.get_exchange_info(symbol)
@@ -164,7 +111,7 @@ class BinanceClient(BrokerClient):
             if not sys_info:
                 raise Exception('Symbol was not found!')
             
-            currency_asset = sys_info.get('quoteAsset')
+            currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
 
             adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, float(quantity))
@@ -223,7 +170,7 @@ class BinanceClient(BrokerClient):
         except Exception as e:
             raise ValueError(str(e))
         
-    def close_trade(self, symbol: str, side: str, quantity: float):
+    def close_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         try:
             t_side = "SELL" if side.upper() == "BUY" else "BUY"
             trade_type = self.account_type
@@ -274,7 +221,7 @@ class BinanceClient(BrokerClient):
         except Exception as e:
             raise ValueError(str(e))
  
-    def get_order_info(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id) -> OrderInfo:
 
         try:
             trade_type = self.account_type
@@ -308,22 +255,11 @@ class BinanceClient(BrokerClient):
                 trade = response
             
             if trade:
-
-                sym_info = self.get_exchange_info(symbol)
-
                 fees = float(trade.get('commission'))
-                # Convert fees from ADA to USDT using avg_price
 
                 if trade_type != "C":
-                    if str(trade.get('commissionAsset')) == sym_info.get('baseAsset'):
-                        try:
-                            fee_ada = Decimal(str(fees))
-                            price_usdt = Decimal(str(trade.get('price', '0')))
-                            fees = fee_ada * price_usdt
-                        except (InvalidOperation, ValueError):
-                            pass
+                    fees = self.calculate_fees(symbol, trade.get('price', '0'), fees, trade.get('commissionAsset'))
 
-                dt_aware = self.convert_timestamp(trade.get('time'))
                 
                 r = {
                     'order_id': str(trade.get('orderId')),
@@ -331,7 +267,7 @@ class BinanceClient(BrokerClient):
                     'volume': str(trade.get('qty')),
                     'side': str(trade.get('side')),
                     
-                    'time': dt_aware,
+                    'time': self.convert_timestamp(trade.get('time')),
                     'price': str(trade.get('price')),
 
                     'profit': str(trade.get('realizedPnl', None)),

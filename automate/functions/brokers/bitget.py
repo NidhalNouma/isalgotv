@@ -5,27 +5,14 @@ import requests
 import base64
 import json
 
-from decimal import Decimal, ROUND_DOWN, ROUND_UP
+from decimal import Decimal
 
-from .broker import BrokerClient
+from .types import *
+from .broker import CryptoBrokerClient
 
-class BitgetClient(BrokerClient):
+class BitgetClient(CryptoBrokerClient):
 
     BITGET_API_URL = 'https://api.bitget.com'
-
-    def __init__(self, account=None, api_key=None, api_secret=None, passphrase=None, account_type="S", current_trade=None):
-        # Support either a Django account object or explicit credentials
-        if account is not None:
-            self.api_key = account.apiKey
-            self.api_secret = account.secretKey
-            self.passphrase = account.pass_phrase
-            self.account_type = getattr(account, 'type', None)
-        else:
-            self.api_key = api_key
-            self.api_secret = api_secret
-            self.account_type = account_type
-            self.passphrase = passphrase
-        self.current_trade = current_trade
 
     @staticmethod
     def check_credentials(api_key, api_secret, phrase, account_type="S"):
@@ -76,7 +63,7 @@ class BitgetClient(BrokerClient):
             response = requests.post(url, headers=headers, json=body)
         return response.json()
 
-    def get_exchange_info(self, symbol):
+    def get_exchange_info(self, symbol) -> ExchangeInfo:
         """
         Retrieve symbol precision and asset info from Bitget.
         """
@@ -94,27 +81,14 @@ class BitgetClient(BrokerClient):
 
         response = self.send_request('GET', endpoint)
         data = response['data'][0]
+        return {
+            'symbol': symbol,
+            'base_asset': data.get('baseAsset'),
+            'quote_asset': data.get('quoteAsset'),
+            'base_Decimals': self.get_decimals_from_step(data.get('tickSize', '0')),
+            'quote_decimals':   self.get_decimals_from_step(data.get('stepSize', '0')),
+        }
         
-        return data
-
-        # url = f"{self.BITGET_API_URL}{endpoint}"
-        # response = requests.get(url).json()
-        # data_list = response.get('data', []) if not isinstance(response, list) else response
-        # # Find matching symbol
-        # sym = next((item for item in data_list if item.get('symbol') == symbol), None)
-        # if not sym:
-        #     return None
-        # # Extract filter info:
-        # filters = sym.get('filters', [])
-        # price_filter = next((f for f in filters if f.get('filterType') == 'PRICE_FILTER'), {})
-        # lot_filter  = next((f for f in filters if f.get('filterType') == 'LOT_SIZE'), {})
-        # return {
-        #     'symbol': symbol,
-        #     'baseAsset': sym.get('baseAsset'),
-        #     'quoteAsset': sym.get('quoteAsset'),
-        #     'priceDecimals': self.get_decimals_from_step(price_filter.get('tickSize', '0')),
-        #     'qtyDecimals':   self.get_decimals_from_step(lot_filter.get('stepSize', '0')),
-        # }
 
     def get_exchange_price(self, symbol):
         # Endpoint for placing an order
@@ -137,7 +111,7 @@ class BitgetClient(BrokerClient):
         price = float(data.get('lastPr'))
         return price
 
-    def get_account_balance(self):
+    def get_account_balance(self) -> AccountBalance:
         """
         Get account balances, falling back to marginCoin if needed.
         """
@@ -150,15 +124,6 @@ class BitgetClient(BrokerClient):
         elif self.account_type  == "UC":
             endpoint = '/api/v2/mix/account/accounts?productType=USDC-FUTURES'
 
-        headers = {'ACCESS-KEY': self.api_key, 'ACCESS-SIGN': '', 'ACCESS-TIMESTAMP': str(int(time.time() * 1000))}
-        # build signature similarly...
-        # response = requests.get(url, headers=headers).json()
-        # data = response.get('data', [])
-        # balances = {}
-        # for asset in data:
-        #     coin_key = asset.get('coin') or asset.get('marginCoin')
-        #     balances[coin_key] = float(asset.get('available', 0))
-        # return balances
         balances = {}
 
         response = self.send_request('GET', endpoint)
@@ -168,77 +133,14 @@ class BitgetClient(BrokerClient):
         for asset in response['data']:
             coin_key = asset.get('coin') or asset.get('marginCoin')
             balances[coin_key] = float(asset.get('available', 0))
+            balances[coin_key] = {
+                'available': float(asset.get('available', 0)),
+                'locked': float(asset.get('locked', 0)),
+            }
             
         return balances
-    
-    def adjust_trade_quantity(self, symbol_info, side ,quote_order_qty):
-        try:
-            base_asset = symbol_info.get('baseCoin')
-            quote_asset = symbol_info.get('quoteCoin')
 
-            account_balace = self.get_account_balance()
-
-            base_balance = account_balace.get(base_asset, 0)
-            quote_balance = account_balace.get(quote_asset, 0)
-
-            base_decimals = symbol_info.get('quantityPrecision') or symbol_info.get('volumePlace')
-            quote_decimals = symbol_info.get('quotePrecision') or symbol_info.get('pricePlace')
-
-            print("Base asset:", base_asset, base_decimals)
-            print("Quote asset:", quote_asset, quote_decimals)
-
-            print("Base balance:", base_balance)
-            print("Quote balance:", quote_balance)
-
-            try:
-                precision = int(base_decimals)
-            except (TypeError, ValueError):
-                precision = 8  # fallback precision
-            quant = Decimal(1).scaleb(-precision)  
-
-
-            if self.account_type == "S":  # Spot
-
-                if side.upper() == "BUY":
-                    if float(quote_balance) <= 0:
-                        raise ValueError("Insufficient quote balance.")
-                    
-                    price = self.get_exchange_price(symbol_info.get('symbol'))
-                    if price == 0:
-                        raise ValueError("Price is zero, cannot calculate order quantity.")
-                    # Calculate the maximum order quantity based on the quote balance
-
-                    try:
-                        precision = int(quote_decimals)
-                    except (TypeError, ValueError):
-                        precision = 8  # fallback precision
-                    quant = Decimal(1).scaleb(-precision)  
-
-                    order_qty = float(quote_order_qty) * price
-                    qty_dec = Decimal(str(order_qty)).quantize(quant, rounding=ROUND_UP)
-                    return format(qty_dec, f'.{precision}f')
-                
-                elif side.upper() == "SELL":
-                    if float(base_balance) <= 0:
-                        raise ValueError("Insufficient base balance.")
-                    elif float(base_balance) < float(quote_order_qty):
-                        # Format quantity to max base_decimals and return as string
-                        qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
-                        return format(qty_dec, f'.{precision}f')
-                    # Format quantity to max base_decimals and return as string
-                    qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                    return format(qty_dec, f'.{precision}f')
-                
-                return quote_order_qty
-            else:  # Futures
-
-                qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
-                return format(qty_dec, f'.{precision}f')
-
-        except Exception as e:
-            raise ValueError(str(e))
-
-    def open_trade(self, symbol, side, quantity, oc = 'open'):
+    def open_trade(self, symbol, side, quantity, oc = 'open') -> OpenTrade:
         try:
             # Endpoint for placing an order
             endpoint = '/api/v2/spot/trade/place-order'
@@ -257,8 +159,8 @@ class BitgetClient(BrokerClient):
             if not sys_info:
                 raise Exception('Symbol was not found!')
             
-            currency_asset = sys_info.get('quoteCoin')
-            base_asset = sys_info.get('baseCoin')
+            currency_asset = sys_info.get('quote_asset')
+            base_asset = sys_info.get('base_asset')
             order_symbol = sys_info.get('symbol')
 
             adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, float(quantity))
@@ -347,7 +249,7 @@ class BitgetClient(BrokerClient):
             print('error opening bitget trade: ', str(e))
             return {'error': str(e)}
 
-    def close_trade(self, symbol, side, quantity):
+    def close_trade(self, symbol, side, quantity) -> CloseTrade:
         if self.account_type == "S":
             opposite_side = "sell" if side.lower() == "buy" else "buy"
         else:
@@ -361,7 +263,7 @@ class BitgetClient(BrokerClient):
             return {'error': str(e)}
 
 
-    def get_order_info(self, symbol, order_id):
+    def get_order_info(self, symbol, order_id) -> OrderInfo:
         try:
             order_endpoint = '/api/v2/spot/trade/fills'
 
@@ -438,14 +340,14 @@ class BitgetClient(BrokerClient):
                     for fd in fee_detail:
                         amt = Decimal(str(fd.get('totalFee', '0')))
                         coin = fd.get('feeCoin')
-                        if coin == sym_info.get('baseCoin'):
+                        if coin == sym_info.get('base_asset'):
                             total_fees += amt * price_usdt
                         else:
                             total_fees += amt
                 else:
                     amt = Decimal(str(fee_detail.get('totalFee', '0')))
                     coin = fee_detail.get('feeCoin')
-                    if coin == sym_info.get('baseCoin'):
+                    if coin == sym_info.get('base_asset'):
                         total_fees = amt * price_usdt
                     else:
                         total_fees = amt
@@ -453,15 +355,13 @@ class BitgetClient(BrokerClient):
                 # Use the computed total_fees
                 fees = total_fees
                 
-                dt_aware = self.convert_timestamp(trade.get('cTime'))
-                
                 r = {
                     'order_id': str(trade.get('orderId')),
                     'symbol': str(trade.get('symbol')),
                     'volume': str(trade.get('size') or trade.get('baseVolume')),
                     'side': str(trade.get('side')),
                     
-                    'time': dt_aware,
+                    'time': self.convert_timestamp(trade.get('cTime')),
                     'price': str(price_str),
 
                     'profit': str(trade.get('profit', None)),
