@@ -191,8 +191,8 @@ class TradeDetails(models.Model):
     entry_time = models.DateTimeField(default=timezone.now)
     exit_time = models.DateTimeField(default=timezone.now)
 
-    fees = models.DecimalField(decimal_places=6, max_digits=40, default=0)
-    profit = models.DecimalField(decimal_places=6, max_digits=40, default=0)
+    fees = models.DecimalField(decimal_places=10, max_digits=40, default=0)
+    profit = models.DecimalField(decimal_places=10, max_digits=40, default=0)
 
     side = models.CharField(max_length=1, choices=TYPE)
  

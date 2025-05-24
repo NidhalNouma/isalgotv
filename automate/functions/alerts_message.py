@@ -41,7 +41,7 @@ def manage_alert(alert_message, account):
 
         if action == 'Entry':
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
-            print('Trade:', trade)
+            # print('Trade:', trade)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
             saved_trade = save_new_trade(custom_id, side, trade, account, strategy_id)

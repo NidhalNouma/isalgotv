@@ -67,7 +67,6 @@ def check_user_and_stripe_middleware(get_response):
                 try:
                     setup_intent = stripe.SetupIntent.retrieve(setup_intent)
                     if setup_intent.status == 'succeeded':
-                        # print("payment intent", setup_intent)
                         get_updated_user_profile = True
                 except stripe.error.StripeError as e:
                     setup_intent = None

@@ -69,35 +69,38 @@ class User_Profile(models.Model):
         Fetches Stripe customer, subscription, payment methods, and latest payment intent,
         then caches them in stripe_obj with a timestamp.
         """
+        try:
 
-        if not force and self.stripe_obj:
-            customer = self.stripe_obj.get("customer", None)
-            subscription = self.stripe_obj.get("subscription", None)
+            if not force and self.stripe_obj:
+                customer = self.stripe_obj.get("customer", None)
+                subscription = self.stripe_obj.get("subscription", None)
 
-            if (customer and customer.get("id", None) != self.customer_id) or (not customer and self.customer_id): 
-                force = True
+                if (customer and customer.get("id", None) != self.customer_id) or (not customer and self.customer_id): 
+                    force = True
 
-            if (subscription and subscription.get("id", None) != self.subscription_id) or (not subscription and self.subscription_id):
-                force = True
+                if not self.is_lifetime:
+                    if (subscription and subscription.get("id", None) != self.subscription_id) or (not subscription and self.subscription_id):
+                        force = True
+
+            if not force and self.stripe_obj and self.stripe_last_checked:
+                # Check if the cached data is still valid (e.g., within 1 hour)
+                if (now() - self.stripe_last_checked).total_seconds() < (3600 * 24):
+                    return self
 
 
-        if not force and self.stripe_obj and self.stripe_last_checked:
-            # Check if the cached data is still valid (e.g., within 1 hour)
-            if (now() - self.stripe_last_checked).total_seconds() < (3600 * 24):
-                return self
+            print("Fetching Stripe data for user:", self.user.email)
 
+            data = get_profile_data(self, PRICE_LIST)
+            has_subscription = data.get("has_subscription", False)
 
-        print("Fetching Stripe data for user:", self.user.email)
-
-        data = get_profile_data(self, PRICE_LIST)
-        has_subscription = data.get("has_subscription", False)
-
-        # Cache the result and timestamp
-        self.stripe_obj = data
-        self.has_subscription = has_subscription
-        self.stripe_last_checked = now()
-        self.save(update_fields=["stripe_obj", "stripe_last_checked", "has_subscription"])
-        return self
+            # Cache the result and timestamp
+            self.stripe_obj = data
+            self.has_subscription = has_subscription
+            self.stripe_last_checked = now()
+            self.save(update_fields=["stripe_obj", "stripe_last_checked", "has_subscription"])
+            return self
+        except Exception as e:
+            print('Error fetching Stripe data ', e)
     
 
 @receiver(pre_delete, sender=User_Profile)

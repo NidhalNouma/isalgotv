@@ -155,10 +155,9 @@ def get_profile_data(user_profile, PRICE_LIST):
 
         if user_profile.is_lifetime:
             data["has_subscription"] = True
-            return data
 
         # Retrieve subscription if exists
-        if user_profile.subscription_id:
+        if user_profile.subscription_id and not user_profile.is_lifetime:
             try:
                 subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
                 data["subscription"] = subscription

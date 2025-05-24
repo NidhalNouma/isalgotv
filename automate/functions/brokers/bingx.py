@@ -113,7 +113,7 @@ class BingxClient(CryptoBrokerClient):
         response = self.send_request('GET', endpoint, params)
         response_data = response.get("data")
 
-        print("Symbols:", response_data, self.account_type)
+        # print("Symbols:", response_data, self.account_type)
 
         if self.account_type == 'S':
             if isinstance(response_data, dict) and response_data.get("symbols"):
@@ -158,6 +158,31 @@ class BingxClient(CryptoBrokerClient):
                             "base_decimals": base_decimals,
                             "quote_decimals": quote_decimals,
                         }
+                    
+        elif self.account_type == 'C':
+            if isinstance(response_data, list):
+                symbols = response_data
+                for s in symbols:
+                    if s.get("symbol") == symbol:
+                        symbol = s.get("symbol")
+                        base_asset, quote_asset = symbol.split("-")
+
+                        min_qty = s.get("minQty")
+                        min_value = s.get("minTradeValue")
+
+                        base_decimals = s.get("pricePrecision")
+                        quote_decimals = s.get("pricePrecision")
+
+                        base_decimals = self.get_decimals_from_step(min_value)
+                        quote_decimals = self.get_decimals_from_step(min_value)
+                        
+                        return {
+                            "symbol": symbol,
+                            "base_asset": base_asset,
+                            "quote_asset": quote_asset,
+                            "base_decimals": base_decimals,
+                            "quote_decimals": quote_decimals,
+                        }
             
         raise ValueError("Symbol not found")
     
@@ -172,9 +197,15 @@ class BingxClient(CryptoBrokerClient):
             
             sys_info = self.get_exchange_info(symbol)
             
-            currency_asset = sys_info.get('quote_asset')
             base_asset = sys_info.get('base_asset')
             order_symbol = sys_info.get('symbol')
+            currency_asset = sys_info.get('quote_asset')
+
+            # data = self.get_order_info(symbol, '1926362720564678657')
+            # raise Exception(data)
+
+            if self.account_type == 'C':
+                currency_asset = base_asset
 
             adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
             # adjusted_quantity = quantity
@@ -187,20 +218,30 @@ class BingxClient(CryptoBrokerClient):
                 "type": "MARKET",  # Using lowercase as per MEXC docs
                 "quantity": adjusted_quantity,
             }
-            if oc:
-                order_params["reduceOnly"] = True
+
             if self.account_type != 'S':
-                order_params["positionSide"] = "LONG" if side.upper() == "BUY" else "SHORT"
+                if oc:
+                    order_params["positionSide"] = "LONG" if side.upper() == "SELL" else "SHORT"
+                else:
+                    order_params["positionSide"] = "LONG" if side.upper() == "BUY" else "SHORT"
+                # order_params["reduceOnly"] = True
+                # order_params["type"] = 'STOP_MARKET'
+                pass
 
             response = self.send_request('POST', endpoint, order_params)
 
-            print("Response:", response)
-            if response.get("code") != 0:
-                raise ValueError(f"{response.get('msg')}")
+            if response.get("code") is not None:
+                if response.get("code") != 0:
+                    raise ValueError(f"{response.get('msg')}")
+                order_data = response.get("data")
+            else:
+                order_data = response
+            # print("Response:", order_data)
             
-            order_data = response.get("data")
+            order_id = order_data.get('orderId')
 
-            order_id = order_data["orderId"]
+            if not order_id:
+                order_id = order_data.get('order', {}).get('orderId')
 
             if not self.current_trade:
                 order_details = self.get_order_info(order_symbol, order_id)
@@ -220,7 +261,7 @@ class BingxClient(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency': currency_asset,
+                    'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
                     'trade_details': trade_details
                 }
@@ -239,8 +280,8 @@ class BingxClient(CryptoBrokerClient):
                 }
         except Exception as e:
             raise ValueError(str(e))
+            
 
-    
     def close_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         try:
             t_side = "SELL" if side.upper() == "BUY" else "BUY"
@@ -259,18 +300,43 @@ class BingxClient(CryptoBrokerClient):
             if self.account_type == 'U':
                 endpoint = '/openApi/swap/v2/trade/order'
             elif self.account_type == 'C':
-                endpoint = '/openApi/cswap/v1/trade/orderDetail'
+                endpoint = '/openApi/cswap/v1/trade/allFillOrders'
+                time.sleep(2)
 
             response_data = self.send_request('GET', endpoint, params)
             
             if isinstance(response_data, dict) and response_data.get("code") == 0:
                 trade = response_data.get("data")
 
+                if self.account_type == 'U':
+                    trade = trade.get('order')
+                elif self.account_type == 'C':
+                    if trade and len(trade) > 0:
+                        trade = trade[0]
+                    else:
+                        raise Exception('Order not found')
+
+                # print(trade)
+
                 if self.account_type == 'S':
                     fees = float(trade.get('fee'))
                     fees = self.calculate_fees(symbol, trade.get('price', '0'), fees, trade.get('feeAsset'))
                 else:
                     fees = trade.get('commission')
+                    fees = self.calculate_fees(symbol, 0, fees=fees)
+                    
+                if self.account_type == 'C':
+                    return {
+                        "symbol": trade.get("symbol"),
+                        "order_id": str(trade.get("orderId")),
+                        "volume": trade.get('volume'),
+                        "side": trade.get("side"),
+                        "time": self.convert_timestamp(trade.get("tradeTime")),
+                        "price": trade.get("tradePrice"),
+                        "fees": str(fees),
+                        "profit": trade.get("realizedPnl"),
+                        "currency": trade.get('currency'),
+                    }
 
                 return {
                     "symbol": trade.get("symbol"),
@@ -278,9 +344,10 @@ class BingxClient(CryptoBrokerClient):
                     "volume": trade.get("executedQty"),
                     "side": trade.get("side"),
                     "time": self.convert_timestamp(trade.get("time")),
-                    "price": trade.get("price"),
+                    "price": trade.get("price") if trade.get("price") not in [None, "0", 0] else trade.get("avgPrice"),
                     "fees": str(fees),
-                    "profit": trade.get("profit", None),
+                    "profit": trade.get("profit") if trade.get("profit") not in [None, "0", 0] else trade.get("realizedPnl"),
+                    "currency": trade.get('currency'),
                     "additional_info": {
                         "status": trade.get("status"),
                         "avg_price": trade.get("avgFillPrice"),
@@ -291,8 +358,7 @@ class BingxClient(CryptoBrokerClient):
                     }
                 }
             else:
-                raise ValueError("Order not found")
+                raise ValueError(f"Order not found")
         except Exception as e:
-            raise ValueError(str(e))
-
-
+            print(f'error getting order {order_id} info ', e)
+            return None

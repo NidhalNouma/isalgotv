@@ -79,15 +79,18 @@ class BrokerClient(abc.ABC):
 
                 side_upper = trade.side.upper()
 
-                if price_dec != 0:
-                    if side_upper in ("B", "BUY"):
-                        profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-                    elif side_upper in ("S", "SELL"):
-                        profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+                profit = result.get('profit')
+
+                if profit is None:
+                    if price_dec != 0:
+                        if side_upper in ("B", "BUY"):
+                            profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
+                        elif side_upper in ("S", "SELL"):
+                            profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
+                        else:
+                            profit = Decimal("0")
                     else:
                         profit = Decimal("0")
-                else:
-                    profit = Decimal("0")
 
                 res = {
                     'order_id': str(result.get('order_id')),
@@ -142,14 +145,14 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
     def create_signature(self, query_string):
         return hmac.new(self.api_secret.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256).hexdigest()
     
-    def calculate_fees(self, symbol, price, fees, fee_currency):
-        sym_info = self.get_exchange_info(symbol)
-
+    def calculate_fees(self, symbol, price, fees, fee_currency=''):
         try:
             fees = Decimal(str(fees))
-            if str(fee_currency) == sym_info.get('base_asset'):
-                _price = Decimal(str(price))
-                fees = fees * _price
+            if fee_currency:
+                sym_info = self.get_exchange_info(symbol)
+                if str(fee_currency) == sym_info.get('base_asset'):
+                    _price = Decimal(str(price))
+                    fees = fees * _price
         except (InvalidOperation, ValueError):
             pass
         
