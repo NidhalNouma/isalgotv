@@ -69,25 +69,34 @@ class BitgetClient(CryptoBrokerClient):
         """
         endpoint = f"/api/v2/spot/public/symbols?symbol={symbol}"
 
-        if self.account_type == "U":
-            productType = "USDT-FUTURES"
-            endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
-        elif self.account_type == "C":
-            productType = "COIN-FUTURES"
-            endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
-        elif self.account_type == "UC":
-            productType = "USDC-FUTURES"
-            endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
+        try:
+            if self.account_type == "U":
+                productType = "USDT-FUTURES"
+                endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
+            elif self.account_type == "C":
+                productType = "COIN-FUTURES"
+                endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
+            elif self.account_type == "UC":
+                productType = "USDC-FUTURES"
+                endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
 
-        response = self.send_request('GET', endpoint)
-        data = response['data'][0]
-        return {
-            'symbol': symbol,
-            'base_asset': data.get('baseAsset'),
-            'quote_asset': data.get('quoteAsset'),
-            'base_Decimals': self.get_decimals_from_step(data.get('tickSize', '0')),
-            'quote_decimals':   self.get_decimals_from_step(data.get('stepSize', '0')),
-        }
+            response = self.send_request('GET', endpoint)
+            # print(response )
+
+            if not response.get('data'):
+                raise Exception('Symbol does not exist')
+
+            data = response['data'][0]
+            
+            return {
+                'symbol': data.get('symbol'),
+                'base_asset': data.get('baseCoin'),
+                'quote_asset': data.get('quoteCoin'),
+                'base_decimals': data.get('quantityPrecision') or data.get('volumePlace'),
+                'quote_decimals':  data.get('quotePrecision') or data.get('pricePlace'),
+            }
+        except Exception as e:
+            raise Exception(e)
         
 
     def get_exchange_price(self, symbol):
@@ -132,7 +141,6 @@ class BitgetClient(CryptoBrokerClient):
         
         for asset in response['data']:
             coin_key = asset.get('coin') or asset.get('marginCoin')
-            balances[coin_key] = float(asset.get('available', 0))
             balances[coin_key] = {
                 'available': float(asset.get('available', 0)),
                 'locked': float(asset.get('locked', 0)),
@@ -364,7 +372,7 @@ class BitgetClient(CryptoBrokerClient):
                     'time': self.convert_timestamp(trade.get('cTime')),
                     'price': str(price_str),
 
-                    'profit': str(trade.get('profit', None)),
+                    'profit': str(trade.get('profit')),
 
                     'fees': str(abs(fees)),
 

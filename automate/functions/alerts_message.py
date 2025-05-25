@@ -23,6 +23,17 @@ def manage_alert(alert_message, account):
 
         if account.broker_type == 'bingx':
             symbol = symbol.replace("/", "-")
+            if '-' not in symbol:
+                if symbol.endswith('USDT'):
+                    symbol = symbol[:-4] + '-USDT'
+                elif symbol.endswith('USDC'):
+                    symbol = symbol[:-3] + '-USDC'
+                elif symbol.endswith('USD'):
+                    symbol = symbol[:-3] + '-USD'
+                elif symbol.endswith('BTC'):
+                    symbol = symbol[:-3] + '-BTC'
+                elif symbol.endswith('ETH'):
+                    symbol = symbol[:-3] + '-ETH'
 
         if not custom_id:
             raise Exception("No ID found in alert message.")
@@ -75,6 +86,7 @@ def extract_alert_data(alert_message):
     # Extract other fields from the message
     for part in parts:
         key, value = part.split('=')
+        key = str(key).upper()
         
         if key == 'D':
             data['Action'] = 'Entry'
@@ -83,7 +95,7 @@ def extract_alert_data(alert_message):
             data['Action'] = 'Exit'
             data['Type'] = value
         elif key == 'A':
-            data['Asset'] = value 
+            data['Asset'] = str(value).upper()
         elif key == 'V':
             data['Volume'] = value
         elif key == 'P':

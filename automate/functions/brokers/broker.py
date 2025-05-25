@@ -81,7 +81,7 @@ class BrokerClient(abc.ABC):
 
                 profit = result.get('profit')
 
-                if profit is None:
+                if profit in [None, 'None']:
                     if price_dec != 0:
                         if side_upper in ("B", "BUY"):
                             profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
@@ -131,6 +131,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
             self.api_key = account.apiKey
             self.api_secret = account.secretKey
             self.passphrase = account.pass_phrase
+            self.account = account
             self.account_type = getattr(account, 'type', None)
         else:
             self.api_key = api_key
@@ -218,6 +219,23 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 if side.upper() == "BUY":
                     if float(quote_balance) <= 0:
                         raise ValueError("Insufficient quote balance.")
+                    
+                    if self.account.broker_type =="bitget":
+                        price = self.get_exchange_price(exchange_info.get('symbol'))
+                        if price == 0:
+                            raise ValueError("Price is zero, cannot calculate order quantity.")
+                        # Calculate the maximum order quantity based on the quote balance
+
+                        try:
+                            precision = int(quote_decimals)
+                        except (TypeError, ValueError):
+                            precision = 8  # fallback precision
+                        quant = Decimal(1).scaleb(-precision)  
+
+                        order_qty = float(quote_order_qty) * price
+
+                        qty_dec = Decimal(str(order_qty)).quantize(quant, rounding=ROUND_UP)
+                        return format(qty_dec, f'.{precision}f')
 
                     qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
                     return format(qty_dec, f'.{precision}f')

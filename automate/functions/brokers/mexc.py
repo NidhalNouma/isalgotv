@@ -43,9 +43,9 @@ class MexcClient(CryptoBrokerClient):
 
 
         if method == 'GET':
-            response = requests.get(url, headers=headers, params=params)
+            response = requests.get(url, headers=headers, params=params, timeout=5)
         elif method == 'POST':
-            response = requests.post(url, headers=headers, params=params)
+            response = requests.post(url, headers=headers, params=params, timeout=5)
         else:
             raise ValueError("Unsupported HTTP method")
 
@@ -76,9 +76,9 @@ class MexcClient(CryptoBrokerClient):
         url = f"{self.FUTURES_BASE_URL}{endpoint}"
 
         if method == 'GET':
-            response = requests.get(url, headers=headers, params=params)
+            response = requests.get(url, headers=headers, params=params, timeout=5)
         elif method == 'POST':
-            response = requests.post(url, headers=headers, params=params)
+            response = requests.post(url, headers=headers, params=params, timeout=5)
         else:
             raise ValueError("Unsupported HTTP method")
         
@@ -132,8 +132,16 @@ class MexcClient(CryptoBrokerClient):
             response_data = self.send_futures_request('GET', endpoint, params)
                     
             if isinstance(response_data, dict) and response_data.get("data"):
-                symbols = response_data.get("data")
-                return symbols
+                s = response_data.get("data")
+                if s.get("symbol") == symbol:
+
+                    return {
+                        "symbol": symbol,
+                        "base_asset": s.get("baseCoin"),
+                        "quote_asset": s.get("quoteCoin"),
+                        "base_decimals": self.get_decimals_from_step(s.get("minVol")),
+                        "quote_decimals": self.get_decimals_from_step(s.get("minVol")),
+                    }
 
         else:
             endpoint = "/api/v3/exchangeInfo"

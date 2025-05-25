@@ -45,7 +45,7 @@
       {% elif trade.profit < 0 %}
         <span class="text-loss">{{ trade.profit|trim_zeros }} <span class="font-light">{{ trade.currency }}</span></span>
       {% else %}
-        <span class="text-text/80">{{ trade.profit|trim_zeros }}</span>
+        <span class="text-text/80">{{ trade.profit|trim_zeros }} <span class="font-light">{{ trade.currency }}</span></span>
       {% endif %}
     {% else %}
       -

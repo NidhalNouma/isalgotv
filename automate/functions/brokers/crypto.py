@@ -172,7 +172,7 @@ class CryptoComClient(CryptoBrokerClient):
             order_data = response["result"]
             
             order_id = order_data["order_id"]
-            order_details = self.get_order_info(order_id)
+            order_details = self.get_order_info(symbol, order_id)
 
             if order_details:
                 return {

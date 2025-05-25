@@ -561,20 +561,14 @@ def get_broker_trades(request, broker_type, pk):
             raise ValueError("Invalid Broker Type")
 
         content_type = ContentType.objects.get_for_model(account_model)
-        all_trades = TradeDetails.objects.filter(content_type=content_type, object_id=pk).order_by('-created_at')
+        all_trades = TradeDetails.objects.filter(content_type=content_type, object_id=pk).order_by('-exit_time')
         trade_list = all_trades[start:start+limit]
-
-        grouped_logs = defaultdict(list)
-        for log in trade_list:
-            log_date = localtime(log.created_at).strftime('%Y-%m-%d')  
-            grouped_logs[log_date].append(log)
 
         # Determine next start offset for pagination
         total = all_trades.count()
         next_start = start + limit if start + limit < total else None
 
         context = {
-            'grouped_trades': dict(grouped_logs),
             'trades': trade_list,
             'id': pk,
             'broker_type': broker_type,

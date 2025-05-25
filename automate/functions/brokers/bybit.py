@@ -116,7 +116,7 @@ class BybitClient(CryptoBrokerClient):
                 b[balance['coin']] = balance['walletBalance']
                 b[balance['coin']] = {
                     'available': balance['walletBalance'],
-                    'locked': balance['walletBalance'] - balance['availableBalance']
+                    'locked': balance['availableToBorrow'] 
                 }
             return b
         except Exception as e:
@@ -146,18 +146,16 @@ class BybitClient(CryptoBrokerClient):
                 'symbol': order_symbol,
                 'side': side.capitalize(),
                 'order_type': 'Market',
-                'qty': str(adjusted_quantity),
+                'qty': adjusted_quantity,
                 
                 'category': self.category,
-
-                'marketUnit': 'baseCoin',
-                'time_in_force': 'IOC',
+                
                 **additional_params
             }
                 
             response = self.send_bybit_request('POST', endpoint, params)
 
-            # print(response)
+            print(response)
             if response['retCode'] != 0:
                 raise Exception(response['retMsg'])
             
