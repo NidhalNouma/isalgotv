@@ -18,10 +18,12 @@
       {% else %}
         <!-- Modal header -->
         {% if header %}
-          <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 bg-gradient-to-b via-75% from-background via-background rounded-md">
+          <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 nav-bg rounded-md">
             <div class="grow mr-4">{{ header }}</div>
             <button onclick="{% if stripe_element_id %}
+                
                 unmountStripeElement('{{ stripe_element_id }}');
+
               {% endif %} hideModel('{{ modal_id }}')"
               type="button"
               class="btn-icon"

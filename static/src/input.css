@@ -61,6 +61,10 @@
 }
 
 @layer components {
+  .nav-bg {
+    @apply bg-gradient-to-b from-background via-background via-75%;
+  }
+
   .btn-primary-landing {
     @apply relative flex items-center justify-center bg-gradient-to-tr from-text  to-secondary hover:brightness-90 mx-auto mb-6 mt-3 text-background font-semibold text-lg px-4 md:px-16 py-1.5 rounded-md whitespace-nowrap border-0 transition-all;
   }

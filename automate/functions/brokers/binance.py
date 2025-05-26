@@ -8,21 +8,20 @@ from .broker import CryptoBrokerClient
 
 class BinanceClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
-        super().__init__(account, api_key, api_secret, account_type, current_trade)
+        super().__init__(account=account, api_key=api_key, api_secret=api_secret, account_type=account_type, current_trade=current_trade)
 
-        if account_type == "S":  # Spot
-            self.client = Spot(api_key, api_secret)
-        elif account_type == "U":  # USDM
-            self.client = UMFutures(api_key, api_secret)
-        elif account_type == "C":  # COINM
-            self.client = CMFutures(api_key, api_secret)
+        if self.account_type == "S":  # Spot
+            self.client = Spot(api_key=self.api_key, api_secret=self.api_secret)
+        elif self.account_type == "U":  # USDM
+            self.client = UMFutures(key=self.api_key, secret=self.api_secret)
+        elif self.account_type == "C":  # COINM
+            self.client = CMFutures(key=self.api_key, secret=self.api_secret)
         else:
             raise ValueError("Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'.")
 
     @staticmethod
     def check_credentials(api_key, api_secret, account_type="S"):
         try:
-
             client = BinanceClient(api_key=api_key, api_secret=api_secret, account_type=account_type).client
             account = client.account()
 
@@ -34,11 +33,16 @@ class BinanceClient(CryptoBrokerClient):
         except ClientError as e:
             return {"error": e.error_message}
         except Exception as e:
+            print("ClientError:", e)
             return {"error": str(e)}
 
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
-            response = self.client.exchange_info(symbol)
+            if self.account_type == "S":
+                response = self.client.exchange_info(symbol=symbol)
+            else:
+                response = self.client.exchange_info()
+
             if isinstance(response, list):
                 data_list = response
             else:
@@ -62,8 +66,8 @@ class BinanceClient(CryptoBrokerClient):
 
                     return {
                         'symbol': symbol_info.get('symbol'),
-                        'baseAsset': base_asset,
-                        'quoteAsset': quote_asset,
+                        'base_asset': base_asset,
+                        'quote_asset': quote_asset,
                         'base_decimals': base_decimals,
                         'quote_decimals': quote_decimals,
                     }
@@ -74,7 +78,7 @@ class BinanceClient(CryptoBrokerClient):
             raise Exception(e)
 
             
-    def get_account_balance(self, asset: str) ->AccountBalance:
+    def get_account_balance(self) -> AccountBalance:
         try:
             trade_type = self.account_type
             balances = {}
@@ -82,7 +86,10 @@ class BinanceClient(CryptoBrokerClient):
             if trade_type == "S":  # Spot
                 account_info = self.client.account()
                 for balance in account_info['balances']:
-                    balances[balance['asset']] = float(balance['free'])
+                    balances[balance['asset']] = {
+                        'available': float(balance['free']),
+                        'locked': float(balance['locked'])
+                    }
             elif trade_type in ["U", "C"]:  # USDM or COINM Futures
                 
                 account_info = self.client.account()
@@ -102,7 +109,7 @@ class BinanceClient(CryptoBrokerClient):
             raise ValueError(str(e))
 
        
-    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None) -> OpenTrade:
+    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None, oc = False) -> OpenTrade:
         try:
             trade_type = self.account_type
             sys_info = self.get_exchange_info(symbol)
@@ -114,27 +121,42 @@ class BinanceClient(CryptoBrokerClient):
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
 
-            adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, float(quantity))
+            adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, quantity)
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
                 raise ValueError("Insufficient balance for the trade.")
 
             order_params = {
-                "symbol": symbol,
+                "symbol": order_symbol,
                 "side": str.upper(side),
                 "type": "MARKET",
                 "quantity": adjusted_quantity,
-                # "reduceOnly": "true",
             }
+
+            if self.account_type != "S":
+                try:
+                    self.client.change_position_mode(dualSidePosition=True)
+                except ClientError as e:
+                    print("Error changing position mode:", str(e.error_message))
+
+                order_params['positionSide'] = 'LONG' if side.upper() == 'BUY' else 'SHORT'
+                if oc:
+                    order_params['positionSide'] = 'LONG' if side.upper() == 'SELL' else 'SHORT'
 
             response = self.client.new_order(**order_params)
             
             if trade_type == "C":
-                currency_asset = sys_info.get('baseAsset')
+                currency_asset = sys_info.get('base_asset')
             
             order_id = response["orderId"]
-            order_details = self.get_order_info(symbol, order_id)
+
+            if not self.current_trade:
+                order_details = self.get_order_info(order_symbol, order_id)
+                trade_details = None 
+            else :
+                order_details = self.get_final_trade_details(self.current_trade, order_id)
+                trade_details = order_details
                 
             if order_details:
                 return {
@@ -146,7 +168,9 @@ class BinanceClient(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency': currency_asset,
+                    'currency':  order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
+
+                    'trade_details': trade_details
                 }
             else:
                 return {
@@ -171,55 +195,10 @@ class BinanceClient(CryptoBrokerClient):
             raise ValueError(str(e))
         
     def close_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
-        try:
-            t_side = "SELL" if side.upper() == "BUY" else "BUY"
-            trade_type = self.account_type
-
-            sys_info = self.get_exchange_info(symbol)
-            # print(sys_info)
-
-            if not sys_info:
-                raise Exception('Symbol was not found!')
-            
-            quote_asset = sys_info.get('quoteAsset')
-            order_symbol = sys_info.get('symbol')
-
-            adjusted_quantity =  self.adjust_trade_quantity(sys_info, t_side, float(quantity))
-            print("Adjusted quantity:", adjusted_quantity)
-
-            order_params = {
-                "symbol": symbol,
-                "side": str.upper(t_side),
-                "type": "MARKET",
-                "quantity": adjusted_quantity,
-                "reduceOnly": "true",
-            }
-
-            response = self.client.new_order(**order_params)
-
-            if response.get('msg') is not None:
-                raise Exception(response.get('msg'))
-
-            return {
-                'message': f"Trade closed for order ID {response.get('orderId')}.",
-                "symbol": symbol,
-
-                "id": response.get('orderId'),
-                "closed_order_id": response["orderId"],
-                "side": t_side.upper(),
-                # Use executedQty if present and > 0, else use adjusted_quantity
-                'qty': (
-                    response.get('executedQty')
-                    if float(response.get('executedQty', 0)) > 0
-                    else adjusted_quantity
-                ),
-                'price': (response['fills'][0].get('price') if response.get('fills') and len(response['fills']) > 0 else response.get('price', '')),
-            }
+        """Close a trade on Binance."""
+        t_side = "SELL" if side.upper() == "BUY" else "BUY"
+        return self.open_trade(symbol, t_side, quantity, oc=True)
         
-        except ClientError as e:
-            raise ValueError(e.error_message)
-        except Exception as e:
-            raise ValueError(str(e))
  
     def get_order_info(self, symbol, order_id) -> OrderInfo:
 
@@ -253,6 +232,8 @@ class BinanceClient(CryptoBrokerClient):
                     trade = response[0]
             else:
                 trade = response
+
+            # print("Trade details:", trade)
             
             if trade:
                 fees = float(trade.get('commission'))
@@ -270,9 +251,10 @@ class BinanceClient(CryptoBrokerClient):
                     'time': self.convert_timestamp(trade.get('time')),
                     'price': str(trade.get('price')),
 
-                    'profit': str(trade.get('realizedPnl', None)),
-
+                    'profit': str(trade.get('realizedPnl')),
                     'fees': str(fees),
+
+                    'currency': str(trade.get('marginAsset')),
 
                     'additional_info': {
                         'commission': str(trade.get('commission')),

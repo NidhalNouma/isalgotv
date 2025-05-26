@@ -132,7 +132,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
             self.api_secret = account.secretKey
             self.passphrase = account.pass_phrase
             self.account = account
-            self.account_type = getattr(account, 'type', None)
+            self.account_type = getattr(account, 'type', account_type)
         else:
             self.api_key = api_key
             self.api_secret = api_secret
@@ -193,11 +193,13 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
             base_asset, quote_asset = exchange_info.get("base_asset"), exchange_info.get("quote_asset")
             if not base_asset or not quote_asset:
                 raise ValueError("Invalid symbol format or exchange info not found.")
-            
+
             balances = self.get_account_balance()
+
+            if not balances:
+                raise ValueError("Failed to retrieve account balances.")
             
             base_balance = balances.get(base_asset, {}).get('available', 0)
-
             quote_balance = balances.get(quote_asset, {}).get('available', 0)
 
             base_decimals = exchange_info.get('base_decimals') 
@@ -241,8 +243,10 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                     return format(qty_dec, f'.{precision}f')
                 
                 elif side.upper() == "SELL":
+                    # print("Base balance:", base_balance, "Quote order qty:", quote_order_qty)
                     if float(base_balance) <= 0:
                         raise ValueError("Insufficient base balance.")
+                    
                     elif float(base_balance) < float(quote_order_qty):
                         # Format quantity to max base_decimals and return as string
                         qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)

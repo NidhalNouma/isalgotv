@@ -62,6 +62,7 @@ pandas==2.2.3
 pillow==11.0.0
 prompt-toolkit==3.0.43
 psycopg==3.2.1
+pybit==5.10.1
 pycparser==2.22
 pycryptodome==3.21.0
 pydantic==2.10.6

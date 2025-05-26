@@ -1,11 +1,9 @@
-import time
-import hmac
-import hashlib
-import requests
-
 from .types import *
-
 from .broker import CryptoBrokerClient
+
+from pybit.unified_trading import HTTP
+from pybit.exceptions import InvalidRequestError, FailedRequestError
+
 
 class BybitClient(CryptoBrokerClient):
     BYBIT_API_URL = 'https://api.bybit.com/v5'
@@ -13,58 +11,36 @@ class BybitClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
         super().__init__(account=account, api_key=api_key, api_secret=api_secret, account_type=account_type, current_trade=current_trade)
 
+        self.session = HTTP(
+                testnet=False,
+                api_key=self.api_key,
+                api_secret=self.api_secret,
+            )
+
         if self.account_type == "S":
             self.category = 'spot'
         else:
             self.category = 'linear'
-
-    def create_bybit_signature(self, params):
-        """Create the signature for a Bybit API request."""
-        sorted_params = sorted(params.items())
-        query_string = '&'.join(f"{key}={value}" for key, value in sorted_params)
-        signature = hmac.new(
-            self.api_secret.encode('utf-8'), 
-            query_string.encode('utf-8'), 
-            hashlib.sha256
-        ).hexdigest()
-        return signature
-
-    def send_bybit_request(self, method, endpoint, params):
-        """Send a request to the Bybit API."""
-        params['api_key'] = self.api_key
-        params['timestamp'] = str(int(time.time() * 1000))
-        params['sign'] = self.create_bybit_signature(params)
-        
-        url = f"{self.BYBIT_API_URL}{endpoint}"
-        if method.upper() == 'GET':
-            response = requests.get(url, params=params)
-        else:
-            response = requests.post(url, json=params)
-        return response.json()
 
     @staticmethod
     def check_credentials(api_key, api_secret, account_type="S"):
         """Check the validity of the Bybit API credentials without instantiating."""
         try:
             client = BybitClient(api_key=api_key, api_secret=api_secret, account_type=account_type)
-            params = {'accountType': 'UNIFIED'}
-            endpoint = '/account/wallet-balance'
-            response = client.send_bybit_request('GET', endpoint, params)
+            response = client.session.get_account_info()
             if response.get('retCode') != 0:
                 return {'error': response.get('retMsg'), 'valid': False}
             return {'message': "API credentials are valid.", 'valid': True}
+        except (InvalidRequestError, FailedRequestError) as e:
+            # return {'error': "API credentials are not valid.", 'valid': False}
+            return {'error': str(e.message), 'valid': False}
         except Exception as e:
             return {'error': str(e), 'valid': False}
         
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
-            params = {
-                'symbol': symbol,
-                'category': self.category,
-            }
-            
-            response = self.send_bybit_request('GET', '/market/instruments-info', params)
+            response = self.session.get_instruments_info(category=self.category, symbol=symbol)
 
             if response['retCode'] != 0:
                 raise Exception(response['retMsg'])
@@ -93,19 +69,18 @@ class BybitClient(CryptoBrokerClient):
 
             return r
 
+        except (InvalidRequestError, FailedRequestError) as e:
+            raise Exception(e.message)
         except Exception as e:
-            raise Exception(e)
+            raise Exception(str(e))
         
 
     def get_account_balance(self) -> AccountBalance:
         """Get the balance of a specific asset on Bybit."""
         try:
-            params = {
-                'accountType': 'UNIFIED',
-                # 'coin': coin
-            }
-            endpoint = '/account/wallet-balance'
-            response = self.send_bybit_request('GET', endpoint, params)
+            response = self.session.get_wallet_balance(
+                accountType='UNIFIED',
+            )
             # print('coin', response)
             if response['retCode'] != 0:
                 raise Exception(response['retMsg'])
@@ -119,10 +94,13 @@ class BybitClient(CryptoBrokerClient):
                     'locked': balance['availableToBorrow'] 
                 }
             return b
+        
+        except (InvalidRequestError, FailedRequestError) as e:
+            raise Exception(e.message)
         except Exception as e:
-            raise Exception(e)
+            raise Exception(str(e))
 
-    def open_trade(self, symbol, side, quantity, additional_params={}) -> OpenTrade:
+    def open_trade(self, symbol, side, quantity, oc = False) -> OpenTrade:
         """Place a market order on Bybit."""
         try:
                 
@@ -141,21 +119,41 @@ class BybitClient(CryptoBrokerClient):
             if float(adjusted_quantity) <= 0:
                 raise ValueError("Insufficient balance for the trade.")
 
-            endpoint = '/order/create'
-            params = {
-                'symbol': order_symbol,
-                'side': side.capitalize(),
-                'order_type': 'Market',
-                'qty': adjusted_quantity,
-                
-                'category': self.category,
-                
-                **additional_params
-            }
-                
-            response = self.send_bybit_request('POST', endpoint, params)
+            if self.account_type != "S":
+                try:
+                    self.session.switch_position_mode(
+                        category=self.category,
+                        symbol=order_symbol,
+                        mode=3
+                    )
+                except (InvalidRequestError, FailedRequestError) as e:
+                    print(f"Error switching position mode: {e.message}")
 
-            print(response)
+            if oc:
+                response = self.session.place_order(
+                    category=self.category,
+                    symbol=order_symbol,
+                    side=side.capitalize(),
+                    positionIdx=2 if side.lower() == 'buy' else 1,
+                    orderType="Market",
+                    qty=adjusted_quantity,
+                    marketUnit='baseCoin',
+                    time_in_force='IOC',
+                    reduceOnly=True,
+                )
+            else:
+                response = self.session.place_order(
+                    category=self.category,
+                    symbol=order_symbol,
+                    side=side.capitalize(),
+                    positionIdx=1 if side.lower() == 'buy' else 2,
+                    orderType="Market",
+                    qty=adjusted_quantity,
+                    marketUnit='baseCoin',
+                    time_in_force='IOC'
+                )
+
+            # print('r', response)
             if response['retCode'] != 0:
                 raise Exception(response['retMsg'])
             
@@ -179,7 +177,7 @@ class BybitClient(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency': currency_asset,
+                    'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
                     'trade_details': trade_details
                 }
@@ -194,6 +192,9 @@ class BybitClient(CryptoBrokerClient):
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
                 }
+            
+        except (InvalidRequestError, FailedRequestError) as e:
+            return {'error': str(e.message)}
         except Exception as e:
             return {'error': str(e)}
 
@@ -201,24 +202,13 @@ class BybitClient(CryptoBrokerClient):
         """Close a trade on Bybit."""
         opposite_side = "sell" if side.lower() == "buy" else "buy"
 
-        additional_params = {
-            'reduceOnly': 'true',
-            'closeOnTrigger': 'true',
-        }
-        return self.open_trade(symbol, opposite_side, quantity, additional_params)
+        return self.open_trade(symbol, opposite_side, quantity, oc=True)
 
 
     def get_order_info(self, symbol, order_id) -> OrderInfo:
         try:
-            endpoint = '/execution/list'
 
-            params = {
-                'category': self.category,
-                'symbol': symbol,
-                'orderId': order_id,
-            }
-
-            response = self.send_bybit_request('GET', endpoint, params)
+            response = self.session.get_executions(category=self.category, symbol=symbol, orderId=order_id)
             response = response.get('result', {}).get('list', [])
             
             if response is None:
@@ -239,6 +229,7 @@ class BybitClient(CryptoBrokerClient):
                 trade = response
 
             if trade:
+                # print('Trade details:', trade)
                 # Fallback to 'price' if 'priceAvg' is missing or falsy
                 price_str = trade.get('execPrice') or trade.get('orderPrice', '0')
 

@@ -203,6 +203,12 @@ class BitgetClient(CryptoBrokerClient):
                 body["marginCoin"] = currency_asset
                 body["tradeSide"] = oc
 
+            if self.account_type != 'S':
+                try:
+                    self.send_request('POST', '/api/v2/mix/account/set-position-mode', {'posMode': 'hedge_mode', 'productType': productType})
+                except Exception as e:
+                    print("Error setting position mode or coin:", str(e))
+
             # print("body ==> ", body)
 
             # Send the trade request
@@ -235,7 +241,7 @@ class BitgetClient(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency': currency_asset,
+                    'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
                     'trade_details': trade_details
                 }

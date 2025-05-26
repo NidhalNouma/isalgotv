@@ -37,46 +37,57 @@ class BinanceUSClient(CryptoBrokerClient):
             return {'error': str(e)}
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
-        params = {
-            "symbol": symbol,
-        }
-        response = self.send_request('GET', '/api/v3/exchangeInfo', params, False)
-                
-        if isinstance(response, list):
-            data_list = response
-        else:
-            data_list = response.get('symbols', [])
-        
-        target = symbol.upper()
-        for item in data_list:
-            inst = item.get('symbol', '')
-            if inst.replace('_', '').upper() == target or inst == target:
-                symbol_info = item
+        try:
+            params = {
+                "symbol": symbol,
+            }
+            response = self.send_request('GET', '/api/v3/exchangeInfo', params, False)
 
-                base_asset = symbol_info.get('baseAsset')
-                quote_asset = symbol_info.get('quoteAsset')
+                    
+            if isinstance(response, list):
+                data_list = response
+            else:
+                data_list = response.get('symbols', [])
+            
+            target = symbol.upper()
+            for item in data_list:
+                # print("Checking item:", item, target)
+                inst = item.get('symbol', '')
+                if inst.replace('_', '').upper() == target or inst == target:
+                    symbol_info = item
 
-                # find the filters
-                price_filter = next(f for f in symbol_info['filters'] if f['filterType']=='PRICE_FILTER')
-                lot_filter   = next(f for f in symbol_info['filters'] if f['filterType']=='LOT_SIZE')
+                    base_asset = symbol_info.get('baseAsset')
+                    quote_asset = symbol_info.get('quoteAsset')
 
-                quote_decimals = self.get_decimals_from_step(price_filter['tickSize'])
-                base_decimals   = self.get_decimals_from_step(lot_filter['stepSize'])
+                    # find the filters
+                    price_filter = next(f for f in symbol_info['filters'] if f['filterType']=='PRICE_FILTER')
+                    lot_filter   = next(f for f in symbol_info['filters'] if f['filterType']=='LOT_SIZE')
 
-                return {
-                    'symbol': symbol_info.get('symbol'),
-                    'baseAsset': base_asset,
-                    'quoteAsset': quote_asset,
-                    'base_decimals': base_decimals,
-                    'quote_decimals': quote_decimals,
-                }
-        return None
+                    quote_decimals = self.get_decimals_from_step(price_filter['tickSize'])
+                    base_decimals   = self.get_decimals_from_step(lot_filter['stepSize'])
+
+                    return {
+                        'symbol': symbol_info.get('symbol'),
+                        'base_asset': base_asset,
+                        'quote_asset': quote_asset,
+                        'base_decimals': base_decimals,
+                        'quote_decimals': quote_decimals,
+                    }
+            return None
+        except Exception as e:
+            print('Error getting exchange info:', e)
+            raise Exception(f"Error getting exchange info for {symbol}: {str(e)}")
 
     def get_account_balance(self) -> AccountBalance:
-        """Fetch the available balance for a specific asset."""
-        response = self.send_request('GET', '/api/v3/account')
-        balances = {item['asset']: {'available': float(item['free']), 'locked': 0} for item in response['balances']}
-        balances
+        try:
+            """Fetch the available balance for a specific asset."""
+            response = self.send_request('GET', '/api/v3/account')
+            balances = {item['asset']: {'available': float(item['free']), 'locked': 0} for item in response['balances']}
+            # print("Account balances:", balances)
+            return balances
+        except Exception as e:
+            print('Error getting account balance:', e)
+            raise Exception(f"Error getting account balance: {str(e)}")
         
     def open_trade(self, symbol, side, quantity, custom_id) -> OpenTrade:
         try:
@@ -85,8 +96,10 @@ class BinanceUSClient(CryptoBrokerClient):
 
             if not symbol_info:
                 raise Exception('Symbol was not found!')
+            
+            print("Symbol info:", symbol_info)
 
-            adjusted_quantity = self.adjust_trade_quantity(symbol_info, float(quantity), side)
+            adjusted_quantity = self.adjust_trade_quantity(symbol_info, side, quantity)
 
             quote_asset = symbol_info.get('quote_asset')
             order_symbol = symbol_info.get('symbol')
@@ -109,6 +122,8 @@ class BinanceUSClient(CryptoBrokerClient):
             
             order_id = response.get("orderId")
             order_details = self.get_order_info(symbol, order_id)
+
+            print("Order details:", order_details)
 
             if order_details:
                 return {
@@ -135,6 +150,7 @@ class BinanceUSClient(CryptoBrokerClient):
                 }
 
         except Exception as e:
+            print('Error opening trade:', e)
             return {'error': str(e)}
 
     def close_trade(self, symbol, side, quantity) -> CloseTrade:
@@ -146,7 +162,7 @@ class BinanceUSClient(CryptoBrokerClient):
             if not symbol_info:
                 raise Exception('Symbol was not found!')
 
-            adjusted_quantity = self.adjust_trade_quantity(symbol_info, float(quantity), side)
+            adjusted_quantity = self.adjust_trade_quantity(symbol_info, t_side, quantity)
 
             params = {
                 "symbol": symbol,
@@ -186,6 +202,8 @@ class BinanceUSClient(CryptoBrokerClient):
             }
 
             response = self.send_request('GET', '/api/v3/myTrades', params)
+
+            # print("Response from get_order_info:", response)
 
             if isinstance(response, dict) and response.get('msg') is not None:
                 raise Exception(response.get('msg'))
