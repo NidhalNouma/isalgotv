@@ -37,6 +37,7 @@ class CryptoBrokerAccount(models.Model):
         ("bitmex", "Bitmex"),
         ("bitmart", "BitMart"),
         ("crypto", "Crypto.com"),
+        ("kucoin", "Kucoin"),
         # Add other brokers here
     ]
 
@@ -89,6 +90,7 @@ class ForexBrokerAccount(models.Model):
         ("tradelocker", "TradeLocker"),
         ("metatrader4", "Metatrader 4"),
         ("metatrader5", "Metatrader 5"),
+        ("ninjatrader", "NinjaTrader"),
         ("dxtrade", "DXTrade"),
     ]
 
@@ -274,6 +276,9 @@ class TradeDetails(models.Model):
                 if trade_response:
                     if isinstance(trade_response, list):
                         self.fills = []
+
+                        self.profit = 0
+                        self.fees = 0
                         # trade_data is an “array” of fills or orders
                         for data in trade_response:
                             # handle each dict in the list

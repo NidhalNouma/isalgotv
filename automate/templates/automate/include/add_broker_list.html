@@ -10,6 +10,7 @@
 
     {% if user_profile.is_lifetime %}
       <button onclick="hideModel('add-broker-modal'); openModel('add-bingx-modal', false);" class="{{ btn_class }}">{% include 'svg/bingx.html' with class='h-4 aspect-auto fill-current' %}</button>
+      <button onclick="hideModel('add-broker-modal'); openModel('add-bitmart-modal', false);" class="{{ btn_class }}">{% include 'svg/bitmart.html' with class='h-4 aspect-auto fill-current' %}</button>
     {% else %}
       <button disabled onclick="hideModel('add-broker-modal'); openModel('add-bingx-modal', false);" class="{{ btn_class }}">
         {% include 'svg/bingx.html' with class='h-4 aspect-auto fill-current' %}
@@ -17,15 +18,16 @@
           <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
         </div>
       </button>
+
+      <button disabled onclick="hideModel('add-broker-modal'); openModel('add-bitmart-modal', false);" class="{{ btn_class }}">
+        {% include 'svg/bitmart.html' with class='h-4 aspect-auto fill-current' %}
+        <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+          <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+        </div>
+      </button>
     {% endif %}
     <button disabled onclick="hideModel('add-broker-modal'); openModel('add-bitmex-modal', false);" class="{{ btn_class }}">
       {% include 'svg/bitmex.html' with class='h-3 aspect-auto fill-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
-    </button>
-    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-bitmart-modal', false);" class="{{ btn_class }}">
-      {% include 'svg/bitmart.html' with class='h-4 aspect-auto fill-current' %}
       <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
@@ -42,6 +44,12 @@
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
     </button>
+    <button disabled class="{{ btn_class }}">
+      {% include 'svg/kucoin.html' with class='h-3.5 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button>
 
     <span class="col-span-full"></span>
 
@@ -51,6 +59,12 @@
 
     <button disabled class="{{ btn_class }}">
       {% include 'svg/ninjatrader.html' with class='h-3.5 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button>
+    <button disabled class="{{ btn_class }}">
+      {% include 'svg/dxtrade.html' with class='h-3.5 aspect-auto fill-current text-current' %}
       <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>

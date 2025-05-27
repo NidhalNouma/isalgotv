@@ -115,6 +115,21 @@
         />
       </div>
       {% endif %}
+      {% if account.broker_type == "bitmart" %}
+      <div class="w-full">
+        <label for="{{broker_type}}_passphrase" class="input-label"
+          >Memo</label
+        >
+        <input
+          type="text"
+          id="{{account.id}}_{{account.broker_type}}_passphrase"
+          name="{{account.id}}_{{account.broker_type}}_pass_phrase"
+          class="input-text w-full"
+          placeholder="Your memo"
+          value="{{account.pass_phrase}}"
+        />
+      </div>
+      {% endif %}
       <div class="w-full">
         <label for="type" class="input-label">Type</label>
 

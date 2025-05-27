@@ -18,6 +18,12 @@
       <input type="text" id="{{ broker_type }}_passphrase" name="{{ broker_type }}_pass_phrase" class="input-text w-full" placeholder="phrase" />
     </div>
   {% endif %}
+  {% if broker_type == 'bitmart' %}
+    <div class="w-full">
+      <label for="{{ broker_type }}_passphrase" class="input-label">Memo</label>
+      <input type="text" id="{{ broker_type }}_passphrase" name="{{ broker_type }}_pass_phrase" class="input-text w-full" placeholder="Your memo" />
+    </div>
+  {% endif %}
   <div class="w-full">
     <label for="type" class="input-label">Type</label>
 

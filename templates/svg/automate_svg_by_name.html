@@ -16,6 +16,8 @@
   {% include 'svg/mexc.html' with class=class %}
 {% elif broker_type == 'crypto' %}
   {% include 'svg/crypto.html' with class=class %}
+{% elif broker_type == 'kucoin' %}
+  {% include 'svg/kucoin.html' with class=class %}
 {% elif broker_type == 'metatrader4' %}
   {% include 'svg/metatrader4.html' with class=class %}
 {% elif broker_type == 'metatrader5' %}
@@ -24,6 +26,8 @@
   {% include 'svg/tradelocker.html' with class=class %}
 {% elif broker_type == 'ninjatrader' %}
   {% include 'svg/ninjatrader.html' with class=class %}
+{% elif broker_type == 'dxtrade' %}
+  {% include 'svg/dxtrade.html' with class=class %}
 {% else %}
   <h3 class="text-title">{{ broker_type }}</h3>
 {% endif %}

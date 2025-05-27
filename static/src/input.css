@@ -361,25 +361,31 @@
 
   /* Landing page result scroll animation */
 
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-
   .animate-scroll {
-    animation: scroll 20s linear infinite;
+    display: flex;
+    width: max-content;
+    animation: scroll 25s linear infinite;
   }
 
   .animate-scroll-reverse {
-    animation: scroll 20s linear infinite reverse;
+    display: flex;
+    width: max-content;
+    animation: scroll 25s linear infinite reverse;
   }
 
   .animate-scroll-2 {
-    animation: scroll 25s linear infinite;
+    display: flex;
+    width: max-content;
+    animation: scroll 30s linear infinite;
+  }
+
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   .animate-scroll img,

@@ -13,7 +13,7 @@ from .models import *
 from .forms import *
 from .tasks import *
 
-from .functions.brokers.metatrader import delete_metatrader_account, deploy_undeploy_metatrader_account
+from .functions.brokers.metatrader import MetatraderClient
 
 from collections import defaultdict
 from django.utils.timezone import localtime
@@ -267,7 +267,7 @@ def toggle_broker(request, broker_type, pk):
 
         if broker_type == "metatrader4" or broker_type == "metatrader5":
             # Undeploy/Deploy the account
-            deploy_undeploy = deploy_undeploy_metatrader_account(model_instance, deploy=model_instance.active)
+            deploy_undeploy = MetatraderClient(account=model_instance).deploy_undeploy_account(deploy=model_instance.active)
             if "error" in deploy_undeploy:
                 raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
 
@@ -314,7 +314,7 @@ def delete_broker(request, broker_type, pk):
             obj = ForexBrokerAccount.objects.get(pk=pk)
 
             if broker_type == "metatrader4" or broker_type == "metatrader5":
-                delete_response = delete_metatrader_account(obj)
+                delete_response = MetatraderClient(account=obj).delete_account()
                 if "error" in delete_response:
                     raise Exception(f"Failed to delete metatrader account: {delete_response['error']}")
 
@@ -477,7 +477,7 @@ def account_subscription_failed(email ,broker_type, subscription_id, send_mail=T
             if obj:
                 if broker_type == "metatrader4" or broker_type == "metatrader5":
                     # Undeploy the account
-                    deploy_undeploy_metatrader_account(obj, deploy=False)
+                    MetatraderClient(account=obj).deploy_undeploy_account(deploy=False)
 
                 obj.active = False
                 obj.save()
