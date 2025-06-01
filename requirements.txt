@@ -6,6 +6,7 @@ anyio==4.8.0
 asgiref==3.7.2
 async-timeout==4.0.3
 attrs==23.2.0
+backoff==2.2.1
 beautifulsoup4==4.13.3
 billiard==4.2.0
 binance-connector==3.9.0
@@ -22,6 +23,7 @@ click==8.1.7
 click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
+coinbase-advanced-py==1.8.2
 cryptography==42.0.5
 DateTime==5.5
 defusedxml==0.7.1

@@ -14,6 +14,7 @@ from .brokers.crypto import CryptoComClient
 from .brokers.bingx import BingxClient
 from .brokers.bitmart import BitmartClient
 from .brokers.kucoin import KucoinClient
+from .brokers.coinbase import CoinbaseClinet
 
 from .brokers.trade_locker import TradeLockerClient
 from .brokers.metatrader import MetatraderClient
@@ -29,6 +30,7 @@ CLIENT_CLASSES = {
     'bingx': BingxClient,
     'bitmart': BitmartClient,
     'kucoin': KucoinClient,
+    'coinbase': CoinbaseClinet,
 
     'tradelocker': TradeLockerClient,
     'metatrader4': MetatraderClient,
@@ -49,6 +51,7 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_t
         'bingx': {},
         'bitmart': {'passphrase': phrase},
         'kucoin': {'passphrase': phrase},
+        'coinbase': {},
     }
 
     client_cls = CLIENT_CLASSES.get(broker_type)

@@ -39,6 +39,7 @@ class CryptoBrokerAccount(models.Model):
         ("crypto", "Crypto.com"),
         ("kucoin", "Kucoin"),
         ("okx", "Okx"),
+        ("coinbase", "Coinbase"),
         # Add other brokers here
     ]
 
@@ -56,8 +57,8 @@ class CryptoBrokerAccount(models.Model):
     type = models.CharField(max_length=2, choices=TYPE, default="S")
 
     name = models.CharField(max_length=100)
-    apiKey = models.CharField(max_length=150)
-    secretKey = encrypt(models.CharField(max_length=150))
+    apiKey = models.CharField(max_length=200)
+    secretKey = encrypt(models.CharField(max_length=350))
 
     active = models.BooleanField(default=True)
 

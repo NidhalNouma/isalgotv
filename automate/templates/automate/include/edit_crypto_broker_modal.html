@@ -264,7 +264,7 @@
           </li>
           {% endif %}
 
-          {% if account.broker_type == 'mexc' or account.broker_type == 'kucoin' %}
+          {% if account.broker_type == 'mexc' or account.broker_type == 'kucoin' or account.broker_type == 'coinbase' %}
             <li class="w-full">
               <div class="flex items-center ps-3">
                 <input {% if account.type == "F" %}checked{% endif %} id="{{account.id}}_{{account.broker_type}}-type-F" type="radio" value="F" name="{{account.id}}_{{account.broker_type}}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
