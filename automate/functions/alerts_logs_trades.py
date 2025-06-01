@@ -13,30 +13,49 @@ from .brokers.mexc import MexcClient
 from .brokers.crypto import CryptoComClient
 from .brokers.bingx import BingxClient
 from .brokers.bitmart import BitmartClient
+from .brokers.kucoin import KucoinClient
 
 from .brokers.trade_locker import TradeLockerClient
 from .brokers.metatrader import MetatraderClient
 
+# Map broker types to their client classes
+CLIENT_CLASSES = {
+    'binance': BinanceClient,
+    'binanceus': BinanceUSClient,
+    'bitget': BitgetClient,
+    'bybit': BybitClient,
+    'mexc': MexcClient,
+    'crypto': CryptoComClient,
+    'bingx': BingxClient,
+    'bitmart': BitmartClient,
+    'kucoin': KucoinClient,
+
+    'tradelocker': TradeLockerClient,
+    'metatrader4': MetatraderClient,
+    'metatrader5': MetatraderClient,
+}
+
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_type="S"):
-    print("Checking crypto credentials for " + broker_type)
-    if broker_type == 'binance':
-        return BinanceClient.check_credentials(api_key, api_secret, account_type)
-    if broker_type == 'binanceus':
-        return BinanceUSClient.check_credentials(api_key, api_secret)
-    elif broker_type == 'bitget':
-        return BitgetClient.check_credentials(api_key, api_secret, phrase, account_type)
-    elif broker_type == 'bybit':
-        return BybitClient.check_credentials(api_key, api_secret, account_type)
-    elif broker_type == 'mexc':
-        return MexcClient.check_credentials(api_key, api_secret, account_type)
-    elif broker_type == 'crypto':
-        return CryptoComClient.check_credentials(api_key, api_secret, account_type)
-    elif broker_type == 'bingx':
-        return BingxClient.check_credentials(api_key, api_secret, account_type)
-    elif broker_type == 'bitmart':
-        return BitmartClient.check_credentials(api_key, api_secret, phrase, account_type)
-    else:
-        raise Exception("Unsupported broker type.")
+    print(f"Checking crypto credentials for {broker_type}")
+    
+    # Parameters required by each check_credentials method
+    CREDENTIAL_PARAMS = {
+        'binance': {},
+        'binanceus': {},
+        'bitget': {'passphrase': phrase},
+        'bybit': {},
+        'mexc': {},
+        'crypto': {},
+        'bingx': {},
+        'bitmart': {'passphrase': phrase},
+        'kucoin': {'passphrase': phrase},
+    }
+
+    client_cls = CLIENT_CLASSES.get(broker_type)
+    if client_cls is None:
+        raise Exception(f"Unsupported broker type: {broker_type}")
+    params = CREDENTIAL_PARAMS[broker_type]
+    return client_cls.check_credentials(api_key, api_secret, account_type=account_type, **params)
 
 def check_forex_credentials(broker_type, username, password, server, type="D"):
     
@@ -53,28 +72,13 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
 def open_trade_by_account(account, symbol, side, volume, custom_id):
     try:
         broker_type = account.broker_type
-        if broker_type == 'binance':
-            return BinanceClient(account=account).open_trade(symbol, side, volume, custom_id)
-        elif broker_type == 'binanceus':
-            return BinanceUSClient(account=account).open_trade(symbol, side, volume, custom_id)
-        elif broker_type == 'bitget':
-            return BitgetClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'bybit':
-            return BybitClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'mexc':
-            return MexcClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'crypto':
-            return CryptoComClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'bingx':
-            return BingxClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'bitmart':
-            return BitmartClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'tradelocker':
-            return TradeLockerClient(account=account).open_trade(symbol, side, volume)
-        elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
-            return MetatraderClient(account=account).open_trade(side.lower(), symbol, volume)
-        else:
-            raise Exception("Unsupported broker type.")
+        
+        client_cls = CLIENT_CLASSES.get(broker_type)
+        if client_cls is None:
+            raise Exception(f"Unsupported broker type: {broker_type}")
+        
+        client = client_cls(account=account)
+        return client.open_trade(symbol, side, volume, custom_id)
     except Exception as e:
         print('open trade error: ', str(e))
         raise e
@@ -82,28 +86,13 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
 def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
     try:
         broker_type = account.broker_type
-        if broker_type == 'binance':
-            return BinanceClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'binanceus':
-            return BinanceUSClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'bitget':
-            return BitgetClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'bybit':
-            return BybitClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'mexc':
-            return MexcClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'crypto':
-            return CryptoComClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'bingx':
-            return BingxClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'bitmart':
-            return BitmartClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'tradelocker':
-            return TradeLockerClient(account=account, current_trade=trade_to_close).close_trade(symbol, side, volume_close)
-        elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
-            return MetatraderClient(account=account, current_trade=trade_to_close).close_trade(trade_to_close, volume_close)
-        else:
-            raise Exception("Unsupported broker type.")
+        
+        client_cls = CLIENT_CLASSES.get(broker_type)
+        if client_cls is None:
+            raise Exception(f"Unsupported broker type: {broker_type}")
+        
+        client = client_cls(account=account, current_trade=trade_to_close)
+        return client.close_trade(symbol, side, volume_close)
     except Exception as e:
         print('close trade error: ', str(e))
         raise e
@@ -111,28 +100,13 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
 def get_trade_data(account, trade):
     try:
         broker_type = account.broker_type
-        if broker_type == 'binance':
-            return BinanceClient(account).get_final_trade_details(trade)
-        elif broker_type == 'binanceus':
-            return BinanceUSClient(account).get_final_trade_details(trade)
-        elif broker_type == 'bitget':
-            return BitgetClient(account).get_final_trade_details(trade)
-        elif broker_type == 'bybit':
-            return BybitClient(account).get_final_trade_details(trade)
-        elif broker_type == 'mexc':
-            return MexcClient(account).get_final_trade_details(trade)
-        elif broker_type == 'crypto':
-            return CryptoComClient(account).get_final_trade_details(trade)
-        elif broker_type == 'bingx':
-            return BingxClient(account).get_final_trade_details(trade)
-        elif broker_type == 'bitmart':
-            return BitmartClient(account).get_final_trade_details(trade)
-        elif broker_type == 'tradelocker':
-            return TradeLockerClient(account=account).get_trade_data(trade)
-        elif broker_type == 'metatrader4' or broker_type == 'metatrader5':
-            return MetatraderClient(account=account).get_final_trade_details(trade)
-        else:
-            raise Exception("Unsupported broker type.")
+
+        client_cls = CLIENT_CLASSES.get(broker_type)
+        if client_cls is None:
+            raise Exception(f"Unsupported broker type: {broker_type}")
+        
+        client = client_cls(account=account)
+        return client.get_final_trade_details(trade)
     except Exception as e:
         print('close trade error: ', str(e))
         raise e

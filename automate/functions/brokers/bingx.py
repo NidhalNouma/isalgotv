@@ -187,7 +187,7 @@ class BingxClient(CryptoBrokerClient):
         raise ValueError("Symbol not found")
     
 
-    def open_trade(self, symbol: str, side: str, quantity: float, oc = False, custom_id: str = None) -> OpenTrade:
+    def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None, oc = False) -> OpenTrade:
         try:
             endpoint = '/openApi/spot/v1/trade/order'
             if self.account_type == 'U':

@@ -26,7 +26,7 @@ class BinanceUSClient(CryptoBrokerClient):
 
 
     @staticmethod
-    def check_credentials(api_key, api_secret):
+    def check_credentials(api_key, api_secret, account_type='S'):
         try:
             client = BinanceUSClient(api_key=api_key, api_secret=api_secret)
             response = client.send_request('GET', '/api/v3/account')
@@ -89,7 +89,7 @@ class BinanceUSClient(CryptoBrokerClient):
             print('Error getting account balance:', e)
             raise Exception(f"Error getting account balance: {str(e)}")
         
-    def open_trade(self, symbol, side, quantity, custom_id) -> OpenTrade:
+    def open_trade(self, symbol, side, quantity, custom_id = '') -> OpenTrade:
         try:
 
             symbol_info = self.get_exchange_info(symbol)

@@ -72,7 +72,7 @@ class TradeLockerClient(BrokerClient):
             return {'error': str(e)}
 
         
-    def close_trade(self, symbol, side, quantity):
+    def close_trade(self, symbol, side, quantity, custom_id = ''):
         try:
             if(float(quantity) < 0.01):
                 raise ValueError("Quantity must be greater than 0.01.")

@@ -100,7 +100,7 @@ class BybitClient(CryptoBrokerClient):
         except Exception as e:
             raise Exception(str(e))
 
-    def open_trade(self, symbol, side, quantity, oc = False) -> OpenTrade:
+    def open_trade(self, symbol, side, quantity, custom_id = '', oc = False) -> OpenTrade:
         """Place a market order on Bybit."""
         try:
                 

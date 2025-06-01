@@ -238,7 +238,7 @@ class MetatraderClient(BrokerClient):
             return None
     
 
-    def open_trade(self, action_type, symbol, lot_size):
+    def open_trade(self, symbol, action_type:str, lot_size, custom_id=''):
         """
         Opens a trade for the given account.
 
@@ -254,9 +254,9 @@ class MetatraderClient(BrokerClient):
         account_api_id = self.account_api_id 
         print("Open a trade ...", account_api_id)
         try:
-            if action_type == "buy":
+            if action_type.lower() == "buy":
                 position_type = "ORDER_TYPE_BUY"
-            elif action_type == "sell":
+            elif action_type.lower() == "sell":
                 position_type = "ORDER_TYPE_SELL"
             else:
                 position_type = ""
@@ -311,7 +311,7 @@ class MetatraderClient(BrokerClient):
             return {"error": str(e)}
 
 
-    def close_trade(self, trade, partial_close=0):
+    def close_trade(self, symbol, order_type, partial_close=0):
         """
         Closes a trade for a given account.
 
@@ -324,6 +324,8 @@ class MetatraderClient(BrokerClient):
         Returns:
             dict: API response data or error details.
         """
+
+        trade = self.current_trade
 
         account_api_id = self.account_api_id 
         print("Close a trade ...", account_api_id, trade.order_id)

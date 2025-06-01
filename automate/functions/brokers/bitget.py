@@ -148,7 +148,7 @@ class BitgetClient(CryptoBrokerClient):
             
         return balances
 
-    def open_trade(self, symbol, side, quantity, oc = 'open') -> OpenTrade:
+    def open_trade(self, symbol, side, quantity, custom_id = '', oc = 'open') -> OpenTrade:
         try:
             # Endpoint for placing an order
             endpoint = '/api/v2/spot/trade/place-order'

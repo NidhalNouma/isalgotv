@@ -82,7 +82,7 @@ class BrokerClient(abc.ABC):
                 profit = result.get('profit')
 
                 if profit in [None, 'None']:
-                    if price_dec != 0:
+                    if price_dec != 0 and trade.entry_price != 0:
                         if side_upper in ("B", "BUY"):
                             profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
                         elif side_upper in ("S", "SELL"):
@@ -195,9 +195,6 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 raise ValueError("Invalid symbol format or exchange info not found.")
 
             balances = self.get_account_balance()
-
-            if not balances:
-                raise ValueError("Failed to retrieve account balances.")
             
             base_balance = balances.get(base_asset, {}).get('available', 0)
             quote_balance = balances.get(quote_asset, {}).get('available', 0)
@@ -222,9 +219,10 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                     if float(quote_balance) <= 0:
                         raise ValueError("Insufficient quote balance.")
                     
-                    if self.account.broker_type =="bitget":
+                    if self.account.broker_type == "bitget" or self.account.broker_type == "bitmart":
                         price = self.get_exchange_price(exchange_info.get('symbol'))
-                        if price == 0:
+                        print('price', price)
+                        if price == 0 or not price:
                             raise ValueError("Price is zero, cannot calculate order quantity.")
                         # Calculate the maximum order quantity based on the quote balance
 
@@ -234,7 +232,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                             precision = 8  # fallback precision
                         quant = Decimal(1).scaleb(-precision)  
 
-                        order_qty = float(quote_order_qty) * price
+                        order_qty = float(quote_order_qty) * float(price)
 
                         qty_dec = Decimal(str(order_qty)).quantize(quant, rounding=ROUND_UP)
                         return format(qty_dec, f'.{precision}f')

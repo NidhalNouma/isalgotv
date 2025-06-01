@@ -21,7 +21,7 @@ def manage_alert(alert_message, account):
             if not symbol.endswith("_PERP"):
                 symbol = symbol + "_PERP"
 
-        if account.broker_type == 'bingx':
+        if account.broker_type == 'bingx' or account.broker_type == 'kucoin':
             symbol = symbol.replace("/", "-")
             if '-' not in symbol:
                 if symbol.endswith('USDT'):
@@ -34,6 +34,11 @@ def manage_alert(alert_message, account):
                     symbol = symbol[:-3] + '-BTC'
                 elif symbol.endswith('ETH'):
                     symbol = symbol[:-3] + '-ETH'
+
+        if account.broker_type == 'kucoin' and account.type != "S":
+                symbol = symbol.replace('-', '')
+                if not symbol.endswith('M'):
+                    symbol = symbol + 'M'
 
         if not custom_id:
             raise Exception("No ID found in alert message.")

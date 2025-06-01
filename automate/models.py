@@ -38,6 +38,7 @@ class CryptoBrokerAccount(models.Model):
         ("bitmart", "BitMart"),
         ("crypto", "Crypto.com"),
         ("kucoin", "Kucoin"),
+        ("okx", "Okx"),
         # Add other brokers here
     ]
 
