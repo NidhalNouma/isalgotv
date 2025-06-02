@@ -23,6 +23,7 @@
                     {% if account.type == "S" %} Spot {% elif account.type == "U" %} USD@M
                     {% elif account.type == "C" %} COIN@M {% elif account.type == "D" %} Derivatives 
                     {% elif account.type == "F" %} Futures {% elif account.type == "UC" %} USD@C
+                    {% elif account.type == "P" %} Perps
                     {% else %} Unknown Type {% endif%}
                 </span>
 

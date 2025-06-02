@@ -45,6 +45,7 @@ class CryptoBrokerAccount(models.Model):
 
     TYPE = [
         ("D", "Derivatives"),
+        ("P", "Perps"),
         ("F", "Futures"),
         ("S", "Spot"),
         ("U", "USD@M"),
