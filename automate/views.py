@@ -393,10 +393,10 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
 
         subscription = stripe.Subscription.retrieve(account_subscription_id)
         
-        stripe.PaymentMethod.attach(
-            new_payment_method,
-            customer=subscription.customer,
-        )
+        # stripe.PaymentMethod.attach(
+        #     new_payment_method,
+        #     customer=subscription.customer,
+        # )
 
         if subscription.status == "canceled":
             # stripe.Subscription.create
