@@ -150,7 +150,8 @@
     <form hx-get="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
-        class="btn-a hover:text-primary/90 text-primary gap-x-0.5"
+        type="submit"
+        class="btn-text font-medium text-xs py-0.5 px-1.5 gap-x-0.5"
         onclick="openDrawer('drawer-forex-trades-{{ account.id }}', 'bottom')"
       >
         <svg

@@ -100,6 +100,9 @@ COPY requirements.txt /usr/src/app/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+#install tradelocker independently
+RUN pip install tradelocker
+
 # Copy project
 COPY . /usr/src/app/
 

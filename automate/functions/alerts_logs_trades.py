@@ -18,6 +18,7 @@ from .brokers.coinbase import CoinbaseClinet
 
 from .brokers.trade_locker import TradeLockerClient
 from .brokers.metatrader import MetatraderClient
+from .brokers.dxtrade import DxtradeClient
 
 # Map broker types to their client classes
 CLIENT_CLASSES = {
@@ -33,6 +34,7 @@ CLIENT_CLASSES = {
     'coinbase': CoinbaseClinet,
 
     'tradelocker': TradeLockerClient,
+    'dxtrade': DxtradeClient,
     'metatrader4': MetatraderClient,
     'metatrader5': MetatraderClient,
 }
@@ -68,6 +70,8 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
         return MetatraderClient.check_credentials(username, username, password, server, "mt4")
     elif broker_type == 'metatrader5':
         return MetatraderClient.check_credentials(username, username, password, server, "mt5")
+    elif broker_type == 'dxtrade':
+        return DxtradeClient.check_credentials(username, password, server)
     else:
         raise Exception("Unsupported broker type.")
 
