@@ -9,7 +9,7 @@ attrs==23.2.0
 backoff==2.2.1
 beautifulsoup4==4.13.3
 billiard==4.2.0
-binance-connector==3.9.0
+binance-connector==3.12.0
 binance-futures-connector==4.1.0
 bitmart-python-sdk-api==2.4.2
 boto3==1.34.52
@@ -97,7 +97,7 @@ sqlparse==0.4.4
 stripe==8.4.0
 termcolor==2.4.0
 tqdm==4.67.1
-tradelocker==0.56.2
+# tradelocker==0.56.2
 typing_extensions==4.12.2
 tzdata==2024.1
 urllib3==1.26.18
