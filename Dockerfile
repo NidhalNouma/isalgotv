@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.13.3-slim
+FROM python:3.13.3
 
 # Set arguments
 ARG SECRET_KEY
