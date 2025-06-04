@@ -15,7 +15,7 @@ class BitgetClient(CryptoBrokerClient):
     BITGET_API_URL = 'https://api.bitget.com'
 
     @staticmethod
-    def check_credentials(api_key, api_secret, phrase, account_type="S"):
+    def check_credentials(api_key, api_secret, passphrase, account_type="S"):
         """
         Static method to validate Bitget API credentials without instantiation.
         """
@@ -28,7 +28,7 @@ class BitgetClient(CryptoBrokerClient):
             elif account_type == "US":
                 endpoint = '/api/v2/mix/account/accounts?productType=USDC-FUTURES'
 
-            client = BitgetClient(api_key=api_key, api_secret=api_secret, passphrase=phrase,account_type=account_type)
+            client = BitgetClient(api_key=api_key, api_secret=api_secret, passphrase=passphrase, account_type=account_type)
 
             response = client.send_request('GET', endpoint)
             # Adjust these checks to match Bitget’s actual response format:

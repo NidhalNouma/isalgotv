@@ -32,6 +32,8 @@
   {% include 'svg/ninjatrader.html' with class=class %}
 {% elif broker_type == 'dxtrade' %}
   {% include 'svg/dxtrade.html' with class=class %}
+{% elif broker_type == 'tradestation' %}
+  {% include 'svg/tradestation.html' with class=class %}
 {% else %}
   <h3 class="text-title">{{ broker_type }}</h3>
 {% endif %}

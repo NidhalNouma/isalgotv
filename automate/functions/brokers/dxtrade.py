@@ -21,7 +21,7 @@ class DxtradeClient(BrokerClient):
             self.server = server
 
         self.csrf = ""
-        self.API_URL = f"https://dxtrade.{server}.com"
+        self.API_URL = f"https://demo.dx.trade"
         self.account_id = None
         self.cookies = {}
         self.s = requests.Session()
@@ -45,17 +45,19 @@ class DxtradeClient(BrokerClient):
         2) On HTTP 200: store cookies in self.cookies, then call self.fetch_csrf()
         3) Optionally fetch positions (or accounts) to verify login success
         """
-        url = f"{self.API_URL}/api/auth/login"
+        url = f"{self.API_URL}/dxsca-web/login"
         payload = {
             "username": self.username,
             "password": self.password,
-            "vendor": self.server
+            "domain": self.server
         }
+        print(payload)
         headers = {
             "Content-Type": "application/json"
         }
 
         resp = self.s.post(url, headers=headers, data=json.dumps(payload))
+        print(resp)
         if resp.status_code != 200:
             raise Exception(f"Login failed: HTTP {resp.status_code} - {resp.text}")
 
@@ -178,7 +180,7 @@ class DxtradeClient(BrokerClient):
         if resp.status_code != 200:
             raise Exception(f"Failed to fetch account info: HTTP {resp.status_code} - {resp.text}")
 
-        print(resp)
+        print(resp.json())
 
         return resp.json()
     

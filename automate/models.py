@@ -95,6 +95,7 @@ class ForexBrokerAccount(models.Model):
         ("metatrader5", "Metatrader 5"),
         ("ninjatrader", "NinjaTrader"),
         ("dxtrade", "DXTrade"),
+        ("tradestation", "TradeStation"),
     ]
 
     TYPE = [

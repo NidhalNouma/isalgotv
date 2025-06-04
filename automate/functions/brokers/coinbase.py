@@ -20,7 +20,7 @@ class CoinbaseClinet(CryptoBrokerClient):
 
             accounts = client.get_accounts()
 
-            print(accounts)
+            # print(accounts)
             
             return {'message': "API credentials are valid.", 'valid': True}
         
