@@ -1,19 +1,18 @@
 {% load static %}
 <article class="docs">
-  <section id="what-is-crypto">
+  <section id="what-is-bingx">
     <aside>
       <h3>What's BingX?</h3>
-      <p>BingX is a global digital asset trading platform offering innovative tools and services for spot and derivatives trading.</p>
+      <p>BingX is a leading global cryptocurrency exchange that empowers users with seamless spot and derivatives trading. Known for its intuitive interface, advanced trading tools, and strong security infrastructure, BingX serves both beginner and professional traders across diverse markets.</p>
       <ul>
-        <li>Spot and advanced trading</li>
-        <li>Competitive fees</li>
-        <li>Robust security measures</li>
-        <li>User-friendly experience</li>
+        <li>Comprehensive spot and futures trading</li>
+        <li>Low, transparent fees</li>
+        <li>Top-tier security protocols</li>
+        <li>Easy-to-use platform for all experience levels</li>
       </ul>
-    </aside>
   </section>
 
-  <section id="api-crypto">
+  <section id="api-bingx">
     <aside>
       <h3>API Key Setup Process</h3>
       <p>Follow the steps below to create and configure your API keys for BingX.</p>
@@ -42,10 +41,7 @@
         <ol>
           <li>Log in to your BingX account.</li>
           <li>
-            Hover over your profile icon in the top-right corner and select <strong>API Management</strong>.
-          </li>
-          <li>
-            Click <strong>Create API</strong>.
+            Click on your profile icon in the top-right corner and select <strong>API Management</strong>.
             <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bingx/step-1.png" %}"}], "b1")' src='{% static "images/docs/automate/bingx/step-1.png" %}' alt="Access API Management" />
           </li>
         </ol>
@@ -58,15 +54,21 @@
       <h3><span>3</span> Create Your API Key</h3>
       <div>
         <ol>
+
           <li>
-            Enter a name for your API key (e.g., “Trading Bot Key”).
+            Click <strong>Create API</strong>.
             <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bingx/step-2.png" %}"}], "b1")' src='{% static "images/docs/automate/bingx/step-2.png" %}' alt="Access API Management" />
           </li>
-          <li>Set a secure API passphrase and choose the permissions required (read, trade, etc.).</li>
           <li>
-            Ensure you understand the permissions granted and keep your passphrase safe.
+            Enter a name for your API key (e.g., “IsAlgo Key”).
+          </li>
+          <li>
+            Enable the required permissions (read, Spot trading, and Futures trading).
             <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bingx/step-3.png" %}"}], "b1")' src='{% static "images/docs/automate/bingx/step-3.png" %}' alt="Access API Management" />
           </li>
+          {% comment %} <li>
+            Ensure you understand the permissions granted and keep your passphrase safe.
+          </li> {% endcomment %}
         </ol>
       </div>
     </aside>
@@ -78,12 +80,12 @@
       <div>
         <ol>
           <li>
-            To enhance security, we strongly recommend adding an IP whitelist.
+            Paste our server's IP address in the IP whitelist field: <span>{{ server_ip }}</span>.
             <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bingx/step-4.png" %}"}], "b1")' src='{% static "images/docs/automate/bingx/step-4.png" %}' alt="Access API Management" />
           </li>
-          <li>Complete any required security verifications like email or Google Authenticator code.</li>
+          <li>Click Confirm and Complete any required security verifications like email or Google Authenticator code.</li>
           <li>
-            Once verified, click <strong>Confirm</strong> to complete API key creation.
+            Once verified, click <strong>Confirm</strong> to get your API key credentials.
             <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bingx/step-5.png" %}"}], "b1")' src='{% static "images/docs/automate/bingx/step-5.png" %}' alt="Access API Management" />
           </li>
         </ol>
@@ -94,7 +96,7 @@
   <section id="complete-bingx">
     <aside>
       <h3>Complete the Integration</h3>
-      <p>Copy your API Key and Secret and paste them into your Etradingview dashboard. Keep them secure and never share them with anyone.</p>
+      <p>Copy your API Key and Secret and paste them into the form. Keep them secure and never share them with anyone.</p>
     </aside>
   </section>
 </article>

@@ -153,7 +153,7 @@
   }
 
   .docs-main {
-    @apply relative flex justify-between my-6;
+    @apply relative flex justify-between mb-6 mt-2;
   }
 
   .docs-container {

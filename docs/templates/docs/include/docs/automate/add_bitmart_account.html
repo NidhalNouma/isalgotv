@@ -3,12 +3,12 @@
   <section id="what-is-bitmart">
     <aside>
       <h3>What's BitMart?</h3>
-      <p>BitMart is a leading cryptocurrency exchange offering a range of trading services including spot trading and various financial products, all through a user-friendly and secure platform.</p>
+      <p>BitMart is a globally recognized cryptocurrency exchange known for its wide range of digital assets and trading options. Whether you're a beginner or a seasoned trader, BitMart offers an intuitive platform, high liquidity, and advanced features to support efficient and secure trading experiences.</p>
       <ul>
-        <li>Spot and advanced trading</li>
-        <li>Competitive fees</li>
-        <li>Robust security measures</li>
-        <li>User-friendly experience</li>
+        <li>Diverse crypto assets and trading pairs</li>
+        <li>Low fees and high performance</li>
+        <li>Enterprise-grade security infrastructure</li>
+        <li>Easy-to-navigate interface for all users</li>
       </ul>
     </aside>
   </section>
@@ -57,12 +57,11 @@
         <ol>
             <li>
               Click <strong>Create API</strong>.
-              <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitmart/step-2.png" %}"}], "b1")' src='{% static "images/docs/automate/bitmart/step-2.png" %}' alt="Access API Management" />
             </li>
-            <li>Enter a name for your API key (e.g., “My Trading Bot”).</li>
+            <li>Enter a memo for your API key (Make sure to remember the memo because you will need it).</li>
             <li>
-                Set the necessery permissions (e.g., read, trade).
-                <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitmart/step-3.png" %}"}], "b1")' src='{% static "images/docs/automate/bitmart/step-3.png" %}' alt="Access API Management" />
+                Set the necessery permissions (Spot Trade, Future Trade).
+                <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitmart/step-2.png" %}"}], "b1")' src='{% static "images/docs/automate/bitmart/step-2.png" %}' alt="Access API Management" />
             </li>
         </ol>
       </div>
@@ -74,13 +73,16 @@
       <h3><span>4</span> Set IP Whitelist and Confirm</h3>
       <div>
         <ol>
-          <li>We strongly recommend setting an IP whitelist to increase security.</li>
           <li>
-            Complete any security verification required (e.g., 2FA, email code).
-            <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitmart/step-4.png" %}"}], "b1")' src='{% static "images/docs/automate/bitmart/step-4.png" %}' alt="Access API Management" />
+            Paste our server's IP address in the IP whitelist field: <span>{{ server_ip }}</span>.
+            <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitmart/step-3.png" %}"}], "b1")' src='{% static "images/docs/automate/bitmart/step-3.png" %}' alt="Access API Management" />
           </li>
           <li>
-            Once done, click <strong>Confirm</strong> to finalize.
+            Complete any security verification required (e.g., 2FA, email code).
+        </li>
+        <li>
+            Once done, click <strong>Confirm</strong> to get your API credentials.
+            <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/bitmart/step-4.png" %}"}], "b1")' src='{% static "images/docs/automate/bitmart/step-4.png" %}' alt="Access API Management" />
           </li>
         </ol>
       </div>

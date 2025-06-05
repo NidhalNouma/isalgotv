@@ -1,19 +1,19 @@
 {% load static %}
 <article class="docs">
-  <section id="what-is-crypto">
+  <section id="what-is-kucoin">
     <aside>
       <h3>What's KuCoin?</h3>
-      <p>KuCoin is a global cryptocurrency exchange known for its wide selection of digital assets, advanced trading tools, and strong security features.</p>
+      <p>KuCoin is a globally trusted cryptocurrency exchange known for its expansive selection of digital assets, powerful trading tools, and innovative features. It caters to both novice and professional traders by offering seamless spot, margin, and futures trading in a highly secure environment.</p>
       <ul>
-        <li>Spot and advanced trading</li>
-        <li>Competitive fees</li>
-        <li>Robust security measures</li>
-        <li>User-friendly experience</li>
+        <li>Extensive range of cryptocurrencies and trading pairs</li>
+        <li>Advanced trading options including spot, margin, and futures</li>
+        <li>Strong security measures including 2FA and encryption</li>
+        <li>User-friendly platform with a responsive mobile app</li>
       </ul>
     </aside>
   </section>
 
-  <section id="api-crypto">
+  <section id="api-kucoin">
     <aside>
       <h3>API Key Setup Process</h3>
       <p>Follow the steps below to create and configure your API keys for KuCoin.</p>
@@ -42,11 +42,11 @@
         <ol>
             <li>Log in to your KuCoin account.</li>
             <li>
-                Click on your profile icon in the upper right and select <strong>API Management</strong>.
+                Click on your profile icon in the upper right.
                 <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/kucoin/step-1.png" %}"}], "b1")' src='{% static "images/docs/automate/kucoin/step-1.png" %}' alt="Access API Management" />
             </li>
             <li>
-                Click <strong>Create API</strong>.
+                Select <strong>API Management</strong>.
                 <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/kucoin/step-2.png" %}"}], "b1")' src='{% static "images/docs/automate/kucoin/step-2.png" %}' alt="Access API Management" />
             </li>
         </ol>
@@ -59,16 +59,20 @@
       <h3><span>3</span> Configure Your API Key</h3>
       <div>
         <ol>
+
             <li>
-                Enter a name for the API (e.g., “My Trading Bot”).
+                Click <strong>Create API</strong>.
                 <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/kucoin/step-3.png" %}"}], "b1")' src='{% static "images/docs/automate/kucoin/step-3.png" %}' alt="Access API Management" />
+            </li>
+            <li>
+                Enter a name for the API (e.g., “IsAlgo key”).
             </li>
             <li>
                 Create an API passphrase and store it securely—you will need it later.
                 <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/kucoin/step-4.png" %}"}], "b1")' src='{% static "images/docs/automate/kucoin/step-4.png" %}' alt="Access API Management" />
             </li>
             <li>
-                Select the required permissions (e.g., General, Trade).
+                Select the required permissions (Spot, futures trading).
                 <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/kucoin/step-5.png" %}"}], "b1")' src='{% static "images/docs/automate/kucoin/step-5.png" %}' alt="Access API Management" />
             </li>
         </ol>
@@ -83,6 +87,9 @@
         <ol>
             <li>
                 Set up IP whitelisting for added protection.
+            </li>
+            <li>
+                Paste our server's IP address in the IP whitelist field: <span>{{ server_ip }}</span> and click <strong>Add</strong>.
                 <img class="mb-2 !-ml-4" onclick='showModalImages([{id: "b1", name: "b1", imageUrl: "{% static "images/docs/automate/kucoin/step-6.png" %}"}], "b1")' src='{% static "images/docs/automate/kucoin/step-6.png" %}' alt="Access API Management" />
             </li>
             <li>Complete 2FA and any other required verification.</li>
@@ -98,9 +105,7 @@
   <section id="complete-kucoin">
     <aside>
       <h3>Complete the Integration</h3>
-      <p>
-        Copy the API Key, Secret, and Passphrase, then input them into your Etradingview dashboard. Keep them secure and do not share them.
-      </p>
+      <p>Copy your API Key and Secret, then paste them into the integration form in your IsAlgo automate dashboard. Ensure you keep your credentials safe and never share them.</p>
     </aside>
   </section>
 </article>

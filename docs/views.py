@@ -50,6 +50,18 @@ def automate_crypto(request):
 def automate_mexc(request):
     return render(request, "docs/automate_mexc.html")
 
+def automate_bingx(request):
+    return render(request, "docs/automate_bingx.html")
+
+def automate_bitmart(request):
+    return render(request, "docs/automate_bitmart.html")
+
+def automate_kucoin(request):
+    return render(request, "docs/automate_kucoin.html")
+
+def automate_coinbase(request):
+    return render(request, "docs/automate_coinbase.html")
+
 def automate_tradelocker(request):
     return render(request, "docs/automate_tradelocker.html")
 
