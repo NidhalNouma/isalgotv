@@ -16,14 +16,14 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: document.getElementById("isalgo-ai").getAttribute("db-key"),
+    apiKey: document.getElementById("saro").getAttribute("db-key"),
     authDomain: "isalgo-91bf7.firebaseapp.com",
     projectId: "isalgo-91bf7",
     storageBucket: "isalgo-91bf7.firebasestorage.app",
     messagingSenderId: "1087283074977",
     appId: "1:1087283074977:web:878e1a02f29429bf30dde0"
   };
-document.getElementById("isalgo-ai").removeAttribute("db-key");
+document.getElementById("saro").removeAttribute("db-key");
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();

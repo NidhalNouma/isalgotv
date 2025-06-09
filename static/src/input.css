@@ -356,21 +356,24 @@
   }
 
   .imgs-bw img {
-    @apply grayscale cursor-pointer transition-all;
+    @apply grayscale cursor-pointer transition-all w-full;
   }
 
   /* Landing page result scroll animation */
+  .fade-up-on-scroll, .fade-down-on-scroll {
+    @apply opacity-0;
+  }
 
   .animate-scroll {
     display: flex;
     width: max-content;
-    animation: scroll 25s linear infinite;
+    animation: scroll 35s linear infinite;
   }
 
   .animate-scroll-reverse {
     display: flex;
     width: max-content;
-    animation: scroll 25s linear infinite reverse;
+    animation: scroll 35s linear infinite reverse;
   }
 
   .animate-scroll-2 {

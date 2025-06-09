@@ -49,10 +49,28 @@ module.exports = {
       sans: ["Commissioner", "ui-monospace", "SFMono-Regular"],
     },
     extend: {
+      animationDelay: {
+        100: "100ms",
+        150: "150ms",
+        200: "200ms",
+        300: "300ms",
+        450: "450ms",
+        600: "600ms",
+        700: "700ms",
+        750: "750ms",
+      },
       keyframes: {
         "rotate-gradient": {
           "0%": { "--gradient-angle": "0deg" },
           "100%": { "--gradient-angle": "360deg" },
+        },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(30px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-down": {
+          "0%": { opacity: "0", transform: "translateY(-30px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
 
         animate: {
@@ -74,6 +92,9 @@ module.exports = {
         rotateGradientFast: "rotateGradient 4s ease-in-out infinite",
 
         draw: "draw 2s ease-in-out forwards",
+
+        "fade-up": "fade-up 0.3s ease-out both",
+        "fade-down": "fade-down 0.3s ease-out both",
       },
     },
   },
@@ -91,6 +112,7 @@ module.exports = {
   plugins: [
     require("flowbite/plugin"),
     require("@tailwindcss/line-clamp"),
+    require("tailwindcss-animation-delay"),
     // require("@tailwindcss/typography"),
   ],
 };

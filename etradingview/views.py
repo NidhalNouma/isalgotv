@@ -10,6 +10,9 @@ from django.conf import settings
 
 from allauth.socialaccount.views import SignupView
 
+
+from profile_user.views import random_strategies_results_context
+
 class CustomSocialSignupView(SignupView):
     def get_success_url(self):
         print('Signup successful with Google ...')
@@ -20,7 +23,7 @@ def index(request):
     if request.user.is_authenticated:
         return redirect('home')
     
-    context = {'prices': settings.PRICES }
+    context = {'prices': settings.PRICES, **random_strategies_results_context() }
     
     return render(request, "etradingview/index.html", context=context)
 

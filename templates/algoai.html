@@ -1,65 +1,41 @@
 <!-- Main modal -->
 {% load static %}
-<div
-  id="modal-algoai"
-  tabindex="-1"
-  aria-hidden="true"
-  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full"
->
+<div id="modal-algoai" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full">
   <div class="relative w-full max-w-[100vw] max-h-full h-full mx-auto">
     <!-- Modal content -->
     <div class="relative rounded-lg shadow h-full max-h-full flex flex-col">
       <div class="absolute inset-0 -z-10 rounded-lg">
-        <div
-          class="absolute -top-0 right-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tr from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-1 bg-[length:200%_200%] animate-rotateGradientFast"
-        ></div>
-        <div
-          class="absolute -bottom-0 right-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-br from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-2 bg-[length:200%_200%] animate-rotateGradientFast"
-        ></div>
-        <div
-          class="absolute -bottom-0 left-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-3 bg-[length:200%_200%] animate-rotateGradientFast"
-        ></div>
-        <div
-          class="absolute -top-0 left-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-bl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-4 bg-[length:200%_200%] animate-rotateGradientFast"
-        ></div>
+        <div class="absolute -top-0 right-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tr from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-1 bg-[length:200%_200%] animate-rotateGradientFast"></div>
+        <div class="absolute -bottom-0 right-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-br from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-2 bg-[length:200%_200%] animate-rotateGradientFast"></div>
+        <div class="absolute -bottom-0 left-0 aspect-square w-[50%] h-[50%] bg-gradient-to-tl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-3 bg-[length:200%_200%] animate-rotateGradientFast"></div>
+        <div class="absolute -top-0 left-[0%] aspect-square w-[50%] h-[50%] bg-gradient-to-bl from-primary/60 via-accent/30 to-primary/30 blur-xl -z-10 animate-blur-motion-4 bg-[length:200%_200%] animate-rotateGradientFast"></div>
       </div>
 
       <!-- Modal body -->
-      <div
-        class="h-full w-full max-h-full my-auto bg-background rounded-xl relative flex flex-col overflow-hidden"
-        id="isalgo-ai"
-        user-email="{{ user_profile }}"
-        user-id="{{ user_profile.id }}"
-        user-tv-username="{{ user_profile.tradingview_username }}"
-        user-is-lifetime="{{ user_profile.is_lifetime }}"
-        user-has-subscription="{{ has_subscription }}"
-        user-subscription-plan="{{ subscription_plan }}"
-        csrf-token="{{ csrf_token }}"
-        db-key="{{ db_key }}"
-      ></div>
+      <div class="h-full w-full max-h-full my-auto bg-background rounded-xl relative flex flex-col overflow-hidden" id="saro" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" csrf-token="{{ csrf_token }}" db-key="{{ db_key }}"></div>
 
       {% if IS_PRODUCTION %}
-      <script src="{% static 'js/aichatReact.js' %}" defer></script>
+        <script src="{% static 'js/aichatReact.js' %}" defer></script>
       {% else %}
-      <script src="http://localhost:3000/static/js/bundle.js"></script>
+        <script src="http://localhost:3000/static/js/bundle.js"></script>
       {% endif %}
 
       <script>
-        window.addEventListener("keydown", function (event) {
-          if ((event.metaKey || event.ctrlKey) && event.key === "k") {
-            event.preventDefault();
-            openModel("modal-algoai");
+        window.addEventListener('keydown', function (event) {
+          if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+            event.preventDefault()
+            openModel('modal-algoai')
           }
-        });
-
+        })
+        
         window.closeAiChat = function (message) {
-          hideModel("modal-algoai");
-        };
-
+          hideModel('modal-algoai')
+        }
+        
         window.buyAiToken = function (message) {
-          hideModel("modal-algoai");
-          openAITokensModalSettings(true);
-        };
+          hideModel('modal-algoai')
+          openAITokensModalSettings(true)
+        }
       </script>
     </div>
   </div>

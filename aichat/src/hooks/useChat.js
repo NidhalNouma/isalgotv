@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const csrf_token = document
-  .getElementById("isalgo-ai")
+  .getElementById("saro")
   .getAttribute("csrf-token");
 
 export function useChatHook() {

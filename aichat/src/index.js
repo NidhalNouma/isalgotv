@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById("isalgo-ai"));
+const root = ReactDOM.createRoot(document.getElementById("saro"));
 root.render(
   <React.StrictMode>
     <App />

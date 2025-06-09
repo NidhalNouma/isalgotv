@@ -1951,4 +1951,42 @@ document.addEventListener("DOMContentLoaded", function () {
       video.load();
     });
   });
+  
+
+  
+  const options = { root: null, rootMargin: '0px', threshold: 0.1 };
+  const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = entry.target.getAttribute("animation-delay");
+          if (delay) {
+            entry.target.style.animationDelay = delay + 'ms';
+          }
+
+          entry.target.classList.remove("opacity-0");
+          entry.target.classList.add("animate-fade-up");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, options);
+    document.querySelectorAll('.fade-up-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+  const observer_dn = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = entry.target.getAttribute("animation-delay");
+          if (delay) {
+            entry.target.style.animationDelay = delay + 'ms';
+          }
+
+          entry.target.classList.remove('opacity-0');
+          entry.target.classList.add('animate-fade-down');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, options);
+    document.querySelectorAll('.fade-down-on-scroll').forEach(el => {
+      observer_dn.observe(el);
+    });
 });

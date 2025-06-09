@@ -6,7 +6,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
 
   useEffect(() => {
-    const rootDiv = document.getElementById("isalgo-ai");
+    const rootDiv = document.getElementById("saro");
     const email = rootDiv.getAttribute("user-email");
     const id = rootDiv.getAttribute("user-id");
     const tradingviewUsername = rootDiv.getAttribute("user-tv-username");

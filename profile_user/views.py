@@ -88,15 +88,9 @@ QUESTIONS = [
     "Do you know that I can answer any specific questions you have about using Isalgo tools and features?"
 ]
 
-@login_required(login_url='login')
-def home(request):
-    show_get_started = False
-    if (request.has_subscription is None or request.has_subscription is False) and not request.subscription_status:
-        show_get_started = True
-
-    context = {'show_get_started': show_get_started, 'show_banner': True}
-
+def random_strategies_results_context():
     cash_timeout = 3600 * 6
+    context = {}
 
     # Cache key names for each query
     new_strategies = cache.get('new_strategies')
@@ -118,7 +112,7 @@ def home(request):
         best_results = list(
             StrategyResults.objects.annotate(
                 positive_votes_count=Count('positive_votes')
-            ).order_by('-positive_votes_count')[:3]
+            ).order_by('-positive_votes_count')[:6]
         )
         cache.set('best_results', best_results, timeout=cash_timeout)
     context['best_results'] = best_results
@@ -135,9 +129,23 @@ def home(request):
         cache.set('comments', comments, timeout=cash_timeout)
     context['comments'] = comments
 
+    return context
+
+
+@login_required(login_url='login')
+def home(request):
+    show_get_started = False
+    if (request.has_subscription is None or request.has_subscription is False) and not request.subscription_status:
+        show_get_started = True
+
+    context = {'show_get_started': show_get_started, 'show_banner': True}
+
+
     # Select a random helper question for the template
     random_question = random.choice(QUESTIONS)
     context['random_ai_question'] = random_question
+
+    context = {**context, **random_strategies_results_context()}
 
     return render(request, 'home.html', context)
 

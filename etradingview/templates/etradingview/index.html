@@ -1,749 +1,539 @@
-{% extends 'page.html' %}  {% load static %}
-{% block head %} 
-{% endblock head %} 
+{% extends 'page.html' %} {% load static %}
+{% block head %}
+  <!-- Load Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 {% block toppage %}
-{% comment %} TODO: Reduce size of images for better loading page {% endcomment %}
-<script type="text/javascript">
-  function randomMove(element) {
-  const maxX = window.innerWidth - element.clientWidth;
-  const maxY = window.innerHeight - element.clientHeight;
+  {% comment %}TODO: Reduce size of images for better loading page{% endcomment %}
+  <script type="text/javascript">
+    function randomMove(element) {
+      const maxX = window.innerWidth - element.clientWidth
+      const maxY = window.innerHeight - element.clientHeight
+    
+      const randomX = Math.random() * maxX * 2 - maxX
+      const randomY = Math.random() * maxY
+    
+      const randomScale = Math.random() * 0.5 + 1 // Adjust scale as needed
+    
+      element.style.transform = `translate(${randomX}px, ${randomY}px) scale(${randomScale})`
+    }
+    
+    // const div1 = document.getElementById('home-blur-1');
+    // const div2 = document.getElementById('home-blur-2');
+    const div3 = document.getElementById('home-blur-3')
+    const div4 = document.getElementById('home-blur-4')
+    
+    // Apply the move-animation class to enable transitions
+    // div1.classList.add('move-animation');
+    // div2.classList.add('move-animation');
+    div3.classList.add('move-animation')
+    div4.classList.add('move-animation')
+    
+    // randomMove(div1);
+    // randomMove(div2);
+    randomMove(div3)
+    randomMove(div4)
+    // Start the animations
+    setInterval(() => {
+      // randomMove(div1);
+      // randomMove(div2);
+      randomMove(div3)
+      randomMove(div4)
+    }, 4000) // Adjust the interval as needed
+  </script>
+{% endblock %}
 
-  const randomX = Math.random() * maxX * 2 - maxX;
-  const randomY = Math.random() * maxY;
+{% block page %}
+  <main class="max-w-full relative pt-8 flex flex-col min-h-[90vh] items-center">
+    <div class="relative flex flex-col items-center w-full text-center z-30 mb-10">
+      <span class="animate-fade-down text-title text-5xl sm:text-6xl font-bold uppercase">Strategy In.</span>
+      <span class="animate-fade-up animation-delay-150 text-5xl sm:text-6xl text-primary font-bold uppercase">Uncertainty Out.</span>
 
-  const randomScale = Math.random() * 0.5 + 1; // Adjust scale as needed
-
-  element.style.transform = `translate(${randomX}px, ${randomY}px) scale(${randomScale})`;
-}
-
-// const div1 = document.getElementById('home-blur-1');
-// const div2 = document.getElementById('home-blur-2');
-const div3 = document.getElementById('home-blur-3');
-const div4 = document.getElementById('home-blur-4');
-
-// Apply the move-animation class to enable transitions
-// div1.classList.add('move-animation');
-// div2.classList.add('move-animation');
-div3.classList.add('move-animation');
-div4.classList.add('move-animation');
-
-// randomMove(div1);
-// randomMove(div2);
-randomMove(div3);
-randomMove(div4);
-// Start the animations
-setInterval(() => {
-  // randomMove(div1);
-  // randomMove(div2);
-  randomMove(div3);
-  randomMove(div4);
-}, 4000); // Adjust the interval as needed
-</script>
-{% endblock toppage %}
-{% block page %} 
-  
-
-<main class="max-w-full relative pt-8  flex flex-col lg:flex-row min-h-[80vh] items-center" >
-
-  <div class="relative  my-auto flex flex-col items-center lg:items-start w-full lg:max-w-[60%]  lg:text-start text-center grow z-30 py-8">
-      <h2 class="text-title text-6xl sm:text-8xl font-extrabold ">
-        Elevate Your 
-        <span class="text-primary block uppercase">trading</span>
-        Prowess 
-      </h2>
-      <h6 class="text-text text-base tracking-wide font-medium mt-4 bg-transparent max-w-md">
-        We offer top-notch backtestable trading strategies that are optimized for the <a href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank" class="font-extrabold text-accent truncate">TradingView platform</a>
-      </h6> 
-      <div class="flex flex-row items-center  rounded justify-center gap-4 w-full max-w-fit  mt-6 md:mt-8 ">
-        <a
-          href="{% url 'register' %}"
-          class="btn-primary-landing sm:text-xl my-0 mx-0"
-          >Get started
-           <svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path></svg>
-        </a>
-        <!-- <button
-          onclick="openModel('video-modal-l')"
-          class="btn-primary-landing my-0 before:!bg-none from-text/10 to-text/20 !text-text  sm:text-lg font-bold md:!px-6  mx-0"
-          >Watch video
-          <svg class="h-4 w-4 ml-1.5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path></svg>
-        </button> -->
-        <a
-          href="{% url 'docs_index' %}"
-          class="btn-primary-landing my-0 before:!bg-none from-text/10 to-text/20 !text-text  sm:text-lg font-bold md:!px-6  mx-0"
-          >Read docs
-          <svg class="h-4 w-4 ml-1.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-text"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 11h8"/><path d="M8 7h6"/></svg>
+      <h6 class="animate-fade-up animation-delay-300 text-text text-lg sm:text-xl tracking-wide font-medium mt-4 bg-transparent max-w-md">Algorithmic precision. — leave emotions behind.</h6>
+      <div class="animate-fade-up animation-delay-450 flex flex-row items-center rounded justify-center gap-4 w-full max-w-fit mt-6 md:mt-8">
+        <a href="{% url 'register' %}" class="btn-primary-landing sm:text-xl my-0 mx-0 py-3">
+          Get started for free<svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path>
+          </svg>
         </a>
       </div>
 
-      <h6 class="text-title/80 text-sm font-medium text-center mt-6 tracking-wider">Start today with 
-        <div class="relative font-semibold inline-block text-title tracking-wider pl-0.5 capitalize">{{free_trial_days}} day free trial
-          <div class="absolute top-[90%] w-full">
+      <h6 class="animate-fade-up animation-delay-600 sm:hidden text-title/80 text-sm font-medium text-center mt-6 tracking-wider">
+        <div class="relative font-semibold inline-block text-title tracking-wider pl-0.5 capitalize">
+          {{ free_trial_days }} day free trial<div class="absolute top-[90%] w-full">
             <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round"/>
+              <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round" />
             </svg>
           </div>
         </div>
-        <a class=" inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
-          <svg class=" w-4 fill-text bg-text/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
+        <a class="inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
+          <svg class="w-4 fill-text bg-text/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path>
+          </svg>
         </a>
       </h6>
-
-  </div>
-
- 
-
-  <div class="w-full relative max-w-3xl ">
-      <img class=" shadow-lg rounded-lg border-0 border-primary/10 w-full aspect-video block relative z-[9]  scale-100 lg:scale-110  bg-background" src="https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png"  loading="lazy" />
-
-      <div onclick="openModel('video-modal-l')" class=" absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-16 aspect-square w-16 rounded-full bg-background dark:bg-title flex items-center justify-center">
-          <svg class="h-5 w-5 text-primary" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path></svg>
-        </div>
-      </div> 
-  </div>
-  
-{% include "include/video_modal.html" with id="l" video_url="https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4" video_poster="https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png" %} 
-  
-
-
-</main>
-
-
-<section class="mx-auto w-full mt-28 relative flex flex-col">
-  <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">For Traders</span></h2>
-  <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
-
-  <div class="grid md:grid-cols-3 gap-5 mt-12 ">
-
-    <div class="border-r-0 md:border-r-2 border-secondary">
-      <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
-        <h5 class="text-primary text-xl font-bold mb-4 uppercase">Easy to use</h5>
-        <p class="text-text font-semibold ">Our tools boast simplicity and extensive customization options, seamlessly integrating into your workflow.</p>
-      </div>
     </div>
 
-    <div class="border-r-0 md:border-r-2 border-accent">
-      <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
-        <h5 class="text-primary text-xl font-bold mb-4 uppercase">BEYOND CHARTS</h5>
-        <p class="text-text font-semibold ">Our aim is to foster a thriving community where we can grow together.</p>
+    <div class="animate-fade-up animation-delay-700 w-full relative max-w-full mt-auto h-fit grow overflow-hidden rounded-t-lg">
+      <div class="absolute sm:top-0 top-1/4 w-full rounded-lg">
+        <img class="rounded-lg border-0 border-primary/10 w-full aspect-video block z-[9] scale-100 lg:scale-110 bg-background" src="https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png" loading="lazy" />
+
+        <div onclick="openModel('video-modal-l')" class="absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-16 aspect-square w-16 rounded-full bg-background dark:bg-title flex items-center justify-center">
+            <svg class="h-5 w-5 text-primary" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+              <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+            </svg>
+          </div>
+        </div>
       </div>
+
+      <div class="absolute h-8 w-full -bottom-4 bg-gradient-to-t from-background pointer-events-none z-10"></div>
     </div>
 
-    <div class="">
-      <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
-        <h5 class="text-primary text-xl font-bold mb-4 uppercase">Stay ahead</h5>
-        <p class="text-text font-semibold ">Access all the essentials for navigating the market like a pro, all in one place, across all assets.</p>
-      </div>
-    </div>
+    {% include 'include/video_modal.html' with id='l' video_url='https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4' video_poster='https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png' %}
+  </main>
 
-  </div>
- 
+  <section class="mx-auto w-full mt-28 relative flex flex-col">
+    <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">For Traders</span></h2>
+    <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
 
-</section>
-
-
-<section class="mt-36 my-8 ">
-    <h2 class="text-title text-5xl font-bold text-center mt-0 mb-4">To turn losses <span class="bg-success text-title dark:text-background  truncate">Into GAINS</span></h2>
-    <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-16 sm:max-w-full max-w-md mx-auto">Reverse losses and maximize profit potential</h2>
-    <div class="p-2 sm:p-3.5 rounded-lg dark:bg-text/20 bg-text">
-      <div id="cr" class="relative w-full sm:w-12/12 aspect-[16/7] mx-auto ounded-lg "  >
-        <div class="absolute inset-0 h-full w-full overflow-hidden">
-          <img src="{% static 'images/landingPage/results/image r 1.png'%}" alt="Trading strategy result 1" class="rounded-md border-0 border-profit inset-0 h-full w-full object-nonei image-1" loading="lazy" />
+    <div class="grid md:grid-cols-3 gap-5 mt-12">
+      <div class="border-r-0 md:border-r-2 border-secondary">
+        <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
+          <h5 class="text-primary text-xl font-bold mb-4 uppercase">Easy to use</h5>
+          <p class="text-text font-semibold">Our tools boast simplicity and extensive customization options, seamlessly integrating into your workflow.</p>
         </div>
-        <div class="absolute inset-0 h-full w-full overflow-hidden">
-          <img src="{% static 'images/landingPage/results/image r l.png' %}" alt="Trading strategy result 2" class="rounded-md border-0 border-loss inset-0 h-full w-full object-nonei image-2 " loading="lazy" />
+      </div>
+
+      <div class="border-r-0 md:border-r-2 border-accent">
+        <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
+          <h5 class="text-primary text-xl font-bold mb-4 uppercase">BEYOND CHARTS</h5>
+          <p class="text-text font-semibold">Our aim is to foster a thriving community where we can grow together.</p>
         </div>
-        <div id="separator" class="absolute left-0 -translate-x-1/2 h-full w-1 scale-y-105 rounded-full bg-gradient-to-t from-loss/60 to-profit"></div>
-        
-      </div>
-    </div>
-
-  <script>
-    const container = document.getElementById('cr');
-    const separator = document.getElementById('separator');
-    const image1 = document.querySelector('.image-1');
-    const image2 = document.querySelector('.image-2');
-
-    function updateSeparator(x) {
-      const rect = container.getBoundingClientRect();
-      const width = rect.width;
-
-          if (x >= 0 && x <= width) {
-              const percent = (x / width) * 100;
-
-              separator.style.left = `${percent}%`;
-              image1.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-              image2.style.clipPath = `inset(0 0 0 ${percent}%)`;
-          } else if (x < 0) {
-              separator.style.left = `0%`;
-              image1.style.clipPath = `inset(0 100% 0 0)`;
-              image2.style.clipPath = `inset(0 0 0 0)`;
-          } else if (x > width) {
-              separator.style.left = `100%`;
-              image1.style.clipPath = `inset(0 0% 0 0)`;
-              image2.style.clipPath = `inset(0 0 0 100%)`;
-          }
-      }
-
-      document.addEventListener('mousemove', (e) => {
-          const rect = container.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          updateSeparator(x);
-      });
-
-      document.addEventListener('touchmove', (e) => {
-          const rect = container.getBoundingClientRect();
-          const x = e.touches[0].clientX - rect.left;
-          updateSeparator(x);
-      });
-</script>
-</section>
-
-<section class="mx-auto max-w-full mt-28 my-8 relative">
-
-  <svg id="snake-line" class="h-full stroke-primary absolute left-1/2 -translate-x-1/2 top-0 bottom-0 scale-y-105 z-0" 
-     viewBox="0 0 619 2873" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <!-- Define a vertical gradient for the stroke -->
-      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <!-- Both stops start at the same offset -->
-        <stop offset="0%" stop-color="hsl(var(--color-primary))" />
-        <stop offset="0%" stop-color="hsl(var(--color-text) / 0.2)" />
-      </linearGradient>
-    </defs>
-    <path d="M295.167 2871C295.167 2830.1 301.203 2789.27 311.104 2748.74C364.352 2530.82 474.862 2319.18 518.662 2100.11C540.509 1990.85 559.186 1878.02 554.81 1767.87C551.854 1693.47 519.201 1632.26 458.027 1566.57C405.55 1510.22 344.498 1460.93 263.295 1416.52C202.639 1383.35 133.887 1355.01 84.4993 1315.76C-16.904 1235.18 -8.93736 1121.09 24.6415 1029.12C75.2651 890.482 206.773 768.855 323.93 645.636C434.758 529.073 518.055 411.377 554.81 280.388C580.714 188.072 593.802 94.5739 617 2" 
-           stroke="url(#lineGradient)" stroke-width="4" stroke-linecap="round"/>
-  </svg>
-
-
-    <script type="text/javascript">
-      function updateSVGLineGradient() {
-        const svg = document.getElementById('snake-line')
-        if (!svg) return
-      
-        // Get the SVG's bounding rectangle
-        const rect = svg.getBoundingClientRect()
-        const viewportMid = window.innerHeight / 2
-      
-        // Calculate cutoffPercentage relative to the SVG's height
-        const cutoffPercentage = Math.max(0, Math.min(100, ((viewportMid - rect.top) / rect.height) * 100))
-      
-        // Update the gradient stops
-        const gradient = document.getElementById('lineGradient')
-        const stops = gradient.querySelectorAll('stop')
-        stops[0].setAttribute('offset', cutoffPercentage + '%')
-        stops[1].setAttribute('offset', cutoffPercentage + '%')
-      }
-      
-      // Update on scroll and resize
-      window.addEventListener('scroll', updateSVGLineGradient)
-      window.addEventListener('resize', updateSVGLineGradient)
-      
-      // Initialize the gradient on page load
-      updateSVGLineGradient()
-    </script>
-
-
-  <div class=" flex flex-col z-10">
-
-    <div class="relative min-h-[60vh] overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around ">
-      <div class="max-w-[100%] md:max-w-[45%] my-6 bg-background py-2 rounded-lg text-center md:text-start ">
-        <h2 class="text-title text-3xl font-bold">
-          Universal Applicability <br/><span class="bg-text text-background ">Any Symbol, Any Timeframe</span>
-        </h2>
-        <p class="text-text/80 max-w-md text-base mt-2 font-medium">Unlock the full potential of our strategies, <span class="text-title">tailored to suit</span> any symbol and timeframe. Experience <span class="text-title">seamless performance</span> on every chart</p>
-      </div>
-      <div class=" w-full relative max-w-3xl md:ml-6 flex justify-center gap-3 bg-background imgs-bw imgs-syms">
-
-        <div class="flex flex-col gap-2">
-          <img class="rounded-md " src='{% static "images/landingPage/symbols/image 14.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 18.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 17.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 19.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 20.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 21.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 22.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 23.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 24.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 25.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 26.png" %}' loading="lazy" />
-        </div>
-          
-
-        <div class="flex flex-col gap-2">
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 27.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 28.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 29.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 31.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 32.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 33.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 34.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 35.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 36.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 37.png" %}' loading="lazy" />
-          <img class="rounded-md" src='{% static "images/landingPage/symbols/image 38.png" %}' loading="lazy" />
-        </div>
-        
-        </div>
-        <script>
-          document.addEventListener('DOMContentLoaded', function () {
-            const images = document.querySelectorAll('.imgs-syms img');
-            
-            // Function to get random images
-            function getRandomImages(images, count) {
-              const randomImages = [];
-              const imageArray = Array.from(images);
-          
-              while (randomImages.length < count) {
-                const randomIndex = Math.floor(Math.random() * imageArray.length);
-                const selectedImage = imageArray[randomIndex];
-          
-                // Ensure we don't select the same image twice
-                if (!randomImages.includes(selectedImage)) {
-                  randomImages.push(selectedImage);
-                }
-              }
-              return randomImages;
-            }
-          
-            // Function to flip random images
-            function flipRandomImages() {
-              // Remove the flipping class from all images to reset
-              images.forEach((img) => img.classList.remove('flipping'));
-          
-              // Get 4-5 random images to flip
-              const randomCount = Math.floor(Math.random() * 2) + 4; // Randomly choose 4 or 5 images
-              const randomImages = getRandomImages(images, randomCount);
-          
-              // Apply the flip animation to the selected random images
-              randomImages.forEach((img) => {
-                img.classList.add('flipping');
-              });
-            }
-          
-            // Flip random images every 3-4 seconds
-            setInterval(flipRandomImages, Math.random() * 1000 + 3000); // Interval between 3-4 seconds
-          });
-          </script>
-    </div>
-
-
-    <div class="relative min-h-[60vh]  overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row-reverse flex items-center justify-between ">
-      <div class="max-w-[100%] md:max-w-[45%] w-full my-6 bg-background py-2 rounded-lg text-center md:text-start ">
-        <h2 class="text-title text-3xl font-bold">
-          Tailored Settings <br/><span class="bg-accent/80 text-background">For Optimal Results</span>
-        </h2>
-        <p class="text-text/80 max-w-md text-base mt-2 font-medium">Every strategy comes with its own <span class="text-title">customizable settings</span>, allowing you to <span class="text-title">fine-tune and maximize</span> its effectiveness</p>
       </div>
 
-      <div class=" w-full relative max-w-3xl md:mr-6 flex justify-center gap-3 imgs-bw imgs-drop">
-
-        <img class="rounded-md -translate-x-1/2 -translate-y-1/2 hidden" src='{% static "images/landingPage/settings/image 40.png" %}' />
-        <img class="rounded-md -rotate-2 absolute top-1/2 left-1/2  -translate-x-1/2 -translate-y-1/2 " src='{% static "images/landingPage/settings/image 40.png" %}' />
-        <img class="rounded-md rotate-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 42.png" %}' />
-        <img class="rounded-md -rotate-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 43.png" %}' />
-        <img class="rounded-md -rotate-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 44.png" %}' />
-        <img class="rounded-md -rotate-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 45.png" %}' />
-        <img class="rounded-md rotate-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 46.png" %}' />
-        <img class="rounded-md -rotate-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 47.png" %}' />
-        <img class="rounded-md rotate-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 49.png" %}' />
-        <img class="rounded-md -rotate-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src='{% static "images/landingPage/settings/image 48.png" %}' />
-      </div>
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const images = document.querySelectorAll('.imgs-drop img');
-          let zIndexCounter = 5;
-        
-          images.forEach((img, index) => {
-            // Listen to the start of each animation cycle
-            img.addEventListener('animationiteration', () => {
-              // Increment the z-index for the newly visible image
-              zIndexCounter++;
-              img.style.zIndex = zIndexCounter;
-
-              if(zIndexCounter > 5) zIndexCounter = 5;
-        
-              // Reset the z-index of previous images in reverse order
-              for (let i = 0; i < images.length; i++) {
-                if (i !== index) {
-                  images[i].style.zIndex = zIndexCounter - 1;
-                }
-              }
-            });
-          });
-        });
-        </script>
-    </div>
-
-
-    <div class="relative min-h-[60vh] overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col md:flex-row flex items-center justify-around ">
-      <div class="max-w-[100%] md:max-w-[45%] my-6 bg-background py-2 rounded-lg text-center md:text-start ">
-        <h2 class="text-title text-3xl font-bold">
-          Stay Informed with <br/><span class="bg-title  text-background">Entry and Exit Alerts</span>
-        </h2>
-        <p class="text-text/80 max-w-md text-base mt-2 font-medium">All our strategies feature <span class="text-title">built-in alerts</span> to keep you updated on every entry and exit point, ensuring you <span class="text-title">never miss</span> a crucial moment</p>
-      </div>
-      
-      <div class=" w-full relative max-w-md md:mr-6 flex flex-col justify-center bg-background gap-y-2 imgs-bw imgs-alerts overflow-hidden">
-
-        <img class="rounded-md " src='{% static "images/landingPage/alerts/image a 1.png" %}' loading="lazy" />
-        <img class="rounded-md " src='{% static "images/landingPage/alerts/image a 2.png" %}' loading="lazy" />
-        <img class="rounded-md " src='{% static "images/landingPage/alerts/image a 3.png" %}' loading="lazy" />
-        <img class="rounded-md " src='{% static "images/landingPage/alerts/image a 4.png" %}' loading="lazy" />
-        <img class="rounded-md " src='{% static "images/landingPage/alerts/image a 5.png" %}' loading="lazy" />
-        <!-- <img class="rounded-md hidden" src='{% static "images/landingPage/alerts/image a 6.png" %}' loading="lazy" />
-        <img class="rounded-md hidden" src='{% static "images/landingPage/alerts/image a 7.png" %}' loading="lazy" />
-        <img class="rounded-md hidden" src='{% static "images/landingPage/alerts/image a 8.png" %}' loading="lazy" />
-        <img class="rounded-md hidden" src='{% static "images/landingPage/alerts/image a 9.png" %}' loading="lazy" />
-        <img class="rounded-md hidden" src='{% static "images/landingPage/alerts/image a 10.png" %}' loading="lazy" /> -->
-      </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const imagesContainer = document.querySelector('.imgs-alerts');
-          let imageIndex = 6; // Start from the 6th image (since we have 5 images initially)
-        
-
-          function addImage() {
-            const images = imagesContainer.querySelectorAll('img');
-                       // After the transition, remove the top image and reset the position
-            setTimeout(() => {
-              // Remove the first (top) image after the transition completes
-              imagesContainer.removeChild(images[0]);
-
-              // Reset the position of the remaining images by removing the transform
-              images.forEach((img) => {
-                img.style.transform = ''; // Reset transform to default
-              });
-
-              // Create and append a new image at the bottom, hidden below the visible area
-              const newImage = document.createElement('img');
-              newImage.src = `{% static "images/landingPage/alerts/image a " %}${imageIndex}.png`;
-              newImage.classList.add('rounded-md');
-              newImage.loading = "lazy"
-              imagesContainer.appendChild(newImage);
-
-              // Increment the image index for the next image
-              imageIndex++;
-              if (imageIndex > 10) imageIndex = 1; // Loop back to image a 1.png if necessary
-            }, 500); // Match the CSS transition duration (0.5s)
-          }
-          // Add a new image every 3 seconds
-          setInterval(addImage, 4000);
-        });
-        </script>
-    </div>
-
-
-    <div class="relative  overflow-hidden my-8 md:my-16 rounded-xl p-4 sm:p-8 w-full md:w-12/12 flex-col imd:flex-row-reverse flex items-center justify-between ">
-      <div class="max-w-[100%] md:max-w-[45%] w-full my-6 bg-background py-2 rounded-lg text-center imd:text-start ">
-        <h2 class="text-title text-3xl font-bold">
-          Join the <span class="bg-primary text-title dark:text-background">Profits Together</span>
-        </h2>
-        <p class="text-text/80 text-base max-w-md mx-auto mt-2 font-medium">Leverage our <span class="text-title">community-tested results</span> and contribute by sharing your best outcomes for <span class="text-title">collective success</span></p>
-      </div>
-      <div class="w-full relative  mt-6 bg-background overflow-hidden">
-
-  <div
-      class="absolute top-0 left-0 bottom-0 w-8  bg-gradient-to-r from-background pointer-events-none z-10"
-    ></div>
-    <div
-      class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"
-    ></div>
-
-        <div class="w-full flex gap-x-6 animate-scroll">
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 1.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 2.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 3.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video"  src='{% static "images/landingPage/results/image r 4.png" %}' loading="lazy" />
-
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 1.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 2.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 3.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 4.png" %}' loading="lazy" />
-        </div>
-        <div class="w-full  mt-3 flex gap-x-6 animate-scroll-2">
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 5.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 6.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video " src='{% static "images/landingPage/results/image r 7.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 8.png" %}' loading="lazy" />
-
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 5.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 6.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 7.png" %}' loading="lazy" />
-          <img class="rounded-md cursor-pointer max-w-md aspect-video" src='{% static "images/landingPage/results/image r 8.png" %}'  />
+      <div class="">
+        <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
+          <h5 class="text-primary text-xl font-bold mb-4 uppercase">Stay ahead</h5>
+          <p class="text-text font-semibold">Access all the essentials for navigating the market like a pro, all in one place, across all assets.</p>
         </div>
       </div>
     </div>
+  </section>
 
-  </div>
-
-
-</section>
-
-
-<section class="mx-auto w-full my-28 flex flex-col items-center">
-  <div class=" max-w-xl">
-    <h2 class="text-title text-4xl font-bold text-center">With built-in alerts</h2>
-    <p class="text-text/80 text-base mt-4 font-medium text-center">We offer built-in alerts for all of our strategies, allowing you to <span class="underline decoration-secondary decoration-4 text-title">seamlessly automate your trades</span> using <span class="text-title">our</span> TradingView automation software</p>
-  </div>
-
-  <div class="mt-12 flex items-center justify-center max-w-full w-[66rem]">
-
-    
-    {% include "svg/automate_svg.html" %}
-      
-  </div>
-</section>
-
-<section class="mx-auto w-full mt-24 mb-10">
-  <h2 class="text-title text-5xl font-bold text-center mt-12">
-    How to get started
-  </h2>
-
-  <div class="w-full mt-14 relative">
-    
-    <ul class="relative mx-auto text-text sm:max-w-[90%] flex flex-col p-0 sm:p-6" id="get-start-list">
-      {% include "include/section3.html" with no=1 h="Join us today" text="Join us today for a seamless account signup experience. Start trading hassle-free" svg='<svg class="w-44 h-44" viewBox="0 0 103 103" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_211_552)"> <path d="M78.0949 0.40233C77.2902 0.603502 75.2182 1.42831 73.468 2.19276C69.525 3.94296 68.9416 4.10389 66.9701 3.92284C65.7631 3.82225 65.3004 3.84237 64.8176 4.10389C64.0732 4.48612 63.8922 4.78788 63.2484 6.71913C62.3834 9.27401 61.9207 11.9697 61.8201 15.3092L61.6994 18.4474L59.7682 17.7635C57.3541 16.8984 54.4371 16.1943 51.7012 15.792C48.9451 15.4098 42.9904 15.4098 40.2344 15.792C31.242 17.0795 23.0342 21.123 16.5967 27.4599C8.59004 35.3258 4.06367 46.0683 4.02344 57.1931C4.02344 61.4982 4.80801 66.5074 6.09551 70.3096L6.79961 72.3213L5.0293 74.1318C3.09805 76.1033 2.73594 76.8678 3.01758 78.1754C3.1584 78.8191 4.92871 80.6699 15.0275 90.7687C27.641 103.382 27.4398 103.221 29.0895 102.92C29.693 102.799 30.3166 102.296 32.3686 100.284L34.9033 97.8097L36.5127 98.192C42.1254 99.5197 49.8303 99.5197 55.4229 98.192L57.0322 97.7896L59.5469 100.284C61.6189 102.316 62.2023 102.779 62.826 102.899C64.3951 103.201 64.7572 102.94 69.867 97.8097C74.0514 93.6053 74.6348 92.9414 74.6348 92.3982C74.6348 91.9556 74.4738 91.6338 74.1117 91.3521C73.0254 90.4871 72.8846 90.5877 67.9961 95.456L63.4697 99.9824L59.5469 96.0596L55.624 92.1367L66.8897 80.8711L78.1553 69.6055L82.0781 73.5283L86.001 77.4512L81.3137 82.1385C77.2902 86.182 76.6465 86.9062 76.6465 87.4293C76.6465 88.1937 77.3707 88.9179 78.1553 88.9179C78.6381 88.9179 79.5031 88.1736 83.5467 84.1301C86.182 81.5148 88.4754 79.1209 88.6363 78.8191C88.9984 78.115 88.9984 76.7873 88.6363 76.0832C88.4754 75.7814 87.6305 74.8359 86.7453 73.9508L85.1359 72.3615L85.6389 70.9332C86.343 68.8812 87.208 65.1998 87.5299 62.9668C87.9322 60.2107 87.8719 53.9543 87.4494 51.2183C87.0672 48.8646 86.343 45.8471 85.7193 44.0164L85.317 42.8697L86.866 41.7834C92.5391 37.7801 96.5223 32.5496 98.5541 26.4139C100.626 20.2178 100.586 12.7945 98.4334 6.41737C97.9707 5.00917 97.7494 4.64706 97.166 4.26483C96.5223 3.84237 96.3211 3.80213 94.8525 3.92284C92.8408 4.10389 92.2373 3.94296 88.6162 2.31346C84.8945 0.643737 83.3656 0.181041 81.2734 0.0804553C79.9859 0.0201037 79.2014 0.100572 78.0949 0.40233ZM82.9432 3.33944C83.607 3.50038 85.4377 4.2246 87.0068 4.9287C90.8291 6.63866 92.2977 7.08124 94.0479 7.02088L95.4561 6.98065L95.8785 8.36874C97.4678 13.4584 97.4074 20.258 95.7578 25.3678C93.726 31.5437 89.1996 36.9754 82.8023 40.8178C81.6557 41.5219 80.9516 41.8236 80.69 41.7431C80.4889 41.6828 79.5635 41.1799 78.6381 40.6166C73.7898 37.6594 69.6658 33.3342 67.4127 28.8078C66.4672 26.9168 65.4613 23.7181 65.059 21.3443C64.5762 18.3267 64.7572 12.9957 65.4412 10.0586C66.2258 6.77948 66.0045 7.041 68.0967 6.96053C70.1486 6.90018 71.235 6.57831 75.198 4.74764C78.9197 3.03768 80.5895 2.73592 82.9432 3.33944ZM51.4598 18.8297C54.2963 19.2521 57.6559 20.1172 60.0699 21.0828L62.0213 21.8473L62.5846 24.0601C63.2082 26.5949 63.8117 28.2646 64.8779 30.3769C67.4328 35.4666 72.1 40.2545 77.6926 43.5738C80.1469 45.0222 80.7504 45.2033 81.7764 44.7808C82.1988 44.5998 82.6213 44.5193 82.7018 44.5998C82.9432 44.8613 84.0496 49.2066 84.4117 51.3994C84.8945 54.2359 84.9147 60.3113 84.4318 63.2082C84.0697 65.3607 83.0236 69.525 82.8023 69.7664C82.7219 69.8267 82.0178 69.2433 81.2131 68.4387C79.7244 66.9701 79.0605 66.5879 78.0346 66.5879C77.3104 66.5879 76.7471 66.8494 75.9826 67.5535L75.4193 68.0765L74.1721 66.8293L72.9248 65.582L76.2844 62.2224C80.1871 58.2795 80.6699 57.5351 80.6699 55.2217C80.6699 54.1756 80.5492 53.5519 80.1871 52.8076C79.3422 50.9769 77.1293 49.4883 75.2986 49.4883C74.6951 49.4883 74.6348 49.4279 74.6348 48.925C74.6348 46.2896 72.2408 43.7146 69.4244 43.3324L68.3984 43.1916V42.3668C68.3984 40.7172 66.95 38.6451 65.1596 37.7197C64.8176 37.5387 64.0531 37.3375 63.4496 37.2771C62.4236 37.1765 62.3633 37.1363 62.3633 36.6133C62.3633 35.5873 61.6994 33.9779 60.8947 33.0726C59.2854 31.242 56.8713 30.5781 54.6182 31.3426L53.4111 31.765L52.707 31.081C51.2385 29.6728 50.7959 29.5722 45.0625 29.5924C40.9787 29.5924 39.832 29.6527 39.4297 29.874C39.148 30.0349 38.3635 30.1556 37.599 30.1758C34.6418 30.1758 32.3283 32.2277 31.8857 35.2453C31.765 36.0701 31.6645 36.2109 31.3023 36.2109C30.4172 36.2109 28.8078 36.8144 27.9428 37.4984C26.8564 38.3232 25.9512 39.9326 25.7701 41.3207L25.6494 42.3467L24.6234 42.4674C21.5857 42.8496 19.2119 45.8068 19.5941 48.764C19.6746 49.3273 19.735 49.9711 19.7752 50.1722C19.7953 50.4539 19.5941 50.6148 18.9906 50.8361C16.2748 51.7615 14.7057 55.0607 15.5908 58.0381C15.8926 59.1043 16.1541 59.4463 18.367 61.6994L20.8012 64.1939L18.7492 66.2459L16.6973 68.2777L16.0535 67.6541C15.2086 66.8695 14.6654 66.5879 13.901 66.5879C12.8549 66.5879 12.2111 66.9701 10.642 68.5191L9.11309 70.048L8.48945 67.7547C7.36289 63.6709 7.16172 62.0816 7.16172 57.334C7.18184 52.4254 7.48359 50.132 8.73086 46.0281C13.0762 31.7449 25.4281 21.0828 40.2344 18.8297C42.8898 18.4273 48.8043 18.4273 51.4598 18.8297ZM50.635 33.2537L51.1982 33.7969L48.9854 36.0299L46.7725 38.2629L44.8613 38.1824C43.2922 38.1221 42.7893 38.0215 42.0852 37.6191C40.8178 36.8949 40.2344 35.8086 40.2344 34.159C40.2344 33.4549 40.2947 32.791 40.3752 32.7105C40.4557 32.6301 42.6686 32.5898 45.3039 32.6301L50.0918 32.6904L50.635 33.2537ZM37.257 34.7424C37.3375 36.6334 37.9008 37.9008 39.1883 39.1883C40.5965 40.6166 41.884 41.0793 44.64 41.1799L46.9736 41.2805L48.4422 42.7289C50.1924 44.4187 50.4941 44.9418 50.4941 46.1488C50.4941 47.899 48.7439 49.1463 46.9736 48.6635C46.3098 48.4824 45.2436 47.5168 40.7775 43.091C34.8631 37.1967 34.5211 36.734 34.9838 35.2252C35.2051 34.4406 36.392 33.1933 36.8949 33.1933C37.0961 33.1933 37.1967 33.6158 37.257 34.7424ZM58.1186 34.5412C58.7824 35.024 59.3457 36.1305 59.3457 36.9351C59.3457 37.257 59.0842 37.9611 58.7422 38.4842C57.9777 39.6912 57.9576 40.4758 58.6617 41.0189C59.3859 41.5822 59.8889 41.542 60.935 40.8379C63.7715 38.9066 66.6885 41.9846 64.7773 44.8613C64.0732 45.9275 64.033 46.2494 64.5963 46.9535C65.1395 47.6576 66.0246 47.6375 67.0707 46.9133C68.0766 46.2293 69.4848 46.1689 70.3498 46.7926C71.6977 47.7783 71.9592 49.6492 70.9332 50.9769C70.2895 51.8219 70.2693 52.6265 70.8527 53.2502C71.4361 53.8738 72.1402 53.8336 73.2064 53.1094C75.2584 51.7213 77.6523 52.9082 77.6523 55.3222C77.6523 55.8453 77.5115 56.4488 77.3305 56.7305C77.1494 57.0121 74.4336 59.8084 71.2953 62.9668C65.24 69.0623 65.1193 69.2232 65.9441 70.1889C66.1252 70.4101 66.5879 70.6717 66.9299 70.732C67.5334 70.8527 67.7145 70.7521 69.2031 69.2836L70.8326 67.7144L72.0799 68.9617L73.3272 70.209L65.3205 78.2156L57.334 86.2021L52.9686 81.8367L48.6232 77.4914L49.5084 77.25C50.0314 77.089 52.0432 76.9885 54.417 76.9482C57.6357 76.9281 58.6617 76.8476 59.5469 76.5459C61.3172 75.9826 62.9668 75.0773 63.2082 74.514C63.51 73.8502 63.2082 73.0254 62.5242 72.623C62.0615 72.3615 61.8805 72.3615 61.3172 72.6029C57.9375 73.9709 58.3398 73.9105 54.1152 73.9508C49.5889 73.9709 48.5227 74.1721 45.8672 75.4797C44.2578 76.2642 43.8756 76.5861 39.2688 81.1527L34.3803 85.9808L26.6553 78.2558L18.9102 70.5107L21.0023 68.4185L23.0945 66.3264L24.2412 66.6885C27.1381 67.5937 30.6385 65.9642 31.423 63.3289C31.5438 62.9064 31.6645 62.5644 31.6846 62.5644C31.7248 62.5644 32.0869 62.7053 32.5094 62.8863C33.5957 63.349 35.7482 63.3088 36.8748 62.8058C38.1824 62.2224 39.309 61.116 39.8522 59.8486C40.3148 58.7824 40.3551 58.7422 40.9385 58.883C42.1857 59.2049 44.3182 59.0439 45.2033 58.5812C47.4564 57.4144 48.5227 55.6642 48.5227 53.2099C48.5025 51.842 48.5428 51.7012 48.9049 51.7012C50.2326 51.7012 52.0834 50.293 52.8881 48.6433C53.4111 47.6174 53.5117 47.1748 53.5117 45.9879C53.5117 44.0566 52.9484 42.9502 51.1178 41.1396L49.6895 39.7314L52.2443 37.1564C53.6727 35.7281 55.101 34.4406 55.4229 34.2797C56.1873 33.9176 57.4346 34.0383 58.1186 34.5412ZM32.6502 39.5101C33.0123 39.6711 35.9695 42.4875 39.2688 45.7867C45.7063 52.2846 45.8672 52.4857 45.4246 54.0549C45.1832 54.94 44.2779 55.8453 43.433 56.0263C41.8438 56.3683 41.7432 56.308 35.3459 49.9308C32.0467 46.6517 29.2102 43.7146 29.0492 43.4129C28.5664 42.5076 28.6871 41.1597 29.3107 40.4154C30.2361 39.309 31.4432 38.9871 32.6502 39.5101ZM26.7156 45.7465C27.0174 45.9074 29.4918 48.2812 32.2277 51.0373C36.5328 55.3625 37.1967 56.1269 37.3375 56.7908C37.7197 58.9433 35.9092 60.6734 33.8572 60.1101C32.7709 59.8285 23.0342 50.1521 22.6922 49.0256C22.1893 47.3357 23.5371 45.4648 25.2672 45.4648C25.7701 45.4648 26.4139 45.5855 26.7156 45.7465ZM22.491 53.7933C23.1348 54.1353 28.2244 59.2652 28.5463 59.8888C28.667 60.1303 28.7676 60.7137 28.7676 61.1965C28.7676 63.2484 26.7961 64.5158 24.885 63.691C24.0602 63.3289 18.7895 58.018 18.5078 57.2736C18.0451 56.0263 18.5279 54.5377 19.5941 53.8939C20.3385 53.4312 21.7266 53.391 22.491 53.7933ZM32.3887 96.0596L28.4658 99.9824L17.2002 88.7168L5.93457 77.4512L9.85742 73.5283L13.7803 69.6055L25.0459 80.8711L36.3115 92.1367L32.3887 96.0596ZM50.5947 83.6875L55.2217 88.3144L54.0549 89.4812C52.2443 91.3119 52.1438 92.7402 53.733 94.4502L54.5176 95.3152L52.7674 95.6572C51.6207 95.8785 49.609 96.0394 47.034 96.0998C43.2117 96.2004 41.5822 96.0998 38.5647 95.5164L37.418 95.2951L38.2227 94.4301C39.1279 93.4443 39.3291 92.881 39.1682 91.5935C39.0877 90.809 38.9066 90.5072 37.8002 89.4008L36.5127 88.1133L41.0592 83.5869C43.5336 81.0924 45.666 79.0605 45.7867 79.0605C45.8873 79.0605 48.06 81.1326 50.5947 83.6875Z" /> <path d="M78.457 8.75097C76.7873 9.11308 74.2123 10.4006 72.9852 11.4668C71.758 12.533 70.1889 14.8867 69.6055 16.5162C68.9818 18.2865 68.841 21.3644 69.2836 23.1348C70.2895 27.1582 73.0254 30.1959 76.8678 31.6041C81.2533 33.2135 85.9004 32.1875 89.2197 28.8883C90.5676 27.5404 92.1367 25.066 92.1367 24.2814C92.1367 23.7182 91.332 22.9336 90.7285 22.9336C89.783 22.9336 89.5617 23.1146 88.8777 24.4223C87.0672 27.8422 83.3053 29.7935 79.6439 29.2303C76.6465 28.7475 74.1721 26.9168 72.8443 24.1607C72.1402 22.6922 72.1201 22.5514 72.1201 20.4189C72.1201 18.2865 72.1402 18.1457 72.8443 16.6973C74.1721 13.9412 76.6666 12.0703 79.6439 11.6076C83.4059 11.0242 87.2684 13.0963 88.918 16.5967C89.2801 17.3812 89.7025 18.1658 89.8836 18.3469C90.3061 18.8498 91.4326 18.8096 91.9355 18.3066C92.5391 17.7031 92.4385 16.9387 91.493 15.0678C90.0647 12.191 87.3287 9.85741 84.291 8.97225C82.6816 8.48944 80.0262 8.38886 78.457 8.75097Z" /> <path d="M82.8627 18.8498L80.2877 21.3846L78.3766 19.5539C76.3045 17.5623 75.9022 17.3812 74.9566 18.1256C74.5744 18.4273 74.4336 18.7291 74.4336 19.2521C74.4336 19.8758 74.6951 20.1976 76.7068 22.2697C79.1209 24.7642 79.825 25.2269 80.6699 24.9051C81.3338 24.6637 86.8861 19.1717 87.208 18.4273C87.6707 17.3812 86.9264 16.2949 85.7596 16.2949C85.5785 16.2949 84.2709 17.4416 82.8627 18.8498Z" /> </g></svg>'%}
-      {% include "include/section3.html" with no=2 h="Select the ideal plan" text="Select the ideal plan that suits your specific needs and trading goals" svg='<svg class="w-44 h-44 " viewBox="0 0 56 67" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.61515 1.17027C6.5073 1.69579 5.48467 2.69001 4.94494 3.79786L4.53305 4.65005V12.7459V20.8417L4.93074 21.6371C5.82554 23.4693 7.51572 24.6624 9.47577 24.847L10.4274 24.9322V31.4657V37.985L9.93027 37.6157C8.56676 36.5788 6.9476 36.1669 5.10118 36.3942C2.70084 36.6925 1.33733 37.5589 0.456734 39.3485C0.0306378 40.2149 -0.0119718 40.3995 0.00223143 41.5784C0.00223143 42.6862 0.186873 43.6378 1.43675 48.893C2.23213 52.2166 2.9849 55.4691 3.11273 56.1366C3.75188 59.304 5.44206 63.2098 7.58674 66.505C9.54678 69.4876 12.3164 72.7544 13.2254 73.1237C13.5947 73.2799 15.995 73.3225 26.0793 73.3225C37.5981 73.3225 38.5071 73.3083 38.9758 73.0669C39.6008 72.7686 40.595 71.263 41.9443 68.6355C44.1032 64.4029 45.4099 60.1703 46.0206 55.3697C46.3047 53.1114 46.4751 37.502 46.2336 35.684C46.0348 34.1501 45.5661 33.1843 44.5719 32.119C43.3788 30.8692 42.2994 30.3862 40.5382 30.3152C39.4445 30.2726 39.0326 30.3152 38.3083 30.5567L37.4277 30.8549L36.6039 30.0312C34.8285 28.2416 32.1867 27.716 29.971 28.6961L29.346 28.9801L28.7353 28.341C27.5848 27.1621 26.1929 26.5798 24.5312 26.5656C23.9772 26.5656 23.3239 26.6082 23.0824 26.665L22.6421 26.7644V25.8412V24.9322L23.5369 24.847C26.0367 24.6482 28.082 22.8301 28.5933 20.373C28.8063 19.3362 28.8063 6.15559 28.5933 5.11876C28.224 3.35756 26.8037 1.61057 25.2697 1.04244C24.5027 0.758375 24.2187 0.744171 16.4921 0.744171H8.50995L7.61515 1.17027ZM23.7074 5.03354C24.4885 5.38862 24.4885 5.41702 24.4885 12.7459C24.4885 18.4982 24.4601 19.5634 24.2755 19.9185C24.0198 20.4156 23.6648 20.6286 23.0824 20.6286H22.6421V19.0237C22.6421 16.4529 22.1166 15.0042 20.7247 13.6833C17.7562 10.8711 12.984 11.6806 11.2086 15.2882C10.6404 16.4245 10.4416 17.5039 10.4274 19.3788V20.6286H10.0155C9.77403 20.6286 9.41895 20.4724 9.16329 20.2594L8.723 19.8901V12.7459V5.60166L9.16329 5.23238L9.60359 4.8631H16.4637C21.4917 4.8631 23.4375 4.90571 23.7074 5.03354ZM17.6142 16.5807C18.3954 17.0921 18.3812 16.9216 18.3812 28.1137C18.3812 37.6725 18.3954 38.4963 18.6368 38.9508C19.3896 40.4705 21.6337 40.4705 22.3865 38.9508C22.6137 38.5247 22.6421 38.0276 22.6421 35.3574C22.6421 32.8718 22.6847 32.1616 22.8552 31.7924C23.3665 30.7129 24.8578 30.4857 25.71 31.3379L26.1929 31.8208V34.9171C26.1929 36.6357 26.2639 38.3116 26.3492 38.6667C26.7895 40.5699 29.1614 40.996 30.1698 39.3485C30.4255 38.9366 30.4539 38.6241 30.4539 36.6783C30.4539 35.471 30.5107 34.2353 30.5817 33.937C30.8516 32.8008 31.931 32.2185 32.9963 32.6446C34.0331 33.0564 34.0615 33.1843 34.1467 37.0617C34.2177 40.8256 34.2319 40.854 35.1836 41.5642C35.7091 41.9476 36.8453 41.9476 37.3709 41.5642C38.2799 40.8824 38.3367 40.712 38.4077 38.0134L38.4787 35.5136L39.0042 35.0307C39.4587 34.6188 39.6434 34.5478 40.2541 34.5478C41.1347 34.5478 41.7596 35.0449 41.9585 35.8971C42.1289 36.6357 42.1289 49.5748 41.9585 52.4864C41.7312 56.3923 40.9501 60.0567 39.615 63.4655C39.0184 64.9852 37.7969 67.5276 37.1294 68.5928L36.8453 69.0616H25.9089H14.9724L14.4327 68.4792C11.1659 64.8432 8.49574 60.1277 7.51572 56.1793C6.22323 50.9667 4.16377 41.6068 4.23478 41.3085C4.36261 40.8114 4.7461 40.641 5.79714 40.6125C6.76295 40.5841 7.26007 40.7972 7.67196 41.4363C7.78558 41.621 8.46734 44.2202 9.16329 47.217C9.93027 50.5122 10.541 52.7989 10.6972 53.0119C11.6347 54.3186 13.5237 54.3328 14.3617 53.0545C14.6031 52.6853 14.6173 51.7336 14.6883 35.1159C14.7594 18.0437 14.7736 17.5608 15.0292 17.1205C15.5547 16.2541 16.7336 15.9984 17.6142 16.5807Z" /><path d="M35.0273 1.09925C33.5218 1.79521 32.5133 2.90306 32.002 4.4086C31.7322 5.20398 31.718 5.57326 31.7606 13.0441L31.8032 20.8417L32.2151 21.6939C32.769 22.8159 33.7774 23.8102 34.9705 24.3641L35.9221 24.8186H43.8049H51.6877L52.5114 24.4919C54.1732 23.8102 55.5509 22.0916 55.8918 20.2736C55.977 19.7907 56.0196 16.7228 55.9912 12.2062L55.9486 4.91991L55.4089 3.84047C54.7556 2.51957 53.6903 1.46853 52.5399 1.04244C51.7729 0.758374 51.4888 0.744171 43.7623 0.744171H35.7801L35.0273 1.09925ZM50.9633 5.00513C51.7445 5.3034 51.7587 5.38862 51.7587 12.7459C51.7587 19.9611 51.7445 20.1173 51.0627 20.4866C50.8781 20.5718 48.3215 20.6286 43.8049 20.6286H36.8169L36.405 20.2168L35.9931 19.8049V12.7459V5.68688L36.405 5.27499L36.8169 4.8631H43.7197C47.7534 4.8631 50.7503 4.91991 50.9633 5.00513Z"/></svg>' %}
-      {% include "include/section3.html" with no=3 h="Share your TradingView username" text="Share your TradingView username with us to unlock complete access to our comprehensive suite of trading strategies" svg='<svg class="w-44 h-44 " viewBox="0 0 94 91" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M52.4391 0.115654C42.3951 1.39228 34.3035 7.85051 31.0744 17.1812C30.0418 20.185 29.7414 22.0061 29.7227 25.4229C29.7227 28.8961 29.948 30.3605 30.943 33.4018C32.2008 37.288 34.1533 40.5172 36.9506 43.352L38.6027 45.0417H19.7537H0.904685V48.0455V51.0493H29.4598H58.015L57.8836 51.9317C57.7334 53.0581 56.7759 54.8604 56.0437 55.48C55.7433 55.7428 55.0487 56.1746 54.523 56.4562L53.5656 56.9631L41.738 57.057C32.8767 57.1321 29.8165 57.2072 29.5162 57.3762C28.8591 57.7516 28.1457 58.7091 28.0142 59.4037C27.7139 61.0371 27.6575 60.962 34.6602 68.021C38.3024 71.6631 41.4376 74.6669 41.7755 74.8171C42.2824 75.0237 44.4039 75.08 53.5468 75.08H64.7173L71.5322 71.6819L78.3472 68.2838L80.3184 68.3777C81.6889 68.434 82.7215 68.603 83.6977 68.9221L85.1058 69.3727L74.0855 76.7321L63.0464 84.0915H47.2763H31.5062L16.9564 78.2715C8.9587 75.0612 2.31273 72.4328 2.20009 72.3953C1.8997 72.339 -0.240525 77.7646 0.0223104 77.9336C0.153728 77.9899 7.02499 80.7685 15.3231 84.0727L30.3985 90.0991L47.7269 90.0616L65.0552 90.0053L79.0042 80.7122C86.664 75.6056 93.141 71.1938 93.3851 70.8934C94.2111 69.8984 94.2111 68.2275 93.3475 67.2137C92.2586 65.9183 87.6966 63.7217 84.2797 62.8581C81.7452 62.2011 78.7602 62.1072 76.8452 62.5953C76.2257 62.7455 72.9027 64.2662 69.4671 65.9746L63.2154 69.0723H53.697H44.1786L41.1748 66.0685L38.1709 63.0647H45.6805C54.2227 63.0647 54.8234 62.9896 57.3767 61.7129C60.1177 60.3612 62.2579 57.8831 63.3843 54.7666C63.8537 53.49 63.8725 53.1708 63.8912 50.167C63.8912 47.2007 63.8537 46.9003 63.497 46.431C62.5395 45.1355 62.5583 45.1543 57.1702 45.0041C54.4667 44.9478 51.8384 44.7976 51.3127 44.685C41.7192 42.5823 35.1296 34.0026 35.7116 24.3904C36.4062 12.9007 46.9384 4.43366 58.259 6.27351C71.1567 8.35741 78.3472 22.2126 72.715 34.0965C71.6824 36.3118 69.9552 38.7336 69.2418 39.034C68.6035 39.2969 68.059 39.1467 67.5521 38.6022C67.1954 38.2267 67.1767 37.87 67.1767 25.1038V11.9996H64.1728H61.169V12.8444C61.169 13.3137 61.1315 13.6892 61.1127 13.6892C61.0751 13.6892 60.5307 13.4264 59.8924 13.126C57.5081 11.9245 54.3165 11.6992 51.7633 12.5628C45.8307 14.5528 42.1135 21.5179 43.4089 28.1827C44.6292 34.3593 48.9847 38.6022 54.4855 38.9777C56.3629 39.0903 58.2966 38.7149 59.8736 37.9076C60.4931 37.6072 61.0188 37.3444 61.0564 37.3444C61.0939 37.3444 61.169 37.87 61.2441 38.5084C61.6759 42.6574 65.8249 45.8302 69.805 45.0792C72.4334 44.5911 74.0292 43.352 76.1882 40.1417C77.5774 38.039 78.1782 36.875 79.0606 34.5283C80.187 31.4869 80.5625 29.2903 80.5813 25.6107C80.6 21.9873 80.3184 20.2976 79.2483 17.1812C75.6437 6.7804 65.7686 -0.165952 54.7859 0.00301361C53.8096 0.0217875 52.7583 0.0781061 52.4391 0.115654ZM57.3767 18.5517C60.2303 20.016 61.8073 24.1087 60.8874 27.6382C60.3054 29.8911 59.0663 31.5995 57.3767 32.5007C56.7384 32.8386 56.269 32.9325 55.1614 32.9325C54.0537 32.9325 53.5843 32.8386 52.946 32.5007C49.0786 30.4543 47.9709 24.503 50.7307 20.5042C51.369 19.5655 52.7583 18.4953 53.7345 18.195C54.6545 17.9133 56.4755 18.1011 57.3767 18.5517Z" /></svg>' %}
-      {% include "include/section3.html" with no=4 h="All set!" text="You are all set and good to go! You're now fully prepared to embark on your trading journey with confidence and ease. Happy trading!" svg='<svg class="w-44 h-44 " viewBox="0 0 77 73" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M67.306 0.284322C70.3338 0.987867 73.1027 3.19619 74.4572 5.95539C75.6402 8.36127 75.5756 6.48741 75.7476 36.3742L75.8979 63.3568L75.4511 64.5928C74.8559 66.2859 74.0882 67.5074 72.8648 68.7491C71.6582 69.9908 70.4482 70.7597 68.7475 71.3971L67.5182 71.8622L40.0801 72.0666L12.642 72.2709L11.406 71.8242C9.69597 71.2121 8.47459 70.4614 7.23293 69.2548C6.00803 68.0313 5.23916 66.8212 4.60171 65.1205L4.13664 63.8913L3.98085 49.7758L3.82507 35.6603L4.30806 34.7618C4.87373 33.6262 6.08404 32.8911 7.3673 32.8815C8.65056 32.872 9.87168 33.589 10.4541 34.6991L10.9335 35.5905L11.0319 48.7946C11.0998 57.9125 11.1991 62.1839 11.3208 62.6558C11.5808 63.5488 12.8736 64.8225 13.7704 65.0691C14.7347 65.3152 65.3222 64.9384 66.2827 64.678C67.1757 64.4181 68.4494 63.1252 68.6961 62.2285C68.9424 61.2979 68.5823 10.6766 68.3052 9.74989C68.0971 9.00846 67.1432 7.90109 66.3802 7.48462C65.9054 7.21798 64.1324 7.2143 44.8997 7.27311L23.9617 7.34462L23.2492 6.89401C21.1111 5.49151 21.0874 2.31714 23.2044 0.882951L23.9102 0.421774L45.1006 0.230183C63.0661 0.0794962 66.4602 0.0879897 67.306 0.284322Z" /><path d="M4.95973 4.36225C5.53583 4.62813 9.75362 8.66623 22.767 21.5039L39.8286 38.2966L44.1357 33.9248C46.5157 31.5262 48.7122 29.4328 49.0318 29.2785C49.3683 29.1071 49.9921 28.9843 50.5831 28.9799C52.4574 28.9659 53.9363 30.2889 54.102 32.1282C54.2499 33.8495 54.2165 33.9004 47.6636 40.5516C41.4122 46.8628 41.278 46.982 39.8934 46.9923C38.4413 47.0032 39.1725 47.69 19.4401 28.2662C8.24719 17.2555 0.625373 9.61228 0.402976 9.22556C-0.00804852 8.45187 -0.0688896 7.08456 0.279533 6.25456C1.02615 4.47598 3.23155 3.58148 4.95973 4.36225Z" /></svg>' %}
-    </ul>
-
-  </div>
-
-</section>
-
-<section class="mx-auto w-full mt-24 mb-10 relative bg-background/20 backdrop-blur-sm">
-  <svg class="parallaxi -rotate-12 h-24 fill-text opacity-10 absolute top-0 left-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>
-  <svg class="parallaxi rotate-12 h-24 fill-text opacity-10 absolute top-[10%] right-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>
-  <svg class="parallaxi rotate-12 h-24 fill-text opacity-10 absolute top-[90%] left-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>
-  <svg class="parallaxi -rotate-12 h-24 fill-text opacity-10 absolute top-full right-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>
-  <!-- <svg class="parallax h-24 fill-text opacity-10 absolute top-[50%] left-[50%]" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>
-  <svg class="parallax h-24 fill-text opacity-10 absolute top-[50%] right-[50%]" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg> -->
-
-  <h2 class="text-title text-5xl font-bold text-center mt-12">
-    Find your answers
-  </h2>
-
-  <div class="mt-16 w-full md:w-[60%] mx-auto">
-    <div class="rounded-lg px-0 sm:px-3 py-3  space-y-6" id="accordion-open" data-accordion="open">
-      {% include "include/qanda_box.html" with id=1 title="What is IsAlgo?" description="Isalgo is a platform that offers a variety of intelligent trading strategies designed to help traders optimize their market performance. It leverages technical indicators, custom algorithms, and risk management techniques to provide users with actionable insights in real-time." %}
-      {% include "include/qanda_box.html" with id=2 title="How do I get started with Isalgo?" description='To get started with Isalgo, simply sign up for an account on our website. After creating an account, select your preferred plan, and provide your TradingView username to access our exclusive strategies and tools.' %}
-      {% include "include/qanda_box.html" with id=3 title="What types of trading strategies does Isalgo offer?" description="Isalgo offers a range of advanced trading strategies, including trend-following strategies, reversal strategies, and breakout strategies. Each strategy is customizable to suit your trading style and preferences." %}
-      {% include "include/qanda_box.html" with id=31 title="How can I customize the strategies?" description="Each strategy comes with a variety of settings that you can adjust according to your trading preferences. You can modify parameters such as entry and exit conditions, stop-loss levels, and trade size. Changes are reflected in real-time on your TradingView chart." %}
-      {% include "include/qanda_box.html" with id=4 title="Is it easy to use for the beginner?" description="Yes, it is. All of our strategies are designed to be beginner-friendly. Each strategy comes with a helper guide that explains the function of each setting and property. <br/><br>You don't need to be an expert trader, basic trading knowledge is sufficient." %}
-      {% include "include/qanda_box.html" with id=5 title="Do I need a tradingview membership?" description="To get started, you don't need a TradingView membership. However, please note that the free TradingView version has some limitations. For example, you can only have one active alert, and you can create only one chart with one strategy on the chart." %}
-      {% include "include/qanda_box.html" with id=6 title="Can I automate my trading with Isalgo?" description="Yes! Isalgo supports automation through TradingView alerts. When a trading condition is met, alerts can be triggered and sent to your broker’s API for trade execution. You can learn more about this process in our Isalgo Automation Guide." %}
-    </div>
-  </div>
-
-</section>
-
-<section class="mx-auto max-w-full w-full mt-24 mb-10 relative">
-
-  <svg class="absolute min-w-[100vw] top-[10%] left-[-20%] right-[-20%] opacity-10 pointer-events-none" viewBox="0 0 4956 707" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="stroke-title" d="M2.12664 389.685C35.6594 380.524 67.1106 356.428 100.842 344.689C151.296 327.13 199.878 304.808 251.636 291.144C367.468 260.567 482.858 233.349 602.43 221.792C756.468 206.902 904.318 213.142 1058.22 230.736C1234.69 250.909 1419.4 257.67 1590.19 310.195C1722.41 350.858 1847.76 409.589 1975.94 460.639C2163.42 535.313 2346.46 597.846 2545.84 634.207C2947.47 707.454 3370.53 703.595 3769.16 613.153C3866.43 591.084 3973.36 567.253 4065.45 528.247C4136.46 498.175 4201.95 461.693 4267.56 421.525C4334.85 380.324 4407.04 336.901 4478.15 304.033C4532.6 278.864 4588.76 257.031 4644 233.564C4680.3 218.143 4717.93 198.5 4757.13 192.288C4810.49 183.836 4872.83 161.838 4921.47 144.09" stroke-width="5" stroke-linecap="round"/>
-    <path class="stroke-secondary" d="M40.6793 704.846C185.914 670.963 336.48 653.887 483.994 632.604C636.429 610.611 789.673 574.726 936.95 530.389C1093.12 483.376 1248.72 447.165 1398.77 380.847C1551.94 313.149 1703.3 239.043 1860.75 181.603C2019.33 123.748 2173.87 70.3808 2341.24 43.8644C2553.63 10.2165 2766 -2.84468 2981.07 4.44545C3186.46 11.4076 3393.33 32.3959 3596.64 62.3862C3721.19 80.7587 3849.5 115.211 3964.31 168.639C4098.09 230.901 4214.58 331.487 4338.97 410.007C4448.31 479.032 4563.84 519.617 4690.1 534.051C4730.19 538.634 4770.23 533.202 4810.41 535.72C4835.63 537.3 4862.31 528.877 4886.49 531.642C4896.05 532.735 4950.59 519.267 4953.72 514.466" stroke-width="5" stroke-linecap="round"/>
-  </svg>
-
-  <h2 class="text-title text-4xl sm:text-5xl font-bold text-center mt-12">
-    Still questioning?
-  </h2>
-  <p class="text-text/80 text-base mt-4 font-medium text-center">Our team is here to help you with any questions</p>
-
-  <div class="w-full mt-4 relative">
-    
-    <div class="flex flex-col mt-2 mb-auto w-full items-center">
-      <a
-      href="{% url 'docs_contactus' %}"
-      class="btn-text font-extrabold max-w-xs mb-5 mt-4 text-2xl py-4 px-6"
-      >
-      Contact us
-      <svg class="h-5 aspect-auto ml-1.5 " stroke="currentColor" fill="currentColor" stroke-width="0.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 2H8C4.691 2 2 4.691 2 8v13a1 1 0 0 0 1 1h13c3.309 0 6-2.691 6-6V8c0-3.309-2.691-6-6-6zm4 14c0 2.206-1.794 4-4 4H4V8c0-2.206 1.794-4 4-4h8c2.206 0 4 1.794 4 4v8z"></path><path d="M7 9h10v2H7zm0 4h7v2H7z"></path></svg>
-      </a>
+  <section class="mx-auto w-full mt-28 relative flex flex-col text-center">
+    <div class="flex items-center gap-2 justify-start text-text">
+      <h2 animation-delay="300" class="fade-down-on-scroll text-title text-center text-4xl font-bold uppercase">Any Symbol</h2>
+      —
+      <h2 animation-delay="450" class="fade-up-on-scroll text-text text-center text-4xl font-bold uppercase">Any Timeframe</h2>
     </div>
 
-  </div>
-</section>
-
-<section class="mx-auto w-full mt-24 mb-24">
-  <h2 class="text-title text-3xl font-bold text-center mt-8">
-    <span class="bg-accent text-background">Experience the Future of Trading</span>
-  </h2>
-  <h2 class="text-text text-3xl font-bold text-center mt-0">
-    <span class="bg-secondary text-background">Start Your Journey For Free</span>
-  </h2>
-
-  <h6 class="text-title/60 text-base font-medium mt-4 text-center">Start today with 
-    <div class="relative inline-block text-title tracking-wider  ml-0.5">{{free_trial_days}} day free trial
-      <div class="absolute top-[90%] w-full">
-        <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-      </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-1.5 mt-8 imgs-bw">
+      <img animation-delay="500" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 14.png' %}" loading="lazy" />
+      <img animation-delay="500" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 17.png' %}" loading="lazy" />
+      <img animation-delay="500" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 18.png' %}" loading="lazy" />
+      <img animation-delay="550" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 19.png' %}" loading="lazy" />
+      <img animation-delay="550" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 20.png' %}" loading="lazy" />
+      <img animation-delay="550" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 21.png' %}" loading="lazy" />
+      <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 22.png' %}" loading="lazy" />
+      <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 23.png' %}" loading="lazy" />
+      <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 24.png' %}" loading="lazy" />
+      <img animation-delay="750" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 25.png' %}" loading="lazy" />
+      <img animation-delay="750" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 26.png' %}" loading="lazy" />
+      <img animation-delay="750" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 27.png' %}" loading="lazy" />
+      <img animation-delay="800" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 28.png' %}" loading="lazy" />
+      <img animation-delay="800" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 29.png' %}" loading="lazy" />
+      <img animation-delay="800" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 31.png' %}" loading="lazy" />
+      <img animation-delay="850" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 32.png' %}" loading="lazy" />
+      <img animation-delay="850" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 33.png' %}" loading="lazy" />
+      <img animation-delay="850" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 34.png' %}" loading="lazy" />
+      <img animation-delay="900" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 35.png' %}" loading="lazy" />
+      <img animation-delay="900" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 36.png' %}" loading="lazy" />
+      <img animation-delay="900" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 37.png' %}" loading="lazy" />
+      <img animation-delay="950" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 38.png' %}" loading="lazy" />
+      <img animation-delay="950" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 23.png' %}" loading="lazy" />
+      <img animation-delay="950" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/symbols/image 24.png' %}" loading="lazy" />
     </div>
-    <a class=" inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
-      <svg class=" w-5 fill-text bg-title/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>
+  </section>
+
+  <section class="mx-auto w-full mt-28 relative flex flex-col">
+    <a href="{% url 'strategies' %}" class="hover:text-title/80 text-title transition-opacity text-4xl font-bold mt-10 mb-6">
+      Discover Top Strategies<svg class="fill-current stroke-current h-6 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" d="M0 0h24v24H0V0z"></path>
+        <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+      </svg>
     </a>
-  </h6>
 
-  <div class="mt-6 w-full flex flex-col md:flex-row items-center justify-center gap-8">
-    {% include "include/price_item.html" with title="MONTHLY" %}
-    {% include "include/price_item.html" with title="QUARTERLY" save="Save $39" %}
-    {% include "include/price_item.html" with title="YEARLY" save="Save $197" %}
-  </div>
-</section>
+    <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+      {% for strategy in most_viewed_strategies %}
+        {% include 'include/quick_strategy.html' with strategy=strategy %}
+      {% endfor %}
+    </div>
+  </section>
 
-<section class="mt-8 mb-8 relative bg-accent/10 rounded-xl overflow-hidden">
-  <div class="absolute right-0 h-full pointer-events-none">
-    <svg
-        class="aspect-square h-full fill-text/10 stroke-text/20i scale-150"
-        viewBox="0 0 302 428"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M211.404 5L211.404 102.073"
-          stroke-width="10"
-          stroke-linecap="round"
-        />
-        <path
-          d="M203.638 82.6582H219.169C222.029 82.6582 224.346 86.1351 224.346 90.4241V152.551C224.346 156.84 222.029 160.317 219.169 160.317H203.638C200.778 160.317 198.46 156.84 198.46 152.551V90.4241C198.46 86.1351 200.778 82.6582 203.638 82.6582Z"
-          stroke-width="15"
-        />
-        <path
-          d="M97.9228 350.173L82.7244 349.97C79.9265 349.933 77.6832 346.437 77.7139 342.161L78.1584 280.231C78.1891 275.955 80.4821 272.52 83.28 272.557L98.4784 272.76C101.276 272.797 103.52 276.293 103.489 280.568L103.044 342.499C103.014 346.774 100.721 350.21 97.9228 350.173Z"
-          stroke-width="15"
-        />
-        <path
-          d="M90.3241 351.011L90.3241 422.421"
-          stroke-width="10"
-          stroke-linecap="round"
-        />
-        <path
-          d="M18.9213 127.582C8.02681 137.789 1.78067 149.872 0.340851 164.059C-1.57142 182.902 4.55596 199.113 18.891 212.921C28.9832 222.643 41.8664 227.94 55.3822 232.327C79.6901 240.217 103.996 248.113 128.336 255.922C130.624 256.656 131.54 257.591 131.405 259.867C131.223 262.953 131.671 266.065 131.675 269.165C131.712 299.984 131.668 330.803 131.776 361.621C131.792 366.107 131.763 370.283 127.277 373.366C125.943 374.283 125.182 375.95 124.33 377.359C118.441 387.094 118.719 396.922 125.082 406.204C131.337 415.328 141.054 419.725 152.872 419.122C165.618 418.471 174.737 412.28 179.426 401.673C184.272 390.709 182.071 380.394 173.3 371.557C170.91 369.149 169.839 366.819 169.846 363.592C169.937 321.504 169.835 279.416 169.988 237.328C170.003 233.42 168.546 231.761 164.564 230.464C132.124 219.898 99.77 209.118 67.3868 198.411C62.832 196.905 58.3622 195.258 54.4411 192.602C34.1485 178.855 39.3168 156.014 56.0194 147.657C69.4852 140.919 82.4802 133.417 95.746 126.349C97.8978 125.202 98.6712 123.823 98.6535 121.617C98.5638 110.463 98.6334 99.3077 98.6097 88.1532C98.5995 83.3534 97.7505 82.8281 93.2104 85.2459C77.7509 93.4787 62.3417 101.789 46.9502 110.125C37.3547 115.323 27.3506 119.996 18.9213 127.582ZM291.176 226.931C289.203 224.537 287.366 222.067 285.166 219.809C274.858 209.231 261.201 203.678 246.992 199.036C223.188 191.259 199.337 183.597 175.439 176.058C171.381 174.778 169.753 173.074 169.79 168.94C170.034 141.693 169.928 114.444 169.929 87.195C169.929 83.8617 170.019 80.522 169.822 77.1971C169.676 74.7372 168.413 73.5887 165.52 74.9425C155.903 79.4432 146.289 79.4173 136.631 74.9188C132.786 73.1273 131.39 73.9797 131.27 78.0217C131.178 81.118 131.268 84.2188 131.283 87.3175C131.453 123.414 131.67 159.511 131.714 195.608C131.718 198.814 132.931 200.24 136.191 201.305C169.568 212.212 202.732 223.647 236.295 234.091C240.398 235.367 244.459 236.822 247.948 239.174C256.886 245.199 261.385 253.059 259.685 263.345C258.338 271.492 252.969 277.111 245.54 281.254C232.329 288.619 219.037 295.868 205.685 303.021C203.046 304.434 201.994 306.086 202.024 308.822C202.145 319.973 202.059 331.126 202.098 342.279C202.103 343.592 201.53 345.285 203.241 346.007C204.822 346.674 206.098 345.432 207.39 344.754C227.204 334.368 246.942 323.861 266.839 313.607C301.494 295.748 312.378 257.863 291.176 226.931Z"
-        />
+  <section class="mx-auto w-full mt-32 relative flex flex-col text-center">
+    <div class="flex items-center gap-2 justify-start text-text">
+      <h2 animation-delay="300" class="fade-down-on-scroll text-text text-center text-4xl font-bold uppercase">Tailored Settings</h2>
+      FOR
+      <h2 animation-delay="450" class="fade-up-on-scroll text-title text-center text-4xl font-bold uppercase">Optimal Results</h2>
+    </div>
+
+    <div class="w-full relative mt-8 flex sm:flex-row flex-col items-start justify-start gap-4">
+      <div class="space-y-4 hidden sm:block imgs-bw w-full">
+        <img animation-delay="500" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 40.png' %}" />
+        <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 49.png' %}" />
+        <img animation-delay="650" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 46.png' %}" />
+      </div>
+      <div class="space-y-4 imgs-bw w-full">
+        <img animation-delay="450" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 44.png' %}" />
+        <img animation-delay="550" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 45.png' %}" />
+        <img animation-delay="650" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 42.png' %}" />
+      </div>
+      <div class="space-y-4 imgs-bw w-full">
+        <img animation-delay="500" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 47.png' %}" />
+        <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 43.png' %}" />
+        <img animation-delay="650" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/settings/image 48.png' %}" />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto w-full mt-28 relative flex flex-col">
+    <a href="{% url 'results' %}" class="hover:text-title/80 text-title transition-opacity text-4xl font-bold mt-10 mb-6">
+      Discover Top Performance<svg class="fill-current stroke-current h-6 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" d="M0 0h24v24H0V0z"></path>
+        <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+      </svg>
+    </a>
+
+    <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+      {% for result in best_results %}
+        <div class="">
+          {% include 'include/quick_result.html' with result=result id=result.id %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="mx-auto w-full mt-28 relative flex flex-col text-center">
+    <div class="flex items-center gap-2 justify-start text-text">
+      <h2 animation-delay="300" class="fade-down-on-scroll text-text text-center text-4xl font-bold uppercase">With Built</h2>
+      —
+      <h2 animation-delay="450" class="fade-up-on-scroll text-title text-center text-4xl font-bold uppercase">In Alerts</h2>
+    </div>
+
+    <div class="w-full relative mt-8 flex sm:flex-row flex-col items-start justify-start gap-2">
+      <div class="space-y-2 hidden sm:block imgs-bw w-full">
+        <img animation-delay="500" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 1.png' %}" loading="lazy" />
+        <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 2.png' %}" loading="lazy" />
+        <img animation-delay="650" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 3.png' %}" loading="lazy" />
+        <img animation-delay="720" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 4.png' %}" loading="lazy" />
+        <img animation-delay="800" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 9.png' %}" loading="lazy" />
+        <img animation-delay="840" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 10.png' %}" loading="lazy" />
+      </div>
+      <div class="space-y-2 imgs-bw w-full">
+        <img animation-delay="540" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 5.png' %}" loading="lazy" />
+        <img animation-delay="590" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 6.png' %}" loading="lazy" />
+        <img animation-delay="620" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 7.png' %}" loading="lazy" />
+        <img animation-delay="700" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 8.png' %}" loading="lazy" />
+        <img animation-delay="740" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 13.png' %}" loading="lazy" />
+        <img animation-delay="800" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 14.png' %}" loading="lazy" />
+      </div>
+      <div class="space-y-2 imgs-bw w-full">
+        <img animation-delay="560" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 5.png' %}" loading="lazy" />
+        <img animation-delay="600" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 6.png' %}" loading="lazy" />
+        <img animation-delay="660" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 7.png' %}" loading="lazy" />
+        <img animation-delay="710" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 8.png' %}" loading="lazy" />
+        <img animation-delay="790" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 11.png' %}" loading="lazy" />
+        <img animation-delay="860" class="fade-up-on-scroll rounded-md" src="{% static 'images/landingPage/alerts/image a 12.png' %}" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto w-full mt-32 relative flex flex-col">
+    <a href="{% url 'automate' %}" class="flex items-center gap-2 justify-start text-text hover:opacity-80 transition-opacity">
+      <h2 animation-delay="300" class="fade-down-on-scroll text-title text-center text-4xl font-bold uppercase">That turns</h2>
+
+      <h2 animation-delay="450" class="fade-up-on-scroll text-primary text-center text-4xl font-bold uppercase flex items-center">
+        into TRADES<svg class="fill-current stroke-current h-6 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M0 0h24v24H0V0z"></path>
+          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+        </svg>
+      </h2>
+    </a>
+
+    <div class="mt-12 flex items-center justify-center">
+      {% include 'svg/automate_svg.html' %}
+    </div>
+  </section>
+
+  <section class="mx-auto w-full mt-32 relative flex flex-col">
+    <div class="flex items-center gap-2 justify-start text-text">
+      <h2 animation-delay="300" class="fade-down-on-scroll text-title text-center text-4xl font-bold uppercase">Join the</h2>
+
+      <h2 animation-delay="450" class="fade-up-on-scroll text-success text-center text-4xl font-bold uppercase">Profits Together</h2>
+    </div>
+
+    <div class="relative mt-8 bg-background overflow-hidden w-full left-1/2 transform -translate-x-1/2">
+      <div class="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
+      <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
+
+      <div class="w-full flex gap-x-6 animate-scroll">
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 1.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 2.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 3.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 4.png' %}" loading="lazy" />
+
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 1.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 2.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 3.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 4.png' %}" loading="lazy" />
+      </div>
+      <div class="w-full mt-3 flex gap-x-6 animate-scroll-2">
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 5.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 6.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 7.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 8.png' %}" loading="lazy" />
+
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 5.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 6.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 7.png' %}" loading="lazy" />
+        <img class="rounded-md cursor-pointer max-w-md aspect-video" src="{% static 'images/landingPage/results/image r 8.png' %}" />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto w-full mt-24 mb-10 relative">
+    <h2 class="text-title text-5xl font-bold text-center mt-12">How to get started</h2>
+
+    <div class="w-full mt-14 relative">
+      <svg id="snake-line" class="h-full stroke-primary absolute left-1/2 -translate-x-1/2 top-0 bottom-0 scale-y-105 z-0" viewBox="0 0 619 2873" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Define a vertical gradient for the stroke -->
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <!-- Both stops start at the same offset -->
+            <stop offset="0%" stop-color="hsl(var(--color-primary))" />
+            <stop offset="0%" stop-color="hsl(var(--color-text) / 0.2)" />
+          </linearGradient>
+        </defs>
+        <path d="M295.167 2871C295.167 2830.1 301.203 2789.27 311.104 2748.74C364.352 2530.82 474.862 2319.18 518.662 2100.11C540.509 1990.85 559.186 1878.02 554.81 1767.87C551.854 1693.47 519.201 1632.26 458.027 1566.57C405.55 1510.22 344.498 1460.93 263.295 1416.52C202.639 1383.35 133.887 1355.01 84.4993 1315.76C-16.904 1235.18 -8.93736 1121.09 24.6415 1029.12C75.2651 890.482 206.773 768.855 323.93 645.636C434.758 529.073 518.055 411.377 554.81 280.388C580.714 188.072 593.802 94.5739 617 2" stroke="url(#lineGradient)" stroke-width="4" stroke-linecap="round" />
+      </svg>
+
+      <script type="text/javascript">
+        function updateSVGLineGradient() {
+          const svg = document.getElementById('snake-line')
+          if (!svg) return
+        
+          // Get the SVG's bounding rectangle
+          const rect = svg.getBoundingClientRect()
+          const viewportMid = window.innerHeight / 2
+        
+          // Calculate cutoffPercentage relative to the SVG's height
+          const cutoffPercentage = Math.max(0, Math.min(100, ((viewportMid - rect.top) / rect.height) * 100))
+        
+          // Update the gradient stops
+          const gradient = document.getElementById('lineGradient')
+          const stops = gradient.querySelectorAll('stop')
+          stops[0].setAttribute('offset', cutoffPercentage + '%')
+          stops[1].setAttribute('offset', cutoffPercentage + '%')
+        }
+        
+        // Update on scroll and resize
+        window.addEventListener('scroll', updateSVGLineGradient)
+        window.addEventListener('resize', updateSVGLineGradient)
+        
+        // Initialize the gradient on page load
+        updateSVGLineGradient()
+      </script>
+
+      <ul class="relative mx-auto text-text sm:max-w-[90%] flex flex-col p-0 sm:p-6" id="get-start-list">
+        {% include 'include/section3.html' with no=1 h='Join us today' text='Join us today for a seamless account signup experience. Start trading hassle-free' svg='<svg class="w-44 h-44" viewBox="0 0 103 103" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_211_552)"> <path d="M78.0949 0.40233C77.2902 0.603502 75.2182 1.42831 73.468 2.19276C69.525 3.94296 68.9416 4.10389 66.9701 3.92284C65.7631 3.82225 65.3004 3.84237 64.8176 4.10389C64.0732 4.48612 63.8922 4.78788 63.2484 6.71913C62.3834 9.27401 61.9207 11.9697 61.8201 15.3092L61.6994 18.4474L59.7682 17.7635C57.3541 16.8984 54.4371 16.1943 51.7012 15.792C48.9451 15.4098 42.9904 15.4098 40.2344 15.792C31.242 17.0795 23.0342 21.123 16.5967 27.4599C8.59004 35.3258 4.06367 46.0683 4.02344 57.1931C4.02344 61.4982 4.80801 66.5074 6.09551 70.3096L6.79961 72.3213L5.0293 74.1318C3.09805 76.1033 2.73594 76.8678 3.01758 78.1754C3.1584 78.8191 4.92871 80.6699 15.0275 90.7687C27.641 103.382 27.4398 103.221 29.0895 102.92C29.693 102.799 30.3166 102.296 32.3686 100.284L34.9033 97.8097L36.5127 98.192C42.1254 99.5197 49.8303 99.5197 55.4229 98.192L57.0322 97.7896L59.5469 100.284C61.6189 102.316 62.2023 102.779 62.826 102.899C64.3951 103.201 64.7572 102.94 69.867 97.8097C74.0514 93.6053 74.6348 92.9414 74.6348 92.3982C74.6348 91.9556 74.4738 91.6338 74.1117 91.3521C73.0254 90.4871 72.8846 90.5877 67.9961 95.456L63.4697 99.9824L59.5469 96.0596L55.624 92.1367L66.8897 80.8711L78.1553 69.6055L82.0781 73.5283L86.001 77.4512L81.3137 82.1385C77.2902 86.182 76.6465 86.9062 76.6465 87.4293C76.6465 88.1937 77.3707 88.9179 78.1553 88.9179C78.6381 88.9179 79.5031 88.1736 83.5467 84.1301C86.182 81.5148 88.4754 79.1209 88.6363 78.8191C88.9984 78.115 88.9984 76.7873 88.6363 76.0832C88.4754 75.7814 87.6305 74.8359 86.7453 73.9508L85.1359 72.3615L85.6389 70.9332C86.343 68.8812 87.208 65.1998 87.5299 62.9668C87.9322 60.2107 87.8719 53.9543 87.4494 51.2183C87.0672 48.8646 86.343 45.8471 85.7193 44.0164L85.317 42.8697L86.866 41.7834C92.5391 37.7801 96.5223 32.5496 98.5541 26.4139C100.626 20.2178 100.586 12.7945 98.4334 6.41737C97.9707 5.00917 97.7494 4.64706 97.166 4.26483C96.5223 3.84237 96.3211 3.80213 94.8525 3.92284C92.8408 4.10389 92.2373 3.94296 88.6162 2.31346C84.8945 0.643737 83.3656 0.181041 81.2734 0.0804553C79.9859 0.0201037 79.2014 0.100572 78.0949 0.40233ZM82.9432 3.33944C83.607 3.50038 85.4377 4.2246 87.0068 4.9287C90.8291 6.63866 92.2977 7.08124 94.0479 7.02088L95.4561 6.98065L95.8785 8.36874C97.4678 13.4584 97.4074 20.258 95.7578 25.3678C93.726 31.5437 89.1996 36.9754 82.8023 40.8178C81.6557 41.5219 80.9516 41.8236 80.69 41.7431C80.4889 41.6828 79.5635 41.1799 78.6381 40.6166C73.7898 37.6594 69.6658 33.3342 67.4127 28.8078C66.4672 26.9168 65.4613 23.7181 65.059 21.3443C64.5762 18.3267 64.7572 12.9957 65.4412 10.0586C66.2258 6.77948 66.0045 7.041 68.0967 6.96053C70.1486 6.90018 71.235 6.57831 75.198 4.74764C78.9197 3.03768 80.5895 2.73592 82.9432 3.33944ZM51.4598 18.8297C54.2963 19.2521 57.6559 20.1172 60.0699 21.0828L62.0213 21.8473L62.5846 24.0601C63.2082 26.5949 63.8117 28.2646 64.8779 30.3769C67.4328 35.4666 72.1 40.2545 77.6926 43.5738C80.1469 45.0222 80.7504 45.2033 81.7764 44.7808C82.1988 44.5998 82.6213 44.5193 82.7018 44.5998C82.9432 44.8613 84.0496 49.2066 84.4117 51.3994C84.8945 54.2359 84.9147 60.3113 84.4318 63.2082C84.0697 65.3607 83.0236 69.525 82.8023 69.7664C82.7219 69.8267 82.0178 69.2433 81.2131 68.4387C79.7244 66.9701 79.0605 66.5879 78.0346 66.5879C77.3104 66.5879 76.7471 66.8494 75.9826 67.5535L75.4193 68.0765L74.1721 66.8293L72.9248 65.582L76.2844 62.2224C80.1871 58.2795 80.6699 57.5351 80.6699 55.2217C80.6699 54.1756 80.5492 53.5519 80.1871 52.8076C79.3422 50.9769 77.1293 49.4883 75.2986 49.4883C74.6951 49.4883 74.6348 49.4279 74.6348 48.925C74.6348 46.2896 72.2408 43.7146 69.4244 43.3324L68.3984 43.1916V42.3668C68.3984 40.7172 66.95 38.6451 65.1596 37.7197C64.8176 37.5387 64.0531 37.3375 63.4496 37.2771C62.4236 37.1765 62.3633 37.1363 62.3633 36.6133C62.3633 35.5873 61.6994 33.9779 60.8947 33.0726C59.2854 31.242 56.8713 30.5781 54.6182 31.3426L53.4111 31.765L52.707 31.081C51.2385 29.6728 50.7959 29.5722 45.0625 29.5924C40.9787 29.5924 39.832 29.6527 39.4297 29.874C39.148 30.0349 38.3635 30.1556 37.599 30.1758C34.6418 30.1758 32.3283 32.2277 31.8857 35.2453C31.765 36.0701 31.6645 36.2109 31.3023 36.2109C30.4172 36.2109 28.8078 36.8144 27.9428 37.4984C26.8564 38.3232 25.9512 39.9326 25.7701 41.3207L25.6494 42.3467L24.6234 42.4674C21.5857 42.8496 19.2119 45.8068 19.5941 48.764C19.6746 49.3273 19.735 49.9711 19.7752 50.1722C19.7953 50.4539 19.5941 50.6148 18.9906 50.8361C16.2748 51.7615 14.7057 55.0607 15.5908 58.0381C15.8926 59.1043 16.1541 59.4463 18.367 61.6994L20.8012 64.1939L18.7492 66.2459L16.6973 68.2777L16.0535 67.6541C15.2086 66.8695 14.6654 66.5879 13.901 66.5879C12.8549 66.5879 12.2111 66.9701 10.642 68.5191L9.11309 70.048L8.48945 67.7547C7.36289 63.6709 7.16172 62.0816 7.16172 57.334C7.18184 52.4254 7.48359 50.132 8.73086 46.0281C13.0762 31.7449 25.4281 21.0828 40.2344 18.8297C42.8898 18.4273 48.8043 18.4273 51.4598 18.8297ZM50.635 33.2537L51.1982 33.7969L48.9854 36.0299L46.7725 38.2629L44.8613 38.1824C43.2922 38.1221 42.7893 38.0215 42.0852 37.6191C40.8178 36.8949 40.2344 35.8086 40.2344 34.159C40.2344 33.4549 40.2947 32.791 40.3752 32.7105C40.4557 32.6301 42.6686 32.5898 45.3039 32.6301L50.0918 32.6904L50.635 33.2537ZM37.257 34.7424C37.3375 36.6334 37.9008 37.9008 39.1883 39.1883C40.5965 40.6166 41.884 41.0793 44.64 41.1799L46.9736 41.2805L48.4422 42.7289C50.1924 44.4187 50.4941 44.9418 50.4941 46.1488C50.4941 47.899 48.7439 49.1463 46.9736 48.6635C46.3098 48.4824 45.2436 47.5168 40.7775 43.091C34.8631 37.1967 34.5211 36.734 34.9838 35.2252C35.2051 34.4406 36.392 33.1933 36.8949 33.1933C37.0961 33.1933 37.1967 33.6158 37.257 34.7424ZM58.1186 34.5412C58.7824 35.024 59.3457 36.1305 59.3457 36.9351C59.3457 37.257 59.0842 37.9611 58.7422 38.4842C57.9777 39.6912 57.9576 40.4758 58.6617 41.0189C59.3859 41.5822 59.8889 41.542 60.935 40.8379C63.7715 38.9066 66.6885 41.9846 64.7773 44.8613C64.0732 45.9275 64.033 46.2494 64.5963 46.9535C65.1395 47.6576 66.0246 47.6375 67.0707 46.9133C68.0766 46.2293 69.4848 46.1689 70.3498 46.7926C71.6977 47.7783 71.9592 49.6492 70.9332 50.9769C70.2895 51.8219 70.2693 52.6265 70.8527 53.2502C71.4361 53.8738 72.1402 53.8336 73.2064 53.1094C75.2584 51.7213 77.6523 52.9082 77.6523 55.3222C77.6523 55.8453 77.5115 56.4488 77.3305 56.7305C77.1494 57.0121 74.4336 59.8084 71.2953 62.9668C65.24 69.0623 65.1193 69.2232 65.9441 70.1889C66.1252 70.4101 66.5879 70.6717 66.9299 70.732C67.5334 70.8527 67.7145 70.7521 69.2031 69.2836L70.8326 67.7144L72.0799 68.9617L73.3272 70.209L65.3205 78.2156L57.334 86.2021L52.9686 81.8367L48.6232 77.4914L49.5084 77.25C50.0314 77.089 52.0432 76.9885 54.417 76.9482C57.6357 76.9281 58.6617 76.8476 59.5469 76.5459C61.3172 75.9826 62.9668 75.0773 63.2082 74.514C63.51 73.8502 63.2082 73.0254 62.5242 72.623C62.0615 72.3615 61.8805 72.3615 61.3172 72.6029C57.9375 73.9709 58.3398 73.9105 54.1152 73.9508C49.5889 73.9709 48.5227 74.1721 45.8672 75.4797C44.2578 76.2642 43.8756 76.5861 39.2688 81.1527L34.3803 85.9808L26.6553 78.2558L18.9102 70.5107L21.0023 68.4185L23.0945 66.3264L24.2412 66.6885C27.1381 67.5937 30.6385 65.9642 31.423 63.3289C31.5438 62.9064 31.6645 62.5644 31.6846 62.5644C31.7248 62.5644 32.0869 62.7053 32.5094 62.8863C33.5957 63.349 35.7482 63.3088 36.8748 62.8058C38.1824 62.2224 39.309 61.116 39.8522 59.8486C40.3148 58.7824 40.3551 58.7422 40.9385 58.883C42.1857 59.2049 44.3182 59.0439 45.2033 58.5812C47.4564 57.4144 48.5227 55.6642 48.5227 53.2099C48.5025 51.842 48.5428 51.7012 48.9049 51.7012C50.2326 51.7012 52.0834 50.293 52.8881 48.6433C53.4111 47.6174 53.5117 47.1748 53.5117 45.9879C53.5117 44.0566 52.9484 42.9502 51.1178 41.1396L49.6895 39.7314L52.2443 37.1564C53.6727 35.7281 55.101 34.4406 55.4229 34.2797C56.1873 33.9176 57.4346 34.0383 58.1186 34.5412ZM32.6502 39.5101C33.0123 39.6711 35.9695 42.4875 39.2688 45.7867C45.7063 52.2846 45.8672 52.4857 45.4246 54.0549C45.1832 54.94 44.2779 55.8453 43.433 56.0263C41.8438 56.3683 41.7432 56.308 35.3459 49.9308C32.0467 46.6517 29.2102 43.7146 29.0492 43.4129C28.5664 42.5076 28.6871 41.1597 29.3107 40.4154C30.2361 39.309 31.4432 38.9871 32.6502 39.5101ZM26.7156 45.7465C27.0174 45.9074 29.4918 48.2812 32.2277 51.0373C36.5328 55.3625 37.1967 56.1269 37.3375 56.7908C37.7197 58.9433 35.9092 60.6734 33.8572 60.1101C32.7709 59.8285 23.0342 50.1521 22.6922 49.0256C22.1893 47.3357 23.5371 45.4648 25.2672 45.4648C25.7701 45.4648 26.4139 45.5855 26.7156 45.7465ZM22.491 53.7933C23.1348 54.1353 28.2244 59.2652 28.5463 59.8888C28.667 60.1303 28.7676 60.7137 28.7676 61.1965C28.7676 63.2484 26.7961 64.5158 24.885 63.691C24.0602 63.3289 18.7895 58.018 18.5078 57.2736C18.0451 56.0263 18.5279 54.5377 19.5941 53.8939C20.3385 53.4312 21.7266 53.391 22.491 53.7933ZM32.3887 96.0596L28.4658 99.9824L17.2002 88.7168L5.93457 77.4512L9.85742 73.5283L13.7803 69.6055L25.0459 80.8711L36.3115 92.1367L32.3887 96.0596ZM50.5947 83.6875L55.2217 88.3144L54.0549 89.4812C52.2443 91.3119 52.1438 92.7402 53.733 94.4502L54.5176 95.3152L52.7674 95.6572C51.6207 95.8785 49.609 96.0394 47.034 96.0998C43.2117 96.2004 41.5822 96.0998 38.5647 95.5164L37.418 95.2951L38.2227 94.4301C39.1279 93.4443 39.3291 92.881 39.1682 91.5935C39.0877 90.809 38.9066 90.5072 37.8002 89.4008L36.5127 88.1133L41.0592 83.5869C43.5336 81.0924 45.666 79.0605 45.7867 79.0605C45.8873 79.0605 48.06 81.1326 50.5947 83.6875Z" /> <path d="M78.457 8.75097C76.7873 9.11308 74.2123 10.4006 72.9852 11.4668C71.758 12.533 70.1889 14.8867 69.6055 16.5162C68.9818 18.2865 68.841 21.3644 69.2836 23.1348C70.2895 27.1582 73.0254 30.1959 76.8678 31.6041C81.2533 33.2135 85.9004 32.1875 89.2197 28.8883C90.5676 27.5404 92.1367 25.066 92.1367 24.2814C92.1367 23.7182 91.332 22.9336 90.7285 22.9336C89.783 22.9336 89.5617 23.1146 88.8777 24.4223C87.0672 27.8422 83.3053 29.7935 79.6439 29.2303C76.6465 28.7475 74.1721 26.9168 72.8443 24.1607C72.1402 22.6922 72.1201 22.5514 72.1201 20.4189C72.1201 18.2865 72.1402 18.1457 72.8443 16.6973C74.1721 13.9412 76.6666 12.0703 79.6439 11.6076C83.4059 11.0242 87.2684 13.0963 88.918 16.5967C89.2801 17.3812 89.7025 18.1658 89.8836 18.3469C90.3061 18.8498 91.4326 18.8096 91.9355 18.3066C92.5391 17.7031 92.4385 16.9387 91.493 15.0678C90.0647 12.191 87.3287 9.85741 84.291 8.97225C82.6816 8.48944 80.0262 8.38886 78.457 8.75097Z" /> <path d="M82.8627 18.8498L80.2877 21.3846L78.3766 19.5539C76.3045 17.5623 75.9022 17.3812 74.9566 18.1256C74.5744 18.4273 74.4336 18.7291 74.4336 19.2521C74.4336 19.8758 74.6951 20.1976 76.7068 22.2697C79.1209 24.7642 79.825 25.2269 80.6699 24.9051C81.3338 24.6637 86.8861 19.1717 87.208 18.4273C87.6707 17.3812 86.9264 16.2949 85.7596 16.2949C85.5785 16.2949 84.2709 17.4416 82.8627 18.8498Z" /> </g></svg>'%}
+        {% include 'include/section3.html' with no=2 h='Select the ideal plan' text='Select the ideal plan that suits your specific needs and trading goals' svg='<svg class="w-44 h-44 " viewBox="0 0 56 67" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.61515 1.17027C6.5073 1.69579 5.48467 2.69001 4.94494 3.79786L4.53305 4.65005V12.7459V20.8417L4.93074 21.6371C5.82554 23.4693 7.51572 24.6624 9.47577 24.847L10.4274 24.9322V31.4657V37.985L9.93027 37.6157C8.56676 36.5788 6.9476 36.1669 5.10118 36.3942C2.70084 36.6925 1.33733 37.5589 0.456734 39.3485C0.0306378 40.2149 -0.0119718 40.3995 0.00223143 41.5784C0.00223143 42.6862 0.186873 43.6378 1.43675 48.893C2.23213 52.2166 2.9849 55.4691 3.11273 56.1366C3.75188 59.304 5.44206 63.2098 7.58674 66.505C9.54678 69.4876 12.3164 72.7544 13.2254 73.1237C13.5947 73.2799 15.995 73.3225 26.0793 73.3225C37.5981 73.3225 38.5071 73.3083 38.9758 73.0669C39.6008 72.7686 40.595 71.263 41.9443 68.6355C44.1032 64.4029 45.4099 60.1703 46.0206 55.3697C46.3047 53.1114 46.4751 37.502 46.2336 35.684C46.0348 34.1501 45.5661 33.1843 44.5719 32.119C43.3788 30.8692 42.2994 30.3862 40.5382 30.3152C39.4445 30.2726 39.0326 30.3152 38.3083 30.5567L37.4277 30.8549L36.6039 30.0312C34.8285 28.2416 32.1867 27.716 29.971 28.6961L29.346 28.9801L28.7353 28.341C27.5848 27.1621 26.1929 26.5798 24.5312 26.5656C23.9772 26.5656 23.3239 26.6082 23.0824 26.665L22.6421 26.7644V25.8412V24.9322L23.5369 24.847C26.0367 24.6482 28.082 22.8301 28.5933 20.373C28.8063 19.3362 28.8063 6.15559 28.5933 5.11876C28.224 3.35756 26.8037 1.61057 25.2697 1.04244C24.5027 0.758375 24.2187 0.744171 16.4921 0.744171H8.50995L7.61515 1.17027ZM23.7074 5.03354C24.4885 5.38862 24.4885 5.41702 24.4885 12.7459C24.4885 18.4982 24.4601 19.5634 24.2755 19.9185C24.0198 20.4156 23.6648 20.6286 23.0824 20.6286H22.6421V19.0237C22.6421 16.4529 22.1166 15.0042 20.7247 13.6833C17.7562 10.8711 12.984 11.6806 11.2086 15.2882C10.6404 16.4245 10.4416 17.5039 10.4274 19.3788V20.6286H10.0155C9.77403 20.6286 9.41895 20.4724 9.16329 20.2594L8.723 19.8901V12.7459V5.60166L9.16329 5.23238L9.60359 4.8631H16.4637C21.4917 4.8631 23.4375 4.90571 23.7074 5.03354ZM17.6142 16.5807C18.3954 17.0921 18.3812 16.9216 18.3812 28.1137C18.3812 37.6725 18.3954 38.4963 18.6368 38.9508C19.3896 40.4705 21.6337 40.4705 22.3865 38.9508C22.6137 38.5247 22.6421 38.0276 22.6421 35.3574C22.6421 32.8718 22.6847 32.1616 22.8552 31.7924C23.3665 30.7129 24.8578 30.4857 25.71 31.3379L26.1929 31.8208V34.9171C26.1929 36.6357 26.2639 38.3116 26.3492 38.6667C26.7895 40.5699 29.1614 40.996 30.1698 39.3485C30.4255 38.9366 30.4539 38.6241 30.4539 36.6783C30.4539 35.471 30.5107 34.2353 30.5817 33.937C30.8516 32.8008 31.931 32.2185 32.9963 32.6446C34.0331 33.0564 34.0615 33.1843 34.1467 37.0617C34.2177 40.8256 34.2319 40.854 35.1836 41.5642C35.7091 41.9476 36.8453 41.9476 37.3709 41.5642C38.2799 40.8824 38.3367 40.712 38.4077 38.0134L38.4787 35.5136L39.0042 35.0307C39.4587 34.6188 39.6434 34.5478 40.2541 34.5478C41.1347 34.5478 41.7596 35.0449 41.9585 35.8971C42.1289 36.6357 42.1289 49.5748 41.9585 52.4864C41.7312 56.3923 40.9501 60.0567 39.615 63.4655C39.0184 64.9852 37.7969 67.5276 37.1294 68.5928L36.8453 69.0616H25.9089H14.9724L14.4327 68.4792C11.1659 64.8432 8.49574 60.1277 7.51572 56.1793C6.22323 50.9667 4.16377 41.6068 4.23478 41.3085C4.36261 40.8114 4.7461 40.641 5.79714 40.6125C6.76295 40.5841 7.26007 40.7972 7.67196 41.4363C7.78558 41.621 8.46734 44.2202 9.16329 47.217C9.93027 50.5122 10.541 52.7989 10.6972 53.0119C11.6347 54.3186 13.5237 54.3328 14.3617 53.0545C14.6031 52.6853 14.6173 51.7336 14.6883 35.1159C14.7594 18.0437 14.7736 17.5608 15.0292 17.1205C15.5547 16.2541 16.7336 15.9984 17.6142 16.5807Z" /><path d="M35.0273 1.09925C33.5218 1.79521 32.5133 2.90306 32.002 4.4086C31.7322 5.20398 31.718 5.57326 31.7606 13.0441L31.8032 20.8417L32.2151 21.6939C32.769 22.8159 33.7774 23.8102 34.9705 24.3641L35.9221 24.8186H43.8049H51.6877L52.5114 24.4919C54.1732 23.8102 55.5509 22.0916 55.8918 20.2736C55.977 19.7907 56.0196 16.7228 55.9912 12.2062L55.9486 4.91991L55.4089 3.84047C54.7556 2.51957 53.6903 1.46853 52.5399 1.04244C51.7729 0.758374 51.4888 0.744171 43.7623 0.744171H35.7801L35.0273 1.09925ZM50.9633 5.00513C51.7445 5.3034 51.7587 5.38862 51.7587 12.7459C51.7587 19.9611 51.7445 20.1173 51.0627 20.4866C50.8781 20.5718 48.3215 20.6286 43.8049 20.6286H36.8169L36.405 20.2168L35.9931 19.8049V12.7459V5.68688L36.405 5.27499L36.8169 4.8631H43.7197C47.7534 4.8631 50.7503 4.91991 50.9633 5.00513Z"/></svg>' %}
+        {% include 'include/section3.html' with no=3 h='Share your TradingView username' text='Share your TradingView username with us to unlock complete access to our comprehensive suite of trading strategies' svg='<svg class="w-44 h-44 " viewBox="0 0 94 91" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M52.4391 0.115654C42.3951 1.39228 34.3035 7.85051 31.0744 17.1812C30.0418 20.185 29.7414 22.0061 29.7227 25.4229C29.7227 28.8961 29.948 30.3605 30.943 33.4018C32.2008 37.288 34.1533 40.5172 36.9506 43.352L38.6027 45.0417H19.7537H0.904685V48.0455V51.0493H29.4598H58.015L57.8836 51.9317C57.7334 53.0581 56.7759 54.8604 56.0437 55.48C55.7433 55.7428 55.0487 56.1746 54.523 56.4562L53.5656 56.9631L41.738 57.057C32.8767 57.1321 29.8165 57.2072 29.5162 57.3762C28.8591 57.7516 28.1457 58.7091 28.0142 59.4037C27.7139 61.0371 27.6575 60.962 34.6602 68.021C38.3024 71.6631 41.4376 74.6669 41.7755 74.8171C42.2824 75.0237 44.4039 75.08 53.5468 75.08H64.7173L71.5322 71.6819L78.3472 68.2838L80.3184 68.3777C81.6889 68.434 82.7215 68.603 83.6977 68.9221L85.1058 69.3727L74.0855 76.7321L63.0464 84.0915H47.2763H31.5062L16.9564 78.2715C8.9587 75.0612 2.31273 72.4328 2.20009 72.3953C1.8997 72.339 -0.240525 77.7646 0.0223104 77.9336C0.153728 77.9899 7.02499 80.7685 15.3231 84.0727L30.3985 90.0991L47.7269 90.0616L65.0552 90.0053L79.0042 80.7122C86.664 75.6056 93.141 71.1938 93.3851 70.8934C94.2111 69.8984 94.2111 68.2275 93.3475 67.2137C92.2586 65.9183 87.6966 63.7217 84.2797 62.8581C81.7452 62.2011 78.7602 62.1072 76.8452 62.5953C76.2257 62.7455 72.9027 64.2662 69.4671 65.9746L63.2154 69.0723H53.697H44.1786L41.1748 66.0685L38.1709 63.0647H45.6805C54.2227 63.0647 54.8234 62.9896 57.3767 61.7129C60.1177 60.3612 62.2579 57.8831 63.3843 54.7666C63.8537 53.49 63.8725 53.1708 63.8912 50.167C63.8912 47.2007 63.8537 46.9003 63.497 46.431C62.5395 45.1355 62.5583 45.1543 57.1702 45.0041C54.4667 44.9478 51.8384 44.7976 51.3127 44.685C41.7192 42.5823 35.1296 34.0026 35.7116 24.3904C36.4062 12.9007 46.9384 4.43366 58.259 6.27351C71.1567 8.35741 78.3472 22.2126 72.715 34.0965C71.6824 36.3118 69.9552 38.7336 69.2418 39.034C68.6035 39.2969 68.059 39.1467 67.5521 38.6022C67.1954 38.2267 67.1767 37.87 67.1767 25.1038V11.9996H64.1728H61.169V12.8444C61.169 13.3137 61.1315 13.6892 61.1127 13.6892C61.0751 13.6892 60.5307 13.4264 59.8924 13.126C57.5081 11.9245 54.3165 11.6992 51.7633 12.5628C45.8307 14.5528 42.1135 21.5179 43.4089 28.1827C44.6292 34.3593 48.9847 38.6022 54.4855 38.9777C56.3629 39.0903 58.2966 38.7149 59.8736 37.9076C60.4931 37.6072 61.0188 37.3444 61.0564 37.3444C61.0939 37.3444 61.169 37.87 61.2441 38.5084C61.6759 42.6574 65.8249 45.8302 69.805 45.0792C72.4334 44.5911 74.0292 43.352 76.1882 40.1417C77.5774 38.039 78.1782 36.875 79.0606 34.5283C80.187 31.4869 80.5625 29.2903 80.5813 25.6107C80.6 21.9873 80.3184 20.2976 79.2483 17.1812C75.6437 6.7804 65.7686 -0.165952 54.7859 0.00301361C53.8096 0.0217875 52.7583 0.0781061 52.4391 0.115654ZM57.3767 18.5517C60.2303 20.016 61.8073 24.1087 60.8874 27.6382C60.3054 29.8911 59.0663 31.5995 57.3767 32.5007C56.7384 32.8386 56.269 32.9325 55.1614 32.9325C54.0537 32.9325 53.5843 32.8386 52.946 32.5007C49.0786 30.4543 47.9709 24.503 50.7307 20.5042C51.369 19.5655 52.7583 18.4953 53.7345 18.195C54.6545 17.9133 56.4755 18.1011 57.3767 18.5517Z" /></svg>' %}
+        {% include 'include/section3.html' with no=4 h='All set!' text="You are all set and good to go! You're now fully prepared to embark on your trading journey with confidence and ease. Happy trading!" svg='<svg class="w-44 h-44 " viewBox="0 0 77 73" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M67.306 0.284322C70.3338 0.987867 73.1027 3.19619 74.4572 5.95539C75.6402 8.36127 75.5756 6.48741 75.7476 36.3742L75.8979 63.3568L75.4511 64.5928C74.8559 66.2859 74.0882 67.5074 72.8648 68.7491C71.6582 69.9908 70.4482 70.7597 68.7475 71.3971L67.5182 71.8622L40.0801 72.0666L12.642 72.2709L11.406 71.8242C9.69597 71.2121 8.47459 70.4614 7.23293 69.2548C6.00803 68.0313 5.23916 66.8212 4.60171 65.1205L4.13664 63.8913L3.98085 49.7758L3.82507 35.6603L4.30806 34.7618C4.87373 33.6262 6.08404 32.8911 7.3673 32.8815C8.65056 32.872 9.87168 33.589 10.4541 34.6991L10.9335 35.5905L11.0319 48.7946C11.0998 57.9125 11.1991 62.1839 11.3208 62.6558C11.5808 63.5488 12.8736 64.8225 13.7704 65.0691C14.7347 65.3152 65.3222 64.9384 66.2827 64.678C67.1757 64.4181 68.4494 63.1252 68.6961 62.2285C68.9424 61.2979 68.5823 10.6766 68.3052 9.74989C68.0971 9.00846 67.1432 7.90109 66.3802 7.48462C65.9054 7.21798 64.1324 7.2143 44.8997 7.27311L23.9617 7.34462L23.2492 6.89401C21.1111 5.49151 21.0874 2.31714 23.2044 0.882951L23.9102 0.421774L45.1006 0.230183C63.0661 0.0794962 66.4602 0.0879897 67.306 0.284322Z" /><path d="M4.95973 4.36225C5.53583 4.62813 9.75362 8.66623 22.767 21.5039L39.8286 38.2966L44.1357 33.9248C46.5157 31.5262 48.7122 29.4328 49.0318 29.2785C49.3683 29.1071 49.9921 28.9843 50.5831 28.9799C52.4574 28.9659 53.9363 30.2889 54.102 32.1282C54.2499 33.8495 54.2165 33.9004 47.6636 40.5516C41.4122 46.8628 41.278 46.982 39.8934 46.9923C38.4413 47.0032 39.1725 47.69 19.4401 28.2662C8.24719 17.2555 0.625373 9.61228 0.402976 9.22556C-0.00804852 8.45187 -0.0688896 7.08456 0.279533 6.25456C1.02615 4.47598 3.23155 3.58148 4.95973 4.36225Z" /></svg>' %}
+      </ul>
+    </div>
+  </section>
+
+  <section class="mx-auto w-full mt-24 mb-10 relative bg-background/20 backdrop-blur-sm">
+    <svg class="parallaxi -rotate-12 h-24 fill-text opacity-10 absolute top-0 left-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <svg class="parallaxi rotate-12 h-24 fill-text opacity-10 absolute top-[10%] right-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <svg class="parallaxi rotate-12 h-24 fill-text opacity-10 absolute top-[90%] left-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <svg class="parallaxi -rotate-12 h-24 fill-text opacity-10 absolute top-full right-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <!--                                                                                                                                                                        <svg class="parallax h-24 fill-text opacity-10 absolute top-[50%] left-[50%]" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>
+  <svg class="parallax h-24 fill-text opacity-10 absolute top-[50%] right-[50%]" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path></svg>                                                                                                                                                                        -->
+
+    <h2 class="text-title text-5xl font-bold text-center mt-12">Find your answers</h2>
+
+    <div class="mt-16 w-full md:w-[60%] mx-auto">
+      <div class="rounded-lg px-0 sm:px-3 py-3 space-y-6" id="accordion-open" data-accordion="open">
+        {% include 'include/qanda_box.html' with id=1 title='What is IsAlgo?' description='Isalgo is a platform that offers a variety of intelligent trading strategies designed to help traders optimize their market performance. It leverages technical indicators, custom algorithms, and risk management techniques to provide users with actionable insights in real-time.' %}
+        {% include 'include/qanda_box.html' with id=2 title='How do I get started with Isalgo?' description='To get started with Isalgo, simply sign up for an account on our website. After creating an account, select your preferred plan, and provide your TradingView username to access our exclusive strategies and tools.' %}
+        {% include 'include/qanda_box.html' with id=3 title='What types of trading strategies does Isalgo offer?' description='Isalgo offers a range of advanced trading strategies, including trend-following strategies, reversal strategies, and breakout strategies. Each strategy is customizable to suit your trading style and preferences.' %}
+        {% include 'include/qanda_box.html' with id=31 title='How can I customize the strategies?' description='Each strategy comes with a variety of settings that you can adjust according to your trading preferences. You can modify parameters such as entry and exit conditions, stop-loss levels, and trade size. Changes are reflected in real-time on your TradingView chart.' %}
+        {% include 'include/qanda_box.html' with id=4 title='Is it easy to use for the beginner?' description="Yes, it is. All of our strategies are designed to be beginner-friendly. Each strategy comes with a helper guide that explains the function of each setting and property. <br/><br>You don't need to be an expert trader, basic trading knowledge is sufficient." %}
+        {% include 'include/qanda_box.html' with id=5 title='Do I need a tradingview membership?' description="To get started, you don't need a TradingView membership. However, please note that the free TradingView version has some limitations. For example, you can only have one active alert, and you can create only one chart with one strategy on the chart." %}
+        {% include 'include/qanda_box.html' with id=6 title='Can I automate my trading with Isalgo?' description='Yes! Isalgo supports automation through TradingView alerts. When a trading condition is met, alerts can be triggered and sent to your broker’s API for trade execution. You can learn more about this process in our Isalgo Automation Guide.' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-full w-full mt-24 mb-10 relative">
+    <svg class="absolute min-w-[100vw] top-[10%] left-[-20%] right-[-20%] opacity-10 pointer-events-none" viewBox="0 0 4956 707" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="stroke-title" d="M2.12664 389.685C35.6594 380.524 67.1106 356.428 100.842 344.689C151.296 327.13 199.878 304.808 251.636 291.144C367.468 260.567 482.858 233.349 602.43 221.792C756.468 206.902 904.318 213.142 1058.22 230.736C1234.69 250.909 1419.4 257.67 1590.19 310.195C1722.41 350.858 1847.76 409.589 1975.94 460.639C2163.42 535.313 2346.46 597.846 2545.84 634.207C2947.47 707.454 3370.53 703.595 3769.16 613.153C3866.43 591.084 3973.36 567.253 4065.45 528.247C4136.46 498.175 4201.95 461.693 4267.56 421.525C4334.85 380.324 4407.04 336.901 4478.15 304.033C4532.6 278.864 4588.76 257.031 4644 233.564C4680.3 218.143 4717.93 198.5 4757.13 192.288C4810.49 183.836 4872.83 161.838 4921.47 144.09" stroke-width="5" stroke-linecap="round" />
+      <path class="stroke-secondary" d="M40.6793 704.846C185.914 670.963 336.48 653.887 483.994 632.604C636.429 610.611 789.673 574.726 936.95 530.389C1093.12 483.376 1248.72 447.165 1398.77 380.847C1551.94 313.149 1703.3 239.043 1860.75 181.603C2019.33 123.748 2173.87 70.3808 2341.24 43.8644C2553.63 10.2165 2766 -2.84468 2981.07 4.44545C3186.46 11.4076 3393.33 32.3959 3596.64 62.3862C3721.19 80.7587 3849.5 115.211 3964.31 168.639C4098.09 230.901 4214.58 331.487 4338.97 410.007C4448.31 479.032 4563.84 519.617 4690.1 534.051C4730.19 538.634 4770.23 533.202 4810.41 535.72C4835.63 537.3 4862.31 528.877 4886.49 531.642C4896.05 532.735 4950.59 519.267 4953.72 514.466" stroke-width="5" stroke-linecap="round" />
+    </svg>
+
+    <h2 class="text-title text-4xl sm:text-5xl font-bold text-center mt-12">Still questioning?</h2>
+    <p class="text-text/80 text-base mt-4 font-medium text-center">Our team is here to help you with any questions</p>
+
+    <div class="w-full mt-4 relative">
+      <div class="flex flex-col mt-2 mb-auto w-full items-center">
+        <a href="{% url 'docs_contactus' %}" class="btn-text font-extrabold max-w-xs mb-5 mt-4 text-2xl py-4 px-6">
+          Contact us<svg class="h-5 aspect-auto ml-1.5" stroke="currentColor" fill="currentColor" stroke-width="0.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2H8C4.691 2 2 4.691 2 8v13a1 1 0 0 0 1 1h13c3.309 0 6-2.691 6-6V8c0-3.309-2.691-6-6-6zm4 14c0 2.206-1.794 4-4 4H4V8c0-2.206 1.794-4 4-4h8c2.206 0 4 1.794 4 4v8z"></path>
+            <path d="M7 9h10v2H7zm0 4h7v2H7z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-16 mb-8 relative bg-accent/10 rounded-xl overflow-hidden">
+    <div class="absolute right-0 h-full pointer-events-none">
+      <svg class="aspect-square h-full fill-text/10 stroke-text/20i scale-150" viewBox="0 0 302 428" xmlns="http://www.w3.org/2000/svg">
+        <path d="M211.404 5L211.404 102.073" stroke-width="10" stroke-linecap="round" />
+        <path d="M203.638 82.6582H219.169C222.029 82.6582 224.346 86.1351 224.346 90.4241V152.551C224.346 156.84 222.029 160.317 219.169 160.317H203.638C200.778 160.317 198.46 156.84 198.46 152.551V90.4241C198.46 86.1351 200.778 82.6582 203.638 82.6582Z" stroke-width="15" />
+        <path d="M97.9228 350.173L82.7244 349.97C79.9265 349.933 77.6832 346.437 77.7139 342.161L78.1584 280.231C78.1891 275.955 80.4821 272.52 83.28 272.557L98.4784 272.76C101.276 272.797 103.52 276.293 103.489 280.568L103.044 342.499C103.014 346.774 100.721 350.21 97.9228 350.173Z" stroke-width="15" />
+        <path d="M90.3241 351.011L90.3241 422.421" stroke-width="10" stroke-linecap="round" />
+        <path d="M18.9213 127.582C8.02681 137.789 1.78067 149.872 0.340851 164.059C-1.57142 182.902 4.55596 199.113 18.891 212.921C28.9832 222.643 41.8664 227.94 55.3822 232.327C79.6901 240.217 103.996 248.113 128.336 255.922C130.624 256.656 131.54 257.591 131.405 259.867C131.223 262.953 131.671 266.065 131.675 269.165C131.712 299.984 131.668 330.803 131.776 361.621C131.792 366.107 131.763 370.283 127.277 373.366C125.943 374.283 125.182 375.95 124.33 377.359C118.441 387.094 118.719 396.922 125.082 406.204C131.337 415.328 141.054 419.725 152.872 419.122C165.618 418.471 174.737 412.28 179.426 401.673C184.272 390.709 182.071 380.394 173.3 371.557C170.91 369.149 169.839 366.819 169.846 363.592C169.937 321.504 169.835 279.416 169.988 237.328C170.003 233.42 168.546 231.761 164.564 230.464C132.124 219.898 99.77 209.118 67.3868 198.411C62.832 196.905 58.3622 195.258 54.4411 192.602C34.1485 178.855 39.3168 156.014 56.0194 147.657C69.4852 140.919 82.4802 133.417 95.746 126.349C97.8978 125.202 98.6712 123.823 98.6535 121.617C98.5638 110.463 98.6334 99.3077 98.6097 88.1532C98.5995 83.3534 97.7505 82.8281 93.2104 85.2459C77.7509 93.4787 62.3417 101.789 46.9502 110.125C37.3547 115.323 27.3506 119.996 18.9213 127.582ZM291.176 226.931C289.203 224.537 287.366 222.067 285.166 219.809C274.858 209.231 261.201 203.678 246.992 199.036C223.188 191.259 199.337 183.597 175.439 176.058C171.381 174.778 169.753 173.074 169.79 168.94C170.034 141.693 169.928 114.444 169.929 87.195C169.929 83.8617 170.019 80.522 169.822 77.1971C169.676 74.7372 168.413 73.5887 165.52 74.9425C155.903 79.4432 146.289 79.4173 136.631 74.9188C132.786 73.1273 131.39 73.9797 131.27 78.0217C131.178 81.118 131.268 84.2188 131.283 87.3175C131.453 123.414 131.67 159.511 131.714 195.608C131.718 198.814 132.931 200.24 136.191 201.305C169.568 212.212 202.732 223.647 236.295 234.091C240.398 235.367 244.459 236.822 247.948 239.174C256.886 245.199 261.385 253.059 259.685 263.345C258.338 271.492 252.969 277.111 245.54 281.254C232.329 288.619 219.037 295.868 205.685 303.021C203.046 304.434 201.994 306.086 202.024 308.822C202.145 319.973 202.059 331.126 202.098 342.279C202.103 343.592 201.53 345.285 203.241 346.007C204.822 346.674 206.098 345.432 207.39 344.754C227.204 334.368 246.942 323.861 266.839 313.607C301.494 295.748 312.378 257.863 291.176 226.931Z" />
         <circle cx="151.003" cy="43.8285" r="21.5721" />
       </svg>
-  </div>
-  <div class="text-text w-full py-20 px-8">
-    <h3 class="text-3xl font-bold mb-1">Join the IsAlgo Community Today</h3>
-    <h3 class="text-3xl font-bold mb-8">First <span class="text-secondary text-4xl font-extrabold">{{ free_trial_days }} Days Free</span></h3>
-    <a href="{% url 'register' %}" class="btn-accent !text-text text-2xl font-bold border-text border-2 bg-transparent ">Join Us Today
-      <svg class="h-6 aspect-square ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.15,179.17l-46.82-46.82,37.92-13.51c.26-.09.51-.19.76-.3a20,20,0,0,0-1.76-37.27L54.16,29A20,20,0,0,0,29,54.16L81.27,214.24A20,20,0,0,0,118.54,216c.11-.25.21-.5.3-.76l13.51-37.92,46.83,46.82a20,20,0,0,0,28.28,0l16.69-16.68A20,20,0,0,0,224.15,179.17Zm-30.83,25.17-48.48-48.48A20,20,0,0,0,130.7,150a20.47,20.47,0,0,0-3.73.35A20,20,0,0,0,112.35,162c-.11.25-.2.5-.3.76L100.4,195.5,54.29,54.29,195.5,100.4l-32.71,11.65c-.25.09-.51.19-.76.3a20,20,0,0,0-6.16,32.48h0l48.48,48.48ZM84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM12,108a12,12,0,0,1,0-24h4a12,12,0,0,1,0,24ZM120.62,24.21l4-12a12,12,0,0,1,22.77,7.58l-4,12a12,12,0,0,1-22.77-7.58Zm-81.23,104a12,12,0,0,1-7.59,15.17l-12,4a12,12,0,1,1-7.59-22.76l12-4A12,12,0,0,1,39.39,128.21Z"></path></svg>
-    </a>
-  </div>
+    </div>
+    <div class="text-text w-full py-20 px-8">
+      <h3 class="text-3xl font-bold mb-1">Join the IsAlgo Community Today</h3>
+      <h3 class="text-3xl font-bold mb-8">First <span class="text-secondary text-4xl font-extrabold">{{ free_trial_days }} Days Free</span></h3>
+      <a href="{% url 'register' %}" class="btn-accent !text-text text-2xl font-bold border-text border-2 bg-transparent">
+        Join Us Today<svg class="h-6 aspect-square ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+          <path d="M224.15,179.17l-46.82-46.82,37.92-13.51c.26-.09.51-.19.76-.3a20,20,0,0,0-1.76-37.27L54.16,29A20,20,0,0,0,29,54.16L81.27,214.24A20,20,0,0,0,118.54,216c.11-.25.21-.5.3-.76l13.51-37.92,46.83,46.82a20,20,0,0,0,28.28,0l16.69-16.68A20,20,0,0,0,224.15,179.17Zm-30.83,25.17-48.48-48.48A20,20,0,0,0,130.7,150a20.47,20.47,0,0,0-3.73.35A20,20,0,0,0,112.35,162c-.11.25-.2.5-.3.76L100.4,195.5,54.29,54.29,195.5,100.4l-32.71,11.65c-.25.09-.51.19-.76.3a20,20,0,0,0-6.16,32.48h0l48.48,48.48ZM84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM12,108a12,12,0,0,1,0-24h4a12,12,0,0,1,0,24ZM120.62,24.21l4-12a12,12,0,0,1,22.77,7.58l-4,12a12,12,0,0,1-22.77-7.58Zm-81.23,104a12,12,0,0,1-7.59,15.17l-12,4a12,12,0,1,1-7.59-22.76l12-4A12,12,0,0,1,39.39,128.21Z"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
 
-</section>
-
-<script type="text/javascript">
-
-   const parallax = document.querySelectorAll('.parallax');
-
-   const parallaxRound = document.querySelectorAll('.parallax-round');
-   const parallaxRoundReverse = document.querySelectorAll('.parallax-round-reverse');
-
-   const parallaxScale = document.querySelectorAll('.parallax-scale');
-
-   let initialScroll = 0;
-
-   function debounce(func, wait) {
-    let timeout;
-    return function() {
-        const context = this;
-        const args = arguments;
-        clearTimeout(timeout);
+  <script type="text/javascript">
+    const parallax = document.querySelectorAll('.parallax')
+    
+    const parallaxRound = document.querySelectorAll('.parallax-round')
+    const parallaxRoundReverse = document.querySelectorAll('.parallax-round-reverse')
+    
+    const parallaxScale = document.querySelectorAll('.parallax-scale')
+    
+    let initialScroll = 0
+    
+    function debounce(func, wait) {
+      let timeout
+      return function () {
+        const context = this
+        const args = arguments
+        clearTimeout(timeout)
         timeout = setTimeout(() => {
-            func.apply(context, args);
-        }, wait);
-    };
-}
-
-    window.addEventListener('scroll', debounce(() => {
-        const scrollY = window.scrollY;
-
-        parallax.forEach(icon => {
-            const nav = document.getElementById('nav-bar');
-
-            const parentDiv = icon.parentElement;
-            const parentRect = parentDiv.getBoundingClientRect();
-            const navRect = nav.getBoundingClientRect();
-
-            const yOffset = parentRect.top - navRect.top + scrollY; // Calculate the total offset
-            let top = (yOffset - scrollY) * -0.5; // Apply parallax effect based on the total offset
-            top = Math.max(top, 0)
-            // Get the current transformation matrix of the icon
-            const transformMatrix = window.getComputedStyle(icon).getPropertyValue('transform');
-            if(false) {
-              // Parse the matrix values into an array
-              const matrixValues = transformMatrix.match(/matrix\((.+)\)/)[1].split(',');
-
-              // Extract the current rotation angle
-              const currentRotation = Math.atan2(parseFloat(matrixValues[1]), parseFloat(matrixValues[0])) * (180 / Math.PI);
-
-              // Apply the translation and keep the initial rotation
-              icon.style.transform = `matrix(${matrixValues[0]}, ${matrixValues[1]}, ${matrixValues[2]}, ${matrixValues[3]}, 0, ${translateY})`;
-            } else {
-              icon.style.transform = `translateY(${top}px)`;
-            }
-          });
-
-          parallaxRound.forEach(icon => {
-                const iniPosition = icon.getBoundingClientRect().top + window.scrollY;
-                const yOffset = scrollY ;
-
-                const rotation = (yOffset * 0.3); // Adjust rotation speed
-                const translation = (yOffset * 0.35); // Adjust translation speed
-
-                // icon.style.transform = `rotateY(${rotation}deg) translateY(${translation}px)`;
-                icon.style.transform = `translateY(${translation}px)`;
-          });
-
-          parallaxRoundReverse.forEach(icon => {
-
-                const nav = document.getElementById('nav-bar');
-
-                const parentDiv = icon.parentElement;
-                const parentRect = parentDiv.getBoundingClientRect();
-                const navRect = nav.getBoundingClientRect();
-
-                const yOffset = parentRect.top - navRect.top; // Calculate when the element is in the viewport
-                const top = (scrollY - yOffset) * 0.2; // Apply parallax effect when the element is in the viewport
-
-                icon.style.transform = `translateY(-${top}px)`;
-          });
-
-          parallaxScale.forEach(icon => {
-
-                const nav = document.getElementById('nav-bar');
-
-                const parentDiv = icon.parentElement;
-                const parentRect = parentDiv.getBoundingClientRect();
-                const navRect = nav.getBoundingClientRect();
-
-                const yOffset = parentRect.top - navRect.top; // Calculate when the element is in the viewport
-                const top = (scrollY - yOffset) * 0.2; // Apply parallax effect when the element is in the viewport
-
-
-                const opacity_spead = 0.004
-
-                if (scrollY > initialScroll) {
-                    // Scrolling down, scale up the element
-                    const scale = 1 + ((scrollY - initialScroll) * 0.0005);
-                    if(scale < 1.25)
-                    icon.style.transform = `scale(${scale})`;
-                    icon.style.opacity = Math.min(1, 0.6 + ((scrollY - initialScroll) * opacity_spead));
-                } else {
-                    // Scrolling up, scale down to original size
-                    icon.style.transform = 'scale(1)';
-                    icon.style.opacity = Math.max(0.6, 0.6 + ((scrollY - initialScroll) * opacity_spead));
-                }
-
-                // icon.style.transform = `translateY(${top}px) scale(${scale}) `;
-                // icon.style.transform = `scale(${scale}) `;
-          });
-    }), 20);
-
-
-</script>
-{% endblock page %}
+          func.apply(context, args)
+        }, wait)
+      }
+    }
+    
+    window.addEventListener(
+      'scroll',
+      debounce(() => {
+        const scrollY = window.scrollY
+    
+        parallax.forEach((icon) => {
+          const nav = document.getElementById('nav-bar')
+    
+          const parentDiv = icon.parentElement
+          const parentRect = parentDiv.getBoundingClientRect()
+          const navRect = nav.getBoundingClientRect()
+    
+          const yOffset = parentRect.top - navRect.top + scrollY // Calculate the total offset
+          let top = (yOffset - scrollY) * -0.5 // Apply parallax effect based on the total offset
+          top = Math.max(top, 0)
+          // Get the current transformation matrix of the icon
+          const transformMatrix = window.getComputedStyle(icon).getPropertyValue('transform')
+          if (false) {
+            // Parse the matrix values into an array
+            const matrixValues = transformMatrix.match(/matrix\((.+)\)/)[1].split(',')
+    
+            // Extract the current rotation angle
+            const currentRotation = Math.atan2(parseFloat(matrixValues[1]), parseFloat(matrixValues[0])) * (180 / Math.PI)
+    
+            // Apply the translation and keep the initial rotation
+            icon.style.transform = `matrix(${matrixValues[0]}, ${matrixValues[1]}, ${matrixValues[2]}, ${matrixValues[3]}, 0, ${translateY})`
+          } else {
+            icon.style.transform = `translateY(${top}px)`
+          }
+        })
+    
+        parallaxRound.forEach((icon) => {
+          const iniPosition = icon.getBoundingClientRect().top + window.scrollY
+          const yOffset = scrollY
+    
+          const rotation = yOffset * 0.3 // Adjust rotation speed
+          const translation = yOffset * 0.35 // Adjust translation speed
+    
+          // icon.style.transform = `rotateY(${rotation}deg) translateY(${translation}px)`;
+          icon.style.transform = `translateY(${translation}px)`
+        })
+    
+        parallaxRoundReverse.forEach((icon) => {
+          const nav = document.getElementById('nav-bar')
+    
+          const parentDiv = icon.parentElement
+          const parentRect = parentDiv.getBoundingClientRect()
+          const navRect = nav.getBoundingClientRect()
+    
+          const yOffset = parentRect.top - navRect.top // Calculate when the element is in the viewport
+          const top = (scrollY - yOffset) * 0.2 // Apply parallax effect when the element is in the viewport
+    
+          icon.style.transform = `translateY(-${top}px)`
+        })
+    
+        parallaxScale.forEach((icon) => {
+          const nav = document.getElementById('nav-bar')
+    
+          const parentDiv = icon.parentElement
+          const parentRect = parentDiv.getBoundingClientRect()
+          const navRect = nav.getBoundingClientRect()
+    
+          const yOffset = parentRect.top - navRect.top // Calculate when the element is in the viewport
+          const top = (scrollY - yOffset) * 0.2 // Apply parallax effect when the element is in the viewport
+    
+          const opacity_spead = 0.004
+    
+          if (scrollY > initialScroll) {
+            // Scrolling down, scale up the element
+            const scale = 1 + (scrollY - initialScroll) * 0.0005
+            if (scale < 1.25) icon.style.transform = `scale(${scale})`
+            icon.style.opacity = Math.min(1, 0.6 + (scrollY - initialScroll) * opacity_spead)
+          } else {
+            // Scrolling up, scale down to original size
+            icon.style.transform = 'scale(1)'
+            icon.style.opacity = Math.max(0.6, 0.6 + (scrollY - initialScroll) * opacity_spead)
+          }
+    
+          // icon.style.transform = `translateY(${top}px) scale(${scale}) `;
+          // icon.style.transform = `scale(${scale}) `;
+        })
+      }),
+      20
+    )
+  </script>
+{% endblock %}
