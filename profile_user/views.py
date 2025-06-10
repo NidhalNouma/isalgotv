@@ -95,38 +95,48 @@ def random_strategies_results_context():
     # Cache key names for each query
     new_strategies = cache.get('new_strategies')
     if new_strategies is None:
-        new_strategies = list(Strategy.objects.order_by('-created_at')[:6])
+        new_strategies = list(Strategy.objects.order_by('-created_at')[:8])
         cache.set('new_strategies', new_strategies, timeout=cash_timeout)
-    context['new_strategies'] = new_strategies
+        
+    random.shuffle(new_strategies)
+    context['new_strategies'] = new_strategies[:6]
 
     most_viewed_strategies = cache.get('most_viewed_strategies')
     if most_viewed_strategies is None:
         most_viewed_strategies = list(
-            Strategy.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:6]
+            Strategy.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:8]
         )
         cache.set('most_viewed_strategies', most_viewed_strategies, timeout=cash_timeout)
-    context['most_viewed_strategies'] = most_viewed_strategies
+
+    random.shuffle(most_viewed_strategies)
+    context['most_viewed_strategies'] = most_viewed_strategies[:6]
 
     best_results = cache.get('best_results')
     if best_results is None:
         best_results = list(
             StrategyResults.objects.annotate(
                 positive_votes_count=Count('positive_votes')
-            ).order_by('-positive_votes_count')[:6]
+            ).order_by('-positive_votes_count')[:8]
         )
         cache.set('best_results', best_results, timeout=cash_timeout)
-    context['best_results'] = best_results
+
+    random.shuffle(best_results)
+    context['best_results'] = best_results[:6]
 
     new_results = cache.get('new_results')
     if new_results is None:
-        new_results = list(StrategyResults.objects.all().order_by('-created_at')[:6])
+        new_results = list(StrategyResults.objects.all().order_by('-created_at')[:8])
         cache.set('new_results', new_results, timeout=cash_timeout)
-    context['new_results'] = new_results
+
+    random.shuffle(new_results)
+    context['new_results'] = new_results[:6]
 
     comments = cache.get('comments')
     if comments is None:
         comments = list(StrategyComments.objects.all().order_by('-created_at')[:4])
         cache.set('comments', comments, timeout=cash_timeout)
+
+    random.shuffle(comments)
     context['comments'] = comments
 
     return context

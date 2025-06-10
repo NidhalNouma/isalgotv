@@ -148,14 +148,27 @@
     {% endif %}
 
     <section class="">
-      <h6 class="text-left text-title text-lg font-bold flex items-center justify-between">
-        Discover Top Strategies
-        <a href="{% url 'strategies' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
-      </h6>
+      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+        Discover Top Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M0 0h24v24H0V0z"></path>
+          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+        </svg>
+      </a>
 
       <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
         {% for strategy in most_viewed_strategies %}
-          {% include 'include/quick_strategy_2.html' with strategy=strategy %}
+          {% if forloop.last %}
+            <div class="flex flex-col justify-around gap-2">
+              {% if comments %}
+                <div class="p-2">
+                  {% include 'include/comment_comment_page.html' with comment=comments.0 %}
+                </div>
+              {% endif %}
+              {% include 'ads.html' with class='mt-auto' %}
+            </div>
+          {% else %}
+            {% include 'include/quick_strategy_2.html' with strategy=strategy %}
+          {% endif %}
         {% endfor %}
       </div>
     </section>
@@ -197,26 +210,28 @@
 
     {% if best_results|length >= 3 %}
       <section class="mt-8">
-        <h6 class="text-left text-title text-lg font-bold flex items-center justify-between">
-          Explore Top Performances
-          <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
-        </h6>
+        <a href="{% url 'results' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+          Explore Top Performances<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+          </svg>
+        </a>
 
         <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
           {% for result in best_results %}
-            <div class="">
-              {% include 'include/quick_result.html' with result=result id=result.id %}
-            </div>
+            {% include 'include/quick_result.html' with result=result id=result.id %}
           {% endfor %}
         </div>
       </section>
     {% endif %}
 
     <section class="mt-8">
-      <h6 class="text-left text-title text-lg font-bold flex items-center justify-between">
-        Explore Latest Strategies
-        <a href="{% url 'strategies' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
-      </h6>
+      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+        Explore Latest Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M0 0h24v24H0V0z"></path>
+          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+        </svg>
+      </a>
 
       <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
         {% for strategy in new_strategies %}
@@ -262,38 +277,35 @@
 
     {% if new_results|length >= 2 %}
       <section class="mt-8">
-        <h6 class="text-left text-title text-lg font-bold flex items-center justify-between">
-          Explore Recent Results
-          <a href="{% url 'results' %}" class="text-sm text-secondary px-2.5 py-1 rounded-full border-0 border-secondary">See more &rarr;</a>
-        </h6>
+        <a href="{% url 'results' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+          Explore Recent Results<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+          </svg>
+        </a>
 
         <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
           {% for result in new_results %}
-            <div class="">
+            {% if forloop.last %}
+              <div class="flex flex-col justify-around gap-2">
+                {% with numbers='1,2,3,4,5,6,7,8'|cut:',' %}
+                  {% with random_number=numbers|random|add:0 %}
+                    {% include 'ads.html' with ads=random_number class='mb-auto' %}
+                  {% endwith %}
+                {% endwith %}
+                {% if comments %}
+                  <div class="p-2">
+                    {% include 'include/comment_comment_page.html' with comment=comments.1 %}
+                  </div>
+                {% endif %}
+              </div>
+            {% else %}
               {% include 'include/quick_result.html' with result=result %}
-            </div>
+            {% endif %}
           {% endfor %}
         </div>
       </section>
     {% endif %}
-  </section>
-
-  <section class="w-3/12 hidden lg:flex flex-col ml-8">
-    {% include 'ads.html' %}
-
-    {% for comment in comments %}
-      <div class="py-2 mb-6">
-        {% include 'include/comment_comment_page.html' with comment=comment %}
-      </div>
-
-      {% if forloop.counter == 2 %}
-        {% with numbers='1,2,3'|cut:',' %}
-          {% with random_number=numbers|random|add:0 %}
-            {% include 'ads.html' with ads=random_number %}
-          {% endwith %}
-        {% endwith %}
-      {% endif %}
-    {% endfor %}
   </section>
 </main>
 
