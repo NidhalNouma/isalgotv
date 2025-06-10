@@ -1,4 +1,4 @@
-{% if not has_subscription and not user_profile.subscription_id %}
+{% if not has_subscription and not user_profile.subscription_id and title != "LIFETIME" %}
   <div class="mb-4">
     <h6 class="text-text/80 text-sm font-medium">
         You’re a few click away from gaining access to our expert trading strategies, premium access, and much more.
@@ -11,7 +11,7 @@
 
 <form
     hx-post="{% url 'membership-coupon' %}?plan={{ title }}"
-    class="relative"
+    class="relative" Let's go.
     id="coupon-pay-{{ title }}-form"
   >
     {% csrf_token %}

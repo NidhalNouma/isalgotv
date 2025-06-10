@@ -9,7 +9,7 @@ export default function AuthPopup({ onClose }) {
         <div className="bg-background rounded-md shadow-xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-text">
-              Continue with IsalGo AI
+              Continue with SARO
             </h2>
             <button onClick={onClose} className="btn-icon transition-colors">
               <X className="w-5 h-5" />
@@ -23,15 +23,15 @@ export default function AuthPopup({ onClose }) {
 
           <div className="space-y-4">
             <a
-              href="/p/register"
+              href="/my/register"
               className="w-full btn-primary transition-colors"
             >
               Sign up
             </a>
 
             <a
-              href="/p/login"
-              className="w-full btn-accent from-transparent to-transparent py-2 text-text border border-text/60 transition-colors"
+              href="/my/login"
+              className="w-full btn-text from-transparent to-transparent py-2 text-text border border-text/60 transition-colors"
             >
               Sign in
             </a>
