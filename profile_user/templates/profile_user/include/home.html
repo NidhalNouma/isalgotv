@@ -173,6 +173,23 @@
       </div>
     </section>
 
+    {% if best_results|length >= 3 %}
+      <section class="mt-8">
+        <a href="{% url 'results' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+          Explore Top Performances<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+          </svg>
+        </a>
+
+        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+          {% for result in best_results %}
+            {% include 'include/quick_result.html' with result=result id=result.id %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
     <div class="group relative overflow-hidden mt-8">
       <div class="absolute inset-0 bg-gradient-to-br from-text/10 to-text/5 rounded-md"></div>
       <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500"></div>
@@ -207,23 +224,6 @@
         </a>
       </div>
     </div>
-
-    {% if best_results|length >= 3 %}
-      <section class="mt-8">
-        <a href="{% url 'results' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
-          Explore Top Performances<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill="none" d="M0 0h24v24H0V0z"></path>
-            <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-          </svg>
-        </a>
-
-        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-          {% for result in best_results %}
-            {% include 'include/quick_result.html' with result=result id=result.id %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
 
     <section class="mt-8">
       <a href="{% url 'strategies' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">

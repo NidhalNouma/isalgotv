@@ -797,7 +797,17 @@ function showModalImages(images, imgId, id = "") {
   // const modal = document.getElementById(id);
   // modal.classList.remove("hidden");
 
-  openModel("modal-images-" + id);
+  const modalId = "modal-images-" + id;
+  openModel(modalId);
+
+  // Close the image modal on scroll
+  // const scrollHandler = () => {
+  //   hideModel(modalId);
+  //   window.removeEventListener("wheel", scrollHandler, { passive: true });
+  //   window.removeEventListener("touchmove", scrollHandler, { passive: true });
+  // };
+  // window.addEventListener("wheel", scrollHandler, { passive: true });
+  // window.addEventListener("touchmove", scrollHandler, { passive: true });
 
   let currentIndex = 0;
 
