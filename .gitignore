@@ -151,3 +151,5 @@ pyvenv.cfg
 
 /ai_fine_tuning
 .qodo
+
+.DS_Store
