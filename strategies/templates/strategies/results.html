@@ -3,11 +3,11 @@
 
 {% block head_title %}
   <title>IsAlgo | Trading Strategy Results Shared by Traders | Verified Backtests by Our Community</title>
-{% endblock head_title %}
+{% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="Explore real trading strategy results shared by our community. Browse verified backtests, analyze performance data, and find strategies that fit your trading style. Start learning and improving with IsAlgo.">
-{% endblock head_description %}
+  <meta name="description" content="Explore real trading strategy results shared by our community. Browse verified backtests, analyze performance data, and find strategies that fit your trading style. Start learning and improving with IsAlgo." />
+{% endblock %}
 
 {% block head %}
   <!-- Load Chart.js library -->
@@ -15,95 +15,83 @@
 {% endblock %}
 
 {% block page %}
+  <h1 class="main-title">Results</h1>
 
-{% if has_subscription or user.is_authenticated and results|length < 6 %}
-<h1 class="main-title">Results</h1>
-{% else %}
-{% comment %} <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Subscribe today and get access to</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of these results<span></h1> {% endcomment %}
-<h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">Discover trading results from</br> <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">the community<span></h1>
-{% endif %}
-
-<main class="mt-8 mb-16">
-    
+  <main class="mt-0 mb-16">
     {% if results|length > 0 %}
-        
-    {% if pairs|length > 4 %}
-    <section class="flex items-center -mt-6 mb-3 py-4 px-1 sticky top-14 sm:top-16 bg-background cursor-pointer overflow-y-auto scrollbar-hide">
-        {% if selected_pair %}
-        <a class=" mr-2 " href="{% url 'results' %}">
-            <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-full text-sm font-semibold truncate  whitespace-nowrap flex items-center transition-all">
+      {% if pairs|length > 1 %}
+        <section class="flex items-center pt-6 mb-3 py-4 px-1 sticky z-10 top-12 sm:top-12 nav-bg cursor-pointer overflow-y-auto scrollbar-hide">
+          {% if selected_pair %}
+            <a class="mr-2" href="{% url 'results' %}">
+              <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">
                 {{ selected_pair }}
 
                 <svg class="h-4 w-4 ml-1.5 hover:text-primary/80 transition-all" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
+                  <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
                 </svg>
-            </span>
-        </a>
-        {% endif %}
-        {% for pair in pairs %}
-        {% if pair != selected_pair %}
-        <a class=" mr-2 " href="{% url 'results' %}?pair={{pair}}">
-            <span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-full text-sm font-semibold truncate  whitespace-nowrap flex items-center transition-all">
-                {{ pair }}
-            </span>
-        </a>
-        {% endif %}
-        {% endfor %}
-    </section>
-    {% endif %}
+              </span>
+            </a>
+          {% endif %}
+          {% for pair in pairs %}
+            {% if pair != selected_pair %}
+              <a class="mr-2" href="{% url 'results' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
+            {% endif %}
+          {% endfor %}
+        </section>
+      {% endif %}
 
-    <section class=" grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+      <section class="grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         {% for result in results %}
-            <div class="w-full mb-3 p-2">
-                {% include "include/quick_result.html" with result=result %}
-            </div>
+          <div class="w-full mb-3 p-2">
+            {% include 'include/quick_result.html' with result=result %}
+          </div>
         {% endfor %}
-    </section>
-
+      </section>
     {% else %}
-    <div class="border border-title/20 text-text rounded-lg p-6 max-w-2xl mx-auto">
+      <div class="border border-title/20 text-text rounded-lg p-6 max-w-2xl mx-auto">
         <div class="flex items-center gap-3 mb-4">
           <h3 class="font-medium">What You'll Find Here</h3>
         </div>
         <div class="space-y-4">
           <div class="flex items-start gap-4">
             <div class="bg-profit/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up w-4 h-4 text-indigo-400"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+              <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up w-4 h-4 text-indigo-400">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
             </div>
             <div>
               <p class="font-medium mb-1">Real Trading Results</p>
-              <p class="text-sm text-text/60">
-                Browse verified trading results from community members using various strategies
-              </p>
+              <p class="text-sm text-text/60">Browse verified trading results from community members using various strategies</p>
             </div>
           </div>
           <div class="flex items-start gap-4">
             <div class="bg-primary/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings w-4 h-4 text-purple-400"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings w-4 h-4 text-purple-400">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
             </div>
             <div>
               <p class="font-medium mb-1">Strategy Insights</p>
-              <p class="text-sm text-text/60">
-                Learn from successful traders by studying their strategy configurations
-              </p>
+              <p class="text-sm text-text/60">Learn from successful traders by studying their strategy configurations</p>
             </div>
           </div>
           <div class="flex items-start gap-4">
             <div class="bg-accent/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-accent" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart w-4 h-4 text-pink-400"><line x1="12" x2="12" y1="20" y2="10"></line><line x1="18" x2="18" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="16"></line></svg>
+              <svg class="w-4 h-4 text-accent" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart w-4 h-4 text-pink-400">
+                <line x1="12" x2="12" y1="20" y2="10"></line>
+                <line x1="18" x2="18" y1="20" y2="4"></line>
+                <line x1="6" x2="6" y1="20" y2="16"></line>
+              </svg>
             </div>
             <div>
               <p class="font-medium mb-1">Performance Analysis</p>
-              <p class="text-sm text-text/60">
-                Compare different approaches and find strategies that match your trading style
-              </p>
+              <p class="text-sm text-text/60">Compare different approaches and find strategies that match your trading style</p>
             </div>
           </div>
         </div>
-    </div>
-
+      </div>
     {% endif %}
-
-
-</main>
-{% endblock page %}
+  </main>
+{% endblock %}

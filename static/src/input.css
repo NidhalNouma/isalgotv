@@ -141,7 +141,7 @@
   }
 
   .main-title {
-    @apply mt-4 sm:mt-6 text-left text-3xl sm:text-4xl text-title font-extrabold;
+    @apply mt-0 sm:mt-2 text-left text-3xl sm:text-5xl text-title font-bold;
   }
 
   .par {

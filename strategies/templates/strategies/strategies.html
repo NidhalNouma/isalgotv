@@ -11,14 +11,7 @@
 {% endblock %}
 
 {% block page %}
-  {% if has_subscription or strategies|length < 6 %}
-    <h1 class="main-title">Strategies</h1>
-  {% else %}
-    <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">
-      Subscribe today and get access to<br />
-      <span class="bg-clip-text bg-gradient-to-tl to-primary from-secondary text-transparent">all of our strategies</span>
-    </h1>
-  {% endif %}
+  <h1 class="main-title">Strategies</h1>
 
   <main class="mt-8 mb-16">
     <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
