@@ -62,6 +62,7 @@ class NotificationAdmin(ModelAdmin):
 
 def send_html_email(request):
     if request.method == 'POST':
+        header = request.POST.get('header', '')
         subject = request.POST.get('subject', '')
         html = request.POST.get('html_content', '')
         
@@ -89,7 +90,10 @@ def send_html_email(request):
 
         
         for email in emails:
-            msg = EmailMessage(subject, html, settings.DEFAULT_FROM_EMAIL, [email])
+            from_email = "IsAlgo"
+            if header:
+                from_email = f"IsAlgo - {header}" 
+            msg = EmailMessage(subject=subject, body=html, from_email=f"{from_email} <{settings.EMAIL_HOST_USER}>", to=[email])
             msg.content_subtype = "html"
             msg.send()
         messages.success(request, "Emails sent to all users")
