@@ -792,10 +792,16 @@ function showSelectImgs(id) {
   input.click();
 }
 
-function showModalImages(images, imgId, id = "") {
-  // console.log(images);
-  // const modal = document.getElementById(id);
-  // modal.classList.remove("hidden");
+function showModalImages(clickedImg, id = "") {
+  // Derive the image list from the clicked image’s parent container
+  const parent = clickedImg.parentElement;
+  const imgElements = Array.from(parent.querySelectorAll('img'));
+  const images = imgElements.map((imgEl, idx) => ({
+    id: idx,
+    imageUrl: imgEl.src
+  }));
+  // Find the index of the clicked image
+  const imgId = images.find(image => image.imageUrl === clickedImg.src).id;
 
   const modalId = "modal-images-" + id;
   openModel(modalId);
@@ -843,7 +849,14 @@ function showModalImages(images, imgId, id = "") {
     document
       .getElementById("next-button-carousel-" + id)
       .classList.add("hidden");
-  }
+  } else  {
+      document
+        .getElementById("prev-button-carousel-" + id)
+        .classList.remove("hidden");
+      document
+        .getElementById("next-button-carousel-" + id)
+        .classList.remove("hidden");
+    }
 
   const carouselControl = document.getElementById("controls-carousel-" + id);
   const carouselContainer = document.getElementById("images-carousel-" + id);
@@ -855,6 +868,7 @@ function showModalImages(images, imgId, id = "") {
     console.log(img);
     const imgElement = document.createElement("img");
     imgElement.src = img.imageUrl;
+    imgElement.onclick = function () { hideModel(modalId); }
     imgElement.classList.add(
       "object-scale-down",
       "absolute",
@@ -865,7 +879,8 @@ function showModalImages(images, imgId, id = "") {
       "-translate-x-1/2",
       "-translate-y-1/2",
       "top-1/2",
-      "left-1/2"
+      "left-1/2",
+      "hover:cursor-zoom-out",
     );
 
     const carouselItem = document.createElement("div");

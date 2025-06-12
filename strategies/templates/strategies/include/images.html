@@ -1,23 +1,9 @@
-{% with imgs_count=images|length %} {% if imgs_count >= 1 %}
-<div class="flex gap-1 max-w-full mt-1">
-  {% for image in images %}
-  <img
-    class="rounded-md h-16 aspect-square object-cover cursor-pointer"
-    src="{{ image.img.url }}"
-    alt="{{ image.name }}"
-    onclick='showModalImages([
-  {% for item in images %}
-      {
-          "id": {{ item.id }},
-          "name": "{{ item.name }}",
-          "imageUrl": "{{ item.img.url }}"
-      },
-      {% if not forloop.last %}
-      {% endif %}
-  {% endfor %}
-], "{{ image.id }}")'
-  />
-  {% endfor %}
-</div>
-
-{% endif %} {% endwith %}
+{% with imgs_count=images|length %}
+  {% if imgs_count >= 1 %}
+    <div class="flex gap-1 max-w-full mt-1">
+      {% for image in images %}
+        <img class="rounded-md h-16 aspect-square object-cover cursor-pointer" src="{{ image.img.url }}" alt="{{ image.name }}" onclick="showModalImages(this)" />
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}

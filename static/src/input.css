@@ -212,7 +212,7 @@
   }
 
   .docs section img {
-    @apply max-w-md mt-2 rounded cursor-pointer object-contain;
+    @apply max-w-md mt-2 rounded cursor-zoom-in object-contain;
   }
 
   .docs section aside div li img {
