@@ -148,7 +148,7 @@
     {% endif %}
 
     <section class="">
-      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
         Discover Top Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path fill="none" d="M0 0h24v24H0V0z"></path>
           <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
@@ -175,14 +175,14 @@
 
     {% if best_results|length >= 3 %}
       <section class="mt-8">
-        <a href="{% url 'results' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+        <a href="{% url 'results' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
           Explore Top Performances<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0V0z"></path>
             <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
           </svg>
         </a>
 
-        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           {% for result in best_results %}
             {% include 'include/quick_result.html' with result=result id=result.id %}
           {% endfor %}
@@ -226,7 +226,7 @@
     </div>
 
     <section class="mt-8">
-      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
         Explore Latest Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path fill="none" d="M0 0h24v24H0V0z"></path>
           <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
@@ -277,14 +277,14 @@
 
     {% if new_results|length >= 2 %}
       <section class="mt-8">
-        <a href="{% url 'results' %}" class="text-left text-title hover:text-primary transition-all text-lg font-bold flex items-baseline w-fit">
+        <a href="{% url 'results' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
           Explore Recent Results<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0V0z"></path>
             <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
           </svg>
         </a>
 
-        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           {% for result in new_results %}
             {% if forloop.last %}
               <div class="flex flex-col justify-around gap-2">

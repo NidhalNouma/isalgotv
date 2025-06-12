@@ -1,6 +1,6 @@
 {% load custom_filters %}
 
-<div class="overflow-hidden">
+<div class="w-full">
   <div class="flex items-center gap-2 mb-3">
     <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
     {% if not hide_title %}
@@ -32,7 +32,7 @@
     </div>
 
     {% if result.list_of_trades %}
-      <div class="mb-2">
+      <div class="mb-2 w-full">
         {% include 'include/result_chart.html' with result=result id=id %}
       </div>
     {% endif %}

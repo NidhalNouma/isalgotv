@@ -1,6 +1,6 @@
-<div class="flex items-center justify-between ">
+<div class="flex items-center justify-between w-full">
   <p class="hidden" id="trades-data-{{ result.id }}{{id}}">{{ result.list_of_trades|json_script }}</p>
-  <canvas id="profitChart-{{ result.id }}{{id}}" class="!w-full !h-full bg-background backdrop-blur-3xl rounded-lg"></canvas>
+  <canvas id="profitChart-{{ result.id }}{{id}}" class="!w-full !max-w-full !h-full bg-background backdrop-blur-3xl rounded-lg"></canvas>
 </div>
 <script type="text/javascript">
   (function() {
