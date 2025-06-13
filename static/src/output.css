@@ -6677,6 +6677,11 @@ input[type="number"] {
     margin-bottom: 3rem;
   }
 
+  .sm\:my-6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
   .sm\:mb-0 {
     margin-bottom: 0px;
   }
@@ -6691,6 +6696,14 @@ input[type="number"] {
 
   .sm\:mt-0 {
     margin-top: 0px;
+  }
+
+  .sm\:ml-4 {
+    margin-left: 1rem;
+  }
+
+  .sm\:ml-3 {
+    margin-left: 0.75rem;
   }
 
   .sm\:line-clamp-4 {
