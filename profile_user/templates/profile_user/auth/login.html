@@ -11,7 +11,7 @@
       <a href="{% provider_login_url 'google' %}" class="btn-title w-full mb-2">
         <svg class="w-4 h-4 mr-2 -ml-1" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
           <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
-        </svg>Sign in with Google
+        </svg>Continue with Google
       </a>
 
       <div class="inline-flex items-center justify-center w-full">
@@ -45,7 +45,7 @@
 
         {% include './errors.html' %}
 
-        <button id="btn-login" onclick="openLoader('', '-login', 'flex');" type="submit" class="btn-primary mt-4 mb-2 w-full">Sign in</button>
+        <button id="btn-login" onclick="openLoader('', '-login', 'flex');" type="submit" class="btn-primary mt-4 mb-2 w-full">Log in</button>
         <button id="spinner-login" type="button" disabled class="btn-primary mt-4 mb-2 w-full hidden">
           Signing in<svg aria-hidden="true" role="status" class="h-4 aspect-square ml-1.5 text-text animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path class="fill-text/60" d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" />

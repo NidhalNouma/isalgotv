@@ -1235,7 +1235,7 @@ h1,
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   --tw-text-opacity: 1;
   color: hsl(var(--color-text-light) / var(--tw-text-opacity));
   transition-property: all;
@@ -1278,7 +1278,7 @@ h1,
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   --tw-text-opacity: 1;
   color: hsl(var(--color-text-light) / var(--tw-text-opacity));
   transition-property: all;
@@ -1321,7 +1321,7 @@ h1,
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   --tw-text-opacity: 1;
   color: hsl(var(--color-background) / var(--tw-text-opacity));
   transition-property: all;
@@ -1363,7 +1363,7 @@ h1,
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   --tw-text-opacity: 1;
   color: hsl(var(--color-text) / var(--tw-text-opacity));
   --tw-backdrop-blur: blur(24px);
@@ -1409,7 +1409,7 @@ h1,
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   --tw-text-opacity: 1;
   color: hsl(var(--color-background) / var(--tw-text-opacity));
   transition-property: all;
@@ -2118,10 +2118,6 @@ h1,
 
 .top-full {
   top: 100%;
-}
-
-.top-10 {
-  top: 2.5rem;
 }
 
 .\!z-0 {
@@ -4932,6 +4928,10 @@ h1,
   padding-bottom: 0.5rem;
 }
 
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -5015,10 +5015,6 @@ h1,
 
 .pt-\[0\.05rem\] {
   padding-top: 0.05rem;
-}
-
-.pb-3 {
-  padding-bottom: 0.75rem;
 }
 
 .text-left {
@@ -6677,11 +6673,6 @@ input[type="number"] {
     margin-bottom: 3rem;
   }
 
-  .sm\:my-6 {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
   .sm\:mb-0 {
     margin-bottom: 0px;
   }
@@ -6696,14 +6687,6 @@ input[type="number"] {
 
   .sm\:mt-0 {
     margin-top: 0px;
-  }
-
-  .sm\:ml-4 {
-    margin-left: 1rem;
-  }
-
-  .sm\:ml-3 {
-    margin-left: 0.75rem;
   }
 
   .sm\:line-clamp-4 {
