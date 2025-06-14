@@ -113,7 +113,7 @@ class ForexBrokerAccount(models.Model):
     password = encrypt(models.CharField(max_length=150))
     server = models.CharField(max_length=150)
     
-    account_api_id = models.CharField(max_length=30, default="")
+    account_api_id = models.CharField(max_length=60, default="")
 
     custom_id = models.CharField(max_length=30, default="")
     active = models.BooleanField(default=True)

@@ -150,7 +150,7 @@ def extract_alert_data(alert_message):
             data['Partial'] = value
         elif key == 'ID' or key == 'NUM':
             data['ID'] = value
-        elif key == 'ST' or key == 'ST_ID':
+        elif key == 'ST' or key == 'ST_ID' or key == "SR":
             data['strategy_ID'] = value
     
     return data
