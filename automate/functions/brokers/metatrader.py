@@ -41,20 +41,21 @@ class MetatraderClient(BrokerClient):
         try:
             response = requests.get(url, headers=headers)
             data = response.json()
-            if data.get("error"):
-                if data.get("id"):
-                    print(data)
-                return {"error": data.get("message")}
-            else:
+            
+            if isinstance(data, list):
                 result = {"valid": True, "id": ""}
-                if isinstance(data, list) and data:
-                    for item in data:
-                        profile_name = item.get("name", "")
-                        # Check if profile_name is found in server_name
-                        if profile_name in server_name:
-                            result["id"] = item.get("_id", "")
-                            break
+                for item in data:
+                    profile_name = item.get("name", "")
+                    # Check if profile_name is found in server_name
+                    if profile_name in server_name:
+                        result["id"] = item.get("_id", "")
+                        break
                 return result
+            else:
+                if data.get("error"):
+                    if data.get("id"):
+                        print(data)
+                    return {"error": data.get("message")}
         except Exception as e:
             print("Error:", e)
             return {"error": str(e)}
