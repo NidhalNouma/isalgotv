@@ -66,6 +66,10 @@ def get_system_content():
     docs_automate_bybit = render_to_string('docs/include/docs/automate/add_bybit_account.html')
     docs_automate_mexc = render_to_string('docs/include/docs/automate/add_mexc_account.html')
     docs_automate_crypto = render_to_string('docs/include/docs/automate/add_crypto_account.html')
+    docs_automate_bingx= render_to_string('docs/include/docs/automate/add_bingx_account.html')
+    docs_automate_bitmart= render_to_string('docs/include/docs/automate/add_bitmart_account.html')
+    docs_automate_kucoin= render_to_string('docs/include/docs/automate/add_kucoin_account.html')
+    docs_automate_coinbase= render_to_string('docs/include/docs/automate/add_coinbase_account.html')
     docs_automate_tradelocker = render_to_string('docs/include/docs/automate/add_tradelocker_account.html')
     
 
@@ -119,6 +123,10 @@ def get_system_content():
         - Bitget: {docs_automate_bitget}
         - Bybit: {docs_automate_bybit}
         - MEXC: {docs_automate_mexc}
+        - BingX: {docs_automate_bingx}
+        - BitMart: {docs_automate_bitmart}
+        - KuCoin: {docs_automate_kucoin}
+        - coinbase: {docs_automate_coinbase}
         - Crypto.com: {docs_automate_crypto}
         - TradeLocker: {docs_automate_tradelocker}
 
@@ -138,12 +146,16 @@ def get_system_content():
         - How to Create a TradingView Alert: [Read More]({reverse('docs_alerts_create')})
         - Isalgo Automation: [Read More]({reverse('docs_automate')})
         - Isalgo Automation Notes: [Read More]({reverse('docs_automate_notes')})
-        - Link Binance Account: [Read More]({reverse('docs_automate_binance')})
-        - Link Binance US Account: [Read More]({reverse('docs_automate_binanceus')})
-        - Link Bitget Account: [Read More]({reverse('docs_automate_bitget')})
-        - Link Bybit Account: [Read More]({reverse('docs_automate_bybit')})
-        - Link Crypto.com Account: [Read More]({reverse('docs_automate_crypto')})
-        - Link TradeLocker Account: [Read More]({reverse('docs_automate_tradelocker')})
+        - Link Binance Account: [Read More]({reverse('docs_automate_broker_binance')})
+        - Link Binance US Account: [Read More]({reverse('docs_automate_broker_binanceus')})
+        - Link Bitget Account: [Read More]({reverse('docs_automate_broker_bitget')})
+        - Link Bybit Account: [Read More]({reverse('docs_automate_broker_bybit')})
+        - Link Crypto.com Account: [Read More]({reverse('docs_automate_broker_crypto')})
+        - Link BingX Account: [Read More]({reverse('docs_automate_broker_bingx')})
+        - Link BitMart Account: [Read More]({reverse('docs_automate_broker_bitmart')})
+        - Link KuCoin Account: [Read More]({reverse('docs_automate_broker_kucoin')})
+        - Link coinbase Account: [Read More]({reverse('docs_automate_broker_coinbase')})
+        - Link TradeLocker Account: [Read More]({reverse('docs_automate_broker_tradelocker')})
         - Automation Notes: [Read More]({reverse('docs_automate_notes')})
         - Isalgo Automation Playground: [Read More]({reverse('docs_automate_playground')})
         - How to Share Your Results: [Read More]({reverse('docs_share')})

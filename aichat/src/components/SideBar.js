@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { MessageSquare, X, Search } from "lucide-react";
+import { MessageSquare, X, Search, MessageSquarePlus } from "lucide-react";
 
 import { useChat } from "../contexts/ChatsContext";
 
 function SideBar({ onClose }) {
-  const { chats, currentChat, deleteChat, selectChat } =
-    useChat();
+  const {
+    chats,
+    currentChat,
+    deleteChat,
+    selectChat,
+    createNewChat,
+    isTyping,
+  } = useChat();
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -35,18 +41,29 @@ function SideBar({ onClose }) {
           <X className="w-5 h-5" />
         </button>
       </div>
+
+      <button
+        disabled={isTyping}
+        onClick={createNewChat}
+        className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
+        aria-label="new Chat"
+      >
+        <MessageSquarePlus className="w-3.5 aspect-auto " />
+        New chat
+      </button>
       <div className="flex-1 overflow-y-auto">
         {filteredChats?.map((chat) => (
           <div
-            onClick={() => {selectChat(chat.id); onClose();}}
+            onClick={() => {
+              selectChat(chat.id);
+              onClose();
+            }}
             key={chat.id}
             className={`group flex items-center gap-3 px-3 py-3 mx-2 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
               chat.id === currentChat ? "bg-text/10" : ""
             }`}
           >
-            <h3
-              className="flex items-center gap-3 text-text/80 flex-1 min-w-0"
-            >
+            <h3 className="flex items-center gap-3 text-text/80 flex-1 min-w-0">
               <MessageSquare className="w-4 h-4 flex-shrink-0" />
               <span className="truncate text-sm">{chat.title}</span>
             </h3>

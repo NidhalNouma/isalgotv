@@ -6,7 +6,7 @@
     <div class="flex">
       <a href="/" class="flex items-center">
         <div class="flex justify-center items-end">
-          <svg class="sm:h-9 h-8 aspect-square fill-title stroke-title" viewBox="0 0 302 428" xmlns="http://www.w3.org/2000/svg">
+          <svg class="sm:w-9 h-8 aspect-square fill-title stroke-title" viewBox="0 0 302 428" xmlns="http://www.w3.org/2000/svg">
             <path d="M211.404 5L211.404 102.073" stroke-width="10" stroke-linecap="round" />
             <path d="M203.638 82.6582H219.169C222.029 82.6582 224.346 86.1351 224.346 90.4241V152.551C224.346 156.84 222.029 160.317 219.169 160.317H203.638C200.778 160.317 198.46 156.84 198.46 152.551V90.4241C198.46 86.1351 200.778 82.6582 203.638 82.6582Z" stroke-width="15" />
             <path d="M97.9228 350.173L82.7244 349.97C79.9265 349.933 77.6832 346.437 77.7139 342.161L78.1584 280.231C78.1891 275.955 80.4821 272.52 83.28 272.557L98.4784 272.76C101.276 272.797 103.52 276.293 103.489 280.568L103.044 342.499C103.014 346.774 100.721 350.21 97.9228 350.173Z" stroke-width="15" />
@@ -19,39 +19,6 @@
     </div>
     <div class="flex items-center lg:order-2">
       {% if user.is_authenticated %}
-        <button class="btn-ai before:hover:scale-105 mr-2 md:mr-4" onclick="openModel('modal-algoai')">
-          <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">
-            SARO
-            <span id="ai-os-icon" class="hidden ml-0.5 text-text dark:text-background opacity-60 text-sm font-normal items-center">
-              <svg id="mac-icon" class="h-3 aspect-square hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-              </svg>
-              <svg id="windows-icon" class="h-3 aspect-square hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m18 15-6-6-6 6" />
-              </svg>K
-            </span>
-          </span>
-        </button>
-
-        <script type="text/javascript">
-          let spanIcon = document.getElementById('ai-os-icon')
-          let macIcon = document.getElementById('mac-icon')
-          let windowsIcon = document.getElementById('windows-icon')
-          
-          let userAgent = navigator.userAgent.toLowerCase()
-          let isIOS = /iphone|ipad|ipod/.test(userAgent)
-          
-          if (userAgent.indexOf('mac') !== -1 && !isIOS) {
-            macIcon.classList.remove('hidden')
-            spanIcon.classList.remove('hidden')
-            spanIcon.classList.add('inline-flex')
-          } else if (userAgent.indexOf('windows') !== -1) {
-            windowsIcon.classList.remove('hidden')
-            spanIcon.classList.remove('hidden')
-            spanIcon.classList.add('inline-flex')
-          }
-        </script>
-
         <div class="relative">
           <button type="button" class="flex mr-2 ml-1 text-sm rounded-full lg:mr-0 md:ml-0 focus:ring-4 focus:ring-text/40" onclick="openCustomDropdown('user-dropdown')">
             <span class="sr-only">Open user menu</span>
@@ -124,7 +91,6 @@
           </div>
         </div>
       {% else %}
-        <button class="btn-ai before:hover:scale-105 mr-2 lg:mr-4" onclick="openModel('modal-algoai')"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></button>
         <a type="button" href="{% url 'login' %}" class="btn-secondary mr-2 lg:mr-0">
           Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0z"></path>
@@ -132,95 +98,6 @@
           </svg>
         </a>
       {% endif %}
-      <button id="menu-toggle-mobile" data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center py-2 text-sm text-text rounded-lg lg:hidden transition-all" aria-controls="mobile-menu-2" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg id="menu-icon" class="w-6 h-6 transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-        </svg>
-
-        <!-- Hidden Close (X) Icon -->
-        <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </div>
-
-    <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-      <ul class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-title/10 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
-        <li>
-          <a href="{% url 'strategies' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %}
-                text-title
-            {% else %}
-                text-text/80
-            {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-              <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
-            </svg>Strategies
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'results' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %}
-               text-title
-            {% else %}
-               text-text/80
-            {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
-            </svg>Results
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'automate' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %}
-               text-title
-            {% else %}
-               text-text/80
-            {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow">
-              <rect width="8" height="8" x="3" y="3" rx="2" />
-              <path d="M7 11v4a2 2 0 0 0 2 2h4" />
-              <rect width="8" height="8" x="13" y="13" rx="2" />
-            </svg>Automate
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'membership' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %}
-               text-title
-            {% else %}
-               text-text/80
-            {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
-              <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" />
-              <circle cx="12" cy="8" r="6" />
-            </svg>
-            {% if has_subscription %}
-              Membership
-            {% else %}
-              Pricing
-            {% endif %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'docs_index' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %}
-               text-title
-            {% else %}
-               text-text/80
-            {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book">
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
-            </svg>Docs
-          </a>
-        </li>
-      </ul>
     </div>
   </div>
 </nav>

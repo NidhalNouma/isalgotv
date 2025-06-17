@@ -1,8 +1,14 @@
 import { useState } from "react";
 
-const csrf_token = document
-  .getElementById("saro")
-  .getAttribute("csrf-token");
+function getCookie(name) {
+  const cookies = document.cookie.split(";").map((c) => c.trim());
+  for (let c of cookies) {
+    if (c.startsWith(name + "=")) {
+      return decodeURIComponent(c.substring(name.length + 1));
+    }
+  }
+  return null;
+}
 
 export function useChatHook() {
   const [loading, setLoading] = useState(false);
@@ -16,8 +22,10 @@ export function useChatHook() {
     setError(null);
     setLimit(false);
 
+    const csrf_token = getCookie("csrftoken")
+
     try {
-      const response = await fetch("/my/ai/chat/", {
+      const response = await fetch("/saro/chat/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

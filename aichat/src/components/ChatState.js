@@ -24,7 +24,9 @@ export default function ChatState({
   }, [messages, typingMessage]);
 
   return (
-    <div className="flex flex-col h-full">
+    <Fragment>
+
+    <div className="flex flex-col h-fit">
       <div
         ref={messagesRef}
         className="flex-1 overflow-y-auto scrollbar-hide scroll-smooth"
@@ -94,8 +96,9 @@ export default function ChatState({
             </div>
           </aside>
         )}
-        <ChatInput onSend={onSendMessage} disabled={isTyping} />
       </div>
     </div>
+        <ChatInput onSend={onSendMessage} disabled={isTyping} />
+    </Fragment>
   );
 }

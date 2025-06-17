@@ -33,6 +33,7 @@ urlpatterns = [
     path('my/', include('profile_user.urls')),
     path('strategies/', include('strategies.urls')) ,
     path('automate/', include('automate.urls')) ,
+    path('saro/', include('saro.urls')),
     path('docs/', include('docs.urls')),
 
 # For Apple Pay

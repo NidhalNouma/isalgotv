@@ -1,0 +1,27 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>Saro | Let AI trade for you</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="" />
+{% endblock %}
+
+{% block navbar %}
+  {% comment %} {% include 'include/saro/navbar.html' %} {% endcomment %}
+{% endblock %}
+
+{% block page %}
+  <main id="saro" class="w-full h-screen relative flex flex-col" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" db-key="{{ db_key }}"></main>
+
+  {% if IS_PRODUCTION %}
+    <script src="{% static 'js/aichatReact.js' %}" defer></script>
+  {% else %}
+    <script src="http://localhost:3000/static/js/bundle.js"></script>
+  {% endif %}
+{% endblock %}
+
+{% block footer %}
+  <footer class=""></footer>
+{% endblock %}

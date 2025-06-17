@@ -326,6 +326,8 @@ class MetatraderClient(BrokerClient):
             dict: API response data or error details.
         """
 
+        partial_close = min(partial_close, 0.01)
+
         trade = self.current_trade
 
         account_api_id = self.account_api_id 

@@ -2620,6 +2620,10 @@ h1,
   margin-top: auto;
 }
 
+.ml-8 {
+  margin-left: 2rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -2825,6 +2829,11 @@ h1,
   height: 100vh;
 }
 
+.h-max {
+  height: -moz-max-content;
+  height: max-content;
+}
+
 .max-h-64 {
   max-height: 16rem;
 }
@@ -2868,6 +2877,10 @@ h1,
 
 .max-h-full {
   max-height: 100%;
+}
+
+.max-h-screen {
+  max-height: 100vh;
 }
 
 .min-h-\[3rem\] {
@@ -2992,10 +3005,6 @@ h1,
 
 .w-8 {
   width: 2rem;
-}
-
-.w-9 {
-  width: 2.25rem;
 }
 
 .w-\[100\%\] {
@@ -3656,6 +3665,18 @@ h1,
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(2rem * var(--tw-space-x-reverse));
+  margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -4594,6 +4615,26 @@ h1,
 
 .to-100\% {
   --tw-gradient-to-position: 100%;
+}
+
+.to-80\% {
+  --tw-gradient-to-position: 80%;
+}
+
+.to-90\% {
+  --tw-gradient-to-position: 90%;
+}
+
+.to-95\% {
+  --tw-gradient-to-position: 95%;
+}
+
+.\!to-100\% {
+  --tw-gradient-to-position: 100% !important;
+}
+
+.\!to-90\% {
+  --tw-gradient-to-position: 90% !important;
 }
 
 .bg-\[length\:200\%_200\%\] {
@@ -6708,10 +6749,6 @@ input[type="number"] {
     display: none;
   }
 
-  .sm\:h-10 {
-    height: 2.5rem;
-  }
-
   .sm\:h-14 {
     height: 3.5rem;
   }
@@ -6724,12 +6761,12 @@ input[type="number"] {
     height: 2rem;
   }
 
-  .sm\:h-\[45vh\] {
-    height: 45vh;
+  .sm\:h-9 {
+    height: 2.25rem;
   }
 
-  .sm\:w-10 {
-    width: 2.5rem;
+  .sm\:h-\[45vh\] {
+    height: 45vh;
   }
 
   .sm\:w-14 {
@@ -6755,6 +6792,11 @@ input[type="number"] {
 
   .sm\:max-w-sm {
     max-width: 24rem;
+  }
+
+  .sm\:-translate-x-1\/2 {
+    --tw-translate-x: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .sm\:grid-cols-2 {

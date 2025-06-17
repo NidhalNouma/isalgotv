@@ -24,7 +24,9 @@ export default function ChatInput({
     handleInput,
   } = SendMessageHook(onSend, disabled, () => setShowAuthPopup(true));
 
-  const containerClass = className ? className : "mt-auto w-full ";
+  const containerClass = className
+    ? className + " mb-4"
+    : "mt-auto w-full bg-background sticky left-0 right-0 bottom-0 pb-2";
 
   useEffect(() => {
     if (quickActionMsg) {
@@ -40,7 +42,7 @@ export default function ChatInput({
       <div className={containerClass}>
         <form
           onSubmit={handleSubmit}
-          className="max-w-3xl mx-auto py-6 md:px-2 px-0"
+          className="max-w-3xl mx-auto pb-2 py-4 md:px-2 px-0"
         >
           <div className="relative rounded-3xl bg-text/10">
             {files.length > 0 && (
@@ -49,7 +51,7 @@ export default function ChatInput({
                   {files.map((file, index) => (
                     <div
                       key={index}
-                      className="bg-text/10 px-2 py-1 rounded text-sm flex items-center gap-1"
+                      className="bg-text/10 px-2 py-1 rounded text-sm flex items-center gap-1 "
                     >
                       <span className="truncate max-w-[200px] text-text/60">
                         {file.name}
@@ -109,8 +111,8 @@ export default function ChatInput({
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M15.1918 8.90615C15.6381 8.45983 16.3618 8.45983 16.8081 8.90615L21.9509 14.049C22.3972 14.4953 22.3972 15.2189 21.9509 15.6652C21.5046 16.1116 20.781 16.1116 20.3347 15.6652L17.1428 12.4734V22.2857C17.1428 22.9169 16.6311 23.4286 15.9999 23.4286C15.3688 23.4286 14.8571 22.9169 14.8571 22.2857V12.4734L11.6652 15.6652C11.2189 16.1116 10.4953 16.1116 10.049 15.6652C9.60265 15.2189 9.60265 14.4953 10.049 14.049L15.1918 8.90615Z"
                       fill="currentColor"
                     ></path>
