@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUser } from "../contexts/UserContext";
 
 export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
@@ -9,16 +9,32 @@ export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    function handleDjangoMessage(e) {
+      console.log("Received message:", e.detail.message);
+      handleSubmit(null, e.detail.message);
+    }
+    window.addEventListener("saroMessage", handleDjangoMessage);
+    return () => {
+      window.removeEventListener("saroMessage", handleDjangoMessage);
+    };
+  }, [user]);
+
+  const handleSubmit = (e, message = null) => {
     e?.preventDefault();
-    if ((input.trim() || files.length > 0) && !disabled) {
+
+    let msg = input.trim() || message
+
+    console.log("Submitting message:", msg, user);
+
+    if ((msg|| files.length > 0) && !disabled) {
       if (!user) {
         toggleAuthPopup();
         // setInput("");
         return;
       }
 
-      onSend(input.trim(), files);
+      onSend(msg, files);
       setInput("");
       setFiles([]);
       if (fileInputRef.current) {

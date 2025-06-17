@@ -91,10 +91,10 @@
               </div>
             </div>
 
-            <p class="text-text text-sm leading-relaxed mb-4">Let our AI help you develop and optimize your trading strategies. Get personalized recommendations based on your goals.</p>
+            <p class="text-text text-sm leading-relaxed mb-4">Let Saro help you develop and optimize your trading strategies. Get personalized recommendations based on your goals.</p>
 
             <button onclick="openModel('modal-algoai')" class="mt-auto btn-accent w-fit">
-              <span class="font-medium">Ask our AI</span>
+              <span class="font-medium">Ask Saro</span>
               <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
                 <path d="M5 12h14"></path>
                 <path d="m12 5 7 7-7 7"></path>
@@ -104,7 +104,7 @@
         </div>
       </section>
     {% else %}
-      <div class="group relative overflow-hidden mb-8">
+      {% comment %} <div class="group relative overflow-hidden mb-8">
         <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-md"></div>
         <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500"></div>
 
@@ -136,7 +136,7 @@
             </div>
           </div>
 
-          <button onclick="openModel('modal-algoai')" class="btn-accent w-full max-w-xs md:w-fit">
+          <button onclick="sendAiMessage('{{ random_ai_question }}'); openModel('modal-algoai');" class="btn-accent w-full max-w-xs md:w-fit">
             <span class="font-medium">Ask me how</span>
             <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5">
               <path d="M7 7h10v10"></path>
@@ -144,7 +144,7 @@
             </svg>
           </button>
         </div>
-      </div>
+      </div> {% endcomment %}
     {% endif %}
 
     <section class="">

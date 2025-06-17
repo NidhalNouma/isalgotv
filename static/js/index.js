@@ -1667,6 +1667,14 @@ function getNumberOfLines(id) {
   return Math.round(totalHeight / lineHeight);
 }
 
+function sendAiMessage(message) {
+  window.dispatchEvent(
+    new CustomEvent("saroMessage", {
+      detail: { message: message },
+    })
+  );
+}
+
 const modals = {};
 function openModel(id, animated = true, backClose = true) {
   const modalElement = document.querySelector("#" + id);
