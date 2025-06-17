@@ -16,6 +16,21 @@ import Typewriter from "typewriter-effect";
 
 import ChatInput from "./ChatInput";
 
+
+const titles = ["Ready when you are.",
+  "What can I help with?",
+  "How can I assist you today?",
+  "What trading insights are you looking for?",
+  "Need help with trading strategies?",
+  "Looking for market analysis?",
+  "Want to learn about trading techniques?",
+  "Have questions about risk management?",
+  "Curious about trading psychology?",
+  "Interested in Pine Script coding?",
+  "Thinking about automating trades?",
+  "Need help writing alerts?"
+]
+
 export default function EmptyState({ onSendMessage }) {
   const [quickActionMsg, setQuuickActionMsg] = useState(null);
 
@@ -26,7 +41,7 @@ export default function EmptyState({ onSendMessage }) {
         <Typewriter
           onInit={(typewriter) => {
             typewriter
-              .typeString("What can I help with?")
+              .typeString(titles[Math.floor(Math.random() * titles.length)])
               .callFunction(() => {
                 const cursorElement = document.querySelector(
                   ".Typewriter__cursor"

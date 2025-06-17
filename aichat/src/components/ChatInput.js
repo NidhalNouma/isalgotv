@@ -25,8 +25,8 @@ export default function ChatInput({
   } = SendMessageHook(onSend, disabled, () => setShowAuthPopup(true));
 
   const containerClass = className
-    ? className + " mb-4"
-    : "mt-auto w-full bg-background sticky left-0 right-0 bottom-0 pb-2";
+    ? className + " mb-4 z-20"
+    : "mt-auto w-full bg-background sticky left-0 right-0 bottom-0 pb-2 z-20";
 
   useEffect(() => {
     if (quickActionMsg) {
@@ -76,7 +76,7 @@ export default function ChatInput({
                 value={input}
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
-                placeholder="Message SARO..."
+                placeholder="Ask Saro"
                 disabled={disabled}
                 rows={1}
                 className="flex-1 text-text placeholder:text-text/40 p-4 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
