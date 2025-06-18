@@ -1,20 +1,13 @@
-from openai import OpenAI, AsyncOpenAI
+from openai import OpenAI, AsyncOpenAI, OpenAIError
+from .vector import build_vectorstore_from_string, retrieve_relevant_docs
+
+from asgiref.sync import sync_to_async
+from bs4 import BeautifulSoup
 from django.urls import reverse
 from django.template.loader import render_to_string
-from functools import lru_cache
-from asgiref.sync import sync_to_async
 
 from strategies.models import Strategy, StrategyResults
 
-import environ
-env = environ.Env()
-
-ai_client = AsyncOpenAI(
-    api_key=env('AI_KEY'),  
-)
-ai_client.system_content = None
-
-from bs4 import BeautifulSoup
 
 def extract_text_with_media(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
@@ -33,7 +26,6 @@ def extract_text_with_media(html_content):
 
     # Extract text with replacements
     return soup.get_text(separator="\n", strip=True)
-
 
 def get_system_content():
     strategies = Strategy.objects.filter(is_live=True)
@@ -185,18 +177,24 @@ def get_system_content():
 
     return extract_text_with_media(system_content)
 
+import environ
+env = environ.Env()
 
-async def get_ai_response(user_message, messages, max_token) -> tuple:
+ai_client = OpenAI(
+    api_key=env('AI_KEY'),  
+)
 
-    system_content = ai_client.system_content
+ai_client.vectorstore = None
 
-    if not system_content:
-        system_content = await sync_to_async(get_system_content)()
-        ai_client.system_content = system_content 
+@sync_to_async
+def get_ai_response(user_message, messages, max_token) -> tuple:
 
-    chat_history = [
-        {"role": "system", "content": system_content},
-    ]
+    if ai_client.vectorstore is None:
+        # Await the async call to get_system_content() so we get the actual string
+        raw_content = get_system_content()
+        ai_client.vectorstore = build_vectorstore_from_string(raw_content)
+
+    chat_history = []
 
     for msg in messages:
         if "question" in msg:
@@ -206,16 +204,33 @@ async def get_ai_response(user_message, messages, max_token) -> tuple:
 
     chat_history.append({"role": "user", "content": user_message})
 
-    # Make an asynchronous API call
-    response = await ai_client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=chat_history,
-        max_tokens=max_token
-    )
 
-    ai_response = response.choices[0].message.content
-    prompt_tokens = response.usage.prompt_tokens
-    completion_tokens = response.usage.completion_tokens
-    total_tokens = response.usage.total_tokens
+    # Retrieve relevant docs
+    docs_context = retrieve_relevant_docs(ai_client.vectorstore, user_message)
 
-    return ai_response, prompt_tokens, completion_tokens, total_tokens
+    system_prompt = f"""
+        You are Saro, a trading assistant.
+        ---
+        Refer to this internal documentation when relevant:
+        {docs_context}
+    """
+
+    chat_history.insert(0, {"role": "system", "content": system_prompt})
+
+    try:
+
+        # Make an asynchronous API call
+        response = ai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=chat_history,
+            max_tokens=max_token
+        )
+
+        ai_response = response.choices[0].message.content
+        prompt_tokens = response.usage.prompt_tokens
+        completion_tokens = response.usage.completion_tokens
+        total_tokens = response.usage.total_tokens
+
+        return ai_response, prompt_tokens, completion_tokens, total_tokens
+    except OpenAIError as e:
+        raise Exception(f"{str(e)}")

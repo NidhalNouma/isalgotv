@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect, retarget
 
-from .functions.ai import get_ai_response, get_system_content
+from .functions.chat import get_ai_response, get_system_content
 
 from asgiref.sync import sync_to_async
 import environ
@@ -22,6 +22,7 @@ def index(request):
 def get_ai_system_content(request):
     if request.method == "POST":
         if request.user.is_authenticated and request.user.is_superuser:
+
             system_content = get_system_content()
             context = {
                 "system_content": system_content,
