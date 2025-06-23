@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Paperclip } from "lucide-react";
 import AuthPopup from "./AuthPopup";
-import { SendMessageHook } from "../hooks/MessageHook";
+import { SendMessageHook } from "../hooks/useSendMessageHook";
 
 export default function ChatInput({
   onSend,

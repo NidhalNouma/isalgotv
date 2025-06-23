@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 
 from strategies.models import Strategy, StrategyResults
+from saro.models import ChatSession, ChatMessage
 
 
 def extract_text_with_media(html_content):
@@ -152,6 +153,8 @@ def get_system_content():
         - Isalgo Automation Playground: [Read More]({reverse('docs_automate_playground')})
         - How to Share Your Results: [Read More]({reverse('docs_share')})
 
+        include images and videos from the documentation when relevant.
+
         ---
         **Additional Trading Assistance**
         - Offer trading suggestions, in-depth chart analysis, and asset evaluations to help traders achieve profitability.
@@ -174,6 +177,9 @@ def get_system_content():
 
         Always maintain a friendly and professional tone while offering clear, precise advice and creative, advanced Pine Script v6 examples unless a simpler version is requested.
     """.strip()
+    # Ensure image URLs include full domain
+    system_content = system_content.replace("static/images/docs/", "https://isalgotest.s3.amazonaws.com/static/images/docs/")
+
 
     return extract_text_with_media(system_content)
 
@@ -197,10 +203,7 @@ def get_ai_response(user_message, messages, max_token) -> tuple:
     chat_history = []
 
     for msg in messages:
-        if "question" in msg:
-            chat_history.append({"role": "user", "content": msg["question"]})
-        if "answer" in msg:
-            chat_history.append({"role": "assistant", "content": msg["answer"]})
+        chat_history.append({"role": msg['role'], "content": msg["content"]})
 
     chat_history.append({"role": "user", "content": user_message})
 
@@ -234,3 +237,163 @@ def get_ai_response(user_message, messages, max_token) -> tuple:
         return ai_response, prompt_tokens, completion_tokens, total_tokens
     except OpenAIError as e:
         raise Exception(f"{str(e)}")
+
+@sync_to_async
+def create_chat_session(user, title=""):
+    session = ChatSession.objects.create(user=user, title=title)
+
+    session_json = {
+        "id": session.id,
+        "user": session.user.username,
+        "title": session.title,
+        "created_at": session.created_at,
+        "last_updated": session.last_updated,
+        "summary": session.summary
+    }
+
+    return session_json, session
+
+@sync_to_async
+def add_chat_message(session, role, content, reply_to=None, liked=None, embedding=None):
+    message = ChatMessage.objects.create(
+        session=session,
+        role=role,
+        content=content,
+        liked=liked,
+        reply_to=reply_to,
+        embedding=embedding
+    )
+    session.last_updated = message.created_at
+    session.save()
+
+    message_json = {
+        "id": message.id,
+        "role": message.role,
+        "content": message.content,
+        "liked": message.liked,
+        "created_at": message.created_at
+    }
+    return message_json, message
+
+def get_sessions_for_user(user):
+    sessions = ChatSession.objects.filter(user=user).order_by('-last_updated')
+    return [
+        {
+            "id": session.id,
+            "title": session.title,
+            "created_at": session.created_at,
+            "last_updated": session.last_updated,
+            "summary": session.summary
+        }
+        for session in sessions
+    ]
+
+def get_limit_chat_sessions(user, limit=10):
+    sessions = ChatSession.objects.filter(user=user).order_by('-last_updated')[:limit]
+    return [
+        {
+            "id": session.id,
+            "title": session.title,
+            "created_at": session.created_at,
+            "last_updated": session.last_updated,
+            "summary": session.summary
+        }
+        for session in sessions
+    ]
+
+def get_chat_messages(session):
+    messages = session.messages.all().order_by('created_at')
+    return [
+        {
+            "id": msg.id,
+            "role": msg.role,
+            "content": msg.content,
+            "liked": msg.liked,
+            "created_at": msg.created_at
+        }
+        for msg in messages
+    ]
+
+def get_limit_chat_messages(session_id, limit=10):
+    session = ChatSession.objects.get(id=session_id)
+    messages = session.messages.all().order_by('created_at')[:limit]
+    return [
+        {
+            "id": msg.id,
+            "role": msg.role,
+            "content": msg.content,
+            "liked": msg.liked,
+            "created_at": msg.created_at
+        }
+        for msg in messages
+    ]
+
+@sync_to_async
+def get_chat_session(session_id):
+    try:
+        session = ChatSession.objects.get(id=session_id)
+        session_json = {
+            "id": session.id,
+            "user": session.user.username,
+            "title": session.title,
+            "created_at": session.created_at,
+            "last_updated": session.last_updated,
+            "summary": session.summary
+        }
+        return session_json, session
+    except ChatSession.DoesNotExist:
+        return None
+    
+def update_chat_session(session_id, title=None, summary=None):
+    try:
+        session = ChatSession.objects.get(id=session_id)
+        if title is not None:
+            session.title = title
+        if summary is not None:
+            session.summary = summary
+        session.save()
+        return {
+            "id": session.id,
+            "title": session.title,
+            "summary": session.summary
+        }
+    except ChatSession.DoesNotExist:
+        return None
+    
+def delete_chat_session(session_id):
+    try:
+        session = ChatSession.objects.get(id=session_id)
+        session.delete()
+        return True
+    except ChatSession.DoesNotExist:
+        return False
+    
+def like_chat_message(message_id):
+    try:
+        message = ChatMessage.objects.get(id=message_id)
+        message.liked = True
+        message.save()
+        return {
+            "id": message.id,
+            "role": message.role,
+            "content": message.content,
+            "liked": message.liked,
+            "created_at": message.created_at
+        }
+    except ChatMessage.DoesNotExist:
+        return None
+    
+def dislike_chat_message(message_id):
+    try:
+        message = ChatMessage.objects.get(id=message_id)
+        message.liked = False
+        message.save()
+        return {
+            "id": message.id,
+            "role": message.role,
+            "content": message.content,
+            "liked": message.liked,
+            "created_at": message.created_at
+        }
+    except ChatMessage.DoesNotExist:
+        return None

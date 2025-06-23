@@ -20,21 +20,21 @@ export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
     };
   }, [user]);
 
-  const handleSubmit = (e, message = null) => {
+  const handleSubmit = async (e, message = null) => {
     e?.preventDefault();
 
-    let msg = input.trim() || message
+    let msg = input.trim() || message;
 
     console.log("Submitting message:", msg, user);
 
-    if ((msg|| files.length > 0) && !disabled) {
+    if ((msg || files.length > 0) && !disabled) {
       if (!user) {
         toggleAuthPopup();
         // setInput("");
         return;
       }
 
-      onSend(msg, files);
+      await onSend(msg, files);
       setInput("");
       setFiles([]);
       if (fileInputRef.current) {

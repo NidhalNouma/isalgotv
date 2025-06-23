@@ -433,7 +433,7 @@ def create_setup_intent(request):
     try:
         customer_id = request.user_profile.customer_id
 
-        payment_method_types = ["card", "link", "amazon_pay"]
+        payment_method_types = ["card"]
 
         data = json.loads(request.body.decode('utf-8'))
         to_add = data.get('to_add', False)

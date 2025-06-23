@@ -8,16 +8,16 @@ import {
   Brain,
   Code,
   Bitcoin,
-  Workflow, 
-  Bell
+  Workflow,
+  Bell,
 } from "lucide-react";
 
 import Typewriter from "typewriter-effect";
 
 import ChatInput from "./ChatInput";
 
-
-const titles = ["Ready when you are.",
+const titles = [
+  "Ready when you are.",
   "What can I help with?",
   "How can I assist you today?",
   "What trading insights are you looking for?",
@@ -28,8 +28,8 @@ const titles = ["Ready when you are.",
   "Curious about trading psychology?",
   "Interested in Pine Script coding?",
   "Thinking about automating trades?",
-  "Need help writing alerts?"
-]
+  "Need help writing alerts?",
+];
 
 export default function EmptyState({ onSendMessage }) {
   const [quickActionMsg, setQuuickActionMsg] = useState(null);
@@ -63,7 +63,7 @@ export default function EmptyState({ onSendMessage }) {
       <div className="w-full max-w-3xl mx-auto">
         <ChatInput
           onSend={onSendMessage}
-          className="j"
+          className=""
           quickActionMsg={quickActionMsg}
         />
       </div>
