@@ -6,6 +6,7 @@ import {
   fetchChatSessions,
   fetchChatMessages,
   deleteChatSession,
+  updateChatSession,
   saveChatMessage,
   createChatSession,
 } from "../api/chat";
@@ -50,6 +51,19 @@ export const ChatsProvider = ({ children }) => {
     setDisplayedMessages([]);
   }
 
+  async function updateChat(chatId, title) {
+    if (!chatId || !user) return;
+    const response = await updateChatSession(chatId, title);
+    setChats((prev) =>
+      prev.map((c) => {
+        if (c.id === chatId) {
+          return response.chat_session;
+        }
+        return c;
+      })
+    );
+  }
+
   useEffect(() => {
     if (user) retrieveChats();
   }, [user]);
@@ -57,14 +71,15 @@ export const ChatsProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
 
-  function newMessagesAdded(newChat, userMessage, answer) {
-    const chat = chats.find((c) => c.id === newChat.id);
+  function newMessagesAdded(chatId, userMessage, answer) {
+    const chat = chats.find((c) => c.id === chatId);
     if (chat) {
       const newMessages = [...(chat.messages || []), userMessage, answer];
+      console.log("Adding new messages to chat:", chatId, newMessages);
       setMessages(newMessages);
       setChats((prev) =>
         prev.map((c) => {
-          if (c.id === newChat.id) {
+          if (c.id === chatId) {
             return { ...c, messages: newMessages };
           }
           return c;
@@ -86,12 +101,51 @@ export const ChatsProvider = ({ children }) => {
 
     setLoadingMessages(true);
     fetchChatMessages(currentChat, 0).then((data) => {
+      const isLastPage = data.is_last_page;
       const newMessages = data.chat_messages;
+      const session = data.session;
+      const start = data.start || 0;
       setMessages(newMessages);
       setChats((prev) =>
         prev.map((c) => {
           if (c.id === currentChat) {
-            return { ...c, messages: newMessages };
+            return { ...session, start, isLastPage, messages: newMessages };
+          }
+          return c;
+        })
+      );
+      setLoadingMessages(false);
+    });
+  }
+
+  function getOlderMessages() {
+    if (loadingMessages) return;
+    if (!currentChat) return;
+    if (currentChat.toString().includes("new")) return;
+    const chat = chats.find((c) => c.id === currentChat);
+    if (!chat || chat.isLastPage) return;
+    console.log("Getting older messages for chat:", chat);
+    setLoadingMessages(true);
+    fetchChatMessages(currentChat, messages.length).then((data) => {
+      const isLastPage = data.is_last_page;
+      const oldMessages = data.chat_messages;
+      const session = data.session;
+      const start = data.start || 0;
+      if (chat.start === start) {
+        setLoadingMessages(false);
+        return;
+      }
+      let newMessages = [...oldMessages, ...chat.messages];
+      setMessages(newMessages);
+      setChats((prev) =>
+        prev.map((c) => {
+          if (c.id === currentChat) {
+            return {
+              ...session,
+              isLastPage,
+              start,
+              messages: newMessages,
+            };
           }
           return c;
         })
@@ -143,12 +197,16 @@ export const ChatsProvider = ({ children }) => {
         newChatAdded,
         messages,
         newMessagesAdded,
+        getOlderMessages,
 
         currentChat,
         setCurrentChat,
+
         createNewChat,
         selectChat,
         deleteChat,
+        updateChat,
+
         displayChats,
         setDisplayChats,
         dislayedMessages,

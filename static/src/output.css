@@ -2322,6 +2322,26 @@ h1,
   margin-bottom: auto;
 }
 
+.\!mx-3 {
+  margin-left: 0.75rem !important;
+  margin-right: 0.75rem !important;
+}
+
+.\!mx-6 {
+  margin-left: 1.5rem !important;
+  margin-right: 1.5rem !important;
+}
+
+.\!mx-5 {
+  margin-left: 1.25rem !important;
+  margin-right: 1.25rem !important;
+}
+
+.\!mx-2 {
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+}
+
 .\!-ml-4 {
   margin-left: -1rem !important;
 }
@@ -3046,6 +3066,11 @@ h1,
 
 .w-full {
   width: 100%;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .min-w-0 {
@@ -3832,6 +3857,11 @@ h1,
   border-top-right-radius: 0.5rem;
 }
 
+.rounded-t-xl {
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -4039,6 +4069,10 @@ h1,
 
 .border-warning\/60 {
   border-color: rgb(202 138 4 / 0.6);
+}
+
+.border-text\/0 {
+  border-color: hsl(var(--color-text) / 0);
 }
 
 .\!bg-background {
@@ -5056,6 +5090,10 @@ h1,
 
 .pt-\[0\.05rem\] {
   padding-top: 0.05rem;
+}
+
+.pt-12 {
+  padding-top: 3rem;
 }
 
 .text-left {
@@ -6318,6 +6356,10 @@ input[type="number"] {
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-none:hover {
+  background-image: none;
 }
 
 .hover\:fill-text:hover {

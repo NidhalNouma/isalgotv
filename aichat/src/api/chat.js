@@ -20,9 +20,6 @@ export async function fetchChatSessions(start = 0) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrf_token, // Include CSRF token here
     },
-    body: JSON.stringify({
-      csrfmiddlewaretoken: csrf_token,
-    }),
   });
   return res.json();
 }
@@ -34,9 +31,6 @@ export async function fetchChatMessages(sessionId, start = 0) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrf_token, // Include CSRF token here
     },
-    body: JSON.stringify({
-      csrfmiddlewaretoken: csrf_token,
-    }),
   });
   return res.json();
 }
@@ -52,7 +46,6 @@ export async function createChatSession(title, message, answer) {
       title,
       message,
       answer,
-      csrfmiddlewaretoken: csrf_token,
     }),
   });
   return res.json();
@@ -69,7 +62,6 @@ export async function getAnswer(message, messages, chatId = null) {
       userMessage: message,
       messages,
       chatId,
-      csrfmiddlewaretoken: csrf_token,
     }),
   });
   return res.json();
@@ -82,7 +74,17 @@ export async function saveChatMessage(sessionId, message, answer) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrf_token, // Include CSRF token here
     },
-    body: JSON.stringify({ message, answer, csrfmiddlewaretoken: csrf_token }),
+    body: JSON.stringify({ message, answer }),
+  });
+  return res.json();
+}
+
+export async function updateChatSession(sessionId, title) {
+  const res = await fetch(`${BASE}/sessions/${sessionId}/update/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": csrf_token },
+
+    body: JSON.stringify({ title }),
   });
   return res.json();
 }
@@ -90,8 +92,7 @@ export async function saveChatMessage(sessionId, message, answer) {
 export async function deleteChatSession(sessionId) {
   const res = await fetch(`${BASE}/sessions/${sessionId}/delete/`, {
     method: "POST",
-    body: JSON.stringify({ csrfmiddlewaretoken: csrf_token }),
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "X-CSRFToken": csrf_token },
   });
   return res.json();
 }

@@ -3,7 +3,13 @@ import { Fragment } from "react";
 import AiResponseMarkdown from "./AiResponseMarkdown";
 import TypewriterEffect from "./TypewriterEffect";
 
-export default function ChatMessage({ message, isUser, isTyping, loading, onComplete }) {
+export default function ChatMessage({
+  message,
+  isUser,
+  isTyping,
+  loading,
+  onComplete,
+}) {
   return (
     <div className={`py-4 `}>
       <div className="max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5">
@@ -11,7 +17,7 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
           {isUser ? (
             <Fragment></Fragment>
           ) : (
-            <div className="p-1 rounded-full border border-text/40 flex items-center justify-center">
+            <div className="p-1 rounded-full border border-text/20 flex items-center justify-center">
               <svg
                 className="sm:w-6 sm:h-6 h-6 w-6 fill-title stroke-title"
                 viewBox="0 0 302 428"
@@ -43,30 +49,26 @@ export default function ChatMessage({ message, isUser, isTyping, loading, onComp
         </div>
         {!isUser && isTyping ? (
           <div className="max-w-full text-text flex-shrink p-1 overflow-hidden">
-            <TypewriterEffect
-              content={message}
-              onComplete={onComplete}
-            />
+            <TypewriterEffect content={message} onComplete={onComplete} />
           </div>
         ) : isUser ? (
           <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text flex-1 ">
             {message}
           </div>
-        ) : !loading && (
-          <div className="max-w-full w-full text-text flex-shrink p-1 overflow-hidden">
-            <AiResponseMarkdown message={message} />
-          </div>
-        )}
-        {
-          loading && (
-            <div className="max-w-full w-full text-text flex-shrink p-1">
-
-              <div className="w-full">
-                <div className="w-full h-7 rounded-xl animate-pulse btn-ai"></div>
-              </div>
+        ) : (
+          !loading && (
+            <div className="max-w-full w-full text-text flex-shrink p-1 overflow-hidden">
+              <AiResponseMarkdown message={message} />
             </div>
           )
-        }
+        )}
+        {loading && (
+          <div className="max-w-full w-full text-text flex-shrink p-1">
+            <div className="w-full">
+              <div className="w-full h-7 rounded-xl animate-pulse btn-ai"></div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

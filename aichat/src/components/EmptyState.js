@@ -54,7 +54,7 @@ export default function EmptyState({ onSendMessage }) {
           }}
           options={{
             autoStart: true,
-            delay: 50,
+            delay: 25,
             deleteSpeed: Infinity,
           }}
         />

@@ -52,7 +52,7 @@ export function useChatHook() {
 
   const handleSendMessage = (messageContent, files) => {
     if ((error || limit) && dislayedMessages?.length > 0 && !messageContent) {
-      messageContent = dislayedMessages[dislayedMessages.length - 1].question;
+      messageContent = dislayedMessages[dislayedMessages.length - 1].content;
     }
 
     if (files?.length) {
@@ -106,7 +106,8 @@ export function useChatHook() {
 
       if (title) {
         newChatAdded(responseChat, responseUserMessage, responseAiMessage);
-      } else newMessagesAdded(currentChat.id, userMessage, newMessage);
+      } else
+        newMessagesAdded(currentChat, responseUserMessage, responseAiMessage);
     }
     setIsTyping(false);
   };

@@ -2,13 +2,7 @@ import { Fragment } from "react";
 import { useUser } from "../contexts/UserContext";
 import { useChat } from "../contexts/ChatsContext";
 
-import {
-  PanelLeft,
-  X,
-  LogOut,
-  MessagesSquare,
-  Activity,
-} from "lucide-react";
+import { PanelLeft, X, LogOut, MessagesSquare, Activity } from "lucide-react";
 
 function Navbar({ className, onMenuClick, onMenuHover }) {
   const { user } = useUser();
@@ -20,7 +14,7 @@ function Navbar({ className, onMenuClick, onMenuHover }) {
     <Fragment>
       <nav
         className={
-          " flex nav-bg items-center justify-between sticky top-0 z-40 py-3" +
+          " flex nav-bg items-center justify-between absolute left-0 right-0 rounded-t-xl top-0 z-40 py-3 px-3" +
           className
         }
       >
@@ -40,27 +34,19 @@ function Navbar({ className, onMenuClick, onMenuHover }) {
                   <PanelLeft className="w-5 h-5" />
                 )}
               </button>
-              {/* <button
-                disabled={isTyping}
-                onClick={createNewChat}
-                className="p-2 btn-icon rounded-md transition-colors"
-                aria-label="New Chat"
-              >
-                <MessageSquarePlus className="w-5 h-5 " />
-              </button> */}
             </Fragment>
           )}
         </div>
-        {/* <div className=" mx-auto flex items-center gap-8 ">
+        {/* <div className=" ml-3 mr-auto flex items-center gap-3 ">
           <button
-            className="gap-1 btn-icon rounded-md transition-colors"
+            className="px-4 gap-1 btn-icon text-background hover:text-background bg-title rounded-md transition-colors"
             aria-label="Close Session"
           >
             <MessagesSquare className="w-3.5 aspect-auto " />
             Chat
           </button>
           <button
-            className="gap-1 btn-icon rounded-md transition-colors"
+            className="px-4 gap-1 btn-icon rounded-md transition-colors"
             aria-label="Close Session"
           >
             <Activity className="w-3.5 aspect-auto " />

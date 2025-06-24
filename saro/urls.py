@@ -9,6 +9,7 @@ urlpatterns = [
     path('', index, name='saro_index'),
 
     path('chat/sessions/create/', create_chat, name='ai_chat_sessions_create'),
+    path('chat/sessions/<int:session_id>/update/', update_chat, name='ai_chat_sessions_update'),
     path('chat/sessions/<int:session_id>/delete/', delete_chat, name='ai_chat_sessions_delete'),
     path('chat/sessions/<int:start>/', get_chat_sessions, name='ai_chat_sessions'),
 

@@ -1,5 +1,6 @@
 from openai import OpenAI, AsyncOpenAI, OpenAIError
 from .vector import build_vectorstore_from_string, retrieve_relevant_docs
+import textwrap
 
 from asgiref.sync import sync_to_async
 from bs4 import BeautifulSoup
@@ -236,10 +237,20 @@ def get_ai_response(user_message, messages, max_token) -> tuple:
 
         return ai_response, prompt_tokens, completion_tokens, total_tokens
     except OpenAIError as e:
+        print(f"OpenAI API error: {str(e)}")
         raise Exception(f"{str(e)}")
 
 @sync_to_async
-def create_chat_session(user, title=""):
+def create_chat_session(user, user_message=""):
+    if user_message:
+        # Generate a concise, meaningful summary up to 30 characters
+        title = textwrap.shorten(
+            user_message.strip().replace("\n", " "),
+            width=30,
+            placeholder="..."
+        )
+    else:
+        title = "New Chat"
     session = ChatSession.objects.create(user=user, title=title)
 
     session_json = {
@@ -288,18 +299,23 @@ def get_sessions_for_user(user):
         for session in sessions
     ]
 
-def get_limit_chat_sessions(user, limit=10):
-    sessions = ChatSession.objects.filter(user=user).order_by('-last_updated')[:limit]
-    return [
+def get_limit_chat_sessions(user, start=0, limit=10):
+    sessions = ChatSession.objects.filter(user=user).order_by('-last_updated')[start:start+limit]
+    chats = [
         {
             "id": session.id,
             "title": session.title,
             "created_at": session.created_at,
             "last_updated": session.last_updated,
-            "summary": session.summary
+            "summary": session.summary,
         }
         for session in sessions
     ]
+
+    return {
+        "sessions": chats,
+        "is_last_page": True if len(sessions) < limit else False,
+    }
 
 def get_chat_messages(session):
     messages = session.messages.all().order_by('created_at')
@@ -314,19 +330,36 @@ def get_chat_messages(session):
         for msg in messages
     ]
 
-def get_limit_chat_messages(session_id, limit=10):
+def get_limit_chat_messages(session_id, start=0, limit=10):
     session = ChatSession.objects.get(id=session_id)
-    messages = session.messages.all().order_by('created_at')[:limit]
-    return [
+    # Fetch messages in descending order (newest first), paginated
+    messages = session.messages.all().order_by('-created_at')[start:start+limit]
+    # print("get_limit_chat_messages -> " ,len(messages), limit)
+    messages = messages[::-1]  # Reverse to maintain chronological order
+    messages = [
         {
             "id": msg.id,
             "role": msg.role,
             "content": msg.content,
             "liked": msg.liked,
-            "created_at": msg.created_at
+            "created_at": msg.created_at,
         }
         for msg in messages
     ]
+
+    return {
+        "messages": messages,
+        "session": {
+            "id": session.id,
+            "user": session.user.username,
+            "title": session.title,
+            "created_at": session.created_at,
+            "last_updated": session.last_updated,
+            "summary": session.summary
+        },
+        "is_last_page": True if len(messages) < limit else False
+    }
+
 
 @sync_to_async
 def get_chat_session(session_id):
@@ -352,11 +385,16 @@ def update_chat_session(session_id, title=None, summary=None):
         if summary is not None:
             session.summary = summary
         session.save()
-        return {
+        session_json = {
             "id": session.id,
             "title": session.title,
-            "summary": session.summary
+            "summary": session.summary,
+
+            "user": session.user.username,
+            "created_at": session.created_at,
+            "last_updated": session.last_updated,
         }
+        return session_json, session
     except ChatSession.DoesNotExist:
         return None
     

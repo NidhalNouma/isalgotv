@@ -24,11 +24,13 @@ def get_chat_sessions(request, start=0):
     if request.method == "POST":
         try:
             if request.user.is_authenticated:
-                limit = int(start) + 10
-                chat_sessions = get_limit_chat_sessions(request.user, limit)
+                limit = 50
+                response = get_limit_chat_sessions(request.user, start, limit)
 
                 context = {
-                    "chat_sessions": chat_sessions,
+                    "chat_sessions": response.get("sessions", []),
+                    "is_last_page": response.get("is_last_page", False),
+                    "start": start,
                     "limit": limit,
                 }
 
@@ -41,12 +43,15 @@ def get_chat_messages(request, session_id, start=0):
     if request.method == "POST":
         try:
             if request.user.is_authenticated:
-                limit = int(start) + 15
-                chat_messages = get_limit_chat_messages(session_id, limit)
+                limit = 40
+                chat_messages = get_limit_chat_messages(session_id, start, limit)
 
                 context = {
-                    "chat_messages": chat_messages,
+                    "chat_messages": chat_messages.get("messages", []),
+                    "session": chat_messages.get("session", {}),
+                    "is_last_page": chat_messages.get("is_last_page", False),
                     "limit": limit,
+                    "start": start,
                 }
 
                 return JsonResponse(context)
@@ -86,6 +91,22 @@ def create_chat(request):
                 "system_answer": system_answer_json,
             }
             return JsonResponse(context)
+        
+def update_chat(request, session_id):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            data = json.loads(request.body)
+            title = data.get("title", "").strip()
+
+            if not session_id:
+                return JsonResponse({"error": "Session ID is required"}, status=400)
+            
+            if not title:
+                return JsonResponse({"error": "Title cannot be empty"}, status=400)
+
+            session_json, session = update_chat_session(session_id, title)
+
+            return JsonResponse({"success": True, "message": "Chat session updated successfully", "chat_session": session_json})
         
 def delete_chat(request, session_id):
     if request.method == "POST":
@@ -163,7 +184,6 @@ async def ai_chat_view(request):
             user_message = data.get("userMessage", "").strip()
             messages = data.get("messages", [])
             chat_id = data.get("chatId", None)
-            title = data.get("title", "new chat")
 
             user_profile = request.user_profile
             if not user_profile:
@@ -200,7 +220,7 @@ async def ai_chat_view(request):
                     system_answer_json, system_answer = await add_chat_message(chat_session, "assistant", ai_response, reply_to=user_message_obj)
 
             else:
-                chat_session_json, chat_session = await create_chat_session(request.user, title)
+                chat_session_json, chat_session = await create_chat_session(request.user, user_message)
 
                 if not chat_session:
                     return JsonResponse({"error": "Failed to create chat session"}, status=500)

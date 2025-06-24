@@ -2,6 +2,8 @@ import { Fragment, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 
+import { useChat } from "../contexts/ChatsContext";
+
 export default function ChatState({
   user,
   messages,
@@ -14,50 +16,84 @@ export default function ChatState({
   onTypingComplete,
 }) {
   const messagesRef = useRef(null);
+  const { currentChat, getOlderMessages } = useChat();
+  // Track scroll height when loading older messages
+  const prevScrollHeightRef = useRef(0);
+  const isFetchingOlderRef = useRef(false);
+  // Track last message ID to only auto-scroll on new messages
+  const prevLastMessageId = useRef(null);
+
+  // When scrolled near the top, load older messages
+  const handleScroll = () => {
+    const el = messagesRef.current;
+    // Don't trigger if no element or already fetching
+    if (!el || isFetchingOlderRef.current) return;
+
+    if (el.scrollTop <= 100) {
+      // Remember current height before loading more
+      prevScrollHeightRef.current = el.scrollHeight;
+      isFetchingOlderRef.current = true;
+      getOlderMessages();
+    }
+  };
 
   useEffect(() => {
-    const element = messagesRef.current;
-    if (element) {
-      console.log("Scrolling to bottom of messages", messages.length);
-      element.style.scrollBehavior = "smooth";
-      element.scrollTop = element.scrollHeight;
+    const el = messagesRef.current;
+    if (!el || messages.length === 0) return;
+
+    if (isFetchingOlderRef.current) {
+      // Restore scroll position after loading older messages
+      const newScrollHeight = el.scrollHeight;
+      el.scrollTop = newScrollHeight - prevScrollHeightRef.current;
+      isFetchingOlderRef.current = false;
+    } else {
+      // Auto-scroll on new messages
+      const currLastMessage = messages[messages.length - 1];
+      const currLastId = currLastMessage.id;
+      const prevLastId = prevLastMessageId.current;
+
+      if (prevLastId === null || prevLastId !== currLastId) {
+        el.scrollTop = el.scrollHeight;
+      }
+      prevLastMessageId.current = currLastId;
     }
-  }, [messages, typingMessage]);
+  }, [messages]);
 
   return (
     <Fragment>
       <div
-        className="flex flex-col h-fit max-h-fit overflow-y-scroll scrollbar-hide"
+        className="flex flex-col h-fit max-h-fit overflow-y-auto scrollbar-hide"
         ref={messagesRef}
+        onScroll={handleScroll}
       >
-        <div className="flex-1 ">
-          {messages.map((message) => (
-            <Fragment key={message.id}>
-              <ChatMessage
-                message={message.content}
-                isUser={message.role === "user" ? true : false}
-              />
+        {/* Spacer for top margin */}
+        <div className="max-w-3xl py-6" />
+        {messages.map((message) => (
+          <Fragment key={message.id}>
+            <ChatMessage
+              message={message.content}
+              isUser={message.role === "user" ? true : false}
+            />
 
-              {/* {message.question && (
+            {/* {message.question && (
                 <ChatMessage message={message.question} isUser={true} />
               )}
               {message.answer && (
                 <ChatMessage message={message.answer} isUser={false} />
               )} */}
-            </Fragment>
-          ))}
-          {loading && (
-            <ChatMessage key="loading" isUser={false} loading={loading} />
-          )}
-          {typingMessage && (
-            <ChatMessage
-              isUser={false}
-              message={typingMessage}
-              // isTyping={isTyping}
-              onComplete={onTypingComplete}
-            />
-          )}
-        </div>
+          </Fragment>
+        ))}
+        {loading && (
+          <ChatMessage key="loading" isUser={false} loading={loading} />
+        )}
+        {typingMessage && (
+          <ChatMessage
+            isUser={false}
+            message={typingMessage}
+            // isTyping={isTyping}
+            onComplete={onTypingComplete}
+          />
+        )}
         <div className="">
           {limit && (
             <aside className="mx-auto md:px-2 px-0 max-w-3xl">
