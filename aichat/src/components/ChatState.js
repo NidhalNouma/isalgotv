@@ -2,6 +2,8 @@ import { Fragment, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 
+import { ScrollContainer } from "./ui/ScrollableContainer";
+
 import { useChat } from "../contexts/ChatsContext";
 
 export default function ChatState({
@@ -61,10 +63,10 @@ export default function ChatState({
 
   return (
     <Fragment>
-      <div
-        className="flex flex-col h-fit max-h-fit overflow-y-auto scrollbar-hide"
-        ref={messagesRef}
+      <ScrollContainer
+        scrollCta="Scroll to bottom"
         onScroll={handleScroll}
+        scrollRef={messagesRef}
       >
         {/* Spacer for top margin */}
         <div className="max-w-3xl py-6" />
@@ -160,7 +162,7 @@ export default function ChatState({
             </aside>
           )}
         </div>
-      </div>
+      </ScrollContainer>
       <ChatInput onSend={onSendMessage} disabled={isTyping} />
     </Fragment>
   );

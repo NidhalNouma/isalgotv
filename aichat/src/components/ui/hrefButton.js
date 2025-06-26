@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-import { useChat } from "../contexts/ChatsContext";
+import { useChat } from "../../contexts/ChatsContext";
 
 import { MessageSquare, X } from "lucide-react";
 

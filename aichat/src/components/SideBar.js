@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   X,
   Search,
@@ -9,7 +9,7 @@ import {
 
 import { useChat } from "../contexts/ChatsContext";
 
-import HrefButton from "./hrefButton";
+import HrefButton from "./ui/hrefButton";
 
 function SideBar({ onClose, page, changePage }) {
   const { chats, createNewChat, isTyping } = useChat();
@@ -66,21 +66,27 @@ function SideBar({ onClose, page, changePage }) {
         </button>
       </div>
 
-      <button
-        // disabled={isTyping}
-        onClick={createNewChat}
-        className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
-        aria-label="new Chat"
-      >
-        <MessageSquarePlus className="w-3.5 aspect-auto " />
-        New chat
-      </button>
-      <div className="flex-1 overflow-y-auto px-2">
-        <h6 className="text-text/80 text-sm px-2 pt-3 pb-2">Chats</h6>
-        {filteredChats?.map((chat) => (
-          <HrefButton chat={chat} onClose={onClose} />
-        ))}
-      </div>
+      {page === "chat" && (
+        <Fragment>
+          <button
+            // disabled={isTyping}
+            onClick={createNewChat}
+            className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
+            aria-label="new Chat"
+          >
+            <MessageSquarePlus className="w-3.5 aspect-auto " />
+            New chat
+          </button>
+          <div className="flex-1 overflow-y-auto px-2">
+            {filteredChats.length > 0 && (
+              <h6 className="text-text/80 text-sm px-2 pt-3 pb-2">Chats</h6>
+            )}
+            {filteredChats?.map((chat) => (
+              <HrefButton chat={chat} onClose={onClose} />
+            ))}
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 }

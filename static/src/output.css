@@ -2120,6 +2120,10 @@ h1,
   top: 100%;
 }
 
+.bottom-1 {
+  bottom: 0.25rem;
+}
+
 .\!z-0 {
   z-index: 0 !important;
 }
@@ -3738,6 +3742,10 @@ h1,
   overflow-x: hidden;
 }
 
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .overflow-x-clip {
   overflow-x: clip;
 }
@@ -4357,6 +4365,15 @@ h1,
 
 .bg-white\/80 {
   background-color: rgb(255 255 255 / 0.8);
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 82 82 / var(--tw-bg-opacity));
+}
+
+.bg-text\/60 {
+  background-color: hsl(var(--color-text) / 0.6);
 }
 
 .bg-opacity-50 {
