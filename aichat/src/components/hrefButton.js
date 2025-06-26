@@ -64,10 +64,6 @@ function HrefButton({ chat, onClose }) {
   if (isEditing) {
     return (
       <div
-        onDoubleClick={(e) => {
-          e.stopPropagation();
-          setIsEditing(true);
-        }}
         key={chat.id}
         className={`group flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
           chat.id === currentChat ? "bg-text/10" : ""
@@ -99,6 +95,8 @@ function HrefButton({ chat, onClose }) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleSingleClick}
       onDoubleClick={handleDoubleClick}
       onTouchEnd={handleTouchEnd}

@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page %}
-  <main id="saro" class="w-full h-screen relative flex flex-col" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" db-key="{{ db_key }}"></main>
+  <main id="saro" class="w-full h-screen relative flex flex-col" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}"></main>
 
   {% if IS_PRODUCTION %}
     <script src="{% static 'js/aichatReact.js' %}" defer></script>

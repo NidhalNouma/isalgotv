@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { X, Search, MessageSquarePlus } from "lucide-react";
+import {
+  X,
+  Search,
+  MessageSquarePlus,
+  MessagesSquare,
+  Activity,
+} from "lucide-react";
 
 import { useChat } from "../contexts/ChatsContext";
 
 import HrefButton from "./hrefButton";
 
-function SideBar({ onClose }) {
+function SideBar({ onClose, page, changePage }) {
   const { chats, createNewChat, isTyping } = useChat();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,8 +43,31 @@ function SideBar({ onClose }) {
         </button>
       </div>
 
+      <div className="ml-3 pr-6 flex flex-col w-full justify-start items-start gap-3 ">
+        <button
+          className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
+            page === "chat" && "text-background hover:text-background bg-title"
+          } `}
+          aria-label="Close Session"
+          onClick={() => changePage("chat")}
+        >
+          <MessagesSquare className="w-3.5 aspect-auto " />
+          Chat
+        </button>
+        <button
+          className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
+            page === "trade" && "text-background hover:text-background bg-title"
+          } `}
+          aria-label="Close Session"
+          onClick={() => changePage("trade")}
+        >
+          <Activity className="w-3.5 aspect-auto " />
+          Trade
+        </button>
+      </div>
+
       <button
-        disabled={isTyping}
+        // disabled={isTyping}
         onClick={createNewChat}
         className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
         aria-label="new Chat"
@@ -47,6 +76,7 @@ function SideBar({ onClose }) {
         New chat
       </button>
       <div className="flex-1 overflow-y-auto px-2">
+        <h6 className="text-text/80 text-sm px-2 pt-3 pb-2">Chats</h6>
         {filteredChats?.map((chat) => (
           <HrefButton chat={chat} onClose={onClose} />
         ))}

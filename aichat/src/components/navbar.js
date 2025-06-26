@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { useUser } from "../contexts/UserContext";
 import { useChat } from "../contexts/ChatsContext";
 
-import { PanelLeft, X, LogOut, MessagesSquare, Activity } from "lucide-react";
+import { PanelLeft, X, LogOut } from "lucide-react";
 
 function Navbar({ className, onMenuClick, onMenuHover }) {
   const { user } = useUser();
@@ -22,7 +22,7 @@ function Navbar({ className, onMenuClick, onMenuHover }) {
           {user && (
             <Fragment>
               <button
-                disabled={isTyping}
+                // disabled={isTyping}
                 onClick={onMenuClick}
                 onMouseEnter={onMenuHover}
                 className="p-2 btn-icon rounded-md transition-colors"
@@ -37,22 +37,6 @@ function Navbar({ className, onMenuClick, onMenuHover }) {
             </Fragment>
           )}
         </div>
-        {/* <div className=" ml-3 mr-auto flex items-center gap-3 ">
-          <button
-            className="px-4 gap-1 btn-icon text-background hover:text-background bg-title rounded-md transition-colors"
-            aria-label="Close Session"
-          >
-            <MessagesSquare className="w-3.5 aspect-auto " />
-            Chat
-          </button>
-          <button
-            className="px-4 gap-1 btn-icon rounded-md transition-colors"
-            aria-label="Close Session"
-          >
-            <Activity className="w-3.5 aspect-auto " />
-            Tasks
-          </button>
-        </div> */}
         <button
           onClick={() => {
             try {

@@ -7,6 +7,7 @@ export default function ChatMessage({
   message,
   isUser,
   isTyping,
+  isNew,
   loading,
   onComplete,
 }) {
@@ -57,8 +58,13 @@ export default function ChatMessage({
           </div>
         ) : (
           !loading && (
-            <div className="max-w-full w-full text-text flex-shrink p-1 overflow-hidden">
-              <AiResponseMarkdown message={message} />
+            <div className="max-w-full w-full relative text-text flex-shrink p-1 overflow-hidden">
+              {isNew ? (
+                // <div className="w-full h-full rounded-xl btn-ai animate-collapse z-10 overflow-hidden"></div>
+                <TypewriterEffect content={message} onComplete={onComplete} />
+              ) : (
+                <AiResponseMarkdown message={message} />
+              )}
             </div>
           )
         )}

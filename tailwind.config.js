@@ -72,6 +72,10 @@ module.exports = {
           "0%": { opacity: "0", transform: "translateY(-30px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        collapse: {
+          from: { "clip-path": "inset(0 0 0 0)" },
+          to: { "clip-path": "inset(100% 0 0 0)" },
+        },
 
         animate: {
           "0%,10%,100%": { width: "0%" },
@@ -95,6 +99,7 @@ module.exports = {
 
         "fade-up": "fade-up 0.3s ease-out both",
         "fade-down": "fade-down 0.3s ease-out both",
+        collapse: "collapse 4s forwards",
       },
     },
   },

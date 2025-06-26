@@ -74,13 +74,21 @@ export const ChatsProvider = ({ children }) => {
   function newMessagesAdded(chatId, userMessage, answer) {
     const chat = chats.find((c) => c.id === chatId);
     if (chat) {
-      const newMessages = [...(chat.messages || []), userMessage, answer];
-      console.log("Adding new messages to chat:", chatId, newMessages);
-      setMessages(newMessages);
+      console.log("Adding new messages to chat:", chatId);
+      if (currentChat === chatId) {
+        setMessages([
+          ...(chat.messages || []),
+          userMessage,
+          { ...answer, isNew: true },
+        ]);
+      }
       setChats((prev) =>
         prev.map((c) => {
           if (c.id === chatId) {
-            return { ...c, messages: newMessages };
+            return {
+              ...c,
+              messages: [...(chat.messages || []), userMessage, answer],
+            };
           }
           return c;
         })

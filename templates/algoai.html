@@ -12,7 +12,7 @@
       </div>
 
       <!-- Modal body -->
-      <div class="h-full w-full max-h-full my-auto bg-background rounded-xl relative flex flex-col overflow-hidden" id="saro" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" db-key="{{ db_key }}"></div>
+      <div class="h-full w-full max-h-full my-auto bg-background rounded-xl relative flex flex-col overflow-hidden" id="saro" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}"></div>
 
       {% if IS_PRODUCTION %}
         <script src="{% static 'js/aichatReact.js' %}" defer></script>

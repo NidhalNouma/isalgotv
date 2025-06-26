@@ -12,8 +12,6 @@ import {
   Bell,
 } from "lucide-react";
 
-import Typewriter from "typewriter-effect";
-
 import ChatInput from "./ChatInput";
 
 const titles = [
@@ -33,31 +31,13 @@ const titles = [
 
 export default function EmptyState({ onSendMessage }) {
   const [quickActionMsg, setQuuickActionMsg] = useState(null);
+  const [title] = useState(titles[Math.floor(Math.random() * titles.length)]);
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center md:px-4 px-1 h-full">
       <h1 className="text-4xl font-semibold mb-8 text-title text-center">
         {/* What can I help with? */}
-        <Typewriter
-          onInit={(typewriter) => {
-            typewriter
-              .typeString(titles[Math.floor(Math.random() * titles.length)])
-              .callFunction(() => {
-                const cursorElement = document.querySelector(
-                  ".Typewriter__cursor"
-                );
-                if (cursorElement) {
-                  cursorElement.style.display = "none";
-                }
-              })
-              .start();
-          }}
-          options={{
-            autoStart: true,
-            delay: 25,
-            deleteSpeed: Infinity,
-          }}
-        />
+        {title}
       </h1>
 
       <div className="w-full max-w-3xl mx-auto">
@@ -65,6 +45,7 @@ export default function EmptyState({ onSendMessage }) {
           onSend={onSendMessage}
           className=""
           quickActionMsg={quickActionMsg}
+          focus={true}
         />
       </div>
 

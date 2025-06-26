@@ -8,6 +8,7 @@ export default function ChatInput({
   disabled,
   className = "",
   quickActionMsg,
+  focus = false,
 }) {
   const [showAuthPopup, setShowAuthPopup] = useState(false);
 
@@ -72,6 +73,7 @@ export default function ChatInput({
             )}
             <div className="flex items-start">
               <textarea
+                autoFocus={focus}
                 ref={textareaRef}
                 value={input}
                 onChange={handleInput}

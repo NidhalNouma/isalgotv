@@ -68,19 +68,13 @@ export default function ChatState({
       >
         {/* Spacer for top margin */}
         <div className="max-w-3xl py-6" />
-        {messages.map((message) => (
+        {messages.map((message, i) => (
           <Fragment key={message.id}>
             <ChatMessage
               message={message.content}
               isUser={message.role === "user" ? true : false}
+              isNew={message.isNew && i === messages.length - 1}
             />
-
-            {/* {message.question && (
-                <ChatMessage message={message.question} isUser={true} />
-              )}
-              {message.answer && (
-                <ChatMessage message={message.answer} isUser={false} />
-              )} */}
           </Fragment>
         ))}
         {loading && (
