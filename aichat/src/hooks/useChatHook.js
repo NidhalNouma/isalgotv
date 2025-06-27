@@ -5,17 +5,15 @@ import { getAnswer } from "../api/chat";
 export function useChatHook() {
   const {
     chats,
+    setChats,
     newChatAdded,
 
     messages,
+    setMessages,
     newMessagesAdded,
 
     currentChat,
     setCurrentChat,
-    displayChats,
-    setDisplayChats,
-    dislayedMessages,
-    setDisplayedMessages,
 
     setIsTyping,
     retrieveChats,
@@ -50,9 +48,9 @@ export function useChatHook() {
     }
   };
 
-  const handleSendMessage = (messageContent, files) => {
-    if ((error || limit) && dislayedMessages?.length > 0 && !messageContent) {
-      messageContent = dislayedMessages[dislayedMessages.length - 1].content;
+  const handleSendMessage = async (messageContent, files) => {
+    if ((error || limit) && messages?.length > 0 && !messageContent) {
+      messageContent = messages[messages.length - 1].content;
     }
 
     if (files?.length) {
@@ -67,16 +65,10 @@ export function useChatHook() {
         content: messageContent,
       };
 
-      setDisplayedMessages((prev) => [...prev, newMessage]);
+      setMessages((prev) => [...prev, newMessage]);
 
-      let title = messageContent.slice(0, 30) + "...";
-      const newChat = {
-        id: chats.length + "-new",
-        title,
-      };
-
-      setCurrentChat(newChat.id);
-      simulateResponse(messageContent, title);
+      setCurrentChat("new-chat");
+      await simulateResponse(messageContent, true);
     } else {
       const newMessage = {
         id: chats.length + 1,
@@ -84,13 +76,12 @@ export function useChatHook() {
         content: messageContent,
       };
 
-      if (!error && !limit)
-        setDisplayedMessages((prev) => [...prev, newMessage]);
-      simulateResponse(messageContent);
+      if (!error && !limit) setMessages((prev) => [...prev, newMessage]);
+      await simulateResponse(messageContent);
     }
   };
 
-  const simulateResponse = async (userMessage, title) => {
+  const simulateResponse = async (userMessage, isNewChat = false) => {
     setIsTyping(true);
 
     const response = await sendMessage(userMessage, messages || []);
@@ -105,7 +96,7 @@ export function useChatHook() {
     if (newMessage) {
       // setCurrentTypingMessage(newMessage);
 
-      if (title) {
+      if (isNewChat) {
         newChatAdded(responseChat, responseUserMessage, responseAiMessage);
       } else
         newMessagesAdded(currentChat, responseUserMessage, responseAiMessage);
@@ -113,31 +104,48 @@ export function useChatHook() {
     setIsTyping(false);
   };
 
-  const handleTypingComplete = async () => {
-    return;
-    if (currentTypingMessage) {
-      const newAnswer = {
-        id: displayChats.length,
-        role: "assistant",
-        content: currentTypingMessage,
-      };
-
-      setDisplayChats((prev) =>
-        prev.map((chat) => {
-          if (chat.id === currentChat) {
-            return {
-              ...chat,
-            };
-          }
-          return chat;
-        })
+  const handleTypingComplete = async (chatId, msgId) => {
+    if (currentChat === chatId) {
+      setMessages((msgs) =>
+        msgs.map((msg) => (msg.id === msgId ? { ...msg, isNew: false } : msg))
       );
-
-      setDisplayedMessages((prev) => [...prev, newAnswer]);
-
-      setCurrentTypingMessage(null);
-      setIsTyping(false);
     }
+    setChats((prev) =>
+      prev.map((chat) =>
+        chat.id === chatId
+          ? {
+              ...chat,
+              messages: chat.messages.map((msg) =>
+                msg.id === msgId ? { ...msg, isNew: false } : msg
+              ),
+            }
+          : chat
+      )
+    );
+    return;
+    // if (currentTypingMessage) {
+    //   const newAnswer = {
+    //     id: displayChats.length,
+    //     role: "assistant",
+    //     content: currentTypingMessage,
+    //   };
+
+    //   setDisplayChats((prev) =>
+    //     prev.map((chat) => {
+    //       if (chat.id === currentChat) {
+    //         return {
+    //           ...chat,
+    //         };
+    //       }
+    //       return chat;
+    //     })
+    //   );
+
+    //   setDisplayedMessages((prev) => [...prev, newAnswer]);
+
+    //   setCurrentTypingMessage(null);
+    //   setIsTyping(false);
+    // }
   };
 
   return {

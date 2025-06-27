@@ -74,14 +74,6 @@ export default function ChatState({
         {loading && (
           <ChatMessage key="loading" isUser={false} loading={loading} />
         )}
-        {typingMessage && (
-          <ChatMessage
-            isUser={false}
-            message={typingMessage}
-            // isTyping={isTyping}
-            onComplete={onTypingComplete}
-          />
-        )}
         <div className="">
           {limit && (
             <aside className="mx-auto md:px-2 px-0 max-w-3xl">
@@ -162,6 +154,7 @@ export default function ChatState({
                 message={message.content}
                 isUser={message.role === "user" ? true : false}
                 isNew={message.isNew && i === messages.length - 1}
+                onComplete={() => onTypingComplete(currentChat, message.id)}
               />
             </Fragment>
           ))

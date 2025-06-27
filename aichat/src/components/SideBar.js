@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   X,
   Search,
@@ -16,9 +16,16 @@ function SideBar({ onClose, page, changePage }) {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredChats = chats.filter((chat) =>
-    chat.title?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [filteredChats, setFilteredChats] = useState([]);
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      let fChats = chats.filter((chat) =>
+        chat.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredChats(fChats);
+    } else setFilteredChats([...chats]);
+  }, [chats, searchQuery]);
 
   return (
     <div className="w-[260px] backdrop-blur-[320px] bg-background/80 rounded-xl h-full flex flex-col relative">
@@ -84,9 +91,10 @@ function SideBar({ onClose, page, changePage }) {
             {filteredChats.length > 0 && (
               <h6 className="text-text/80 text-sm px-2 pt-3 pb-2">Chats</h6>
             )}
-            {filteredChats?.map((chat) => (
-              <HrefButton chat={chat} onClose={onClose} />
-            ))}
+            {chats &&
+              filteredChats.map((chat) => (
+                <HrefButton key={chat.id} chat={chat} onClose={onClose} />
+              ))}
           </div>
         </Fragment>
       )}

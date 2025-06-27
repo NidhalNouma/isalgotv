@@ -9,7 +9,7 @@ import { useChatHook } from "../hooks/useChatHook";
 
 function ChatSection() {
   const { user } = useUser();
-  const { currentChat, dislayedMessages, isTyping } = useChat();
+  const { currentChat, messages, isTyping } = useChat();
 
   const {
     currentTypingMessage,
@@ -27,7 +27,7 @@ function ChatSection() {
       ) : (
         <ChatState
           user={user}
-          messages={dislayedMessages || []}
+          messages={messages || []}
           typingMessage={currentTypingMessage}
           isTyping={isTyping}
           loading={loading}

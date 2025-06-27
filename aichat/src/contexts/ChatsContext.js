@@ -33,12 +33,11 @@ export const ChatsProvider = ({ children }) => {
     });
   }
 
-  function newChatAdded(chat, userMessage, answer) {
-    let newChat = chat;
+  function newChatAdded(newChat, userMessage, answer) {
     newChat.messages = [userMessage, { ...answer, isNew: true }];
     setChats((prev) => [newChat, ...prev]);
 
-    setCurrentChat(chat.id);
+    setCurrentChat(newChat.id);
   }
 
   async function deleteChat(chatId) {
@@ -47,8 +46,10 @@ export const ChatsProvider = ({ children }) => {
 
     setChats((prev) => prev.filter((c) => c.id !== chatId));
 
-    setCurrentChat(null);
-    setDisplayedMessages([]);
+    if (chatId === currentChat) {
+      setCurrentChat(null);
+      setMessages([]);
+    }
   }
 
   async function updateChat(chatId, title) {
@@ -103,9 +104,12 @@ export const ChatsProvider = ({ children }) => {
 
     let chat = chats.find((c) => c.id === currentChat);
     if (chat && chat.messages && chat.messages.length > 0) {
+      // console.log(chat);
       setMessages(chat.messages);
       return;
     }
+
+    console.log("fetching messages ...");
 
     setLoadingMessages(true);
     fetchChatMessages(currentChat, 0).then((data) => {
@@ -168,17 +172,6 @@ export const ChatsProvider = ({ children }) => {
     }
   }, [currentChat]);
 
-  const [dislayedMessages, setDisplayedMessages] = useState(messages);
-
-  useEffect(() => {
-    setDisplayedMessages(messages);
-  }, [messages]);
-
-  const [displayChats, setDisplayChats] = useState(chats);
-  useEffect(() => {
-    setDisplayChats(chats);
-  }, [chats]);
-
   const createNewChat = () => {
     // if (currentChat) {
     //   const c = chats.find((c) => c.id === currentChat);
@@ -186,7 +179,6 @@ export const ChatsProvider = ({ children }) => {
     // }
     setMessages([]);
     setCurrentChat(null);
-    setDisplayedMessages([]);
     // const newChat = {
     //   id: chats.length + "-chat",
     //   title: "New chat",
@@ -202,8 +194,12 @@ export const ChatsProvider = ({ children }) => {
     <ChatsContext.Provider
       value={{
         chats,
+        setChats,
         newChatAdded,
+        retrieveChats,
+
         messages,
+        setMessages,
         newMessagesAdded,
         getOlderMessages,
 
@@ -215,16 +211,8 @@ export const ChatsProvider = ({ children }) => {
         deleteChat,
         updateChat,
 
-        displayChats,
-        setDisplayChats,
-        dislayedMessages,
-        setDisplayedMessages,
-        createContext,
-
         isTyping,
         setIsTyping,
-
-        retrieveChats,
       }}
     >
       {children}
