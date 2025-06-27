@@ -15,55 +15,53 @@ export const ScrollContainer = ({
 }) => {
   const outerDiv1 = useRef(null);
   const outerDiv = scrollRef || outerDiv1;
-  const innerDiv = useRef(null);
 
   const prevInnerDivHeight = useRef(null);
 
   const [showMessages, setShowMessages] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  useLayoutEffect(() => {
-    const outerDivHeight = outerDiv.current.clientHeight;
-    const innerDivHeight = innerDiv.current.clientHeight;
+  //   useLayoutEffect(() => {
+  //     const outerDivHeight = outerDiv.current.clientHeight;
+  //     const innerDivHeight = innerDiv.current.clientHeight;
 
-    if (showMessages) {
-      outerDiv.current.scrollTo({
-        top: innerDivHeight - outerDivHeight,
-        left: 0,
-        behavior: "auto",
-      });
-      setShowScrollButton(false);
-    }
-  }, [showMessages]);
+  //     if (showMessages) {
+  //       outerDiv.current.scrollTo({
+  //         top: innerDivHeight - outerDivHeight,
+  //         left: 0,
+  //         behavior: "auto",
+  //       });
+  //       setShowScrollButton(false);
+  //     }
+  //   }, [showMessages]);
 
-  useEffect(() => {
-    const outerDivHeight = outerDiv.current.clientHeight;
-    const innerDivHeight = innerDiv.current.clientHeight;
-    const outerDivScrollTop = outerDiv.current.scrollTop;
+  //   useEffect(() => {
+  //     const outerDivHeight = outerDiv.current.clientHeight;
+  //     const innerDivHeight = innerDiv.current.clientHeight;
+  //     const outerDivScrollTop = outerDiv.current.scrollTop;
 
-    if (
-      !prevInnerDivHeight.current ||
-      outerDivScrollTop === prevInnerDivHeight.current - outerDivHeight
-    ) {
-      outerDiv.current.scrollTo({
-        top: innerDivHeight - outerDivHeight,
-        left: 0,
-        behavior: prevInnerDivHeight.current ? "smooth" : "auto",
-      });
-      setShowMessages(true);
-    } else if (outerDivScrollTop + outerDivHeight < innerDivHeight) {
-      setShowScrollButton(true);
-    }
+  //     if (
+  //       !prevInnerDivHeight.current ||
+  //       outerDivScrollTop === prevInnerDivHeight.current - outerDivHeight
+  //     ) {
+  //       outerDiv.current.scrollTo({
+  //         top: innerDivHeight - outerDivHeight,
+  //         left: 0,
+  //         behavior: prevInnerDivHeight.current ? "smooth" : "auto",
+  //       });
+  //       setShowMessages(true);
+  //     } else if (outerDivScrollTop + outerDivHeight < innerDivHeight) {
+  //       setShowScrollButton(true);
+  //     }
 
-    prevInnerDivHeight.current = innerDivHeight;
-  }, [children]);
+  //     prevInnerDivHeight.current = innerDivHeight;
+  //   }, [children]);
 
   const handleScrollButtonClick = useCallback(() => {
     const outerDivHeight = outerDiv.current.clientHeight;
-    const innerDivHeight = innerDiv.current.clientHeight;
 
     outerDiv.current.scrollTo({
-      top: innerDivHeight - outerDivHeight,
+      top: outerDivHeight,
       left: 0,
       behavior: "smooth",
     });
@@ -72,9 +70,9 @@ export const ScrollContainer = ({
   }, []);
 
   return (
-    <div className="relative flex flex-col h-full overflow-y-hidden">
+    <div className="relative flex flex-col overflow-y-hidden">
       <div
-        className="relative flex flex-col h-fit max-h-fit overflow-scroll scrollbar-hide"
+        className="relative flex flex-col-reverse space-y-3 space-y-reverse h-fit max-h-fit overflow-y-auto scrollbar-hide"
         onScroll={(e) => {
           // Call any external onScroll handler
           if (onScroll) onScroll(e);
@@ -87,13 +85,7 @@ export const ScrollContainer = ({
         }}
         ref={outerDiv}
       >
-        <div
-          className="relative transition-all duration-300"
-          style={{ opacity: showMessages ? 1 : 0 }}
-          ref={innerDiv}
-        >
-          {children}
-        </div>
+        {children}
       </div>
       <button
         style={{

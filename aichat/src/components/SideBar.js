@@ -70,7 +70,10 @@ function SideBar({ onClose, page, changePage }) {
         <Fragment>
           <button
             // disabled={isTyping}
-            onClick={createNewChat}
+            onClick={() => {
+              createNewChat();
+              onClose();
+            }}
             className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
             aria-label="new Chat"
           >

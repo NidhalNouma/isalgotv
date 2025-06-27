@@ -31,7 +31,7 @@ export default function ChatState({
     // Don't trigger if no element or already fetching
     if (!el || isFetchingOlderRef.current) return;
 
-    if (el.scrollTop <= 100) {
+    if (el.scrollTop <= 80) {
       // Remember current height before loading more
       prevScrollHeightRef.current = el.scrollHeight;
       isFetchingOlderRef.current = true;
@@ -68,17 +68,6 @@ export default function ChatState({
         onScroll={handleScroll}
         scrollRef={messagesRef}
       >
-        {/* Spacer for top margin */}
-        <div className="max-w-3xl py-6" />
-        {messages.map((message, i) => (
-          <Fragment key={message.id}>
-            <ChatMessage
-              message={message.content}
-              isUser={message.role === "user" ? true : false}
-              isNew={message.isNew && i === messages.length - 1}
-            />
-          </Fragment>
-        ))}
         {loading && (
           <ChatMessage key="loading" isUser={false} loading={loading} />
         )}
@@ -162,6 +151,20 @@ export default function ChatState({
             </aside>
           )}
         </div>
+
+        {messages
+          .map((message, i) => (
+            <Fragment key={message.id}>
+              <ChatMessage
+                message={message.content}
+                isUser={message.role === "user" ? true : false}
+                isNew={message.isNew && i === messages.length - 1}
+              />
+            </Fragment>
+          ))
+          .reverse()}
+        {/* Spacer for top margin */}
+        <div className="max-w-3xl py-4" />
       </ScrollContainer>
       <ChatInput onSend={onSendMessage} disabled={isTyping} />
     </Fragment>

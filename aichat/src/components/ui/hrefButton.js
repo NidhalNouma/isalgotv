@@ -95,20 +95,21 @@ function HrefButton({ chat, onClose }) {
 
   return (
     <div
-      role="button"
-      tabIndex={0}
-      onClick={handleSingleClick}
-      onDoubleClick={handleDoubleClick}
-      onTouchEnd={handleTouchEnd}
       key={chat.id}
       className={`group flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
         chat.id === currentChat ? "bg-text/10" : ""
       }`}
     >
-      <h3 className="flex items-center gap-3 text-text/80 flex-1 min-w-0">
+      <button
+        tabIndex={0}
+        onClick={handleSingleClick}
+        onDoubleClick={handleDoubleClick}
+        onTouchEnd={handleTouchEnd}
+        className="flex items-center gap-3 text-text/80 flex-1 min-w-0"
+      >
         <MessageSquare className="w-4 h-4 flex-shrink-0" />
         <span className="truncate text-sm">{editText}</span>
-      </h3>
+      </button>
       <button
         onClick={(e) => {
           e.stopPropagation();

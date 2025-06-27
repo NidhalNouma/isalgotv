@@ -4,6 +4,7 @@ import AiResponseMarkdown from "./AiResponseMarkdown";
 import TypewriterEffect from "./TypewriterEffect";
 
 export default function ChatMessage({
+  className,
   message,
   isUser,
   isTyping,
@@ -12,7 +13,7 @@ export default function ChatMessage({
   onComplete,
 }) {
   return (
-    <div className={`py-4 `}>
+    <div className={className}>
       <div className="max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5">
         <div className="w-8 h-8 flex-shrink-0">
           {isUser ? (
