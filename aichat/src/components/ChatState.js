@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 
-import { ScrollContainer } from "./ui/ScrollableContainer";
+import { ChatScrollContainer } from "./ui/ScrollableContainer";
 
 import { useChat } from "../contexts/ChatsContext";
 
@@ -31,7 +31,10 @@ export default function ChatState({
     // Don't trigger if no element or already fetching
     if (!el || isFetchingOlderRef.current) return;
 
-    if (el.scrollTop <= 80) {
+    if (
+      Math.abs(el.scrollHeight) - Math.abs(el.scrollTop) <=
+      (el.scrollHeight * 25) / 100
+    ) {
       // Remember current height before loading more
       prevScrollHeightRef.current = el.scrollHeight;
       isFetchingOlderRef.current = true;
@@ -44,9 +47,9 @@ export default function ChatState({
     if (!el || messages.length === 0) return;
 
     if (isFetchingOlderRef.current) {
-      // Restore scroll position after loading older messages
-      const newScrollHeight = el.scrollHeight;
-      el.scrollTop = newScrollHeight - prevScrollHeightRef.current;
+      // // Restore scroll position after loading older messages
+      // const newScrollHeight = el.scrollHeight;
+      // el.scrollTop = newScrollHeight - prevScrollHeightRef.current;
       isFetchingOlderRef.current = false;
     } else {
       // Auto-scroll on new messages
@@ -63,7 +66,7 @@ export default function ChatState({
 
   return (
     <Fragment>
-      <ScrollContainer
+      <ChatScrollContainer
         scrollCta="Scroll to bottom"
         onScroll={handleScroll}
         scrollRef={messagesRef}
@@ -164,8 +167,8 @@ export default function ChatState({
           ))
           .reverse()}
         {/* Spacer for top margin */}
-        <div className="max-w-3xl py-4" />
-      </ScrollContainer>
+        <div className="max-w-3xl py-6" />
+      </ChatScrollContainer>
       <ChatInput onSend={onSendMessage} disabled={isTyping} />
     </Fragment>
   );

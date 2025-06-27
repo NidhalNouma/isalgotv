@@ -45,7 +45,7 @@ export default function EmptyState({ onSendMessage }) {
           onSend={onSendMessage}
           className=""
           quickActionMsg={quickActionMsg}
-          focus={true}
+          // focus={true}
         />
       </div>
 

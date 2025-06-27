@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 
 import { useChat } from "../../contexts/ChatsContext";
 
-import { MessageSquare, X } from "lucide-react";
+import { MessageSquare, X, PencilLine } from "lucide-react";
 
 function HrefButton({ chat, onClose }) {
   const { currentChat, deleteChat, selectChat, updateChat } = useChat();
@@ -51,7 +51,11 @@ function HrefButton({ chat, onClose }) {
   const handleKeyDown = async (e) => {
     setEditText(e.target.value);
 
-    if (e.key === "Enter") {
+    if (e.key === "Escape") {
+      e.preventDefault();
+
+      setIsEditing(false);
+    } else if (e.key === "Enter") {
       e.preventDefault();
 
       setIsEditing(false);
@@ -95,20 +99,27 @@ function HrefButton({ chat, onClose }) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      onClick={handleSingleClick}
+      onTouchEnd={handleTouchEnd}
       key={chat.id}
-      className={`group flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
+      className={`group flex items-center gap-2 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
         chat.id === currentChat ? "bg-text/10" : ""
       }`}
     >
-      <button
-        tabIndex={0}
-        onClick={handleSingleClick}
-        onDoubleClick={handleDoubleClick}
-        onTouchEnd={handleTouchEnd}
-        className="flex items-center gap-3 text-text/80 flex-1 min-w-0"
-      >
+      <h4 className="flex items-center gap-3 text-text/80 flex-1 min-w-0">
         <MessageSquare className="w-4 h-4 flex-shrink-0" />
         <span className="truncate text-sm">{editText}</span>
+      </h4>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsEditing(true);
+        }}
+        className="text-text/40 hover:text-text opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        <PencilLine className="w-3.5 aspect-square" />
       </button>
       <button
         onClick={(e) => {
@@ -117,7 +128,7 @@ function HrefButton({ chat, onClose }) {
         }}
         className="text-text/40 hover:text-loss opacity-0 group-hover:opacity-100 transition-opacity"
       >
-        <X className="w-4 h-4" />
+        <X className="w-4 aspect-square" />
       </button>
     </div>
   );

@@ -84,7 +84,8 @@ export function useChatHook() {
         content: messageContent,
       };
 
-      setDisplayedMessages((prev) => [...prev, newMessage]);
+      if (!error && !limit)
+        setDisplayedMessages((prev) => [...prev, newMessage]);
       simulateResponse(messageContent);
     }
   };

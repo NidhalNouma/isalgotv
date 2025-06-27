@@ -6948,6 +6948,11 @@ input[type="number"] {
     line-height: 1.75rem;
   }
 
+  .sm\:text-8xl {
+    font-size: 6rem;
+    line-height: 1;
+  }
+
   .sm\:line-clamp-4 {
     overflow: hidden;
     display: -webkit-box;

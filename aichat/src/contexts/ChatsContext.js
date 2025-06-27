@@ -35,7 +35,7 @@ export const ChatsProvider = ({ children }) => {
 
   function newChatAdded(chat, userMessage, answer) {
     let newChat = chat;
-    newChat.messages = [userMessage, answer];
+    newChat.messages = [userMessage, { ...answer, isNew: true }];
     setChats((prev) => [newChat, ...prev]);
 
     setCurrentChat(chat.id);
