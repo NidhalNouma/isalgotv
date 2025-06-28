@@ -19,33 +19,10 @@ function HrefButton({ chat, onClose }) {
 
   const handleSingleClick = (e) => {
     e.stopPropagation();
-    // Delay single-click action to detect double-click
-    clearTimeout(clickTimeout.current);
-    clickTimeout.current = setTimeout(() => {
-      selectChat(chat.id);
-      if (isTouchOnlyDevice()) {
-        onClose();
-      }
-    }, 200);
-  };
-
-  const handleDoubleClick = (e) => {
-    e.stopPropagation();
-    // Cancel the pending single-click action
-    clearTimeout(clickTimeout.current);
-    setIsEditing(true);
-  };
-
-  const handleTouchEnd = (e) => {
-    e.stopPropagation();
-    const now = Date.now();
-    const delta = now - lastTapRef.current;
-    if (delta > 0 && delta < 300) {
-      // double-tap detected
-      clearTimeout(clickTimeout.current);
-      setIsEditing(true);
+    selectChat(chat.id);
+    if (isTouchOnlyDevice()) {
+      onClose();
     }
-    lastTapRef.current = now;
   };
 
   const handleKeyDown = async (e) => {
@@ -102,7 +79,7 @@ function HrefButton({ chat, onClose }) {
       role="button"
       tabIndex={0}
       onClick={handleSingleClick}
-      onTouchEnd={handleTouchEnd}
+      onTouchEnd={handleSingleClick}
       key={chat.id}
       className={`group flex items-center gap-2 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
         chat.id === currentChat ? "bg-text/10" : ""

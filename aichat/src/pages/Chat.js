@@ -1,9 +1,15 @@
-import { useState, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import Navbar from "../components/NavBar";
 import SideBar from "../components/SideBar";
 import ChatSection from "../components/ChatSection";
 
+import { useChat } from "../contexts/ChatsContext";
+import { useUser } from "../contexts/UserContext";
+
 function Chat({ changePage }) {
+  const { user } = useUser();
+  const { retrieveChats } = useChat();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -11,6 +17,16 @@ function Chat({ changePage }) {
     setIsSidebarOpen((prev) => !prev);
     setIsHovering(false);
   };
+
+  // Track if chats have been retrieved once
+  const hasFetchedChats = useRef(false);
+
+  useEffect(() => {
+    if ((isSidebarOpen || isHovering) && user && !hasFetchedChats.current) {
+      retrieveChats();
+      hasFetchedChats.current = true;
+    }
+  }, [isSidebarOpen, isHovering, user]);
 
   return (
     <Fragment>

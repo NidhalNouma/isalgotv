@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 
 import { useUser } from "./UserContext";
 
@@ -25,10 +25,17 @@ export const ChatsProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [loadingChats, setLoadingChats] = useState(false);
 
+  const isLAstChat = useRef(false);
+
   function retrieveChats() {
+    if (isLAstChat.current) return;
+    if (loadingChats) return;
     setLoadingChats(true);
     fetchChatSessions(chats.length).then((data) => {
-      setChats(data.chat_sessions);
+      const isLastPage = data.is_last_page;
+      isLAstChat.current = isLastPage;
+      const dchats = data.chat_sessions;
+      setChats((prev) => [...prev, ...dchats]);
       setLoadingChats(false);
     });
   }
@@ -65,9 +72,9 @@ export const ChatsProvider = ({ children }) => {
     );
   }
 
-  useEffect(() => {
-    if (user) retrieveChats();
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) retrieveChats();
+  // }, [user]);
 
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
@@ -138,7 +145,7 @@ export const ChatsProvider = ({ children }) => {
     if (!chat || chat.isLastPage) return;
     console.log("Getting older messages for chat:", chat);
     setLoadingMessages(true);
-    fetchChatMessages(currentChat, messages.length).then((data) => {
+    fetchChatMessages(currentChat, chat.messages.length).then((data) => {
       const isLastPage = data.is_last_page;
       const oldMessages = data.chat_messages;
       const session = data.session;

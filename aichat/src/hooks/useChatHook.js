@@ -65,7 +65,13 @@ export function useChatHook() {
         content: messageContent,
       };
 
-      setMessages((prev) => [...prev, newMessage]);
+      const loadingMsg = {
+        id: chats.length + 2,
+        role: "assistant",
+        isLoading: true,
+      };
+
+      setMessages((prev) => [...prev, newMessage, loadingMsg]);
 
       setCurrentChat("new-chat");
       await simulateResponse(messageContent, true);
@@ -75,8 +81,14 @@ export function useChatHook() {
         role: "user",
         content: messageContent,
       };
+      const loadingMsg = {
+        id: chats.length + 2,
+        role: "assistant",
+        isLoading: true,
+      };
 
-      if (!error && !limit) setMessages((prev) => [...prev, newMessage]);
+      if (!error && !limit)
+        setMessages((prev) => [...prev, newMessage, loadingMsg]);
       await simulateResponse(messageContent);
     }
   };
@@ -152,7 +164,7 @@ export function useChatHook() {
     currentTypingMessage,
     handleSendMessage,
     handleTypingComplete,
-    loading,
+    // loading,
     error,
     limit,
   };

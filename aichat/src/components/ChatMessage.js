@@ -7,7 +7,6 @@ export default function ChatMessage({
   className,
   message,
   isUser,
-  isTyping,
   isNew,
   loading,
   onComplete,
@@ -49,11 +48,7 @@ export default function ChatMessage({
             </div>
           )}
         </div>
-        {!isUser && isTyping ? (
-          <div className="max-w-full text-text flex-shrink p-1 overflow-hidden">
-            <TypewriterEffect content={message} onComplete={onComplete} />
-          </div>
-        ) : isUser ? (
+        {isUser ? (
           <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text flex-1 ">
             {message}
           </div>
@@ -72,7 +67,7 @@ export default function ChatMessage({
         {loading && (
           <div className="max-w-full w-full text-text flex-shrink p-1">
             <div className="w-full">
-              <div className="w-full h-7 rounded-xl animate-pulse btn-ai"></div>
+              <div className="w-full h-8 rounded-xl animate-pulse btn-ai"></div>
             </div>
           </div>
         )}

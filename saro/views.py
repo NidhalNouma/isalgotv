@@ -24,7 +24,7 @@ def get_chat_sessions(request, start=0):
     if request.method == "POST":
         try:
             if request.user.is_authenticated:
-                limit = 50
+                limit = 25
                 response = get_limit_chat_sessions(request.user, start, limit)
 
                 context = {

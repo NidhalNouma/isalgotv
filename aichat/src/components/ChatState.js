@@ -9,9 +9,7 @@ import { useChat } from "../contexts/ChatsContext";
 export default function ChatState({
   user,
   messages,
-  typingMessage,
   isTyping,
-  loading,
   error,
   limit,
   onSendMessage,
@@ -71,9 +69,6 @@ export default function ChatState({
         onScroll={handleScroll}
         scrollRef={messagesRef}
       >
-        {loading && (
-          <ChatMessage key="loading" isUser={false} loading={loading} />
-        )}
         <div className="">
           {limit && (
             <aside className="mx-auto md:px-2 px-0 max-w-3xl">
@@ -154,6 +149,7 @@ export default function ChatState({
                 message={message.content}
                 isUser={message.role === "user" ? true : false}
                 isNew={message.isNew && i === messages.length - 1}
+                loading={message.isLoading}
                 onComplete={() => onTypingComplete(currentChat, message.id)}
               />
             </Fragment>

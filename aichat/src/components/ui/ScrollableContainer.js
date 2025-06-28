@@ -64,7 +64,7 @@ export const ChatScrollContainer = ({
   return (
     <div className="relative flex flex-col overflow-y-hidden">
       <div
-        className="relative flex flex-col-reverse space-y-3 space-y-reverse h-fit max-h-fit overflow-y-auto scrollbar-hide"
+        className="relative flex flex-col-reverse space-y-4 space-y-reverse h-fit max-h-fit overflow-y-auto scrollbar-hide"
         onScroll={handleScroll}
         ref={outerDiv}
       >
@@ -81,6 +81,37 @@ export const ChatScrollContainer = ({
       >
         {scrollCta}
       </button>
+    </div>
+  );
+};
+
+export const ScrollDiv = ({ children, className, onBottomReach }) => {
+  const scrollDiv = useRef(null);
+  const [hasTriggered, setHasTriggered] = useState(false);
+
+  useEffect(() => {
+    // Reset trigger when children change (new content loaded)
+    setHasTriggered(false);
+  }, [children]);
+
+  const handleScroll = useCallback(() => {
+    const el = scrollDiv.current;
+    if (el) {
+      const { scrollTop, scrollHeight, clientHeight } = el;
+      if (!hasTriggered && scrollTop + clientHeight >= scrollHeight * 0.8) {
+        onBottomReach && onBottomReach();
+        setHasTriggered(true);
+      }
+    }
+  }, [onBottomReach, hasTriggered]);
+
+  return (
+    <div
+      ref={scrollDiv}
+      className={`flex-1 overflow-y-auto px-2 ${className || ""}`}
+      onScroll={handleScroll}
+    >
+      {children}
     </div>
   );
 };

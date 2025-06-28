@@ -7,12 +7,16 @@ import {
   Activity,
 } from "lucide-react";
 
+import { ScrollDiv } from "./ui/ScrollableContainer";
+
 import { useChat } from "../contexts/ChatsContext";
+import { useUser } from "../contexts/UserContext";
 
 import HrefButton from "./ui/hrefButton";
 
 function SideBar({ onClose, page, changePage }) {
-  const { chats, createNewChat, isTyping } = useChat();
+  const { user } = useUser();
+  const { chats, createNewChat, isTyping, retrieveChats } = useChat();
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -50,28 +54,32 @@ function SideBar({ onClose, page, changePage }) {
         </button>
       </div>
 
-      <div className="ml-3 pr-6 flex flex-col w-full justify-start items-start gap-3 ">
-        <button
-          className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
-            page === "chat" && "text-background hover:text-background bg-title"
-          } `}
-          aria-label="Close Session"
-          onClick={() => changePage("chat")}
-        >
-          <MessagesSquare className="w-3.5 aspect-auto " />
-          Chat
-        </button>
-        <button
-          className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
-            page === "trade" && "text-background hover:text-background bg-title"
-          } `}
-          aria-label="Close Session"
-          onClick={() => changePage("trade")}
-        >
-          <Activity className="w-3.5 aspect-auto " />
-          Trade
-        </button>
-      </div>
+      {user?.isLifetime && (
+        <div className="ml-3 pr-6 flex flex-col w-full justify-start items-start gap-3 ">
+          <button
+            className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
+              page === "chat" &&
+              "text-background hover:text-background bg-title"
+            } `}
+            aria-label="Close Session"
+            onClick={() => changePage("chat")}
+          >
+            <MessagesSquare className="w-3.5 aspect-auto " />
+            Chat
+          </button>
+          <button
+            className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
+              page === "trade" &&
+              "text-background hover:text-background bg-title"
+            } `}
+            aria-label="Close Session"
+            onClick={() => changePage("trade")}
+          >
+            <Activity className="w-3.5 aspect-auto " />
+            Trade
+          </button>
+        </div>
+      )}
 
       {page === "chat" && (
         <Fragment>
@@ -87,7 +95,7 @@ function SideBar({ onClose, page, changePage }) {
             <MessageSquarePlus className="w-3.5 aspect-auto " />
             New chat
           </button>
-          <div className="flex-1 overflow-y-auto px-2">
+          <ScrollDiv className="px-2" onBottomReach={retrieveChats}>
             {filteredChats.length > 0 && (
               <h6 className="text-text/80 text-sm px-2 pt-3 pb-2">Chats</h6>
             )}
@@ -95,7 +103,7 @@ function SideBar({ onClose, page, changePage }) {
               filteredChats.map((chat) => (
                 <HrefButton key={chat.id} chat={chat} onClose={onClose} />
               ))}
-          </div>
+          </ScrollDiv>
         </Fragment>
       )}
     </div>

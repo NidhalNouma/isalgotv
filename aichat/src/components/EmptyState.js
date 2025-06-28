@@ -210,10 +210,9 @@ function QuickActions({ setQuuickActionMsg }) {
   );
 }
 
-function ActionButton({ key, icon, label, onClick }) {
+function ActionButton({ icon, label, onClick }) {
   return (
     <button
-      key={key}
       onClick={onClick}
       className="flex items-center gap-2 py-2 px-4 border border-text/20 rounded-3xl hover:bg-text/20 transition-colors text-left w-full"
     >
