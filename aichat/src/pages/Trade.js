@@ -21,6 +21,8 @@ function Trade({ changePage }) {
           onMenuClick={toggleSidebar}
           onMenuHover={() => setIsHovering(true)}
           className=""
+          page="trade"
+          changePage={changePage}
         />
         <TradeSection />
       </div>

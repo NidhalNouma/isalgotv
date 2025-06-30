@@ -354,14 +354,13 @@ def buy_ai_tokens(request):
             user_profile.save()
 
             is_settings = request.GET.get('settings', '') == 'true'
-            # print("GET Parameters:", request.GET.dict(), "Settings:", is_settings)
 
             if is_settings:
                 response = render(request, 'include/settings/ai_tokens.html', context)
                 return retarget(response, "#setting-ai-tokens")
             
             response = render(request, 'include/ai_tokens_form.html', context)
-            return retarget(response, "#div-ai_tokens_form")
+            return retarget(response, "#add-ai-tokens-form")
             
 
         except Exception as e:

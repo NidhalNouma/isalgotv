@@ -795,13 +795,13 @@ function showSelectImgs(id) {
 function showModalImages(clickedImg, id = "") {
   // Derive the image list from the clicked image’s parent container
   const parent = clickedImg.parentElement;
-  const imgElements = Array.from(parent.querySelectorAll('img'));
+  const imgElements = Array.from(parent.querySelectorAll("img"));
   const images = imgElements.map((imgEl, idx) => ({
     id: idx,
-    imageUrl: imgEl.src
+    imageUrl: imgEl.src,
   }));
   // Find the index of the clicked image
-  const imgId = images.find(image => image.imageUrl === clickedImg.src).id;
+  const imgId = images.find((image) => image.imageUrl === clickedImg.src).id;
 
   const modalId = "modal-images-" + id;
   openModel(modalId);
@@ -849,14 +849,14 @@ function showModalImages(clickedImg, id = "") {
     document
       .getElementById("next-button-carousel-" + id)
       .classList.add("hidden");
-  } else  {
-      document
-        .getElementById("prev-button-carousel-" + id)
-        .classList.remove("hidden");
-      document
-        .getElementById("next-button-carousel-" + id)
-        .classList.remove("hidden");
-    }
+  } else {
+    document
+      .getElementById("prev-button-carousel-" + id)
+      .classList.remove("hidden");
+    document
+      .getElementById("next-button-carousel-" + id)
+      .classList.remove("hidden");
+  }
 
   const carouselControl = document.getElementById("controls-carousel-" + id);
   const carouselContainer = document.getElementById("images-carousel-" + id);
@@ -868,7 +868,9 @@ function showModalImages(clickedImg, id = "") {
     console.log(img);
     const imgElement = document.createElement("img");
     imgElement.src = img.imageUrl;
-    imgElement.onclick = function () { hideModel(modalId); }
+    imgElement.onclick = function () {
+      hideModel(modalId);
+    };
     imgElement.classList.add(
       "object-scale-down",
       "absolute",
@@ -880,7 +882,7 @@ function showModalImages(clickedImg, id = "") {
       "-translate-y-1/2",
       "top-1/2",
       "left-1/2",
-      "hover:cursor-zoom-out",
+      "hover:cursor-zoom-out"
     );
 
     const carouselItem = document.createElement("div");
@@ -929,6 +931,52 @@ function closeAITokensModalSettings() {
 
     form.setAttribute("hx-post", cleanHxPost);
     htmx.process(form);
+  }
+}
+
+// Select the tokens amount
+let lastAiTokenId = "";
+
+function AIamountBtnClick(id, amount, event) {
+  console.log(amount);
+  try {
+    event.preventDefault(); // Prevent default button behavior
+
+    const parts = id.split("-");
+    // Grab everything between the first and last dash
+    const title = parts.slice(1, -1).join("-");
+
+    console.log(title, id);
+
+    let activeClass = ["bg-text", "hover:bg-text", "text-background"];
+    let desactiveClass = ["bg-text/10", "text-text", "hover:bg-text/20"];
+
+    // Highlight the clicked button
+    const btn = document.getElementById(id);
+    btn.classList.remove(...desactiveClass);
+    btn.classList.add(...activeClass);
+
+    // Remove highlight from the last selected button
+    if (lastAiTokenId && lastAiTokenId !== id) {
+      const lastBtn = document.getElementById(lastAiTokenId);
+      lastBtn.classList.remove(...activeClass);
+      lastBtn.classList.add(...desactiveClass);
+    }
+
+    // Show input field if "Other" is selected, otherwise set amount
+    let amountInput = document.getElementById("amount-" + title);
+    if (Number(amount) <= 0) {
+      document.getElementById("div-amount-" + title).classList.remove("hidden");
+      amountInput.value = "";
+      amountInput.focus();
+    } else {
+      amountInput.value = amount;
+      document.getElementById("div-amount-" + title).classList.add("hidden");
+    }
+
+    lastAiTokenId = id;
+  } catch (e) {
+    console.error("amountBtnClick error:", e);
   }
 }
 
@@ -984,7 +1032,7 @@ htmx.on("htmx:afterRequest", (evt) => {
     closeAITokensModalSettings();
   }
 
-  if (evt?.detail?.target.id.includes("div-ai_tokens_form")) {
+  if (evt?.detail?.target.id.includes("add-ai-tokens-form")) {
     closeAITokensModalSettings();
     openModel("modal-algoai");
   }
@@ -1984,42 +2032,40 @@ document.addEventListener("DOMContentLoaded", function () {
       video.load();
     });
   });
-  
 
-  
-  const options = { root: null, rootMargin: '0px', threshold: 0.1 };
+  const options = { root: null, rootMargin: "0px", threshold: 0.1 };
   const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const delay = entry.target.getAttribute("animation-delay");
-          if (delay) {
-            entry.target.style.animationDelay = delay + 'ms';
-          }
-
-          entry.target.classList.remove("opacity-0");
-          entry.target.classList.add("animate-fade-up");
-          obs.unobserve(entry.target);
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.getAttribute("animation-delay");
+        if (delay) {
+          entry.target.style.animationDelay = delay + "ms";
         }
-      });
-    }, options);
-    document.querySelectorAll('.fade-up-on-scroll').forEach(el => {
-      observer.observe(el);
+
+        entry.target.classList.remove("opacity-0");
+        entry.target.classList.add("animate-fade-up");
+        obs.unobserve(entry.target);
+      }
     });
+  }, options);
+  document.querySelectorAll(".fade-up-on-scroll").forEach((el) => {
+    observer.observe(el);
+  });
   const observer_dn = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const delay = entry.target.getAttribute("animation-delay");
-          if (delay) {
-            entry.target.style.animationDelay = delay + 'ms';
-          }
-
-          entry.target.classList.remove('opacity-0');
-          entry.target.classList.add('animate-fade-down');
-          obs.unobserve(entry.target);
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.getAttribute("animation-delay");
+        if (delay) {
+          entry.target.style.animationDelay = delay + "ms";
         }
-      });
-    }, options);
-    document.querySelectorAll('.fade-down-on-scroll').forEach(el => {
-      observer_dn.observe(el);
+
+        entry.target.classList.remove("opacity-0");
+        entry.target.classList.add("animate-fade-down");
+        obs.unobserve(entry.target);
+      }
     });
+  }, options);
+  document.querySelectorAll(".fade-down-on-scroll").forEach((el) => {
+    observer_dn.observe(el);
+  });
 });

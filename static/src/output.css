@@ -2624,6 +2624,10 @@ h1,
   margin-top: auto;
 }
 
+.-mr-1 {
+  margin-right: -0.25rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -3042,6 +3046,14 @@ h1,
 .w-max {
   width: -moz-max-content;
   width: max-content;
+}
+
+.w-screen {
+  width: 100vw;
+}
+
+.\!w-screen {
+  width: 100vw !important;
 }
 
 .min-w-0 {
@@ -6338,6 +6350,14 @@ input[type="number"] {
   fill: hsl(var(--color-title) / 1);
 }
 
+.hover\:fill-title\/80:hover {
+  fill: hsl(var(--color-title) / 0.8);
+}
+
+.hover\:stroke-title\/80:hover {
+  stroke: hsl(var(--color-title) / 0.8);
+}
+
 .hover\:font-medium:hover {
   font-weight: 500;
 }
@@ -6777,6 +6797,14 @@ input[type="number"] {
 
   .sm\:h-\[45vh\] {
     height: 45vh;
+  }
+
+  .sm\:h-4 {
+    height: 1rem;
+  }
+
+  .sm\:h-5 {
+    height: 1.25rem;
   }
 
   .sm\:w-14 {

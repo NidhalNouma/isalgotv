@@ -41,7 +41,7 @@ function SideBar({ onClose, page, changePage }) {
             placeholder="Search chats..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent text-text placeholder-text/40 rounded-md py-1 pl-9 pr-3 !focus:outline-none  focus:ring-0"
+            className="w-full input-text py-1 pl-9 pr-3"
           />
 
           <Search className="absolute left-2.5 top-2 w-4 h-4 text-text/60" />
@@ -54,32 +54,28 @@ function SideBar({ onClose, page, changePage }) {
         </button>
       </div>
 
-      {user?.isLifetime && (
-        <div className="ml-3 pr-6 flex flex-col w-full justify-start items-start gap-3 ">
-          <button
-            className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
-              page === "chat" &&
-              "text-background hover:text-background bg-title"
-            } `}
-            aria-label="Close Session"
-            onClick={() => changePage("chat")}
-          >
-            <MessagesSquare className="w-3.5 aspect-auto " />
-            Chat
-          </button>
-          <button
-            className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
-              page === "trade" &&
-              "text-background hover:text-background bg-title"
-            } `}
-            aria-label="Close Session"
-            onClick={() => changePage("trade")}
-          >
-            <Activity className="w-3.5 aspect-auto " />
-            Trade
-          </button>
-        </div>
-      )}
+      <div className="ml-3 pr-6 flex flex-col w-full justify-start items-start gap-3 ">
+        <button
+          className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
+            page === "chat" && "text-background hover:text-background bg-title"
+          } `}
+          aria-label="Close Session"
+          onClick={() => changePage("chat")}
+        >
+          <MessagesSquare className="w-3.5 aspect-auto " />
+          Chat
+        </button>
+        <button
+          className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors ml-0 w-full max-w-xs ${
+            page === "trade" && "text-background hover:text-background bg-title"
+          } `}
+          aria-label="Close Session"
+          onClick={() => changePage("trade")}
+        >
+          <Activity className="w-3.5 aspect-auto " />
+          Trade
+        </button>
+      </div>
 
       {page === "chat" && (
         <Fragment>

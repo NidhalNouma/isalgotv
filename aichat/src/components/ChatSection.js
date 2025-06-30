@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import EmptyState from "./EmptyState";
+import EmptyState from "./EmptyChatState";
 import ChatState from "./ChatState";
 
 import { useUser } from "../contexts/UserContext";

@@ -9,12 +9,12 @@
     <div class="">
       <h3 class="text-text mt-2 font-semibold">Select token amount</h3>
       <div id="" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
-        <button id="btn-{{ title }}-500K" onclick="amountBtnClick('btn-{{ title }}-500K', 500000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">500K</button>
-        <button id="btn-{{ title }}-1M" onclick="amountBtnClick('btn-{{ title }}-1M', 1000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">1M</button>
-        <button id="btn-{{ title }}-2M" onclick="amountBtnClick('btn-{{ title }}-2M', 2000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">2M</button>
-        <button id="btn-{{ title }}-5M" onclick="amountBtnClick('btn-{{ title }}-5M', 5000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">5M</button>
-        <button id="btn-{{ title }}-10M" onclick="amountBtnClick('btn-{{ title }}-10M', 10000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">10M</button>
-        <button id="btn-{{ title }}-other" onclick="amountBtnClick('btn-{{ title }}-other', 0, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">Other</button>
+        <button id="btn-{{ title }}-500K" onclick="AIamountBtnClick('btn-{{ title }}-500K', 500000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">500K</button>
+        <button id="btn-{{ title }}-1M" onclick="AIamountBtnClick('btn-{{ title }}-1M', 1000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">1M</button>
+        <button id="btn-{{ title }}-2M" onclick="AIamountBtnClick('btn-{{ title }}-2M', 2000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">2M</button>
+        <button id="btn-{{ title }}-5M" onclick="AIamountBtnClick('btn-{{ title }}-5M', 5000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">5M</button>
+        <button id="btn-{{ title }}-10M" onclick="AIamountBtnClick('btn-{{ title }}-10M', 10000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">10M</button>
+        <button id="btn-{{ title }}-other" onclick="AIamountBtnClick('btn-{{ title }}-other', 0, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">Other</button>
       </div>
 
       <div id="div-amount-{{ title }}" class="hidden mt-4">
@@ -51,41 +51,4 @@
       </svg>
     </button>
   </div>
-
-  <script type="text/javascript">
-    // Select the tokens amount
-    let lastAiTokenId = ''
-    
-    function amountBtnClick(id, amount, event) {
-      event.preventDefault() // Prevent default button behavior
-    
-      let activeClass = ['bg-text', 'hover:bg-text', 'text-background']
-      let desactiveClass = ['bg-text/10', 'text-text', 'hover:bg-text/20']
-    
-      // Highlight the clicked button
-      const btn = document.getElementById(id)
-      btn.classList.remove(...desactiveClass)
-      btn.classList.add(...activeClass)
-    
-      // Remove highlight from the last selected button
-      if (lastAiTokenId && lastAiTokenId !== id) {
-        const lastBtn = document.getElementById(lastAiTokenId)
-        lastBtn.classList.remove(...activeClass)
-        lastBtn.classList.add(...desactiveClass)
-      }
-    
-      // Show input field if "Other" is selected, otherwise set amount
-      let amountInput = document.getElementById('amount-{{title}}')
-      if (Number(amount) <= 0) {
-        document.getElementById('div-amount-{{title}}').classList.remove('hidden')
-        amountInput.value = ''
-        amountInput.focus()
-      } else {
-        amountInput.value = amount
-        document.getElementById('div-amount-{{title}}').classList.add('hidden')
-      }
-    
-      lastAiTokenId = id
-    }
-  </script>
 </form>

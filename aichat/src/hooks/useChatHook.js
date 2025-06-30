@@ -37,11 +37,25 @@ export function useChatHook() {
 
       if (data.todat_limit_hit) {
         setLimit(true);
+        setMessages((prev) => {
+          const last = prev[prev.length - 1];
+          if (last && typeof last === "object" && last.isLoading) {
+            return prev.slice(0, -1);
+          }
+          return prev;
+        });
         return null;
       }
       return data;
     } catch (err) {
       console.error("Error fetching response:", err);
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last && typeof last === "object" && last.isLoading) {
+          return prev.slice(0, -1);
+        }
+        return prev;
+      });
       setError("Failed to get response");
     } finally {
       setLoading(false);
@@ -58,37 +72,26 @@ export function useChatHook() {
       messageContent += `\n\nAttached files: ${fileNames}`;
     }
 
+    const newMessage = {
+      id: messages.length,
+      role: "user",
+      content: messageContent,
+    };
+    const loadingMsg = {
+      id: messages.length + 1,
+      role: "assistant",
+      isLoading: true,
+    };
+
     if (!currentChat) {
-      const newMessage = {
-        id: "0",
-        role: "user",
-        content: messageContent,
-      };
-
-      const loadingMsg = {
-        id: chats.length + 2,
-        role: "assistant",
-        isLoading: true,
-      };
-
       setMessages((prev) => [...prev, newMessage, loadingMsg]);
 
       setCurrentChat("new-chat");
       await simulateResponse(messageContent, true);
     } else {
-      const newMessage = {
-        id: chats.length + 1,
-        role: "user",
-        content: messageContent,
-      };
-      const loadingMsg = {
-        id: chats.length + 2,
-        role: "assistant",
-        isLoading: true,
-      };
-
       if (!error && !limit)
         setMessages((prev) => [...prev, newMessage, loadingMsg]);
+      if (error || limit) setMessages((prev) => [...prev, loadingMsg]);
       await simulateResponse(messageContent);
     }
   };

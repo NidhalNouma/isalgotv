@@ -17,9 +17,9 @@
         </div>
       </a>
     </div>
-    <div class="flex items-center lg:order-2">
+    <div class="flex items-center lg:order-2 justify-center gap-2">
       {% if user.is_authenticated %}
-        <button class="btn-ai before:hover:scale-105 mr-2 md:mr-4" onclick="openModel('modal-algoai')">
+        <button class="btn-ai before:hover:scale-105" onclick="openModel('modal-algoai')">
           <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">
             SARO
             <span id="ai-os-icon" class="hidden ml-0.5 text-text dark:text-background opacity-60 text-sm font-normal items-center">
@@ -52,10 +52,10 @@
           }
         </script>
 
-        <div class="relative">
-          <button type="button" class="flex mr-2 ml-1 text-sm rounded-full lg:mr-0 md:ml-0 focus:ring-4 focus:ring-text/40" onclick="openCustomDropdown('user-dropdown')">
+        <div class="relative flex items-center">
+          <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
             <span class="sr-only">Open user menu</span>
-            <svg stroke-width="0" viewBox="0 0 24 24" class="w-7 h-7 fill-text/80 stroke-text/80 hover:fill-text focus:fill-text" xmlns="http://www.w3.org/2000/svg">
+            <svg stroke-width="0" viewBox="0 0 24 24" class="w-6 aspect-auto fill-current stroke-current" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9ZM14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z"></path>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM3 12C3 14.0902 3.71255 16.014 4.90798 17.5417C6.55245 15.3889 9.14627 14 12.0645 14C14.9448 14 17.5092 15.3531 19.1565 17.4583C20.313 15.9443 21 14.0524 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12ZM12 21C9.84977 21 7.87565 20.2459 6.32767 18.9878C7.59352 17.1812 9.69106 16 12.0645 16C14.4084 16 16.4833 17.1521 17.7538 18.9209C16.1939 20.2191 14.1881 21 12 21Z"></path>
             </svg>
@@ -124,15 +124,15 @@
           </div>
         </div>
       {% else %}
-        <button class="btn-ai before:hover:scale-105 mr-2 lg:mr-4" onclick="openModel('modal-algoai')"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></button>
-        <a type="button" href="{% url 'login' %}" class="btn-secondary mr-2 lg:mr-0">
+        <button class="btn-ai before:hover:scale-105" onclick="openModel('modal-algoai')"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></button>
+        <a type="button" href="{% url 'login' %}" class="btn-secondary">
           Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0z"></path>
             <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"></path>
           </svg>
         </a>
       {% endif %}
-      <button id="menu-toggle-mobile" data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center py-2 text-sm text-text rounded-lg lg:hidden transition-all" aria-controls="mobile-menu-2" aria-expanded="false">
+      <button id="menu-toggle-mobile" data-collapse-toggle="mobile-menu-2" type="button" class="btn-icon lg:hidden" aria-controls="mobile-menu-2" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg id="menu-icon" class="w-6 h-6 transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
@@ -150,9 +150,61 @@
         <li>
           <a href="{% url 'strategies' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                 text-title
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% else %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                 text-text/80
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page">
             <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -163,9 +215,61 @@
         <li>
           <a href="{% url 'results' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-title
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% else %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-text/80
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page">
             <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -176,9 +280,61 @@
         <li>
           <a href="{% url 'automate' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-title
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% else %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-text/80
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page">
             <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow">
@@ -191,9 +347,61 @@
         <li>
           <a href="{% url 'membership' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-title
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% else %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-text/80
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page">
             <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
@@ -210,9 +418,61 @@
         <li>
           <a href="{% url 'docs_index' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-title
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% else %}
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
                text-text/80
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% endif %} hover:text-title hover:font-medium transition-all"
             aria-current="page">
             <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book">

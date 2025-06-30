@@ -35,6 +35,8 @@ function Chat({ changePage }) {
           onMenuClick={toggleSidebar}
           onMenuHover={() => setIsHovering(true)}
           className=""
+          page="chat"
+          changePage={changePage}
         />
         <ChatSection />
       </div>

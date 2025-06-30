@@ -6,7 +6,8 @@ from .views import *
 
 
 urlpatterns = [
-    path('', index, name='saro_index'),
+    path('', index, name='saro_chat'),
+    path('trade/', index, name='saro_trade'),
 
     path('chat/sessions/create/', create_chat, name='ai_chat_sessions_create'),
     path('chat/sessions/<int:session_id>/update/', update_chat, name='ai_chat_sessions_update'),

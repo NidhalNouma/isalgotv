@@ -106,7 +106,16 @@
 
     {% endblock %}
     {% comment %} {% include 'sidenav.html' %} {% endcomment %}
-    <main id="main-div" class="container mx-auto grow flex flex-col px-3 sm:px-1 relative">
+    <main id="main-div"
+      class="{% if 'saro' in request.resolver_match.view_name %}
+        
+         w-full
+
+      {% else %}
+        
+         container
+
+      {% endif %}  mx-auto grow flex flex-col px-3 sm:px-1 relative ">
       {% block navbar %}
         {% include 'navbar.html' %}
       {% endblock %}
@@ -204,7 +213,7 @@
       <!-- ai tokens AI modal -->
       {% with title='ai-tokens' %}
         {% render_template 'include/ai_tokens_form.html' title=title as ai_tokens_form %}
-        {% with header_html="<h3 class='text-xl font-semibold text-title'>Add AI Tokens</h3>" %}
+        {% with header_html="<h3 class='text-xl font-semibold text-title'>Buy AI Tokens</h3>" %}
           {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn' body_class='px-2 mt-4' %}
         {% endwith %}
       {% endwith %}
