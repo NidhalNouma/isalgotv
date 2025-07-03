@@ -16,7 +16,8 @@ import HrefButton from "./ui/hrefButton";
 
 function SideBar({ onClose, page, changePage }) {
   const { user } = useUser();
-  const { chats, createNewChat, isTyping, retrieveChats } = useChat();
+  const { chats, createNewChat, isTyping, retrieveChats, currentChat } =
+    useChat();
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -79,18 +80,20 @@ function SideBar({ onClose, page, changePage }) {
 
       {page === "chat" && (
         <Fragment>
-          <button
-            // disabled={isTyping}
-            onClick={() => {
-              createNewChat();
-              onClose();
-            }}
-            className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
-            aria-label="new Chat"
-          >
-            <MessageSquarePlus className="w-3.5 aspect-auto " />
-            New chat
-          </button>
+          {currentChat && (
+            <button
+              // disabled={isTyping}
+              onClick={() => {
+                createNewChat();
+                onClose();
+              }}
+              className="btn-icon ml-2  px-3 py-3 gap-3 rounded-md transition-colors"
+              aria-label="new Chat"
+            >
+              <MessageSquarePlus className="w-3.5 aspect-auto " />
+              New chat
+            </button>
+          )}
           <ScrollDiv className="px-2" onBottomReach={retrieveChats}>
             {filteredChats.length > 0 && (
               <h6 className="text-text/80 text-sm px-2 pt-3 pb-2">Chats</h6>

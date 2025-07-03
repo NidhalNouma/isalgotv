@@ -1,12 +1,16 @@
+import { Fragment, useState } from "react";
+import EmptyTradeState from "./EmptyTradeState";
+import NewTradeTask from "./NewTradeTask";
+
 export default function TradeSection({}) {
+  const [newTask, setNewTask] = useState(false);
   return (
-    <div className="flex-1 flex flex-col items-center justify-center md:px-4 px-1 h-full">
-      <h1 className="text-4xl sm:text-6xl font-semibold mb-2 text-title text-center">
-        Let Saro Trade <br /> for you
-      </h1>
-      <h1 className="text-xl font-semibold mb-8 text-title/40 text-center">
-        under development
-      </h1>
-    </div>
+    <Fragment>
+      {!newTask ? (
+        <EmptyTradeState newTaskFn={() => setNewTask(true)} />
+      ) : (
+        <NewTradeTask close={() => setNewTask(false)} />
+      )}
+    </Fragment>
   );
 }

@@ -2124,6 +2124,10 @@ h1,
   bottom: 0.25rem;
 }
 
+.top-16 {
+  top: 4rem;
+}
+
 .\!z-0 {
   z-index: 0 !important;
 }
@@ -2878,6 +2882,10 @@ h1,
   max-height: 100%;
 }
 
+.max-h-screen {
+  max-height: 100vh;
+}
+
 .min-h-\[3rem\] {
   min-height: 3rem;
 }
@@ -3253,6 +3261,11 @@ h1,
 
 .translate-y-full {
   --tw-translate-y: 100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.translate-x-1\/2 {
+  --tw-translate-x: 50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -4583,6 +4596,10 @@ h1,
   --tw-gradient-via-position: 75%;
 }
 
+.via-80\% {
+  --tw-gradient-via-position: 80%;
+}
+
 .\!to-\[\#7289da\] {
   --tw-gradient-to: #7289da var(--tw-gradient-to-position) !important;
 }
@@ -4653,6 +4670,18 @@ h1,
 
 .to-100\% {
   --tw-gradient-to-position: 100%;
+}
+
+.to-80\% {
+  --tw-gradient-to-position: 80%;
+}
+
+.to-20\% {
+  --tw-gradient-to-position: 20%;
+}
+
+.to-60\% {
+  --tw-gradient-to-position: 60%;
 }
 
 .bg-\[length\:200\%_200\%\] {
@@ -5078,6 +5107,18 @@ h1,
 
 .pr-6 {
   padding-right: 1.5rem;
+}
+
+.pt-12 {
+  padding-top: 3rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
+}
+
+.pt-14 {
+  padding-top: 3.5rem;
 }
 
 .text-left {

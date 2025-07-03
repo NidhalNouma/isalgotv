@@ -6,7 +6,10 @@ import { UserProvider } from "./contexts/UserContext";
 import { ChatsProvider } from "./contexts/ChatsContext";
 
 function App() {
-  const [page, setPage] = useState("chat");
+  const initialPage = window.location.pathname.includes("saro/trade")
+    ? "trade"
+    : "chat";
+  const [page, setPage] = useState(initialPage);
 
   return (
     <UserProvider>
