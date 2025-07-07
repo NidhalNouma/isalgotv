@@ -11,13 +11,23 @@ function App() {
     : "chat";
   const [page, setPage] = useState(initialPage);
 
+  const [sideBar, setSideBar] = useState(false);
+
   return (
     <UserProvider>
       <ChatsProvider>
         {page === "chat" ? (
-          <Chat changePage={setPage} />
+          <Chat
+            changePage={setPage}
+            sideBar={sideBar}
+            setSideBar={setSideBar}
+          />
         ) : page === "trade" ? (
-          <Trade changePage={setPage} />
+          <Trade
+            changePage={setPage}
+            sideBar={sideBar}
+            setSideBar={setSideBar}
+          />
         ) : (
           <Fragment />
         )}

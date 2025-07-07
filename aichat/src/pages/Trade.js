@@ -5,53 +5,25 @@ import TradeSection from "../components/TradeSection";
 
 import { ChatsProvider } from "../contexts/ChatsContext";
 
-function Trade({ changePage }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
+const rootDiv = document.getElementById("saro");
+const isPage = rootDiv.getAttribute("is-page") === "true" ? true : false;
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-    setIsHovering(false);
-  };
-
+function Trade({ changePage, sideBar, setSideBar }) {
   return (
-    <Fragment>
-      <div className="px-4 relative flex flex-col w-full flex-grow overflow-y-scroll scrollbar-hide">
-        <Navbar
-          onMenuClick={toggleSidebar}
-          onMenuHover={() => setIsHovering(true)}
-          className=""
-          page="trade"
-          changePage={changePage}
-        />
-        <TradeSection />
-      </div>
-
-      <div
-        className={`
-            fixed left-0 top-0 h-full z-50 transition-transform duration-300 ease-in-out p-4 
-            ${
-              isSidebarOpen || isHovering
-                ? "translate-x-0"
-                : "-translate-x-full"
-            }
-          `}
-        onMouseLeave={() => {
-          if (!isSidebarOpen) {
-            setIsHovering(false);
-          }
-        }}
-      >
+    <div className="flex h-screen max-h-screen">
+      {isPage && (
         <SideBar
           page="trade"
           changePage={changePage}
-          onClose={() => {
-            setIsSidebarOpen(false);
-            setIsHovering(false);
-          }}
+          open={sideBar}
+          setOpen={setSideBar}
         />
+      )}
+      <div className="px-4 relative flex flex-col w-full flex-grow overflow-y-scroll scrollbar-hide">
+        <Navbar className="" page="trade" changePage={changePage} />
+        <TradeSection />
       </div>
-    </Fragment>
+    </div>
   );
 }
 

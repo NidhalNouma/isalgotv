@@ -108,14 +108,10 @@
     {% comment %} {% include 'sidenav.html' %} {% endcomment %}
     <main id="main-div"
       class="{% if 'saro' in request.resolver_match.view_name %}
-        
          w-full
-
       {% else %}
-        
          container
-
-      {% endif %}  mx-auto grow flex flex-col px-3 sm:px-1 relative ">
+      {% endif %}  mx-auto grow flex flex-col px-1 relative ">
       {% block navbar %}
         {% include 'navbar.html' %}
       {% endblock %}

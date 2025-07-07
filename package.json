@@ -1,16 +1,16 @@
 {
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16",
-    "tailwindcss": "^3.3.2",
-    "tailwindcss-animation-delay": "^2.0.2"
-  },
-  "dependencies": {
-    "@tailwindcss/line-clamp": "^0.4.4",
-    "flowbite": "^1.6.6"
-  },
-  "scripts": {
-    "css-out": "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch",
-    "ai-start": "cd ./aichat && npm run start",
-    "ai-build": "cd ./aichat && npm run build"
+    "devDependencies": {
+      "@tailwindcss/typography": "^0.5.16",
+      "tailwindcss": "^3.3.2",
+      "tailwindcss-animation-delay": "^2.0.2"
+    },
+    "dependencies": {
+      "@tailwindcss/line-clamp": "^0.4.4",
+      "flowbite": "^1.6.6"
+    },
+    "scripts": {
+      "css-out": "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch",
+      "ai-start": "cd ./aichat && npm run start",
+      "ai-build": "cd ./aichat && npm run build"
+    }
   }
-}

@@ -24,9 +24,9 @@ function Navbar({ className, onMenuClick, onMenuHover, page, changePage }) {
       >
         <div className="flex items-center gap-1.5">
           {/* {isPage && (
-            <a className="" href="/">
+            <a className="btn-icon" href="/">
               <svg
-                className="h-7 aspect-square fill-title stroke-title hover:fill-title/80 hover:stroke-title/80 transition-colors"
+                className=" h-6 aspect-auto fill-title stroke-title hover:fill-title/80 hover:stroke-title/80 transition-colors"
                 viewBox="0 0 302 428"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -53,7 +53,7 @@ function Navbar({ className, onMenuClick, onMenuHover, page, changePage }) {
               </svg>
             </a>
           )} */}
-          <button
+          {/* <button
             // disabled={isTyping}
             onClick={onMenuClick}
             onMouseEnter={onMenuHover}
@@ -90,10 +90,10 @@ function Navbar({ className, onMenuClick, onMenuHover, page, changePage }) {
             ) : (
               <PanelLeft className="h-5 aspect-auto" />
             )}
-          </button>
+          </button> */}
 
           <div className=" flex justify-center items-center gap-3 ">
-            <button
+            {/* <button
               className={`px-2 py-0.5 gap-1 btn-icon rounded-full transition-colors ${
                 page === "chat" &&
                 "text-background hover:text-background bg-title"
@@ -101,7 +101,7 @@ function Navbar({ className, onMenuClick, onMenuHover, page, changePage }) {
               aria-label="Close Session"
               onClick={() => changePage("chat")}
             >
-              <MessagesSquare className="w-3.5 aspect-auto " />
+              <MessagesSquare className="w-4 aspect-auto " />
             </button>
             <button
               className={`px-2 py-0.5 gap-1 btn-icon rounded-full transition-colors  ${
@@ -111,8 +111,8 @@ function Navbar({ className, onMenuClick, onMenuHover, page, changePage }) {
               aria-label="Close Session"
               onClick={() => changePage("trade")}
             >
-              <Activity className="w-3.5 aspect-auto " />
-            </button>
+              <Activity className="w-4 aspect-auto " />
+            </button> */}
           </div>
         </div>
 
