@@ -46,7 +46,7 @@ function HrefButton({ chat, onClose }) {
     return (
       <div
         key={chat.id}
-        className={`group flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
+        className={`group flex items-center gap-3 rounded-md cursor-pointer transition-colors ${
           chat.id === currentChat ? "bg-text/10" : ""
         }`}
       >
@@ -57,7 +57,7 @@ function HrefButton({ chat, onClose }) {
           onChange={(e) => setEditText(e.target.value)}
           onBlur={() => setIsEditing(false)}
           onKeyDown={handleKeyDown}
-          className="input-text flex-1"
+          className="input-text text-xs flex-1"
           autoFocus
         />
 
@@ -81,12 +81,12 @@ function HrefButton({ chat, onClose }) {
       onClick={handleSingleClick}
       onTouchEnd={handleSingleClick}
       key={chat.id}
-      className={`group flex items-center gap-2 px-3 py-3 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
-        chat.id === currentChat ? "bg-text/10" : ""
+      className={`group flex items-center gap-2 px-1 py-1 rounded-md cursor-pointer hover:bg-text/20 transition-colors ${
+        chat.id === currentChat ? "bg-text/20" : ""
       }`}
     >
-      <h4 className="flex items-center gap-3 text-text/80 flex-1 min-w-0">
-        <MessageSquare className="w-4 h-4 flex-shrink-0" />
+      <h4 className="flex items-center gap-1.5 text-text/80 flex-1 min-w-0">
+        <MessageSquare className="w-3.5 aspect-auto flex-shrink-0" />
         <span className="truncate text-sm">{editText}</span>
       </h4>
       <button

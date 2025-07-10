@@ -6,7 +6,7 @@ function NewTradeTask({ close }) {
   const { step, nextStep } = NewTaskHook();
   return (
     <section className="overflow-y-scroll h-screen max-h-screen">
-      <div className="pt-14 flex sm:flex-row flex-col-reverse gap-4 justify-between items-end sticky top-0 z-10 nav-bg via-80%">
+      <div className="pt-4 flex sm:flex-row flex-col-reverse gap-4 justify-between items-end sticky top-0 z-10 nav-bg via-80%">
         <div className="grid grid-cols-3 rounded-md w-fit gap-4">
           <button
             className={

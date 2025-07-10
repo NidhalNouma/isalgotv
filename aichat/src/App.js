@@ -5,6 +5,11 @@ import Trade from "./pages/Trade";
 import { UserProvider } from "./contexts/UserContext";
 import { ChatsProvider } from "./contexts/ChatsContext";
 
+import SideBar from "./components/SideBar";
+
+const rootDiv = document.getElementById("saro");
+const isPage = rootDiv.getAttribute("is-page") === "true" ? true : false;
+
 function App() {
   const initialPage = window.location.pathname.includes("saro/trade")
     ? "trade"
@@ -14,25 +19,35 @@ function App() {
   const [sideBar, setSideBar] = useState(false);
 
   return (
-    <UserProvider>
-      <ChatsProvider>
-        {page === "chat" ? (
-          <Chat
-            changePage={setPage}
-            sideBar={sideBar}
-            setSideBar={setSideBar}
-          />
-        ) : page === "trade" ? (
-          <Trade
-            changePage={setPage}
-            sideBar={sideBar}
-            setSideBar={setSideBar}
-          />
-        ) : (
-          <Fragment />
-        )}
-      </ChatsProvider>
-    </UserProvider>
+    <div className="flex h-screen max-h-screen">
+      <UserProvider>
+        <ChatsProvider>
+          {isPage && (
+            <SideBar
+              page={page}
+              changePage={setPage}
+              open={sideBar}
+              setOpen={setSideBar}
+            />
+          )}
+          {page === "chat" ? (
+            <Chat
+              changePage={setPage}
+              sideBar={sideBar}
+              setSideBar={setSideBar}
+            />
+          ) : page === "trade" ? (
+            <Trade
+              changePage={setPage}
+              sideBar={sideBar}
+              setSideBar={setSideBar}
+            />
+          ) : (
+            <Fragment />
+          )}
+        </ChatsProvider>
+      </UserProvider>
+    </div>
   );
 }
 

@@ -108,11 +108,11 @@
   }
 
   .btn-a {
-    @apply text-text/80 hover:text-text/60 font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all;
+    @apply text-text/80 hover:text-text/60 font-medium rounded text-sm py-1 text-center inline-flex  justify-center items-center transition-all disabled:opacity-60;
   }
 
   .btn-icon {
-    @apply text-title/80 hover:text-title/60 bg-transparent rounded text-sm px-1 ml-auto inline-flex items-center transition-all;
+    @apply text-title/80 hover:text-title/60 bg-transparent rounded text-sm px-1 ml-auto inline-flex items-center transition-all disabled:opacity-60;
   }
 
   .input-label {

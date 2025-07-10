@@ -108,7 +108,7 @@ export const ScrollDiv = ({ children, className, onBottomReach }) => {
   return (
     <div
       ref={scrollDiv}
-      className={`flex-1 overflow-y-auto px-2 ${className || ""}`}
+      className={`flex-1 overflow-y-auto ${className || ""}`}
       onScroll={handleScroll}
     >
       {children}
