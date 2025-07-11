@@ -543,6 +543,35 @@ def get_broker_logs(request, broker_type, pk):
         response = render(request, "include/errors.html", context=context)
         return response
 
+
+def get_accounts_list_json(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            accounts = context_accounts_by_user(request)
+            crypto_accounts = [
+                {
+                    "id": acc.id,
+                    "broker_type": acc.broker_type,
+                    "type": acc.type,
+                    "name": acc.name,
+                    "active": acc.active,
+                }
+                for acc in accounts.get('crypto_accounts', [])
+            ]
+
+            forex_accounts = [
+                {
+                    "id": acc.id,
+                    "broker_type": acc.broker_type,
+                    "type": acc.type,
+                    "name": acc.name,
+                    "active": acc.active,
+                }
+                for acc in accounts.get("forex_accounts", [])
+            ]
+
+            return JsonResponse({"success": True, "crypto_accounts": crypto_accounts, 'forex_accounts': forex_accounts})
+
 @require_http_methods(["GET"])
 def get_broker_trades(request, broker_type, pk):
     try:

@@ -145,7 +145,7 @@
         </div>
       {% endif %}
 
-      <div class="min-h-[90vh] flex flex-col relative" id="page-main-div">
+      <div class="min-h-[90vh] flex flex-col relative {% if 'saro' not in request.resolver_match.view_name %}px-2{% endif %}" id="page-main-div">
         {% if user.is_authenticated and not has_subscription and show_banner and subscription_status != 'past_due' %}
           {% include 'include/subscribe_banner.html' %}
         {% endif %}

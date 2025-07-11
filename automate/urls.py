@@ -18,6 +18,8 @@ urlpatterns = [
     path('get-sub-data/<str:broker_type>/<int:pk>/<str:account_subscription_id>/', account_subscription_data, name='get_account_subscription_data'),
     path('change-sub-payment/<str:broker_type>/<int:pk>/<str:account_subscription_id>/', change_account_subscription_payment, name='change_account_subscription_payment'),
 
+    path('accounts/list/', get_accounts_list_json, name='get_account_list_json'),
+
 
     path('c/<str:custom_id>', handle_webhook_crypto, name='webhook_crypto_request'),
     path('f/<str:custom_id>', handle_webhook_forex, name='webhook_forex_request'),

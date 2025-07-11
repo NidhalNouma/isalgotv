@@ -6,6 +6,7 @@ import {
   Activity,
   PanelLeft,
   PanelRight,
+  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -38,15 +39,6 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
   if (isMobile) {
     return (
       <Fragment>
-        <div className="sticky inset-y-0 left-0 px-2 py-4 space-y-2 backdrop-blur-[320px] bg-background/80 rounded-tr-xl rounded-br-xl flex flex-col z-50">
-          <MinSideBar
-            onClose={onClose}
-            open={open}
-            setOpen={setOpen}
-            page={page}
-            changePage={changePage}
-          />
-        </div>
         <AnimatePresence>
           {open && (
             <motion.div
@@ -57,8 +49,8 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
             >
               {/* Overlay backdrop */}
               <div
-                className="absolute inset-0 bg-black bg-opacity-50"
-                onClick={onClose}
+                className="absolute inset-0 bg-background bg-opacity-50"
+                onClick={() => setOpen(false)}
               />
               {/* Sliding drawer */}
               <motion.div
@@ -90,7 +82,7 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
       onAnimationComplete={() => {
         if (!open) setRenderOpen(false);
       }}
-      className="overflow-hidden space-y-2 py-4 px-2 backdrop-blur-[320px] bg-background/80 rounded-xl h-screen flex flex-col relative"
+      className="overflow-hidden space-y-2 py-4 px-2 backdrop-blur-[320px] bg-background/80 rounded-xl h-screen hidden md:flex flex-col relative"
     >
       {!renderOpen ? (
         <MinSideBar
@@ -134,7 +126,7 @@ function MinSideBar({ onClose, open, setOpen, page, changePage }) {
         aria-label="Chat"
         onClick={() => changePage("chat")}
       >
-        <MessagesSquare className="w-3.5 aspect-auto" />
+        <MessagesSquare className="w-3.5 aspect-auto " />
       </button>
       <button
         className={` px-2 py-1 btn-icon ml-auto mr-auto rounded-md transition-colors ${
@@ -311,7 +303,8 @@ function FullSideBar({ onClose, open, setOpen, page, changePage }) {
           onClick={() => setOpen(false)}
           className="btn-icon transition-colors ml-auto"
         >
-          <PanelLeft className="w-5 h-5" />
+          <PanelLeft className="w-5 aspect-auto hidden md:block" />
+          <X className="w-5 aspect-auto block md:hidden" />
         </button>
       </div>
       <button

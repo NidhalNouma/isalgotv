@@ -5,7 +5,12 @@ import TradeSection from "../components/TradeSection";
 function Trade({ changePage, sideBar, setSideBar }) {
   return (
     <div className="px-4 relative flex flex-col w-full flex-grow overflow-y-scroll scrollbar-hide">
-      {/* <Navbar className="" page="trade" changePage={changePage} /> */}
+      <Navbar
+        className=""
+        page="trade"
+        changePage={changePage}
+        setSideBar={setSideBar}
+      />
       <TradeSection />
     </div>
   );
