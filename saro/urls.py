@@ -1,12 +1,13 @@
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from .views import *
 
 
 urlpatterns = [
-    path('', index, name='saro_chat'),
+    path('', index, name='saro_index'),
+    path('chat/', index, name='saro_chat'),
     path('trade/', index, name='saro_trade'),
 
     path('chat/sessions/create/', create_chat, name='ai_chat_sessions_create'),

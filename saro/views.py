@@ -1,11 +1,14 @@
 
 from django.shortcuts import render
 from django.http import JsonResponse, StreamingHttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect, retarget
 
 from .functions.chat import *
+
+from proxy.views import proxy_view
 
 from asgiref.sync import sync_to_async
 import environ
@@ -16,7 +19,6 @@ import stripe
 env = environ.Env()
 stripe.api_key = env('STRIPE_API_KEY')
 
-# Create your views here.
 def index(request):
     return render(request, "saro/index.html")
 

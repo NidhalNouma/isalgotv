@@ -1,4 +1,5 @@
-import { Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Chat from "./pages/Chat";
 import Trade from "./pages/Trade";
 
@@ -11,12 +12,18 @@ const rootDiv = document.getElementById("saro");
 const isPage = rootDiv.getAttribute("is-page") === "true" ? true : false;
 
 function App() {
-  const initialPage = window.location.pathname.includes("saro/trade")
-    ? "trade"
-    : "chat";
-  const [page, setPage] = useState(initialPage);
-
   const [sideBar, setSideBar] = useState(false);
+
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const page = pathname.includes("saro/trade")
+    ? "trade"
+    : pathname.includes("saro/chat")
+    ? "chat"
+    : "";
+  const changePage = (newPage) => {
+    navigate(newPage === "trade" ? "/saro/trade" : "/saro/chat");
+  };
 
   return (
     <div className="flex h-screen max-h-screen overflow-hidden">
@@ -25,26 +32,34 @@ function App() {
           {isPage && (
             <SideBar
               page={page}
-              changePage={setPage}
+              changePage={changePage}
               open={sideBar}
               setOpen={setSideBar}
             />
           )}
-          {page === "chat" ? (
-            <Chat
-              changePage={setPage}
-              sideBar={sideBar}
-              setSideBar={setSideBar}
+          <Routes>
+            <Route
+              path="/saro/chat"
+              element={
+                <Chat
+                  changePage={changePage}
+                  sideBar={sideBar}
+                  setSideBar={setSideBar}
+                />
+              }
             />
-          ) : page === "trade" ? (
-            <Trade
-              changePage={setPage}
-              sideBar={sideBar}
-              setSideBar={setSideBar}
+            <Route
+              path="/saro/trade"
+              element={
+                <Trade
+                  changePage={changePage}
+                  sideBar={sideBar}
+                  setSideBar={setSideBar}
+                />
+              }
             />
-          ) : (
-            <Fragment />
-          )}
+            <Route path="*" element={<Fragment />} />
+          </Routes>
         </ChatsProvider>
       </UserProvider>
     </div>

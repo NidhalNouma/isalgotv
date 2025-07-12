@@ -84,7 +84,7 @@ function Navbar({
           </div>
         </div>
 
-        {user && isPage ? (
+        {isPage ? (
           <Fragment></Fragment>
         ) : (
           <button

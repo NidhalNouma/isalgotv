@@ -9,6 +9,7 @@ module.exports = {
     "./strategies/templates/**/*.html",
     "./profile_user/templates/**/*.html",
     "./automate/templates/**/*.html",
+    "./saro/next-app/**/*.tsx",
     "./docs/templates/**/*.html",
     "./aichat/src/**/*.js",
     "./static/js/**/*.js",

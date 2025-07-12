@@ -9,7 +9,7 @@
       "flowbite": "^1.6.6"
     },
     "scripts": {
-      "css-out": "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch",
+      "css-out": "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch --minify",
       "ai-start": "cd ./aichat && npm run start",
       "ai-build": "cd ./aichat && npm run build"
     }
