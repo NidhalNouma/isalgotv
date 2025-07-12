@@ -19,7 +19,7 @@ function App() {
   const [sideBar, setSideBar] = useState(false);
 
   return (
-    <div className="flex h-screen max-h-screen">
+    <div className="flex h-screen max-h-screen overflow-hidden">
       <UserProvider>
         <ChatsProvider>
           {isPage && (

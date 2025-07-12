@@ -42,7 +42,7 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
         <AnimatePresence>
           {open && (
             <motion.div
-              className="fixed inset-0 z-50 flex"
+              className="fixed inset-0 z-40 flex"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

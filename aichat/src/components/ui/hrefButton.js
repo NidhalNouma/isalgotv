@@ -21,7 +21,7 @@ function HrefButton({ chat, onClose }) {
     e.stopPropagation();
     selectChat(chat.id);
     if (isTouchOnlyDevice()) {
-      onClose();
+      if (onClose) onClose();
     }
   };
 
