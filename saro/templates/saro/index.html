@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page %}
-  <main id="saro" class="w-full h-screen overflow-hidden relative flex flex-col" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" is-page="true"></main>
+  <main id="saro" class="w-full max-h-screen h-screen overflow-hidden relative flex flex-col" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" is-page="true"></main>
 
   {% if IS_PRODUCTION %}
     <script src="{% static 'js/aichatReact.js' %}" defer></script>
@@ -25,6 +25,16 @@
     window.buyAiToken = function (message) {
       openAITokensModalSettings(true)
     }
+  </script>
+  <script>
+    function setViewportHeight() {
+      const vh = window.innerHeight * 0.01
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+    }
+    
+    window.addEventListener('resize', setViewportHeight)
+    window.addEventListener('orientationchange', setViewportHeight)
+    setViewportHeight()
   </script>
 {% endblock %}
 
