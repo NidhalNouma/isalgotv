@@ -11,6 +11,7 @@ ALLOWED_HOSTS = [
     'isalgo.com',
     # 'test.isalgo.com',
     'www.isalgo.com',
+    'saro.isalgo.com',
     'webhook.isalgo.com',
     '*'
 ]

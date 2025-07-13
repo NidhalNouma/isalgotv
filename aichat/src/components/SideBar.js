@@ -52,7 +52,7 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
               />
               {/* Sliding drawer */}
               <motion.div
-                className="relative w-52 px-2 py-4 space-y-2 h-full backdrop-blur-[320px] bg-background/80 flex flex-col md:hidden"
+                className="relative w-52 px-2 py-4 space-y-2 h-full backdrop-blur-[320px] bg-text/10 flex flex-col md:hidden"
                 initial={{ x: "-100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
@@ -80,7 +80,7 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
       onAnimationComplete={() => {
         if (!open) setRenderOpen(false);
       }}
-      className="overflow-hidden space-y-2 py-4 px-2 backdrop-blur-[320px] bg-background/80 rounded-xl h-screen hidden md:flex flex-col relative"
+      className="overflow-hidden space-y-2 py-4 px-2 backdrop-blur-[320px] bg-text/10 rounded-xl h-full hidden md:flex flex-col relative"
     >
       {!renderOpen ? (
         <MinSideBar

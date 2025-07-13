@@ -7,8 +7,8 @@ function NewTradeTask({ close }) {
     NewTaskHook();
 
   return (
-    <section className="overflow-y-scroll h-screen max-h-screen">
-      <div className="pt-4 flex sm:flex-row flex-col-reverse gap-4 justify-between items-end sticky top-0 z-50 nav-bg via-80%">
+    <section className="overflow-y-auto h-full max-h-full w-full">
+      <div className="pt-4 flex sm:flex-row flex-col-reverse gap-4 justify-between items-end sticky w-full top-0 z-50 ">
         <div className="grid grid-cols-3 rounded-md w-fit gap-4">
           <button
             className={
@@ -64,7 +64,7 @@ function NewTradeTask({ close }) {
         </div>
       </div>
 
-      <section className="mt-8">
+      <section className="mt-8 bg-transparent">
         {step === 1 ? (
           <Step1
             nextFn={() => nextStep(2)}
@@ -84,7 +84,7 @@ export default NewTradeTask;
 
 function Step1({ nextFn, accounts, selectedAccount, setSelectedAccount }) {
   return (
-    <div className="space-y-4 max-w-md roubded-md p-4 bg-text/5 backdrop-blur-3xl mx-auto">
+    <div className="space-y-4 max-w-md rounded-md p-4 bg-text/5 backdrop-blur-3xl mx-auto">
       <div className="">
         <label className="input-label">Name</label>
         <input className="input-text w-full" placeholder="My first agent" />

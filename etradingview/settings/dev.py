@@ -5,7 +5,7 @@ environ.Env.read_env()
 
 # DEBUG = True
 # DEBUG = False
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "myproject.local", "webhook.myproject.local"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "myproject.local", "webhook.myproject.local", "saro.myproject.local"]
 
 
 # Database

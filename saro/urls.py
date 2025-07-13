@@ -18,7 +18,7 @@ urlpatterns = [
     path('chat/messages/<int:session_id>/<int:start>/', get_chat_messages, name='ai_chat_messages'),
     path('chat/messages/<int:session_id>/send/', new_chat_message, name='ai_chat_send_message'),
 
-    path('chat/', ai_chat_view, name='ai_chat'),
+    path('chat/response/', ai_chat_view, name='ai_chat'),
     path('buy-tokens/', buy_ai_tokens, name='buy_ai_tokens'),
     path('chat/system-content/', get_ai_system_content, name='ai_system_content'),
 

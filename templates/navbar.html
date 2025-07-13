@@ -19,38 +19,7 @@
     </div>
     <div class="flex items-center lg:order-2 justify-center gap-2">
       {% if user.is_authenticated %}
-        <button class="btn-ai before:hover:scale-105" onclick="openModel('modal-algoai')">
-          <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">
-            SARO
-            <span id="ai-os-icon" class="hidden ml-0.5 text-text dark:text-background opacity-60 text-sm font-normal items-center">
-              <svg id="mac-icon" class="h-3 aspect-square hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-              </svg>
-              <svg id="windows-icon" class="h-3 aspect-square hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m18 15-6-6-6 6" />
-              </svg>K
-            </span>
-          </span>
-        </button>
-
-        <script type="text/javascript">
-          let spanIcon = document.getElementById('ai-os-icon')
-          let macIcon = document.getElementById('mac-icon')
-          let windowsIcon = document.getElementById('windows-icon')
-          
-          let userAgent = navigator.userAgent.toLowerCase()
-          let isIOS = /iphone|ipad|ipod/.test(userAgent)
-          
-          if (userAgent.indexOf('mac') !== -1 && !isIOS) {
-            macIcon.classList.remove('hidden')
-            spanIcon.classList.remove('hidden')
-            spanIcon.classList.add('inline-flex')
-          } else if (userAgent.indexOf('windows') !== -1) {
-            windowsIcon.classList.remove('hidden')
-            spanIcon.classList.remove('hidden')
-            spanIcon.classList.add('inline-flex')
-          }
-        </script>
+        <a href="/saro/chat" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
 
         <div class="relative flex items-center">
           <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
@@ -124,7 +93,7 @@
           </div>
         </div>
       {% else %}
-        <button class="btn-ai before:hover:scale-105" onclick="openModel('modal-algoai')"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></button>
+        <a href="/saro/chat" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
         <a type="button" href="{% url 'login' %}" class="btn-secondary">
           Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0z"></path>
@@ -150,6 +119,7 @@
         <li>
           <a href="{% url 'strategies' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %}
+              
               
               
               
@@ -231,6 +201,7 @@
 
 
 
+
             {% else %}
               
               
@@ -272,7 +243,9 @@
               
               
               
+              
                 text-text/80
+
 
 
 
@@ -363,7 +336,9 @@
               
               
               
+              
                text-title
+
 
 
 
@@ -445,7 +420,9 @@
               
               
               
+              
                text-text/80
+
 
 
 
@@ -536,7 +513,9 @@
               
               
               
+              
                text-title
+
 
 
 
@@ -618,7 +597,9 @@
               
               
               
+              
                text-text/80
+
 
 
 
@@ -711,7 +692,9 @@
               
               
               
+              
                text-title
+
 
 
 
@@ -793,7 +776,9 @@
               
               
               
+              
                text-text/80
+
 
 
 
@@ -890,7 +875,9 @@
               
               
               
+              
                text-title
+
 
 
 
@@ -972,7 +959,9 @@
               
               
               
+              
                text-text/80
+
 
 
 

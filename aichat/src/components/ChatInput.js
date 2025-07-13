@@ -27,7 +27,7 @@ export default function ChatInput({
 
   const containerClass = className
     ? className + " mb-4 z-20"
-    : "mt-auto w-full bg-background sticky left-0 right-0 bottom-0 pb-2 z-20";
+    : "mt-auto w-full bg-transparent sticky left-0 right-0 bottom-0 pb-2 z-20";
 
   useEffect(() => {
     if (quickActionMsg) {

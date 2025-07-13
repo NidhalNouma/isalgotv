@@ -35,6 +35,8 @@ export function useChatHook() {
     try {
       const data = await getAnswer(msg, messages, currentChat);
 
+      console.log(data);
+
       if (data.todat_limit_hit) {
         setLimit(true);
         setMessages((prev) => {

@@ -52,7 +52,7 @@ export async function createChatSession(title, message, answer) {
 }
 
 export async function getAnswer(message, messages, chatId = null) {
-  const res = await fetch(`${BASE}/`, {
+  const res = await fetch(`${BASE}/response/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
