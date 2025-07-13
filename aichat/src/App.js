@@ -26,7 +26,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen max-h-screen overflow-hidden bg-text/10 my-1 rounded-xl">
+    <div className="flex h-full max-h-screen overflow-hidden bg-text/10 my-1 rounded-xl">
       <UserProvider>
         <ChatsProvider>
           {isPage && (

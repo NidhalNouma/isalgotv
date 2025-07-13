@@ -47,12 +47,12 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
             >
               {/* Overlay backdrop */}
               <div
-                className="absolute inset-0 bg-background bg-opacity-50"
+                className="absolute inset-0 bg-background bg-opacity-60"
                 onClick={() => setOpen(false)}
               />
               {/* Sliding drawer */}
               <motion.div
-                className="relative w-52 px-2 py-4 space-y-2 h-full backdrop-blur-[320px] bg-text/10 flex flex-col md:hidden"
+                className="relative w-52 px-2 py-4 space-y-2 h-full backdrop-blur-3xl bg-text/10 flex flex-col rounded-r-xl md:hidden"
                 initial={{ x: "-100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}

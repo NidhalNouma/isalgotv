@@ -64,7 +64,7 @@ export const ChatScrollContainer = ({
   return (
     <div className="relative flex flex-col overflow-y-hidden">
       <div
-        className="relative flex flex-col-reverse space-y-4 space-y-reverse h-fit max-h-fit overflow-y-auto scrollbar-hide"
+        className="relative flex flex-col-reverse space-y-4 space-y-reverse h-fit max-h-fit overflow-y-auto no-scrollbar"
         onScroll={handleScroll}
         ref={outerDiv}
       >

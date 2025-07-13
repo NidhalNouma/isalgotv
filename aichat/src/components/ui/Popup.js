@@ -4,9 +4,9 @@ import { X } from "lucide-react";
 export function AuthPopup({ onClose }) {
   return (
     <Fragment>
-      <div className="fixed inset-0 bg-background/50 z-40" onClick={onClose} />
+      <div className="fixed inset-0 bg-background/60 z-40" onClick={onClose} />
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 p-8">
-        <div className="bg-background rounded-md shadow-xl p-6">
+        <div className="bg-text/10 backdrop-blur-3xl rounded-md shadow-xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-text">
               Continue with SARO
@@ -50,9 +50,9 @@ export function AuthPopup({ onClose }) {
 export function UpgradePopup({ onClose }) {
   return (
     <Fragment>
-      <div className="fixed inset-0 bg-background/50 z-40" onClick={onClose} />
+      <div className="fixed inset-0 bg-background/60 z-40" onClick={onClose} />
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 p-8">
-        <div className="bg-background rounded-md shadow-xl p-6">
+        <div className="bg-text/10 backdrop-blur-3xl rounded-md shadow-xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-text">Upgrade</h2>
             <button onClick={onClose} className="btn-icon transition-colors">
@@ -72,11 +72,6 @@ export function UpgradePopup({ onClose }) {
             >
               Upgrade
             </a>
-
-            <p className="text-xs text-center text-text/30">
-              By continuing, you agree to our Terms of Service and Privacy
-              Policy.
-            </p>
           </div>
         </div>
       </div>

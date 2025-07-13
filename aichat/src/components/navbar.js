@@ -27,12 +27,11 @@ function Navbar({
 
   const [openMenu, setOpenMenu] = useState(false);
 
-  let isSidebarOpen = false;
   return (
     <Fragment>
       <nav
         className={
-          " flex nav-bg from-text/10 items-center justify-between absolute left-0 right-0 rounded-t-xl top-0 z-30 py-2 px-3" +
+          "md:hidden flex nav-bg from-text/10 items-center justify-between absolute left-0 right-0 rounded-t-xl top-0 z-30 py-2 px-3" +
           className
         }
       >
