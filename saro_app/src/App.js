@@ -1,5 +1,11 @@
-import React, { Fragment, useState } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Fragment, useState } from "react";
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 import Chat from "./pages/Chat";
 import Trade from "./pages/Trade";
 
@@ -58,7 +64,7 @@ function App() {
                 />
               }
             />
-            <Route path="*" element={<Fragment />} />
+            <Route path="*" element={<Navigate to="/saro/chat" replace />} />
           </Routes>
         </ChatsProvider>
       </UserProvider>
