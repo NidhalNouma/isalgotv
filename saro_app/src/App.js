@@ -26,7 +26,7 @@ function App() {
   };
 
   return (
-    <div className="relative flex h-full max-h-screen overflow-hidden bg-text/10 my-1 rounded-xl">
+    <div className="relative flex h-full max-h-screen overflow-hidden bg-text/10 rounded-xl">
       <UserProvider>
         <ChatsProvider>
           {isPage && (

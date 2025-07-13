@@ -106,12 +106,7 @@
 
     {% endblock %}
     {% comment %} {% include 'sidenav.html' %} {% endcomment %}
-    <main id="main-div"
-      class="{% if 'saro' in request.resolver_match.view_name %}
-         w-full
-      {% else %}
-         container
-      {% endif %}  mx-auto grow flex flex-col px-1 relative ">
+    <main id="main-div" class="container mx-auto grow flex flex-col px-1 relative">
       {% block navbar %}
         {% include 'navbar.html' %}
       {% endblock %}
@@ -145,7 +140,7 @@
         </div>
       {% endif %}
 
-      <div class="min-h-[90vh] flex flex-col relative {% if 'saro' not in request.resolver_match.view_name %}px-2{% endif %}" id="page-main-div">
+      <div class="min-h-[90vh] flex flex-col relative px-2" id="page-main-div">
         {% if user.is_authenticated and not has_subscription and show_banner and subscription_status != 'past_due' %}
           {% include 'include/subscribe_banner.html' %}
         {% endif %}
