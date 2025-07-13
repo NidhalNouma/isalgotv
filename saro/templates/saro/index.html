@@ -13,10 +13,18 @@
 {% endblock %}
 
 {% block page %}
-  <main id="saro" class="w-full max-h-screen h-screen overflow-hidden relative flex flex-col" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" is-page="true"></main>
+  <script>
+    // Fix mobile viewport height issue
+    function setVh() {
+      document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px')
+    }
+    window.addEventListener('resize', setVh)
+    setVh()
+  </script>
+  <main id="saro" class="w-full overflow-hidden relative flex flex-col" style="height: calc(var(--vh) * 100);" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" is-page="true"></main>
 
   {% if IS_PRODUCTION %}
-    <script src="{% static 'js/aichatReact.js' %}" defer></script>
+    <script src="{% static 'js/saro_app.js' %}" defer></script>
   {% else %}
     <script src="http://localhost:3001/static/js/bundle.js"></script>
   {% endif %}
@@ -25,16 +33,6 @@
     window.buyAiToken = function (message) {
       openAITokensModalSettings(true)
     }
-  </script>
-  <script>
-    function setViewportHeight() {
-      const vh = window.innerHeight * 0.01
-      document.documentElement.style.setProperty('--vh', `${vh}px`)
-    }
-    
-    window.addEventListener('resize', setViewportHeight)
-    window.addEventListener('orientationchange', setViewportHeight)
-    setViewportHeight()
   </script>
 {% endblock %}
 
