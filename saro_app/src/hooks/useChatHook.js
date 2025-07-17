@@ -37,6 +37,8 @@ export function useChatHook() {
 
       console.log(data);
 
+      if (data.error) throw new Error(data.error);
+
       if (data.todat_limit_hit) {
         setLimit(true);
         setMessages((prev) => {

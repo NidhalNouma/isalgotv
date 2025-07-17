@@ -1,5 +1,3 @@
-from openai import OpenAI, AsyncOpenAI, OpenAIError
-from .vector import build_vectorstore_from_string, retrieve_relevant_docs
 import textwrap
 
 from asgiref.sync import sync_to_async
@@ -9,6 +7,8 @@ from django.template.loader import render_to_string
 
 from strategies.models import Strategy, StrategyResults
 from saro.models import ChatSession, ChatMessage
+
+from .chat_service import ChatService
 
 
 def extract_text_with_media(html_content):
@@ -184,60 +184,33 @@ def get_system_content():
 
     return extract_text_with_media(system_content)
 
-import environ
-env = environ.Env()
-
-ai_client = OpenAI(
-    api_key=env('AI_KEY'),  
-)
-
-ai_client.vectorstore = None
 
 @sync_to_async
 def get_ai_response(user_message, messages, max_token) -> tuple:
 
-    if ai_client.vectorstore is None:
-        # Await the async call to get_system_content() so we get the actual string
-        raw_content = get_system_content()
-        ai_client.vectorstore = build_vectorstore_from_string(raw_content)
+    chat_service = ChatService()
+    chat_service.build_vector_store_from_text(get_system_content())
 
     chat_history = []
 
     for msg in messages:
         chat_history.append({"role": msg['role'], "content": msg["content"]})
 
-    chat_history.append({"role": "user", "content": user_message})
-
-
-    # Retrieve relevant docs
-    docs_context = retrieve_relevant_docs(ai_client.vectorstore, user_message)
-
-    system_prompt = f"""
-        You are Saro, a trading assistant.
-        ---
-        Refer to this internal documentation when relevant:
-        {docs_context}
-    """
-
-    chat_history.insert(0, {"role": "system", "content": system_prompt})
-
     try:
 
-        # Make an asynchronous API call
-        response = ai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=chat_history,
-            max_tokens=max_token
+        response = chat_service.generate_response(
+            user_question=user_message,
+            message_history=chat_history
         )
 
-        ai_response = response.choices[0].message.content
-        prompt_tokens = response.usage.prompt_tokens
-        completion_tokens = response.usage.completion_tokens
-        total_tokens = response.usage.total_tokens
+        ai_response = response.get('response', '')
+        prompt_tokens = response.get('prompt_tokens', 0)
+        completion_tokens = response.get('completion_tokens', 0)
+        total_tokens = response.get('total_tokens', 0)
 
         return ai_response, prompt_tokens, completion_tokens, total_tokens
-    except OpenAIError as e:
-        print(f"OpenAI API error: {str(e)}")
+    except Exception as e:
+        print(f"AI error: {str(e)}")
         raise Exception(f"{str(e)}")
 
 @sync_to_async

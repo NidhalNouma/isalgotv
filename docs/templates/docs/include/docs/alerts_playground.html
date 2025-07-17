@@ -50,16 +50,16 @@
 
             <p>
                 Long Entry:
-                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{exchange}" }}} V={{ "{{qty}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{ticker}" }}} V={{ "{{qty}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
                 <br/>
                 Short Entry:
-                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{exchange}" }}} V={{ "{{qty}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{ticker}" }}} V={{ "{{qty}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
                 <br/>
                 Long Exit:
-                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
                 <br/>
                 Short Exit:
-                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{exchange}" }}} P={{ "{{partial_close}" }}} NUM={{ "{{No}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
             </p>
 
             <p class="pt-4">
@@ -109,7 +109,7 @@
             if (codeElement) {
                 console.log(codeElement.innerHTML)
                 // Replace BTCUSD in the original text with the new symbol
-                codeElement.innerHTML =  codeElement.innerHTML.replace(/A=[^\s]+/g, `A=${newSymbol || ("{{exchange}" + "}")}`);
+                codeElement.innerHTML =  codeElement.innerHTML.replace(/A=[^\s]+/g, `A=${newSymbol || ("{{ticker}" + "}")}`);
             }
         });
     });

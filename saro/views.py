@@ -220,7 +220,7 @@ async def ai_chat_view(request):
             # Async ORM update
             await update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token)
 
-            if chat_id and str.find(str(chat_id), '-new') == -1:
+            if chat_id and str.find(str(chat_id), 'new') == -1:
                 chat_session_json, chat_session = await get_chat_session(chat_id)
                 if chat_session:
                     user_message_json, user_message_obj = await add_chat_message(chat_session, "user", user_message)
