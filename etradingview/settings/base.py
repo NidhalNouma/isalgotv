@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'django_cryptography',
 
     'django_hosts',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,7 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",
 
     'django_hosts.middleware.HostsResponseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'etradingview.urls'

@@ -7,6 +7,9 @@ environ.Env.read_env()
 # DEBUG = False
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "myproject.local", "webhook.myproject.local", "saro.myproject.local"]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://saro.myproject.local:8000",
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

@@ -16,12 +16,18 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://saro.isalgo.com",
+]
+
 CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 
+SESSION_COOKIE_DOMAIN = ".isalgo.com" 
+CSRF_COOKIE_DOMAIN = ".isalgo.com"
 
 
 DATABASES = {

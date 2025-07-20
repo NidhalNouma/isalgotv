@@ -17,16 +17,16 @@ class ChatService:
         self,
         model_name: str = "gpt-4o-mini",
         summary_model_name: str = "gpt-3.5-turbo",
-        temperature: float = 0.0,
+        temperature: float = 0.5,
         vectorstore_path: str = "vector_index"
     ):
         self.llm = ChatOpenAI(model=model_name, temperature=temperature, api_key=env("AI_KEY"))
         self.summary_llm = ChatOpenAI(model=summary_model_name, temperature=temperature, api_key=env("AI_KEY"))
-        self.embeddings = OpenAIEmbeddings(api_key=env("AI_KEY"))
+        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large", api_key=env("AI_KEY"))
         self.vectorstore_path = vectorstore_path
         self.retriever = None
 
-    def build_vector_store_from_text(self, text: str, chunk_size: int = 500, overlap: int = 50):
+    def build_vector_store_from_text(self, text: str, chunk_size: int = 1000, overlap: int = 100):
         """
         Splits the text and saves a FAISS vector index locally.
         """
@@ -54,6 +54,11 @@ class ChatService:
         if not self.retriever:
             self.load_vector_store()
 
+        retrieved_docs = self.retriever.invoke(user_question)
+        context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+
+        print(context)
+
         # Format history for LangChain
         formatted_history: List[BaseMessage] = []
         for msg in message_history:
@@ -62,12 +67,16 @@ class ChatService:
             elif msg["role"] == "assistant":
                 formatted_history.append(AIMessage(content=msg["content"]))
 
-        prompt = ChatPromptTemplate.from_messages([
-            SystemMessagePromptTemplate.from_template(
-                "You are Saro, a trading assistant."
-            ),
-            HumanMessagePromptTemplate.from_template("Context:\n{context}\n\nQuestion:\n{question}")
-        ])
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                SystemMessagePromptTemplate.from_template(
+                    "You are Saro, a trading assistant. If the user asks a question, "
+                    "Display images if they are relevant to the question and the context provided."
+                    "you should answer it based on the context provided below.\n\nContext:\n{context}"
+                ),
+                HumanMessagePromptTemplate.from_template("{question}")
+            ]
+        )
 
         qa_chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
@@ -79,7 +88,8 @@ class ChatService:
         with get_openai_callback() as cb:
             result = qa_chain.invoke({
                 "question": user_question,
-                "chat_history": formatted_history
+                "chat_history": formatted_history,
+                "context": context
             })
 
         return {

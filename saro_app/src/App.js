@@ -14,38 +14,33 @@ import { ChatsProvider } from "./contexts/ChatsContext";
 
 import SideBar from "./components/SideBar";
 
-const rootDiv = document.getElementById("saro");
-const isPage = rootDiv.getAttribute("is-page") === "true" ? true : false;
-
 function App() {
   const [sideBar, setSideBar] = useState(false);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const page = pathname.includes("saro/trade")
+  const page = pathname.includes("trade")
     ? "trade"
-    : pathname.includes("saro/chat")
+    : pathname.includes("chat")
     ? "chat"
     : "";
   const changePage = (newPage) => {
-    navigate(newPage === "trade" ? "/saro/trade" : "/saro/chat");
+    navigate(newPage === "trade" ? "/trade" : "/chat");
   };
 
   return (
     <div className="relative flex h-full max-h-screen overflow-hidden bg-text/10 rounded-xl">
       <UserProvider>
         <ChatsProvider>
-          {isPage && (
-            <SideBar
-              page={page}
-              changePage={changePage}
-              open={sideBar}
-              setOpen={setSideBar}
-            />
-          )}
+          <SideBar
+            page={page}
+            changePage={changePage}
+            open={sideBar}
+            setOpen={setSideBar}
+          />
           <Routes>
             <Route
-              path="/saro/chat"
+              path="/chat"
               element={
                 <Chat
                   changePage={changePage}
@@ -55,7 +50,7 @@ function App() {
               }
             />
             <Route
-              path="/saro/trade"
+              path="/trade"
               element={
                 <Trade
                   changePage={changePage}
@@ -64,7 +59,7 @@ function App() {
                 />
               }
             />
-            <Route path="*" element={<Navigate to="/saro/chat" replace />} />
+            <Route path="*" element={<Navigate to="/chat" replace />} />
           </Routes>
         </ChatsProvider>
       </UserProvider>

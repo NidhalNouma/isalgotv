@@ -1,4 +1,13 @@
-const BASE = "/saro/chat";
+let host = window.location.hostname;
+if (host.startsWith("saro.")) {
+  host = host.replace("saro.", "www.");
+  const port = window.location.port ? `:${window.location.port}` : "";
+  const newUrl = `${window.location.protocol}//${host}${port}`;
+  host = newUrl;
+}
+const BASE = host + "/saro/chat";
+
+console.log("BASE URL:", BASE);
 
 function getCookie(name) {
   const cookies = document.cookie.split(";").map((c) => c.trim());
@@ -13,15 +22,21 @@ function getCookie(name) {
 const csrf_token = getCookie("csrftoken");
 
 export async function fetchChatSessions(start = 0) {
-  const res = await fetch(`${BASE}/sessions/${start}/`, {
-    method: "POST",
+  try {
+    const res = await fetch(`${BASE}/sessions/${start}/`, {
+      method: "POST",
 
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrf_token, // Include CSRF token here
-    },
-  });
-  return res.json();
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Allow all origins
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf_token, // Include CSRF token here
+      },
+    });
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching chat sessions:", error);
+    throw error; // Re-throw the error for further handling if needed
+  }
 }
 
 export async function fetchChatMessages(sessionId, start = 0) {

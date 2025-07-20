@@ -1,9 +1,9 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check } from "lucide-react";
 
 function AiResponseMarkdown({ message }) {
   const [copiedCode, setCopiedCode] = useState(null);
@@ -20,20 +20,20 @@ function AiResponseMarkdown({ message }) {
         remarkPlugins={[remarkGfm]}
         components={{
           code({ node, inline, className, children, ...props }) {
-            
             const code = String(children).replace(/\n$/, "");
-            const match = /language-(\w+)/.exec(className || '');
-            const language = match ? match[1] : 'text';
+            const match = /language-(\w+)/.exec(className || "");
+            const language = match ? match[1] : "text";
 
             const codeString = String(children).trim();
-            const isInline = inline !== undefined ? inline : !codeString.includes("\n");
+            const isInline =
+              inline !== undefined ? inline : !codeString.includes("\n");
 
             if (isInline) {
-                return (
-                  <code className="bg-text/10 text-text px-1.5 py-0.5 rounded font-mono text-sm border border-text/5">
-                    {children}
-                  </code>
-                );
+              return (
+                <code className="bg-text/10 text-text px-1.5 py-0.5 rounded font-mono text-sm border border-text/5">
+                  {children}
+                </code>
+              );
             }
 
             return (
@@ -63,25 +63,37 @@ function AiResponseMarkdown({ message }) {
                   </SyntaxHighlighter>
                 </div>
               </div>
-            )
+            );
           },
           h1: ({ children }) => (
-            <h1 className="text-3xl font-bold mt-8 mb-6 text-title">{children}</h1>
+            <h1 className="text-3xl font-bold mt-8 mb-6 text-title">
+              {children}
+            </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-2xl font-semibold mt-6 mb-4 text-title/90">{children}</h2>
+            <h2 className="text-2xl font-semibold mt-6 mb-4 text-title/90">
+              {children}
+            </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-xl font-semibold mt-5 mb-3 text-title/80">{children}</h3>
+            <h3 className="text-xl font-semibold mt-5 mb-3 text-title/80">
+              {children}
+            </h3>
           ),
           p: ({ children }) => (
-            <p className="text-text leading-relaxed mb-2  text-[15px]">{children}</p>
+            <p className="text-text leading-relaxed mb-2  text-[15px]">
+              {children}
+            </p>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc ml-6 my-4 text-text space-y-2 marker:text-title">{children}</ul>
+            <ul className="list-disc ml-6 my-4 text-text space-y-2 marker:text-title">
+              {children}
+            </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal ml-6 my-4 text-text/80 space-y-2 marker:text-title">{children}</ol>
+            <ol className="list-decimal ml-6 my-4 text-text/80 space-y-2 marker:text-title">
+              {children}
+            </ol>
           ),
           li: ({ children }) => (
             <li className="text-text/80 pl-2">{children}</li>
@@ -89,13 +101,11 @@ function AiResponseMarkdown({ message }) {
           blockquote: ({ children }) => (
             <blockquote className="relative my-6 pl-6 pr-4 py-4 border-l-2 border-text/40 bg-gradient-to-r from-text/10 to-transparent rounded-r-lg">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/3 to-transparent rounded-r-lg" />
-              <div className="relative text-text italic">
-                {children}
-              </div>
+              <div className="relative text-text italic">{children}</div>
             </blockquote>
           ),
           a: ({ children, href }) => (
-            <a 
+            <a
               href={href}
               className="text-cyan-400 hover:text-cyan-300 underline decoration-cyan-800 hover:decoration-cyan-600 transition-colors"
               target="_blank"
@@ -118,16 +128,28 @@ function AiResponseMarkdown({ message }) {
             <tbody className="divide-y divide-text/30">{children}</tbody>
           ),
           tr: ({ children }) => (
-            <tr className="transition-colors hover:divide-text/30">{children}</tr>
+            <tr className="transition-colors hover:divide-text/30">
+              {children}
+            </tr>
           ),
           th: ({ children }) => (
-            <th className="px-6 py-4 text-left text-sm font-semibold text-text">{children}</th>
+            <th className="px-6 py-4 text-left text-sm font-semibold text-text">
+              {children}
+            </th>
           ),
           td: ({ children }) => (
-            <td className="px-6 py-4 text-sm text-text/80 whitespace-nowrap">{children}</td>
+            <td className="px-6 py-4 text-sm text-text/80 whitespace-nowrap">
+              {children}
+            </td>
           ),
-          hr: ({ children }) => (
-            <hr className="my-2.5"/>
+          hr: ({ children }) => <hr className="my-2.5" />,
+          img: ({ src, alt }) => (
+            <img
+              src={src}
+              alt={alt}
+              className="p-1 max-h-96 max-w-full aspect-auto h-auto rounded-md cursor-pointer"
+              onClick={() => window.open(src, "_blank")}
+            />
           ),
         }}
       >

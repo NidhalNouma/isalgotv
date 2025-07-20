@@ -153,3 +153,7 @@ pyvenv.cfg
 .qodo
 
 .DS_Store
+
+*.ipynb
+*.faiss
+*.pkl
