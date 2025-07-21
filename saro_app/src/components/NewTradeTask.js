@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { NewTaskHook } from "../hooks/useTaskHook";
 import { ArrowRight, Download, Plus } from "lucide-react";
 
+import { HOST } from "../constant";
+
 function NewTradeTask({ close }) {
   const { step, nextStep, accounts, selectedAccount, setSelectedAccount } =
     NewTaskHook();
@@ -100,7 +102,7 @@ function Step1({ nextFn, accounts, selectedAccount, setSelectedAccount }) {
       <div className="">
         <div className="flex items-center justify-between">
           <label className="input-label">Account</label>
-          <a href="/automate/" className="btn-icon">
+          <a href={HOST + "/automate/"} className="btn-icon">
             <Plus className="h-4 aspect-auto" />
           </a>
         </div>

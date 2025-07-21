@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { X } from "lucide-react";
 
+import { HOST } from "../../constant";
+
 export function AuthPopup({ onClose }) {
   return (
     <Fragment>
@@ -23,14 +25,14 @@ export function AuthPopup({ onClose }) {
 
           <div className="space-y-4">
             <a
-              href="/my/register"
+              href={HOST + "/my/register"}
               className="w-full btn-primary transition-colors"
             >
               Sign up
             </a>
 
             <a
-              href="/my/login"
+              href={HOST + "/my/login"}
               className="w-full btn-text from-transparent to-transparent py-2 text-text border border-text/60 transition-colors"
             >
               Sign in
@@ -67,7 +69,7 @@ export function UpgradePopup({ onClose }) {
 
           <div className="space-y-4">
             <a
-              href="/my/membership/"
+              href={HOST + "/my/membership/"}
               className="w-full btn-primary transition-colors"
             >
               Upgrade

@@ -214,9 +214,11 @@ async def ai_chat_view(request):
             if max_token > availble_tokens:
                 max_token = availble_tokens
 
+
+
+
             response_data = await get_ai_response(user_message, messages, max_token)  # ✅ Await once
             ai_response, prompt_tokens, completion_tokens, total_tokens = response_data  # ✅ Unpack
-
             # Async ORM update
             await update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token)
 
@@ -224,7 +226,7 @@ async def ai_chat_view(request):
                 chat_session_json, chat_session = await get_chat_session(chat_id)
                 if chat_session:
                     user_message_json, user_message_obj = await add_chat_message(chat_session, "user", user_message)
-                    system_answer_json, system_answer = await add_chat_message(chat_session, "assistant", ai_response, reply_to=user_message_obj)
+                    system_answer_json, system_answer = await add_chat_message(chat_session, "assistant", ai_response, reply_to=user_message_obj, token_used=total_tokens)
 
             else:
                 chat_session_json, chat_session = await create_chat_session(request.user, user_message)
@@ -233,7 +235,7 @@ async def ai_chat_view(request):
                     return JsonResponse({"error": "Failed to create chat session"}, status=500)
                 
                 user_message_json, user_message = await add_chat_message(chat_session, "user", user_message)
-                system_answer_json, system_answer = await add_chat_message(chat_session, "assistant", ai_response, reply_to=user_message)
+                system_answer_json, system_answer = await add_chat_message(chat_session, "assistant", ai_response, reply_to=user_message, token_used=total_tokens)
 
 
             return JsonResponse({
@@ -250,7 +252,7 @@ async def ai_chat_view(request):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Ai response Error: {e}")
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)

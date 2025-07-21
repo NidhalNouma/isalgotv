@@ -11,9 +11,9 @@ module.exports = {
     "./automate/templates/**/*.html",
     "./saro/next-app/**/*.tsx",
     "./docs/templates/**/*.html",
-    "./aichat/src/**/*.js",
     "./static/js/**/*.js",
-    "./aichat/src/components/**/*.js",
+    "./saro_app/src/**/*.js",
+    "./saro_app/src/components/**/*.js",
 
     "./node_modules/flowbite/**/*.js",
   ],

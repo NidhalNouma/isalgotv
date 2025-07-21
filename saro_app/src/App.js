@@ -19,9 +19,9 @@ function App() {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const page = pathname.includes("trade")
+  const page = pathname.includes("/trade")
     ? "trade"
-    : pathname.includes("chat")
+    : pathname.includes("/chat")
     ? "chat"
     : "";
   const changePage = (newPage) => {

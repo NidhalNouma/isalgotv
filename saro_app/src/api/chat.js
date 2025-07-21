@@ -1,13 +1,4 @@
-let host = window.location.hostname;
-if (host.startsWith("saro.")) {
-  host = host.replace("saro.", "www.");
-  const port = window.location.port ? `:${window.location.port}` : "";
-  const newUrl = `${window.location.protocol}//${host}${port}`;
-  host = newUrl;
-}
-const BASE = host + "/saro/chat";
-
-console.log("BASE URL:", BASE);
+const BASE = "/chat";
 
 function getCookie(name) {
   const cookies = document.cookie.split(";").map((c) => c.trim());
@@ -27,7 +18,6 @@ export async function fetchChatSessions(start = 0) {
       method: "POST",
 
       headers: {
-        "Access-Control-Allow-Origin": "*", // Allow all origins
         "Content-Type": "application/json",
         "X-CSRFToken": csrf_token, // Include CSRF token here
       },

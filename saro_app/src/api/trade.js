@@ -1,4 +1,4 @@
-const BASE = "/saro/trade";
+const BASE = "/trade";
 
 function getCookie(name) {
   const cookies = document.cookie.split(";").map((c) => c.trim());
@@ -13,7 +13,7 @@ function getCookie(name) {
 const csrf_token = getCookie("csrftoken");
 
 export async function fetchAccounts() {
-  const res = await fetch(`/automate/accounts/list/`, {
+  const res = await fetch(`${BASE}/accounts/list/`, {
     method: "POST",
 
     headers: {

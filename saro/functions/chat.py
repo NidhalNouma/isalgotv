@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 from django.urls import reverse
 from django.template.loader import render_to_string
 
+from django.test import RequestFactory
+from django.urls import set_urlconf
+
 from strategies.models import Strategy, StrategyResults
 from saro.models import ChatSession, ChatMessage
 
@@ -43,29 +46,34 @@ def get_system_content():
         for result in best_results
     ]) if best_results else "No results available." 
 
-    docs_instalation = render_to_string('docs/include/docs/find_username.html')
-    docs_setup = render_to_string('docs/include/docs/adding_strategy_to_chart.html')
-    docs_share = render_to_string('docs/include/docs/share_archivement.html')
+    request = RequestFactory().get("/")
+    set_urlconf('etradingview.urls') 
 
-    docs_alerts = render_to_string('docs/include/docs/alerts_intro.html')
-    docs_alerts_placeholders = render_to_string('docs/include/docs/alerts_placeholders.html')
-    docs_alerts_create = render_to_string('docs/include/docs/alerts_create.html')
+    try:
+        docs_instalation = render_to_string('docs/include/docs/find_username.html', request=request)
+        docs_setup = render_to_string('docs/include/docs/adding_strategy_to_chart.html', request=request)
+        docs_share = render_to_string('docs/include/docs/share_archivement.html', request=request)
 
-    docs_automate = render_to_string('docs/include/docs/automate/get_started.html')
-    docs_automate_notes = render_to_string('docs/include/docs/automate/notes.html')
-    docs_automate_playground = render_to_string('docs/include/docs/alerts_playground.html')
-    docs_automate_binance = render_to_string('docs/include/docs/automate/add_binance_account.html')
-    docs_automate_binanceus = render_to_string('docs/include/docs/automate/add_binanceus_account.html')
-    docs_automate_bitget = render_to_string('docs/include/docs/automate/add_bitget_account.html')
-    docs_automate_bybit = render_to_string('docs/include/docs/automate/add_bybit_account.html')
-    docs_automate_mexc = render_to_string('docs/include/docs/automate/add_mexc_account.html')
-    docs_automate_crypto = render_to_string('docs/include/docs/automate/add_crypto_account.html')
-    docs_automate_bingx= render_to_string('docs/include/docs/automate/add_bingx_account.html')
-    docs_automate_bitmart= render_to_string('docs/include/docs/automate/add_bitmart_account.html')
-    docs_automate_kucoin= render_to_string('docs/include/docs/automate/add_kucoin_account.html')
-    docs_automate_coinbase= render_to_string('docs/include/docs/automate/add_coinbase_account.html')
-    docs_automate_tradelocker = render_to_string('docs/include/docs/automate/add_tradelocker_account.html')
-    
+        docs_alerts = render_to_string('docs/include/docs/alerts_intro.html', request=request)
+        docs_alerts_placeholders = render_to_string('docs/include/docs/alerts_placeholders.html', request=request)
+        docs_alerts_create = render_to_string('docs/include/docs/alerts_create.html', request=request)
+
+        docs_automate = render_to_string('docs/include/docs/automate/get_started.html', request=request)
+        docs_automate_notes = render_to_string('docs/include/docs/automate/notes.html', request=request)
+        docs_automate_playground = render_to_string('docs/include/docs/alerts_playground.html', request=request)
+        docs_automate_binance = render_to_string('docs/include/docs/automate/add_binance_account.html', request=request)
+        docs_automate_binanceus = render_to_string('docs/include/docs/automate/add_binanceus_account.html', request=request)
+        docs_automate_bitget = render_to_string('docs/include/docs/automate/add_bitget_account.html', request=request)
+        docs_automate_bybit = render_to_string('docs/include/docs/automate/add_bybit_account.html', request=request)
+        docs_automate_mexc = render_to_string('docs/include/docs/automate/add_mexc_account.html', request=request)
+        docs_automate_crypto = render_to_string('docs/include/docs/automate/add_crypto_account.html', request=request)
+        docs_automate_bingx= render_to_string('docs/include/docs/automate/add_bingx_account.html', request=request)
+        docs_automate_bitmart= render_to_string('docs/include/docs/automate/add_bitmart_account.html', request=request)
+        docs_automate_kucoin= render_to_string('docs/include/docs/automate/add_kucoin_account.html', request=request)
+        docs_automate_coinbase= render_to_string('docs/include/docs/automate/add_coinbase_account.html', request=request)
+        docs_automate_tradelocker = render_to_string('docs/include/docs/automate/add_tradelocker_account.html', request=request)
+    finally:
+        set_urlconf(None)
 
     system_content = f"""
         You are SARO, the official assistant for isalgo.com. You know the Isalgo documentation inside-out. Your job is to provide accurate, clear answers and guide users on how to use Isalgo’s features while helping them become more profitable in their trading.
@@ -181,12 +189,12 @@ def get_system_content():
     # Ensure image URLs include full domain
     system_content = system_content.replace("static/images/docs/", "https://isalgotest.s3.amazonaws.com/static/images/docs/")
 
-
     return extract_text_with_media(system_content)
 
 
 @sync_to_async
 def get_ai_response(user_message, messages, max_token) -> tuple:
+    print(f"User message: {user_message}")
 
     chat_service = ChatService()
     chat_service.build_vector_store_from_text(get_system_content())
@@ -238,14 +246,15 @@ def create_chat_session(user, user_message=""):
     return session_json, session
 
 @sync_to_async
-def add_chat_message(session, role, content, reply_to=None, liked=None, embedding=None):
+def add_chat_message(session, role, content, reply_to=None, liked=None, embedding=None, token_used=0):
     message = ChatMessage.objects.create(
         session=session,
         role=role,
         content=content,
         liked=liked,
         reply_to=reply_to,
-        embedding=embedding
+        embedding=embedding,
+        token_used=token_used
     )
     session.last_updated = message.created_at
     session.save()

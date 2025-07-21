@@ -19,6 +19,7 @@ class ChatMessage(models.Model):
     session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name="messages")
     role = models.CharField(max_length=50, choices=[('user', 'User'), ('assistant', 'Assistant'), ('system', 'System')])
     content = models.TextField()
+    token_used = models.IntegerField(default=0) 
     
     reply_to = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='replies')
 

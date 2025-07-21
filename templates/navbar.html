@@ -1,197 +1,239 @@
 {% load static %}
 
-<nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
-  <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
-  <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">
-    <div class="flex">
-      <a href="/" class="flex items-center">
-        <div class="flex justify-center items-end">
-          <svg class="sm:h-9 h-8 aspect-square fill-title stroke-title" viewBox="0 0 302 428" xmlns="http://www.w3.org/2000/svg">
-            <path d="M211.404 5L211.404 102.073" stroke-width="10" stroke-linecap="round" />
-            <path d="M203.638 82.6582H219.169C222.029 82.6582 224.346 86.1351 224.346 90.4241V152.551C224.346 156.84 222.029 160.317 219.169 160.317H203.638C200.778 160.317 198.46 156.84 198.46 152.551V90.4241C198.46 86.1351 200.778 82.6582 203.638 82.6582Z" stroke-width="15" />
-            <path d="M97.9228 350.173L82.7244 349.97C79.9265 349.933 77.6832 346.437 77.7139 342.161L78.1584 280.231C78.1891 275.955 80.4821 272.52 83.28 272.557L98.4784 272.76C101.276 272.797 103.52 276.293 103.489 280.568L103.044 342.499C103.014 346.774 100.721 350.21 97.9228 350.173Z" stroke-width="15" />
-            <path d="M90.3241 351.011L90.3241 422.421" stroke-width="10" stroke-linecap="round" />
-            <path d="M18.9213 127.582C8.02681 137.789 1.78067 149.872 0.340851 164.059C-1.57142 182.902 4.55596 199.113 18.891 212.921C28.9832 222.643 41.8664 227.94 55.3822 232.327C79.6901 240.217 103.996 248.113 128.336 255.922C130.624 256.656 131.54 257.591 131.405 259.867C131.223 262.953 131.671 266.065 131.675 269.165C131.712 299.984 131.668 330.803 131.776 361.621C131.792 366.107 131.763 370.283 127.277 373.366C125.943 374.283 125.182 375.95 124.33 377.359C118.441 387.094 118.719 396.922 125.082 406.204C131.337 415.328 141.054 419.725 152.872 419.122C165.618 418.471 174.737 412.28 179.426 401.673C184.272 390.709 182.071 380.394 173.3 371.557C170.91 369.149 169.839 366.819 169.846 363.592C169.937 321.504 169.835 279.416 169.988 237.328C170.003 233.42 168.546 231.761 164.564 230.464C132.124 219.898 99.77 209.118 67.3868 198.411C62.832 196.905 58.3622 195.258 54.4411 192.602C34.1485 178.855 39.3168 156.014 56.0194 147.657C69.4852 140.919 82.4802 133.417 95.746 126.349C97.8978 125.202 98.6712 123.823 98.6535 121.617C98.5638 110.463 98.6334 99.3077 98.6097 88.1532C98.5995 83.3534 97.7505 82.8281 93.2104 85.2459C77.7509 93.4787 62.3417 101.789 46.9502 110.125C37.3547 115.323 27.3506 119.996 18.9213 127.582ZM291.176 226.931C289.203 224.537 287.366 222.067 285.166 219.809C274.858 209.231 261.201 203.678 246.992 199.036C223.188 191.259 199.337 183.597 175.439 176.058C171.381 174.778 169.753 173.074 169.79 168.94C170.034 141.693 169.928 114.444 169.929 87.195C169.929 83.8617 170.019 80.522 169.822 77.1971C169.676 74.7372 168.413 73.5887 165.52 74.9425C155.903 79.4432 146.289 79.4173 136.631 74.9188C132.786 73.1273 131.39 73.9797 131.27 78.0217C131.178 81.118 131.268 84.2188 131.283 87.3175C131.453 123.414 131.67 159.511 131.714 195.608C131.718 198.814 132.931 200.24 136.191 201.305C169.568 212.212 202.732 223.647 236.295 234.091C240.398 235.367 244.459 236.822 247.948 239.174C256.886 245.199 261.385 253.059 259.685 263.345C258.338 271.492 252.969 277.111 245.54 281.254C232.329 288.619 219.037 295.868 205.685 303.021C203.046 304.434 201.994 306.086 202.024 308.822C202.145 319.973 202.059 331.126 202.098 342.279C202.103 343.592 201.53 345.285 203.241 346.007C204.822 346.674 206.098 345.432 207.39 344.754C227.204 334.368 246.942 323.861 266.839 313.607C301.494 295.748 312.378 257.863 291.176 226.931Z" />
-            <circle cx="151.003" cy="43.8285" r="21.5721" />
-          </svg>
-        </div>
-      </a>
-    </div>
-    <div class="flex items-center lg:order-2 justify-center gap-2">
-      {% if user.is_authenticated %}
-        <a href="/saro/chat" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
-
-        <div class="relative flex items-center">
-          <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
-            <span class="sr-only">Open user menu</span>
-            <svg stroke-width="0" viewBox="0 0 24 24" class="w-6 aspect-auto fill-current stroke-current" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9ZM14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM3 12C3 14.0902 3.71255 16.014 4.90798 17.5417C6.55245 15.3889 9.14627 14 12.0645 14C14.9448 14 17.5092 15.3531 19.1565 17.4583C20.313 15.9443 21 14.0524 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12ZM12 21C9.84977 21 7.87565 20.2459 6.32767 18.9878C7.59352 17.1812 9.69106 16 12.0645 16C14.4084 16 16.4833 17.1521 17.7538 18.9209C16.1939 20.2191 14.1881 21 12 21Z"></path>
+{% with saro_url=request.scheme|stringformat:'s'|add:'://saro.'|add:request.get_host|cut:'www.' %}
+  <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
+    <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
+    <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">
+      <div class="flex">
+        <a href="/" class="flex items-center">
+          <div class="flex justify-center items-end">
+            <svg class="sm:h-9 h-8 aspect-square fill-title stroke-title" viewBox="0 0 302 428" xmlns="http://www.w3.org/2000/svg">
+              <path d="M211.404 5L211.404 102.073" stroke-width="10" stroke-linecap="round" />
+              <path d="M203.638 82.6582H219.169C222.029 82.6582 224.346 86.1351 224.346 90.4241V152.551C224.346 156.84 222.029 160.317 219.169 160.317H203.638C200.778 160.317 198.46 156.84 198.46 152.551V90.4241C198.46 86.1351 200.778 82.6582 203.638 82.6582Z" stroke-width="15" />
+              <path d="M97.9228 350.173L82.7244 349.97C79.9265 349.933 77.6832 346.437 77.7139 342.161L78.1584 280.231C78.1891 275.955 80.4821 272.52 83.28 272.557L98.4784 272.76C101.276 272.797 103.52 276.293 103.489 280.568L103.044 342.499C103.014 346.774 100.721 350.21 97.9228 350.173Z" stroke-width="15" />
+              <path d="M90.3241 351.011L90.3241 422.421" stroke-width="10" stroke-linecap="round" />
+              <path d="M18.9213 127.582C8.02681 137.789 1.78067 149.872 0.340851 164.059C-1.57142 182.902 4.55596 199.113 18.891 212.921C28.9832 222.643 41.8664 227.94 55.3822 232.327C79.6901 240.217 103.996 248.113 128.336 255.922C130.624 256.656 131.54 257.591 131.405 259.867C131.223 262.953 131.671 266.065 131.675 269.165C131.712 299.984 131.668 330.803 131.776 361.621C131.792 366.107 131.763 370.283 127.277 373.366C125.943 374.283 125.182 375.95 124.33 377.359C118.441 387.094 118.719 396.922 125.082 406.204C131.337 415.328 141.054 419.725 152.872 419.122C165.618 418.471 174.737 412.28 179.426 401.673C184.272 390.709 182.071 380.394 173.3 371.557C170.91 369.149 169.839 366.819 169.846 363.592C169.937 321.504 169.835 279.416 169.988 237.328C170.003 233.42 168.546 231.761 164.564 230.464C132.124 219.898 99.77 209.118 67.3868 198.411C62.832 196.905 58.3622 195.258 54.4411 192.602C34.1485 178.855 39.3168 156.014 56.0194 147.657C69.4852 140.919 82.4802 133.417 95.746 126.349C97.8978 125.202 98.6712 123.823 98.6535 121.617C98.5638 110.463 98.6334 99.3077 98.6097 88.1532C98.5995 83.3534 97.7505 82.8281 93.2104 85.2459C77.7509 93.4787 62.3417 101.789 46.9502 110.125C37.3547 115.323 27.3506 119.996 18.9213 127.582ZM291.176 226.931C289.203 224.537 287.366 222.067 285.166 219.809C274.858 209.231 261.201 203.678 246.992 199.036C223.188 191.259 199.337 183.597 175.439 176.058C171.381 174.778 169.753 173.074 169.79 168.94C170.034 141.693 169.928 114.444 169.929 87.195C169.929 83.8617 170.019 80.522 169.822 77.1971C169.676 74.7372 168.413 73.5887 165.52 74.9425C155.903 79.4432 146.289 79.4173 136.631 74.9188C132.786 73.1273 131.39 73.9797 131.27 78.0217C131.178 81.118 131.268 84.2188 131.283 87.3175C131.453 123.414 131.67 159.511 131.714 195.608C131.718 198.814 132.931 200.24 136.191 201.305C169.568 212.212 202.732 223.647 236.295 234.091C240.398 235.367 244.459 236.822 247.948 239.174C256.886 245.199 261.385 253.059 259.685 263.345C258.338 271.492 252.969 277.111 245.54 281.254C232.329 288.619 219.037 295.868 205.685 303.021C203.046 304.434 201.994 306.086 202.024 308.822C202.145 319.973 202.059 331.126 202.098 342.279C202.103 343.592 201.53 345.285 203.241 346.007C204.822 346.674 206.098 345.432 207.39 344.754C227.204 334.368 246.942 323.861 266.839 313.607C301.494 295.748 312.378 257.863 291.176 226.931Z" />
+              <circle cx="151.003" cy="43.8285" r="21.5721" />
             </svg>
-          </button>
-          <!-- Dropdown menu -->
-          <div class="px-4 z-50 absolute top-8 right-6 hidden text-base list-none bg-text/10 backdrop-blur-3xl rounded-md shadow" id="user-dropdown">
-            {% if user_profile.tradingview_username %}
-              <div class="px-0.5 py-0 pt-2 text-center">
-                <span class="block text-sm text-text/60">{{ user_profile.tradingview_username }}</span>
-              </div>
-            {% endif %}
-            <ul class="py-2">
-              {% if user.is_superuser %}
+          </div>
+        </a>
+      </div>
+      <div class="flex items-center lg:order-2 justify-center gap-2">
+        {% if user.is_authenticated %}
+          <a href="{{ saro_url }}" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
+
+          <div class="relative flex items-center">
+            <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
+              <span class="sr-only">Open user menu</span>
+              <svg stroke-width="0" viewBox="0 0 24 24" class="w-6 aspect-auto fill-current stroke-current" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9ZM14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM3 12C3 14.0902 3.71255 16.014 4.90798 17.5417C6.55245 15.3889 9.14627 14 12.0645 14C14.9448 14 17.5092 15.3531 19.1565 17.4583C20.313 15.9443 21 14.0524 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12ZM12 21C9.84977 21 7.87565 20.2459 6.32767 18.9878C7.59352 17.1812 9.69106 16 12.0645 16C14.4084 16 16.4833 17.1521 17.7538 18.9209C16.1939 20.2191 14.1881 21 12 21Z"></path>
+              </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div class="px-4 z-50 absolute top-8 right-6 hidden text-base list-none bg-text/10 backdrop-blur-3xl rounded-md shadow" id="user-dropdown">
+              {% if user_profile.tradingview_username %}
+                <div class="px-0.5 py-0 pt-2 text-center">
+                  <span class="block text-sm text-text/60">{{ user_profile.tradingview_username }}</span>
+                </div>
+              {% endif %}
+              <ul class="py-2">
+                {% if user.is_superuser %}
+                  <li>
+                    <a href="{% url 'admin:index' %}" class="flex items-center px-4 py-2 text-sm text-text/90 hover:text-title transition-all">
+                      <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <g fill-rule="evenodd">
+                          <circle cx="17" cy="15.5" r="1.12"></circle>
+                          <path d="M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z"></path>
+                          <path d="M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                        </g>
+                      </svg>Admin
+                    </a>
+                  </li>
+                {% endif %}
                 <li>
-                  <a href="{% url 'admin:index' %}" class="flex items-center px-4 py-2 text-sm text-text/90 hover:text-title transition-all">
+                  <a href="{% url 'notifications' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
                     <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path fill="none" d="M0 0h24v24H0z"></path>
-                      <g fill-rule="evenodd">
-                        <circle cx="17" cy="15.5" r="1.12"></circle>
-                        <path d="M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z"></path>
-                        <path d="M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
-                      </g>
-                    </svg>Admin
+                      <path fill="none" d="M0 0h24v24H0V0z"></path>
+                      <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zM7.58 4.08 6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2a8.445 8.445 0 0 1 3.55-6.42zm12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43a8.495 8.495 0 0 1 3.54 6.42z"></path>
+                    </svg>Notifications
                   </a>
                 </li>
-              {% endif %}
-              <li>
-                <a href="{% url 'notifications' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
-                  <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="none" d="M0 0h24v24H0V0z"></path>
-                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zM7.58 4.08 6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2a8.445 8.445 0 0 1 3.55-6.42zm12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43a8.495 8.495 0 0 1 3.54 6.42z"></path>
-                  </svg>Notifications
-                </a>
-              </li>
-              <li>
-                <a href="{% url 'access' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
-                  <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M4 8v-2a2 2 0 0 1 2 -2h2"></path>
-                    <path d="M4 16v2a2 2 0 0 0 2 2h2"></path>
-                    <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
-                    <path d="M16 20h2a2 2 0 0 0 2 -2v-2"></path>
-                    <path d="M8 11m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v3a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"></path>
-                    <path d="M10 11v-2a2 2 0 1 1 4 0v2"></path>
-                  </svg>Access
-                </a>
-              </li>
-              <li>
-                <a href="{% url 'settings' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
-                  <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4zM416.39 256a154.34 154.34 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.48 164.48 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155.3 155.3 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.48 164.48 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155.3 155.3 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47z"></path>
-                  </svg>Settings
-                </a>
-              </li>
-              <li>
-                <a href="{% url 'logout' %}" class="flex items-center px-4 py-2 text-sm text-text/80 hover:text-title transition-all">
-                  <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"></path>
-                    <path d="M15 12h-12l3 -3"></path>
-                    <path d="M6 15l-3 -3"></path>
-                  </svg>Log out
-                </a>
-              </li>
-            </ul>
+                <li>
+                  <a href="{% url 'access' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
+                    <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M4 8v-2a2 2 0 0 1 2 -2h2"></path>
+                      <path d="M4 16v2a2 2 0 0 0 2 2h2"></path>
+                      <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
+                      <path d="M16 20h2a2 2 0 0 0 2 -2v-2"></path>
+                      <path d="M8 11m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v3a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"></path>
+                      <path d="M10 11v-2a2 2 0 1 1 4 0v2"></path>
+                    </svg>Access
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'settings' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
+                    <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4zM416.39 256a154.34 154.34 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.48 164.48 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155.3 155.3 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.48 164.48 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155.3 155.3 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47z"></path>
+                    </svg>Settings
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'logout' %}" class="flex items-center px-4 py-2 text-sm text-text/80 hover:text-title transition-all">
+                    <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"></path>
+                      <path d="M15 12h-12l3 -3"></path>
+                      <path d="M6 15l-3 -3"></path>
+                    </svg>Log out
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      {% else %}
-        <a href="/saro/chat" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
-        <a type="button" href="{% url 'login' %}" class="btn-secondary">
-          Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill="none" d="M0 0h24v24H0z"></path>
-            <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"></path>
-          </svg>
-        </a>
-      {% endif %}
-      <button id="menu-toggle-mobile" data-collapse-toggle="mobile-menu-2" type="button" class="btn-icon lg:hidden" aria-controls="mobile-menu-2" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg id="menu-icon" class="w-6 h-6 transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-        </svg>
-
-        <!-- Hidden Close (X) Icon -->
-        <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </div>
-
-    <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-      <ul class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-title/10 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
-        <li>
-          <a href="{% url 'strategies' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-              <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
-            </svg>Strategies
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'results' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
-            </svg>Results
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'automate' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all" aria-current="page">
-            <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow">
-              <rect width="8" height="8" x="3" y="3" rx="2" />
-              <path d="M7 11v4a2 2 0 0 0 2 2h4" />
-              <rect width="8" height="8" x="13" y="13" rx="2" />
-            </svg>Automate
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'membership' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
-              <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" />
-              <circle cx="12" cy="8" r="6" />
+        {% else %}
+          <a href="{{ saro_url }}" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
+          <a type="button" href="{% url 'login' %}" class="btn-secondary">
+            Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"></path>
             </svg>
-            {% if has_subscription %}
-              Membership
-            {% else %}
-              Pricing
-            {% endif %}
           </a>
-        </li>
-        <li>
-          <a href="{% url 'docs_index' %}"
-            class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %} text-title  {% else %} text-text/80  {% endif %} hover:text-title hover:font-medium transition-all"
-            aria-current="page">
-            <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book">
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
-            </svg>Docs
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-{% comment %} {% if user.is_authenticated %}
-  {% with drawer_id='drawer-Notifications' %}
-    <div id="{{ drawer_id }}" class="fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] bg-background" tabindex="-1" aria-labelledby="drawer-right-label">
-      <div class="flex items-center justify-between bg-background sticky z-30 top-0 w-full py-6 px-4">
-        <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text">Notifications</h5>
-        <button type="button" onclick="hideDrawer('{{ drawer_id }}')" class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+        {% endif %}
+        <button id="menu-toggle-mobile" data-collapse-toggle="mobile-menu-2" type="button" class="btn-icon lg:hidden" aria-controls="mobile-menu-2" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg id="menu-icon" class="w-6 h-6 transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
           </svg>
-          <span class="sr-only">Close menu</span>
+
+          <!-- Hidden Close (X) Icon -->
+          <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
         </button>
       </div>
 
-      <div class="text-text text-start px-4 my-4">
-        {% include 'include/settings/notifications.html' %}
+      <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+        <ul class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-title/10 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
+          <li>
+            <a href="{% url 'strategies' %}"
+              class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %}
+                
+               text-title
+
+              {% else %}
+                
+               text-text/80
+
+              {% endif %} hover:text-title hover:font-medium transition-all"
+              aria-current="page">
+              <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
+              </svg>Strategies
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'results' %}"
+              class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %}
+                
+               text-title
+
+              {% else %}
+                
+               text-text/80
+
+              {% endif %} hover:text-title hover:font-medium transition-all"
+              aria-current="page">
+              <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
+              </svg>Results
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'automate' %}"
+              class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %}
+                
+               text-title
+
+              {% else %}
+                
+               text-text/80
+
+              {% endif %} hover:text-title hover:font-medium transition-all"
+              aria-current="page">
+              <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow">
+                <rect width="8" height="8" x="3" y="3" rx="2" />
+                <path d="M7 11v4a2 2 0 0 0 2 2h4" />
+                <rect width="8" height="8" x="13" y="13" rx="2" />
+              </svg>Automate
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'membership' %}"
+              class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %}
+                
+               text-title
+
+              {% else %}
+                
+               text-text/80
+
+              {% endif %} hover:text-title hover:font-medium transition-all"
+              aria-current="page">
+              <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
+                <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" />
+                <circle cx="12" cy="8" r="6" />
+              </svg>
+              {% if has_subscription %}
+                Membership
+              {% else %}
+                Pricing
+              {% endif %}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'docs_index' %}"
+              class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %}
+                
+               text-title
+
+              {% else %}
+                
+               text-text/80
+
+              {% endif %} hover:text-title hover:font-medium transition-all"
+              aria-current="page">
+              <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+              </svg>Docs
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-  {% endwith %}
-{% endif %} {% endcomment %}
+  </nav>
+  {% comment %} {% if user.is_authenticated %}
+    {% with drawer_id='drawer-Notifications' %}
+      <div id="{{ drawer_id }}" class="fixed top-0 right-0 z-[60] h-screen overflow-y-auto transition-transform translate-x-full w-[75vw] sm:w-[50vw] bg-background" tabindex="-1" aria-labelledby="drawer-right-label">
+        <div class="flex items-center justify-between bg-background sticky z-30 top-0 w-full py-6 px-4">
+          <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text">Notifications</h5>
+          <button type="button" onclick="hideDrawer('{{ drawer_id }}')" class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close menu</span>
+          </button>
+        </div>
 
+        <div class="text-text text-start px-4 my-4">
+          {% include 'include/settings/notifications.html' %}
+        </div>
+      </div>
+    {% endwith %}
+  {% endif %} {% endcomment %}
+{% endwith %}
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle-mobile')

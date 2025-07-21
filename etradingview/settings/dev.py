@@ -5,11 +5,13 @@ environ.Env.read_env()
 
 # DEBUG = True
 # DEBUG = False
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "myproject.local", "webhook.myproject.local", "saro.myproject.local"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "www.myproject.local", "myproject.local", "webhook.myproject.local", "saro.myproject.local"]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://saro.myproject.local:8000",
+    "http://saro.myproject.local",
 ]
+
+CSRF_TRUSTED_ORIGINS = ['http://*.myproject.local']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
