@@ -157,3 +157,4 @@ pyvenv.cfg
 *.ipynb
 *.faiss
 *.pkl
+/vector_index
