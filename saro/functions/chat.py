@@ -186,9 +186,7 @@ def get_system_content():
 
         Always maintain a friendly and professional tone while offering clear, precise advice and creative, advanced Pine Script v6 examples unless a simpler version is requested.
     """.strip()
-    # Ensure image URLs include full domain
-    system_content = system_content.replace("static/images/docs/", "https://isalgotest.s3.amazonaws.com/static/images/docs/")
-
+    
     return extract_text_with_media(system_content)
 
 

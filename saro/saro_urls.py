@@ -13,7 +13,9 @@ from automate.views import (
 urlpatterns = [
     path('', index, name='home'),
     path('chat/', index, name='saro_index_chat'),
+    path('chat', index),
     path('trade/', index, name='saro_index_trade'),
+    path('trade', index),
 
     path('my/membership/payment-intent/', create_setup_intent, name="membership-payment-intent"),
 
