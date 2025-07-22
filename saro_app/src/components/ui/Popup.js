@@ -6,7 +6,7 @@ import { HOST } from "../../constant";
 export function AuthPopup({ onClose }) {
   return (
     <Fragment>
-      <div className="fixed inset-0 bg-background/60 z-40" onClick={onClose} />
+      <div className="fixed inset-0 backdrop-color z-40" onClick={onClose} />
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 p-8">
         <div className="bg-text/10 backdrop-blur-3xl rounded-md shadow-xl p-6">
           <div className="flex justify-between items-center mb-6">
@@ -52,7 +52,7 @@ export function AuthPopup({ onClose }) {
 export function UpgradePopup({ onClose }) {
   return (
     <Fragment>
-      <div className="fixed inset-0 bg-background/60 z-40" onClick={onClose} />
+      <div className="fixed inset-0 backdrop-color z-40" onClick={onClose} />
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 p-8">
         <div className="bg-text/10 backdrop-blur-3xl rounded-md shadow-xl p-6">
           <div className="flex justify-between items-center mb-6">

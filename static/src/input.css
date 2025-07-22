@@ -529,13 +529,17 @@
     scrollbar-width: none; /* Firefox */
   }
 
+  .backdrop-color {
+    @apply bg-text/10 backdrop-brightness-50 backdrop-blur-[1px];
+  }
+
   [modal-backdrop],
   .modal-backdrop {
-    @apply bg-title/70 grayscale brightness-[0.1] z-40 absolute top-0 w-screen h-full left-0;
+    @apply backdrop-color z-40 absolute top-0 w-screen h-full left-0;
   }
 
   [drawer-backdrop] {
-    @apply bg-title/70 grayscale brightness-[0.1] z-50;
+    @apply backdrop-color z-50;
   }
 
   /* Scroller */

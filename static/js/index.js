@@ -355,7 +355,7 @@ function mountStripeCard(id) {
   cardElement.mount("#card-element-" + id);
 }
 
-function mountStripeElement(id, to_add = false, callback) {
+function mountStripeElement(id, to_add = false, callback, bg_color = null) {
   const objEl = document.getElementById("stripe-element-" + id);
   const cardEl = document.getElementById("card-element-" + id);
 
@@ -411,7 +411,7 @@ function mountStripeElement(id, to_add = false, callback) {
           fontLineHeight: "1.5",
           borderRadius: "10px",
 
-          colorBackground: getCssVariableColor("--color-background"),
+          colorBackground: "#0000a",
 
           colorPrimary: getCssVariableColor("--color-primary"),
           colorText: getCssVariableColor("--color-text"),
@@ -425,7 +425,8 @@ function mountStripeElement(id, to_add = false, callback) {
         },
         rules: {
           ".AccordionItem": {
-            // border: "none",
+            borderColor: getCssVariableColor("--color-text", 0.1),
+            borderWidth: "2px",
             boxShadow: "none",
           },
           ".Block": {
@@ -435,6 +436,7 @@ function mountStripeElement(id, to_add = false, callback) {
             padding: "12px",
           },
           ".Input": {
+            borderColor: getCssVariableColor("--color-text", 0.1),
             padding: "12px",
             backgroundColor: getCssVariableColor("--color-text", 0.1),
           },

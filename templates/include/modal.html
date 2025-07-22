@@ -4,6 +4,7 @@
 {% comment %}close_modal_btn_id: The ID of the button to close the modal.{% endcomment %}
 {% comment %}stripe_element_id: The ID of the Stripe element to unmount when closing the modal.{% endcomment %}
 {% comment %}class: Additional classes for the modal container.{% endcomment %}
+{% comment %}header_class: Additional classes for the modal header.{% endcomment %}
 {% comment %}body_class: Additional classes for the modal body.{% endcomment %}
 {% comment %}content: modal content if it was povided{% endcomment %}
 {% comment %}content_class: Additional classes for the modal content.{% endcomment %}
@@ -18,12 +19,10 @@
       {% else %}
         <!-- Modal header -->
         {% if header %}
-          <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 nav-bg rounded-md">
+          <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 nav-bg rounded-md {{ header_class }}">
             <div class="grow mr-4">{{ header }}</div>
             <button onclick="{% if stripe_element_id %}
-                
-                unmountStripeElement('{{ stripe_element_id }}');
-
+                 unmountStripeElement('{{ stripe_element_id }}');
               {% endif %} hideModel('{{ modal_id }}')"
               type="button"
               class="btn-icon"
@@ -37,7 +36,7 @@
         <!-- Modal body -->
         <div class="w-full h-fit max-w-md mx-auto overflow-hidden mt-4 sm:px-2 px-4 {{ body_class }}">{{ body }}</div>
       {% endif %}
-      <div class="sticky bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none"></div>
+      <div class="sticky bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none {{ bottom_effect_class }}"></div>
     </div>
   </div>
 </div>

@@ -200,6 +200,8 @@ function MinSideBar({ onClose, open, setOpen, page, changePage }) {
         onClick={(e) => {
           setOpen(true);
         }}
+        onMouseEnter={() => setHideLogo(true)}
+        onMouseLeave={() => setHideLogo(false)}
         className="cursor-e-resize grow overflow-y-auto no-scrollbar"
       ></div>
       {user && (

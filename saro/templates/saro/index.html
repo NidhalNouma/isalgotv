@@ -80,7 +80,7 @@
       {% with title='ai-tokens' %}
         {% render_template 'include/ai_tokens_form.html' title=title as ai_tokens_form %}
         {% with header_html="<h3 class='text-xl font-semibold text-title'>Buy AI Tokens</h3>" %}
-          {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn' body_class='px-2 mt-4' %}
+          {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn' content_class='bg-text/10 backdrop-blur-3xl' header_class=' from-text/10 ' body_class='px-2 mt-4' bottom_effect_class='from-transparent' %}
         {% endwith %}
       {% endwith %}
     {% endif %}

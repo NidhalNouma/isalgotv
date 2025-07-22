@@ -105,6 +105,7 @@ module.exports = {
     },
   },
   safelist: [
+    "from-transparent",
     "scale-0",
     "scale-100",
     "transition-transform",
