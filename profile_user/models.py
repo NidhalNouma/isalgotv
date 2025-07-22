@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.db.models import Max
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
@@ -42,6 +43,17 @@ class User_Profile(models.Model):
     ai_tokens_available = models.IntegerField(default=0, blank=True)  
     ai_tokens_used_today = models.IntegerField(default=0, blank=True)  
     last_token_reset = models.DateField(default=now, blank=True) 
+
+    def save(self, *args, **kwargs):
+        # Check if is_lifetime changed from False to True
+        if self.lifetime_num == 0 and self.is_lifetime:
+
+            highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
+            lifetime_num = 1
+            if highest_lifetime_num:
+                lifetime_num = highest_lifetime_num + 1
+            self.lifetime_num += lifetime_num
+        super().save(*args, **kwargs)
 
     def reset_token_usage_if_needed(self):
         """Reset the token usage if the date has changed."""

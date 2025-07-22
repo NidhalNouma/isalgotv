@@ -18,7 +18,6 @@ from automate.views import account_subscription_failed
 
 from .forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
-from django.db.models import Max
 from strategies.models import *
 
 from django.core.mail import EmailMessage
@@ -739,16 +738,18 @@ def subscription_stripeform(request):
                     automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
                     metadata={"price_id": price_id}
                 )
-                highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
-                lifetime_num = 1
-                if highest_lifetime_num:
-                    lifetime_num = lifetime_num + 1
-                User_Profile.objects.filter(user = request.user).update(lifetime_intent=lifetime.id, is_lifetime=True, lifetime_num=lifetime_num)
+                user_profile.lifetime_intent = lifetime.id
+                user_profile.is_lifetime = True
+                user_profile.save()
+
                 print("New lifetime has been created ...")
                 send_new_lifetime_email_task(request.user.email)
                 if len(old_subscription_id) > 0:
-                    cancel_subscription = stripe.Subscription.delete(old_subscription_id)
-                    print("Old subscription has been canceled ... ")
+                    try:
+                        cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+                        print("Old subscription has been canceled ... ")
+                    except Exception as e:
+                        print("Error canceling old subscription:", e)
                     # Handle free-trial UI if requested
                     from_get_started = request.GET.get('get_started', '')
                     if from_get_started == "true":
@@ -798,8 +799,11 @@ def subscription_stripeform(request):
 
             if len(old_subscription_id) > 0:
                 if request.subscription_status != 'canceled':
-                    cancel_subscription = stripe.Subscription.delete(old_subscription_id)
-                    print("Old subscription has been canceled ... ")
+                    try: 
+                        cancel_subscription = stripe.Subscription.delete(old_subscription_id)
+                        print("Old subscription has been canceled ... ")
+                    except Exception as e:
+                        print("Error canceling old subscription:", e)
                 # Handle free-trial UI if requested
                 from_get_started = request.GET.get('get_started', '')
                 if from_get_started == "true":

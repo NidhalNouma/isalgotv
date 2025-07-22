@@ -1,19 +1,15 @@
-{% if not has_subscription and not user_profile.subscription_id and title != "LIFETIME" %}
+{% if not has_subscription %}
   <div class="mb-4">
     <h6 class="text-text/80 text-sm font-medium">
         You’re a few click away from gaining access to our expert trading strategies, premium access, and much more.
     </h6>
-    {% if free_trial_days %}
+    {% if free_trial_days and title != "LIFETIME" and not user_profile.subscription_id %}
       <h6 class="mt-1.5 text-title bg-title/20 rounded-lg px-2 py-1 inline-block text-xs font-medium">First {{ free_trial_days }} days free</h6>
     {% endif %}
   </div>
 {% endif %}
 
-<form
-    hx-post="{% url 'membership-coupon' %}?plan={{ title }}"
-    class="relative" Let's go.
-    id="coupon-pay-{{ title }}-form"
-  >
+<form hx-post="{% url 'membership-coupon' %}?plan={{ title }}" class="relative" id="coupon-pay-{{ title }}-form">
     {% csrf_token %}
     {% include 'include/pay_form_coupon.html' %}
 </form>
