@@ -16,11 +16,19 @@ import { useChat } from "../contexts/ChatsContext";
 import { useUser } from "../contexts/UserContext";
 
 import HrefButton from "./ui/hrefButton";
+import { DeleteConfirmPopup, SettingsPopup, TokensPopup } from "./ui/Popup";
 
 import { HOST } from "../constant";
+import { deleteChatSession } from "../api/chat";
 
 function SideBar({ onClose, open, setOpen, page, changePage }) {
   const [renderOpen, setRenderOpen] = useState(false);
+  const [deleteChatFn, setDeleteChatFn] = useState(null);
+
+  const [openSettings, setOpenSettings] = useState(false);
+  const [openTokens, setOpenTokens] = useState(false);
+
+  const { user, tokens } = useUser();
 
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -66,48 +74,120 @@ function SideBar({ onClose, open, setOpen, page, changePage }) {
                   setOpen={setOpen}
                   page={page}
                   changePage={changePage}
+                  setDeleteChatFn={setDeleteChatFn}
+                  openSettings={() => setOpenSettings(true)}
+                  openTokens={() => setOpenTokens(true)}
                 />
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
+
+        {deleteChatFn && (
+          <DeleteConfirmPopup
+            title="Delete Chat"
+            onClose={() => setDeleteChatFn(null)}
+            onDelete={async () => {
+              await deleteChatFn.deleteFn();
+              setDeleteChatFn(null);
+            }}
+          >
+            Are you sure you want to delete{" "}
+            <strong>{deleteChatFn.chatTitle}</strong>? <br />
+            This action cannot be undone.
+          </DeleteConfirmPopup>
+        )}
+
+        {openSettings && (
+          <SettingsPopup onClose={() => setOpenSettings(false)} user={user} />
+        )}
+
+        {openTokens && (
+          <TokensPopup
+            onClose={() => setOpenTokens(false)}
+            user={user}
+            tokens={tokens}
+          />
+        )}
       </Fragment>
     );
   }
   return (
-    <motion.div
-      initial={false}
-      animate={{ width: open ? 240 : 48 }}
-      transition={{ duration: 0.22, ease: open ? "easeIn" : "easeOut" }}
-      onAnimationComplete={() => {
-        if (!open) setRenderOpen(false);
-      }}
-      className={` overflow-hidden space-y-2 py-4 px-2 backdrop-blur-[320px] bg-text/10 rounded-xl h-full hidden md:flex flex-col relative`}
-    >
-      {!renderOpen ? (
-        <MinSideBar
-          onClose={onClose}
-          open={open}
-          setOpen={setOpen}
-          page={page}
-          changePage={changePage}
-        />
-      ) : (
-        <FullSideBar
-          onClose={onClose}
-          open={open}
-          setOpen={setOpen}
-          page={page}
-          changePage={changePage}
+    <Fragment>
+      <motion.div
+        initial={false}
+        animate={{ width: open ? 240 : 48 }}
+        transition={{ duration: 0.22, ease: open ? "easeIn" : "easeOut" }}
+        onAnimationComplete={() => {
+          if (!open) setRenderOpen(false);
+        }}
+        className={` overflow-hidden space-y-2 py-4 px-2 backdrop-blur-[320px] bg-text/10 rounded-xl h-full hidden md:flex flex-col relative`}
+      >
+        {!renderOpen ? (
+          <MinSideBar
+            onClose={onClose}
+            open={open}
+            setOpen={setOpen}
+            page={page}
+            changePage={changePage}
+            openSettings={() => setOpenSettings(true)}
+            openTokens={() => setOpenTokens(true)}
+          />
+        ) : (
+          <FullSideBar
+            onClose={onClose}
+            open={open}
+            setOpen={setOpen}
+            page={page}
+            changePage={changePage}
+            setDeleteChatFn={setDeleteChatFn}
+            openSettings={() => setOpenSettings(true)}
+            openTokens={() => setOpenTokens(true)}
+          />
+        )}
+      </motion.div>
+
+      {deleteChatFn && (
+        <DeleteConfirmPopup
+          title="Delete Chat"
+          onClose={() => setDeleteChatFn(null)}
+          onDelete={async () => {
+            await deleteChatFn.deleteFn();
+            setDeleteChatFn(null);
+          }}
+        >
+          Are you sure you want to delete{" "}
+          <strong>{deleteChatFn.chatTitle}</strong>? <br />
+          This action cannot be undone.
+        </DeleteConfirmPopup>
+      )}
+
+      {openSettings && (
+        <SettingsPopup onClose={() => setOpenSettings(false)} user={user} />
+      )}
+
+      {openTokens && (
+        <TokensPopup
+          onClose={() => setOpenTokens(false)}
+          user={user}
+          tokens={tokens}
         />
       )}
-    </motion.div>
+    </Fragment>
   );
 }
 
 export default SideBar;
 
-function MinSideBar({ onClose, open, setOpen, page, changePage }) {
+function MinSideBar({
+  onClose,
+  open,
+  setOpen,
+  page,
+  changePage,
+  openSettings,
+  openTokens,
+}) {
   const { chats, createNewChat, isTyping, retrieveChats, currentChat } =
     useChat();
 
@@ -208,7 +288,7 @@ function MinSideBar({ onClose, open, setOpen, page, changePage }) {
         <Fragment>
           <button
             className={`mt-auto !mb-1 px-2 py-1 btn-icon ml-auto mr-auto rounded-md transition-colors `}
-            onClick={() => window.buyAiToken()}
+            onClick={openTokens}
           >
             <svg
               className="w-3.5 aspect-auto"
@@ -226,8 +306,9 @@ function MinSideBar({ onClose, open, setOpen, page, changePage }) {
               <path d="m16.71 13.88.7.71-2.82 2.82"></path>
             </svg>
           </button>
-          <a
-            href={HOST + "/my/settings/"}
+          <button
+            type="button"
+            onClick={openSettings}
             className={`px-2 py-1 !mb-1 btn-icon ml-auto mr-auto rounded-md transition-colors `}
           >
             <svg
@@ -246,7 +327,7 @@ function MinSideBar({ onClose, open, setOpen, page, changePage }) {
                 d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4zM416.39 256a154.34 154.34 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.48 164.48 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155.3 155.3 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.48 164.48 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155.3 155.3 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47z"
               ></path>
             </svg>
-          </a>
+          </button>
         </Fragment>
       )}
       <a
@@ -273,7 +354,16 @@ function MinSideBar({ onClose, open, setOpen, page, changePage }) {
   );
 }
 
-function FullSideBar({ onClose, open, setOpen, page, changePage }) {
+function FullSideBar({
+  onClose,
+  open,
+  setOpen,
+  page,
+  changePage,
+  setDeleteChatFn,
+  openSettings,
+  openTokens,
+}) {
   const { chats, createNewChat, isTyping, retrieveChats, currentChat } =
     useChat();
 
@@ -398,7 +488,12 @@ function FullSideBar({ onClose, open, setOpen, page, changePage }) {
               )}
               {chats &&
                 filteredChats.map((chat) => (
-                  <HrefButton key={chat.id} chat={chat} onClose={onClose} />
+                  <HrefButton
+                    key={chat.id}
+                    chat={chat}
+                    onClose={onClose}
+                    setDeleteChatFn={setDeleteChatFn}
+                  />
                 ))}
             </ScrollDiv>
           </Fragment>
@@ -408,7 +503,7 @@ function FullSideBar({ onClose, open, setOpen, page, changePage }) {
         <Fragment>
           <button
             className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors w-full max-w-xs`}
-            onClick={() => window.buyAiToken()}
+            onClick={openTokens}
           >
             <svg
               className="w-3.5 aspect-auto"
@@ -427,10 +522,10 @@ function FullSideBar({ onClose, open, setOpen, page, changePage }) {
             </svg>
             Tokens
           </button>
-          <a
-            href={HOST + "/my/settings/"}
+          <button
+            type="button"
+            onClick={openSettings}
             className={`px-2 py-1 gap-1 btn-icon rounded-md transition-colors w-full max-w-xs `}
-            aria-label="Trade"
           >
             <svg
               className="h-3.5 aspect-auto"
@@ -449,7 +544,7 @@ function FullSideBar({ onClose, open, setOpen, page, changePage }) {
               ></path>
             </svg>
             Settings
-          </a>
+          </button>
         </Fragment>
       )}
       <a

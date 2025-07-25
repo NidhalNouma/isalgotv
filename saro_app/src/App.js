@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   Routes,
   Route,
@@ -15,7 +15,13 @@ import { ChatsProvider } from "./contexts/ChatsContext";
 import SideBar from "./components/SideBar";
 
 function App() {
-  const [sideBar, setSideBar] = useState(false);
+  const [sideBar, setSideBar] = useState(() => {
+    const saved = localStorage.getItem("sideBar");
+    return saved === "true";
+  });
+  useEffect(() => {
+    localStorage.setItem("sideBar", sideBar);
+  }, [sideBar]);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();

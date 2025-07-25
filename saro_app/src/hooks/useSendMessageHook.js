@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useUser } from "../contexts/UserContext";
 
+import { AI_MODELS } from "../constant";
+
 export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
   const { user } = useUser();
 
   const [input, setInput] = useState("");
   const [files, setFiles] = useState([]);
+
+  const [model, setModel] = useState(AI_MODELS[0]);
+
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -34,7 +39,7 @@ export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
         return;
       }
 
-      await onSend(msg, files);
+      await onSend(msg, files, model);
       setInput("");
       setFiles([]);
       if (fileInputRef.current) {
@@ -77,5 +82,9 @@ export function SendMessageHook(onSend, disabled, toggleAuthPopup) {
     handleFileChange,
     handleKeyDown,
     handleInput,
+
+    models: AI_MODELS,
+    model,
+    setModel,
   };
 }

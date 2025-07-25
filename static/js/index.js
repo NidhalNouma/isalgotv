@@ -436,9 +436,14 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
             padding: "12px",
           },
           ".Input": {
-            borderColor: getCssVariableColor("--color-text", 0.1),
-            padding: "12px",
+            border: "2px solid " + getCssVariableColor("--color-text", 0),
+            padding: "0.5rem 0.625rem",
+            borderRadius: "0.375rem",
             backgroundColor: getCssVariableColor("--color-text", 0.1),
+            // fontSize: "0.875rem",
+          },
+          ".Input::placeholder": {
+            color: getCssVariableColor("--color-text", 0.4),
           },
           ".Input:disabled, .Input--invalid:disabled": {
             color: getCssVariableColor("--color-text", 0.4),
@@ -464,7 +469,7 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
           ".Input:focus": {
             boxShadow: "0 0 0 0 transparent",
             outline: "1px solid transparent",
-            border: "1px solid " + getCssVariableColor("--color-text", 0.4),
+            border: "2px solid " + getCssVariableColor("--color-text", 0.4),
           },
         },
       };
@@ -1030,11 +1035,17 @@ htmx.on("htmx:afterRequest", (evt) => {
   //   }
   // }
 
-  if (evt?.detail?.target.id.includes("setting-ai-tokens")) {
+  if (
+    evt?.detail?.target.id.includes("setting-ai-tokens") &&
+    !evt?.detail?.target.id.includes("errors")
+  ) {
     closeAITokensModalSettings();
   }
 
-  if (evt?.detail?.target.id.includes("add-ai-tokens-form")) {
+  if (
+    evt?.detail?.target.id.includes("add-ai-tokens-form") &&
+    !evt?.detail?.target.id.includes("errors")
+  ) {
     closeAITokensModalSettings();
     openModel("modal-algoai");
   }

@@ -186,6 +186,7 @@ async def ai_chat_view(request):
             user_message = data.get("userMessage", "").strip()
             messages = data.get("messages", [])
             chat_id = data.get("chatId", None)
+            model = data.get("model", "GPT-4o") 
 
             user_profile = request.user_profile
             if not user_profile:

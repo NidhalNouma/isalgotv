@@ -25,7 +25,7 @@ export function useChatHook() {
 
   const [currentTypingMessage, setCurrentTypingMessage] = useState("");
 
-  const sendMessage = async (msg) => {
+  const sendMessage = async (msg, files, model) => {
     if (!msg?.trim()) return;
 
     setLoading(true);
@@ -33,7 +33,7 @@ export function useChatHook() {
     setLimit(false);
 
     try {
-      const data = await getAnswer(msg, messages, currentChat);
+      const data = await getAnswer(msg, messages, model, files, currentChat);
 
       console.log(data);
 
@@ -66,7 +66,7 @@ export function useChatHook() {
     }
   };
 
-  const handleSendMessage = async (messageContent, files) => {
+  const handleSendMessage = async (messageContent, files, model) => {
     if ((error || limit) && messages?.length > 0 && !messageContent) {
       messageContent = messages[messages.length - 1].content;
     }
@@ -91,19 +91,24 @@ export function useChatHook() {
       setMessages((prev) => [...prev, newMessage, loadingMsg]);
 
       setCurrentChat("new-chat");
-      await simulateResponse(messageContent, true);
+      await simulateResponse(messageContent, files, model, true);
     } else {
       if (!error && !limit)
         setMessages((prev) => [...prev, newMessage, loadingMsg]);
       if (error || limit) setMessages((prev) => [...prev, loadingMsg]);
-      await simulateResponse(messageContent);
+      await simulateResponse(messageContent, files, model, false);
     }
   };
 
-  const simulateResponse = async (userMessage, isNewChat = false) => {
+  const simulateResponse = async (
+    userMessage,
+    files,
+    model,
+    isNewChat = false
+  ) => {
     setIsTyping(true);
 
-    const response = await sendMessage(userMessage, messages || []);
+    const response = await sendMessage(userMessage, files, model);
 
     const newMessage = response ? response.answer : null;
 

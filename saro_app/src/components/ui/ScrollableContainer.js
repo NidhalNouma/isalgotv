@@ -76,7 +76,7 @@ export const ChatScrollContainer = ({
           opacity: showScrollButton ? 1 : 0,
           pointerEvents: showScrollButton ? "auto" : "none",
         }}
-        className="absolute bottom-1 left-1/2 btn-text "
+        className="absolute bottom-1 left-1/2 btn-text text-xs"
         onClick={handleScrollButtonClick}
       >
         {scrollCta}

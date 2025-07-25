@@ -83,7 +83,6 @@
   }
 
   .btn-primary {
-    /* @apply text-text-light bg-gradient-to-r from-primary via-primary/90 to-primary/80  hover:bg-gradient-to-l font-medium rounded text-sm px-3 py-2 text-center inline-flex  justify-center items-center transition-all; */
     @apply relative inline-flex  justify-center items-center transition-all box-border appearance-none rounded-md border-transparent border-b-2 bg-primary text-text-light font-medium text-sm select-none px-4 py-1.5 text-center transform duration-200 ease-in-out hover:brightness-90 disabled:cursor-auto;
   }
 

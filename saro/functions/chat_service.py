@@ -7,10 +7,8 @@ from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.callbacks import get_openai_callback
 
-
 import environ
 env = environ.Env()
-
 
 class ChatService:
     def __init__(

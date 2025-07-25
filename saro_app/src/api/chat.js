@@ -56,7 +56,13 @@ export async function createChatSession(title, message, answer) {
   return res.json();
 }
 
-export async function getAnswer(message, messages, chatId = null) {
+export async function getAnswer(
+  message,
+  messages,
+  files,
+  model,
+  chatId = null
+) {
   const res = await fetch(`${BASE}/response/`, {
     method: "POST",
     headers: {
@@ -67,6 +73,7 @@ export async function getAnswer(message, messages, chatId = null) {
       userMessage: message,
       messages,
       chatId,
+      model,
     }),
   });
   return res.json();

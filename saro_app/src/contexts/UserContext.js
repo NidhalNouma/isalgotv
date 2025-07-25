@@ -4,6 +4,10 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
+  const [tokens, setTokens] = useState({
+    availabel: 0,
+    free: 0,
+  });
 
   useEffect(() => {
     const rootDiv = document.getElementById("saro");
@@ -29,10 +33,20 @@ export const UserProvider = ({ children }) => {
     console.log("user ...", user);
 
     setUser(user);
+
+    const availabelTokens = rootDiv.getAttribute("available-tokens");
+    const freeTokens = rootDiv.getAttribute("free-tokens");
+
+    setTokens({
+      availabel: availabelTokens ? parseInt(availabelTokens, 10) : 0,
+      free: freeTokens ? parseInt(freeTokens, 10) : 0,
+    });
   }, []);
 
   return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user, tokens }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 

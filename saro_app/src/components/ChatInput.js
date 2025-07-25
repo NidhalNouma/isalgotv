@@ -1,7 +1,9 @@
 import { Fragment, useState, useEffect } from "react";
-import { Paperclip } from "lucide-react";
+import { Paperclip, ChevronDown, Plus } from "lucide-react";
 import { AuthPopup } from "./ui/Popup";
 import { SendMessageHook } from "../hooks/useSendMessageHook";
+
+import { Dropdown } from "./ui/DropDown";
 
 export default function ChatInput({
   onSend,
@@ -23,6 +25,10 @@ export default function ChatInput({
     handleFileChange,
     handleKeyDown,
     handleInput,
+
+    models,
+    model,
+    setModel,
   } = SendMessageHook(onSend, disabled, () => setShowAuthPopup(true));
 
   const containerClass = className
@@ -71,8 +77,9 @@ export default function ChatInput({
                 </div>
               </div>
             )}
-            <div className="flex items-start">
+            <div className="flex flex-col items-start">
               <textarea
+                name="message"
                 autoFocus={focus}
                 ref={textareaRef}
                 value={input}
@@ -81,10 +88,30 @@ export default function ChatInput({
                 placeholder="Ask Saro"
                 disabled={disabled}
                 rows={1}
-                className="flex-1 text-text placeholder:text-text/40 p-4 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
+                className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}
               />
-              <div className="flex items-center self-start p-2 mt-auto">
+              <div className="flex items-center w-full px-2 pb-1">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={disabled}
+                  className="p-2 text-text/60 hover:text-text/70 disabled:opacity-50"
+                >
+                  <Paperclip className="w-5 aspect-auto" />
+                </button>
+                <Dropdown
+                  defaultLabel={model.name}
+                  className="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
+                  options={
+                    models.map((m) => ({
+                      label: m.name,
+                      description: m.description,
+                      onClick: () => setModel(m),
+                    })) || []
+                  }
+                ></Dropdown>
+                <div className="!ml-auto"></div>
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -93,17 +120,9 @@ export default function ChatInput({
                   className="hidden"
                 />
                 <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={disabled}
-                  className="p-2 text-text/60 hover:text-text/70 disabled:opacity-50"
-                >
-                  <Paperclip className="w-5 h-5" />
-                </button>
-                <button
                   type="submit"
                   disabled={disabled || (!input.trim() && files.length === 0)}
-                  className="p-2 mr-2 text-background hover:text-background disabled:opacity-50"
+                  className="p-2 text-background hover:text-background disabled:opacity-50"
                 >
                   {/* <SendHorizontal className="w-5 h-5" /> */}
                   <svg

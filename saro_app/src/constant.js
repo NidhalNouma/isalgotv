@@ -7,3 +7,8 @@ if (host.startsWith("saro.")) {
 }
 
 export const HOST = host;
+
+export const AI_MODELS = [
+  { name: "TR-A5", description: "Best for common use" },
+  { name: "TR-H6 ", description: "Best for reasoning" },
+];
