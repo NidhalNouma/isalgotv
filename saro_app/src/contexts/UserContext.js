@@ -9,6 +9,13 @@ export const UserProvider = ({ children }) => {
     free: 0,
   });
 
+  const updateTokens = (free, availabel) => {
+    setTokens((prevTokens) => ({
+      availabel,
+      free,
+    }));
+  };
+
   useEffect(() => {
     const rootDiv = document.getElementById("saro");
     const email = rootDiv.getAttribute("user-email");
@@ -44,7 +51,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, tokens }}>
+    <UserContext.Provider value={{ user, tokens, updateTokens }}>
       {children}
     </UserContext.Provider>
   );

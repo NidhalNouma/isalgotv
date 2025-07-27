@@ -157,31 +157,29 @@ def get_ai_system_content(request):
             return response
 
 @sync_to_async
-def update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token):
+def update_user_tokens(user_profile, total_tokens):
     """ Update user AI token usage safely in async context. """
-    tokens = total_tokens - daily_token_remaining
+    tokens = user_profile.ai_free_daily_tokens_available - total_tokens 
      
-    print("Total Tokens: ", total_tokens, "Daily Token Remaining: ", daily_token_remaining, "Tokens: ", tokens) 
+    print("Total Tokens: ", total_tokens, "Daily Token Remaining: ", tokens) 
 
-    if tokens > 0:
-        new_available_tokens = user_profile.ai_tokens_available - tokens
+    if tokens < 0:
+        new_available_tokens = user_profile.ai_tokens_available - abs(tokens)
         if new_available_tokens < 0:
             new_available_tokens = 0
         user_profile.ai_tokens_available = new_available_tokens
-        user_profile.ai_tokens_used_today = daily_token
+        user_profile.ai_free_daily_tokens_available = 0
     else:
-        user_profile.ai_tokens_used_today += total_tokens
+        user_profile.ai_free_daily_tokens_available -= total_tokens
 
-    user_profile.save()  # ORM operation inside sync_to_async
+    user_profile.save()  
+    
+    return user_profile
 
 
 async def ai_chat_view(request):
     if request.method == "POST":
         try:
-            daily_token = 50000
-            if request.has_subscription:
-                daily_token = 500000
-            
             data = json.loads(request.body)
             user_message = data.get("userMessage", "").strip()
             messages = data.get("messages", [])
@@ -197,16 +195,11 @@ async def ai_chat_view(request):
 
             # await sync_to_async(user_profile.reset_token_usage_if_needed)() This was done by the middleware
 
-            daily_token_remaining = daily_token - user_profile.ai_tokens_used_today
             
-            availble_tokens = daily_token_remaining + user_profile.ai_tokens_available
-            # print("Total Tokens: ", availble_tokens)
+            availble_tokens = user_profile.ai_free_daily_tokens_available + user_profile.ai_tokens_available
             # availble_tokens = 0
 
-            # import asyncio
-            # await asyncio.sleep(3)
-
-            # print('user ', user_message)
+            print(messages)
 
             if availble_tokens <= 0:
                 return JsonResponse({"todat_limit_hit": True})
@@ -215,13 +208,10 @@ async def ai_chat_view(request):
             if max_token > availble_tokens:
                 max_token = availble_tokens
 
-
-
-
             response_data = await get_ai_response(user_message, messages, max_token)  # ✅ Await once
             ai_response, prompt_tokens, completion_tokens, total_tokens = response_data  # ✅ Unpack
             # Async ORM update
-            await update_user_tokens(user_profile, total_tokens, daily_token_remaining, daily_token)
+            user_profile = await update_user_tokens(user_profile, total_tokens)
 
             if chat_id and str.find(str(chat_id), 'new') == -1:
                 chat_session_json, chat_session = await get_chat_session(chat_id)
@@ -244,6 +234,9 @@ async def ai_chat_view(request):
                 "prompt_tokens": prompt_tokens,
                 "completion_tokens": completion_tokens,
                 "total_tokens": total_tokens,
+
+                "ai_tokens_available": user_profile.ai_tokens_available,
+                "ai_free_daily_tokens_available": user_profile.ai_free_daily_tokens_available,
 
                 "chat_session": chat_session_json,
                 "user_message": user_message_json,

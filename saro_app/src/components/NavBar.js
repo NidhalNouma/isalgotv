@@ -1,6 +1,5 @@
 import { Fragment, useState } from "react";
 import { useUser } from "../contexts/UserContext";
-import { useChat } from "../contexts/ChatsContext";
 
 import {
   PanelLeft,
@@ -20,7 +19,6 @@ function Navbar({
   setSideBar,
 }) {
   const { user } = useUser();
-  const { isTyping } = useChat();
 
   const [openMenu, setOpenMenu] = useState(false);
 

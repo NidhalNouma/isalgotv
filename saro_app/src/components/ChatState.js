@@ -9,9 +9,10 @@ import { useChat } from "../contexts/ChatsContext";
 export default function ChatState({
   user,
   messages,
-  isTyping,
+
   error,
   limit,
+
   onSendMessage,
   onTypingComplete,
 }) {
@@ -158,7 +159,7 @@ export default function ChatState({
         {/* Spacer for top margin */}
         <div className="max-w-3xl py-6" />
       </ChatScrollContainer>
-      <ChatInput onSend={onSendMessage} disabled={isTyping} />
+      <ChatInput onSend={onSendMessage} />
     </Fragment>
   );
 }

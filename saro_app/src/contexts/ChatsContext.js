@@ -14,16 +14,15 @@ import {
 const ChatsContext = createContext();
 
 export const ChatsProvider = ({ children }) => {
+  const { user } = useUser();
+
+  const [chats, setChats] = useState([]);
+  const [loadingChats, setLoadingChats] = useState(false);
   const [currentChat, setCurrentChat] = useState(null);
 
   const selectChat = (id) => {
     setCurrentChat(id);
   };
-
-  const { user } = useUser();
-
-  const [chats, setChats] = useState([]);
-  const [loadingChats, setLoadingChats] = useState(false);
 
   const isLAstChat = useRef(false);
 
@@ -55,7 +54,7 @@ export const ChatsProvider = ({ children }) => {
 
     if (chatId === currentChat) {
       setCurrentChat(null);
-      setMessages([]);
+      // setMessages([]);
     }
   }
 
@@ -65,7 +64,7 @@ export const ChatsProvider = ({ children }) => {
     setChats((prev) =>
       prev.map((c) => {
         if (c.id === chatId) {
-          return response.chat_session;
+          return { ...c, ...response.chat_session };
         }
         return c;
       })
@@ -76,20 +75,12 @@ export const ChatsProvider = ({ children }) => {
   //   if (user) retrieveChats();
   // }, [user]);
 
-  const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
 
   function newMessagesAdded(chatId, userMessage, answer) {
     const chat = chats.find((c) => c.id === chatId);
     if (chat) {
       console.log("Adding new messages to chat:", chatId);
-      if (currentChat === chatId) {
-        setMessages([
-          ...(chat.messages || []),
-          userMessage,
-          { ...answer, isNew: true },
-        ]);
-      }
       setChats((prev) =>
         prev.map((c) => {
           if (c.id === chatId) {
@@ -111,8 +102,6 @@ export const ChatsProvider = ({ children }) => {
 
     let chat = chats.find((c) => c.id === currentChat);
     if (chat && chat.messages && chat.messages.length > 0) {
-      // console.log(chat);
-      setMessages(chat.messages);
       return;
     }
 
@@ -124,7 +113,7 @@ export const ChatsProvider = ({ children }) => {
       const newMessages = data.chat_messages;
       const session = data.session;
       const start = data.start || 0;
-      setMessages(newMessages);
+      // setMessages(newMessages);
       setChats((prev) =>
         prev.map((c) => {
           if (c.id === currentChat) {
@@ -155,7 +144,7 @@ export const ChatsProvider = ({ children }) => {
         return;
       }
       let newMessages = [...oldMessages, ...chat.messages];
-      setMessages(newMessages);
+      // setMessages(newMessages);
       setChats((prev) =>
         prev.map((c) => {
           if (c.id === currentChat) {
@@ -184,7 +173,7 @@ export const ChatsProvider = ({ children }) => {
     //   const c = chats.find((c) => c.id === currentChat);
     //   if (c && c.messages?.length === 0) return;
     // }
-    setMessages([]);
+    // setMessages([]);
     setCurrentChat(null);
     // const newChat = {
     //   id: chats.length + "-chat",
@@ -195,8 +184,6 @@ export const ChatsProvider = ({ children }) => {
     // setCurrentChat(newChat.id);
   };
 
-  const [isTyping, setIsTyping] = useState(false);
-
   return (
     <ChatsContext.Provider
       value={{
@@ -205,21 +192,15 @@ export const ChatsProvider = ({ children }) => {
         newChatAdded,
         retrieveChats,
 
-        messages,
-        setMessages,
         newMessagesAdded,
         getOlderMessages,
 
         currentChat,
-        setCurrentChat,
 
         createNewChat,
         selectChat,
         deleteChat,
         updateChat,
-
-        isTyping,
-        setIsTyping,
       }}
     >
       {children}

@@ -1,29 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useChat } from "../contexts/ChatsContext";
+import { useUser } from "../contexts/UserContext";
 import { getAnswer } from "../api/chat";
 
+import { AI_MODELS } from "../constant";
+
 export function useChatHook() {
+  const { user, updateTokens } = useUser();
   const {
     chats,
     setChats,
     newChatAdded,
 
-    messages,
-    setMessages,
     newMessagesAdded,
 
     currentChat,
-    setCurrentChat,
+    selectChat,
 
-    setIsTyping,
     retrieveChats,
   } = useChat();
+
+  function setChatMessages(chatId, messages) {
+    setChats((prev) => {
+      return prev.map((chat) => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            messages: messages,
+          };
+        }
+        return chat;
+      });
+    });
+  }
+
+  function addTempChatMessages(chatName, messages) {
+    let id = "new-chat" + chats.length;
+    setChats([...chats, { id, name: chatName, messages, hidden: true }]);
+
+    selectChat(id);
+  }
+
+  const chat = chats?.find((c) => c?.id === currentChat);
+  let messages = chat ? chat.messages || [] : [];
+
+  // console.log("Chat messages:", messages, currentChat, chat);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [limit, setLimit] = useState(false);
-
-  const [currentTypingMessage, setCurrentTypingMessage] = useState("");
 
   const sendMessage = async (msg, files, model) => {
     if (!msg?.trim()) return;
@@ -33,7 +58,8 @@ export function useChatHook() {
     setLimit(false);
 
     try {
-      const data = await getAnswer(msg, messages, model, files, currentChat);
+      const msgs = messages.filter((m) => m.content);
+      const data = await getAnswer(msg, msgs, model, files, currentChat);
 
       console.log(data);
 
@@ -41,25 +67,25 @@ export function useChatHook() {
 
       if (data.todat_limit_hit) {
         setLimit(true);
-        setMessages((prev) => {
-          const last = prev[prev.length - 1];
-          if (last && typeof last === "object" && last.isLoading) {
-            return prev.slice(0, -1);
-          }
-          return prev;
-        });
+
+        const last = messages[messages.length - 1];
+        if (last && typeof last === "object" && last.isLoading) {
+          messages = messages.slice(0, -1);
+        }
+        setChatMessages(currentChat, messages);
+
         return null;
       }
       return data;
     } catch (err) {
       console.error("Error fetching response:", err);
-      setMessages((prev) => {
-        const last = prev[prev.length - 1];
-        if (last && typeof last === "object" && last.isLoading) {
-          return prev.slice(0, -1);
-        }
-        return prev;
-      });
+
+      const last = messages[messages.length - 1];
+      if (last && typeof last === "object" && last.isLoading) {
+        messages = messages.slice(0, -1);
+      }
+      setChatMessages(currentChat, messages);
+
       setError("Failed to get response");
     } finally {
       setLoading(false);
@@ -88,14 +114,20 @@ export function useChatHook() {
     };
 
     if (!currentChat) {
-      setMessages((prev) => [...prev, newMessage, loadingMsg]);
+      messages = [...messages, newMessage, loadingMsg];
 
-      setCurrentChat("new-chat");
+      addTempChatMessages("New chat", messages);
+
       await simulateResponse(messageContent, files, model, true);
     } else {
-      if (!error && !limit)
-        setMessages((prev) => [...prev, newMessage, loadingMsg]);
-      if (error || limit) setMessages((prev) => [...prev, loadingMsg]);
+      if (!error && !limit) {
+        messages = [...messages, newMessage, loadingMsg];
+        setChatMessages(currentChat, messages);
+      }
+      if (error || limit) {
+        messages = [...messages, loadingMsg];
+        setChatMessages(currentChat, messages);
+      }
       await simulateResponse(messageContent, files, model, false);
     }
   };
@@ -106,8 +138,6 @@ export function useChatHook() {
     model,
     isNewChat = false
   ) => {
-    setIsTyping(true);
-
     const response = await sendMessage(userMessage, files, model);
 
     const newMessage = response ? response.answer : null;
@@ -115,25 +145,31 @@ export function useChatHook() {
     const responseChat = response.chat_session;
     const responseUserMessage = response.user_message;
     const responseAiMessage = response.system_answer;
+
+    const daylyToken = response.ai_free_daily_tokens_available;
+    const aiTokensAvailable = response.ai_tokens_available;
+
+    updateTokens(daylyToken, aiTokensAvailable);
+
     // await new Promise((resolve) => setTimeout(resolve, 3000));
     // const newMessage = " await sendMessage(userMessage, messages || [])"
     if (newMessage) {
       // setCurrentTypingMessage(newMessage);
 
       if (isNewChat) {
-        newChatAdded(responseChat, responseUserMessage, responseAiMessage);
+        newChatAdded(responseChat, responseUserMessage, {
+          ...responseAiMessage,
+          isNew: true,
+        });
       } else
-        newMessagesAdded(currentChat, responseUserMessage, responseAiMessage);
+        newMessagesAdded(currentChat, responseUserMessage, {
+          ...responseAiMessage,
+          isNew: true,
+        });
     }
-    setIsTyping(false);
   };
 
   const handleTypingComplete = async (chatId, msgId) => {
-    if (currentChat === chatId) {
-      setMessages((msgs) =>
-        msgs.map((msg) => (msg.id === msgId ? { ...msg, isNew: false } : msg))
-      );
-    }
     setChats((prev) =>
       prev.map((chat) =>
         chat.id === chatId
@@ -147,37 +183,115 @@ export function useChatHook() {
       )
     );
     return;
-    // if (currentTypingMessage) {
-    //   const newAnswer = {
-    //     id: displayChats.length,
-    //     role: "assistant",
-    //     content: currentTypingMessage,
-    //   };
-
-    //   setDisplayChats((prev) =>
-    //     prev.map((chat) => {
-    //       if (chat.id === currentChat) {
-    //         return {
-    //           ...chat,
-    //         };
-    //       }
-    //       return chat;
-    //     })
-    //   );
-
-    //   setDisplayedMessages((prev) => [...prev, newAnswer]);
-
-    //   setCurrentTypingMessage(null);
-    //   setIsTyping(false);
-    // }
   };
 
   return {
-    currentTypingMessage,
+    messages,
+
     handleSendMessage,
     handleTypingComplete,
-    // loading,
+
     error,
     limit,
+  };
+}
+
+export function SendMessageHook(onSend, toggleAuthPopup) {
+  const { user } = useUser();
+
+  const [input, setInput] = useState("");
+  const [files, setFiles] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const [model, setModel] = useState(AI_MODELS[0]);
+
+  const fileInputRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    function handleDjangoMessage(e) {
+      console.log("Received message:", e.detail.message);
+      handleSubmit(null, e.detail.message);
+    }
+    window.addEventListener("saroMessage", handleDjangoMessage);
+    return () => {
+      window.removeEventListener("saroMessage", handleDjangoMessage);
+    };
+  }, [user]);
+
+  const handleSubmit = async (e, message = null) => {
+    e?.preventDefault();
+
+    let msg = input.trim() || message;
+
+    console.log("Submitting message:", msg, user);
+
+    if ((msg || files.length > 0) && !loading) {
+      if (!user) {
+        toggleAuthPopup();
+        // setInput("");
+        return;
+      }
+
+      setLoading(true);
+
+      setInput("");
+      setFiles([]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
+      }
+
+      try {
+        await onSend(msg, files, model);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      setFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
+  const handleInput = (e) => {
+    const textarea = e.target;
+    setInput(textarea.value);
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
+  return {
+    input,
+    files,
+    fileInputRef,
+    textareaRef,
+    setInput,
+    setFiles,
+    handleSubmit,
+    handleFileChange,
+    handleKeyDown,
+    handleInput,
+
+    models: AI_MODELS,
+    model,
+    setModel,
+
+    loading,
   };
 }

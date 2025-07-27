@@ -41,7 +41,7 @@ class User_Profile(models.Model):
     lifetime_intent = models.CharField(default="", max_length=100, blank=True)
     
     ai_tokens_available = models.IntegerField(default=0, blank=True)  
-    ai_tokens_used_today = models.IntegerField(default=0, blank=True)  
+    ai_free_daily_tokens_available = models.IntegerField(default=0, blank=True)  
     last_token_reset = models.DateField(default=now, blank=True) 
 
     def save(self, *args, **kwargs):
@@ -58,7 +58,12 @@ class User_Profile(models.Model):
     def reset_token_usage_if_needed(self):
         """Reset the token usage if the date has changed."""
         if self.last_token_reset != now().date():
-            self.ai_tokens_used_today = 0
+            if self.has_subscription or self.is_lifetime:
+                # Reset daily tokens only if the user has a subscription or is lifetime
+                self.ai_free_daily_tokens_available = 500000
+            else:
+                # Reset to 0 if the user does not have a subscription or is not lifetime
+                self.ai_free_daily_tokens_available = 50000
             self.last_token_reset = now().date()
             self.save()
 

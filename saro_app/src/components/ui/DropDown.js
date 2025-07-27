@@ -3,7 +3,13 @@ import { useState, useRef, useEffect, Fragment } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export function Dropdown({ className, defaultLabel, children, options }) {
+export function Dropdown({
+  className,
+  defaultLabel,
+  children,
+  options,
+  disabled = false,
+}) {
   const [open, setOpen] = useState(false);
   const [label, setLabel] = useState(defaultLabel || "Select an option");
   const [dropUp, setDropUp] = useState(false);
@@ -33,7 +39,12 @@ export function Dropdown({ className, defaultLabel, children, options }) {
 
   return (
     <div ref={containerRef} className="relative inline-block text-left">
-      <button className={className} onClick={toggleOpen} type="button">
+      <button
+        className={`${className} disabled:opacity-50`}
+        onClick={toggleOpen}
+        type="button"
+        disabled={disabled}
+      >
         {label} <ChevronDown className="w-4 aspect-auto ml-1" />
       </button>
       <AnimatePresence>

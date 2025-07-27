@@ -182,7 +182,7 @@ export function TokensPopup({ onClose, user, tokens }) {
                   }}
                   className="w-full btn-text "
                 >
-                  Buy more
+                  Buy Tokens
                 </button>
               </div>
             </div>

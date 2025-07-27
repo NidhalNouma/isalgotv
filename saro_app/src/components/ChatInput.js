@@ -1,13 +1,12 @@
 import { Fragment, useState, useEffect } from "react";
-import { Paperclip, ChevronDown, Plus } from "lucide-react";
+import { Paperclip } from "lucide-react";
 import { AuthPopup } from "./ui/Popup";
-import { SendMessageHook } from "../hooks/useSendMessageHook";
+import { SendMessageHook } from "../hooks/useChatHook";
 
 import { Dropdown } from "./ui/DropDown";
 
 export default function ChatInput({
   onSend,
-  disabled,
   className = "",
   quickActionMsg,
   focus = false,
@@ -29,7 +28,9 @@ export default function ChatInput({
     models,
     model,
     setModel,
-  } = SendMessageHook(onSend, disabled, () => setShowAuthPopup(true));
+
+    loading,
+  } = SendMessageHook(onSend, () => setShowAuthPopup(true));
 
   const containerClass = className
     ? className + " mb-4 z-20"
@@ -86,7 +87,7 @@ export default function ChatInput({
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask Saro"
-                disabled={disabled}
+                disabled={loading}
                 rows={1}
                 className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}
@@ -95,12 +96,13 @@ export default function ChatInput({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  disabled={disabled}
+                  disabled={loading}
                   className="p-2 text-text/60 hover:text-text/70 disabled:opacity-50"
                 >
                   <Paperclip className="w-5 aspect-auto" />
                 </button>
                 <Dropdown
+                  disabled={loading}
                   defaultLabel={model.name}
                   className="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
                   options={
@@ -117,11 +119,12 @@ export default function ChatInput({
                   ref={fileInputRef}
                   onChange={handleFileChange}
                   multiple
+                  disabled={loading}
                   className="hidden"
                 />
                 <button
                   type="submit"
-                  disabled={disabled || (!input.trim() && files.length === 0)}
+                  disabled={loading || (!input.trim() && files.length === 0)}
                   className="p-2 text-background hover:text-background disabled:opacity-50"
                 >
                   {/* <SendHorizontal className="w-5 h-5" /> */}
