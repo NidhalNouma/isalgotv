@@ -4,33 +4,30 @@ import EmptyState from "./EmptyChatState";
 import ChatState from "./ChatState";
 
 import { useUser } from "../contexts/UserContext";
-import { useChat } from "../contexts/ChatsContext";
 import { useChatHook } from "../hooks/useChatHook";
 
 function ChatSection() {
   const { user } = useUser();
-  const { currentChat } = useChat();
 
   const {
+    chat,
     messages,
 
     handleSendMessage,
     handleTypingComplete,
-
-    error,
-    limit,
   } = useChatHook();
 
   return (
     <Fragment>
-      {!currentChat ? (
+      {messages.length === 0 ? (
         <EmptyState onSendMessage={handleSendMessage} />
       ) : (
         <ChatState
           user={user}
           messages={messages}
-          error={error}
-          limit={limit}
+          // disable={chat.isLoading}
+          error={chat.error}
+          limit={chat.limit}
           onSendMessage={handleSendMessage}
           onTypingComplete={handleTypingComplete}
         />

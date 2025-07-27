@@ -15,6 +15,7 @@ function HrefButton({ chat, onClose, setDeleteChatFn }) {
     window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
   const handleSingleClick = (e) => {
+    console.log("Single click on chat:", chat);
     e.stopPropagation();
     selectChat(chat.id);
     if (isTouchOnlyDevice()) {
@@ -85,7 +86,13 @@ function HrefButton({ chat, onClose, setDeleteChatFn }) {
       >
         <h4 className="flex items-center gap-1.5 text-text/80 flex-1 min-w-0">
           <MessageSquare className="w-3.5 aspect-auto flex-shrink-0" />
-          <span className="truncate text-sm">{editText}</span>
+          <span
+            className={`truncate text-sm ${
+              !chat.read ? "font-bold" : "font-normal"
+            }`}
+          >
+            {editText}
+          </span>
         </h4>
         <button
           onClick={(e) => {

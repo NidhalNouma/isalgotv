@@ -74,6 +74,7 @@ def add_chat_message(session, role, content, reply_to=None, liked=None, embeddin
         token_used=token_used
     )
     session.last_updated = message.created_at
+    session.read = False  # Mark session as unread when a new message is added
     session.save()
 
     message_json = {
@@ -91,6 +92,7 @@ def get_sessions_for_user(user):
         {
             "id": session.id,
             "title": session.title,
+            "read": session.read,
             "created_at": session.created_at,
             "last_updated": session.last_updated,
             "summary": session.summary
@@ -105,6 +107,7 @@ def get_limit_chat_sessions(user, start=0, limit=10):
             "id": session.id,
             "title": session.title,
             "created_at": session.created_at,
+            "read": session.read,
             "last_updated": session.last_updated,
             "summary": session.summary,
         }
@@ -176,14 +179,30 @@ def get_chat_session(session_id):
     except ChatSession.DoesNotExist:
         return None
     
-def update_chat_session(session_id, title=None, summary=None):
+def update_chat_session(session_id, title=None, summary=None, read=None):
     try:
         session = ChatSession.objects.get(id=session_id)
+
+        update_fields = []
         if title is not None:
             session.title = title
+            update_fields.append('title')
         if summary is not None:
             session.summary = summary
-        session.save()
+            update_fields.append('summary')
+        if read is not None:
+            if session.read == read:
+                print(f"Session {session_id} already has read={read}, skipping update.")
+            else:
+                session.read = read
+                update_fields.append('read')
+
+        if update_fields:
+            session.save(update_fields=update_fields)
+            
+        # Reload to get fresh data
+        session.refresh_from_db()
+
         session_json = {
             "id": session.id,
             "title": session.title,

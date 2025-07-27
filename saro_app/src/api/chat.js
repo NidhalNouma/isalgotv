@@ -101,6 +101,15 @@ export async function updateChatSession(sessionId, title) {
   return res.json();
 }
 
+export async function markChatSessionAsRead(sessionId) {
+  const res = await fetch(`${BASE}/sessions/${sessionId}/read/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": csrf_token },
+    body: JSON.stringify({ read: true }),
+  });
+  return res.json();
+}
+
 export async function deleteChatSession(sessionId) {
   const res = await fetch(`${BASE}/sessions/${sessionId}/delete/`, {
     method: "POST",

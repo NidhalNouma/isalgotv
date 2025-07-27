@@ -10,6 +10,8 @@ export default function ChatState({
   user,
   messages,
 
+  disable = false,
+
   error,
   limit,
 
@@ -159,7 +161,7 @@ export default function ChatState({
         {/* Spacer for top margin */}
         <div className="max-w-3xl py-6" />
       </ChatScrollContainer>
-      <ChatInput onSend={onSendMessage} />
+      <ChatInput onSend={onSendMessage} disable={disable} />
     </Fragment>
   );
 }

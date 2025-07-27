@@ -7,6 +7,7 @@ import {
   fetchChatMessages,
   deleteChatSession,
   updateChatSession,
+  markChatSessionAsRead,
   saveChatMessage,
   createChatSession,
 } from "../api/chat";
@@ -20,8 +21,28 @@ export const ChatsProvider = ({ children }) => {
   const [loadingChats, setLoadingChats] = useState(false);
   const [currentChat, setCurrentChat] = useState(null);
 
+  function markSessionAsRead(chatId, force = false) {
+    let chat = chats.find((c) => c.id === chatId);
+
+    // console.log("Marking session as read for chat:", chatId, chat);
+
+    if (chat && (!chat.read || force)) {
+      markChatSessionAsRead(chatId).then((data) => {
+        setChats((prev) =>
+          prev.map((c) => {
+            if (c.id === chatId) {
+              return { ...c, read: true };
+            }
+            return c;
+          })
+        );
+      });
+    }
+  }
+
   const selectChat = (id) => {
     setCurrentChat(id);
+    markSessionAsRead(id);
   };
 
   const isLAstChat = useRef(false);
@@ -86,6 +107,7 @@ export const ChatsProvider = ({ children }) => {
           if (c.id === chatId) {
             return {
               ...c,
+              read: false,
               messages: [...(chat.messages || []), userMessage, answer],
             };
           }
@@ -117,7 +139,13 @@ export const ChatsProvider = ({ children }) => {
       setChats((prev) =>
         prev.map((c) => {
           if (c.id === currentChat) {
-            return { ...session, start, isLastPage, messages: newMessages };
+            return {
+              ...session,
+              start,
+              isLastPage,
+              messages: newMessages,
+              read: true,
+            };
           }
           return c;
         })
@@ -174,6 +202,7 @@ export const ChatsProvider = ({ children }) => {
     //   if (c && c.messages?.length === 0) return;
     // }
     // setMessages([]);
+
     setCurrentChat(null);
     // const newChat = {
     //   id: chats.length + "-chat",
@@ -201,6 +230,7 @@ export const ChatsProvider = ({ children }) => {
         selectChat,
         deleteChat,
         updateChat,
+        markSessionAsRead,
       }}
     >
       {children}

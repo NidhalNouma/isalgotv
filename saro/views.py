@@ -106,7 +106,19 @@ def update_chat(request, session_id):
             if not title:
                 return JsonResponse({"error": "Title cannot be empty"}, status=400)
 
-            session_json, session = update_chat_session(session_id, title)
+            session_json, session = update_chat_session(session_id, title=title)
+
+            return JsonResponse({"success": True, "message": "Chat session updated successfully", "chat_session": session_json})
+                
+def chat_read(request, session_id):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            data = json.loads(request.body)
+
+            if not session_id:
+                return JsonResponse({"error": "Session ID is required"}, status=400)
+            
+            session_json, session = update_chat_session(session_id, read=True)
 
             return JsonResponse({"success": True, "message": "Chat session updated successfully", "chat_session": session_json})
         
@@ -199,8 +211,6 @@ async def ai_chat_view(request):
             availble_tokens = user_profile.ai_free_daily_tokens_available + user_profile.ai_tokens_available
             # availble_tokens = 0
 
-            print(messages)
-
             if availble_tokens <= 0:
                 return JsonResponse({"todat_limit_hit": True})
 
@@ -218,6 +228,8 @@ async def ai_chat_view(request):
                 if chat_session:
                     user_message_json, user_message_obj = await add_chat_message(chat_session, "user", user_message)
                     system_answer_json, system_answer = await add_chat_message(chat_session, "assistant", ai_response, reply_to=user_message_obj, token_used=total_tokens)
+
+                    chat_session_json["read"] = False  # Mark as unread
 
             else:
                 chat_session_json, chat_session = await create_chat_session(request.user, user_message)

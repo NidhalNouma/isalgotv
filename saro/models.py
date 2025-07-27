@@ -5,6 +5,7 @@ class ChatSession(models.Model):
     """A single conversation between a user and the AI."""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_sessions")
     title = models.CharField(max_length=255, blank=True, default="")
+    read = models.BooleanField(default=False)  
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
