@@ -17,6 +17,8 @@ function ChatSection() {
     handleTypingComplete,
   } = useChatHook();
 
+  // console.log("ChatSection rendered", chat);
+
   return (
     <Fragment>
       {messages.length === 0 ? (
@@ -25,7 +27,7 @@ function ChatSection() {
         <ChatState
           user={user}
           messages={messages}
-          // disable={chat.isLoading}
+          disable={chat.isLoading}
           error={chat.error}
           limit={chat.limit}
           onSendMessage={handleSendMessage}

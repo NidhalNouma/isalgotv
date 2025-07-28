@@ -29,8 +29,6 @@ export default function ChatInput({
     models,
     model,
     setModel,
-
-    loading,
   } = SendMessageHook(onSend, () => setShowAuthPopup(true));
 
   const containerClass = className
@@ -88,7 +86,7 @@ export default function ChatInput({
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask Saro"
-                disabled={loading || disable}
+                disabled={disable}
                 rows={1}
                 className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}
@@ -97,13 +95,13 @@ export default function ChatInput({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  disabled={loading || disable}
+                  disabled={disable}
                   className="p-2 text-text/60 hover:text-text/70 disabled:opacity-50"
                 >
                   <Paperclip className="w-5 aspect-auto" />
                 </button>
                 <Dropdown
-                  disabled={loading || disable}
+                  disabled={disable}
                   defaultLabel={model.name}
                   className="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
                   options={
@@ -120,12 +118,12 @@ export default function ChatInput({
                   ref={fileInputRef}
                   onChange={handleFileChange}
                   multiple
-                  disabled={loading || disable}
+                  disabled={disable}
                   className="hidden"
                 />
                 <button
                   type="submit"
-                  disabled={loading || (!input.trim() && files.length === 0)}
+                  disabled={!input.trim() && files.length === 0}
                   className="p-2 text-background hover:text-background disabled:opacity-50"
                 >
                   {/* <SendHorizontal className="w-5 h-5" /> */}

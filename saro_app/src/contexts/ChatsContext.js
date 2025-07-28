@@ -61,7 +61,10 @@ export const ChatsProvider = ({ children }) => {
   }
 
   function newChatAdded(newChat, userMessage, answer) {
-    newChat.messages = [userMessage, { ...answer, isNew: true }];
+    newChat.messages = [
+      userMessage,
+      { ...answer, isNew: true, isLoading: false },
+    ];
     setChats((prev) => [newChat, ...prev]);
 
     setCurrentChat(newChat.id);
@@ -107,6 +110,7 @@ export const ChatsProvider = ({ children }) => {
           if (c.id === chatId) {
             return {
               ...c,
+              isLoading: false,
               read: false,
               messages: [...(chat.messages || []), userMessage, answer],
             };

@@ -15,7 +15,7 @@ function HrefButton({ chat, onClose, setDeleteChatFn }) {
     window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
   const handleSingleClick = (e) => {
-    console.log("Single click on chat:", chat);
+    // console.log("Single click on chat:", chat);
     e.stopPropagation();
     selectChat(chat.id);
     if (isTouchOnlyDevice()) {
