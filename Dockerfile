@@ -118,22 +118,12 @@ RUN python manage.py migrate --noinput
 # Expose port 8000
 EXPOSE 8000
 
-# Command to run the application
-# CMD ["gunicorn", "etradingview.asgi:application", \
-#     "-k", "uvicorn.workers.UvicornWorker", \
-#     "-w", "4", \            
-#     "--threads", "4", \      
-#     "--bind", "0.0.0.0:8000", \
-#     "--access-logfile", "-", "--error-logfile", "-"]
-# -w 4 separate processes
-# --threads 4 threads each (optional)
 
-CMD ["uvicorn", "etradingview.asgi:application", \
-     "--host", "0.0.0.0", "--port", "8000", \
-     "--workers", "4", \
-     "--loop", "auto", \
-     "--http", "auto", \
-     "--lifespan", "on"]
+CMD ["gunicorn", "etradingview.asgi:application", \
+     "-k", "uvicorn.workers.UvicornWorker", \
+     "-w", "6", \
+     "--bind", "0.0.0.0:8000", \
+     "--access-logfile", "-", "--error-logfile", "-"]
 
 # For async-heavy apps
 # CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", " -w", "4", "-k", "uvicorn.workers.UvicornWorker", "--access-logfile", "-", "--error-logfile", "-"]
