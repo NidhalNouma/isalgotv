@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Paperclip } from "lucide-react";
+import { Paperclip, Square } from "lucide-react";
 import { AuthPopup } from "./ui/Popup";
 import { SendMessageHook } from "../hooks/useChatHook";
 
@@ -86,7 +86,6 @@ export default function ChatInput({
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask Saro"
-                disabled={disable}
                 rows={1}
                 className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}
@@ -95,13 +94,11 @@ export default function ChatInput({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  disabled={disable}
                   className="p-2 text-text/60 hover:text-text/70 disabled:opacity-50"
                 >
                   <Paperclip className="w-5 aspect-auto" />
                 </button>
                 <Dropdown
-                  disabled={disable}
                   defaultLabel={model.name}
                   className="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
                   options={
@@ -118,29 +115,37 @@ export default function ChatInput({
                   ref={fileInputRef}
                   onChange={handleFileChange}
                   multiple
-                  disabled={disable}
                   className="hidden"
                 />
-                <button
-                  type="submit"
-                  disabled={!input.trim() && files.length === 0}
-                  className="p-2 text-background hover:text-background disabled:opacity-50"
-                >
-                  {/* <SendHorizontal className="w-5 h-5" /> */}
-                  <svg
-                    className="w-6 h-6 bg-text/80 hover:bg-text rounded-full"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                {disable ? (
+                  <button
+                    type="button"
+                    className="p-2 text-background hover:text-background disabled:opacity-50"
                   >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M15.1918 8.90615C15.6381 8.45983 16.3618 8.45983 16.8081 8.90615L21.9509 14.049C22.3972 14.4953 22.3972 15.2189 21.9509 15.6652C21.5046 16.1116 20.781 16.1116 20.3347 15.6652L17.1428 12.4734V22.2857C17.1428 22.9169 16.6311 23.4286 15.9999 23.4286C15.3688 23.4286 14.8571 22.9169 14.8571 22.2857V12.4734L11.6652 15.6652C11.2189 16.1116 10.4953 16.1116 10.049 15.6652C9.60265 15.2189 9.60265 14.4953 10.049 14.049L15.1918 8.90615Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                </button>
+                    <Square className=" p-1.5 w-6 aspect-auto fill-background bg-text/80 hover:bg-text rounded-full" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={disable}
+                    className="p-2 text-background hover:text-background disabled:opacity-50"
+                  >
+                    {/* <SendHorizontal className="w-5 h-5" /> */}
+                    <svg
+                      className="w-6 h-6 bg-text/80 hover:bg-text rounded-full"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M15.1918 8.90615C15.6381 8.45983 16.3618 8.45983 16.8081 8.90615L21.9509 14.049C22.3972 14.4953 22.3972 15.2189 21.9509 15.6652C21.5046 16.1116 20.781 16.1116 20.3347 15.6652L17.1428 12.4734V22.2857C17.1428 22.9169 16.6311 23.4286 15.9999 23.4286C15.3688 23.4286 14.8571 22.9169 14.8571 22.2857V12.4734L11.6652 15.6652C11.2189 16.1116 10.4953 16.1116 10.049 15.6652C9.60265 15.2189 9.60265 14.4953 10.049 14.049L15.1918 8.90615Z"
+                        fill="currentColor"
+                      ></path>
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
           </div>

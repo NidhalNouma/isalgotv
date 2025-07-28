@@ -4,10 +4,12 @@ import EmptyState from "./EmptyChatState";
 import ChatState from "./ChatState";
 
 import { useUser } from "../contexts/UserContext";
+import { useChat } from "../contexts/ChatsContext";
 import { useChatHook } from "../hooks/useChatHook";
 
 function ChatSection() {
   const { user } = useUser();
+  const { currentChat } = useChat();
 
   const {
     chat,
@@ -21,7 +23,7 @@ function ChatSection() {
 
   return (
     <Fragment>
-      {messages.length === 0 ? (
+      {messages.length === 0 && !currentChat ? (
         <EmptyState onSendMessage={handleSendMessage} />
       ) : (
         <ChatState
