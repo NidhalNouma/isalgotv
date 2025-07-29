@@ -67,7 +67,24 @@
       window.addEventListener('resize', setVh)
       setVh()
     </script>
-    <main id="saro" class="w-full overflow-hidden relative flex flex-col p-1" style="height: calc(var(--vh) * 100);" user-email="{{ user_profile }}" user-id="{{ user_profile.id }}" user-tv-username="{{ user_profile.tradingview_username }}" user-is-lifetime="{{ user_profile.is_lifetime }}" user-has-subscription="{{ has_subscription }}" user-subscription-plan="{{ subscription_plan }}" available-tokens="{{ user_profile.ai_tokens_available }}" free-tokens="{{ user_profile.ai_free_daily_tokens_available }}"></main>
+    <main id="saro" class="w-full overflow-hidden relative flex flex-col p-1" style="height: calc(var(--vh) * 100);"></main>
+
+    <script>
+      window.__SARO_CONTEXT__ = {
+        user: {
+          email: '{{ user_profile|escapejs }}',
+          id: '{{ user_profile.id }}',
+          tvUsername: '{{ user_profile.tradingview_username|escapejs }}',
+          isLifetime: '{{ user_profile.is_lifetime }}',
+          hasSubscription: '{{ has_subscription }}',
+          subscriptionPlan: '{{ subscription_plan|escapejs }}'
+        },
+        tokens: {
+          aiTokensAvailable: '{{ user_profile.ai_tokens_available }}',
+          aiFreeTokens: '{{ user_profile.ai_free_daily_tokens_available }}'
+        }
+      }
+    </script>
 
     {% if IS_PRODUCTION %}
       <script src="{% static 'js/saro_app.js' %}" defer></script>

@@ -1,13 +1,7 @@
 {% load custom_tags %}
 
 {% with price_key=title %}
-  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %}
-      bg-gradient-to-t from-primary/30 to-text/5
-    {% elif title == 'LIFETIME' %}
-      bg-gradient-to-t from-primary/30 to-success/30
-    {% else %}
-      bg-text/5
-    {% endif %} backdrop-blur-3xl border-0 border-text relative">
+  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %} bg-gradient-to-t from-primary/30 to-text/5 {% elif title == 'LIFETIME' %} bg-gradient-to-t from-primary/30 to-success/30 {% else %} bg-text/5 {% endif %} backdrop-blur-3xl border-0 border-text relative">
     <h3 class="text-text text-2xl font-extrabold pt-4 rounded-xl">{{ title }}</h3>
     {% if save %}
       {% comment %} <div class="relative my-2">
@@ -43,24 +37,23 @@
               <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
             </svg>
           </span>
-          {% if title == 'LIFETIME' %}
-            Full
-          {% else %}
-            Premium
-          {% endif %}Strategies
+            Premium Strategies
         </li>
-        {% comment %} <li class="mt-2 flex items-center truncate">
-          <svg class="h-3 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18.36 18.336V93.59l317.51 262.287-52.917.53 82.58 63.884-71.963.394 80.102 32.728-17.404 15.14c34.87 16.374 70.587 22.075 135.648 22.718l.008-.002c-.314-44.892-11.583-91.282-28.666-126.69l-12.5 25.762-43.65-104.975-8.303 72.656-53.752-70.182 5.8 55.584L85.86 18.336h-67.5zm148.736 0L336.303 271.23 232.88 18.336h-65.784zm123.34 0l50.753 183.898 2.468-183.898h-53.22zM18.363 160.074v82.963l241.853 99.272L18.36 160.073zm0 141.29v57.396l201.552-4.795-201.55-52.6zm357.154 77.212c41.388 7.493 81.473 39.554 93.138 89.248-30.75-5.512-52.902-16.592-67.86-31.74-14.722-14.907-22.987-34.03-25.278-57.508z"></path>
-          </svg>Upcoming Strategies Access
-        </li> {% endcomment %}
+        <li class="flex items-center gap-1.5  {% if title != 'LIFETIME' %} opacity-20 {% endif %}">
+          <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
+            <svg class="h-3.5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+              <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
+            </svg>
+          </span>
+            Beta Strategies
+        </li>
         <li class="flex items-center truncate gap-1.5">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
             <svg class="h-3.5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
             </svg>
           </span>
-          Full Results
+          Strategies Results
         </li>
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -75,17 +68,18 @@
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
             <svg class="h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
-              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
-              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
-              <path d="M17.599 6.5a3 3 0 0 0 .399-1.375" />
-              <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
-              <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
-              <path d="M19.938 10.5a4 4 0 0 1 .585.396" />
-              <path d="M6 18a4 4 0 0 1-1.967-.516" />
-              <path d="M19.967 17.484A4 4 0 0 1 18 18" />
+              <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+              <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
             </svg>
-          </span>AI tools
+          </span>
+          SARO Chat
+        </li>
+        <li class="gap-1.5 flex items-center truncate  {% if title != 'LIFETIME' %} opacity-20 {% endif %}">
+          <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
+            <svg class="h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+            </svg>
+          </span>SARO Trade
         </li>
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -95,13 +89,13 @@
           </span>
           VIP Discord
         </li>
-        <li class="gap-1.5 flex items-center truncate">
+        {% comment %} <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
             <svg class="h-3.5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M21 8C22.1046 8 23 8.89543 23 10V14C23 15.1046 22.1046 16 21 16H19.9381C19.446 19.9463 16.0796 23 12 23V21C15.3137 21 18 18.3137 18 15V9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V16H3C1.89543 16 1 15.1046 1 14V10C1 8.89543 1.89543 8 3 8H4.06189C4.55399 4.05369 7.92038 1 12 1C16.0796 1 19.446 4.05369 19.9381 8H21ZM7.75944 15.7849L8.81958 14.0887C9.74161 14.6662 10.8318 15 12 15C13.1682 15 14.2584 14.6662 15.1804 14.0887L16.2406 15.7849C15.0112 16.5549 13.5576 17 12 17C10.4424 17 8.98882 16.5549 7.75944 15.7849Z"></path>
             </svg>
           </span>Customer Support
-        </li>
+        </li> {% endcomment %}
         <li class="gap-1.5 flex items-center truncate">
           {% if title != 'LIFETIME' %}
             <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">

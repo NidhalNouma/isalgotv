@@ -17,23 +17,17 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const rootDiv = document.getElementById("saro");
-    const email = rootDiv.getAttribute("user-email");
-    const id = rootDiv.getAttribute("user-id");
-    const tradingviewUsername = rootDiv.getAttribute("user-tv-username");
-    const isLifetime = rootDiv.getAttribute("user-is-lifetime");
-    const hasSubscription = rootDiv.getAttribute("user-has-subscription");
-    const subscriptionPlan = rootDiv.getAttribute("user-subscription-plan");
+    const context = window.__SARO_CONTEXT__;
 
     let user =
-      email !== "None"
+      context.user.email !== "None"
         ? {
-            email,
-            id,
-            tradingviewUsername,
-            isLifetime: isLifetime === "True",
-            hasSubscription: hasSubscription === "True",
-            subscriptionPlan,
+            email: context.user.email,
+            id: context.user.id,
+            tradingviewUsername: context.user.tvUsername,
+            isLifetime: context.user.isLifetime === "True",
+            hasSubscription: context.user.hasSubscription === "True",
+            subscriptionPlan: context.user.subscriptionPlan,
           }
         : null;
 
@@ -41,13 +35,11 @@ export const UserProvider = ({ children }) => {
 
     setUser(user);
 
-    const availabelTokens = rootDiv.getAttribute("available-tokens");
-    const freeTokens = rootDiv.getAttribute("free-tokens");
-
-    setTokens({
-      availabel: availabelTokens ? parseInt(availabelTokens, 10) : 0,
-      free: freeTokens ? parseInt(freeTokens, 10) : 0,
-    });
+    if (context?.tokens)
+      setTokens({
+        availabel: parseInt(context.tokens.aiTokensAvailable, 10) || 0,
+        free: parseInt(context.tokens.aiFreeTokens, 10) || 0,
+      });
   }, []);
 
   return (
