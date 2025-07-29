@@ -67,7 +67,9 @@ export const ChatsProvider = ({ children }) => {
     ];
     setChats((prev) => [newChat, ...prev]);
 
-    setCurrentChat(newChat.id);
+    setCurrentChat((prev) =>
+      prev === null || prev.toString().includes("new") ? newChat.id : prev
+    );
   }
 
   async function deleteChat(chatId) {

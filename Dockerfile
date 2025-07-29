@@ -121,7 +121,7 @@ EXPOSE 8000
 
 CMD ["gunicorn", "etradingview.asgi:application", \
      "-k", "uvicorn.workers.UvicornWorker", \
-     "-w", "2", \
+     "-w", "1", \
      "--bind", "0.0.0.0:8000", \
      "--access-logfile", "-", "--error-logfile", "-"]
 
