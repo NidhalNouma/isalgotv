@@ -100,7 +100,7 @@ export default function ChatInput({
                 </button>
                 <Dropdown
                   defaultLabel={model.name}
-                  className="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
+                  btnClassName="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
                   options={
                     models.map((m) => ({
                       label: m.name,

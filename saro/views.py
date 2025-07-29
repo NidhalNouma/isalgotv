@@ -20,7 +20,13 @@ env = environ.Env()
 stripe.api_key = env('STRIPE_API_KEY')
 
 def index(request):
-    return render(request, "saro/index.html")
+    context = {
+        "ai_models": [
+            { "name": "TR-A5", "description": "Best for common use" },
+            { "name": "TR-H6 ", "description": "Best for reasoning" }
+        ]
+    }
+    return render(request, "saro/index.html", context=context)
 
 def get_chat_sessions(request, start=0):
     if request.method == "POST":

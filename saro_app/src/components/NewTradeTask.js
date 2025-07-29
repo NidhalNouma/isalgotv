@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { NewTaskHook } from "../hooks/useTaskHook";
 import { ArrowRight, Download, Plus } from "lucide-react";
 
+import { Dropdown } from "../components/ui/DropDown";
+
 import { HOST } from "../constant";
 
 function NewTradeTask({ close }) {
@@ -106,7 +108,17 @@ function Step1({ nextFn, accounts, selectedAccount, setSelectedAccount }) {
             <Plus className="h-4 aspect-auto" />
           </a>
         </div>
-        <select
+        <Dropdown
+          className="w-full"
+          btnClassName="input-text cursor-pointer w-full"
+          options={accounts.map((v) => {
+            return {
+              label: `${v.name} (${v.broker_type})`,
+              onClick: (e) => setSelectedAccount(`${v.id}#${v.broker_type}`),
+            };
+          })}
+        />
+        {/* <select
           className="input-text w-full cursor-pointer"
           value={selectedAccount}
           onChange={(e) => setSelectedAccount(e.target.value)}
@@ -124,7 +136,7 @@ function Step1({ nextFn, accounts, selectedAccount, setSelectedAccount }) {
               {acc.name} ({acc.broker_type})
             </option>
           ))}
-        </select>
+        </select> */}
       </div>
     </div>
   );

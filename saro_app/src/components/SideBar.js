@@ -8,7 +8,7 @@ import {
   PanelRight,
   X,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 
 import { ScrollDiv } from "./ui/ScrollableContainer";
 
@@ -478,25 +478,31 @@ function FullSideBar({
                 <Search className="absolute left-2.5 top-2 w-4 h-4 text-text/60" />
               </div>
             )}
-
             <ScrollDiv
-              className="space-y-2 px-2 box-content"
+              className=" px-2 box-content"
               onBottomReach={retrieveChats}
             >
               {filteredChats.length > 0 && (
                 <h6 className="text-text/80 text-sm pt-3 pb-2">Chats</h6>
               )}
-              {chats &&
-                filteredChats
-                  .filter((chat) => !chat.hidden)
-                  .map((chat) => (
-                    <HrefButton
-                      key={chat.id}
-                      chat={chat}
-                      onClose={onClose}
-                      setDeleteChatFn={setDeleteChatFn}
-                    />
-                  ))}
+              <Reorder.Group
+                values={filteredChats}
+                onReorder={setFilteredChats}
+              >
+                {chats &&
+                  filteredChats
+                    .filter((chat) => !chat.hidden)
+                    .map((chat) => (
+                      <Reorder.Item key={chat.id} value={chat} className="my-2">
+                        <HrefButton
+                          key={chat.id}
+                          chat={chat}
+                          onClose={onClose}
+                          setDeleteChatFn={setDeleteChatFn}
+                        />
+                      </Reorder.Item>
+                    ))}
+              </Reorder.Group>
             </ScrollDiv>
           </Fragment>
         )}

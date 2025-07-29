@@ -82,7 +82,15 @@
         tokens: {
           aiTokensAvailable: '{{ user_profile.ai_tokens_available }}',
           aiFreeTokens: '{{ user_profile.ai_free_daily_tokens_available }}'
-        }
+        },
+        models: [
+          {% for model in ai_models %}
+            {
+              name: "{{model.name}}",
+              description: "{{model.description}}",
+            },
+          {% endfor %}
+        ]
       }
     </script>
 
