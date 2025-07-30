@@ -399,7 +399,7 @@ def get_access(request, strategy_id):
 
         access_response = give_access(strategy_id, profile_user.id, True)
 
-        # print("Access response:", access_response)
+        print("Access response:", access_response)
     
         if access_response.get('error'):
             error = access_response.get('error')

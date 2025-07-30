@@ -466,34 +466,37 @@ function FullSideBar({
       <section className="grow overflow-y-auto no-scrollbar">
         {page === "chat" && (
           <Fragment>
-            {chats.length > 0 && (
-              <div className="relative my-2 mx-0.5">
-                <input
-                  type="text"
-                  placeholder="Search chats..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full input-text py-1 pl-9 pr-3"
-                />
-                <Search className="absolute left-2.5 top-2 w-4 h-4 text-text/60" />
-              </div>
-            )}
-            <ScrollDiv
-              className=" px-2 box-content"
-              onBottomReach={retrieveChats}
-            >
+            <ScrollDiv className="box-content" onBottomReach={retrieveChats}>
+              {chats.length > 0 && (
+                <div className="relative my-2 mx-0.5">
+                  <input
+                    type="text"
+                    placeholder="Search chats..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full input-text py-1 pl-9 pr-3"
+                  />
+                  <Search className="absolute left-2.5 top-2 w-4 h-4 text-text/60" />
+                </div>
+              )}
               {filteredChats.length > 0 && (
-                <h6 className="text-text/80 text-sm pt-3 pb-2">Chats</h6>
+                <h6 className="text-text/80 text-sm pt-3 pb-2 px-2">Chats</h6>
               )}
               <Reorder.Group
                 values={filteredChats}
                 onReorder={setFilteredChats}
+                className="px-2"
               >
                 {chats &&
                   filteredChats
                     .filter((chat) => !chat.hidden)
                     .map((chat) => (
-                      <Reorder.Item key={chat.id} value={chat} className="my-2">
+                      <Reorder.Item
+                        drag={false}
+                        key={chat.id}
+                        value={chat}
+                        className="my-2"
+                      >
                         <HrefButton
                           key={chat.id}
                           chat={chat}
