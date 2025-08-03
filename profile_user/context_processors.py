@@ -42,8 +42,6 @@ def profile_context(request):
 
         'server_ip': server_ip,
 
-        'db_key':  env('FIREBASE_KEY'),
-
         "stripe_public_key": env('STRIPE_API_PUBLIC_KEY'),
 
         'IS_PRODUCTION': True if settings.DEBUG == False else False,

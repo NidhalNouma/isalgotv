@@ -25,7 +25,7 @@ def index(request):
     
     context = {'prices': settings.PRICES, **random_strategies_results_context() }
     
-    return render(request, "etradingview/index.html", context=context)
+    return render(request, "main_app/index.html", context=context)
 
 
 def redirect_to_home(request):
@@ -45,7 +45,7 @@ def redirect_admin_logout(request):
 
 # For Apple Pay
 def serve_apple_pay_verification(request):
-    file_path = os.path.join(settings.BASE_DIR, 'etradingview', 'verification_files', 'apple-developer-merchantid-domain-association')
+    file_path = os.path.join(settings.BASE_DIR, 'main_app', 'verification_files', 'apple-developer-merchantid-domain-association')
 
     try:
         with open(file_path, 'r') as file:

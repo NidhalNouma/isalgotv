@@ -47,7 +47,7 @@ ARG COUPON_CODE
 ARG COUPON_OFF
 
 # Set environment variables
-ENV DJANGO_SETTINGS_MODULE etradingview.settings.prod
+ENV DJANGO_SETTINGS_MODULE main_app.settings.prod
 ENV SECRET_KEY ${SECRET_KEY}
 
 ENV EMAIL_HOST_USER ${EMAIL_HOST_USER}
@@ -117,14 +117,14 @@ RUN python manage.py migrate --noinput
 EXPOSE 8000
 
 
-CMD ["gunicorn", "etradingview.asgi:application", \
+CMD ["gunicorn", "main_app.asgi:application", \
      "-k", "uvicorn.workers.UvicornWorker", \
      "-w", "1", \
      "--bind", "0.0.0.0:8000", \
      "--access-logfile", "-", "--error-logfile", "-"]
 
 # For async-heavy apps
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "etradingview.wsgi:application", " -w", "4", "-k", "uvicorn.workers.UvicornWorker", "--access-logfile", "-", "--error-logfile", "-"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "main_app.wsgi:application", " -w", "4", "-k", "uvicorn.workers.UvicornWorker", "--access-logfile", "-", "--error-logfile", "-"]
 
 
 

@@ -5,7 +5,7 @@ module.exports = {
   darkMode: "class",
   content: [
     "./templates/**/*.html",
-    "./etradingview/templates/**/*.html",
+    "./main_app/templates/**/*.html",
     "./strategies/templates/**/*.html",
     "./profile_user/templates/**/*.html",
     "./automate/templates/**/*.html",

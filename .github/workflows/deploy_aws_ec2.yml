@@ -39,10 +39,10 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
 
-      - run: mv .env ./etradingview/settings
+      - run: mv .env ./main_app/settings
       - run: sudo docker rmi --force $(sudo docker images -q 'isalgo' | uniq) || echo "No isalgo image founddd"
       - run: sudo docker build --progress=plain --no-cache --tag isalgo .
       - run: sudo docker stop isalgo_run || echo "No isalgo run container founddd to stop"
       - run: sudo docker rm isalgo_run || echo "No isalgo run container founddd to remove"
       - run: sudo docker run -d --name isalgo_run --publish 80:8000 isalgo
-      - run: rm ./etradingview/settings/.env
+      - run: rm ./main_app/settings/.env
