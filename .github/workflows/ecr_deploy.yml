@@ -80,8 +80,7 @@ jobs:
           --build-arg TV_SESSION_ID="${{ secrets.TV_SESSION_ID }}" \
           --build-arg META_API_TOKEN="${{ secrets.META_API_TOKEN }}" \
           --build-arg DISCORD_BOT_ACCESS_TOKEN="${{ secrets.DISCORD_BOT_ACCESS_TOKEN }}" \
-          --build-arg AI_KEY="${{ secrets.AI_KEY }}" \
-          --build-arg FIREBASE_KEY="${{ secrets.FIREBASE_KEY }}" \
+          --build-arg OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
           --build-arg REDIS_ENDPOINT="${{ secrets.REDIS_ENDPOINT }}" \
           --build-arg FREE_TRIAL_DAYS="${{ secrets.FREE_TRIAL_DAYS }}" \
           --build-arg WEBHOOK_SERVER_IP="${{ secrets.WEBHOOK_SERVER_IP }}" \

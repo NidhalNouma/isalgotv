@@ -154,8 +154,7 @@ pyvenv.cfg
 
 .DS_Store
 
-*.ipynb
 *.faiss
 *.pkl
 /vector_index
-*/__aitest__
+

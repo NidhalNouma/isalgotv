@@ -415,10 +415,9 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
 
           colorPrimary: getCssVariableColor("--color-primary"),
           colorText: getCssVariableColor("--color-text"),
-          colorText: getCssVariableColor("--color-text"),
+          colorDanger: getCssVariableColor("--color-loss"),
 
           borderRadius: "6px",
-          // colorDanger: "#df1b41",
           accessibleColorOnColorPrimary: "#262626",
           logoColor: "dark",
           tabLogoColor: "dark",

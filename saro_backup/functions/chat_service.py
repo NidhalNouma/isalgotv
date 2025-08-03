@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import List, Dict, Any, Union, Optional, Callable
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.schema import HumanMessage, AIMessage, BaseMessage
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
@@ -6,9 +6,14 @@ from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, H
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.callbacks import get_openai_callback
+from langchain.callbacks.base import BaseCallbackHandler
 
-import environ
-env = environ.Env()
+class StreamHandler(BaseCallbackHandler):
+    def __init__(self, token_callback: Callable[[str], None]):
+        self.token_callback = token_callback
+
+    def on_llm_new_token(self, token: str, **kwargs):
+        self.token_callback(token)
 
 class ChatService:
     def __init__(
@@ -18,9 +23,9 @@ class ChatService:
         temperature: float = 0.5,
         vectorstore_path: str = "vector_index"
     ):
-        self.llm = ChatOpenAI(model=model_name, temperature=temperature, api_key=env("AI_KEY"))
-        self.summary_llm = ChatOpenAI(model=summary_model_name, temperature=temperature, api_key=env("AI_KEY"))
-        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large", api_key=env("AI_KEY"))
+        self.llm = ChatOpenAI(model=model_name, temperature=temperature)
+        self.summary_llm = ChatOpenAI(model=summary_model_name, temperature=temperature, streaming=True)
+        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
         self.vectorstore_path = vectorstore_path
         self.retriever = None
 
@@ -44,7 +49,7 @@ class ChatService:
         self,
         user_question: str,
         message_history: List[Dict[str, str]]
-    ) -> Dict[str, Union[str, int, float]]:
+    ) -> Any:
         """
         Generates a response using memory + retrieved doc context.
         Returns result with token usage and cost.
@@ -123,3 +128,58 @@ class ChatService:
 
         summary_chain = LLMChain(llm=self.summary_llm, prompt=prompt)
         return summary_chain.run({"history": history_text})
+    
+    def stream_response(
+        self,
+        user_question: str,
+        message_history: List[Dict[str, str]]
+    ):
+        if not self.retriever:
+            self.load_vector_store()
+
+        retrieved_docs = self.retriever.invoke(user_question)
+        context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+
+        formatted_history: List[BaseMessage] = []
+        for msg in message_history:
+            if msg["role"] == "user":
+                formatted_history.append(HumanMessage(content=msg["content"]))
+            elif msg["role"] == "assistant":
+                formatted_history.append(AIMessage(content=msg["content"]))
+
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                SystemMessagePromptTemplate.from_template(
+                    "You are Saro, a trading assistant. If the user asks a question, "
+                    "Display images if they are relevant to the question and the context provided."
+                    "you should answer it based on the context provided below.\n\nContext:\n{context}"
+                ),
+                HumanMessagePromptTemplate.from_template("{question}")
+            ]
+        )
+
+        messages = prompt.format_prompt(context=context, question=user_question).to_messages()
+        messages = formatted_history + messages  # Optionally prepend history
+
+        # Streaming LLM
+        def yield_token(token):
+            yield token
+
+        # Set up a generator for tokens
+        def token_generator():
+            tokens = []
+            def callback(token):
+                tokens.append(token)
+                yield token
+            handler = StreamHandler(callback)
+            streaming_llm = ChatOpenAI(
+                model=self.llm.model,
+                temperature=self.llm.temperature,
+                streaming=True,
+                callbacks=[handler],
+            )
+            for chunk in streaming_llm.stream(messages):
+                yield chunk.content
+
+        # Return as generator
+        return token_generator()
