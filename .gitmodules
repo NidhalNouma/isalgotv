@@ -1,0 +1,4 @@
+[submodule "saro"]
+	path = saro
+	url = https://github.com/NidhalNouma/isalgo-saro.git
+	branch = main
