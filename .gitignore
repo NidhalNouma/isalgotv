@@ -158,3 +158,5 @@ pyvenv.cfg
 *.pkl
 /vector_index
 
+gh-deploy-key
+gh-deploy-key.pub

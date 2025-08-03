@@ -21,6 +21,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.SARO_DEPLOY_KEY }}
+          submodules: recursive
 
       - name: Install AWS CLI
         run: |
