@@ -1,4 +1,4 @@
-/*! For license information please see main.a04622eb.js.LICENSE.txt */
+/*! For license information please see main.5fff1ac9.js.LICENSE.txt */
 (() => {
   var e = {
       46: (e) => {
@@ -31140,7 +31140,7 @@
             [i, o] = (0, r.useState)({ availabel: 0, free: 0 });
           return (
             (0, r.useEffect)(() => {
-              const e = window.__SARO_CONTEXT__;
+              const e = window.__TARO_CONTEXT__;
               let t =
                 "None" !== e.user.email
                   ? {
@@ -31439,7 +31439,7 @@
       }
       const Pt = Dt,
         Mt =
-          null === (Lt = window.__SARO_CONTEXT__) || void 0 === Lt
+          null === (Lt = window.__TARO_CONTEXT__) || void 0 === Lt
             ? void 0
             : Lt.models.map((e) => ({
                 name: e.name,
@@ -39216,7 +39216,7 @@
               () => document.removeEventListener("mousedown", e)
             );
           }, []),
-          (0, r.useEffect)(() => {
+          (0, r.useLayoutEffect)(() => {
             if (l && h.current && b.current) {
               const e = h.current.getBoundingClientRect(),
                 t = b.current.getBoundingClientRect(),
@@ -52778,12 +52778,14 @@
                 n(e), r(e), a(e), i(e), o(e);
               });
         };
-      a.createRoot(document.getElementById("taro")).render(
-        (0, dt.jsx)(r.StrictMode, {
-          children: (0, dt.jsx)(tt, { children: (0, dt.jsx)(Pb, {}) }),
-        })
-      ),
+      a
+        .createRoot(document.getElementById("taro"))
+        .render(
+          (0, dt.jsx)(r.StrictMode, {
+            children: (0, dt.jsx)(tt, { children: (0, dt.jsx)(Pb, {}) }),
+          })
+        ),
         Mb();
     })();
 })();
-//# sourceMappingURL=main.a04622eb.js.map
+//# sourceMappingURL=main.5fff1ac9.js.map

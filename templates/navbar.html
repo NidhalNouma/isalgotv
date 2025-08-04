@@ -20,7 +20,7 @@
       </div>
       <div class="flex items-center lg:order-2 justify-center gap-2">
         {% if user.is_authenticated %}
-          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span></a>
+          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
 
           <div class="relative flex items-center">
             <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
@@ -94,7 +94,7 @@
             </div>
           </div>
         {% else %}
-          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span></a>
+          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
           <a type="button" href="{% url 'login' %}" class="btn-secondary">
             Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M0 0h24v24H0z"></path>
