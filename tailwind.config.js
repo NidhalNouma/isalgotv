@@ -10,10 +10,10 @@ module.exports = {
     "./profile_user/templates/**/*.html",
     "./automate/templates/**/*.html",
     "./docs/templates/**/*.html",
-    "./taro/templates/**/*.html",
+    "./tero/templates/**/*.html",
     "./static/js/**/*.js",
-    "./taro_app/src/**/*.js",
-    "./taro_app/src/components/**/*.js",
+    "./tero_app/src/**/*.js",
+    "./tero_app/src/components/**/*.js",
 
     "./node_modules/flowbite/**/*.js",
   ],

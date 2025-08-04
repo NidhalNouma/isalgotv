@@ -11,7 +11,7 @@ export function AuthPopup({ onClose }) {
         <div className="bg-background/60 dark:bg-text/10 backdrop-blur-3xl rounded-md shadow-xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-text">
-              Continue with SARO
+              Continue with TERO
             </h2>
             <button onClick={onClose} className="btn-icon transition-colors">
               <X className="w-5 h-5" />
@@ -330,7 +330,7 @@ export function SettingsPopup({ onClose, user }) {
                 About
               </label>
               <span className="text-text/80 text-sm">
-                SARO is an AI-powered trading assistant that helps you make
+                TERO is an AI-powered trading assistant that helps you make
                 informed trading decisions.
               </span>
             </div>

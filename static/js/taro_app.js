@@ -31140,7 +31140,7 @@
             [i, o] = (0, r.useState)({ availabel: 0, free: 0 });
           return (
             (0, r.useEffect)(() => {
-              const e = window.__TARO_CONTEXT__;
+              const e = window.__TERO_CONTEXT__;
               let t =
                 "None" !== e.user.email
                   ? {
@@ -31432,14 +31432,14 @@
         ]);
       var Lt;
       let Dt = window.location.hostname;
-      if (Dt.startsWith("taro.")) {
-        Dt = Dt.replace("taro.", "www.");
+      if (Dt.startsWith("tero.")) {
+        Dt = Dt.replace("tero.", "www.");
         const e = window.location.port ? `:${window.location.port}` : "";
         Dt = `${window.location.protocol}//${Dt}${e}`;
       }
       const Pt = Dt,
         Mt =
-          null === (Lt = window.__TARO_CONTEXT__) || void 0 === Lt
+          null === (Lt = window.__TERO_CONTEXT__) || void 0 === Lt
             ? void 0
             : Lt.models.map((e) => ({
                 name: e.name,
@@ -31465,7 +31465,7 @@
                     children: [
                       (0, dt.jsx)("h2", {
                         className: "text-xl font-semibold text-text",
-                        children: "Continue with SARO",
+                        children: "Continue with TERO",
                       }),
                       (0, dt.jsx)("button", {
                         onClick: t,
@@ -31974,7 +31974,7 @@
                             (0, dt.jsx)("span", {
                               className: "text-text/80 text-sm",
                               children:
-                                "SARO is an AI-powered trading assistant that helps you make informed trading decisions.",
+                                "TERO is an AI-powered trading assistant that helps you make informed trading decisions.",
                             }),
                           ],
                         }),
@@ -39332,9 +39332,9 @@
                   m(null, e.detail.message);
               }
               return (
-                window.addEventListener("taroMessage", e),
+                window.addEventListener("teroMessage", e),
                 () => {
-                  window.removeEventListener("taroMessage", e);
+                  window.removeEventListener("teroMessage", e);
                 }
               );
             }, [n]);
@@ -39450,7 +39450,7 @@
                             value: u,
                             onChange: y,
                             onKeyDown: b,
-                            placeholder: "Ask Taro",
+                            placeholder: "Ask Tero",
                             rows: 1,
                             className:
                               "w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide",
@@ -51384,11 +51384,11 @@
             (0, dt.jsxs)("h1", {
               className:
                 "text-4xl sm:text-6xl font-semibold mb-2 text-title text-center",
-              children: ["Let Taro Trade ", (0, dt.jsx)("br", {}), " for you"],
+              children: ["Let Tero Trade ", (0, dt.jsx)("br", {}), " for you"],
             }),
             (0, dt.jsx)("h1", {
               className: "text-xl font-semibold mb-8 text-title/40 text-center",
-              children: "Connect your account and let Taro manage it for you",
+              children: "Connect your account and let Tero manage it for you",
             }),
             (0, dt.jsx)("button", {
               className: "btn-accent",
@@ -52778,13 +52778,11 @@
                 n(e), r(e), a(e), i(e), o(e);
               });
         };
-      a
-        .createRoot(document.getElementById("taro"))
-        .render(
-          (0, dt.jsx)(r.StrictMode, {
-            children: (0, dt.jsx)(tt, { children: (0, dt.jsx)(Pb, {}) }),
-          })
-        ),
+      a.createRoot(document.getElementById("tero")).render(
+        (0, dt.jsx)(r.StrictMode, {
+          children: (0, dt.jsx)(tt, { children: (0, dt.jsx)(Pb, {}) }),
+        })
+      ),
         Mb();
     })();
 })();

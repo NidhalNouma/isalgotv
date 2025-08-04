@@ -1,7 +1,19 @@
 {% load custom_tags %}
 
 {% with price_key=title %}
-  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %} bg-gradient-to-t from-primary/30 to-text/5 {% elif title == 'LIFETIME' %} bg-gradient-to-t from-primary/30 to-success/30 {% else %} bg-text/5 {% endif %} backdrop-blur-3xl border-0 border-text relative">
+  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %}
+      
+       bg-gradient-to-t from-primary/30 to-text/5
+
+    {% elif title == 'LIFETIME' %}
+      
+       bg-gradient-to-t from-primary/30 to-success/30
+
+    {% else %}
+      
+       bg-text/5
+
+    {% endif %} backdrop-blur-3xl border-0 border-text relative">
     <h3 class="text-text text-2xl font-extrabold pt-4 rounded-xl">{{ title }}</h3>
     {% if save %}
       {% comment %} <div class="relative my-2">
@@ -37,7 +49,7 @@
               <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
             </svg>
           </span>
-            Premium Strategies
+          Premium Strategies
         </li>
         <li class="flex items-center gap-1.5  {% if title != 'LIFETIME' %} opacity-20 {% endif %}">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -45,7 +57,7 @@
               <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
             </svg>
           </span>
-            Beta Strategies
+          Beta Strategies
         </li>
         <li class="flex items-center truncate gap-1.5">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -72,14 +84,14 @@
               <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
             </svg>
           </span>
-          SARO Chat
+          TERO Chat
         </li>
         <li class="gap-1.5 flex items-center truncate  {% if title != 'LIFETIME' %} opacity-20 {% endif %}">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
             <svg class="h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
             </svg>
-          </span>SARO Trade
+          </span>TERO Trade
         </li>
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">

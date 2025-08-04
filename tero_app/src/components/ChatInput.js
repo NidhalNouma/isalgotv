@@ -85,7 +85,7 @@ export default function ChatInput({
                 value={input}
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask Taro"
+                placeholder="Ask Tero"
                 rows={1}
                 className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}

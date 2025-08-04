@@ -5,7 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 
 import { BrowserRouter as Router } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById("taro"));
+const root = ReactDOM.createRoot(document.getElementById("tero"));
 root.render(
   <React.StrictMode>
     <Router>

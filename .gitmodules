@@ -1,4 +1,4 @@
-[submodule "taro"]
-	path = taro
-	url = git@github.com:NidhalNouma/isalgo-taro.git
+[submodule "tero"]
+	path = tero
+	url = git@github.com:NidhalNouma/isalgo-tero.git
 	branch = main

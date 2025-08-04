@@ -1,6 +1,6 @@
 {% load static %}
 
-{% with taro_url=request.scheme|stringformat:'s'|add:'://taro.'|add:request.get_host|cut:'www.' %}
+{% with tero_url=request.scheme|stringformat:'s'|add:'://tero.'|add:request.get_host|cut:'www.' %}
   <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
     <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
     <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">
@@ -20,7 +20,13 @@
       </div>
       <div class="flex items-center lg:order-2 justify-center gap-2">
         {% if user.is_authenticated %}
-          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+          <a href="{{ tero_url }}" target="_blank" class="btn-ai before:hover:scale-105">
+            <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TERO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h6v6" />
+              <path d="M10 14 21 3" />
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            </svg>
+          </a>
 
           <div class="relative flex items-center">
             <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
@@ -94,7 +100,13 @@
             </div>
           </div>
         {% else %}
-          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+          <a href="{{ tero_url }}" target="_blank" class="btn-ai before:hover:scale-105">
+            <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TERO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h6v6" />
+              <path d="M10 14 21 3" />
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            </svg>
+          </a>
           <a type="button" href="{% url 'login' %}" class="btn-secondary">
             Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M0 0h24v24H0z"></path>
@@ -121,11 +133,19 @@
             <a href="{% url 'strategies' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name %}
                 
+                
+                
                text-title
+
+
 
               {% else %}
                 
+                
+                
                text-text/80
+
+
 
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
@@ -138,11 +158,19 @@
             <a href="{% url 'results' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %}
                 
+                
+                
                text-title
+
+
 
               {% else %}
                 
+                
+                
                text-text/80
+
+
 
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
@@ -155,11 +183,19 @@
             <a href="{% url 'automate' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %}
                 
+                
+                
                text-title
+
+
 
               {% else %}
                 
+                
+                
                text-text/80
+
+
 
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
@@ -174,11 +210,19 @@
             <a href="{% url 'membership' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %}
                 
+                
+                
                text-title
+
+
 
               {% else %}
                 
+                
+                
                text-text/80
+
+
 
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
@@ -197,11 +241,19 @@
             <a href="{% url 'docs_index' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %}
                 
+                
+                
                text-title
+
+
 
               {% else %}
                 
+                
+                
                text-text/80
+
+
 
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
