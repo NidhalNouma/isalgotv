@@ -1729,7 +1729,7 @@ function getNumberOfLines(id) {
 
 function sendAiMessage(message) {
   window.dispatchEvent(
-    new CustomEvent("saroMessage", {
+    new CustomEvent("taroMessage", {
       detail: { message: message },
     })
   );

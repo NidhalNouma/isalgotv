@@ -5,10 +5,10 @@ environ.Env.read_env()
 
 # DEBUG = True
 # DEBUG = False
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "www.myproject.local", "myproject.local", "webhook.myproject.local", "saro.myproject.local"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "www.myproject.local", "myproject.local", "webhook.myproject.local", "taro.myproject.local"]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://saro.myproject.local",
+    "http://taro.myproject.local",
 ]
 
 CSRF_TRUSTED_ORIGINS = ['http://*.myproject.local']

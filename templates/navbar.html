@@ -1,6 +1,6 @@
 {% load static %}
 
-{% with saro_url=request.scheme|stringformat:'s'|add:'://saro.'|add:request.get_host|cut:'www.' %}
+{% with taro_url=request.scheme|stringformat:'s'|add:'://taro.'|add:request.get_host|cut:'www.' %}
   <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
     <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
     <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">
@@ -20,7 +20,7 @@
       </div>
       <div class="flex items-center lg:order-2 justify-center gap-2">
         {% if user.is_authenticated %}
-          <a href="{{ saro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
+          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span></a>
 
           <div class="relative flex items-center">
             <button type="button" class="btn-icon -mr-1 lg:mr-0" onclick="openCustomDropdown('user-dropdown')">
@@ -94,7 +94,7 @@
             </div>
           </div>
         {% else %}
-          <a href="{{ saro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">SARO</span></a>
+          <a href="{{ taro_url }}" target="_blank" class="btn-ai before:hover:scale-105"><span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TARO</span></a>
           <a type="button" href="{% url 'login' %}" class="btn-secondary">
             Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M0 0h24v24H0z"></path>

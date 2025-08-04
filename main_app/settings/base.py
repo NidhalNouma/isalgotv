@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'profile_user.apps.ProfileUserConfig',
     'strategies',
     'automate',
-    'saro',
+    'taro',
     'docs',
     
     "unfold",  # before django.contrib.admin
@@ -117,7 +117,7 @@ TEMPLATES = [
                 BASE_DIR / "profile_user/templates/profile_user",
                 BASE_DIR / "docs/templates/docs",
                 BASE_DIR / "automate/templates/automate",
-                BASE_DIR / "saro/templates/saro",
+                BASE_DIR / "taro/templates/taro",
                 BASE_DIR / "strategies/templates/strategies"],
         'APP_DIRS': True,
         'OPTIONS': {

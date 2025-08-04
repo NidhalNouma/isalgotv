@@ -11,13 +11,13 @@ ALLOWED_HOSTS = [
     'isalgo.com',
     # 'test.isalgo.com',
     'www.isalgo.com',
-    'saro.isalgo.com',
+    'taro.isalgo.com',
     'webhook.isalgo.com',
     '*'
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://saro.isalgo.com",
+    "https://taro.isalgo.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://*.isalgo.com']

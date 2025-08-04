@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { NewTaskHook } from "../hooks/useTaskHook";
 import { ArrowRight, Download, Plus } from "lucide-react";
 
-import { Dropdown } from "../components/ui/DropDown";
+import { Dropdown } from "./ui/DropDown";
 
 import { HOST } from "../constant";
 

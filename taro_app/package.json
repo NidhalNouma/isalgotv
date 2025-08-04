@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "cp build/static/js/main.*.js ../static/js/saro_app.js"
+    "postbuild": "cp build/static/js/main.*.js ../static/js/taro_app.js"
   },
   "eslintConfig": {
     "extends": [

@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const context = window.__SARO_CONTEXT__;
+    const context = window.__TARO_CONTEXT__;
 
     let user =
       context.user.email !== "None"

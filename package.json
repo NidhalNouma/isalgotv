@@ -10,7 +10,7 @@
     },
     "scripts": {
       "css-out": "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch --minify",
-      "ai-start": "cd ./saro_app && npm run start",
-      "ai-build": "cd ./saro_app && npm run build"
+      "ai-start": "cd ./taro_app && npm run start",
+      "ai-build": "cd ./taro_app && npm run build"
     }
   }

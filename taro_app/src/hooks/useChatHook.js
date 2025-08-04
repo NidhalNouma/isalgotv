@@ -219,9 +219,9 @@ export function SendMessageHook(onSend, toggleAuthPopup) {
       console.log("Received message:", e.detail.message);
       handleSubmit(null, e.detail.message);
     }
-    window.addEventListener("saroMessage", handleDjangoMessage);
+    window.addEventListener("taroMessage", handleDjangoMessage);
     return () => {
-      window.removeEventListener("saroMessage", handleDjangoMessage);
+      window.removeEventListener("taroMessage", handleDjangoMessage);
     };
   }, [user]);
 
