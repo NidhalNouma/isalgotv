@@ -142,6 +142,7 @@ GitHub.sublime-settings
 
 # Node #
 
+node_modules
 /node_modules
 /static/CACHE
 /bin
