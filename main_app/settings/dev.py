@@ -3,8 +3,6 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-# DEBUG = True
-# DEBUG = False
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "www.myproject.local", "myproject.local", "webhook.myproject.local", "tero.myproject.local"]
 
 CORS_ALLOWED_ORIGINS = [
@@ -46,6 +44,8 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Use Amazon S3 endpoint for your region
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Logging
 
 LOGGING = {
     'version': 1,

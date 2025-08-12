@@ -37,11 +37,9 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = []
-
-
 
 # Application definition
 
@@ -82,6 +80,7 @@ INSTALLED_APPS = [
 
     'django_hosts',
     'corsheaders',
+    "django_vite",
 ]
 
 MIDDLEWARE = [
@@ -172,8 +171,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+
+# Path to the frontend source folder
+VITE_APP_DIR = BASE_DIR / "tero_app"
+
+# Vite assets configuration for django-vite
+DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "_out"
+DJANGO_VITE_DEV_MODE = DEBUG
+DJANGO_VITE_MANIFEST_PATH = DJANGO_VITE_ASSETS_PATH / ".vite" / "manifest.json"
+
+# print("Resolved VITE_APP_DIR =", VITE_APP_DIR)
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ BASE_DIR / "static",]
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    DJANGO_VITE_ASSETS_PATH,
+]
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
@@ -195,6 +209,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',  # Finds files in your apps' static directories
     'compressor.finders.CompressorFinder',  # Required for Django Compressor
 ]
+
+
 
 # SMTP settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

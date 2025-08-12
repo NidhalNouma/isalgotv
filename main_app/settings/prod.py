@@ -4,8 +4,6 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-DEBUG = False
-
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'isalgo.com',

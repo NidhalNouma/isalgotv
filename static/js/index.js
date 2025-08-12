@@ -1046,7 +1046,7 @@ htmx.on("htmx:afterRequest", (evt) => {
     !evt?.detail?.target.id.includes("errors")
   ) {
     closeAITokensModalSettings();
-    openModel("modal-algoai");
+    // openModel("modal-algoai");
   }
 
   if (evt?.detail?.target.id === "setting-payment_methods") {

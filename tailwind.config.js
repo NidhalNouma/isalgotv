@@ -12,8 +12,8 @@ module.exports = {
     "./docs/templates/**/*.html",
     "./tero/templates/**/*.html",
     "./static/js/**/*.js",
-    "./tero_app/src/**/*.js",
-    "./tero_app/src/components/**/*.js",
+    "./tero_app/src/**/*.tsx",
+    "./tero_app/src/components/**/*.tsx",
 
     "./node_modules/flowbite/**/*.js",
   ],

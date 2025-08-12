@@ -244,14 +244,14 @@ class Strategy(models.Model):
         text_output = ""
         for section in self.settings:
             section_title = section.get("key", "Unnamed Section")
-            text_output += f"\n{section_title}\n" + "=" * len(section_title) + "\n"
+            text_output += f"\n{section_title}\n" + "=" * len(section_title) + "<br />"
 
             for entry in section.get("value", []):
                 for setting in entry:
                     name = setting.get("display_name", "Unnamed Setting")
                     default_value = setting.get("default_value", "N/A")
 
-                    text_output += f"- {name} => default value: {default_value}\n"
+                    text_output += f"- {name} => default value: {default_value} <br />"
         
         return text_output
 
@@ -343,7 +343,7 @@ class StrategyResults(models.Model):
             if key in performance_data:
                 formatted_output.append(f"{key}: {value}")
 
-        return "; ".join(formatted_output)
+        return "; <br />".join(formatted_output)
 
     def settings_to_text(self):
         """Converts the settings JSON into a structured text format."""
@@ -353,14 +353,14 @@ class StrategyResults(models.Model):
         text_output = ""
         for section in self.settings:
             section_title = section.get("key", "Unnamed Section")
-            text_output += f"\n{section_title}\n" + "=" * len(section_title) + "\n"
+            text_output += f"\n{section_title}\n" + "=" * len(section_title) + "<br />"
 
             for entry in section.get("value", []):
                 for setting in entry:
                     name = setting.get("display_name", "Unnamed Setting")
                     default_value = setting.get("default_value", "N/A")
 
-                    text_output += f"- {name} => Value: {default_value}\n"
+                    text_output += f"- {name} => Value: {default_value} <br />"
         
         return text_output
     

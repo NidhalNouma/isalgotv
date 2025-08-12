@@ -42,13 +42,3 @@ def redirect_admin_logout(request):
     logout(request)
     return redirect('login')
  
-
-# For Apple Pay
-def serve_apple_pay_verification(request):
-    file_path = os.path.join(settings.BASE_DIR, 'main_app', 'verification_files', 'apple-developer-merchantid-domain-association')
-
-    try:
-        with open(file_path, 'r') as file:
-            return HttpResponse(file.read(), content_type='text/plain')
-    except FileNotFoundError:
-        return HttpResponse('File not found', status=404)
