@@ -282,10 +282,40 @@ export function useChatHook() {
     // console.log("read settings ", currentChat, responseChat);
   };
 
-  const [input, setInput] = useState<string>("");
-  const [files, setFiles] = useState<File[]>([]);
+  // --- Per-chat drafts: each chat id has its own input/files ---
+  const activeId = String(currentChat ?? "new-chat");
+
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [fileDrafts, setFileDrafts] = useState<Record<string, File[]>>({});
+
+  const input = drafts[activeId] ?? "";
+  const files = fileDrafts[activeId] ?? [];
+
+  const setInput = (next: string | ((prev: string) => string)) => {
+    setDrafts((prev) => {
+      const prevVal = prev[activeId] ?? "";
+      const nextVal =
+        typeof next === "function"
+          ? (next as (p: string) => string)(prevVal)
+          : next;
+      if (nextVal === prevVal) return prev;
+      return { ...prev, [activeId]: nextVal };
+    });
+  };
+
+  const setFiles = (next: File[] | ((prev: File[]) => File[])) => {
+    setFileDrafts((prev) => {
+      const prevVal = prev[activeId] ?? [];
+      const nextVal =
+        typeof next === "function"
+          ? (next as (p: File[]) => File[])(prevVal)
+          : next;
+      return { ...prev, [activeId]: nextVal };
+    });
+  };
 
   const [loading, setLoading] = useState<boolean>(chat?.isLoading || false);
+  console.log(chat?.isLoading);
 
   const [model, setModel] = useState<AIModel>(AI_MODELS![0]);
 

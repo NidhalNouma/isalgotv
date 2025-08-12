@@ -34,11 +34,12 @@ function Chat({}: ChatProps) {
     models,
     model,
     setModel,
-    loading,
+    // loading,
   } = useChatHook();
 
   const Input: React.ReactNode = (
     <ChatInput
+      key={chat?.id ?? id ?? "__no_chat__"}
       onSend={handleSubmit}
       input={input}
       setInput={setInput}
@@ -47,7 +48,7 @@ function Chat({}: ChatProps) {
       models={models}
       model={model}
       setModel={setModel}
-      loading={loading}
+      loading={chat?.isLoading || false}
     />
   );
 

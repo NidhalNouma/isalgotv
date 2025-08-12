@@ -92,7 +92,9 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     if (chat && (!chat.read || force)) {
       markChatSessionAsRead(chatId).then(() => {
         setChats((prev) =>
-          prev.map((c) => (c.id === chatId ? { ...c, read: true } : c))
+          prev.map((c) =>
+            String(c.id) === String(chatId) ? { ...c, read: true } : c
+          )
         );
       });
     }
@@ -139,7 +141,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     if (!chatId || !user) return;
     await deleteChatSession(chatId);
 
-    setChats((prev) => prev.filter((c) => c.id !== chatId));
+    setChats((prev) => prev.filter((c) => String(c.id) !== String(chatId)));
 
     if (chatId === currentChat) {
       setCurrentChat(null);
@@ -154,7 +156,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     );
     setChats((prev) =>
       prev.map((c) =>
-        c.id === chatId ? { ...c, ...response.chat_session } : c
+        String(c.id) === String(chatId) ? { ...c, ...response.chat_session } : c
       )
     );
   }

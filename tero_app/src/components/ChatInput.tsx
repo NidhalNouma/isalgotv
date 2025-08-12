@@ -85,8 +85,6 @@ export default function ChatInput({
 
     const msg = input.trim() || "";
 
-    // console.log("Submitting message:", msg, currentChat, loading);
-
     if ((msg || files.length > 0) && !loading) {
       if (!user) {
         setShowAuthPopup(true);
