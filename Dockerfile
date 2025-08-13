@@ -121,7 +121,11 @@ CMD ["gunicorn", "main_app.asgi:application", \
      "-k", "uvicorn.workers.UvicornWorker", \
      "-w", "1", \
      "--bind", "0.0.0.0:8000", \
+     "--keep-alive", "75", \
+     "--timeout", "600", \
+     "--graceful-timeout", "600", \
      "--access-logfile", "-", "--error-logfile", "-"]
+
 
 # For async-heavy apps
 # CMD ["gunicorn", "--bind", "0.0.0.0:8000", "main_app.wsgi:application", " -w", "4", "-k", "uvicorn.workers.UvicornWorker", "--access-logfile", "-", "--error-logfile", "-"]

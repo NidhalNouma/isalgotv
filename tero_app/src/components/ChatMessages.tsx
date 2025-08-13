@@ -91,11 +91,7 @@ export default function ChatMessages({
 
   return (
     <Fragment>
-      <ChatScrollContainer
-        scrollCta="Scroll to bottom"
-        onScroll={handleScroll}
-        scrollRef={messagesRef}
-      >
+      <ChatScrollContainer onScroll={handleScroll} scrollRef={messagesRef}>
         <div className="">
           {limit && (
             <aside className="mx-auto md:px-2 px-0 max-w-3xl">

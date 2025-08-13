@@ -8,10 +8,12 @@ import React, {
   type CSSProperties,
 } from "react";
 
+import { ArrowDown } from "lucide-react";
+
 // Props
 interface ChatScrollContainerProps {
   children: ReactNode;
-  scrollCta: ReactNode;
+  scrollCta?: ReactNode;
   onScroll?: (e: UIEvent<HTMLDivElement>) => void;
   scrollRef: React.RefObject<HTMLDivElement | null> | null;
 }
@@ -86,13 +88,23 @@ export const ChatScrollContainer: React.FC<ChatScrollContainerProps> = ({
       >
         {children}
       </div>
-      <button
-        style={buttonStyle}
-        className="absolute bottom-1 left-1/2 btn-text text-xs"
-        onClick={handleScrollButtonClick}
-      >
-        {scrollCta}
-      </button>
+      {scrollCta ? (
+        <button
+          style={buttonStyle}
+          className="absolute bottom-1 left-1/2 btn-text text-xs"
+          onClick={handleScrollButtonClick}
+        >
+          {scrollCta}
+        </button>
+      ) : (
+        <button
+          style={buttonStyle}
+          className="absolute bottom-1 left-1/2 btn-text text-xs py-1.5 px-0.5 rounded-full"
+          onClick={handleScrollButtonClick}
+        >
+          <ArrowDown className="h-4 aspect-auto " />
+        </button>
+      )}
     </div>
   );
 };

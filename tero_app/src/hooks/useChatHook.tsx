@@ -122,6 +122,92 @@ export function useChatHook() {
     selectChat(id);
   }
 
+  // --- Per-chat drafts: each chat id has its own input/files ---
+  const activeId = String(currentChat ?? "new-chat");
+
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [fileDrafts, setFileDrafts] = useState<Record<string, File[]>>({});
+
+  const input = drafts[activeId] ?? "";
+  const files = fileDrafts[activeId] ?? [];
+
+  const setInput = (next: string | ((prev: string) => string)) => {
+    setDrafts((prev) => {
+      const prevVal = prev[activeId] ?? "";
+      const nextVal =
+        typeof next === "function"
+          ? (next as (p: string) => string)(prevVal)
+          : next;
+      if (nextVal === prevVal) return prev;
+      return { ...prev, [activeId]: nextVal };
+    });
+  };
+
+  const setFiles = (next: File[] | ((prev: File[]) => File[])) => {
+    setFileDrafts((prev) => {
+      const prevVal = prev[activeId] ?? [];
+      const nextVal =
+        typeof next === "function"
+          ? (next as (p: File[]) => File[])(prevVal)
+          : next;
+      return { ...prev, [activeId]: nextVal };
+    });
+  };
+
+  const [model, setModel] = useState<AIModel>(AI_MODELS![0]);
+
+  useEffect(() => {
+    function handleDjangoMessage(e: Event) {
+      const ce = e as CustomEvent<{ message: string }>;
+      // console.log("Received message:", ce.detail.message);
+      handleSubmit(null, ce.detail?.message);
+    }
+    window.addEventListener(
+      "teroMessage",
+      handleDjangoMessage as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        "teroMessage",
+        handleDjangoMessage as EventListener
+      );
+    };
+  }, [user]);
+
+  function parseChunks(input: string) {
+    // Markers look like: \n<|TAG|>:
+    const marker = /\n<\|([a-zA-Z]+)\|>:/g;
+
+    type Chunk = { tag: string; payload: string };
+
+    const indices: { tag: string; start: number; endOfMarker: number }[] = [];
+    let m: RegExpExecArray | null;
+
+    // Collect all marker positions and their tags
+    while ((m = marker.exec(input)) !== null) {
+      indices.push({
+        tag: m[1].toLowerCase(),
+        start: m.index,
+        endOfMarker: m.index + m[0].length,
+      });
+    }
+
+    // Build results with payloads (what comes after each tag)
+    const result: Chunk[] = [];
+    for (let i = 0; i < indices.length; i++) {
+      const cur = indices[i];
+      const next = indices[i + 1];
+      const payloadStart = cur.endOfMarker;
+      const payloadEnd = next ? next.start : input.length;
+      // Preserve payload exactly as emitted (including spaces/newlines)
+      const payload = input.slice(payloadStart, payloadEnd);
+
+      result.push({ tag: cur.tag, payload });
+    }
+
+    return result;
+  }
+
   const sendMessage = async (
     msg: string,
     files: File[] | null,
@@ -145,36 +231,56 @@ export function useChatHook() {
       )) as AsyncIterable<string> | any;
 
       for await (const chunk of stream as AsyncIterable<string>) {
-        const chunks = chunk.split("<|END_AI_RESPONSE|>");
+        const chunks = parseChunks(chunk);
 
-        // console.log(chunks, chunks[chunks.length - 1], chunk.length);
-        if (chunks.length > 1) {
-          const parsed: StreamResponseMeta = JSON.parse(
-            chunks[chunks.length - 1]
-          );
+        console.log(chunks);
 
-          if (parsed.error) throw new Error(parsed.error);
+        for (const ch of chunks) {
+          const tag = ch.tag;
+          const payload = ch.payload ?? "";
 
-          if (parsed.limit) {
-            const last = messages[messages.length - 1];
-            if (last && typeof last === "object" && last.isLoading) {
-              messages = messages.slice(0, -1);
+          switch (tag) {
+            case "data": {
+              // Accumulate assistant text and update the typing message live
+              full_reply += payload;
+              console.log(full_reply);
+              setTypingMessage(
+                currentChatId!,
+                messages[messages.length - 1].id,
+                full_reply
+              );
+              break;
             }
-            setChatMessages(currentChatId, messages, null, true);
-            return;
+            case "limit": {
+              // Server indicates token/usage limit reached
+              const last = messages[messages.length - 1];
+              if (last && typeof last === "object" && last.isLoading) {
+                messages = messages.slice(0, -1);
+              }
+              setChatMessages(currentChatId, messages, null, true);
+              return;
+            }
+            case "error": {
+              // Server sent an error payload
+              throw new Error(payload || "Unknown error from stream");
+            }
+            case "done": {
+              // Optionally the payload after <|done|>: may be a JSON meta blob
+              let meta: StreamResponseMeta | undefined;
+              try {
+                meta = payload
+                  ? (JSON.parse(payload) as StreamResponseMeta)
+                  : undefined;
+              } catch (_) {
+                // If it's not JSON, just finish without meta
+              }
+              return meta;
+            }
+            default: {
+              // Unknown tag — ignore and continue
+              break;
+            }
           }
-
-          if (parsed.done) {
-            return parsed;
-          }
-        } else {
-          const text = chunk as string;
-          full_reply += text;
-          setTypingMessage(
-            currentChatId!,
-            messages[messages.length - 1].id,
-            full_reply
-          );
         }
       }
     } catch (err) {
@@ -283,61 +389,6 @@ export function useChatHook() {
     // console.log("read settings ", currentChat, responseChat);
   };
 
-  // --- Per-chat drafts: each chat id has its own input/files ---
-  const activeId = String(currentChat ?? "new-chat");
-
-  const [drafts, setDrafts] = useState<Record<string, string>>({});
-  const [fileDrafts, setFileDrafts] = useState<Record<string, File[]>>({});
-
-  const input = drafts[activeId] ?? "";
-  const files = fileDrafts[activeId] ?? [];
-
-  const setInput = (next: string | ((prev: string) => string)) => {
-    setDrafts((prev) => {
-      const prevVal = prev[activeId] ?? "";
-      const nextVal =
-        typeof next === "function"
-          ? (next as (p: string) => string)(prevVal)
-          : next;
-      if (nextVal === prevVal) return prev;
-      return { ...prev, [activeId]: nextVal };
-    });
-  };
-
-  const setFiles = (next: File[] | ((prev: File[]) => File[])) => {
-    setFileDrafts((prev) => {
-      const prevVal = prev[activeId] ?? [];
-      const nextVal =
-        typeof next === "function"
-          ? (next as (p: File[]) => File[])(prevVal)
-          : next;
-      return { ...prev, [activeId]: nextVal };
-    });
-  };
-
-  // const [loading, setLoading] = useState<boolean>(chat?.isLoading || false);
-  console.log(chat?.isLoading);
-
-  const [model, setModel] = useState<AIModel>(AI_MODELS![0]);
-
-  useEffect(() => {
-    function handleDjangoMessage(e: Event) {
-      const ce = e as CustomEvent<{ message: string }>;
-      // console.log("Received message:", ce.detail.message);
-      handleSubmit(null, ce.detail?.message);
-    }
-    window.addEventListener(
-      "teroMessage",
-      handleDjangoMessage as EventListener
-    );
-    return () => {
-      window.removeEventListener(
-        "teroMessage",
-        handleDjangoMessage as EventListener
-      );
-    };
-  }, [user]);
-
   const handleSubmit = async (
     e?: React.FormEvent | null,
     message: string | null = null
@@ -349,8 +400,6 @@ export function useChatHook() {
     // console.log("Submitting message:", msg, currentChat, loading);
 
     if ((msg || files.length > 0) && !chat?.isLoading) {
-      // setLoading(true);
-
       setInput("");
       setFiles([]);
 
@@ -359,7 +408,6 @@ export function useChatHook() {
       } catch (error) {
         console.error("Error sending message:", error);
       } finally {
-        // setLoading(false);
       }
     }
   };
@@ -377,7 +425,5 @@ export function useChatHook() {
     models: AI_MODELS,
     model,
     setModel,
-
-    // loading,
   };
 }
