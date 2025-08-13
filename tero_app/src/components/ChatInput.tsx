@@ -42,7 +42,7 @@ export default function ChatInput({
 
   loading,
 }: ChatInputProps) {
-  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const [showAuthPopup, setShowAuthPopup] = useState<Boolean>(false);
 
   const { user } = useUser();
 

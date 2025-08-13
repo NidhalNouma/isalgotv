@@ -1,4 +1,6 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
+
+import { AuthPopup } from "../ui/Popup";
 import {
   ChartNoAxesColumn,
   Lightbulb,
@@ -10,10 +12,16 @@ import {
   Bell,
 } from "lucide-react";
 
+import { useUser } from "../contexts/UserContext";
+
 // ---- Types ----
 interface EmptyStateProps {
   Input: React.ReactNode;
   setInput: React.Dispatch<React.SetStateAction<string>>;
+  handleSendMessage: (
+    e: React.FormEvent | null,
+    message: string | null | undefined
+  ) => void | Promise<void>;
 }
 
 type QuickActionOption = string;
@@ -26,7 +34,13 @@ interface QuickActionGroup {
   options: QuickActionOption[];
 }
 
-export default function EmptyState({ Input, setInput }: EmptyStateProps) {
+export default function EmptyState({
+  Input,
+  setInput,
+  handleSendMessage,
+}: EmptyStateProps) {
+  const { user } = useUser();
+  const [showAuthPopup, setShowAuthPopup] = useState<Boolean>(false);
   const [quickActionMsg, setQuuickActionMsg] = useState<string | null>(null);
   const titles = [
     "Ready when you are.",
@@ -50,19 +64,25 @@ export default function EmptyState({ Input, setInput }: EmptyStateProps) {
   useEffect(() => {
     if (quickActionMsg) {
       setInput(quickActionMsg);
+
+      if (!user) setShowAuthPopup(true);
+      else handleSendMessage(null, quickActionMsg);
     }
   }, [quickActionMsg]);
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center md:px-4 px-1 h-full">
-      <h1 className="text-4xl font-semibold mb-8 text-title text-center">
-        {title}
-      </h1>
+    <Fragment>
+      {showAuthPopup && <AuthPopup onClose={() => setShowAuthPopup(false)} />}
+      <div className="flex-1 flex flex-col items-center justify-center md:px-4 px-1 h-full">
+        <h1 className="text-4xl font-semibold mb-8 text-title text-center">
+          {title}
+        </h1>
 
-      <div className="w-full max-w-3xl mx-auto">{Input}</div>
+        <div className="w-full max-w-3xl mx-auto">{Input}</div>
 
-      <QuickActions setQuuickActionMsg={setQuuickActionMsg} />
-    </div>
+        <QuickActions setQuuickActionMsg={setQuuickActionMsg} />
+      </div>
+    </Fragment>
   );
 }
 
@@ -203,7 +223,10 @@ function QuickActions({ setQuuickActionMsg }: QuickActionsProps) {
             }  `}
           >
             <div
-              onClick={() => setQuuickActionMsg(v)}
+              onClick={() => {
+                setQuuickActionMsg(v);
+                setOptions(null);
+              }}
               className={`transition-all duration-200 ease-out  hover:bg-text/20 rounded-lg py-2 px-2 text-text/80 hover:text-text cursor-pointer `}
             >
               <p className="font-medium text-sm ">{v}</p>
@@ -220,7 +243,9 @@ function QuickActions({ setQuuickActionMsg }: QuickActionsProps) {
             key={i}
             label={v.label}
             icon={v.icon(iconClassName)}
-            onClick={() => setOptions(v.options)}
+            onClick={() => {
+              setOptions(v.options);
+            }}
           />
         ))}
       </div>
@@ -243,7 +268,6 @@ function ActionButton({ icon, label, onClick }: ActionButtonProps) {
       <div className="text-text/60">{icon}</div>
       <div>
         <div className="font-medium text-sm text-text/80">{label}</div>
-        {/* <div className="text-sm text-text/60">{description}</div> */}
       </div>
     </button>
   );

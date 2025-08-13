@@ -111,7 +111,13 @@ export function useChatHook() {
     const id = "new-chat";
     setChats([
       ...(chats as ChatSession[]),
-      { id, name: chatName, messages: msgs, hidden: true } as ChatSession,
+      {
+        id,
+        name: chatName,
+        messages: msgs,
+        hidden: true,
+        isLoading: true,
+      } as ChatSession,
     ]);
     selectChat(id);
   }
@@ -123,7 +129,7 @@ export function useChatHook() {
   ) => {
     if (!msg?.trim()) return;
 
-    const currentChatId = currentChat as string | number | undefined;
+    const currentChatId = currentChat || "new-chat";
     setChatMessages(currentChatId, messages, null, false, true);
 
     try {
@@ -141,7 +147,7 @@ export function useChatHook() {
       for await (const chunk of stream as AsyncIterable<string>) {
         const chunks = chunk.split("<|END_AI_RESPONSE|>");
 
-        console.log(chunks, chunks[chunks.length - 1], chunk.length);
+        // console.log(chunks, chunks[chunks.length - 1], chunk.length);
         if (chunks.length > 1) {
           const parsed: StreamResponseMeta = JSON.parse(
             chunks[chunks.length - 1]
@@ -154,12 +160,7 @@ export function useChatHook() {
             if (last && typeof last === "object" && last.isLoading) {
               messages = messages.slice(0, -1);
             }
-            setChatMessages(
-              currentChat as string | number,
-              messages,
-              null,
-              true
-            );
+            setChatMessages(currentChatId, messages, null, true);
             return;
           }
 
@@ -314,7 +315,7 @@ export function useChatHook() {
     });
   };
 
-  const [loading, setLoading] = useState<boolean>(chat?.isLoading || false);
+  // const [loading, setLoading] = useState<boolean>(chat?.isLoading || false);
   console.log(chat?.isLoading);
 
   const [model, setModel] = useState<AIModel>(AI_MODELS![0]);
@@ -347,8 +348,8 @@ export function useChatHook() {
 
     // console.log("Submitting message:", msg, currentChat, loading);
 
-    if ((msg || files.length > 0) && !loading) {
-      setLoading(true);
+    if ((msg || files.length > 0) && !chat?.isLoading) {
+      // setLoading(true);
 
       setInput("");
       setFiles([]);
@@ -358,7 +359,7 @@ export function useChatHook() {
       } catch (error) {
         console.error("Error sending message:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     }
   };
@@ -377,114 +378,6 @@ export function useChatHook() {
     model,
     setModel,
 
-    loading,
+    // loading,
   };
 }
-
-// Hook in charge of input, files, model and submit UX
-// export function SendMessageHook(
-//   handleSendMessage: (messageContent: string, files: File[], model: AIModel) => Promise<void>,
-//   toggleAuthPopup: () => void
-// ) {
-//   const { user } = useUser();
-//   const { currentChat } = useChat();
-
-//   const [input, setInput] = useState<string>("");
-//   const [files, setFiles] = useState<File[]>([]);
-
-//   const [loading, setLoading] = useState<boolean>(false);
-
-//   const [model, setModel] = useState<AIModel>(AI_MODELS![0]);
-
-//   const fileInputRef = useRef<HTMLInputElement | null>(null);
-//   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-//   useEffect(() => {
-//     function handleDjangoMessage(e: Event) {
-//       const ce = e as CustomEvent<{ message: string }>;
-//       // console.log("Received message:", ce.detail.message);
-//       handleSubmit(null, ce.detail?.message);
-//     }
-//     window.addEventListener("teroMessage", handleDjangoMessage as EventListener);
-//     return () => {
-//       window.removeEventListener("teroMessage", handleDjangoMessage as EventListener);
-//     };
-//   }, [user]);
-
-//   const handleSubmit = async (
-//     e?: React.FormEvent | null,
-//     message: string | null = null
-//   ) => {
-//     e?.preventDefault();
-
-//     const msg = (input.trim() || message || "");
-
-//     // console.log("Submitting message:", msg, currentChat, loading);
-
-//     if ((msg || files.length > 0) && !loading) {
-//       if (!user) {
-//         toggleAuthPopup();
-//         return;
-//       }
-
-//       setLoading(true);
-
-//       setInput("");
-//       setFiles([]);
-
-//       if (fileInputRef.current) {
-//         fileInputRef.current.value = "";
-//       }
-//       if (textareaRef.current) {
-//         textareaRef.current.style.height = "auto";
-//       }
-
-//       try {
-//         await handleSendMessage(msg, files, model);
-//       } catch (error) {
-//         console.error("Error sending message:", error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }
-//   };
-
-//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.files) {
-//       setFiles(Array.from(e.target.files));
-//     }
-//   };
-
-//   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-//     if (e.key === "Enter" && !e.shiftKey) {
-//       e.preventDefault();
-//       handleSubmit(e);
-//     }
-//   };
-
-//   const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
-//     const textarea = e.currentTarget;
-//     setInput(textarea.value);
-//     textarea.style.height = "auto";
-//     textarea.style.height = `${textarea.scrollHeight}px`;
-//   };
-
-//   return {
-//     input,
-//     files,
-//     fileInputRef,
-//     textareaRef,
-//     setInput,
-//     setFiles,
-//     handleSubmit,
-//     handleFileChange,
-//     handleKeyDown,
-//     handleInput,
-
-//     models: AI_MODELS,
-//     model,
-//     setModel,
-
-//     loading,
-//   } as const;
-// }

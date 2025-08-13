@@ -128,12 +128,12 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
   ) {
     newChat.messages = [
       userMessage,
-      { ...(answer as any), isNew: true, isLoading: false },
+      { ...answer, isNew: true, isLoading: false },
     ];
     setChats((prev) => [newChat, ...prev]);
 
     setCurrentChat((prev) =>
-      prev === null || prev.toString().includes("new") ? newChat.id : prev
+      prev === null || String(prev).includes("new") ? newChat.id : prev
     );
   }
 

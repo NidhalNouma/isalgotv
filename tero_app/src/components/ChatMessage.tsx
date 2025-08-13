@@ -56,14 +56,14 @@ export default function ChatMessage({
           <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text flex-1 ">
             {message}
           </div>
+        ) : message.length > 0 ? (
+          <div className="max-w-full w-full relative text-text flex-shrink p-1 overflow-hidden">
+            <AiResponseMarkdown
+              message={message as string}
+              isStreaming={loading}
+            />
+          </div>
         ) : (
-          !loading && (
-            <div className="max-w-full w-full relative text-text flex-shrink p-1 overflow-hidden">
-              <AiResponseMarkdown message={message as string} />
-            </div>
-          )
-        )}
-        {loading && (
           <div className="max-w-full w-full text-text flex-shrink p-1">
             <div className="w-full">
               <div className="w-full h-8 rounded-xl animate-pulse btn-ai"></div>

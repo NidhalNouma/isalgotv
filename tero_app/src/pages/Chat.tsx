@@ -55,7 +55,11 @@ function Chat({}: ChatProps) {
   return (
     <Fragment>
       {messages.length === 0 && !currentChat ? (
-        <EmptyState Input={Input} setInput={setInput} />
+        <EmptyState
+          Input={Input}
+          setInput={setInput}
+          handleSendMessage={handleSubmit}
+        />
       ) : (
         <ChatMessages
           messages={messages}

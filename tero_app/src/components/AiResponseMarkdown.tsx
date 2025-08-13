@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -7,10 +7,12 @@ import { Copy, Check } from "lucide-react";
 
 interface AiResponseMarkdownProps {
   message: string;
+  isStreaming?: boolean;
 }
 
 export default function AiResponseMarkdown({
   message,
+  isStreaming = false,
 }: AiResponseMarkdownProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
@@ -23,7 +25,13 @@ export default function AiResponseMarkdown({
   };
 
   return (
-    <Fragment>
+    <div
+      className={isStreaming ? "relative transition-opacity duration-300" : ""}
+    >
+      <style>{`
+        @keyframes ai-blink-caret { 0%, 40% { opacity: 1 } 50%, 100% { opacity: 0 } }
+        .ai-caret { display: inline-block; width: 0.5ch; height: 1em; margin-left: 2px; vertical-align: -0.15em; background: currentColor; animation: ai-blink-caret 1s steps(1,end) infinite; border-radius: 2px; }
+      `}</style>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         // "components" typing from react-markdown is broad; use inline type assertions for handlers
@@ -168,6 +176,9 @@ export default function AiResponseMarkdown({
       >
         {message}
       </ReactMarkdown>
-    </Fragment>
+      {isStreaming && (
+        <span aria-hidden="true" className="ai-caret text-text/70" />
+      )}
+    </div>
   );
 }
