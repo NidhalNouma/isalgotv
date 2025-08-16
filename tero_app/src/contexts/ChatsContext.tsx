@@ -59,8 +59,10 @@ export interface ChatsContextValue {
   retrieveChats: () => void;
   newMessagesAdded: (
     chatId: number | string,
+    userMsgTempId: number | string,
     userMessage: ChatMessage,
-    answer: ChatMessage
+    responseMsgTempId: number | string,
+    responseMessage: ChatMessage
   ) => void;
   getOlderMessages: () => void;
   currentChat: number | string | null;
@@ -165,25 +167,35 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
 
   function newMessagesAdded(
     chatId: number | string,
+    userMsgTempId: number | string,
     userMessage: ChatMessage,
-    answer: ChatMessage
+    responseMsgTempId: number | string,
+    responseMessage: ChatMessage
   ) {
-    const chat = chats.find((c) => c.id === chatId);
-    if (chat) {
-      console.log("Adding new messages to chat:", chatId);
-      setChats((prev) =>
-        prev.map((c) =>
-          c.id === chatId
-            ? {
-                ...c,
-                isLoading: false,
-                read: false,
-                messages: [...(chat.messages || []), userMessage, answer],
-              }
-            : c
-        )
-      );
-    }
+    console.log("Adding new messages to chat:", chatId);
+    setChats((prev) =>
+      prev.map((c) =>
+        c.id === chatId
+          ? {
+              ...c,
+              isLoading: false,
+              read: false,
+              messages: c.messages?.map((msg) => {
+                if (String(msg.id) === String(userMsgTempId))
+                  return { ...msg, id: userMessage.id };
+                else if (String(msg.id) === String(responseMsgTempId))
+                  return {
+                    ...msg,
+                    id: responseMessage.id,
+                    content: responseMessage.content,
+                  };
+
+                return msg;
+              }),
+            }
+          : c
+      )
+    );
   }
 
   function getMessagesByChat() {

@@ -96,7 +96,7 @@ export function useChatHook() {
                 ? {
                     ...msg,
                     content: reply,
-                    isLoading: false,
+                    isLoading: true,
                   }
                 : msg
             ),
@@ -243,12 +243,6 @@ export function useChatHook() {
             case "data": {
               // Accumulate assistant text and update the typing message live
               full_reply += payload;
-              console.log(full_reply);
-              setTypingMessage(
-                currentChatId!,
-                messages[messages.length - 1].id,
-                full_reply
-              );
               break;
             }
             case "limit": {
@@ -282,6 +276,13 @@ export function useChatHook() {
             }
           }
         }
+
+        console.log(full_reply);
+        setTypingMessage(
+          currentChatId!,
+          messages[messages.length - 1].id,
+          full_reply
+        );
       }
     } catch (err) {
       console.error("Error fetching response:", err);
@@ -316,7 +317,7 @@ export function useChatHook() {
       content += `\n\nAttached files: ${fileNames}`;
     }
 
-    const newMessage: ChatMessage = {
+    const tempMsg: ChatMessage = {
       id: messages.length.toString() + "_",
       role: "user",
       content: content,
@@ -328,48 +329,32 @@ export function useChatHook() {
     };
 
     if (!currentChat) {
-      messages = [...messages, newMessage, loadingMsg];
+      messages = [...messages, tempMsg, loadingMsg];
       addTempChatMessages("new-chat", messages);
-      await simulateResponse(content, files, modelName, true);
     } else {
       if (!chat?.error && !chat?.limit) {
-        messages = [...messages, newMessage, loadingMsg];
+        messages = [...messages, tempMsg, loadingMsg];
         setChatMessages(currentChat as string | number, messages);
       }
       if (chat?.error || chat?.limit) {
         messages = [...messages, loadingMsg];
         setChatMessages(currentChat as string | number, messages);
       }
-      await simulateResponse(
-        content,
-        files,
-        modelName,
-        currentChat === "new-chat"
-      );
     }
-  };
 
-  const simulateResponse = async (
-    userMessage: string,
-    files: File[] | null,
-    modelName: string,
-    isNewChat = false
-  ) => {
-    const response = (await sendMessage(userMessage, files, modelName)) as
-      | StreamResponseMeta
-      | null
-      | undefined;
+    const isNewChat = currentChat === "new-chat" || !currentChat;
+
+    const response = (await sendMessage(
+      content,
+      files,
+      modelName
+    )) as StreamResponseMeta;
 
     const newMessage = response ? response.answer : null;
 
-    const responseChat = response?.chat_session as ChatSession | undefined;
-    const responseUserMessage = response?.user_message as
-      | ChatMessage
-      | undefined;
-    const responseAiMessage = response?.system_answer as
-      | ChatMessage
-      | undefined;
-
+    const responseChat = response?.chat_session as ChatSession;
+    const responseUserMessage = response?.user_message as ChatMessage;
+    const responseAiMessage = response?.system_answer as ChatMessage;
     const daylyToken = response?.ai_free_daily_tokens_available;
     const aiTokensAvailable = response?.ai_tokens_available;
 
@@ -377,16 +362,16 @@ export function useChatHook() {
       updateTokens(daylyToken!, aiTokensAvailable!);
 
       if (isNewChat) {
-        newChatAdded(responseChat!, responseUserMessage!, responseAiMessage!);
+        newChatAdded(responseChat, responseUserMessage, responseAiMessage);
       } else
         newMessagesAdded(
-          responseChat!.id,
-          responseUserMessage!,
-          responseAiMessage!
+          responseChat.id,
+          tempMsg.id,
+          responseUserMessage,
+          loadingMsg.id,
+          responseAiMessage
         );
     }
-
-    // console.log("read settings ", currentChat, responseChat);
   };
 
   const handleSubmit = async (

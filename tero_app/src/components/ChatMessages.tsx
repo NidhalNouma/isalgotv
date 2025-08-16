@@ -183,7 +183,7 @@ export default function ChatMessages({
         {messages
           .map((message, i) => (
             <ChatMessage
-              key={String(message.id || i)}
+              key={String(i)}
               message={message.content ?? ""}
               isUser={message.role === "user"}
               loading={message.isLoading}
