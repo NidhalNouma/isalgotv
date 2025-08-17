@@ -2,8 +2,11 @@ import { Fragment } from "react";
 // import { UserCircle } from "lucide-react";
 import AiResponseMarkdown from "./AiResponseMarkdown";
 
+import type { CSSProperties } from "react";
+
 interface ChatMessageProps {
   className?: string;
+  style?: CSSProperties;
   message: string;
   isUser: boolean;
   loading?: boolean;
@@ -11,13 +14,17 @@ interface ChatMessageProps {
 
 export default function ChatMessage({
   className,
+  style,
   message,
   isUser,
   loading,
 }: ChatMessageProps) {
   return (
-    <div className={className}>
-      <div className="max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5">
+    <div className={`${className || ""} h-fit`}>
+      <div
+        className={"max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5 h-fit"}
+        style={style}
+      >
         <div className="w-8 h-8 flex-shrink-0">
           {isUser ? (
             <Fragment></Fragment>
@@ -53,21 +60,19 @@ export default function ChatMessage({
           )}
         </div>
         {isUser ? (
-          <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text flex-1 ">
+          <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text h-fit flex-1 ">
             {message}
           </div>
         ) : message.length > 0 ? (
-          <div className="max-w-full w-full relative text-text flex-shrink p-1 overflow-hidden">
+          <div className="max-w-full w-full relative text-text flex-shrink h-fit p-1">
             <AiResponseMarkdown
               message={message as string}
               isStreaming={loading as boolean}
             />
           </div>
         ) : (
-          <div className="max-w-full w-full text-text flex-shrink p-1">
-            <div className="w-full">
-              <div className="w-full h-8 rounded-xl animate-pulse btn-ai"></div>
-            </div>
+          <div className="max-w-full w-full text-text flex-shrink h-fit">
+            <div className="w-full h-8 rounded-xl animate-pulse btn-ai" />
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useLayoutEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -14,8 +14,26 @@ interface AiResponseMarkdownProps {
 
 export default function AiResponseMarkdown({
   message,
+  isStreaming,
 }: AiResponseMarkdownProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  // Typing effect state
+  const [displayedMessage, setDisplayedMessage] = useState<string>("");
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  // const [totalLength, setTotalLength] = useState<number>(0);
+
+  useLayoutEffect(() => {
+    if (isStreaming)
+      if (currentIndex < message.length) {
+        const timeout = setTimeout(() => {
+          setDisplayedMessage((prev) => prev + message[currentIndex]);
+          setCurrentIndex((prev) => prev + 1);
+        }, 0.4 + Math.random() * 5); // Varying speed for more natural effect
+
+        return () => clearTimeout(timeout);
+      }
+  }, [currentIndex]);
 
   const handleCopyCode = (code: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -212,11 +230,15 @@ export default function AiResponseMarkdown({
   } as const;
 
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={sharedComponents as Components}
-    >
-      {message}
-    </ReactMarkdown>
+    <Fragment>
+      <div className="relative ">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={sharedComponents as Components}
+        >
+          {isStreaming ? displayedMessage : message}
+        </ReactMarkdown>
+      </div>
+    </Fragment>
   );
 }

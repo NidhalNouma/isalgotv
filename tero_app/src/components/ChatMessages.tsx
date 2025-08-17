@@ -187,9 +187,23 @@ export default function ChatMessages({
               message={message.content ?? ""}
               isUser={message.role === "user"}
               loading={message.isLoading}
+              style={
+                message.isLoading && i === messages.length - 1
+                  ? {
+                      minHeight: messagesRef.current
+                        ? messagesRef.current.clientHeight - 100
+                        : "fit-content",
+                    }
+                  : {
+                      // minHeight: messagesRef.current
+                      //   ? messagesRef.current.clientHeight - 100
+                      //   : "fit-content",
+                    }
+              }
             />
           ))
           .reverse()}
+
         {/* Spacer for top margin */}
         <div className="max-w-3xl py-6" />
       </ChatScrollContainer>

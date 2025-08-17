@@ -103,7 +103,23 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
   }
 
   const selectChat = (id: number | string | null) => {
-    setCurrentChat(id);
+    if (String(currentChat) !== String(id)) {
+      // Reset previous loading messages
+      setChats((prev) =>
+        prev.map((c) =>
+          String(c.id) === String(id)
+            ? {
+                ...c,
+                messages: c.messages?.map((msg) =>
+                  msg.isLoading ? { ...msg, isLoading: false } : msg
+                ),
+              }
+            : c
+        )
+      );
+      // Select the new chat
+      setCurrentChat(id);
+    }
     if (id) markSessionAsRead(id);
   };
 
@@ -188,6 +204,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
                     ...msg,
                     id: responseMessage.id,
                     content: responseMessage.content,
+                    // isLoading: false,
                   };
 
                 return msg;
