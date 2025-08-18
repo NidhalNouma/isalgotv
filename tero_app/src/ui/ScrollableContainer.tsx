@@ -80,7 +80,7 @@ export const ChatScrollContainer: React.FC<ChatScrollContainerProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col overflow-y-hidden">
+    <div className="relative flex flex-col overflow-y-hidden h-full">
       <div
         className="relative flex flex-col-reverse space-y-4 space-y-reverse h-fit max-h-fit overflow-y-auto no-scrollbar"
         onScroll={handleScroll}

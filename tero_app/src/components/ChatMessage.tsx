@@ -2,11 +2,12 @@ import { Fragment } from "react";
 // import { UserCircle } from "lucide-react";
 import AiResponseMarkdown from "./AiResponseMarkdown";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, Ref } from "react";
 
 interface ChatMessageProps {
   className?: string;
   style?: CSSProperties;
+  ref?: Ref<HTMLDivElement>;
   message: string;
   isUser: boolean;
   loading?: boolean;
@@ -15,12 +16,13 @@ interface ChatMessageProps {
 export default function ChatMessage({
   className,
   style,
+  ref,
   message,
   isUser,
   loading,
 }: ChatMessageProps) {
   return (
-    <div className={`${className || ""} h-fit`}>
+    <div className={`${className || ""} h-fit`} ref={ref}>
       <div
         className={"max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5 h-fit"}
         style={style}
@@ -60,8 +62,8 @@ export default function ChatMessage({
           )}
         </div>
         {isUser ? (
-          <div className=" max-w-xl ml-auto bg-text/10 px-3 py-2 rounded-lg text-text h-fit flex-1 ">
-            {message}
+          <div className=" max-w-xl ml-auto bg-text/10 px-3 pt-2  rounded-lg text-text h-fit flex-1 ">
+            <AiResponseMarkdown message={message as string} />
           </div>
         ) : message.length > 0 ? (
           <div className="max-w-full w-full relative text-text flex-shrink h-fit p-1">

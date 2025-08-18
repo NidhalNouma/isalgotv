@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 import {
   Search,
@@ -237,8 +236,7 @@ const MinSideBar: React.FC<MinSideBarProps> = ({
   openSettings,
   openTokens,
 }) => {
-  const navigate = useNavigate();
-  const { createNewChat, currentChat } = useChat();
+  const { createNewChat, currentChat, selectChat } = useChat();
   const { user } = useUser();
 
   const [hideLogo, setHideLogo] = useState(false);
@@ -278,7 +276,9 @@ const MinSideBar: React.FC<MinSideBarProps> = ({
 
       {page === "chat" && (
         <button
-          onClick={() => navigate("/chat")}
+          onClick={() => {
+            selectChat(null);
+          }}
           disabled={!currentChat}
           className="px-2 py-1 btn-icon ml-auto mr-auto rounded-md transition-colors "
           aria-label="New Chat"
@@ -407,8 +407,8 @@ const FullSideBar: React.FC<FullSideBarProps> = ({
   openSettings,
   openTokens,
 }) => {
-  const navigate = useNavigate();
-  const { chats, createNewChat, retrieveChats, currentChat } = useChat();
+  const { chats, createNewChat, retrieveChats, currentChat, selectChat } =
+    useChat();
   const { user } = useUser();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -463,7 +463,7 @@ const FullSideBar: React.FC<FullSideBarProps> = ({
         <button
           disabled={!currentChat}
           onClick={() => {
-            navigate("/chat");
+            selectChat(null);
           }}
           className="px-2 py-1 gap-1 btn-icon rounded-md transition-colors w-full max-w-xs "
           aria-label="New Chat"

@@ -194,11 +194,7 @@ export default function ChatMessages({
                         ? messagesRef.current.clientHeight - 100
                         : "fit-content",
                     }
-                  : {
-                      // minHeight: messagesRef.current
-                      //   ? messagesRef.current.clientHeight - 100
-                      //   : "fit-content",
-                    }
+                  : {}
               }
             />
           ))

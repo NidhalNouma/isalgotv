@@ -109,17 +109,17 @@ export default function AiResponseMarkdown({
       </CodeBlock>
     ),
     h1: ({ node, children, ...props }: any) => (
-      <h1 className="text-3xl font-bold mt-8 mb-6 text-title" {...props}>
+      <h1 className="text-3xl font-bold mb-6 text-title" {...props}>
         {children}
       </h1>
     ),
     h2: ({ node, children, ...props }: any) => (
-      <h2 className="text-2xl font-semibold mt-6 mb-4 text-title/90" {...props}>
+      <h2 className="text-2xl font-semibold mb-4 text-title/90" {...props}>
         {children}
       </h2>
     ),
     h3: ({ node, children, ...props }: any) => (
-      <h3 className="text-xl font-semibold mt-5 mb-3 text-title/80" {...props}>
+      <h3 className="text-xl font-semibold mb-3 text-title/80" {...props}>
         {children}
       </h3>
     ),
@@ -231,7 +231,7 @@ export default function AiResponseMarkdown({
 
   return (
     <Fragment>
-      <div className="relative ">
+      <div className="relative space-y-4">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={sharedComponents as Components}

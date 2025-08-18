@@ -16,6 +16,7 @@ import {
   updateChatSession,
   markChatSessionAsRead,
 } from "../api/chat";
+import { useNavigate } from "react-router-dom";
 
 // --- Types ---------------------------------------------------------------
 
@@ -32,6 +33,7 @@ export interface ChatSession {
   isLastPage?: boolean;
   start?: number;
   messages?: ChatMessage[];
+  hidden?: boolean;
   // Keep it open to accept any extra fields coming from the API
   [key: string]: any;
 }
@@ -79,14 +81,11 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { user } = useUser();
+  const navigate = useNavigate();
 
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [loadingChats, setLoadingChats] = useState<boolean>(false);
   const [currentChat, setCurrentChat] = useState<number | string | null>(null);
-
-  useEffect(() => {
-    console.log("changing chat ,", currentChat);
-  }, [currentChat]);
 
   function markSessionAsRead(chatId: number | string, force: boolean = false) {
     const chat = chats.find((c) => String(c.id) === String(chatId));
@@ -121,6 +120,8 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
       setCurrentChat(id);
     }
     if (id) markSessionAsRead(id);
+
+    if (!id) navigate("/chat");
   };
 
   const isLAstChat = useRef<boolean>(false);
@@ -148,12 +149,33 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
       userMessage,
       { ...answer, isNew: true, isLoading: false },
     ];
-    setChats((prev) => [newChat, ...prev]);
+    // setChats((prev) => [newChat, ...prev]);
+
+    setChats((prev) =>
+      prev.map((chat) =>
+        String(chat.id) === "new-chat"
+          ? {
+              ...chat,
+              hidden: false,
+              isLoading: false,
+              id: newChat.id,
+              title: newChat.title,
+              created_at: newChat.created_at,
+              last_updated: newChat.last_updated,
+              messages: chat.messages,
+            }
+          : chat
+      )
+    );
 
     setCurrentChat((prev) =>
       prev === null || String(prev).includes("new") ? newChat.id : prev
     );
   }
+
+  useEffect(() => {
+    console.log("changing chat ,", currentChat);
+  }, [currentChat]);
 
   async function deleteChat(chatId: number | string) {
     if (!chatId || !user) return;
@@ -161,7 +183,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
 
     setChats((prev) => prev.filter((c) => String(c.id) !== String(chatId)));
 
-    if (chatId === currentChat) {
+    if (String(chatId) === String(currentChat)) {
       setCurrentChat(null);
     }
   }

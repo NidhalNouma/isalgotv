@@ -110,7 +110,6 @@ export function useChatHook() {
   function addTempChatMessages(chatName: string, msgs: ChatMessage[]) {
     const id = "new-chat";
     setChats([
-      ...(chats as ChatSession[]),
       {
         id,
         name: chatName,
@@ -118,6 +117,7 @@ export function useChatHook() {
         hidden: true,
         isLoading: true,
       } as ChatSession,
+      ...(chats as ChatSession[]),
     ]);
     selectChat(id);
   }
