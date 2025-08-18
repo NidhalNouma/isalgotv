@@ -21,7 +21,6 @@ export default function AiResponseMarkdown({
   // Typing effect state
   const [displayedMessage, setDisplayedMessage] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  // const [totalLength, setTotalLength] = useState<number>(0);
 
   useLayoutEffect(() => {
     if (isStreaming)

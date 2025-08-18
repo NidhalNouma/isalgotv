@@ -147,7 +147,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
   ) {
     newChat.messages = [
       userMessage,
-      { ...answer, isNew: true, isLoading: false },
+      { ...answer, isNew: true, isLoading: true },
     ];
     // setChats((prev) => [newChat, ...prev]);
 
@@ -162,7 +162,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
               title: newChat.title,
               created_at: newChat.created_at,
               last_updated: newChat.last_updated,
-              messages: chat.messages,
+              messages: newChat.messages,
             }
           : chat
       )
