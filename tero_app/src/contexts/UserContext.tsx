@@ -5,21 +5,9 @@ import React, {
   useEffect,
   type ReactNode,
 } from "react";
-import { type AIModel } from "../constant";
 
-export interface User {
-  email: string;
-  id: number | string;
-  tradingviewUsername: string;
-  isLifetime: boolean;
-  hasSubscription: boolean;
-  subscriptionPlan: string;
-}
-
-export interface Tokens {
-  availabel: number;
-  free: number;
-}
+import { type AIModel } from "../types/user";
+import type { User, Tokens } from "../types/user";
 
 interface UserContextValue {
   user: User | null | undefined;
@@ -30,17 +18,10 @@ interface UserContextValue {
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 // Local fallback types for window.__TERO_CONTEXT__ in case global ambient type isn't picked up
-interface TeroUserRaw {
-  email: string;
-  id: number | string;
-  tvUsername: string;
-  isLifetime: string;
-  hasSubscription: string;
-  subscriptionPlan: string;
-}
+
 interface TeroContextRaw {
   models?: AIModel[];
-  user?: TeroUserRaw;
+  user?: User;
   tokens?: {
     aiTokensAvailable?: string;
     aiFreeTokens?: string;
@@ -72,7 +53,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         ? {
             email: ctx.user.email,
             id: ctx.user.id,
-            tradingviewUsername: ctx.user.tvUsername,
+            tradingviewUsername: ctx.user.tradingviewUsername,
             isLifetime: ctx.user.isLifetime === "True",
             hasSubscription: ctx.user.hasSubscription === "True",
             subscriptionPlan: ctx.user.subscriptionPlan,

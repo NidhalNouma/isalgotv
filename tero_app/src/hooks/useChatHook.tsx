@@ -3,37 +3,14 @@ import { useChat } from "../contexts/ChatsContext";
 import { useUser } from "../contexts/UserContext";
 import { getStreamAnswer } from "../api/chat";
 
-import { AI_MODELS, type AIModel } from "../constant";
+import { AI_MODELS } from "../constant";
+import { type AIModel } from "../types/user";
 
-// --------- Types ---------
-export interface ChatMessage {
-  id: string | number;
-  role: "user" | "assistant" | "system";
-  content?: string;
-  isLoading?: boolean;
-}
-
-export interface ChatSession {
-  id: string | number;
-  name?: string;
-  messages: ChatMessage[];
-  error?: string | null;
-  limit?: boolean;
-  isLoading?: boolean;
-  hidden?: boolean;
-}
-
-interface StreamResponseMeta {
-  answer?: string;
-  chat_session?: ChatSession;
-  user_message?: ChatMessage;
-  system_answer?: ChatMessage;
-  ai_free_daily_tokens_available?: number;
-  ai_tokens_available?: number;
-  limit?: boolean;
-  done?: boolean;
-  error?: string;
-}
+import type {
+  ChatSession,
+  ChatMessage,
+  StreamResponseMeta,
+} from "../types/chat";
 
 // Hook that manages a single chat session state and sending/streaming
 export function useChatHook() {

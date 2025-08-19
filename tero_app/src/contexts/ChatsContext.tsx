@@ -18,37 +18,14 @@ import {
 } from "../api/chat";
 import { useNavigate } from "react-router-dom";
 
+import type {
+  ChatSession,
+  ChatMessage,
+  FetchMessagesResponse,
+  FetchSessionsResponse,
+} from "../types/chat";
+
 // --- Types ---------------------------------------------------------------
-
-export interface ChatMessage {
-  // Message shape is not fully known; keep it flexible
-  [key: string]: any;
-}
-
-export interface ChatSession {
-  id: number | string;
-  title?: string;
-  read?: boolean;
-  isLoading?: boolean;
-  isLastPage?: boolean;
-  start?: number;
-  messages?: ChatMessage[];
-  hidden?: boolean;
-  // Keep it open to accept any extra fields coming from the API
-  [key: string]: any;
-}
-
-interface FetchSessionsResponse {
-  is_last_page: boolean;
-  chat_sessions: ChatSession[];
-}
-
-interface FetchMessagesResponse {
-  is_last_page: boolean;
-  chat_messages: ChatMessage[];
-  session: ChatSession;
-  start?: number;
-}
 
 export interface ChatsContextValue {
   chats: ChatSession[];
@@ -130,11 +107,13 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     if (isLAstChat.current) return;
     if (loadingChats) return;
     setLoadingChats(true);
-    fetchChatSessions(chats.length as number).then((raw) => {
+    const unhiddenChats = chats.filter((chat) => !chat.hidden);
+    fetchChatSessions(unhiddenChats.length as number).then((raw) => {
       const data = raw as FetchSessionsResponse;
       const isLastPage = data.is_last_page;
       isLAstChat.current = isLastPage;
       const dchats = data.chat_sessions;
+      // console.log(dchats);
       setChats((prev) => [...prev, ...dchats]);
       setLoadingChats(false);
     });
@@ -145,10 +124,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     userMessage: ChatMessage,
     answer: ChatMessage
   ) {
-    newChat.messages = [
-      userMessage,
-      { ...answer, isNew: true, isLoading: true },
-    ];
+    newChat.messages = [userMessage, { ...answer, isLoading: true }];
     // setChats((prev) => [newChat, ...prev]);
 
     setChats((prev) =>
@@ -250,27 +226,41 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     console.log("fetching messages ...", chat);
 
     setLoadingMessages(true);
-    fetchChatMessages(currentChat as number | string, 0).then((raw) => {
-      const data = raw as FetchMessagesResponse;
-      const isLastPage = data.is_last_page;
-      const newMessages = data.chat_messages;
-      const session = data.session;
-      const start = data.start || 0;
-      setChats((prev) =>
-        prev.map((c) =>
-          String(c.id) === String(currentChat)
-            ? {
+    fetchChatMessages(currentChat as number | string, 0)
+      .then((raw) => {
+        const data = raw as FetchMessagesResponse;
+        const isLastPage = data.is_last_page;
+        const newMessages = data.chat_messages;
+        const session = data.session;
+        const start = data.start || 0;
+        setChats((prev) => {
+          if (prev.find((c) => String(c.id) === String(currentChat)))
+            return prev.map((c) =>
+              String(c.id) === String(currentChat)
+                ? {
+                    ...session,
+                    start,
+                    isLastPage,
+                    messages: newMessages,
+                    read: true,
+                  }
+                : c
+            );
+          else
+            return [
+              ...prev,
+              {
                 ...session,
-                start,
-                isLastPage,
+                hidden: true,
                 messages: newMessages,
-                read: true,
-              }
-            : c
-        )
-      );
-      setLoadingMessages(false);
-    });
+              },
+            ];
+        });
+        setLoadingMessages(false);
+      })
+      .catch((_) => {
+        navigate("/chat");
+      });
   }
 
   function getOlderMessages() {

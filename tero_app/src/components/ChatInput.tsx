@@ -5,7 +5,7 @@ import { Dropdown } from "../ui/DropDown";
 
 import { useUser } from "../contexts/UserContext";
 
-import { type AIModel } from "../constant";
+import { type AIModel } from "../types/user";
 
 interface ChatInputProps {
   className?: string;

@@ -1,3 +1,5 @@
+import type {AIModel} from "./types/user"
+
 let host: string = window.location.hostname;
 if (host.startsWith("tero.")) {
   host = host.replace("tero.", "www.");
@@ -8,10 +10,6 @@ if (host.startsWith("tero.")) {
 
 export const HOST: string = host;
 
-export interface AIModel {
-  name: string;
-  description: string;
-}
 
 // Tell TypeScript about the shape of window.__TERO_CONTEXT__
 declare global {

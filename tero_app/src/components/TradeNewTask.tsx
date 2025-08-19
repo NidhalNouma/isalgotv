@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { NewTaskHook, type Account } from "../hooks/useTradeHook";
+import { NewTaskHook } from "../hooks/useTradeHook";
+import type { Account } from "../types/user";
 import { ArrowRight, Download, Plus } from "lucide-react";
 
 import { Dropdown } from "../ui/DropDown";

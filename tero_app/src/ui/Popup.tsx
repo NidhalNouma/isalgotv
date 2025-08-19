@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState, type ReactNode } from "react";
 import { X, ExternalLink } from "lucide-react";
 
-import { type User, type Tokens } from "../contexts/UserContext";
+import type { User, Tokens } from "../types/user";
 
 import { HOST } from "../constant";
 

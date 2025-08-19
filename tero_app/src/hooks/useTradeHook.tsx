@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchAccounts } from "../api/trade";
 
-export interface Account {
-  id: string;
-  [key: string]: any;
-}
+import type { Account } from "../types/user";
 
 export function NewTaskHook(): {
   step: number;

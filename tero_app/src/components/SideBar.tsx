@@ -14,7 +14,7 @@ import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { ScrollDiv } from "../ui/ScrollableContainer";
 
 import { useChat } from "../contexts/ChatsContext";
-import type { ChatSession } from "../contexts/ChatsContext";
+import type { ChatSession } from "../types/chat";
 import { useUser } from "../contexts/UserContext";
 
 import { HrefChat } from "../ui/SideBarLink";
