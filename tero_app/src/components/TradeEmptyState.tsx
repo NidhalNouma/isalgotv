@@ -12,7 +12,7 @@ export default function TradeEmptyState({ newTaskFn }: TradeEmptyStateProps) {
         Connect your account and let Tero manage it for you
       </h1>
       <button className="btn-accent" onClick={newTaskFn}>
-        Create task
+        Create agent
       </button>
     </div>
   );

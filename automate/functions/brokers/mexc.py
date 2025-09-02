@@ -1,8 +1,8 @@
 import requests
 from urllib.parse import urlencode
 
-from .broker import CryptoBrokerClient
-from .types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
 
 class MexcClient(CryptoBrokerClient):
     BASE_URL = 'https://api.mexc.com'

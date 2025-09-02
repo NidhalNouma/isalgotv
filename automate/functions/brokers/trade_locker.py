@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 from django.utils import timezone
 
-from .broker import BrokerClient
+from automate.functions.brokers.broker import BrokerClient
 
 class TradeLockerClient(BrokerClient):
     

@@ -24,11 +24,16 @@ export function Dropdown({
   defaultLabel,
   options,
   disabled = false,
+  children,
 }: DropdownProps) {
   const [open, setOpen] = useState<boolean>(false);
-  const [label, setLabel] = useState<string>(defaultLabel || "Select an option");
+  const [label, setLabel] = useState<string>(
+    defaultLabel || "Select an option"
+  );
   const [dropUp, setDropUp] = useState<boolean>(false);
-  const [dropdownMaxHeight, setDropdownMaxHeight] = useState<number | null>(null);
+  const [dropdownMaxHeight, setDropdownMaxHeight] = useState<number | null>(
+    null
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -36,7 +41,10 @@ export function Dropdown({
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setOpen(false);
       }
     }
@@ -71,7 +79,13 @@ export function Dropdown({
         type="button"
         disabled={disabled}
       >
-        {label} <ChevronDown className="w-4 aspect-auto ml-1" />
+        {children ? (
+          children
+        ) : (
+          <Fragment>
+            {label} <ChevronDown className="w-4 aspect-auto ml-1" />
+          </Fragment>
+        )}
       </button>
       <AnimatePresence>
         {open && (

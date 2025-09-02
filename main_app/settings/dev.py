@@ -11,6 +11,8 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = ['http://*.myproject.local']
 
+PARENT_HOST = "myproject.local:8000"           # <-- no scheme, no subdomain
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

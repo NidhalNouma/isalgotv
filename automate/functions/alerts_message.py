@@ -1,5 +1,5 @@
 import re
-from .alerts_logs_trades import *
+from automate.functions.alerts_logs_trades import *
 
 def manage_alert(alert_message, account):
     try:

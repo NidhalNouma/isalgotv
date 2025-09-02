@@ -2,8 +2,8 @@ import requests
 import json
 import uuid
 
-from .broker import BrokerClient
-from .types import *
+from automate.functions.brokers.broker import BrokerClient
+from automate.functions.brokers.types import *
 
 
 class NinjatraderClient(BrokerClient):

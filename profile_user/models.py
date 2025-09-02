@@ -10,7 +10,7 @@ from django.utils.timezone import now
 
 import json
 
-from .utils.stripe import get_profile_data, delete_customer
+from profile_user.utils.stripe import get_profile_data, delete_customer
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -127,7 +127,12 @@ def cleanup_stripe_on_profile_delete(sender, instance, **kwargs):
     Cancels Stripe subscription and deletes Stripe customer.
     """
     # Delete Stripe customer if exists automatically cancel subscription
-    delete_customer(instance)
+
+    try:
+        if instance.customer_id:
+            delete_customer(instance)
+    except Exception as e:
+        print("Error deleting Stripe customer:", e)
 
 
 class Notification(models.Model):

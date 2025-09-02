@@ -8,8 +8,8 @@ import environ
 env = environ.Env()
 meta_api_token = env('META_API_TOKEN')
 
-from .types import *
-from .broker import BrokerClient
+from automate.functions.brokers.types import *
+from automate.functions.brokers.broker import BrokerClient
 
 class MetatraderClient(BrokerClient):
     api_url = "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai"

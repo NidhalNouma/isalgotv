@@ -1,5 +1,5 @@
-from .types import *
-from .broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
 
 from pybit.unified_trading import HTTP
 from pybit.exceptions import InvalidRequestError, FailedRequestError

@@ -8,7 +8,7 @@ import hmac
 import hashlib
 from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
 
-from .types import *
+from automate.functions.brokers.types import *
 
 class BrokerClient(abc.ABC):
 

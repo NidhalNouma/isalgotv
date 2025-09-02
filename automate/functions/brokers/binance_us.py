@@ -1,7 +1,7 @@
 import requests
 
-from .types import *
-from .broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
 
 class BinanceUSClient(CryptoBrokerClient):
     API_URL = 'https://api.binance.us'

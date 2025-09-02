@@ -31,7 +31,7 @@ export function useChatHook() {
 
   let messages: ChatMessage[] = chat ? chat.messages || [] : [];
 
-  // console.log("=== ", chat);
+  console.log("=== ", chat);
 
   function setChatMessages(
     chatId: string | number | null | undefined,

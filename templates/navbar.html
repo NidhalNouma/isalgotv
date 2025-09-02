@@ -1,6 +1,7 @@
 {% load static %}
+{% load hosts %}
 
-{% with tero_url=request.scheme|stringformat:'s'|add:'://tero.'|add:request.get_host|cut:'www.' %}
+
   <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
     <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
     <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">
@@ -20,12 +21,9 @@
       </div>
       <div class="flex items-center lg:order-2 justify-center gap-2">
         {% if user.is_authenticated %}
-          <a href="{{ tero_url }}" target="_blank" class="btn-ai before:hover:scale-105">
-            <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TERO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 3h6v6" />
-              <path d="M10 14 21 3" />
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            </svg>
+          <a href="{% host_url 'tero_index' host 'tero' %}" target="_blank" class="btn-ai before:hover:scale-105">
+            <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TERO</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" ><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
           </a>
 
           <div class="relative flex items-center">
@@ -100,12 +98,9 @@
             </div>
           </div>
         {% else %}
-          <a href="{{ tero_url }}" target="_blank" class="btn-ai before:hover:scale-105">
-            <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TERO</span> <svg class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 3h6v6" />
-              <path d="M10 14 21 3" />
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            </svg>
+          <a href="{% host_url 'tero_index' host 'tero' %}" target="_blank" class="btn-ai before:hover:scale-105">
+            <span class="font-semibold tracking-wider bg-clip-text bg-gradient-to-tl to-text dark:to-background from-primary text-transparent animate-gradient-x">TERO</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 aspect-auto ml-1 dark:stroke-background stroke-text" ><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
           </a>
           <a type="button" href="{% url 'login' %}" class="btn-secondary">
             Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -135,7 +130,9 @@
                 
                 
                 
+                
                text-title
+
 
 
 
@@ -143,7 +140,9 @@
                 
                 
                 
+                
                text-text/80
+
 
 
 
@@ -157,21 +156,9 @@
           <li>
             <a href="{% url 'results' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %}
-                
-                
-                
                text-title
-
-
-
               {% else %}
-                
-                
-                
                text-text/80
-
-
-
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
               <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -182,48 +169,22 @@
           <li>
             <a href="{% url 'automate' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %}
-                
-                
-                
                text-title
-
-
-
               {% else %}
-                
-                
-                
                text-text/80
-
-
-
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
-              <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow">
-                <rect width="8" height="8" x="3" y="3" rx="2" />
-                <path d="M7 11v4a2 2 0 0 0 2 2h4" />
-                <rect width="8" height="8" x="13" y="13" rx="2" />
+              <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="w-4 aspect-auto mr-1">
+                <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
               </svg>Automate
             </a>
           </li>
           <li>
             <a href="{% url 'membership' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'membership' %}
-                
-                
-                
                text-title
-
-
-
               {% else %}
-                
-                
-                
                text-text/80
-
-
-
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
               <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
@@ -240,21 +201,9 @@
           <li>
             <a href="{% url 'docs_index' %}"
               class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'docs' in request.resolver_match.view_name %}
-                
-                
-                
                text-title
-
-
-
               {% else %}
-                
-                
-                
                text-text/80
-
-
-
               {% endif %} hover:text-title hover:font-medium transition-all"
               aria-current="page">
               <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book">
@@ -285,7 +234,7 @@
       </div>
     {% endwith %}
   {% endif %} {% endcomment %}
-{% endwith %}
+  
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle-mobile')

@@ -191,7 +191,7 @@ export default function ChatMessages({
                 message.isLoading && i === messages.length - 1
                   ? {
                       minHeight: messagesRef.current
-                        ? messagesRef.current.clientHeight - 100
+                        ? messagesRef.current.clientHeight - 90
                         : "fit-content",
                     }
                   : {}

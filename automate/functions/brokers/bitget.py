@@ -7,8 +7,8 @@ import json
 
 from decimal import Decimal
 
-from .types import *
-from .broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
 
 class BitgetClient(CryptoBrokerClient):
 

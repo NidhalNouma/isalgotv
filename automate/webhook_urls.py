@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from automate.views import *
 from profile_user.views import stripe_webhook
 
 urlpatterns = [

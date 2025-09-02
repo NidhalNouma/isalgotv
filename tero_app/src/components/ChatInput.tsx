@@ -150,14 +150,36 @@ export default function ChatInput({
                 className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
                 style={{ height: "auto", resize: "none" }}
               />
-              <div className="flex items-center w-full px-2 pb-1">
+              <div className="flex items-center px-2 gap-3 w-full pb-1">
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="p-2 text-text/60 hover:text-text/70 disabled:opacity-50"
+                  className="ml-2 text-text/60 hover:text-text/70 disabled:opacity-50"
                 >
-                  <Paperclip className="w-5 aspect-auto" />
+                  <Paperclip className="w-4 aspect-auto" />
                 </button>
+                {/* <Dropdown
+                  defaultLabel={(model as any)?.name ?? String(model)}
+                  btnClassName="btn-text rounded-3xl text-xs py-1 px-2.5 opacity-80 "
+                  options={
+                    Array.isArray(models)
+                      ? (models as any[]).map((m) => ({
+                          label: (m as any)?.name ?? String(m),
+                          description: (m as any)?.description,
+                          onClick: () => setModel(m as any),
+                        }))
+                      : []
+                  }
+                >
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 aspect-auto"
+                  >
+                    <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
+                  </svg>
+                </Dropdown> */}
                 <Dropdown
                   defaultLabel={(model as any)?.name ?? String(model)}
                   btnClassName="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
@@ -194,7 +216,7 @@ export default function ChatInput({
                   >
                     {/* <SendHorizontal className="w-5 h-5" /> */}
                     <svg
-                      className="w-6 h-6 bg-text/80 hover:bg-text rounded-full"
+                      className="w-6 aspect-auto bg-text/80 hover:bg-text rounded-full"
                       viewBox="0 0 32 32"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"

@@ -1,9 +1,6 @@
 from .models import User_Profile, Notification
-from django.urls import resolve, reverse
 
-import re
 import datetime
-import time
 import requests
 
 import environ
@@ -11,13 +8,13 @@ env = environ.Env()
 
 server_ip = env('WEBHOOK_SERVER_IP', None)
 
-def get_stored_server_ip(request):
+def get_stored_server_ip():
     global server_ip
 
     if server_ip:
         return server_ip
 
-    server_ip_req = requests.get('https://ifconfig.me')
+    server_ip_req = requests.get('https://ifconfig.me', timeout=1.5)
     server_ip = server_ip_req.text
     return server_ip
 
@@ -103,8 +100,6 @@ def check_user_and_stripe_middleware(get_response):
                             subscription_period_end = None
                     else:
                         subscription_period_end = sub_end
-
-
                     
                     subscription_active = user_profile.stripe_obj.get('subscription_active', None)
                     subscription_status =   user_profile.stripe_obj.get('subscription_status', None)
@@ -112,10 +107,7 @@ def check_user_and_stripe_middleware(get_response):
 
                     subscription_plan = user_profile.stripe_obj.get('subscription_plan', None)
 
-
-
             # notifications = Notification.objects.filter(user=user_profile).order_by('-created_at')
-
         
         request.stripe_customer = stripe_customer
         request.user_profile = user_profile
@@ -135,11 +127,9 @@ def check_user_and_stripe_middleware(get_response):
         request.has_subscription = has_subscription
         request.subscription_canceled = subscription_canceled
 
-        request.server_ip = get_stored_server_ip(request),
-
+        request.server_ip = get_stored_server_ip(),
 
         response = get_response(request)
-
 
         return response
 

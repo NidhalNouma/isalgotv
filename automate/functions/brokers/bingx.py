@@ -2,8 +2,8 @@ import time
 import requests
 import json
 
-from .broker import CryptoBrokerClient
-from .types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
 
 class BingxClient(CryptoBrokerClient):
     BASE_URL = 'https://open-api.bingx.com'

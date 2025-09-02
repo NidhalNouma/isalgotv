@@ -3,23 +3,23 @@ from django.contrib.contenttypes.models import ContentType
 from decimal import Decimal
 from django.utils import timezone
 
-from ..models import *
+from automate.models import *
 
-from .brokers.binance import BinanceClient
-from .brokers.binance_us import BinanceUSClient
-from .brokers.bitget import BitgetClient
-from .brokers.bybit import BybitClient
-from .brokers.mexc import MexcClient
-from .brokers.crypto import CryptoComClient
-from .brokers.bingx import BingxClient
-from .brokers.bitmart import BitmartClient
-from .brokers.kucoin import KucoinClient
-from .brokers.coinbase import CoinbaseClinet
+from automate.functions.brokers.binance import BinanceClient
+from automate.functions.brokers.binance_us import BinanceUSClient
+from automate.functions.brokers.bitget import BitgetClient
+from automate.functions.brokers.bybit import BybitClient
+from automate.functions.brokers.mexc import MexcClient
+from automate.functions.brokers.crypto import CryptoComClient
+from automate.functions.brokers.bingx import BingxClient
+from automate.functions.brokers.bitmart import BitmartClient
+from automate.functions.brokers.kucoin import KucoinClient
+from automate.functions.brokers.coinbase import CoinbaseClinet
 
-from .brokers.trade_locker import TradeLockerClient
-from .brokers.metatrader import MetatraderClient
-from .brokers.dxtrade import DxtradeClient
-from .brokers.ninjatrader import NinjatraderClient
+from automate.functions.brokers.trade_locker import TradeLockerClient
+from automate.functions.brokers.metatrader import MetatraderClient
+from automate.functions.brokers.dxtrade import DxtradeClient
+from automate.functions.brokers.ninjatrader import NinjatraderClient
 
 # Map broker types to their client classes
 CLIENT_CLASSES = {

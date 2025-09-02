@@ -3,8 +3,8 @@ import json
 import uuid
 from bs4 import BeautifulSoup
 
-from .broker import BrokerClient
-from .types import *
+from automate.functions.brokers.broker import BrokerClient
+from automate.functions.brokers.types import *
 
 
 class DxtradeClient(BrokerClient):

@@ -3,8 +3,8 @@ from binance.cm_futures import CMFutures
 from binance.um_futures import UMFutures
 from binance.error import ClientError
 
-from .types import *
-from .broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
 
 class BinanceClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):

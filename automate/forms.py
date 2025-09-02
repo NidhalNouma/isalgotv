@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from automate.models import *
 from django.core.exceptions import ValidationError
 
 

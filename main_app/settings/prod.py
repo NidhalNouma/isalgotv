@@ -28,6 +28,9 @@ SESSION_COOKIE_DOMAIN = ".isalgo.com"
 CSRF_COOKIE_DOMAIN = ".isalgo.com"
 
 
+PARENT_HOST = "isalgo.com"           # <-- no scheme, no subdomain
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

@@ -3,6 +3,42 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+      font-family: 'Assistant';
+      font-style: normal;
+      font-weight: 200 800;
+      /* variable range */
+      font-display: swap;
+      src: url('../fonts/Assistant-VariableFont_wght.ttf') format('truetype');
+    }
+  
+    @font-face {
+      font-family: 'Azeret Mono';
+      font-style: normal;
+      font-weight: 100 900;
+      /* variable range */
+      font-display: swap;
+      src: url('../fonts/AzeretMono-VariableFont_wght.ttf') format('truetype');
+    }
+  
+    @font-face {
+      font-family: 'Azeret Mono';
+      font-style: italic;
+      font-weight: 100 900;
+      /* variable range */
+      font-display: swap;
+      src: url('../fonts/AzeretMono-Italic-VariableFont_wght.ttf') format('truetype');
+    }
+  
+    @font-face {
+      font-family: 'Commissioner';
+      font-style: normal;
+      font-weight: 100 900;
+      /* variable range */
+      font-display: swap;
+      src: url('../fonts/Commissioner-VariableFont_wght.ttf') format('truetype');
+    }
+
   :root {
     --color-primary: 227 91% 59%; /* hex - #3861f6 */
     --color-secondary: 227 91% 59%; /* hex - #3861f6 */

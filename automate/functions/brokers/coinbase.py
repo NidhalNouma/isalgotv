@@ -1,8 +1,8 @@
 from coinbase.rest import RESTClient
 from datetime import datetime, timezone
 
-from .broker import CryptoBrokerClient
-from .types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
 
 class CoinbaseClinet(CryptoBrokerClient):
 

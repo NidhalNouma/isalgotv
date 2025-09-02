@@ -141,10 +141,8 @@ def get_profile_data(user_profile, PRICE_LIST):
                 print("Error with getting stripe customer...", e)
 
         if not user_profile.customer_id or not stripe_customer or "deleted" in stripe_customer:
-            customer = stripe.Customer.create(
-                    email=user_profile.user.email,
-                    name=user_profile.user.username,
-                )
+            customer, created = get_or_create_customer_by_email(user_profile.user.email, name=user_profile.user.username, metadata={"user_id": user_profile.user.id})
+
             if customer.id:
                 stripe_customer = customer
                 # user_profile = User_Profile.objects.get(user=current_user)
@@ -237,6 +235,56 @@ def get_profile_data(user_profile, PRICE_LIST):
         print("Error with getting stripe data ...", e)
 
     return data
+
+
+def get_or_create_customer_by_email(email: str, name: str | None = None, metadata: dict | None = None):
+    """
+    Retrieve an existing Stripe Customer by email; if none exists, create one.
+
+    Returns:
+        (customer, created)
+        - customer: the Stripe Customer object
+        - created: bool indicating whether a new Customer was created
+
+    Notes:
+      * We first try Stripe's Customer Search API, which supports flexible queries.
+      * If search returns nothing (or is unavailable), we fall back to the
+        `stripe.Customer.list(email=...)` filter.
+      * We skip any objects marked as `deleted`.
+    """
+    try:
+        # 1) Prefer the Search API (fast/flexible). Don’t use for read-after-write,
+        # but we’re only reading here so it’s fine.
+        try:
+            results = stripe.Customer.search(query=f"email:'{email}'", limit=1)
+            if results.data:
+                cust = results.data[0]
+                if not getattr(cust, "deleted", False):
+                    return cust, False
+        except Exception:
+            # Some accounts may not have search enabled; ignore and fall back.
+            pass
+
+        # 2) Fallback to list filter (case-sensitive per Stripe docs).
+        candidates = stripe.Customer.list(email=email, limit=1)
+        if candidates.data:
+            cust = candidates.data[0]
+            if not getattr(cust, "deleted", False):
+                return cust, False
+
+        # 3) Create if nothing matched.
+        create_params = {"email": email}
+        if name:
+            create_params["name"] = name
+        if metadata:
+            create_params["metadata"] = metadata
+
+        customer = stripe.Customer.create(**create_params)
+        return customer, True
+
+    except Exception as e:
+        # Bubble up so the caller can handle/log it
+        raise
 
 def delete_customer(user_profile):
     """

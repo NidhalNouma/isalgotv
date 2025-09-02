@@ -6,8 +6,8 @@ from bitmart.lib import cloud_exceptions
 import json
 import time
 
-from .broker import CryptoBrokerClient
-from .types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
 
 class BitmartClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, passphrase=None, account_type="S", current_trade=None):

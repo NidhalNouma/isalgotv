@@ -14,8 +14,8 @@ from kucoin_universal_sdk.model import TransportOptionBuilder
 
 from kucoin_universal_sdk.model.common import RestError
 
-from .broker import CryptoBrokerClient
-from .types import *
+from automate.functions.brokers.broker import CryptoBrokerClient
+from automate.functions.brokers.types import *
 
 
 class KucoinClient(CryptoBrokerClient):
