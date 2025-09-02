@@ -1,5 +1,7 @@
+{% load hosts %}
+{% host_url 'webhook_crypto_request' account.custom_id host 'webhook' as raw_webhook_url %}
+{% with webhook_url=request.scheme|add:":"|add:raw_webhook_url %}
 
-{% with webhook_url='https://webhook.'|add:request.get_host|cut:"www."|add:'/c/'|add:account.custom_id %}
 <div class="w-full h-fit max-w-2xl bg-text/5 backdrop-blur-3xl rounded-md overflow-hidden">
   <div class="p-2 sm:p-3">
     <div
@@ -321,4 +323,4 @@
   {% include 'include/drawer_modal.html' with drawer_id='crypto-broker-trades-'|add:account_id_str title='Trades ('|add:account.name|add:')' body=trades_content side='bottom' class='h-[80vh]  max-w-[100vw]' body_class="!h-[calc(100%-90px)]" %}
   
   {% endwith %}
-  {% endwith %}
+{% endwith %}

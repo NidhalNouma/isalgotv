@@ -10,7 +10,7 @@ from django.utils.timezone import now
 
 import json
 
-from profile_user.utils.stripe import get_profile_data, delete_customer
+from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -45,15 +45,46 @@ class User_Profile(models.Model):
     last_token_reset = models.DateField(default=now, blank=True) 
 
     def save(self, *args, **kwargs):
+        is_new = self.pk is None
+
         # Check if is_lifetime changed from False to True
         if self.lifetime_num == 0 and self.is_lifetime:
-
             highest_lifetime_num = User_Profile.objects.aggregate(Max('lifetime_num'))['lifetime_num__max']
             lifetime_num = 1
             if highest_lifetime_num:
                 lifetime_num = highest_lifetime_num + 1
             self.lifetime_num += lifetime_num
+
         super().save(*args, **kwargs)
+
+        if is_new:
+            # 👇 your code here
+            print(f"User_Profile created for {self.user.email}")
+            self.create_stripe_customer_if_needed()
+
+    @property
+    def customer_id_value(self):
+        """
+        Accessing this property will auto-create a Stripe customer if needed.
+        """
+        if not self.customer_id:
+            print(f"Auto-creating Stripe customer for {self.user.email}")
+            customer, created = get_or_create_customer_by_email(
+                self.user.email,
+                name=self.user.username,
+                metadata={"user_id": self.user.id},
+            )
+            self.customer_id = customer.id
+            self.save(update_fields=["customer_id"])
+        return self.customer_id
+
+    def create_stripe_customer_if_needed(self):
+        if not self.customer_id:
+            customer, created = get_or_create_customer_by_email(self.user.email, name=self.user.username, metadata={"user_id": self.user.id})
+
+            self.customer_id = customer.id
+            self.save(update_fields=["customer_id"])
+            return customer
 
     def reset_token_usage_if_needed(self):
         """Reset the token usage if the date has changed."""

@@ -1,4 +1,5 @@
 {% load static %}
+{% load hosts %}
 
 <main class="mt-4 md:flex block justify-between mb-8">
   <section class="">
@@ -93,15 +94,13 @@
 
             <p class="text-text text-sm leading-relaxed mb-4">Let Tero help you develop and optimize your trading strategies. Get personalized recommendations based on your goals.</p>
 
-            {% with tero_url=request.scheme|stringformat:'s'|add:'://tero.'|add:request.get_host|cut:'www.' %}
-              <a href="{{ tero_url }}" target="_blank" class="mt-auto btn-accent w-fit">
-                <span class="font-medium">Ask Tero</span>
-                <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
-              </a>
-            {% endwith %}
+            <a href="{% host_url 'tero_index' host 'tero' %}" target="_blank" class="mt-auto btn-accent w-fit">
+              <span class="font-medium">Ask Tero</span>
+              <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
           </div>
         </div>
       </section>

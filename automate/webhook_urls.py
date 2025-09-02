@@ -9,3 +9,6 @@ urlpatterns = [
     path('whats-my-ip', get_server_ip, name='webhook_whats_my_ip'),
     path('stripe', stripe_webhook, name='webhook_handle_stripe'),
 ]
+
+
+handler404 = webhook_404

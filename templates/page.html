@@ -17,7 +17,7 @@
     {% endblock %}
 
     <!-- This is for search engines and won't affect the actual URL directly, but it's a good practice to ensure your slug is reflected in the URL structure managed by your server or CMS -->
-    <link rel="canonical" href="https:www.//isalgo.com/easy-trading-strategies-for-all-levels" />
+    <link rel="canonical" href="https://www.isalgo.com/easy-trading-strategies-for-all-levels" />
     <link rel="icon" href="{% static 'images/logo.png' %}" type="image/x-icon" />
     <link rel="icon" sizes="16x16" href="{% static 'images/logo_img_16_16.png' %}" />
     <link rel="icon" sizes="32x32" href="{% static 'images/logo_img_32_32.png' %}" />
@@ -48,16 +48,18 @@
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}
 
-    <script src="https://js.stripe.com/v3/"></script>
     <script type="text/javascript">
-      const stripe_public_key = '{{ stripe_public_key }}'
-      
       // Load theme
       if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark')
       } else {
         document.documentElement.classList.remove('dark')
       }
+    </script>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript">
+      const stripe_public_key = '{{ stripe_public_key }}'
     </script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
     <script src="{% static 'js/index.js' %}" defer></script>

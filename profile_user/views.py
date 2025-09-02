@@ -12,27 +12,27 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
 from django.core.cache import cache
 
-from .models import User_Profile, Notification
+from profile_user.models import User_Profile, Notification
 from strategies.models import Strategy
 from automate.views import account_subscription_failed
 
-from .forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
+from profile_user.forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from strategies.models import *
 
 from django.core.mail import EmailMessage
 
 
-from .tasks import *
+from profile_user.tasks import *
 
 import random
 import datetime
 import environ
 env = environ.Env()
 
-from .utils.stripe import *
-from .utils.tradingview import *
-from .utils.discord import get_discord_user_id, add_role_to_user, remove_role_from_user
+from profile_user.utils.stripe import *
+from profile_user.utils.tradingview import *
+from profile_user.utils.discord import get_discord_user_id, add_role_to_user, remove_role_from_user
 
 
 import json
@@ -43,14 +43,6 @@ stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
 PRICES = settings.PRICES
-
-
-from allauth.account.signals import user_signed_up
-from django.dispatch import receiver
-
-@receiver(user_signed_up)
-def send_welcome_email_allauth(request, user, **kwargs):
-    print('new user sign up ... ', user.email)
 
 
 # Array of helper questions for home view
@@ -430,7 +422,7 @@ def create_setup_intent(request):
     API endpoint to create a Stripe SetupIntent for the logged-in user and return its client_secret.
     """
     try:
-        customer_id = request.user_profile.customer_id
+        customer_id = request.user_profile.customer_id_value
 
         payment_method_types = ["card"]
 
@@ -464,7 +456,7 @@ def create_payment_method(request):
             return retarget(response, "#stripe-error-payment_methods")
 
         user_profile = request.user_profile
-        customer_id = user_profile.customer_id
+        customer_id = user_profile.customer_id_value
 
         try:
             print("Adding payment method ...", payment_method, customer_id)
@@ -511,7 +503,7 @@ def delete_payment_method(request):
             context["error"] = 'No payment method has been detected.'
 
         user_profile = request.user_profile
-        customer_id = user_profile.customer_id
+        customer_id = user_profile.customer_id_value
 
         try:
             subscriptions = stripe.Subscription.list(customer=customer_id, status="active")
@@ -549,7 +541,7 @@ def setdefault_payment_method(request):
             context["error"] = 'No payment method has been detected.'
 
         user_profile = request.user_profile
-        customer_id = user_profile.customer_id
+        customer_id = user_profile.customer_id_value
 
         try:
             customer = stripe.Customer.modify(
@@ -591,7 +583,8 @@ def check_coupon(request):
 
         if coupon_id:
             try:
-                price, coupon_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
+                customer_id = request.user_profile.customer_id_value
+                price, coupon_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, customer_id)
 
             except Exception as e:
                 context["error"] = str(e)
@@ -671,7 +664,7 @@ def subscription_stripeform(request):
                 "profile_user_id": str(user_profile.id), 
             }
 
-        customer_id = user_profile.customer_id
+        customer_id = user_profile.customer_id_value
         old_subscription_id = user_profile.subscription_id
 
         trial_days = request.free_trial_days
@@ -692,7 +685,7 @@ def subscription_stripeform(request):
 
         if coupon_id:
             try:
-                price, price_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, request.user_profile.customer_id)
+                price, price_off, promo_id = check_coupon_fn(coupon_id, plan_id, price, customer_id)
             except Exception as e:
                 context["error"] = 'Invalid coupon code '+str(e)
                 response = render(request, 'include/errors.html', context)
@@ -706,7 +699,7 @@ def subscription_stripeform(request):
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
-        print("Creating subscription ...", payment_method, user_profile.customer_id)
+        print("Creating subscription ...")
 
         try:
             # stripe.PaymentMethod.attach(
@@ -795,7 +788,7 @@ def subscription_stripeform(request):
                 )
 
             User_Profile.objects.filter(user = request.user).update(subscription_id=subscription.id)
-            print("New subscription has been created ...")
+            print("New subscription has been created ...", subscription.id)
 
             if len(old_subscription_id) > 0:
                 if request.subscription_status != 'canceled':

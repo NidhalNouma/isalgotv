@@ -237,7 +237,7 @@ type SettingsPopupProps = {
 
 export function SettingsPopup({ onClose, user }: SettingsPopupProps) {
   const [theme, setTheme] = useState<string>(() => {
-    return localStorage.getItem("color-theme") || "light";
+    return localStorage.getItem("color-theme") || "dark";
   });
 
   useEffect(() => {

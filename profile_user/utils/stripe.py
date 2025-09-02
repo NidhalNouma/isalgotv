@@ -1,5 +1,3 @@
-
-
 import datetime
 import time
 import environ
@@ -136,20 +134,11 @@ def get_profile_data(user_profile, PRICE_LIST):
         if user_profile.customer_id:
             try:
                 stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+                data["customer"] = stripe_customer
                 # print("stripe customer, " , stripe_customer)
             except Exception as e:
                 print("Error with getting stripe customer...", e)
 
-        if not user_profile.customer_id or not stripe_customer or "deleted" in stripe_customer:
-            customer, created = get_or_create_customer_by_email(user_profile.user.email, name=user_profile.user.username, metadata={"user_id": user_profile.user.id})
-
-            if customer.id:
-                stripe_customer = customer
-                # user_profile = User_Profile.objects.get(user=current_user)
-                user_profile.customer_id = customer.id
-                user_profile.save(update_fields=["customer_id"])
-
-        data["customer"] = stripe_customer
 
         if user_profile.is_lifetime:
             data["has_subscription"] = True

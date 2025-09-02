@@ -56,6 +56,9 @@ def index(request):
     
     return render(request, "automate/automate.html", context=context_accounts_by_user(request))
 
+def webhook_404(request, exception):
+    return HttpResponse("Page not found!", content_type="text/plain")
+
 @require_http_methods([ "POST"])
 def add_broker(request, broker_type):
     try:
@@ -109,7 +112,7 @@ def add_broker(request, broker_type):
                 if valid.get('valid') == True:
                     # Add a subscription
                     profile_user = request.user_profile
-                    customer_id = profile_user.customer_id
+                    customer_id = profile_user.customer_id_value
 
                     stripe.PaymentMethod.attach(
                         payment_method,
@@ -402,7 +405,7 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
             # stripe.Subscription.create
 
             profile_user = request.user_profile
-            customer_id = profile_user.customer_id
+            customer_id = profile_user.customer_id_value
 
             stripe.PaymentMethod.attach(
                 new_payment_method,
