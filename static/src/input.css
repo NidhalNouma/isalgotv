@@ -603,7 +603,7 @@
 }
 
 .hideMe {
-  animation: cssAnimation 6s forwards;
+  animation: cssAnimation 8s forwards;
 }
 
 @keyframes cssAnimation {

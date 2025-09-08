@@ -154,7 +154,7 @@ export default function ChatInput({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="ml-2 text-text/60 hover:text-text/70 disabled:opacity-50"
+                  className="text-text/60 hover:text-text/70 disabled:opacity-50 hidden"
                 >
                   <Paperclip className="w-4 aspect-auto" />
                 </button>
@@ -182,7 +182,7 @@ export default function ChatInput({
                 </Dropdown> */}
                 <Dropdown
                   defaultLabel={(model as any)?.name ?? String(model)}
-                  btnClassName="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 "
+                  btnClassName="btn-text rounded-3xl text-xs py-0 px-2.5 opacity-80 ml-1"
                   options={
                     Array.isArray(models)
                       ? (models as any[]).map((m) => ({

@@ -1,59 +1,19 @@
-<div
-  class="absolute top-0 left-0 hideMe max-h-[70vh] overflow-hidden pointer-events-none"
->
-  <lottie-player
-    class="h-full w-full"
-    src="https://assets10.lottiefiles.com/packages/lf20_URdfaeLv3R.json"
-    background="transparent"
-    speed="1"
-    loop
-    autoplay
-  ></lottie-player>
-</div>
-<div
-  class="absolute top-0 right-[50%] hideMe max-h-[70vh] overflow-hidden pointer-events-none"
->
-  <lottie-player
-    class="h-full w-full"
-    src="https://assets10.lottiefiles.com/packages/lf20_URdfaeLv3R.json"
-    background="transparent"
-    speed="1"
-    loop
-    autoplay
-  ></lottie-player>
-</div>
-<div
-  class="absolute top-0 left-[50%] hideMe max-h-[70vh] overflow-hidden pointer-events-none"
->
-  <lottie-player
-    class="h-full w-full"
-    src="https://assets10.lottiefiles.com/packages/lf20_URdfaeLv3R.json"
-    background="transparent"
-    speed="1"
-    loop
-    autoplay
-  ></lottie-player>
-</div>
-<div
-  class="absolute top-0 right-0 hideMe max-h-[70vh] overflow-hidden pointer-events-none"
->
-  <lottie-player
-    class="h-full w-full"
-    src="https://assets10.lottiefiles.com/packages/lf20_URdfaeLv3R.json"
-    background="transparent"
-    speed="1"
-    loop
-    autoPlay
-  ></lottie-player>
-</div>
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+
+{% with lottie_url='https://lottie.host/bdcfefe3-e506-4374-a71d-a92efeb0d9ad/EK1lzlDGHg.lottie' %}
+  <div class="absolute top-0 left-0 right-0 hideMe h-full w-full pointer-events-none">
+    <dotlottie-wc class="h-full w-auto absolute -left-1/2 top-24" src="{{ lottie_url }}" speed="1" autoplay loop></dotlottie-wc>
+    <dotlottie-wc class="h-full w-auto absolute -right-1/2 top-24" src="{{ lottie_url }}" background="transparent" speed="1" autoplay loop></dotlottie-wc>
+  </div>
+{% endwith %}
 
 <script type="text/javascript">
   function hideQueryParameters() {
-    var newUrl = window.location.pathname; // Get the current URL without the query parameters
-    history.replaceState({}, document.title, newUrl); // Replace the URL without query parameters
+    var newUrl = window.location.pathname // Get the current URL without the query parameters
+    history.replaceState({}, document.title, newUrl) // Replace the URL without query parameters
   }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    hideQueryParameters();
-  });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    hideQueryParameters()
+  })
 </script>

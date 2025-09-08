@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 // import { UserCircle } from "lucide-react";
 import AiResponseMarkdown from "./AiResponseMarkdown";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 import type { CSSProperties, Ref } from "react";
 
@@ -73,8 +74,16 @@ export default function ChatMessage({
             />
           </div>
         ) : (
-          <div className="max-w-full w-full text-text flex-shrink h-fit">
-            <div className="w-full h-8 rounded-xl animate-pulse btn-ai" />
+          <div className="max-w-full w-fit text-text flex-shrink h-fit p-1 flex items-center justify-center">
+            <DotLottieReact
+              className="h-6 aspect-auto -mx-3 "
+              src="https://lottie.host/10d47088-1f8f-44da-9af5-9c884cb11553/jPRNwGHTNk.lottie"
+              loop
+              autoplay
+            />
+            <span className="text-sm ml-1.5 text-text/70 animate-pulse filter drop-shadow-[0_0_8px_rgba(255,255,255,0.35)]">
+              Thinking...
+            </span>
           </div>
         )}
       </div>
