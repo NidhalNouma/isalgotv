@@ -1,9 +1,9 @@
-<div class="mb-2">
+<div class="mb-4">
   {% if results|length > 0 %}
     {% if user.is_authenticated and has_subscription %}
-      <button class="btn-secondary text-sm font-semibold underlinei" id="add-result-btn" onclick="openModel('add-result-modal')">Submit your results</button>
+      <button class="btn-text text-sm font-semibold underlinei" id="add-result-btn" onclick="openModel('add-result-modal')">Share your results</button>
     {% elif user.is_authenticated and not has_subscription %}
-      <button class="btn-secondary text-sm font-semibold underlinei" onclick="openModel('upgrade-modal')">Submit your results</button>
+      <button class="btn-text text-sm font-semibold underlinei" onclick="openModel('upgrade-modal')">Share your results</button>
     {% endif %}
   {% endif %}
 </div>

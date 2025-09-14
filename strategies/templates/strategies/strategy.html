@@ -128,30 +128,28 @@
       {% endif %}
     </div>
 
-    <section class="bg-background/20 backdrop-blur-2xl z-40 w-full pt-1 mb-6">
-      <div class="w-full max-w-xl mx-auto grid grid-cols-3 gap-1 border rounded-lg border-secondary/70 p-1">
-        <button id="strategyBtn" class="flex items-center justify-center gap-1.5 text-base font-bold text-title rounded-lg bg-secondary py-2 hover:bg-secondary hover:text-title dark:hover:text-background transition-all">
-          <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-            <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
-          </svg>
-          <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-width="2" d="M0,22 L24,22 M22,2 L18,2 L18,18 L22,18 L22,2 Z M6,6 L2,6 L2,18 L6,18 L6,6 Z M14,18 L10,18 L10,10 L14,10 L14,18 Z"></path></svg> -->
-          Strategy
-        </button>
-        <button id="settingsBtn" class="flex items-center justify-center gap-1.5 text-base font-bold text-title rounded-lg py-2 hover:bg-secondary hover:text-title dark:hover:text-background transition-all">
-          <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
-          </svg>Results
-        </button>
-        <button id="commentsBtn" class="flex items-center justify-center gap-1.5 text-base font-bold text-title rounded-lg py-2 hover:bg-secondary hover:text-title dark:hover:text-background transition-all">
-          <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
-            <path d="M845.784 581.585a135.867 135.867 0 0 0-47.042 19.049 114.236 114.236 0 0 1-51.41 31.075c2.613-17.554 11.313-33.577 24.455-45.418a169.303 169.303 0 0 0 23.409-55.017c-.061-27.838 22.44-50.459 50.265-50.534 27.827-.076 50.45 22.423 50.539 50.26.089 27.839-22.39 50.482-50.215 50.585zM753.568 460.83a168.829 168.829 0 0 0-54.808-23.68c-27.836 0-50.402-22.575-50.402-50.423 0-27.848 22.566-50.423 50.402-50.423 27.836 0 50.402 22.575 50.402 50.423a137.497 137.497 0 0 0 18.817 47.211 114.809 114.809 0 0 1 30.764 51.656 76.08 76.08 0 0 1-45.026-24.763h-.186zm-83.033-177.713C655.34 155.789 523.548 56.026 364.09 56.026c-169.874 0-308.088 113.097-308.088 252.19 2.72 78.1 43.941 149.778 110.063 191.385a311.284 311.284 0 0 0 33.602 21.588l-13.664 54.569c4.928 2.316 9.706 4.78 14.746 6.91l68.996-34.512c10.08 2.615 20.683 4.295 31.21 6.088 6.721 1.195 13.442 2.428 20.35 3.25a354.835 354.835 0 0 0 128.805-7.396 248.885 248.885 0 0 0 10.154 55.055 425.638 425.638 0 0 1-96.175 11.242 417.983 417.983 0 0 1-86.392-9.524l-125.186 62.526a27.619 27.619 0 0 1-29.98-3.137 28.019 28.019 0 0 1-9.67-28.611l22.401-90.239C53.176 495.186 2.463 405.506 0 308.216 0 137.973 163.004 0 364.09 0c190.93 0 347.29 124.527 362.521 282.818a244.967 244.967 0 0 0-26.47-2.614c-9.893.374-19.787 1.307-29.607 2.876zM554.237 481.934c16.764-3.362 32.706-9.786 47.042-19.049a114.236 114.236 0 0 1 51.447-31.001 76.466 76.466 0 0 1-24.491 45.344c-11.014 16.807-18.929 35.483-23.409 55.054.041 27.833-22.468 50.435-50.29 50.497-27.821.062-50.43-22.44-50.514-50.273-.082-27.833 22.393-50.469 50.215-50.572m90.798 121.314c16.652 11.168 35.17 19.236 54.659 23.904 20.386 0 38.764 12.286 46.565 31.127 7.801 18.842 3.49 40.53-10.926 54.95-14.414 14.422-36.093 18.736-54.927 10.931-18.834-7.804-31.114-26.19-31.114-46.585a136.736 136.736 0 0 0-18.668-47.285 114.714 114.714 0 0 1-30.54-51.805 76 76 0 0 1 44.951 25.062z" transform="translate(64 148)"></path>
-          </svg>Comments
-        </button>
-      </div>
-    </section>
+    <div class="block justify-between mx-auto max-w-5xl">
+      <section class="backdrop-blur-2xl z-40 w-full pt-1 mb-6">
+        <div class="mr-auto flex justify-start gap-2 sm:gap-3 mt-2">
+          <button id="strategyBtn" class="btn-primary text-background text-base font-semibold rounded-full">
+            <svg class="h-5 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="2" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+              <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
+            </svg>Strategy
+          </button>
+          <button id="settingsBtn" class="btn-primary text-background bg-text/20 text-text/80 text-base font-semibold rounded-full">
+            <svg class="h-5 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
+            </svg>Results
+          </button>
+          <button id="commentsBtn" class="btn-primary text-background bg-text/20 text-text/80 text-base font-semibold rounded-full">
+            <svg class="h-5 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
+              <path d="M845.784 581.585a135.867 135.867 0 0 0-47.042 19.049 114.236 114.236 0 0 1-51.41 31.075c2.613-17.554 11.313-33.577 24.455-45.418a169.303 169.303 0 0 0 23.409-55.017c-.061-27.838 22.44-50.459 50.265-50.534 27.827-.076 50.45 22.423 50.539 50.26.089 27.839-22.39 50.482-50.215 50.585zM753.568 460.83a168.829 168.829 0 0 0-54.808-23.68c-27.836 0-50.402-22.575-50.402-50.423 0-27.848 22.566-50.423 50.402-50.423 27.836 0 50.402 22.575 50.402 50.423a137.497 137.497 0 0 0 18.817 47.211 114.809 114.809 0 0 1 30.764 51.656 76.08 76.08 0 0 1-45.026-24.763h-.186zm-83.033-177.713C655.34 155.789 523.548 56.026 364.09 56.026c-169.874 0-308.088 113.097-308.088 252.19 2.72 78.1 43.941 149.778 110.063 191.385a311.284 311.284 0 0 0 33.602 21.588l-13.664 54.569c4.928 2.316 9.706 4.78 14.746 6.91l68.996-34.512c10.08 2.615 20.683 4.295 31.21 6.088 6.721 1.195 13.442 2.428 20.35 3.25a354.835 354.835 0 0 0 128.805-7.396 248.885 248.885 0 0 0 10.154 55.055 425.638 425.638 0 0 1-96.175 11.242 417.983 417.983 0 0 1-86.392-9.524l-125.186 62.526a27.619 27.619 0 0 1-29.98-3.137 28.019 28.019 0 0 1-9.67-28.611l22.401-90.239C53.176 495.186 2.463 405.506 0 308.216 0 137.973 163.004 0 364.09 0c190.93 0 347.29 124.527 362.521 282.818a244.967 244.967 0 0 0-26.47-2.614c-9.893.374-19.787 1.307-29.607 2.876zM554.237 481.934c16.764-3.362 32.706-9.786 47.042-19.049a114.236 114.236 0 0 1 51.447-31.001 76.466 76.466 0 0 1-24.491 45.344c-11.014 16.807-18.929 35.483-23.409 55.054.041 27.833-22.468 50.435-50.29 50.497-27.821.062-50.43-22.44-50.514-50.273-.082-27.833 22.393-50.469 50.215-50.572m90.798 121.314c16.652 11.168 35.17 19.236 54.659 23.904 20.386 0 38.764 12.286 46.565 31.127 7.801 18.842 3.49 40.53-10.926 54.95-14.414 14.422-36.093 18.736-54.927 10.931-18.834-7.804-31.114-26.19-31.114-46.585a136.736 136.736 0 0 0-18.668-47.285 114.714 114.714 0 0 1-30.54-51.805 76 76 0 0 1 44.951 25.062z" transform="translate(64 148)"></path>
+            </svg>Comments
+          </button>
+        </div>
+      </section>
 
-    <div class="md:flex block justify-between">
-      <section class="w-full mx-auto max-w-5xl">
+      <section class="w-full">
         {% if user.is_authenticated and not has_subscription and strategy.premium or not strategy.is_live and not has_subscription or not user.is_authenticated %}
           <section class="w-full pb-3 pt-6 nav-bg rounded sticky top-10 z-10 mb-2">
             <div class="text-center py-2">
@@ -229,7 +227,7 @@
     const settingsDiv = document.getElementById('FullResultsDiv')
     const strategyDiv = document.getElementById('strategyDiv')
     
-    let cssClass = ['bg-secondary', 'text-dark']
+    let cssClass = ['bg-text/20', 'text-text/80']
     
     // By default, show the settings div and hide the comments div
     strategyDiv.style.display = 'block'
@@ -242,9 +240,9 @@
       strategyDiv.style.display = 'block'
       commentsDiv.style.display = 'none'
       settingsDiv.style.display = 'none'
-      showCommentsBtn.classList.remove(...cssClass)
-      showSettingsBtn.classList.remove(...cssClass)
-      showStrategyBtn.classList.add(...cssClass)
+      showCommentsBtn.classList.add(...cssClass)
+      showSettingsBtn.classList.add(...cssClass)
+      showStrategyBtn.classList.remove(...cssClass)
     })
     
     showCommentsBtn.addEventListener('click', () => {
@@ -252,9 +250,9 @@
       commentsDiv.style.display = 'block'
       settingsDiv.style.display = 'none'
       strategyDiv.style.display = 'none'
-      showCommentsBtn.classList.add(...cssClass)
-      showSettingsBtn.classList.remove(...cssClass)
-      showStrategyBtn.classList.remove(...cssClass)
+      showCommentsBtn.classList.remove(...cssClass)
+      showSettingsBtn.classList.add(...cssClass)
+      showStrategyBtn.classList.add(...cssClass)
     })
     
     showSettingsBtn.addEventListener('click', () => {
@@ -263,9 +261,9 @@
       commentsDiv.style.display = 'none'
       strategyDiv.style.display = 'none'
     
-      showCommentsBtn.classList.remove(...cssClass)
-      showStrategyBtn.classList.remove(...cssClass)
-      showSettingsBtn.classList.add(...cssClass)
+      showCommentsBtn.classList.add(...cssClass)
+      showStrategyBtn.classList.add(...cssClass)
+      showSettingsBtn.classList.remove(...cssClass)
     })
     
     showStrategyBtn.click()

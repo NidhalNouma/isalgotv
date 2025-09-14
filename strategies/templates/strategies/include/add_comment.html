@@ -1,19 +1,19 @@
-<div class="mb-2">
+<div class="mb-4">
   {% if comments|length > 0 %}
     {% if user.is_authenticated and has_subscription %}
     <button
-      class="btn-secondary text-sm font-semibold underlinei"
+      class="btn-text text-sm font-semibold underlinei"
       id="add-comment-btn"
       onclick='toggleForm("add-comment-btn", "add-comment-form")'
     >
-      Submit Your Thoughts
+      Share Your Thoughts
     </button>
     {% elif user.is_authenticated and not has_subscription %}
     <button
-      class="btn-secondary text-sm font-semibold underlinei"
+      class="btn-text text-sm font-semibold underlinei"
       onclick="openModel('upgrade-modal', false);"
     >
-      Submit Your Thoughts
+      Share Your Thoughts
     </button>
     {% endif %}
   {% endif %}

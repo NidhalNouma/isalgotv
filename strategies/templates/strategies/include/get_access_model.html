@@ -20,7 +20,7 @@
               </svg>
             </a>
           {% else %}
-            <div class="mb-5 text-base font-normal text-text">
+            <div class="mb-5 text-sm font-normal text-text">
               {% include 'include/errors.html' %}
             </div>
             <a href="mailto:support@isalgo.com?subject=My access was denied!&body=My access was denied when attempting to access the strategy." class="btn-primary font-semibold">
@@ -30,9 +30,9 @@
             </a>
           {% endif %}
         {% else %}
-          <p class="mb-5 text-base font-normal text-text">You now have access to this strategy! Click below to learn more about where to find it and how to use it.</p>
-          <a href="{% url 'docs_setup' %}" class="btn-primary font-semibold">
-            Click here<svg class="h-4 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <p class="mb-5 text-sm font-normal text-text">You now have access to this strategy! Click below to learn more about where to find it and how to use it.</p>
+          <a href="{% url 'docs_setup' %}" class="btn-icon font-semibold">
+            How to use<svg class="h-4 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
               <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
               <path d="M11 14h1v4h1"></path>
