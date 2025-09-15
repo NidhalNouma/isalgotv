@@ -32,7 +32,7 @@ class TradeLockerClient(BrokerClient):
             return {'error': str(e), "valid": False}
 
         
-    def open_trade(self, symbol, side, quantity):
+    def open_trade(self, symbol, side, quantity, custom_id = ''):
         try:
             # Fetch the instrument ID for the given symbol
             tl = self.tl
