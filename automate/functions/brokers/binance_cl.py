@@ -157,6 +157,8 @@ class BinanceClient(CryptoBrokerClient):
             else :
                 order_details = self.get_final_trade_details(self.current_trade, order_id)
                 trade_details = order_details
+
+            print(order_details)
                 
             if order_details:
                 return {
@@ -168,7 +170,7 @@ class BinanceClient(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency':  order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
+                    'currency':  order_details.get('currency') if order_details.get('currency') not in (None, 'None') else currency_asset,
 
                     'trade_details': trade_details
                 }
@@ -266,6 +268,35 @@ class BinanceClient(CryptoBrokerClient):
             
             return None
 
+        except ClientError as e:
+            raise ValueError(e.error_message)
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def history_candles(self, symbol: str, interval: str, limit: int = 500):
+        try:
+            sys_info = self.get_exchange_info(symbol)
+            if not sys_info:
+                raise Exception('Symbol was not found!')
+
+            order_symbol = sys_info.get('symbol')
+
+            response = self.client.klines(symbol=order_symbol, interval=interval, limit=limit)
+            
+            ohlcv_data = []
+            for entry in response:
+                ohlcv = {
+                    'timestamp': int(entry[0]),
+                    'open': float(entry[1]),
+                    'high': float(entry[2]),
+                    'low': float(entry[3]),
+                    'close': float(entry[4]),
+                    'volume': float(entry[5]),
+                }
+                ohlcv_data.append(ohlcv)
+
+            return ohlcv_data
+        
         except ClientError as e:
             raise ValueError(e.error_message)
         except Exception as e:
