@@ -44,7 +44,7 @@ def manage_alert(alert_message, account):
             save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
 
         elif action == 'Exit':
-            trade_to_close = get_trade(custom_id, symbol, side, account, strategy_id)
+            trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
             if not trade_to_close:
                 raise Exception(f"No trade found to close with ID: {custom_id}")
 

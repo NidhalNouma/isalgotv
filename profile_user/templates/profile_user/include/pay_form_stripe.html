@@ -3,7 +3,7 @@
     <h6 class="text-text/80 text-sm font-medium">
         You’re a few click away from gaining access to our expert trading strategies, premium access, and much more.
     </h6>
-    {% if free_trial_days and title != "LIFETIME" and not user_profile.subscription_id %}
+    {% if free_trial_days and free_trial_days|add:'0' > 0 and title != "LIFETIME" and not user_profile.subscription_id %}
       <h6 class="mt-1.5 text-title bg-title/20 rounded-lg px-2 py-1 inline-block text-xs font-medium">First {{ free_trial_days }} days free</h6>
     {% endif %}
   </div>

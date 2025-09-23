@@ -6,11 +6,7 @@ from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
 from decimal import Decimal, InvalidOperation
 
-from django.contrib.auth.models import User
 from profile_user.models import User_Profile
-
-from django.db.models.signals import post_save, pre_save
-from django.dispatch import receiver
 
 from strategies.models import Strategy
 
@@ -68,7 +64,9 @@ class CryptoBrokerAccount(models.Model):
     custom_id = models.CharField(max_length=30, default="")
     
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     subscription_id = models.CharField(max_length=100, blank=False)
 
@@ -118,11 +116,11 @@ class ForexBrokerAccount(models.Model):
     custom_id = models.CharField(max_length=100, default="")
     active = models.BooleanField(default=True)
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     subscription_id = models.CharField(max_length=100, blank=False)
-
 
     def save(self, *args, **kwargs):
         if not self.subscription_id:
@@ -299,6 +297,13 @@ class TradeDetails(models.Model):
     def save(self, *args, **kwargs):
         # Run adjustments before saving
         self.pre_save_adjustments()
+
+        if float(self.remaining_volume) <= 0:
+            self.status = 'C'
+        elif float(self.remaining_volume) < float(self.volume):
+            self.status = 'P'
+        else:
+            self.status = 'O'
         super(TradeDetails, self).save(*args, **kwargs)
 
 class LogMessage(models.Model):

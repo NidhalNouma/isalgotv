@@ -52,14 +52,22 @@
     <div class="mx-auto">
       <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0">
         <li class="flex items-center {% if step == 1 %}
+            
              text-secondary
+
           {% else %}
+            
              text-text/60
+
           {% endif %} space-x-2.5">
           <span class="flex items-center justify-center w-8 h-8 border {% if step == 1 %}
+              
                border-secondary
+
             {% else %}
+              
                border-text/60
+
             {% endif %} rounded-full shrink-0">
             1
           </span>
@@ -71,14 +79,22 @@
           </span>
         </li>
         <li class="flex items-center {% if step == 2 %}
+            
              text-secondary
+
           {% else %}
+            
              text-text/60
+
           {% endif %} space-x-2.5">
           <span class="flex items-center justify-center w-8 h-8 border {% if step == 2 %}
+              
                border-secondary
+
             {% else %}
+              
                border-text/60
+
             {% endif %} rounded-full shrink-0">
             2
           </span>
@@ -88,14 +104,22 @@
           </span>
         </li>
         <li class="flex items-center {% if step == 3 %}
+            
              text-secondary
+
           {% else %}
+            
              text-text/60
+
           {% endif %} space-x-2.5">
           <span class="flex items-center justify-center w-8 h-8 border {% if step == 3 %}
+              
                border-secondary
+
             {% else %}
+              
                border-text/60
+
             {% endif %} rounded-full shrink-0">
             3
           </span>
@@ -112,7 +136,7 @@
 
     {% if step == 1 %}
       <section class="mt-14 text-center">
-        {% if not has_subscription and not user_profile.subscription_id %}
+        {% if not has_subscription and not user_profile.subscription_id and free_trial_days|add:'0' > 0 %}
           <h2 class="text-text text-sm font-semibold text-center tracking-wider">
             Start today with<div class="relative inline-block text-title text-base ml-1">
               {{ free_trial_days }} day trial<div class="absolute top-[90%] w-full">
@@ -161,9 +185,9 @@
           <video class="aspect-video w-full mr-auto my-3 rounded max-w-2xl" muted="" controls="controls">
             <source src="https://isalgotest.s3.amazonaws.com/docs/find_strategies.mp4" type="video/mp4" />
           </video>
-          <!--        <img
+          <!--         <img
             class="rounded-xl"
-            src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" />        -->
+            src="https://firebasestorage.googleapis.com/v0/b/automated-trader-fd733.appspot.com/o/files%2Fvideos%2Ftrading_view_find_invite_scipts.gif?alt=media&token=c6cf5732-7fdd-40c0-b56b-09724af58ce4" />         -->
         </div>
         <p class="text-text text-sm text-center mt-6">
           If you encounter any issues, please refer to our <a class="text-title font-medium underline" href="{% url 'docs_index' %}">documentation</a> for a step-by-step guide.

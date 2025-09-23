@@ -203,6 +203,22 @@ def get_trade(custom_id, symbol, side, account, strategy_id):
 
     return trade
 
+def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
+    t_side = "B" if str.lower(side) == "buy" else "S"
+
+    content_type = ContentType.objects.get_for_model(account.__class__)
+
+    trade = TradeDetails.objects.select_for_update().filter(
+        custom_id=custom_id,
+        symbol=symbol,
+        side=t_side,
+        strategy_id=strategy_id,
+        content_type=content_type,
+        object_id=account.id
+    ).last()
+
+    return trade
+
 def update_trade_after_close(trade, closed_volume, closed_trade):
 
     closed_volume = closed_trade.get('qty', closed_volume)
@@ -216,10 +232,6 @@ def update_trade_after_close(trade, closed_volume, closed_trade):
     trade.exit_price = float(price)
     trade.closed_order_id = closed_order_id
     trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
-    if float(trade.remaining_volume) <= 0:
-        trade.status = 'C'
-    else:
-        trade.status = 'P'
     trade.save()
 
     return trade

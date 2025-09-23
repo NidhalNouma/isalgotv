@@ -38,8 +38,8 @@ PRICES = settings.PRICES
 
 def context_accounts_by_user(request):
     user_profile = request.user.user_profile  
-    crypto_accounts = CryptoBrokerAccount.objects.filter(created_by=user_profile)
-    forex_accounts = ForexBrokerAccount.objects.filter(created_by=user_profile)
+    crypto_accounts = CryptoBrokerAccount.objects.filter(created_by=user_profile).order_by("-created_at")
+    forex_accounts = ForexBrokerAccount.objects.filter(created_by=user_profile).order_by("-created_at")
 
     context ={
         'crypto_accounts': crypto_accounts,
@@ -157,14 +157,15 @@ def add_broker(request, broker_type):
                     return render(request, 'include/accounts_list.html', context=context)
                 
                 else: 
-                    context = {'error': valid.get('error')}
-                    response = render(request, "include/errors.html", context=context)
-                    return retarget(response, f'#add-{broker_type}-form-errors')
+                    if broker_type == 'metatrader4' or broker_type == 'metatrader5':
+                        if valid.get('account_api_id'):
+                            account_obj = ForexBrokerAccount(**valid) 
+                            delete_account = MetatraderClient(account=account_obj).delete_account()
+
+                    raise Exception(valid.get('error'))
                 
             else:
-                context = {'error': form.errors}
-                response = render(request, "include/errors.html", context=context)
-                return retarget(response, f'#add-{broker_type}-form-errors')
+                raise Exception(form.errors)
 
     except Exception as e:
         context = {'error': e}
