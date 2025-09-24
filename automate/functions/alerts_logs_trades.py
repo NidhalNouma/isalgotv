@@ -7,7 +7,7 @@ import inspect
 
 from automate.models import *
 
-from automate.functions.brokers.binance_cl import BinanceClient
+from automate.functions.brokers.binance import BinanceClient
 from automate.functions.brokers.binance_us import BinanceUSClient
 from automate.functions.brokers.bitget import BitgetClient
 from automate.functions.brokers.bybit import BybitClient

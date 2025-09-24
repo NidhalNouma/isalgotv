@@ -296,14 +296,13 @@ class TradeDetails(models.Model):
 
     def save(self, *args, **kwargs):
         # Run adjustments before saving
-        self.pre_save_adjustments()
-
         if float(self.remaining_volume) <= 0:
             self.status = 'C'
         elif float(self.remaining_volume) < float(self.volume):
             self.status = 'P'
         else:
             self.status = 'O'
+        self.pre_save_adjustments()
         super(TradeDetails, self).save(*args, **kwargs)
 
 class LogMessage(models.Model):

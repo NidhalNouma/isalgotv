@@ -157,8 +157,6 @@ class BinanceClient(CryptoBrokerClient):
             else :
                 order_details = self.get_final_trade_details(self.current_trade, order_id)
                 trade_details = order_details
-
-            print(order_details)
                 
             if order_details:
                 return {
