@@ -30,7 +30,7 @@ class BitgetClient(CryptoBrokerClient):
 
             client = BitgetClient(api_key=api_key, api_secret=api_secret, passphrase=passphrase, account_type=account_type)
 
-            response = client.send_request('GET', endpoint)
+            response = client._send_request('GET', endpoint)
             # Adjust these checks to match Bitget’s actual response format:
             if response.get('code') != '00000':
                 return {'error': response.get('msg'), 'valid': False}
@@ -38,19 +38,19 @@ class BitgetClient(CryptoBrokerClient):
         except Exception as e:
             return {'error': str(e), 'valid': False}
 
-    def create_signature(self, timestamp, method, request_path, body=''):
+    def _create_signature(self, timestamp, method, request_path, body=''):
         if isinstance(body, dict):
             body = json.dumps(body)
 
         message = timestamp + method.upper() + request_path + body
         return base64.b64encode(hmac.new(self.api_secret.encode(), message.encode(), hashlib.sha256).digest()).decode()
 
-    def send_request(self, method, endpoint, body=None):
+    def _send_request(self, method, endpoint, body=None):
         timestamp = str(int(time.time() * 1000))
 
         headers = {
             'ACCESS-KEY': self.api_key,
-            'ACCESS-SIGN': self.create_signature(timestamp, method, endpoint, body or ''),
+            'ACCESS-SIGN': self._create_signature(timestamp, method, endpoint, body or ''),
             'ACCESS-TIMESTAMP': timestamp,
             'ACCESS-PASSPHRASE': self.passphrase,
             'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ class BitgetClient(CryptoBrokerClient):
                 productType = "USDC-FUTURES"
                 endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
 
-            response = self.send_request('GET', endpoint)
+            response = self._send_request('GET', endpoint)
             # print(response )
 
             if not response.get('data'):
@@ -113,14 +113,14 @@ class BitgetClient(CryptoBrokerClient):
             productType = "USDC-FUTURES"
             endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
     
-        response = self.send_request('GET', endpoint)
+        response = self._send_request('GET', endpoint)
         data = response['data'][0]
         if data.get('lastPr') is None:
             return 0
         price = float(data.get('lastPr'))
         return price
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol: str = None) -> AccountBalance:
         """
         Get account balances, falling back to marginCoin if needed.
         """
@@ -135,12 +135,16 @@ class BitgetClient(CryptoBrokerClient):
 
         balances = {}
 
-        response = self.send_request('GET', endpoint)
+        response = self._send_request('GET', endpoint)
         if 'code' in response and int(response['code']) != 0:
             raise ValueError(response['msg'])
         
         for asset in response['data']:
             coin_key = asset.get('coin') or asset.get('marginCoin')
+
+            if symbol and coin_key not in symbol.upper():
+                continue
+            
             balances[coin_key] = {
                 'available': float(asset.get('available', 0)),
                 'locked': float(asset.get('locked', 0)),
@@ -205,14 +209,14 @@ class BitgetClient(CryptoBrokerClient):
 
             if self.account_type != 'S':
                 try:
-                    self.send_request('POST', '/api/v2/mix/account/set-position-mode', {'posMode': 'hedge_mode', 'productType': productType})
+                    self._send_request('POST', '/api/v2/mix/account/set-position-mode', {'posMode': 'hedge_mode', 'productType': productType})
                 except Exception as e:
                     print("Error setting position mode or coin:", str(e))
 
             # print("body ==> ", body)
 
             # Send the trade request
-            response = self.send_request('POST', endpoint, body)
+            response = self._send_request('POST', endpoint, body)
 
             if "msg" in response and response.get('code') != '00000':
                 raise Exception(response.get('msg'))
@@ -299,7 +303,7 @@ class BitgetClient(CryptoBrokerClient):
             if self.account_type != 'S':
                 order_url += f"&productType={productType}&symbol={symbol}"
 
-            response = self.send_request('GET', order_url)
+            response = self._send_request('GET', order_url)
             # print("trade data => ", response) 
             response = response.get('data')
 
@@ -392,4 +396,8 @@ class BitgetClient(CryptoBrokerClient):
         except Exception as e:
             print('error getting order details: ', str(e))
             return None
+        
+    # ------------------------------------------------------------------------------------------------------------------------
+    # methods for market data
+    # ------------------------------------------------------------------------------------------------------------------------
         

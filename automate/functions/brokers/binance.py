@@ -5,6 +5,7 @@ from binance.error import ClientError
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+from typing import List
 
 class BinanceClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
@@ -78,7 +79,7 @@ class BinanceClient(CryptoBrokerClient):
             raise Exception(e)
 
             
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol: str = None) -> AccountBalance:
         try:
             trade_type = self.account_type
             balances = {}
@@ -86,6 +87,8 @@ class BinanceClient(CryptoBrokerClient):
             if trade_type == "S":  # Spot
                 account_info = self.client.account()
                 for balance in account_info['balances']:
+                    if symbol and balance['asset'] not in symbol.upper():
+                        continue
                     balances[balance['asset']] = {
                         'available': float(balance['free']),
                         'locked': float(balance['locked'])
@@ -94,6 +97,8 @@ class BinanceClient(CryptoBrokerClient):
                 
                 account_info = self.client.account()
                 for balance in account_info['assets']:
+                    if symbol and balance['asset'] not in symbol.upper():
+                        continue
                     balances[balance['asset']] = {
                         'available': float(balance['availableBalance']),
                         'locked': float(balance['maxWithdrawAmount']) - float(balance['availableBalance'])
@@ -270,8 +275,47 @@ class BinanceClient(CryptoBrokerClient):
             raise ValueError(e.error_message)
         except Exception as e:
             raise ValueError(str(e))
+
+    # ------------------------------------------------------------------------------------------------------------------------
+    # methods for market data
+    # ------------------------------------------------------------------------------------------------------------------------
         
-    def history_candles(self, symbol: str, interval: str, limit: int = 500):
+    def get_trading_pairs(self) -> list:
+        try:
+            if self.account_type == "S":
+                response = self.client.exchange_info()
+            else:
+                response = self.client.exchange_info()
+
+
+            symbols = []
+            data_list = response.get('symbols', [])
+            
+            for item in data_list:
+                status = item.get('status', '')
+                contractStatus = item.get('contractStatus', '')
+
+                if status != 'TRADING' and contractStatus != 'TRADING':
+                    continue
+                
+                base_asset = item.get('baseAsset')
+                quote_asset = item.get('quoteAsset')
+                symbol = item.get('symbol')
+
+                symbols.append({
+                    'symbol': symbol,
+                    'base_asset': base_asset,
+                    'quote_asset': quote_asset,
+                })
+
+            return symbols
+        
+        except ClientError as e:
+            raise ValueError(e.error_message)
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def get_history_candles(self, symbol: str, interval: str, limit: int = 500):
         try:
             sys_info = self.get_exchange_info(symbol)
             if not sys_info:
@@ -299,4 +343,88 @@ class BinanceClient(CryptoBrokerClient):
             raise ValueError(e.error_message)
         except Exception as e:
             raise ValueError(str(e))
+        
+    def get_order_book(self, symbol: str, limit: int = 100) :
+        try:
+            sys_info = self.get_exchange_info(symbol)
+            if not sys_info:
+                raise Exception('Symbol was not found!')
+
+            order_symbol = sys_info.get('symbol')
+
+            response = self.client.depth(symbol=order_symbol, limit=limit)
             
+            bids = [{"price":float(price), "qty":float(qty)} for price, qty in response['bids']]
+            asks = [{"price":float(price), "qty":float(qty)} for price, qty in response['asks']]
+
+            return {
+                'lastUpdateId': response['lastUpdateId'],
+                'bids': bids,
+                'asks': asks
+            }
+        
+        except ClientError as e:
+            raise ValueError(e.error_message)
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def get_exchange_price(self, symbol: str) -> float:
+        try:
+            sys_info = self.get_exchange_info(symbol)
+            if not sys_info:
+                raise Exception('Symbol was not found!')
+
+            order_symbol = sys_info.get('symbol')
+
+            response = self.client.ticker_price(symbol=order_symbol)
+
+            # If the response is a list/tuple, use the first item
+            if isinstance(response, (list, tuple)):
+                if not response:
+                    raise Exception('Empty price response')
+                response = response[0]
+
+            # Normalize possible response shapes
+            price = None
+            if isinstance(response, dict):
+                for key in ('price', 'lastPrice', 'askPrice'):
+                    if key in response and response[key] not in (None, ''):
+                        price = response[key]
+                        break
+            else:
+                # response might be a plain number or string
+                price = response
+
+            if price is None:
+                raise Exception(f"Could not find price in response: {response}")
+
+            return float(price)
+        
+        except ClientError as e:
+            raise ValueError(e.error_message)
+        except Exception as e:
+            raise ValueError(str(e))
+
+
+    def market_and_account_data(self, symbol: str, intervals: List[str], limit: int = 500) -> dict:
+        try:
+            history_candles = {}
+
+            for intv in intervals:
+                if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
+                    raise ValueError(f"Invalid interval: {intv}")
+                history_candles[intv] = self.get_history_candles(symbol, intv, limit=limit)
+                
+            order_book = self.get_order_book(symbol, limit=limit)
+            account_balance = self.get_account_balance(symbol=symbol)
+            price = self.get_exchange_price(symbol)
+
+            return {
+                'order_book': order_book,
+                'history_candles': history_candles,
+                'account_balance': account_balance,
+                'price': price,
+            }
+        
+        except Exception as e:
+            raise ValueError(str(e))

@@ -327,6 +327,7 @@ class MetatraderClient(BrokerClient):
         """
 
         partial_close = max(float(partial_close), 0.01)
+        partial_close = round(float(partial_close), 2)
 
         trade = self.current_trade
 
@@ -337,8 +338,8 @@ class MetatraderClient(BrokerClient):
         data = {
             "actionType": "POSITION_PARTIAL",
             "positionId": trade.order_id,
-            "volume": round(float(partial_close), 2),
-        }
+            "volume": partial_close,
+       }
 
         url = f"{self.api_data_url}/users/current/accounts/{account_api_id}/trade"
         headers = {
