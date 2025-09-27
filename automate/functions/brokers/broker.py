@@ -258,7 +258,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 return format(qty_dec, f'.{precision}f')
             
             elif self.account_type == "C":  # COINM Futures
-                quant = 0
+                # quant = 0
                 qty_dec = Decimal(str(quote_order_qty)).quantize(quant, rounding=ROUND_UP)
                 return format(qty_dec, f'.{precision}f')
             
@@ -268,6 +268,51 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 return format(qty_dec, f'.{precision}f')
             
             return quote_order_qty
+        except Exception as e:
+            raise ValueError(str(e))
+
+    
+    def market_and_account_data(self, symbol: str, intervals: List[str], limit: int = 500) -> dict:
+        try:
+            history_candles = {}
+
+            for intv in intervals:
+                if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
+                    raise ValueError(f"Invalid interval: {intv}")
+                history_candles[intv] = self.get_history_candles(symbol, intv, limit=limit)
+                
+            try:
+                order_book = self.get_order_book(symbol, limit=limit)
+            except Exception as e:
+                order_book = {"bids": [], "asks": []}
+                print("Error fetching order book:", e)
+            
+            try:
+                symbol_info = self.get_exchange_info(symbol=symbol)
+            except Exception as e:
+                symbol_info = {}
+                print("Error fetching symbol info:", e)
+
+            try:
+                account_balance = self.get_account_balance(symbol=symbol_info.get('base_asset')+symbol_info.get('quote_asset'))
+            except Exception as e:
+                account_balance = {}
+                print("Error fetching account balance:", e)
+
+            try:
+                price = self.get_exchange_price(symbol)
+            except Exception as e:
+                price = "NA"
+                print("Error fetching price:", e)
+
+            return {
+                'order_book': order_book,
+                'history_candles': history_candles,
+                'account_balance': account_balance,
+                'symbol_info': symbol_info,
+                'price': price,
+            }
+        
         except Exception as e:
             raise ValueError(str(e))
         

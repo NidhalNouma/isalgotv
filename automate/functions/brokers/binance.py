@@ -5,7 +5,7 @@ from binance.error import ClientError
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
-from typing import List
+
 
 class BinanceClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, account_type="S", current_trade=None):
@@ -328,7 +328,7 @@ class BinanceClient(CryptoBrokerClient):
             ohlcv_data = []
             for entry in response:
                 ohlcv = {
-                    'timestamp': int(entry[0]),
+                    'timestamp': self.convert_timestamp(entry[0]),
                     'open': float(entry[1]),
                     'high': float(entry[2]),
                     'low': float(entry[3]),
@@ -405,26 +405,3 @@ class BinanceClient(CryptoBrokerClient):
         except Exception as e:
             raise ValueError(str(e))
 
-
-    def market_and_account_data(self, symbol: str, intervals: List[str], limit: int = 500) -> dict:
-        try:
-            history_candles = {}
-
-            for intv in intervals:
-                if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
-                    raise ValueError(f"Invalid interval: {intv}")
-                history_candles[intv] = self.get_history_candles(symbol, intv, limit=limit)
-                
-            order_book = self.get_order_book(symbol, limit=limit)
-            account_balance = self.get_account_balance(symbol=symbol)
-            price = self.get_exchange_price(symbol)
-
-            return {
-                'order_book': order_book,
-                'history_candles': history_candles,
-                'account_balance': account_balance,
-                'price': price,
-            }
-        
-        except Exception as e:
-            raise ValueError(str(e))

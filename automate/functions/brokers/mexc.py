@@ -26,7 +26,7 @@ class MexcClient(CryptoBrokerClient):
         except Exception as e:
             return {"error": str(e)}
 
-    def send_request(self, method, endpoint, params=None):
+    def _send_request(self, method, endpoint, params=None):
         if params is None:
             params = {}
 
@@ -58,7 +58,7 @@ class MexcClient(CryptoBrokerClient):
 
         return data
 
-    def send_futures_request(self, method, endpoint, params=None):
+    def _send_futures_request(self, method, endpoint, params=None):
         if params is None:
             params = {}
 
@@ -92,11 +92,11 @@ class MexcClient(CryptoBrokerClient):
 
     def get_account_info(self):
         endpoint = "/api/v3/account"
-        response_data = self.send_request('GET', endpoint)
+        response_data = self._send_request('GET', endpoint)
         
         return response_data
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         try:
             account_info = self.get_account_info()
             
@@ -104,6 +104,8 @@ class MexcClient(CryptoBrokerClient):
             # Expected structure:
             # {"code":200, "data": {"balances": [{"asset": "BTC", "free": "0.1", ...}, ...]}}
             for balance in account_info["balances"]:
+                if symbol and balance["asset"] not in symbol:
+                    continue
                 balances[balance["asset"]] = float(balance["free"])
                 balances[balance["asset"]] = {
                     "available": float(balance["free"]),
@@ -119,7 +121,7 @@ class MexcClient(CryptoBrokerClient):
         print("Getting futures account info...")
         endpoint = "/api/v1/private/account/assets"
 
-        response_data = self.send_futures_request('GET', endpoint)
+        response_data = self._send_futures_request('GET', endpoint)
         return response_data
 
     def get_exchange_info(self, symbol) -> ExchangeInfo:
@@ -129,7 +131,7 @@ class MexcClient(CryptoBrokerClient):
 
         if self.account_type == "F":
             endpoint = "/api/v1/contract/detail"
-            response_data = self.send_futures_request('GET', endpoint, params)
+            response_data = self._send_futures_request('GET', endpoint, params)
                     
             if isinstance(response_data, dict) and response_data.get("data"):
                 s = response_data.get("data")
@@ -145,7 +147,9 @@ class MexcClient(CryptoBrokerClient):
 
         else:
             endpoint = "/api/v3/exchangeInfo"
-            response_data = self.send_request('GET', endpoint, params)
+            response_data = self._send_request('GET', endpoint, params)
+
+            # print("Exchange info response:", response_data)
 
             if isinstance(response_data, dict) and response_data.get("symbols"):
                 symbols = response_data.get("symbols")
@@ -175,19 +179,19 @@ class MexcClient(CryptoBrokerClient):
         raise Exception('Symbol was not found!')
         
 
-    def new_order(self, order_params):
+    def _new_order(self, order_params):
         endpoint = "/api/v3/order"
         
-        response_data = self.send_request('POST', endpoint, order_params)
+        response_data = self._send_request('POST', endpoint, order_params)
 
         return response_data
 
 
-    def new_futures_order(self, order_params):
+    def _new_futures_order(self, order_params):
         """Place a new futures order using MEXC futures API."""
         endpoint = "/api/v1/private/order/submit"
 
-        response_data = self.send_futures_request('POST', endpoint, order_params)
+        response_data = self._send_futures_request('POST', endpoint, order_params)
         print("Futures order response:", response_data)
         
         return response_data
@@ -195,9 +199,9 @@ class MexcClient(CryptoBrokerClient):
 
     def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None) -> OpenTrade:
         try:
+            print("Opening spot trade...")
             if self.account_type == "F":
                 return self.open_mexc_futures_trade(symbol, side, quantity, custom_id)
-            
             sys_info = self.get_exchange_info(symbol)
             
             currency_asset = sys_info.get('quote_asset')
@@ -215,7 +219,7 @@ class MexcClient(CryptoBrokerClient):
                 "type": "MARKET",  # Using lowercase as per MEXC docs
                 "quantity": adjusted_quantity,
             }
-            response = self.new_order(order_params)
+            response = self._new_order(order_params)
             
             order_data = response
 
@@ -293,7 +297,7 @@ class MexcClient(CryptoBrokerClient):
             }
             print("Order params:", order_params)
 
-            response = self.new_futures_order(order_params)
+            response = self._new_futures_order(order_params)
             
             order_id = response["data"]
             return {
@@ -319,7 +323,7 @@ class MexcClient(CryptoBrokerClient):
                 "vol": quantity,
                 "reduceOnly": "true",
             }
-            response = self.new_futures_order(order_params)
+            response = self._new_futures_order(order_params)
             if response.get("code") != 200:
                 raise ValueError(response.get("message", "Futures order placement failed"))
             order_id = response["data"]
@@ -345,7 +349,7 @@ class MexcClient(CryptoBrokerClient):
                 "orderId": order_id,
             }
 
-            response = self.send_request('GET', endpoint, params)
+            response = self._send_request('GET', endpoint, params)
 
             if isinstance(response, dict) and response.get('msg') is not None:
                 raise Exception(response.get('msg'))
@@ -399,7 +403,7 @@ class MexcClient(CryptoBrokerClient):
                 "orderId": order_id,
             }
 
-            response = self.send_futures_request('GET', endpoint, params)
+            response = self._send_futures_request('GET', endpoint, params)
 
             # print("Order info response:", response)
             response = response.get('data')
@@ -445,4 +449,193 @@ class MexcClient(CryptoBrokerClient):
         except Exception as e:     
             print('getting trade info ', e)   
             return None
+
+    # ------------------------------------------------------------------------------------------------------------------------
+    # methods for market data
+    # ------------------------------------------------------------------------------------------------------------------------
+
+    def get_trading_pairs(self) -> List[str]:
+        try:
+            if self.account_type == "F":
+                return self.get_futures_trading_pairs()
+
+            endpoint = "/api/v3/exchangeInfo"
+            response = self._send_request('GET', endpoint)
+            symbols = []
+            if isinstance(response, dict) and response.get("symbols"):
+                for s in response.get("symbols"):
+                    symbols.append(s.get("symbol"))
+            return symbols
+        except Exception as e:
+            raise ValueError(str(e))
         
+    def get_futures_trading_pairs(self) -> List[str]:
+        try:
+            endpoint = "/api/v1/contract/detail"
+            response = self._send_futures_request('GET', endpoint)
+            # print(response)
+            data = response.get("data", [])
+            symbols = []
+            if isinstance(data, list):
+                for s in data:
+                    symbols.append(s.get("symbol"))
+            return symbols
+        except Exception as e:
+            raise ValueError(str(e))
+    
+    def get_history_candles(self, symbol, interval, limit=100):
+        try:
+            if interval not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
+                raise ValueError(f"Invalid interval: {interval}")
+            
+            if self.account_type == "F":
+                return self.get_future_history_candles(symbol, interval, limit=limit)
+            
+            endpoint = "/api/v3/klines"
+            params = {
+                "symbol": symbol,
+                "interval": interval,
+                "limit": limit
+            }
+            response = self._send_request('GET', endpoint, params)
+            candles = []
+            if isinstance(response, list):
+                for item in response:
+                    candle = {
+                        "timestamp": self.convert_timestamp(item[0]),
+                        "open": str(item[1]),
+                        "high": str(item[2]),
+                        "low": str(item[3]),
+                        "close": str(item[4]),
+                        "volume": str(item[5])
+                    }
+                    candles.append(candle)
+            return candles
+        except Exception as e:
+            raise ValueError(str(e))
+
+    def get_future_history_candles(self, symbol, interval, limit=100):
+        try:
+            if interval not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
+                raise ValueError(f"Invalid interval: {interval}")
+            
+            endpoint = "/api/v1/contract/kline"
+            params = {
+                "symbol": symbol,
+                "interval": interval,
+                "limit": limit
+            }
+            response = self._send_futures_request('GET', endpoint, params)
+            # print(response)
+            data = response.get("data", [])
+            candles = []
+            if isinstance(data, list):
+                for item in data:
+                    candle = {
+                        "timestamp": self.convert_timestamp(item[0]),
+                        "open": str(item[1]),
+                        "high": str(item[2]),
+                        "low": str(item[3]),
+                        "close": str(item[4]),
+                        "volume": str(item[5])
+                    }
+                    candles.append(candle)
+            return candles
+        except Exception as e:
+            raise ValueError(str(e))
+
+    def get_order_book(self, symbol, limit=100):
+        try:
+            if limit not in [5, 10, 20, 50, 100, 500, 1000, 5000]:
+                raise ValueError(f"Invalid limit: {limit}")
+            
+            if self.account_type == "F":
+                return self.get_futures_order_book(symbol, limit=limit)
+            
+            endpoint = "/api/v3/depth"
+            params = {
+                "symbol": symbol,
+                "limit": limit
+            }
+            response = self._send_request('GET', endpoint, params)
+            order_book = {
+                "bids": [],
+                "asks": []
+            }
+            if isinstance(response, dict):
+                for bid in response.get("bids", []):
+                    order_book["bids"].append({
+                        "price": str(bid[0]),
+                        "quantity": str(bid[1])
+                    })
+                for ask in response.get("asks", []):
+                    order_book["asks"].append({
+                        "price": str(ask[0]),
+                        "quantity": str(ask[1])
+                    })
+            return order_book
+        except Exception as e:
+            raise ValueError(str(e))
+
+    def get_futures_order_book(self, symbol, limit=100):
+        try:
+            if limit not in [5, 10, 20, 50, 100, 500, 1000, 5000]:
+                raise ValueError(f"Invalid limit: {limit}")
+            
+            endpoint = "/api/v1/contract/depth"
+            params = {
+                "symbol": symbol,
+                "limit": limit
+            }
+            response = self._send_futures_request('GET', endpoint, params)
+            # print(response)
+            data = response.get("data", {})
+            order_book = {
+                "bids": [],
+                "asks": []
+            }
+            if isinstance(data, dict):
+                for bid in data.get("bids", []):
+                    order_book["bids"].append({
+                        "price": str(bid[0]),
+                        "quantity": str(bid[1])
+                    })
+                for ask in data.get("asks", []):
+                    order_book["asks"].append({
+                        "price": str(ask[0]),
+                        "quantity": str(ask[1])
+                    })
+            return order_book
+        except Exception as e:
+            raise ValueError(str(e))
+
+    def get_exchange_price(self, symbol):
+        try:
+            if self.account_type == "F":
+                return self.get_future_exchange_price(symbol)
+            endpoint = "/api/v3/ticker/price"
+            params = {
+                "symbol": symbol
+            }
+            response = self._send_request('GET', endpoint, params)
+            if isinstance(response, dict) and response.get("price"):
+                return str(response.get("price"))
+            raise ValueError("Price not found in response")
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def get_future_exchange_price(self, symbol):
+        try:
+            endpoint = "/api/v1/contract/ticker"
+            params = {
+                "symbol": symbol
+            }
+            response = self._send_futures_request('GET', endpoint, params)
+            # print(response)
+            if isinstance(response, dict) and response.get("data") and response.get("data").get("lastPrice"):
+                return str(response.get("data").get("lastPrice"))
+            raise ValueError("Price not found in response")
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    

@@ -4,6 +4,7 @@ from automate.functions.brokers.broker import CryptoBrokerClient
 from pybit.unified_trading import HTTP
 from pybit.exceptions import InvalidRequestError, FailedRequestError
 
+# Derivatives of the CryptoBrokerClient for Bybit works only with USDT
 
 class BybitClient(CryptoBrokerClient):
     BYBIT_API_URL = 'https://api.bybit.com/v5'
@@ -75,7 +76,7 @@ class BybitClient(CryptoBrokerClient):
             raise Exception(str(e))
         
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol: str = None) -> AccountBalance:
         """Get the balance of a specific asset on Bybit."""
         try:
             response = self.session.get_wallet_balance(
@@ -88,6 +89,9 @@ class BybitClient(CryptoBrokerClient):
             b = {}
             for balance in response['result']['list'][0]['coin']:
                 # if balance['coin'] == coin:
+                if symbol and balance['coin'] not in symbol:
+                    continue
+
                 b[balance['coin']] = balance['walletBalance']
                 b[balance['coin']] = {
                     'available': balance['walletBalance'],
@@ -106,6 +110,8 @@ class BybitClient(CryptoBrokerClient):
                 
             sys_info = self.get_exchange_info(symbol)
 
+            # print("System info:", sys_info, quantity)
+
             if not sys_info:
                 raise Exception('Symbol was not found!')
             
@@ -113,7 +119,7 @@ class BybitClient(CryptoBrokerClient):
             base_asset = sys_info.get('base_asset')
             order_symbol = sys_info.get('symbol')
 
-            adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
+            adjusted_quantity = self.adjust_trade_quantity(sys_info, side, quantity)
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
@@ -174,10 +180,10 @@ class BybitClient(CryptoBrokerClient):
                     'symbol': symbol,
                     "side": side.upper(),
                     'qty': order_details.get('volume', adjusted_quantity),
-                    'price': order_details.get('price', '0'),
+                    'price': order_details.get('price', '0') or self.get_exchange_price(order_symbol),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
+                    'currency': order_details.get('currency') if order_details.get('currency') not in (None, "None") else currency_asset,
 
                     'trade_details': trade_details
                 }
@@ -231,7 +237,7 @@ class BybitClient(CryptoBrokerClient):
             if trade:
                 # print('Trade details:', trade)
                 # Fallback to 'price' if 'priceAvg' is missing or falsy
-                price_str = trade.get('execPrice') or trade.get('orderPrice', '0')
+                price_str = trade.get('execPrice') or trade.get('orderPrice', None)
 
                 # Normalize fee detail, which may be a dict or a list of dicts
                 fees = trade.get('execFee', 0)
@@ -265,3 +271,115 @@ class BybitClient(CryptoBrokerClient):
             print('error getting order details: ', str(e))
             return None
 
+    # ------------------------------------------------------------------------------------------------------------------------
+    # methods for market data
+    # ------------------------------------------------------------------------------------------------------------------------
+
+    def get_trading_pairs(self) -> List[str]:
+        """Get a list of available trading pairs on Bybit."""
+        try:
+            response = self.session.get_instruments_info(category=self.category)
+
+            if response['retCode'] != 0:
+                raise Exception(response['retMsg'])
+
+            symbols = [item['symbol'] for item in response['result']['list']]
+            return symbols
+
+        except (InvalidRequestError, FailedRequestError) as e:
+            raise Exception(e.message)
+        except Exception as e:
+            raise Exception(str(e))        
+
+
+    def get_exchange_price(self, symbol):
+        """Get the current price of a symbol on Bybit."""
+        try:
+            response = self.session.get_tickers(category=self.category, symbol=symbol)
+
+            if response['retCode'] != 0:
+                raise Exception(response['retMsg'])
+
+            data = response['result']['list'][0]
+            return data['lastPrice']
+
+        except (InvalidRequestError, FailedRequestError) as e:
+            raise Exception(e.message)
+        except Exception as e:
+            raise Exception(str(e))
+
+    def get_order_book(self, symbol, limit=50):
+        """Get the order book for a symbol on Bybit."""
+        try:
+            response = self.session.get_orderbook(
+                category=self.category,
+                symbol=symbol,
+                limit=limit
+            )
+
+            if response['retCode'] != 0:
+                raise Exception(response['retMsg'])
+
+            data = response['result']
+            return data
+
+        except (InvalidRequestError, FailedRequestError) as e:
+            raise Exception(e.message)
+        except Exception as e:
+            raise Exception(str(e))
+        
+    def get_history_candles(self, symbol, interval, limit=100):
+        """Get historical candlestick data for a symbol on Bybit."""
+        try:
+
+            valid_intervals = ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]
+            if interval not in valid_intervals:
+                raise ValueError(f"Invalid interval: {interval}. Valid intervals are: {', '.join(valid_intervals)}")
+            # mapping numeric/short tokens <-> Bybit interval strings
+            to_bybit = {
+                "1": "1m", "3": "3m", "5": "5m", "15": "15m", "30": "30m",
+                "60": "1h", "120": "2h", "240": "4h", "360": "6h", "480": "8h", "720": "12h",
+                "D": "1d", "W": "1w", "M": "1M"
+            }
+            # reverse mapping: if user passed a Bybit interval (e.g. "1m"), convert to token (e.g. "1")
+            from_bybit = {v: k for k, v in to_bybit.items()}
+
+            # Accept either token ("1", "60", "D") or Bybit format ("1m", "1h", "1d").
+            # If user passed a Bybit interval, set `interval` to its token (reversed mapping).
+            # Use `api_interval` for the actual call to Bybit (always a Bybit-format string).
+            if interval in from_bybit:
+                interval = from_bybit[interval]      # user-visible reversed mapping (e.g. "1m" -> "1")
+            api_interval = to_bybit.get(interval, interval)
+
+            if api_interval not in valid_intervals:
+                raise ValueError(f"Invalid interval: {interval}. Valid intervals are: {', '.join(valid_intervals)}")
+ 
+
+            response = self.session.get_kline(
+                category=self.category,
+                symbol=symbol,
+                interval=interval,
+                limit=limit
+            )
+
+            if response['retCode'] != 0:
+                raise Exception(response['retMsg'])
+
+            data = response['result']['list']
+            candles = []
+            for item in data:
+                candles.append({
+                    'timestamp': self.convert_timestamp(item[0]),
+                    'open': item[1],
+                    'high': item[2],
+                    'low': item[3],
+                    'close': item[4],
+                    'volume': item[5]
+                })
+            return candles
+
+        except (InvalidRequestError, FailedRequestError) as e:
+            raise Exception(e.message)
+        except Exception as e:
+            raise Exception(str(e))
+        

@@ -91,6 +91,7 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
             raise Exception(f"Unsupported broker type: {broker_type}")
         
         client = client_cls(account=account)
+        
         return client.open_trade(symbol, side, volume, custom_id)
     except Exception as e:
         print('open trade error: ', str(e))

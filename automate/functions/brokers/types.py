@@ -1,5 +1,6 @@
 from typing import TypedDict, Any, NotRequired
 from datetime import datetime
+from typing import List
 
 class ExchangeInfo(TypedDict):
     symbol: str

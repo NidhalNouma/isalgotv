@@ -94,31 +94,10 @@ class BitgetClient(CryptoBrokerClient):
                 'quote_asset': data.get('quoteCoin'),
                 'base_decimals': data.get('quantityPrecision') or data.get('volumePlace'),
                 'quote_decimals':  data.get('quotePrecision') or data.get('pricePlace'),
+                "supportMarginCoins": data.get("supportMarginCoins", []),
             }
         except Exception as e:
             raise Exception(e)
-        
-
-    def get_exchange_price(self, symbol):
-        # Endpoint for placing an order
-        endpoint = f"/api/v2/spot/market/tickers?symbol={symbol}"
-
-        if self.account_type == "U":
-            productType = "USDT-FUTURES"
-            endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
-        elif self.account_type == "C":
-            productType = "COIN-FUTURES"
-            endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
-        elif self.account_type == "UC":
-            productType = "USDC-FUTURES"
-            endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"
-    
-        response = self._send_request('GET', endpoint)
-        data = response['data'][0]
-        if data.get('lastPr') is None:
-            return 0
-        price = float(data.get('lastPr'))
-        return price
 
     def get_account_balance(self, symbol: str = None) -> AccountBalance:
         """
@@ -144,7 +123,7 @@ class BitgetClient(CryptoBrokerClient):
 
             if symbol and coin_key not in symbol.upper():
                 continue
-            
+
             balances[coin_key] = {
                 'available': float(asset.get('available', 0)),
                 'locked': float(asset.get('locked', 0)),
@@ -401,3 +380,119 @@ class BitgetClient(CryptoBrokerClient):
     # methods for market data
     # ------------------------------------------------------------------------------------------------------------------------
         
+    def get_trading_pairs(self) -> list:
+        try:
+            endpoint = '/api/v2/spot/public/symbols'
+            if self.account_type == "U":
+                productType = "USDT-FUTURES"
+                endpoint = f'/api/v2/mix/market/contracts?productType={productType}'
+            elif self.account_type == "C":
+                productType = "COIN-FUTURES"
+                endpoint = f'/api/v2/mix/market/contracts?productType={productType}'
+            elif self.account_type == "UC":
+                productType = "USDC-FUTURES"
+                endpoint = f'/api/v2/mix/market/contracts?productType={productType}'
+
+            response = self._send_request('GET', endpoint)
+            if response.get('code') != '00000':
+                raise Exception(response.get('msg'))
+            
+            data = response.get('data', [])
+            symbols = [item['symbol'] for item in data if 'symbol' in item]
+            return symbols
+        except Exception as e:
+            raise Exception(e)
+        
+    
+    def get_history_candles(self, symbol: str, interval: str, limit: int = 500):
+        try:
+            if self.account_type == "S":
+                interval = interval.replace("m", "min").replace("h", "hour").replace("d", "day").replace("w", "week").replace("M", "mon")
+
+            endpoint = f'/api/v2/spot/market/candles?symbol={symbol}&granularity={interval}&limit={limit}'
+            if self.account_type == "U":
+                productType = "USDT-FUTURES"
+                endpoint = f'/api/v2/mix/market/candles?symbol={symbol}&granularity={interval}&limit={limit}&productType={productType}'
+            elif self.account_type == "C":
+                productType = "COIN-FUTURES"
+                endpoint = f'/api/v2/mix/market/candles?symbol={symbol}&granularity={interval}&limit={limit}&productType={productType}'
+            elif self.account_type == "UC":
+                productType = "USDC-FUTURES"
+                endpoint = f'/api/v2/mix/market/candles?symbol={symbol}&granularity={interval}&limit={limit}&productType={productType}'
+
+            response = self._send_request('GET', endpoint)
+            if response.get('code') != '00000':
+                raise Exception(response.get('msg'))
+            
+            
+            data = response.get('data', [])
+            candles = []
+            for item in data:
+                candles.append({
+                    'timestamp': self.convert_timestamp(item[0]),
+                    'open': float(item[1]),
+                    'high': float(item[2]),
+                    'low': float(item[3]),
+                    'close': float(item[4]),
+                    'volume': float(item[5]),
+                })
+            # Sort candles by timestamp ascending
+            candles.sort(key=lambda x: x['timestamp'])
+            return candles
+        except Exception as e:
+            raise Exception(e)
+    
+    def get_order_book(self, symbol: str, limit: int = 100) :
+        try:
+            endpoint = f'/api/v2/spot/market/merge-depth?symbol={symbol}&limit={limit}'
+            if self.account_type == "U":
+                productType = "USDT-FUTURES"
+                endpoint = f'/api/v2/mix/market/merge-depth?symbol={symbol}&limit={limit}&productType={productType}'
+            elif self.account_type == "C":
+                productType = "COIN-FUTURES"
+                endpoint = f'/api/v2/mix/market/merge-depth?symbol={symbol}&limit={limit}&productType={productType}'
+            elif self.account_type == "UC":
+                productType = "USDC-FUTURES"
+                endpoint = f'/api/v2/mix/market/merge-depth?symbol={symbol}&limit={limit}&productType={productType}'
+
+            response = self._send_request('GET', endpoint)
+            if response.get('code') != '00000':
+                raise Exception(response.get('msg'))
+            
+            data = response.get('data', {})
+            order_book = {
+                'bids': [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('bids', [])],
+                'asks': [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('asks', [])],
+            }
+            return order_book
+        except Exception as e:
+            raise Exception(e)
+
+    
+    def get_exchange_price(self, symbol):
+        try:
+            endpoint = f'/api/v2/spot/market/tickers?symbol={symbol}'
+            if self.account_type == "U":
+                productType = "USDT-FUTURES"
+                endpoint = f'/api/v2/mix/market/ticker?symbol={symbol}&productType={productType}'
+            elif self.account_type == "C":
+                productType = "COIN-FUTURES"
+                endpoint = f'/api/v2/mix/market/ticker?symbol={symbol}&productType={productType}'
+            elif self.account_type == "UC":
+                productType = "USDC-FUTURES"
+                endpoint = f'/api/v2/mix/market/ticker?symbol={symbol}&productType={productType}'
+
+            response = self._send_request('GET', endpoint)
+
+            if response.get('code') != '00000':
+                raise Exception(response.get('msg'))
+            
+            data = response.get('data', {})
+
+            if isinstance(data, list):
+                data = data[0] if data else {}
+
+            price = float(data.get('lastPr', 0))
+            return price
+        except Exception as e:
+            raise Exception(e)
