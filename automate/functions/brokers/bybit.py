@@ -180,7 +180,7 @@ class BybitClient(CryptoBrokerClient):
                     'symbol': symbol,
                     "side": side.upper(),
                     'qty': order_details.get('volume', adjusted_quantity),
-                    'price': order_details.get('price', '0') or self.get_exchange_price(order_symbol),
+                    'price': order_details.get('price', '0') or self.get_current_price(order_symbol),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') not in (None, "None") else currency_asset,
@@ -292,7 +292,7 @@ class BybitClient(CryptoBrokerClient):
             raise Exception(str(e))        
 
 
-    def get_exchange_price(self, symbol):
+    def get_current_price(self, symbol):
         """Get the current price of a symbol on Bybit."""
         try:
             response = self.session.get_tickers(category=self.category, symbol=symbol)

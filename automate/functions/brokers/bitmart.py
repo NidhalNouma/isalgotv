@@ -76,8 +76,7 @@ class BitmartClient(CryptoBrokerClient):
                         'quote_decimals': quote_decimals,
                     }
 
-            
-            return None
+            raise Exception("Symbol not found")
 
         except cloud_exceptions.APIException as apiException:
             error = json.loads(apiException.response)
@@ -86,7 +85,7 @@ class BitmartClient(CryptoBrokerClient):
         except Exception as e:
             raise Exception(str(e))
         
-    def get_exchange_price(self, symbol):
+    def get_current_price(self, symbol):
         try:
             if self.account_type == 'S':
                 response = self.API.get_v3_ticker(symbol)
@@ -105,14 +104,16 @@ class BitmartClient(CryptoBrokerClient):
                 else:
                     symbols = response[0].get('data', {}).get('symbols', [])
 
+                # print(response)
+
                 target = symbol.upper()
                 for item in symbols:
                     inst = item.get('symbol', '')
 
                     if inst.replace('_', '').upper() == target or inst == target:
-                        return inst.get('last_price')
+                        return item.get('last_price', None) or item.get('index_price', 0)
 
-            return None
+            raise Exception("Symbol not found")
 
         except cloud_exceptions.APIException as apiException:
             error = json.loads(apiException.response)
@@ -122,7 +123,7 @@ class BitmartClient(CryptoBrokerClient):
             raise Exception(str(e))
 
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         try:
             balances = {}
 
@@ -136,6 +137,8 @@ class BitmartClient(CryptoBrokerClient):
                     wallet = response[0].get('data', {}).get('wallet', [])
 
                 for balance in wallet:
+                    if symbol and balance['id'].upper() not in symbol.upper():
+                        continue
                     balances[balance['id']] = {
                         'available': float(balance['available']),
                         'locked': float(balance['frozen'])
@@ -150,6 +153,8 @@ class BitmartClient(CryptoBrokerClient):
                     wallet = response[0].get('data', [])
 
                 for balance in wallet:
+                    if symbol and balance['currency'].upper() not in symbol.upper():
+                        continue
                     balances[balance['currency']] = {
                         'available': float(balance['available_balance']),
                         'locked': float(balance['frozen_balance'])
@@ -362,6 +367,156 @@ class BitmartClient(CryptoBrokerClient):
         except cloud_exceptions.APIException as apiException:
             error = json.loads(apiException.response)
             error_msg = error.get('msg') or error.get('message', 'Error getting trade data.')
+            raise Exception(error_msg)
+        except Exception as e:
+            raise Exception(str(e))
+
+
+    def get_trading_pairs(self):
+        try:
+            pairs = []
+
+            if self.account_type == 'S':
+                response = self.API.get_symbol_detail()
+
+                if response[0].get('code') != 1000:
+                    raise Exception(response[0].get('message'))
+                else:
+                    symbols = response[0].get('data', {}).get('symbols', [])
+
+                for item in symbols:
+                    pairs.append(item.get('symbol'))
+
+            else:
+                response = self.API.get_details()
+
+                if response[0].get('code') != 1000:
+                    raise Exception(response[0].get('msg'))
+                else:
+                    symbols = response[0].get('data', {}).get('symbols', [])
+
+                for item in symbols:
+                    pairs.append(item.get('symbol'))
+
+            return pairs
+
+        except cloud_exceptions.APIException as apiException:
+            error = json.loads(apiException.response)
+            error_msg = error.get('msg') or error.get('message', 'Error fetching trading pairs.')
+            raise Exception(error_msg)
+        except Exception as e:
+            raise Exception(str(e))
+        
+
+    def get_history_candles(self, symbol, interval, limit = 500):
+        try:
+            #  [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200]
+            bitmart_intervals = {
+                '1m': '1',
+                '3m': '3',
+                '5m': '5',
+                '15m': '15',
+                '30m': '30',
+                '45m': '45',
+                '1h': '60',
+                '2h': '120',
+                '3h': '180',
+                '4h': '240',
+                '1d': '1440',
+                '1W': '10080',
+                '1M': '43200'
+            }
+            step = bitmart_intervals.get(interval, '1')
+
+            # print("Fetching candles for", symbol, "interval", interval, "step", step)
+
+            if self.account_type == 'S':
+                response = self.API.get_v3_latest_kline(symbol=symbol, step=step, limit=limit)
+
+                if response[0].get('code') != 1000:
+                    raise Exception(response[0].get('message'))
+                else:
+                    data = response[0].get('data', [])
+
+                candles = []
+                for entry in data:
+                    # print(entry)
+                    candles.append({
+                        "time": self.convert_timestamp(int(entry[0]) * 1000),
+                        # "timestamp": int(entry[0]) * 1000,
+                        "open": float(entry[1]),  # open
+                        "high": float(entry[2]),  # high
+                        "low": float(entry[3]),  # low
+                        "close": float(entry[4]),  # close
+                        "volume": float(entry[5])   # volume
+                    })
+                return candles
+
+            else:
+                end_time = int(time.time())
+                start_time = end_time - (limit * int(step) * 60)
+
+                response = self.API.get_kline(contract_symbol=symbol, step=step, start_time=start_time, end_time=end_time)
+
+                if response[0].get('code') != 1000:
+                    raise Exception(response[0].get('msg'))
+                else:
+                    data = response[0].get('data', [])
+
+                # print("Candle data:", data)
+
+                candles = []
+                for entry in data:
+                    candles.append({
+                        "time": self.convert_timestamp(int(entry.get('timestamp')) * 1000),
+                        # "timestamp": int(entry.get('timestamp')) * 1000,
+                        "open": float(entry.get('open_price')),  # open
+                        "high": float(entry.get('high_price')),  # high
+                        "low": float(entry.get('low_price')),  # low
+                        "close": float(entry.get('close_price')),  # close
+                        "volume": float(entry.get('volume'))   # volume
+                    })
+                return candles
+
+        except cloud_exceptions.APIException as apiException:
+            error = json.loads(apiException.response)
+            error_msg = error.get('msg') or error.get('message', 'Error fetching historical candles.')
+            raise Exception(error_msg)
+        except Exception as e:
+            raise Exception(str(e))
+        
+
+    def get_order_book(self, symbol, limit = 100):
+        try:
+            if self.account_type == 'S':
+                response = self.API.get_v3_depth(symbol, limit=limit)
+
+                if response[0].get('code') != 1000:
+                    raise Exception(response[0].get('message'))
+                else:
+                    data = response[0].get('data', {})
+
+                bids = [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('bids', [])],
+                asks = [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('asks', [])],
+
+                return {'bids': bids, 'asks': asks}
+
+            else:
+                response = self.API.get_depth(contract_symbol=symbol)
+
+                if response[0].get('code') != 1000:
+                    raise Exception(response[0].get('msg'))
+                else:
+                    data = response[0].get('data', {})
+
+                # bids = [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('bids', [])],
+                # asks = [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('asks', [])],
+
+                return data
+            
+        except cloud_exceptions.APIException as apiException:
+            error = json.loads(apiException.response)
+            error_msg = error.get('msg') or error.get('message', 'Error fetching order book.')
             raise Exception(error_msg)
         except Exception as e:
             raise Exception(str(e))

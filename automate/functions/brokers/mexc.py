@@ -32,7 +32,7 @@ class MexcClient(CryptoBrokerClient):
 
         params["timestamp"] = self._get_timestamp()
         query_string = urlencode(params)
-        signature = self.create_signature(query_string)
+        signature = self._create_signature(query_string)
         params["signature"] = signature
         headers = {
             "X-MEXC-APIKEY": self.api_key,
@@ -64,7 +64,7 @@ class MexcClient(CryptoBrokerClient):
 
         timestamp = str(self._get_timestamp())
         signature_target = self.api_key + timestamp
-        signature = self.create_signature(signature_target)
+        signature = self._create_signature(signature_target)
         
         headers = {
             "ApiKey": self.api_key,
@@ -609,7 +609,7 @@ class MexcClient(CryptoBrokerClient):
         except Exception as e:
             raise ValueError(str(e))
 
-    def get_exchange_price(self, symbol):
+    def get_current_price(self, symbol):
         try:
             if self.account_type == "F":
                 return self.get_future_exchange_price(symbol)
@@ -618,6 +618,7 @@ class MexcClient(CryptoBrokerClient):
                 "symbol": symbol
             }
             response = self._send_request('GET', endpoint, params)
+            # print(response)
             if isinstance(response, dict) and response.get("price"):
                 return str(response.get("price"))
             raise ValueError("Price not found in response")

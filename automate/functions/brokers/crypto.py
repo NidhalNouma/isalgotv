@@ -64,7 +64,7 @@ class CryptoComClient(CryptoBrokerClient):
         return response.json()
     
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         """Retrieve the balance for a specific asset from Crypto.com account info."""
         try:
             account_info = self.get_account_info()
@@ -77,6 +77,8 @@ class CryptoComClient(CryptoBrokerClient):
             # print("Balances Data:", data["position_balances"]) 
             
             for balance in data["position_balances"]:  # Debugging line to check each balance
+                if symbol and balance["instrument_name"] not in symbol:
+                    continue
                 balances[balance["instrument_name"]] = float(balance["quantity"])
                 balances[balance["instrument_name"]] = {
                     "available": float(balance["quantity"]),
@@ -292,3 +294,83 @@ class CryptoComClient(CryptoBrokerClient):
         except Exception as e:
             print('Error get crypto order details, ', e)
             return None
+
+
+    def get_current_price(self, symbol):
+        """Fetch the current market price for a given symbol from Crypto.com Exchange API."""
+        try:
+            url = self.BASE_URL + f'public/get-tickers?instrument_name={symbol}'
+            response = requests.get(url)
+            res_json = response.json()
+            data_list = res_json.get('result', {}).get('data', [])
+            
+            target = symbol.upper()
+
+            # print(res_json)
+            for sym in data_list:
+                inst = sym.get('i', '')
+                if inst.replace('_', '').upper() == target or inst == target:
+                    return float(sym.get('a'))  # Return the ask price as the current price
+            return None
+        except Exception as e:
+            print("Error fetching exchange price:", e)
+            return None
+        
+    def get_trading_pairs(self):
+        """Retrieve a list of all trading pairs available on Crypto.com Exchange."""
+        try:
+            url = self.BASE_URL + 'public/get-instruments'
+            response = requests.get(url)
+            res_json = response.json()
+            data_list = res_json.get('result', {}).get('data', [])
+            
+            trading_pairs = [sym.get('symbol') for sym in data_list if 'symbol' in sym]
+            return trading_pairs
+        except Exception as e:
+            print("Error fetching trading pairs:", e)
+            return []
+        
+    def get_history_candles(self, symbol, interval, limit = 500):
+        """Fetch historical candlestick data for a given symbol and interval from Crypto.com Exchange API."""
+        try:
+            url = self.BASE_URL + f'public/get-candlestick?instrument_name={symbol}&timeframe={interval}&limit={limit}'
+            response = requests.get(url)
+            res_json = response.json()
+            data_list = res_json.get('result', {}).get('data', [])
+            
+            candles = []
+            for candle in data_list:
+                candles.append({
+                    'open': float(candle.get('o')),
+                    'high': float(candle.get('h')),
+                    'low': float(candle.get('l')),
+                    'close': float(candle.get('c')),
+                    'volume': float(candle.get('v')),
+                    'time': self.convert_timestamp(candle.get('t')),
+                })
+            return candles
+        except Exception as e:
+            print("Error fetching historical candles:", e)
+            return []
+        
+    def get_order_book(self, symbol, limit=10):
+        """Fetch the order book for a given symbol from Crypto.com Exchange API."""
+        try:
+            if limit > 50:
+                limit = 50
+            url = self.BASE_URL + f'public/get-book?instrument_name={symbol}&depth={limit}'
+            response = requests.get(url)
+            res_json = response.json()
+            data = res_json.get('result', {}).get('data', {})
+
+            if isinstance(data, list):
+                data = data[0] if data else {}
+            
+            order_book = {
+                'bids': [(float(bid[0]), float(bid[1])) for bid in data.get('bids', [])],
+                'asks': [(float(ask[0]), float(ask[1])) for ask in data.get('asks', [])],
+            }
+            return order_book
+        except Exception as e:
+            print("Error fetching order book:", e)
+            return {'bids': [], 'asks': []}

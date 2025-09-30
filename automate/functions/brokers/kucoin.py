@@ -113,7 +113,7 @@ class KucoinClient(CryptoBrokerClient):
                         'quote_decimals': quote_decimals,
                     }
 
-            return None
+            raise Exception('Symbol was not found!')
         except RestError as e:
             # print(e, e.response)
             raise Exception(e.__str__())
@@ -121,7 +121,7 @@ class KucoinClient(CryptoBrokerClient):
             raise Exception(e)
 
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         try:
             balances = {}
 
@@ -134,6 +134,8 @@ class KucoinClient(CryptoBrokerClient):
 
                 for balance in symbols:
                     if balance.get('type') == 'trade':
+                        if symbol and balance['currency'] not in symbol:
+                            continue
                         balances[balance['currency']] = {
                             'available': float(balance['available']),
                             'locked': float(balance['holds'])
@@ -385,6 +387,126 @@ class KucoinClient(CryptoBrokerClient):
             return None
         except RestError as e:
             print('Error getting trade info ', e.__str__())
+            raise Exception(e.__str__())
+        except Exception as e:
+            raise Exception(e)
+        
+    
+    def get_current_price(self, symbol):
+        try:
+            if self.account_type == 'S':
+                symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
+                request = self.rest_service.get_spot_service().get_market_api()
+
+                response = request.get_symbol(symbol_req).to_dict()
+                response = response.get('common_response')
+
+                sym_info = response.get('data', {})
+                # print(sym_info, type(sym_info), sym_info)
+                if sym_info:
+                    return float(sym_info.get('price'))
+            else:
+                symbol_req = GetFutureSymbolReqBuilder().set_symbol(symbol).build()
+                request = self.rest_service.get_futures_service().get_market_api()
+                response = request.get_symbol(symbol_req).to_dict()
+
+                response = response.get('common_response')
+                sym_info = response.get('data', {})
+                
+                if sym_info:
+                    return float(sym_info.get('indexPrice'))
+
+            raise Exception('Symbol was not found!')
+        except RestError as e:
+            # print(e, e.response)
+            raise Exception(e.__str__())
+        except Exception as e:
+            raise Exception(e)
+
+
+    def get_trading_pairs(self):
+        try:
+            symbols = []
+
+            if self.account_type == 'S':
+                request = self.rest_service.get_spot_service().get_market_api().get_symbols().to_dict()
+                data = request.get('common_response')
+                symbols_data = data.get('data', [])
+
+                for sym in symbols_data:
+                    symbols.append(sym.get('symbol'))
+            else:
+                request = self.rest_service.get_futures_service().get_market_api().get_symbols().to_dict()
+                data = request.get('common_response')
+                symbols_data = data.get('data', [])
+
+                for sym in symbols_data:
+                    symbols.append(sym.get('symbol'))
+
+            return symbols
+        except RestError as e:
+            raise Exception(e.__str__())
+        except Exception as e:
+            raise Exception(e)
+        
+    def get_history_candles(self, symbol, interval, limit = 500):
+        try:
+            if self.account_type == 'S':
+                symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
+                request = self.rest_service.get_spot_service().get_market_api()
+
+                response = request.get_symbol(symbol_req).to_dict()
+                response = response.get('common_response')
+
+                sym_info = response.get('data', {})
+                # print(sym_info, type(sym_info), sym_info)
+                if sym_info:
+                    return float(sym_info.get('price'))
+            else:
+                symbol_req = GetFutureSymbolReqBuilder().set_symbol(symbol).build()
+                request = self.rest_service.get_futures_service().get_market_api()
+                response = request.get_symbol(symbol_req).to_dict()
+
+                response = response.get('common_response')
+                sym_info = response.get('data', {})
+                
+                if sym_info:
+                    return float(sym_info.get('indexPrice'))
+
+            raise Exception('Symbol was not found!')
+        except RestError as e:
+            # print(e, e.response)
+            raise Exception(e.__str__())
+        except Exception as e:
+            raise Exception(e)
+        
+    def get_order_book(self, symbol, limit = 100):
+        try:
+            if self.account_type == 'S':
+                symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
+                request = self.rest_service.get_spot_service().get_market_api()
+
+                response = request.get_symbol(symbol_req).to_dict()
+                response = response.get('common_response')
+
+                sym_info = response.get('data', {})
+                # print(sym_info, type(sym_info), sym_info)
+                if sym_info:
+                    return float(sym_info.get('price'))
+            else:
+                symbol_req = GetFutureSymbolReqBuilder().set_symbol(symbol).build()
+                request = self.rest_service.get_futures_service().get_market_api()
+                response = request.get_symbol(symbol_req).to_dict()
+
+                response = response.get('common_response')
+                sym_info = response.get('data', {})
+                
+                if sym_info:
+                    return float(sym_info.get('indexPrice'))
+
+            raise Exception('Symbol was not found!')
+        except RestError as e:
+            # print(e, e.response)
             raise Exception(e.__str__())
         except Exception as e:
             raise Exception(e)

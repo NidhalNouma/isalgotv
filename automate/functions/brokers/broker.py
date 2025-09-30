@@ -143,7 +143,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
     def _get_timestamp(self):
         return int(time.time() * 1000)
 
-    def create_signature(self, query_string):
+    def _create_signature(self, query_string):
         return hmac.new(self.api_secret.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256).hexdigest()
     
     def calculate_fees(self, symbol, price, fees, fee_currency=''):
@@ -170,7 +170,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
     
 
     @abc.abstractmethod
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         """
         Fetches the account balance.
 
@@ -178,6 +178,41 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
     
+    @abc.abstractmethod
+    def get_current_price(self, symbol: str) -> float:
+        """
+        Fetches the current price for a given symbol.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+    
+    @abc.abstractmethod
+    def get_order_book(self, symbol: str, limit: int = 100):
+        """
+        Fetches the order book for a given symbol.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+    
+    @abc.abstractmethod
+    def get_trading_pairs(self) -> List[str]:
+        """
+        Fetches the list of trading pairs available on the exchange.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+
+    @abc.abstractmethod
+    def get_history_candles(self, symbol: str, interval: str, limit: int = 500):
+        """
+        Fetches historical candlestick data for a given symbol and interval.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
 
     def adjust_trade_quantity(self, exchange_info, side, quote_order_qty) -> float:
         """
@@ -220,7 +255,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                         raise ValueError("Insufficient quote balance.")
                     
                     if self.account.broker_type == "bitget" or self.account.broker_type == "bitmart":
-                        price = self.get_exchange_price(exchange_info.get('symbol'))
+                        price = self.get_current_price(exchange_info.get('symbol'))
                         print('price', price)
                         if price == 0 or not price:
                             raise ValueError("Price is zero, cannot calculate order quantity.")
@@ -275,6 +310,13 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
     def market_and_account_data(self, symbol: str, intervals: List[str], limit: int = 500) -> dict:
         try:
             history_candles = {}
+            
+            try:
+                symbol_info = self.get_exchange_info(symbol=symbol)
+                symbol = symbol_info.get('symbol', symbol)
+            except Exception as e:
+                symbol_info = {}
+                print("Error fetching symbol info:", e)
 
             for intv in intervals:
                 if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
@@ -286,12 +328,6 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
             except Exception as e:
                 order_book = {"bids": [], "asks": []}
                 print("Error fetching order book:", e)
-            
-            try:
-                symbol_info = self.get_exchange_info(symbol=symbol)
-            except Exception as e:
-                symbol_info = {}
-                print("Error fetching symbol info:", e)
 
             try:
                 account_balance = self.get_account_balance(symbol=symbol_info.get('base_asset')+symbol_info.get('quote_asset'))
@@ -300,7 +336,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 print("Error fetching account balance:", e)
 
             try:
-                price = self.get_exchange_price(symbol)
+                price = self.get_current_price(symbol)
             except Exception as e:
                 price = "NA"
                 print("Error fetching price:", e)
@@ -310,7 +346,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 'history_candles': history_candles,
                 'account_balance': account_balance,
                 'symbol_info': symbol_info,
-                'price': price,
+                'current_price': price,
             }
         
         except Exception as e:

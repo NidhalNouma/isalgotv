@@ -20,15 +20,15 @@ class BingxClient(CryptoBrokerClient):
             return {'error': str(e), "valid": False}
 
 
-    def send_request(self, method, path, payload, data={}):
+    def _send_request(self, method, path, payload, data={}):
         paramsMap = {
             **payload,
             "recvWindow": "60000",
             "timestamp": self._get_timestamp(),
         }
-        paramsStr = self.parseParam(paramsMap)
+        paramsStr = self._parseParam(paramsMap)
 
-        url = "%s%s?%s&signature=%s" % (self.BASE_URL, path, paramsStr, self.create_signature(paramsStr))
+        url = "%s%s?%s&signature=%s" % (self.BASE_URL, path, paramsStr, self._create_signature(paramsStr))
         # print(url)
         headers = {
             'X-BX-APIKEY': self.api_key,
@@ -36,7 +36,7 @@ class BingxClient(CryptoBrokerClient):
         response = requests.request(method, url, headers=headers, data=data)
         return response.json()
 
-    def parseParam(self, paramsMap):
+    def _parseParam(self, paramsMap):
         sortedKeys = sorted(paramsMap)
         paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
         if paramsStr != "": 
@@ -53,7 +53,7 @@ class BingxClient(CryptoBrokerClient):
         else:
             path = '/openApi/swap/v3/user/balance'
 
-        respons =  self.send_request("GET", path, payload)
+        respons =  self._send_request("GET", path, payload)
 
 
         # print("Response:", respons)
@@ -64,16 +64,16 @@ class BingxClient(CryptoBrokerClient):
                     return data.get('data')
                 else:
                     print("Error:", data.get('msg'))
-                    return None
+                    raise Exception(data.get('msg'))
             except json.JSONDecodeError as e:
                 print("JSON Decode Error:", e)
                 return None
         else:
             print("No response from server")
-            return None
+            raise Exception("No response from server")
         
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         try:
             account_info = self.get_account_info()
             
@@ -82,12 +82,16 @@ class BingxClient(CryptoBrokerClient):
             # {"code":200, "data": {"balances": [{"asset": "BTC", "free": "0.1", ...}, ...]}}
             if self.account_type == 'S':
                 for balance in account_info["balances"]:
+                    if symbol and balance["asset"] not in symbol:
+                        continue
                     balances[balance["asset"]] = {
                         "available": float(balance["free"]),
                         "locked": float(balance["locked"])
                     }
             else:
                 for balance in account_info:
+                    if symbol and balance["asset"] not in symbol:
+                        continue
                     balances[balance["asset"]] = {
                         "available": float(balance["balance"]),
                         "locked": float(balance["unrealizedProfit"])
@@ -110,10 +114,8 @@ class BingxClient(CryptoBrokerClient):
         elif self.account_type == 'C':
             endpoint = '/openApi/cswap/v1/market/contracts'
 
-        response = self.send_request('GET', endpoint, params)
+        response = self._send_request('GET', endpoint, params)
         response_data = response.get("data")
-
-        # print("Symbols:", response_data, self.account_type)
 
         if self.account_type == 'S':
             if isinstance(response_data, dict) and response_data.get("symbols"):
@@ -123,11 +125,9 @@ class BingxClient(CryptoBrokerClient):
                         symbol = s.get("symbol")
                         base_asset, quote_asset = symbol.split("-")
 
-                        min_qty = s.get("minQty")
-                        min_value = s.get("minNotional")
 
-                        base_decimals = self.get_decimals_from_step(min_qty)
-                        quote_decimals = self.get_decimals_from_step(min_value)
+                        base_decimals = self.get_decimals_from_step(s.get("stepSize"))
+                        quote_decimals = self.get_decimals_from_step(s.get("tickSize"))
                         
                         return {
                             "symbol": symbol,
@@ -135,6 +135,10 @@ class BingxClient(CryptoBrokerClient):
                             "quote_asset": quote_asset,
                             "base_decimals": base_decimals,
                             "quote_decimals": quote_decimals,
+                            "min_qty": s.get("minQty", None),
+                            "min_value": s.get("minNotional", None),
+                            "max_qty": s.get("maxQty", None),
+                            "max_value": s.get("maxNotional", None),
                         }
         elif self.account_type == 'U':
             if isinstance(response_data, list):
@@ -145,9 +149,6 @@ class BingxClient(CryptoBrokerClient):
                         base_asset = s.get("asset")
                         quote_asset = s.get("currency")
 
-                        min_qty = s.get("quantityPrecision")
-                        min_value = s.get("minNotional")
-
                         base_decimals = s.get("quantityPrecision")
                         quote_decimals = s.get("pricePrecision")
                         
@@ -157,6 +158,8 @@ class BingxClient(CryptoBrokerClient):
                             "quote_asset": quote_asset,
                             "base_decimals": base_decimals,
                             "quote_decimals": quote_decimals,
+                            "min_qty": s.get("tradeMinQuantity", None),
+                            "min_value": s.get("tradeMinUSDT", None),
                         }
                     
         elif self.account_type == 'C':
@@ -169,19 +172,15 @@ class BingxClient(CryptoBrokerClient):
 
                         min_qty = s.get("minQty")
                         min_value = s.get("minTradeValue")
-
-                        base_decimals = s.get("pricePrecision")
-                        quote_decimals = s.get("pricePrecision")
-
-                        base_decimals = self.get_decimals_from_step(min_value)
-                        quote_decimals = self.get_decimals_from_step(min_value)
                         
                         return {
                             "symbol": symbol,
                             "base_asset": base_asset,
                             "quote_asset": quote_asset,
-                            "base_decimals": base_decimals,
-                            "quote_decimals": quote_decimals,
+                            "base_decimals": s.get("pricePrecision"),
+                            "quote_decimals": s.get("pricePrecision"),
+                            'min_qty': min_qty,
+                            'min_value': min_value,
                         }
             
         raise ValueError("Symbol not found")
@@ -228,15 +227,15 @@ class BingxClient(CryptoBrokerClient):
                 # order_params["type"] = 'STOP_MARKET'
                 pass
 
-            response = self.send_request('POST', endpoint, order_params)
+            response = self._send_request('POST', endpoint, order_params)
 
+            print("Response:", response)
             if response.get("code") is not None:
                 if response.get("code") != 0:
                     raise ValueError(f"{response.get('msg')}")
                 order_data = response.get("data")
             else:
                 order_data = response
-            # print("Response:", order_data)
             
             order_id = order_data.get('orderId')
 
@@ -303,7 +302,7 @@ class BingxClient(CryptoBrokerClient):
                 endpoint = '/openApi/cswap/v1/trade/allFillOrders'
                 time.sleep(2)
 
-            response_data = self.send_request('GET', endpoint, params)
+            response_data = self._send_request('GET', endpoint, params)
             
             if isinstance(response_data, dict) and response_data.get("code") == 0:
                 trade = response_data.get("data")
@@ -362,3 +361,150 @@ class BingxClient(CryptoBrokerClient):
         except Exception as e:
             print(f'error getting order {order_id} info ', e)
             return None
+
+    
+    def get_current_price(self, symbol):
+        try:
+            params = {
+                "symbol": symbol
+            }
+            endpoint = '/openApi/spot/v1/ticker/price'
+            if self.account_type == 'U':
+                endpoint = '/openApi/swap/v2/quote/ticker'
+            elif self.account_type == 'C':
+                endpoint = '/openApi/cswap/v1/market/ticker'
+
+            response_data = self._send_request('GET', endpoint, params)
+            # print("Price response:", response_data)
+
+            if isinstance(response_data, dict) and response_data.get("code") == 0:
+                trade = response_data.get("data")
+
+                if isinstance(trade, list) and len(trade) > 0:
+                    trade = trade[0]
+
+                t = trade.get('trades', {})
+
+                if t and isinstance(t, list) and len(t) > 0:
+                    trade = t[0]
+
+                # print("Trade data:", trade)
+                if self.account_type in ['U', 'C']:
+                    return float(trade.get('lastPrice'))
+                
+                
+
+                return float(trade.get('price'))
+            else:
+                raise Exception(response_data.get("msg", "Could not fetch price"))
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def get_trading_pairs(self):
+        try:
+            endpoint = '/openApi/spot/v1/common/symbols'
+            if self.account_type == 'U':
+                endpoint = '/openApi/swap/v2/quote/contracts'
+            elif self.account_type == 'C':
+                endpoint = '/openApi/cswap/v1/market/contracts'
+
+            response_data = self._send_request('GET', endpoint, {})
+            # print("Pairs response:", response_data)
+
+            pairs = []
+            if isinstance(response_data, dict) and response_data.get("code") == 0:
+                data = response_data.get("data")
+                if self.account_type == 'S':
+                    symbols = data.get("symbols")
+                    for s in symbols:
+                        pairs.append(s.get("symbol"))
+                else:
+                    symbols = data
+                    for s in symbols:
+                        pairs.append(s.get("symbol"))
+                return pairs
+            else:
+                raise Exception(response_data.get("msg", "Could not fetch trading pairs"))
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def get_history_candles(self, symbol, interval, limit = 500):
+        try:
+            if limit> 1440:
+                limit = 1440
+            params = {
+                "symbol": symbol,
+                "interval": interval,
+                "limit": limit
+            }
+            endpoint = '/openApi/spot/v2/market/kline'
+            if self.account_type == 'U':
+                endpoint = '/openApi/swap/v3/quote/klines'
+            elif self.account_type == 'C':
+                endpoint = '/openApi/cswap/v1/market/klines'
+
+            response_data = self._send_request('GET', endpoint, params)
+
+            candles = []
+            if isinstance(response_data, dict) and response_data.get("code") == 0:
+                # print("Candles response:", response_data) 
+                data = response_data.get("data")
+                for c in data:
+                    if self.account_type == 'S':
+                        candles.append({
+                            'timestamp': self.convert_timestamp(c[0]),
+                            'open': float(c[1]),
+                            'high': float(c[2]),
+                            'low': float(c[3]),
+                            'close': float(c[4]),
+                            'volume': float(c[5]),
+                        })
+                    elif self.account_type in ['U', 'C']:
+                        candles.append({
+                            'timestamp': self.convert_timestamp(c.get('time')),
+                            'open': float(c.get('open')),
+                            'high': float(c.get('high')),
+                            'low': float(c.get('low')),
+                            'close': float(c.get('close')),
+                            'volume': float(c.get('volume')),
+                        })
+                return candles
+            else:
+                raise Exception(response_data.get("msg", "Could not fetch candles"))
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    def get_order_book(self, symbol, limit=10):
+        try:
+            if self.account_type == 'S':
+                if limit < 20:
+                    limit = 20
+                elif limit > 1000:
+                    limit = 1000
+            elif self.account_type in ['U', 'C']:
+                if limit not in [5, 10, 20, 50, 100, 500, 1000]:
+                    limit = 100
+
+            params = {
+                "symbol": symbol,
+                "limit": limit
+            }
+            endpoint = '/openApi/spot/v1/market/depth'
+            if self.account_type == 'U':
+                endpoint = '/openApi/swap/v2/quote/depth'
+            elif self.account_type == 'C':
+                endpoint = '/openApi/cswap/v1/market/depth'
+
+            response_data = self._send_request('GET', endpoint, params)
+            # print("Order Book response:", response_data)
+
+            if isinstance(response_data, dict) and response_data.get("code") == 0:
+                data = response_data.get("data")
+                return {
+                    'bids': [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('bids', [])],
+                    'asks': [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('asks', [])],
+                }
+            else:
+                raise Exception(response_data.get("msg", "Could not fetch order book"))
+        except Exception as e:
+            raise ValueError(str(e))

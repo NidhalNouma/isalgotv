@@ -6,7 +6,7 @@ from automate.functions.brokers.broker import CryptoBrokerClient
 class BinanceUSClient(CryptoBrokerClient):
     API_URL = 'https://api.binance.us'
 
-    def send_request(self, method, endpoint, params={}, with_signuture = True):
+    def _send_request(self, method, endpoint, params={}, with_signuture = True):
         query_string = '&'.join([f"{key}={value}" for key, value in params.items()])
         timestamp = self._get_timestamp()
         
@@ -17,7 +17,7 @@ class BinanceUSClient(CryptoBrokerClient):
 
         if with_signuture:
             query_string += f"&timestamp={timestamp}"
-            signature = self.create_signature(query_string)
+            signature = self._create_signature(query_string)
             query_string += f"&signature={signature}"
 
         url = f"{self.API_URL}{endpoint}?{query_string}"
@@ -29,7 +29,7 @@ class BinanceUSClient(CryptoBrokerClient):
     def check_credentials(api_key, api_secret, account_type='S'):
         try:
             client = BinanceUSClient(api_key=api_key, api_secret=api_secret)
-            response = client.send_request('GET', '/api/v3/account')
+            response = client._send_request('GET', '/api/v3/account')
             if response.get('code') == -2014:  # Example error code handling
                 return {'error': "Invalid API key or secret.", "valid": False}
             return {'message': "API credentials are valid.", "valid": True}
@@ -41,7 +41,7 @@ class BinanceUSClient(CryptoBrokerClient):
             params = {
                 "symbol": symbol,
             }
-            response = self.send_request('GET', '/api/v3/exchangeInfo', params, False)
+            response = self._send_request('GET', '/api/v3/exchangeInfo', params, False)
 
                     
             if isinstance(response, list):
@@ -81,7 +81,7 @@ class BinanceUSClient(CryptoBrokerClient):
     def get_account_balance(self) -> AccountBalance:
         try:
             """Fetch the available balance for a specific asset."""
-            response = self.send_request('GET', '/api/v3/account')
+            response = self._send_request('GET', '/api/v3/account')
             balances = {item['asset']: {'available': float(item['free']), 'locked': 0} for item in response['balances']}
             # print("Account balances:", balances)
             return balances
@@ -114,7 +114,7 @@ class BinanceUSClient(CryptoBrokerClient):
 
             print("Quantity:", quantity, "Qty:", adjusted_quantity)
 
-            response = self.send_request('POST', '/api/v3/order', params)
+            response = self._send_request('POST', '/api/v3/order', params)
             
             if response.get('msg') is not None:
                 raise Exception(response.get('msg'))
@@ -175,7 +175,7 @@ class BinanceUSClient(CryptoBrokerClient):
 
             print("Quantity:", quantity, "Qty:", adjusted_quantity)
 
-            response = self.send_request('POST', '/api/v3/order', params)
+            response = self._send_request('POST', '/api/v3/order', params)
 
             if response.get('msg') is not None:
                 raise Exception(response.get('msg'))
@@ -201,7 +201,7 @@ class BinanceUSClient(CryptoBrokerClient):
                 "orderId": order_id,
             }
 
-            response = self.send_request('GET', '/api/v3/myTrades', params)
+            response = self._send_request('GET', '/api/v3/myTrades', params)
 
             # print("Response from get_order_info:", response)
 
@@ -248,4 +248,76 @@ class BinanceUSClient(CryptoBrokerClient):
         except Exception as e:     
             print('getting trade info ', e)   
             return None
+
+    def get_current_price(self, symbol):
+        try:
+            params = {
+                "symbol": symbol,
+            }
+            response = self._send_request('GET', '/api/v3/ticker/price', params, False)
+            if response.get('code') == -1121:  # Example error code handling
+                raise Exception("Symbol not found.")
+            return float(response['price'])
+        except Exception as e:
+            print('Error getting exchange price:', e)
+            raise Exception(f"Error getting exchange price for {symbol}: {str(e)}")
+        
+    def get_history_candles(self, symbol, interval, limit = 500):
+        try:
+            params = {
+                "symbol": symbol,
+                "interval": interval,
+                "limit": limit
+            }
+            response = self._send_request('GET', '/api/v3/klines', params, False)
+
+            if isinstance(response, dict) and response.get('code') is not None:
+                raise Exception(response.get('msg', 'Error fetching candles'))
+
+            candles = []
+            for item in response:
+                candle = {
+                    'open_time': self.convert_timestamp(item[0]),
+                    'open': float(item[1]),
+                    'high': float(item[2]),
+                    'low': float(item[3]),
+                    'close': float(item[4]),
+                    'volume': float(item[5]),
+                    'close_time': self.convert_timestamp(item[6]),
+                    'quote_asset_volume': float(item[7]),
+                    'number_of_trades': int(item[8]),
+                    'taker_buy_base_asset_volume': float(item[9]),
+                    'taker_buy_quote_asset_volume': float(item[10]),
+                }
+                candles.append(candle)
+            return candles
+        except Exception as e:
+            print('Error getting historical candles:', e)
+            raise Exception(f"Error getting historical candles for {symbol}: {str(e)}")
+
+    def get_order_book(self, symbol, limit = 100):
+        try:
+            params = {
+                "symbol": symbol,
+                "limit": limit
+            }
+            response = self._send_request('GET', '/api/v3/depth', params, False)
+
+            if isinstance(response, dict) and response.get('code') is not None:
+                raise Exception(response.get('msg', 'Error fetching order book'))
+
+            bids = [[float(price), float(qty)] for price, qty in response.get('bids', [])]
+            asks = [[float(price), float(qty)] for price, qty in response.get('asks', [])]
+
+            return {
+                'lastUpdateId': response.get('lastUpdateId'),
+                'bids': bids,
+                'asks': asks
+            }
+        except Exception as e:
+            print('Error getting order book:', e)
+            raise Exception(f"Error getting order book for {symbol}: {str(e)}")
+
+
+
 

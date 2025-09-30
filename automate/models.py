@@ -200,7 +200,7 @@ class TradeDetails(models.Model):
 
     side = models.CharField(max_length=1, choices=TYPE)
  
-    trade_type = models.CharField(max_length=1, default="S")
+    trade_type = models.CharField(max_length=2, default="S")
     status = models.CharField(max_length=1, choices=STATUS, default='O')
 
     fills = models.JSONField(default=list, blank=True, validators=[validate_fills])

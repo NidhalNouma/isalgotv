@@ -469,7 +469,7 @@ class BitgetClient(CryptoBrokerClient):
             raise Exception(e)
 
     
-    def get_exchange_price(self, symbol):
+    def get_current_price(self, symbol):
         try:
             endpoint = f'/api/v2/spot/market/tickers?symbol={symbol}'
             if self.account_type == "U":

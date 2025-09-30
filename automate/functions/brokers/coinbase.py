@@ -56,7 +56,7 @@ class CoinbaseClinet(CryptoBrokerClient):
         except Exception as e:
             raise Exception(str(e))
         
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
         try:
             balances = {}
 
@@ -64,6 +64,8 @@ class CoinbaseClinet(CryptoBrokerClient):
             accounts = response.accounts
 
             for account in accounts:
+                if symbol and account.currency not in symbol:
+                    continue
                 balances[account.currency] = {
                     'available': float(account.available_balance.get('value', 0)),
                     'locked': float(account.hold.get('value', 0))
@@ -197,6 +199,78 @@ class CoinbaseClinet(CryptoBrokerClient):
 
                 return r 
 
+
+        except Exception as e:
+            raise Exception(str(e))
+
+
+    def get_cuurent_price(self, symbol) -> float:
+        try:
+            response = self.client.get_product_ticker(product_id=symbol)
+            ticker = response.to_dict()
+            return float(ticker.get('price', 0))
+        except Exception as e:
+            raise Exception(str(e))
+
+    def get_trading_pairs(self):
+        try:
+            response = self.client.get_products()
+            products = response.products
+
+            symbols = []
+            for product in products:
+                symbols.append(product.product_id)
+
+            return symbols
+
+        except Exception as e:
+            raise Exception(str(e))
+        
+    def get_history_candles(self, symbol, interval, limit = 500):
+        try:
+            granularity = self.convert_interval_to_granularity(interval)
+
+            response = self.client.get_product_candles(product_id=symbol, granularity=granularity)
+            candles = response.candles
+
+            ohlc = []
+            for candle in candles[:limit]:
+                ohlc.append([
+                    datetime.strptime(candle.time, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc),
+                    float(candle.open),
+                    float(candle.high),
+                    float(candle.low),
+                    float(candle.close),
+                    float(candle.volume)
+                ])
+            
+            # Sort by time ascending
+            ohlc.sort(key=lambda x: x[0])
+
+            return ohlc
+
+        except Exception as e:
+            raise Exception(str(e))
+        
+
+    def get_order_book(self, symbol, limit = 100):
+        try:
+            response = self.client.get_product_order_book(product_id=symbol, level=2)
+            order_book = response.to_dict()
+
+            bids = []
+            asks = []
+
+            for bid in order_book.get('bids', [])[:limit]:
+                bids.append([float(bid[0]), float(bid[1])])
+
+            for ask in order_book.get('asks', [])[:limit]:
+                asks.append([float(ask[0]), float(ask[1])])
+
+            return {
+                'bids': bids,
+                'asks': asks
+            }
 
         except Exception as e:
             raise Exception(str(e))

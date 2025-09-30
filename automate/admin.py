@@ -17,10 +17,11 @@ class ForexBrokerAccountAdmin(ModelAdmin):
 
 @admin.register(LogMessage)
 class LogMessageAdmin(ModelAdmin):
-    pass
+    list_display = ('response_status',)
+    search_fields = ['alert_message', 'response_message', 'response_status']
 
 
 @admin.register(TradeDetails)
 class TradeDetailsAdmin(ModelAdmin):
-    pass
-
+    list_display = ('symbol', 'side', 'volume', 'status')
+    search_fields = ['symbol', 'side', 'status', 'order_id', 'custom_id']

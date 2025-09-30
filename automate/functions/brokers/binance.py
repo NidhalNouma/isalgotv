@@ -73,7 +73,7 @@ class BinanceClient(CryptoBrokerClient):
                         'quote_decimals': quote_decimals,
                     }
             
-            return None
+            raise Exception("Symbol not found")
         
         except Exception as e:
             raise Exception(e)
@@ -368,7 +368,7 @@ class BinanceClient(CryptoBrokerClient):
         except Exception as e:
             raise ValueError(str(e))
         
-    def get_exchange_price(self, symbol: str) -> float:
+    def get_current_price(self, symbol: str) -> float:
         try:
             sys_info = self.get_exchange_info(symbol)
             if not sys_info:
