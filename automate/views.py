@@ -502,7 +502,7 @@ def get_broker_logs(request, broker_type, pk):
     try:
         # Pagination parameters (per date now)
         start = int(request.GET.get('start', 0))
-        limit = 5  # number of days per page
+        limit = 25  # number of days per page
 
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
@@ -516,33 +516,18 @@ def get_broker_logs(request, broker_type, pk):
 
         content_type = ContentType.objects.get_for_model(account_model)
 
-        # Get all distinct log dates
-        all_dates = LogMessage.objects.filter(
+        logs_qs = LogMessage.objects.filter(
             content_type=content_type, object_id=pk
-        ).dates('created_at', 'day', order='DESC')
+        ).order_by('-created_at')
 
-        # Slice dates for pagination
-        selected_dates = all_dates[start:start+limit]
+        # Apply pagination directly at query level
+        logs_list = logs_qs[start:start+limit]
+        
+        total = logs_qs.count()   # still get total count for pagination
 
-        grouped_logs = {}
-        logs_list = []
-
-        for date in selected_dates:
-            day_logs = LogMessage.objects.filter(
-                content_type=content_type,
-                object_id=pk,
-                created_at__date=date
-            ).order_by('-created_at')
-            grouped_logs[date.strftime('%B %d %Y')] = list(day_logs)
-            logs_list.extend(day_logs)
-
-        # Determine next start offset for pagination
-        total = len(all_dates)
-        # print("Total log dates:", total)
         next_start = start + limit if start + limit < total else None
 
         context = {
-            'grouped_logs': grouped_logs,
             'logs': logs_list,
             'id': pk,
             'broker_type': broker_type,

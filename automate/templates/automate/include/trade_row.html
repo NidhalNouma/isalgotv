@@ -1,8 +1,10 @@
 {% load custom_tags %}
 
 <tr onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="hover:bg-text/10 cursor-pointer transition-colors">
-  <td class="px-4 py-3 text-xs text-text/80 truncate">{{ trade.order_id }} | {{ trade.custom_id }}</td>
-  <td class="px-4 py-3 text-xs text-text truncate flex items-center gap-0.5">
+  <td class="px-4 py-3 text-xs text-text/80 truncate">
+    <span class="text-[0.7rem]">{{ trade.order_id }}</span> <br /> <span class="text-[0.7rem]">{{ trade.custom_id }}</span>
+  </td>
+  <td class="px-4 text-xs text-text truncate flex items-center my-auto h-full gap-0.5">
     {% if trade.status == 'O' %}
       <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
     {% elif trade.status == 'P' %}

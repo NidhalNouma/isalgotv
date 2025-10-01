@@ -125,6 +125,8 @@ class MexcClient(CryptoBrokerClient):
         return response_data
 
     def get_exchange_info(self, symbol) -> ExchangeInfo:
+
+        symbol = self.adjust_symbol_name(symbol)
         params = {
             "symbol": symbol
         }
@@ -314,6 +316,7 @@ class MexcClient(CryptoBrokerClient):
     def close_mexc_futures_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         """Close an existing futures trade on MEXC by placing an opposite order."""
         try:
+            symbol = self.adjust_symbol_name(symbol)
             # Reverse the side for closing the position
             t_side = 4 if side.upper() == "BUY" else 2
             order_params = {

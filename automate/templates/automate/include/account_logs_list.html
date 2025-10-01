@@ -18,9 +18,13 @@
       </div>
       <div class="flex items-start gap-2">
         <svg class="w-3.5 aspect-square shrink-0 {% if log.response_status == 'E' %}
+            
              text-error/80 bg-error/10
+
           {% elif log.response_status == 'S' %}
+            
              text-success/80 bg-success/10
+
           {% endif %} rounded-full inline align-top"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -36,12 +40,17 @@
           <path d="M4 4v7a4 4 0 0 0 4 4h12" />
         </svg>
         <p class=" text-sm flex-1 mr-1.5 {% if log.response_status == 'E' %}
+            
              text-error/80
-          {% elif log.response_status == 'S' %}
-             text-success/80
-          {% endif %}">{{ log.response_message }} <br />
 
-            <span class="text-xs text-text/60 inline-block">Triggered: {{ log.created_at|date:"D d M Y H:i:s" }}</span>
+          {% elif log.response_status == 'S' %}
+            
+             text-success/80
+
+          {% endif %}">
+          {{ log.response_message }} <br />
+
+          <span class="text-xs text-text/60 inline-block">Triggered: {{ log.created_at|date:'D d M Y H:i:s' }}</span>
         </p>
       </div>
     </div>

@@ -70,6 +70,8 @@ class BitgetClient(CryptoBrokerClient):
         endpoint = f"/api/v2/spot/public/symbols?symbol={symbol}"
 
         try:
+            symbol = self.adjust_symbol_name(symbol)
+            
             if self.account_type == "U":
                 productType = "USDT-FUTURES"
                 endpoint = f"/api/v2/mix/market/contracts?symbol={symbol}&productType={productType}"

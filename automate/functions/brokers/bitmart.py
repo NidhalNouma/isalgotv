@@ -44,6 +44,8 @@ class BitmartClient(CryptoBrokerClient):
     def get_exchange_info(self, symbol) -> ExchangeInfo:
 
         try:
+            symbol = self.adjust_symbol_name(symbol)
+            
             if self.account_type == 'S':
                 response = self.API.get_symbol_detail()
             else:
@@ -213,6 +215,9 @@ class BitmartClient(CryptoBrokerClient):
                     trade_details = order_details
 
             else:
+                currency_asset = sys_info.get('quote_asset')
+                if currency_asset == 'USD':
+                    currency_asset = sys_info.get('base_asset')
                 # try:
                 #     self.API.set_pos
                 

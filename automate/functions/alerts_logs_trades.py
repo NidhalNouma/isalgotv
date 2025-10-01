@@ -7,6 +7,8 @@ import inspect
 
 from automate.models import *
 
+from automate.functions.brokers.broker import BrokerClient
+
 from automate.functions.brokers.binance import BinanceClient
 from automate.functions.brokers.binance_us import BinanceUSClient
 from automate.functions.brokers.bitget import BitgetClient
@@ -16,7 +18,7 @@ from automate.functions.brokers.crypto import CryptoComClient
 from automate.functions.brokers.bingx import BingxClient
 from automate.functions.brokers.bitmart import BitmartClient
 from automate.functions.brokers.kucoin import KucoinClient
-from automate.functions.brokers.coinbase import CoinbaseClinet
+from automate.functions.brokers.coinbase import CoinbaseClient
 
 from automate.functions.brokers.trade_locker import TradeLockerClient
 from automate.functions.brokers.metatrader import MetatraderClient
@@ -34,7 +36,7 @@ CLIENT_CLASSES = {
     'bingx': BingxClient,
     'bitmart': BitmartClient,
     'kucoin': KucoinClient,
-    'coinbase': CoinbaseClinet,
+    'coinbase': CoinbaseClient,
 
     'tradelocker': TradeLockerClient,
     'ninjatrader': NinjatraderClient,
@@ -152,9 +154,9 @@ def save_log(response_status, alert_message, response_message, account, trade = 
 
     return log
 
-def save_new_trade(custom_id, side, opend_trade, account, strategy_id):
+def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
     order_id = opend_trade.get('order_id') 
-    symbol = opend_trade.get('symbol')
+    # symbol = opend_trade.get('symbol')
     volume = opend_trade.get('qty')
     price = opend_trade.get('price', 0)
     time = opend_trade.get('time', timezone.now())
@@ -216,7 +218,7 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
             async with transaction.atomic():
                 return await TradeDetails.objects.select_for_update().filter(
                     custom_id=custom_id,
-                    symbol=symbol,
+                    symbol=symbol ,
                     side=t_side,
                     strategy_id=strategy_id,
                     content_type=content_type,

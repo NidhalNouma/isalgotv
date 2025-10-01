@@ -1,10 +1,11 @@
-from coinbase.rest import RESTClient
+from coinbase.rest import RESTClient, products
 from datetime import datetime, timezone
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
 
-class CoinbaseClinet(CryptoBrokerClient):
+
+class CoinbaseClient(CryptoBrokerClient):
 
     def __init__(self, account=None, api_key=None, api_secret=None, passphrase=None, account_type="S", current_trade=None):
         super().__init__(account=account, api_key=api_key, api_secret=api_secret, passphrase=passphrase, account_type=account_type, current_trade=current_trade)
@@ -16,7 +17,7 @@ class CoinbaseClinet(CryptoBrokerClient):
     def check_credentials(api_key, api_secret, account_type="S"):
         """Check the validity of the Bitmart API credentials without instantiating."""
         try:
-            client = CoinbaseClinet(api_key=api_key, api_secret=api_secret, account_type=account_type).client
+            client = CoinbaseClient(api_key=api_key, api_secret=api_secret, account_type=account_type).client
 
             accounts = client.get_accounts()
 
@@ -27,13 +28,12 @@ class CoinbaseClinet(CryptoBrokerClient):
             return {'error': 'API credentials are not valid.', 'valid': False}
         except Exception as e:
             return {'error': str(e), 'valid': False}
+
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
-            # response = self.client.get_products(product_type='FUTURE')
-            # products = response.products
-            # for p in products:
-            #     print(p.product_id)
+            symbol = self.adjust_symbol_name(symbol)
+
             product = self.client.get_product(symbol)
 
             # print(product)
@@ -48,7 +48,7 @@ class CoinbaseClinet(CryptoBrokerClient):
             else:
                 return {
                     'symbol': product.product_id,
-                    'base_asset': product.future_product_details.get('contract_code'),
+                    'base_asset': product.future_product_details.get('contract_code') if product.future_product_details else product.base_currency_id,
                     'quote_asset': product.quote_currency_id,
                     'base_decimals': self.get_decimals_from_step(product.base_increment),
                     'quote_decimals': self.get_decimals_from_step(product.quote_increment),
@@ -92,17 +92,20 @@ class CoinbaseClinet(CryptoBrokerClient):
             print("Adjusted quantity:", adjusted_quantity)
 
             if str.lower(side) == 'buy':            
-                response = self.client.market_order_buy(client_order_id=None, product_id=symbol, base_size=quantity)
+                response = self.client.market_order_buy(client_order_id=None, product_id=order_symbol, base_size=quantity, leverage="10" if self.account_type != 'S' else "1")
             elif str.lower(side) == 'sell':            
-                response = self.client.market_order_sell(client_order_id=None, product_id=symbol, base_size=quantity)
+                response = self.client.market_order_sell(client_order_id=None, product_id=order_symbol, base_size=quantity, leverage="10" if self.account_type != 'S' else "1")
             else:
                 raise Exception('Order type is not supported.')
             
             result = response.to_dict()
-            # print(result)
+            # print(response)
 
             if result.get('success') == False:
-                raise Exception(result.get('error_response', {}).get('message', 'Error occured.'))
+                error_msg = result.get('error_response', {}).get('message', 'Error occured.')
+                if not error_msg:
+                    error_msg = result.get('error_response', {}).get('preview_failure_reason', 'Error occured.')
+                raise Exception(error_msg)
 
             order_id = result.get('success_response', {}).get('order_id')
 
@@ -127,7 +130,7 @@ class CoinbaseClinet(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
+                    'currency': order_details.get('currency') if order_details.get('currency') not in (None, "None") else currency_asset,
 
                     'trade_details': trade_details
                 }
@@ -148,6 +151,7 @@ class CoinbaseClinet(CryptoBrokerClient):
         
     def close_trade(self, symbol, side, quantity) -> CloseTrade:
         try:
+            symbol = self.adjust_symbol_name(symbol)
             opposite_side = "sell" if side.lower() == "buy" else "buy"
 
             if self.account_type == 'S':
@@ -157,14 +161,45 @@ class CoinbaseClinet(CryptoBrokerClient):
 
  
             result = response.to_dict()
-            # print(result)
+            # print(response)
 
             if result.get('success') == False:
                 raise Exception(result.get('error_response', {}).get('message', 'Error occured.'))
 
             order_id = result.get('success_response', {}).get('order_id')
 
-
+            
+            if not self.current_trade:
+                order_details = self.get_order_info(symbol, str(order_id))
+                trade_details = None 
+            else :
+                order_details = self.get_final_trade_details(self.current_trade, str(order_id))
+                trade_details = order_details
+            
+            if order_details:
+                return {
+                    'message': f"Trade opened with order ID {order_id}.",
+                    'order_id': order_id,
+                    'closed_order_id': order_id,
+                    'symbol': symbol,
+                    "side": side.upper(),
+                    'qty': order_details.get('volume', quantity),
+                    'price': order_details.get('price', '0'),
+                    'time': order_details.get('time', ''),
+                    'fees': order_details.get('fees', ''),
+                    'trade_details': trade_details
+                }
+            
+            else:
+                return {
+                    'message': f"Trade opened with order ID {order_id}.",
+                    'order_id': order_id,
+                    'closed_order_id': order_id,
+                    'symbol': symbol,
+                    "side": side.upper(),
+                    'qty': quantity,
+                }
+            
 
         except Exception as e:
             raise Exception(str(e))
@@ -173,7 +208,8 @@ class CoinbaseClinet(CryptoBrokerClient):
         try:
             response = self.client.get_order(order_id=order_id)
             trade = response.to_dict().get('order')
-            print(trade)
+
+            # print(trade)
             
             if trade:
                 dt = datetime.strptime(trade.get('created_time'), "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -191,6 +227,8 @@ class CoinbaseClinet(CryptoBrokerClient):
 
                     'fees': str(trade.get('total_fees')),
 
+                    'currency': str(trade.get('fill_fees_currency')),
+
                     'additional_info': {
                         'client_order_id': str(trade.get('client_order_id')),
                         'outstanding_hold_amount': str(trade.get('outstanding_hold_amount')),
@@ -204,9 +242,9 @@ class CoinbaseClinet(CryptoBrokerClient):
             raise Exception(str(e))
 
 
-    def get_cuurent_price(self, symbol) -> float:
+    def get_current_price(self, symbol) -> float:
         try:
-            response = self.client.get_product_ticker(product_id=symbol)
+            response = self.client.get_public_product(product_id=symbol)
             ticker = response.to_dict()
             return float(ticker.get('price', 0))
         except Exception as e:
@@ -214,7 +252,11 @@ class CoinbaseClinet(CryptoBrokerClient):
 
     def get_trading_pairs(self):
         try:
-            response = self.client.get_products()
+            response = self.client.get_products(
+                product_type="UNKNOWN_PRODUCT_TYPE" if self.account_type == 'S' else 'FUTURE',
+                contract_expiry_type="UNKNOWN_CONTRACT_EXPIRY_TYPE" if self.account_type == 'F' else 'PERPETUAL'
+            )
+
             products = response.products
 
             symbols = []
@@ -228,24 +270,45 @@ class CoinbaseClinet(CryptoBrokerClient):
         
     def get_history_candles(self, symbol, interval, limit = 500):
         try:
-            granularity = self.convert_interval_to_granularity(interval)
+            if limit > 350:
+                limit = 350
+            mapping = {
+                '1m': ('ONE_MINUTE', 60),
+                '5m': ('FIVE_MINUTE', 300),
+                '15m': ('FIFTEEN_MINUTE', 900),
+                '30m': ('THIRTY_MINUTE', 1800),
+                '1h': ('ONE_HOUR', 3600),
+                '2h': ('TWO_HOUR', 7200),
+                '4h': ('FOUR_HOUR', 14400),
+                '6h': ('SIX_HOUR', 21600),
+                '1d': ('ONE_DAY', 86400),
+            }
+            granularity = mapping.get(interval, ('FIVE_MINUTE', 300))
 
-            response = self.client.get_product_candles(product_id=symbol, granularity=granularity)
+            end_time = int(datetime.now(tz=timezone.utc).timestamp())
+            start_time = end_time - (limit * int(granularity[1]))
+
+            # print("Start time:", datetime.fromtimestamp(start_time, tz=timezone.utc))
+
+            response = self.client.get_public_candles(product_id=symbol, start=str(start_time), end=str(end_time), granularity=granularity[0], limit=limit)
             candles = response.candles
 
+            # print(candles)
+
             ohlc = []
-            for candle in candles[:limit]:
-                ohlc.append([
-                    datetime.strptime(candle.time, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc),
-                    float(candle.open),
-                    float(candle.high),
-                    float(candle.low),
-                    float(candle.close),
-                    float(candle.volume)
-                ])
+            for candle in candles:
+                ohlc.append({
+                    "time": self.convert_timestamp(int(candle.start) * 1000),
+                    # "timestamp": int(entry[0]) * 1000,
+                    "open": float(candle.open),  # open
+                    "high": float(candle.high),  # high
+                    "low": float(candle.low),    # low
+                    "close": float(candle.close),  # close
+                    "volume": float(candle.volume)  # volume
+                })
             
             # Sort by time ascending
-            ohlc.sort(key=lambda x: x[0])
+            ohlc.sort(key=lambda x: x['time'])
 
             return ohlc
 
@@ -255,17 +318,13 @@ class CoinbaseClinet(CryptoBrokerClient):
 
     def get_order_book(self, symbol, limit = 100):
         try:
-            response = self.client.get_product_order_book(product_id=symbol, level=2)
-            order_book = response.to_dict()
+            response = self.client.get_product_book(product_id=symbol, limit=limit)
+            order_book = response.to_dict().get('pricebook', {})
 
-            bids = []
-            asks = []
+            # print(order_book)
 
-            for bid in order_book.get('bids', [])[:limit]:
-                bids.append([float(bid[0]), float(bid[1])])
-
-            for ask in order_book.get('asks', [])[:limit]:
-                asks.append([float(ask[0]), float(ask[1])])
+            bids = order_book.get('bids', [])
+            asks =  order_book.get('asks', [])
 
             return {
                 'bids': bids,

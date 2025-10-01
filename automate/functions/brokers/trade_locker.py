@@ -283,3 +283,89 @@ class TradeLockerClient(BrokerClient):
             return res
 
         return None
+
+    def get_account_balance(self):
+        try:
+            account_balance = self.tl.get_all_accounts()
+            if not account_balance.empty:
+                row = account_balance.iloc[0]  # first row of the DataFrame
+                return {
+                    'balance': str(row.get('accountBalance', '0')),
+                    'currency': row.get('currency', ''),
+                    'id': str(row.get('id', '')),
+                    'name': str(row.get('name', '')),
+                    'status': str(row.get('status', '')),
+                }
+            else:
+                return {'error': "Failed to retrieve account balance."}
+        except Exception as e:
+            return {'error': str(e)}
+        
+    def get_trading_pairs(self):
+        try:
+            instruments = self.tl.get_all_instruments()
+            # print(instruments.head())  # for debugging, show first 5 rows
+            if "name" in instruments.columns:
+                symbols = instruments["name"].dropna().unique().tolist()
+                return symbols
+            else:
+                return {'error': "No 'name' column in instruments data."}
+        except Exception as e:
+            return {'error': str(e)}
+        
+    def get_history_candles(self, symbol, interval, limit=100):
+        try:
+            instrument_id = self.tl.get_instrument_id_from_symbol_name(symbol)
+            if not instrument_id:
+                return {'error': f"Symbol {symbol} not found."}
+
+            interval_map = {
+                '1m': 'M1',
+                '5m': 'M5',
+                '15m': 'M15',
+                '30m': 'M30',
+                '1h': 'H1',
+                '4h': 'H4',
+                '1d': 'D1',
+                '1w': 'W1',
+                '1mo': 'MN1'
+            }
+
+            tl_interval = interval_map.get(interval)
+            if not tl_interval:
+                return {'error': f"Interval {interval} is not supported."}
+
+            end_ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
+            start_ts = end_ts - (limit * {
+                'M1': 60 * 1000,
+                'M5': 5 * 60 * 1000,
+                'M15': 15 * 60 * 1000,
+                'M30': 30 * 60 * 1000,
+                'H1': 60 * 60 * 1000,
+                'H4': 4 * 60 * 60 * 1000,
+                'D1': 24 * 60 * 60 * 1000,
+                'W1': 7 * 24 * 60 * 60 * 1000,
+                'MN1': 30 * 24 * 60 * 60 * 1000,
+            }[tl_interval])
+
+            candles = self.tl.get_market_depth(instrument_id, start_timestamp=start_ts, end_timestamp=end_ts, granularity=tl_interval)
+
+            if candles.empty:
+                return []
+
+            # Convert DataFrame to list of dicts
+            candle_list = []
+            for _, row in candles.iterrows():
+                candle = {
+                    'time': timezone.make_aware(datetime.fromtimestamp(row['timestamp'] / 1000.0), timezone.utc),
+                    'open': str(row['open']),
+                    'high': str(row['high']),
+                    'low': str(row['low']),
+                    'close': str(row['close']),
+                    'volume': str(row['volume']),
+                }
+                candle_list.append(candle)
+
+            return candle_list
+        except Exception as e:
+            return {'error': str(e)}

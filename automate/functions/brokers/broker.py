@@ -29,7 +29,6 @@ class BrokerClient(abc.ABC):
     def get_order_info(self, symbol, order_id) -> OrderInfo:
         raise NotImplementedError("This method should be implemented by subclasses.")
 
-
     def get_decimals_from_step(self, size_str):
         """
         Returns the number of decimal places in the given step size string.
@@ -213,6 +212,61 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
         This method should be implemented by subclasses.
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
+    
+
+    def adjust_symbol_name(self, symbol:str):
+        account = self.account
+
+        if account:
+            if account.broker_type == 'binance' and account.type == "C":
+                if not symbol.endswith("_PERP"):
+                    symbol = symbol + "_PERP"
+
+            if account.broker_type == 'kucoin' and account.type != "S":
+                    symbol = symbol.replace('-', '')
+                    if not symbol.endswith('M'):
+                        symbol = symbol + 'M'
+                    
+            if account.broker_type == 'bingx' or account.broker_type == 'kucoin' or account.broker_type == 'coinbase':
+                symbol = symbol.replace("/", "-")
+                symbol = symbol.replace("_", "-")
+                if '-' not in symbol:
+                    if symbol.endswith('USDT'):
+                        symbol = symbol[:-4] + '-USDT'
+                    elif symbol.endswith('USDC'):
+                        symbol = symbol[:-4] + '-USDC'
+                    elif symbol.endswith('BTC'):
+                        symbol = symbol[:-3] + '-BTC'
+                    elif symbol.endswith('ETH'):
+                        symbol = symbol[:-3] + '-ETH'
+                    elif symbol.endswith('DAI'):
+                        symbol = symbol[:-3] + '-DAI'
+                    elif symbol.endswith('USD'):
+                        symbol = symbol[:-3] + '-USD'
+                    elif symbol.endswith('EUR'):
+                        symbol = symbol[:-3] + '-EUR'
+                    elif symbol.endswith('GBP'):
+                        symbol = symbol[:-3] + '-GBP'
+            
+            if account.broker_type == 'coinbase':
+                symbol = symbol.replace(" ", "-")
+                # Remove leading dash if present
+                if symbol.startswith('-'):
+                    symbol = symbol[1:]
+
+                if account.type == 'P':
+                    if symbol.endswith('PERP'):
+                        if '-' not in symbol:
+                            symbol = symbol[:-4] + '-PERP'
+
+                        symbol = symbol + '-INTX'
+                    else:
+                        symbol = symbol + '-PERP-INTX'
+
+                elif account.type == 'F':
+                    symbol = symbol + '-CDE'
+
+        return symbol
 
     def adjust_trade_quantity(self, exchange_info, side, quote_order_qty) -> float:
         """

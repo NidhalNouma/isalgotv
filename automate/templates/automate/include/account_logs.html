@@ -3,12 +3,9 @@
 <section id="logs-{{ broker_type }}-{{ id }}" class="">
   {% if logs is not None %}
     {% if logs %}
-      {% for date_logs, logs in grouped_logs.items %}
-        <h2 class="mb-2 text-title/80">{{ date_logs }}</h2>
-        <ul>
-          {% include 'include/account_logs_list.html' %}
-        </ul>
-      {% endfor %}
+      <ul>
+        {% include 'include/account_logs_list.html' %}
+      </ul>
     {% else %}
       <!-- Case where 'logs' is an empty list or similar iterable -->
       <p class="text-text/80 text-sm mb-6">No logs available for this account at this moment.</p>

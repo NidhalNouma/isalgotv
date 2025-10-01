@@ -41,6 +41,7 @@ class BybitClient(CryptoBrokerClient):
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
+            symbol = self.adjust_symbol_name(symbol)
             response = self.session.get_instruments_info(category=self.category, symbol=symbol)
 
             if response['retCode'] != 0:

@@ -92,6 +92,8 @@ class CryptoComClient(CryptoBrokerClient):
 
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         """Retrieve exchange information for a specific symbol from Crypto.com Exchange API."""
+
+        symbol = self.adjust_symbol_name(symbol)
         url = self.BASE_URL + f'public/get-instruments?instrument_name={symbol}'
         response = requests.get(url)
 

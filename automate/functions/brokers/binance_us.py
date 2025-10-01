@@ -38,6 +38,7 @@ class BinanceUSClient(CryptoBrokerClient):
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
+            symbol = self.adjust_symbol_name(symbol)
             params = {
                 "symbol": symbol,
             }
@@ -156,7 +157,6 @@ class BinanceUSClient(CryptoBrokerClient):
     def close_trade(self, symbol, side, quantity) -> CloseTrade:
         t_side = "SELL" if side.upper() == "BUY" else "BUY"
         try:
-            
             symbol_info = self.get_exchange_info(symbol)
 
             if not symbol_info:
@@ -318,6 +318,16 @@ class BinanceUSClient(CryptoBrokerClient):
             print('Error getting order book:', e)
             raise Exception(f"Error getting order book for {symbol}: {str(e)}")
 
+    def get_trading_pairs(self):
+        try:
+            response = self._send_request('GET', '/api/v3/exchangeInfo', {}, False)
 
+            symbols = []
+            for item in response.get('symbols', []):
+                symbols.append(item['symbol'])
+            return symbols
+        except Exception as e:
+            print('Error getting trading pairs:', e)
+            raise Exception(f"Error getting trading pairs: {str(e)}")
 
 

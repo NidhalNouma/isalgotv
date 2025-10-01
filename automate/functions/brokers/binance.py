@@ -39,6 +39,7 @@ class BinanceClient(CryptoBrokerClient):
 
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
+            symbol = self.adjust_symbol_name(symbol)
             if self.account_type == "S":
                 response = self.client.exchange_info(symbol=symbol)
             else:
@@ -181,7 +182,7 @@ class BinanceClient(CryptoBrokerClient):
                 return {
                     'message': f"Trade opened with order ID {response.get('orderId')}.",
                     'order_id': response.get('orderId'),
-                    'symbol': response.get('symbol', symbol),
+                    'symbol': symbol,
                     "side": side.upper(),
                     'price': (response['fills'][0].get('price') if response.get('fills') and len(response['fills']) > 0 else response.get('price', '')),
                     # 'fees': response['fills'][0]['commission'],

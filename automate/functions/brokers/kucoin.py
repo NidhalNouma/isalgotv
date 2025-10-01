@@ -67,6 +67,7 @@ class KucoinClient(CryptoBrokerClient):
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
         try:
+            symbol = self.adjust_symbol_name(symbol)
             if self.account_type == 'S':
                 symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
                 request = self.rest_service.get_spot_service().get_market_api()

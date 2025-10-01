@@ -103,6 +103,7 @@ class BingxClient(CryptoBrokerClient):
         
     
     def get_exchange_info(self, symbol) -> ExchangeInfo:
+        symbol = self.adjust_symbol_name(symbol)
         params = {
             "symbol": symbol
         }
