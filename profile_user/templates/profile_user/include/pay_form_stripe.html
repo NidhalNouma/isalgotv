@@ -12,6 +12,7 @@
 <form hx-post="{% url 'membership-coupon' %}?plan={{ title }}" class="relative" id="coupon-pay-{{ title }}-form">
     {% csrf_token %}
     {% include 'include/pay_form_coupon.html' %}
+    <div id="have-coupon-{{title}}" class=" w-full flex mb-4"><button type="button" onclick="changeHidden('coupon-input-{{title}}', 'have-coupon-{{title}}')" class="btn-icon ml-auto px-0">Have a coupon?</button></div>
 </form>
 
 <form
@@ -30,7 +31,7 @@
 
   {% include "include/pay_form_stripe_element.html" %}
 
-<div id="have-coupon-{{title}}" class=" w-full flex"><button type="button" onclick="changeHidden('coupon-input-{{title}}', 'have-coupon-{{title}}')" class="btn-icon ml-auto px-0">Have a coupon?</button></div>
+
 
   <input type="text" name="pm_id" id="pm-{{title}}" class="hidden" value="{{stripe_customer.invoice_settings.default_payment_method}}" />
   <input type="text" name="coupon" id="stripe-pay-coupon-{{title}}" class="hidden" value="" />

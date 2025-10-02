@@ -29,6 +29,51 @@ class BrokerClient(abc.ABC):
     def get_order_info(self, symbol, order_id) -> OrderInfo:
         raise NotImplementedError("This method should be implemented by subclasses.")
 
+    @abc.abstractmethod
+    def get_account_balance(self, symbol:str = None) -> AccountBalance:
+        """
+        Fetches the account balance.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+    
+    @abc.abstractmethod
+    def get_current_price(self, symbol: str) -> float:
+        """
+        Fetches the current price for a given symbol.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+    
+    @abc.abstractmethod
+    def get_trading_pairs(self) -> List[str]:
+        """
+        Fetches the list of trading pairs available on the exchange.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+
+    @abc.abstractmethod
+    def get_history_candles(self, symbol: str, interval: str, limit: int = 500):
+        """
+        Fetches historical candlestick data for a given symbol and interval.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+    
+    @abc.abstractmethod
+    def market_and_account_data(self, symbol: str, intervals: List[str], limit: int = 500) -> dict:
+        """
+        Fetches market and account data for a given symbol.
+
+        This method should be implemented by subclasses.
+        """
+        raise NotImplementedError("This method should be implemented by subclasses.")
+
     def get_decimals_from_step(self, size_str):
         """
         Returns the number of decimal places in the given step size string.
@@ -167,47 +212,10 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
     
-
-    @abc.abstractmethod
-    def get_account_balance(self, symbol:str = None) -> AccountBalance:
-        """
-        Fetches the account balance.
-
-        This method should be implemented by subclasses.
-        """
-        raise NotImplementedError("This method should be implemented by subclasses.")
-    
-    @abc.abstractmethod
-    def get_current_price(self, symbol: str) -> float:
-        """
-        Fetches the current price for a given symbol.
-
-        This method should be implemented by subclasses.
-        """
-        raise NotImplementedError("This method should be implemented by subclasses.")
-    
     @abc.abstractmethod
     def get_order_book(self, symbol: str, limit: int = 100):
         """
         Fetches the order book for a given symbol.
-
-        This method should be implemented by subclasses.
-        """
-        raise NotImplementedError("This method should be implemented by subclasses.")
-    
-    @abc.abstractmethod
-    def get_trading_pairs(self) -> List[str]:
-        """
-        Fetches the list of trading pairs available on the exchange.
-
-        This method should be implemented by subclasses.
-        """
-        raise NotImplementedError("This method should be implemented by subclasses.")
-
-    @abc.abstractmethod
-    def get_history_candles(self, symbol: str, interval: str, limit: int = 500):
-        """
-        Fetches historical candlestick data for a given symbol and interval.
 
         This method should be implemented by subclasses.
         """

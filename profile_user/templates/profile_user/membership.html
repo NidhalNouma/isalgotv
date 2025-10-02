@@ -107,20 +107,13 @@
     {% endif %}
 
     <main class="mt-8 mb-24">
-      {% if prices|get_item:'LIFETIME' %}
-        <div class="mt-0 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-8">
-          {% include 'include/price_item.html' with title='MONTHLY' %}
-          {% include 'include/price_item.html' with title='QUARTERLY' save='Save $35' %}
-          {% include 'include/price_item.html' with title='YEARLY' save='Save $197' %}
+      <div class="mt-0 w-full flex flex-col lg:flex-row items-center justify-center gap-8">
+        {% include 'include/price_item.html' with title='MONTHLY' %}
+        {% include 'include/price_item.html' with title='YEARLY' save='Save $197' %}
+        {% if prices|get_item:'LIFETIME' %}
           {% include 'include/price_item.html' with title='LIFETIME' save='Pay once' %}
-        </div>
-      {% else %}
-        <div class="mt-0 w-full flex flex-col md:flex-row items-center justify-center gap-8">
-          {% include 'include/price_item.html' with title='MONTHLY' %}
-          {% include 'include/price_item.html' with title='QUARTERLY' save='Save $35' %}
-          {% include 'include/price_item.html' with title='YEARLY' save='Save $197' %}
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     </main>
   {% endif %}
 

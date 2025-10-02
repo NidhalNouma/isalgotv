@@ -48,10 +48,12 @@ class BingxClient(CryptoBrokerClient):
     def get_account_info(self):
         payload = {}
 
-        if self.account_type == 'S':
-            path = '/openApi/spot/v1/account/balance'
-        else:
+        path = '/openApi/spot/v1/account/balance'
+        
+        if self.account_type == 'U':
             path = '/openApi/swap/v3/user/balance'
+        elif self.account_type == 'C':
+            path = '/openApi/cswap/v1/user/balance'
 
         respons =  self._send_request("GET", path, payload)
 
@@ -228,12 +230,18 @@ class BingxClient(CryptoBrokerClient):
                 # order_params["type"] = 'STOP_MARKET'
                 pass
 
+            print(order_params)
+
             response = self._send_request('POST', endpoint, order_params)
 
             print("Response:", response)
             if response.get("code") is not None:
                 if response.get("code") != 0:
-                    raise ValueError(f"{response.get('msg')}")
+                    error_msg = response.get('msg')
+                    if error_msg in ('', None):
+                        error_msg = 'an error occured! #' + str(response.get("code"))
+
+                    raise ValueError(error_msg)
                 order_data = response.get("data")
             else:
                 order_data = response

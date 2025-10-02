@@ -1,4 +1,10 @@
 {% for log in logs %}
+  {% ifchanged log.created_at.date %}
+  <li class="mb-1 flex items-start">
+    <h3 class="text-md font-semibold text-text mb-2 {% if not forloop.first %} mt-2 {% endif %}">{{ log.created_at|date:'M d, Y' }}</h3>
+  </li>
+  {% endifchanged %}
+
   <li class="mb-1 flex items-start">
     {% comment %} <span class="text-xs text-text/60 flex-shrink-0">{{ log.created_at|date:'H:i:s' }}</span> {% endcomment %}
     <div class="inline-block flex-1 hover:bg-text/10 rounded-md transition-all py-1.5">
@@ -17,15 +23,7 @@
         <p class="text-xs text-text/80 flex-1 mr-1.5">{{ log.alert_message }}</p>
       </div>
       <div class="flex items-start gap-2">
-        <svg class="w-3.5 aspect-square shrink-0 {% if log.response_status == 'E' %}
-            
-             text-error/80 bg-error/10
-
-          {% elif log.response_status == 'S' %}
-            
-             text-success/80 bg-success/10
-
-          {% endif %} rounded-full inline align-top"
+        <svg class="w-3.5 aspect-square shrink-0 {% if log.response_status == 'E' %} text-error/80 bg-error/10 {% elif log.response_status == 'S' %} text-success/80 bg-success/10 {% endif %} rounded-full inline align-top"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -39,15 +37,7 @@
           <polyline points="15 10 20 15 15 20" />
           <path d="M4 4v7a4 4 0 0 0 4 4h12" />
         </svg>
-        <p class=" text-sm flex-1 mr-1.5 {% if log.response_status == 'E' %}
-            
-             text-error/80
-
-          {% elif log.response_status == 'S' %}
-            
-             text-success/80
-
-          {% endif %}">
+        <p class=" text-sm flex-1 mr-1.5 {% if log.response_status == 'E' %} text-error/80 {% elif log.response_status == 'S' %}  text-success/80 {% endif %}">
           {{ log.response_message }} <br />
 
           <span class="text-xs text-text/60 inline-block">Triggered: {{ log.created_at|date:'D d M Y H:i:s' }}</span>

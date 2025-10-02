@@ -1008,7 +1008,7 @@ def stripe_webhook(request):
             else:
                 print('Unhandled event type {}'.format(event['type']))
 
-        return HttpResponse(status=200)
+        return JsonResponse({"status": "success", "message": "Webhook received"}, status=200)
 
     except ValueError as e:
         return HttpResponse(status=400)

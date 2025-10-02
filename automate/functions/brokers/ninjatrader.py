@@ -88,3 +88,15 @@ class NinjatraderClient(BrokerClient):
 
     def get_order_info(self, symbol, order_id) -> OrderInfo:
         pass
+
+    def get_account_balance(self, symbol: str = None):
+        pass
+
+    def get_trading_pairs(self):
+        pass
+
+    def get_history_candles(self, symbol, interval, limit = 500):
+        pass
+
+    def market_and_account_data(self, symbol: str, intervals: list, limit: int = 500) -> dict:
+        pass

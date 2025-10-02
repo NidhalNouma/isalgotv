@@ -3,7 +3,7 @@
 <section id="logs-{{ broker_type }}-{{ id }}" class="">
   {% if logs is not None %}
     {% if logs %}
-      <ul>
+      <ul class="">
         {% include 'include/account_logs_list.html' %}
       </ul>
     {% else %}

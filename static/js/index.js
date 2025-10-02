@@ -411,7 +411,7 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
           fontLineHeight: "1.5",
           borderRadius: "10px",
 
-          colorBackground: "#0000a",
+          colorBackground: getCssVariableColor("--color-background"),
 
           colorPrimary: getCssVariableColor("--color-primary"),
           colorText: getCssVariableColor("--color-text"),

@@ -14,6 +14,7 @@ from automate.functions.brokers.broker import BrokerClient
 class MetatraderClient(BrokerClient):
     api_url = "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai"
     api_data_url = "https://mt-client-api-v1.new-york.agiliumtrade.ai"
+    api_market_data_url = "https://mt-market-data-client-api-v1.new-york.agiliumtrade.ai"
 
     def generate_random_string(self, length):
         """Generate a random alphanumeric string of the given length."""
@@ -422,3 +423,147 @@ class MetatraderClient(BrokerClient):
         except Exception as e:
             print('get_trade_date ', e)
             return None
+
+    def get_symbol_info(self, symbol):
+        try:
+            url = f"{self.api_data_url}/users/current/accounts/{self.account_api_id}/symbols/{symbol}/specification"
+            headers = {
+                "auth-token": meta_api_token
+            }
+            response = requests.get(url, headers=headers)
+            data = response.json()
+            if data.get("error"):
+                return None
+            return data
+        except Exception as e:
+            print("Error:", e)
+            return None
+        
+    def get_account_balance(self, symbol = None):
+        try:
+            url = f"{self.api_data_url}/users/current/accounts/{self.account_api_id}/account-information"
+            headers = {
+                "auth-token": meta_api_token
+            }
+            response = requests.get(url, headers=headers)
+            data = response.json()
+            if data.get("error"):
+                return {"error": data.get("message")}
+            
+            balance = float(data.get("balance", 0))
+            equity = float(data.get("equity", 0))
+            margin = float(data.get("margin", 0))
+            free_margin = float(data.get("freeMargin", 0))
+            currency = data.get("currency", "")
+            
+            return {
+                "balance": balance,
+                "equity": equity,
+                "margin": margin,
+                "free_margin": free_margin,
+                "currency": currency,
+            }
+        except Exception as e:
+            print("Error:", e)
+            return {"error": str(e)}
+        
+    def get_history_candles(self, symbol, interval, limit = 500):
+        try:
+            if interval not in ["1m", "2m", "3m", "4m", "5m", "6m", "10m", "12m", "15m", "20m", "30m", "1h", "2h", "3h", "4h", "6h", "8h", "12h", "1d", "1w", "1mn"]:
+                return {"error": "Invalid interval. Supported intervals: 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m, 1h, 2h, 3h, 4h, 6h, 8h, 12h, 1d, 1w, 1mn."}
+
+            if limit > 1000:
+                limit = 1000
+            url = f"{self.api_market_data_url}/users/current/accounts/{self.account_api_id}/historical-market-data/symbols/{symbol}/timeframes/{interval}/candles"
+
+            headers = {
+                "auth-token": meta_api_token
+            }
+            response = requests.get(url, headers=headers, params={"limit": limit})
+            data = response.json()
+            
+            if isinstance(data, list):
+                candles = []
+                for item in data:
+                    candle = {
+                        "time": parse_datetime(item.get("time")),
+                        "open": float(item.get("open", 0)),
+                        "high": float(item.get("high", 0)),
+                        "low": float(item.get("low", 0)),
+                        "close": float(item.get("close", 0)),
+                        "volume": float(item.get("volume", 0)),
+                    }
+                    candles.append(candle)
+                    
+                return candles
+
+            if data.get("error"):
+                return {"error": data.get("message")}
+            
+        except Exception as e:
+            print("Error:", e)
+            return {"error": str(e)}
+        
+    def get_trading_pairs(self):
+        try:
+            url = f"{self.api_data_url}/users/current/accounts/{self.account_api_id}/symbols"
+            headers = {
+                "auth-token": meta_api_token
+            }
+            response = requests.get(url, headers=headers)
+            data = response.json()
+
+            if isinstance(data, list):
+                return data
+            if data.get("error"):
+                return {"error": data.get("message")}
+
+        except Exception as e:
+            print("Error:", e)
+            return {"error": str(e)}
+        
+    def get_current_price(self, symbol):
+        try:
+            url = f"{self.api_data_url}/users/current/accounts/{self.account_api_id}/symbols/{symbol}/current-price"
+            headers = {
+                "auth-token": meta_api_token
+            }
+            response = requests.get(url, headers=headers)
+            data = response.json()
+            if data.get("error"):
+                return {"error": data.get("message")}
+            
+            bid = float(data.get("bid", 0))
+            ask = float(data.get("ask", 0))
+            
+            return {
+                "bid": bid,
+                "ask": ask,
+            }
+        except Exception as e:
+            print("Error:", e)
+            return {"error": str(e)}
+        
+    def market_and_account_data(self, symbol, intervals, limit = 500):
+        try:
+            history_candles = {}
+            for interval in intervals:
+                candles = self.get_history_candles(symbol, interval, limit)
+                if isinstance(candles, dict) and candles.get("error"):
+                    return {"error": candles.get("error")}
+                history_candles[interval] = candles
+            
+            account_data = self.get_account_balance()
+            symbol_info = self.get_symbol_info(symbol)
+            current_price = self.get_current_price(symbol)
+            
+            
+            return {
+                "history_candles": history_candles,
+                "account_info": account_data,
+                "symbol_info": symbol_info,
+                "current_price": current_price,
+            }
+        except Exception as e:
+            print("Error:", e)
+            return {"error": str(e)}

@@ -134,6 +134,8 @@ class TradeLockerClient(BrokerClient):
     def get_order_info(self, symbol, position_id, ladtTradeId = None):
         try:
             positions = self.tl.get_all_positions()
+            
+            print(positions)
 
             if 'id' not in positions.columns:
                 print("Column 'orderId' not found in orders")
@@ -168,6 +170,8 @@ class TradeLockerClient(BrokerClient):
                 }
                 return trade_details
             else:
+
+                trade = self.get_closed_trades(position_id=position_id)
                 return None
         except Exception as e:
             print("An error occurred:", str(e))
@@ -215,7 +219,7 @@ class TradeLockerClient(BrokerClient):
         except Exception as e:
             return None
 
-    def get_trade_data(self, trade):
+    def get_final_trade_details(self, trade):
 
         closed_positions = self.get_closed_trades(trade.order_id, trade.entry_time, trade.closed_order_id)
 
@@ -276,6 +280,9 @@ class TradeLockerClient(BrokerClient):
                 'open_time': str(trade.entry_time),
                 'close_time': str(time_dt),
 
+                'fees': str(abs(float(last_trade.get('fee', 0)))),
+                'profit': str(last_trade.get('profit', 0)),
+
                 'lastModified': str(last_trade.get('lastModified'))
 
             }
@@ -284,7 +291,7 @@ class TradeLockerClient(BrokerClient):
 
         return None
 
-    def get_account_balance(self):
+    def get_account_balance(self, symbol: str = None):
         try:
             account_balance = self.tl.get_all_accounts()
             if not account_balance.empty:
@@ -320,15 +327,15 @@ class TradeLockerClient(BrokerClient):
                 return {'error': f"Symbol {symbol} not found."}
 
             interval_map = {
-                '1m': 'M1',
-                '5m': 'M5',
-                '15m': 'M15',
-                '30m': 'M30',
-                '1h': 'H1',
-                '4h': 'H4',
-                '1d': 'D1',
-                '1w': 'W1',
-                '1mo': 'MN1'
+                '1m': ('1m', 60),
+                '5m': ('5m', 300),
+                '15m': ('15m', 900),
+                '30m': ('30m', 1800),
+                '1h': ('1H', 3600),
+                '4h': ('4H', 14400),
+                '1d': ('1D', 86400),
+                '1w': ('1W', 604800),
+                '1mn': ('1M', 2592000),
             }
 
             tl_interval = interval_map.get(interval)
@@ -336,19 +343,15 @@ class TradeLockerClient(BrokerClient):
                 return {'error': f"Interval {interval} is not supported."}
 
             end_ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-            start_ts = end_ts - (limit * {
-                'M1': 60 * 1000,
-                'M5': 5 * 60 * 1000,
-                'M15': 15 * 60 * 1000,
-                'M30': 30 * 60 * 1000,
-                'H1': 60 * 60 * 1000,
-                'H4': 4 * 60 * 60 * 1000,
-                'D1': 24 * 60 * 60 * 1000,
-                'W1': 7 * 24 * 60 * 60 * 1000,
-                'MN1': 30 * 24 * 60 * 60 * 1000,
-            }[tl_interval])
+            start_ts = end_ts - (limit * tl_interval[1] * 1000)
 
-            candles = self.tl.get_market_depth(instrument_id, start_timestamp=start_ts, end_timestamp=end_ts, granularity=tl_interval)
+            candles = self.tl.get_price_history(
+                instrument_id=instrument_id,
+                start_timestamp=start_ts,
+                end_timestamp=end_ts,
+                resolution=tl_interval[0])
+            
+            print(candles)
 
             if candles.empty:
                 return []
@@ -357,15 +360,73 @@ class TradeLockerClient(BrokerClient):
             candle_list = []
             for _, row in candles.iterrows():
                 candle = {
-                    'time': timezone.make_aware(datetime.fromtimestamp(row['timestamp'] / 1000.0), timezone.utc),
-                    'open': str(row['open']),
-                    'high': str(row['high']),
-                    'low': str(row['low']),
-                    'close': str(row['close']),
-                    'volume': str(row['volume']),
+                    'time': timezone.make_aware(datetime.fromtimestamp(row['t'] / 1000.0), timezone.utc),
+                    'open': str(row['o']),
+                    'high': str(row['h']),
+                    'low': str(row['l']),
+                    'close': str(row['c']),
+                    'volume': str(row['v']),
                 }
                 candle_list.append(candle)
 
             return candle_list
+        except Exception as e:
+            return {'error': str(e)}
+        
+    
+    def get_current_price(self, symbol):
+        try:
+            instrument_id = self.tl.get_instrument_id_from_symbol_name(symbol)
+            if not instrument_id:
+                return {'error': f"Symbol {symbol} not found."}
+
+            ask = self.tl.get_latest_asking_price(instrument_id=instrument_id)
+            bid = self.tl.get_latest_bid_price(instrument_id=instrument_id)
+            return { 
+                "ask": float(ask), 
+                "bid": float(bid)
+            }
+        except Exception as e:
+            return {'error': str(e)}
+        
+    def get_symbol_info(self, symbol):
+        try:
+            instrument_id = self.tl.get_instrument_id_from_symbol_name(symbol)
+            if not instrument_id:
+                return {'error': f"Symbol {symbol} not found."}
+
+            details = self.tl.get_instrument_details(instrument_id)
+
+            if details:
+                return {
+                    'symbol': symbol,
+                    'instrument_id': instrument_id,
+                    **{k: v for k, v in details.items() if v not in (None, '', "None")}
+                }
+            
+            else:
+                return {'error': f"Symbol info for {symbol} not found."}
+        except Exception as e:
+            return {'error': str(e)}
+        
+    def market_and_account_data(self, symbol: str, intervals: list, limit: int = 500) -> dict:
+        try:
+            symbol_info = self.get_symbol_info(symbol)
+            history_candles = {} 
+            for interval in intervals:
+                if interval not in ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']:
+                    return {'error': f"Interval {interval} is not supported. use one of ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']"}
+                
+                candles = self.get_history_candles(symbol, interval, limit)
+                history_candles[interval] = candles
+            account_balance = self.get_account_balance()
+            current_price = self.get_current_price(symbol)
+
+            return {
+                "history_candles": history_candles,
+                "account_info": account_balance,
+                "current_price": current_price,
+                "symbol_info": symbol_info
+            }
         except Exception as e:
             return {'error': str(e)}

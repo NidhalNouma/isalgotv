@@ -257,7 +257,6 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 
 PRICE_LIST = {
     'MONTHLY': env('STRIPE_PRICE_MN_ID'),
-    'QUARTERLY': env('STRIPE_PRICE_3MN_ID'),
     'YEARLY': env('STRIPE_PRICE_Y_ID'),
     'LIFETIME': env('STRIPE_PRICE_LT_ID'),
 
@@ -268,13 +267,12 @@ PRICE_LIST = {
 
 PRICES = {
     'MONTHLY': get_price_by_id(env('STRIPE_PRICE_MN_ID')),
-    'QUARTERLY': get_price_by_id(env('STRIPE_PRICE_3MN_ID')),
     'YEARLY': get_price_by_id(env('STRIPE_PRICE_Y_ID')),
-    'LIFETIME':     get_price_by_id(env('STRIPE_PRICE_LT_ID')),
+    'LIFETIME': get_price_by_id(env('STRIPE_PRICE_LT_ID')),
 
-    'CRYPTO':   get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_CRYPTO')),
-    'FOREX':  get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_FOREX')),
-    'METATRADER':   get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_METATRADER')),
+    'CRYPTO': get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_CRYPTO')),
+    'FOREX': get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_FOREX')),
+    'METATRADER': get_price_by_id(env('STRIPE_AUTOMATE_PRICE_ID_METATRADER')),
 }
 
 # CKEDITOR Text Editor
