@@ -1,9 +1,12 @@
+# if account type == F it uses the contract value as the size of the trade and not the base asset
 
 import time
+import math
+from datetime import datetime, timezone
 from kucoin_universal_sdk.api import DefaultClient
-from kucoin_universal_sdk.generate.spot.market import GetSymbolReqBuilder
+from kucoin_universal_sdk.generate.spot.market import GetSymbolReqBuilder, GetTickerReqBuilder, GetAllSymbolsReqBuilder, GetKlinesReqBuilder, GetPartOrderBookReqBuilder
 from kucoin_universal_sdk.generate.spot.order import AddOrderReqBuilder, GetTradeHistoryReqBuilder, GetOrderByOrderIdReqBuilder
-from kucoin_universal_sdk.generate.futures.market import GetSymbolReqBuilder as GetFutureSymbolReqBuilder
+from kucoin_universal_sdk.generate.futures.market import GetSymbolReqBuilder as GetFutureSymbolReqBuilder, GetKlinesReqBuilder as GetFutureKlinesReqBuilder, GetPartOrderBookReqBuilder as GetFuturePartOrderBookReqBuilder
 from kucoin_universal_sdk.generate.futures.order import AddOrderReqBuilder as AddFutureOrderReqBuilder, GetTradeHistoryReqBuilder as GetFutureTradeHistoryReqBuilder
 from kucoin_universal_sdk.generate.futures.positions import GetPositionsHistoryReqBuilder
 from kucoin_universal_sdk.generate.account.account import GetSpotAccountListReqBuilder, GetFuturesAccountReqBuilder
@@ -112,6 +115,7 @@ class KucoinClient(CryptoBrokerClient):
                         'quote_asset': quote_asset,
                         'base_decimals': base_decimals,
                         'quote_decimals': quote_decimals,
+                        'contract_val': sym_info.get('multiplier', None)
                     }
 
             raise Exception('Symbol was not found!')
@@ -210,10 +214,11 @@ class KucoinClient(CryptoBrokerClient):
                     .set_client_oid(clientOid)
                     .set_symbol(order_symbol)
                     .set_side(str.lower(side))
-                    .set_size(adjusted_quantity)
+                    .set_size(math.ceil(float(adjusted_quantity)))
                     .set_type('market')
                     .set_reduce_only(oc)
                     .set_leverage(3)
+                    .set_margin_mode('ISOLATED')
                     .build()
                 )
 
@@ -353,6 +358,9 @@ class KucoinClient(CryptoBrokerClient):
                 
                 trade = next((item for item in trades if item.get('orderId') == order_id), None)
 
+                # print(trades)
+                # print(trade)
+
                 if trade:
                     price_str = trade.get('price')
 
@@ -396,10 +404,10 @@ class KucoinClient(CryptoBrokerClient):
     def get_current_price(self, symbol):
         try:
             if self.account_type == 'S':
-                symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
+                symbol_req = GetTickerReqBuilder().set_symbol(symbol).build()
                 request = self.rest_service.get_spot_service().get_market_api()
 
-                response = request.get_symbol(symbol_req).to_dict()
+                response = request.get_ticker(symbol_req).to_dict()
                 response = response.get('common_response')
 
                 sym_info = response.get('data', {})
@@ -407,15 +415,15 @@ class KucoinClient(CryptoBrokerClient):
                 if sym_info:
                     return float(sym_info.get('price'))
             else:
-                symbol_req = GetFutureSymbolReqBuilder().set_symbol(symbol).build()
+                symbol_req = GetTickerReqBuilder().set_symbol(symbol).build()
                 request = self.rest_service.get_futures_service().get_market_api()
-                response = request.get_symbol(symbol_req).to_dict()
+                response = request.get_ticker(symbol_req).to_dict()
 
                 response = response.get('common_response')
                 sym_info = response.get('data', {})
                 
                 if sym_info:
-                    return float(sym_info.get('indexPrice'))
+                    return float(sym_info.get('price'))
 
             raise Exception('Symbol was not found!')
         except RestError as e:
@@ -430,14 +438,15 @@ class KucoinClient(CryptoBrokerClient):
             symbols = []
 
             if self.account_type == 'S':
-                request = self.rest_service.get_spot_service().get_market_api().get_symbols().to_dict()
+                req = GetAllSymbolsReqBuilder().build()
+                request = self.rest_service.get_spot_service().get_market_api().get_all_symbols(req).to_dict()
                 data = request.get('common_response')
                 symbols_data = data.get('data', [])
 
                 for sym in symbols_data:
                     symbols.append(sym.get('symbol'))
             else:
-                request = self.rest_service.get_futures_service().get_market_api().get_symbols().to_dict()
+                request = self.rest_service.get_futures_service().get_market_api().get_all_symbols().to_dict()
                 data = request.get('common_response')
                 symbols_data = data.get('data', [])
 
@@ -451,30 +460,70 @@ class KucoinClient(CryptoBrokerClient):
             raise Exception(e)
         
     def get_history_candles(self, symbol, interval, limit = 500):
+        kucoin_intervals = {
+            '1m': ('1min', 1),
+            '3m': ('3min', 3),
+            '5m': ('5min', 5),
+            '15m': ('15min', 15),
+            '30m': ('30min', 30),
+            '45m': ('45min', 45),
+            '1h': ('1hour', 60),
+            '2h': ('2hour', 120),
+            '4h': ('4hour', 240),
+            '6h': ('6hour', 360),
+            '8h': ('8hour', 480),
+            '12h': ('12hour', 720),
+            '1d': ('1day', 1440),
+            '1W': ('1week', 10080),
+            '1M': ('1month', 43200)
+        }
+        granularity = kucoin_intervals.get(interval, ('5min', 5))
+
+        end_time = int(datetime.now(tz=timezone.utc).timestamp())
+        start_time = end_time - (limit * int(granularity[1]) * 60)
+
         try:
             if self.account_type == 'S':
-                symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
+                req = GetKlinesReqBuilder().set_symbol(symbol).set_type(granularity[0]).set_start_at(start_time).set_end_at(end_time).build()
                 request = self.rest_service.get_spot_service().get_market_api()
 
-                response = request.get_symbol(symbol_req).to_dict()
+                response = request.get_klines(req).to_dict()
                 response = response.get('common_response')
 
-                sym_info = response.get('data', {})
-                # print(sym_info, type(sym_info), sym_info)
-                if sym_info:
-                    return float(sym_info.get('price'))
+                data = response.get('data', [])
+                candles = []
+
+                for candle in data:
+                    candles.append({
+                        "time": self.convert_timestamp(int(candle[0]) * 1000),
+                        "open": float(candle[1]),  # open
+                        "high": float(candle[3]),  # high
+                        "low": float(candle[4]),    # low
+                        "close": float(candle[2]),  # close
+                        "volume": float(candle[5])  # volume
+                    })
+                return candles
+
             else:
-                symbol_req = GetFutureSymbolReqBuilder().set_symbol(symbol).build()
+                req = GetFutureKlinesReqBuilder().set_symbol(symbol).set_granularity(granularity[1]).set_from_(start_time * 1000).set_to(end_time * 1000).build()
                 request = self.rest_service.get_futures_service().get_market_api()
-                response = request.get_symbol(symbol_req).to_dict()
+                response = request.get_klines(req).to_dict()
 
                 response = response.get('common_response')
-                sym_info = response.get('data', {})
+                data = response.get('data', [])
                 
-                if sym_info:
-                    return float(sym_info.get('indexPrice'))
+                candles = []
 
-            raise Exception('Symbol was not found!')
+                for candle in data:
+                    candles.append({
+                        "time": self.convert_timestamp(int(candle[0]) * 1000),
+                        "open": float(candle[1]),  # open
+                        "high": float(candle[2]),  # high
+                        "low": float(candle[3]),    # low
+                        "close": float(candle[4]),  # close
+                        "volume": float(candle[5])  # volume
+                    })
+                return candles
         except RestError as e:
             # print(e, e.response)
             raise Exception(e.__str__())
@@ -484,28 +533,37 @@ class KucoinClient(CryptoBrokerClient):
     def get_order_book(self, symbol, limit = 100):
         try:
             if self.account_type == 'S':
-                symbol_req = GetSymbolReqBuilder().set_symbol(symbol).build()
+                req = GetPartOrderBookReqBuilder().set_symbol(symbol).set_size('100').build()
                 request = self.rest_service.get_spot_service().get_market_api()
 
-                response = request.get_symbol(symbol_req).to_dict()
+                response = request.get_part_order_book(req).to_dict()
                 response = response.get('common_response')
 
-                sym_info = response.get('data', {})
-                # print(sym_info, type(sym_info), sym_info)
-                if sym_info:
-                    return float(sym_info.get('price'))
+                data = response.get('data', {})
+                    
+                order_book = {
+                    'bids': [{"price":float(b[0]), "qty":float(b[1])} for b in data.get('bids', [])],
+                    'asks': [{"price":float(b[0]), "qty":float(b[1])} for b in data.get('asks', [])],
+                    'time': self.convert_timestamp(data.get('time'))
+                }
+
+                return order_book
             else:
-                symbol_req = GetFutureSymbolReqBuilder().set_symbol(symbol).build()
+                req = GetFuturePartOrderBookReqBuilder().set_symbol(symbol).set_size('100').build()
                 request = self.rest_service.get_futures_service().get_market_api()
-                response = request.get_symbol(symbol_req).to_dict()
+                response = request.get_part_order_book(req).to_dict()
 
                 response = response.get('common_response')
-                sym_info = response.get('data', {})
+                data = response.get('data', {})
                 
-                if sym_info:
-                    return float(sym_info.get('indexPrice'))
+                order_book = {
+                    'bids': [{"price":float(b[0]), "qty":float(b[1])} for b in data.get('bids', [])],
+                    'asks': [{"price":float(b[0]), "qty":float(b[1])} for b in data.get('asks', [])],
+                    'time': self.convert_timestamp(data.get('time'))
+                }
 
-            raise Exception('Symbol was not found!')
+                return order_book
+            
         except RestError as e:
             # print(e, e.response)
             raise Exception(e.__str__())

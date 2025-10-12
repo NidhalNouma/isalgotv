@@ -14,7 +14,7 @@
   <h1 class="main-title">Strategies</h1>
 
   <main class="mt-8 mb-16">
-    <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 max-w-full mx-auto gap-12">
       {% for strategy in strategies %}
         {% include 'include/quick_strategy.html' with strategy=strategy %}
       {% empty %}

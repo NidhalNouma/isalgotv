@@ -14,6 +14,7 @@ from automate.forms import *
 from automate.tasks import *
 
 from automate.functions.brokers.metatrader import MetatraderClient
+from automate.functions.brokers.ctrader import CLIENT_ID
 
 from collections import defaultdict
 from django.utils.timezone import localtime
@@ -38,14 +39,23 @@ PRICES = settings.PRICES
 
 def context_accounts_by_user(request):
     user_profile = request.user.user_profile  
-    crypto_accounts = CryptoBrokerAccount.objects.filter(created_by=user_profile).order_by("-created_at")
-    forex_accounts = ForexBrokerAccount.objects.filter(created_by=user_profile).order_by("-created_at")
+    crypto_accounts = list(CryptoBrokerAccount.objects.filter(created_by=user_profile))
+    forex_accounts = list(ForexBrokerAccount.objects.filter(created_by=user_profile))
 
-    context ={
-        'crypto_accounts': crypto_accounts,
-        'forex_accounts': forex_accounts
+    # Annotate each account with its broker type
+    for acc in crypto_accounts:
+        acc.broker = 'crypto'
+    for acc in forex_accounts:
+        acc.broker = 'forex'
+
+    # Combine and sort all accounts by created_at descending
+    all_accounts = crypto_accounts + forex_accounts
+    all_accounts.sort(key=lambda x: x.created_at, reverse=True)
+
+    context = {
+        'accounts': all_accounts,
+        'ctrader_client_id': CLIENT_ID,
     }
-
     return context
 
 
@@ -58,6 +68,18 @@ def index(request):
 
 def webhook_404(request, exception):
     return HttpResponse("Page not found!", content_type="text/plain")
+
+@require_http_methods(["GET"])
+def ctrader_auth_code(request):
+    # Extract the 'code' parameter from the GET request
+    auth_code = request.GET.get('code', None)
+
+    if auth_code:
+        # Return the code in a JSON response
+        return JsonResponse({"authorization_code": auth_code}, status=200)
+    else:
+        # If no code is found, return an error message
+        return JsonResponse({"error": "Authorization code not found in the request."}, status=400)
 
 @require_http_methods([ "POST"])
 def add_broker(request, broker_type):
@@ -91,10 +113,14 @@ def add_broker(request, broker_type):
                     'username': request.POST.get(f'{broker_type}_username'),
                     'password': request.POST.get(f'{broker_type}_password'),
                     'server': request.POST.get(f'{broker_type}_server'),
-                    'type': request.POST.get(f'{broker_type}_type'),
+                    'type': request.POST.get(f'{broker_type}_type', 'D'),
                     'created_by' : request.user.user_profile,
                     'broker_type': broker_type
                 }
+
+                if broker_type == 'ctrader':
+                    form_data['username'] = 'xxx'
+                    form_data['password'] = 'xxx'
                 form = AddForexBrokerAccountForm(form_data) 
 
             else:
@@ -147,6 +173,14 @@ def add_broker(request, broker_type):
 
                     if valid.get('account_api_id'):
                         account.account_api_id = valid.get('account_api_id')
+                    
+                    if valid.get('ctrader_access_token'):
+                        account.server = valid.get('ctrader_access_token')
+                        account.username = valid.get('account_id', 'xxx')
+
+                    if valid.get('account_type'):
+                        account_type = valid.get('account_type')
+                        account.type = 'L' if str(account_type).lower() in ('live', 'l') else 'D'
 
                     account.save()
 
@@ -205,10 +239,13 @@ def edit_broker(request, broker_type, pk):
                     'username': request.POST.get(f'{account.id}_{account.broker_type}_username'),
                     'password': request.POST.get(f'{account.id}_{account.broker_type}_password'),
                     'server': request.POST.get(f'{account.id}_{account.broker_type}_server'),
-                    'type': request.POST.get(f'{account.id}_{account.broker_type}_type'),
+                    'type': request.POST.get(f'{account.id}_{account.broker_type}_type', 'D'),
                     'created_by' : request.user.user_profile,
                     'broker_type': broker_type
                 }
+                if broker_type == 'ctrader':
+                    form_data['username'] = 'xxx'
+                    form_data['password'] = 'xxx'
                 form = AddForexBrokerAccountForm(form_data, instance=account) 
             else:
                 raise Exception("Invalid Broker Type")
@@ -228,6 +265,17 @@ def edit_broker(request, broker_type, pk):
 
                     if not subscription or subscription.status != "active":
                         raise Exception("Subscription is not active. Please activate your subscription.")
+
+                    if valid.get('account_api_id'):
+                        account.account_api_id = valid.get('account_api_id')
+                    
+                    if valid.get('ctrader_access_token'):
+                        account.server = valid.get('ctrader_access_token')
+                        account.username = valid.get('account_id', 'xxx')
+
+                    if valid.get('account_type'):
+                        account_type = valid.get('account_type')
+                        account.type = 'L' if str(account_type).lower() in ('live', 'l') else 'D'
                     
                     account = form.save(commit=False)
                     
@@ -502,7 +550,7 @@ def get_broker_logs(request, broker_type, pk):
     try:
         # Pagination parameters (per date now)
         start = int(request.GET.get('start', 0))
-        limit = 25  # number of days per page
+        limit = 40  # number of days per page
 
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]

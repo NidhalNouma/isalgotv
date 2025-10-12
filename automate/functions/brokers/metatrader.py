@@ -128,6 +128,7 @@ class MetatraderClient(BrokerClient):
             
             data["valid"] = True
             data["account_api_id"] = data.get("id", "")
+            data["account_type"] = 'demo' if 'demo' in str(data.get("server", "")).lower() else 'live'
             return data
         except Exception as e:
             print("Error:", e)

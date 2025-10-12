@@ -106,7 +106,7 @@ class MexcClient(CryptoBrokerClient):
             for balance in account_info["balances"]:
                 if symbol and balance["asset"] not in symbol:
                     continue
-                balances[balance["asset"]] = float(balance["free"])
+                # balances[balance["asset"]] = float(balance["free"])
                 balances[balance["asset"]] = {
                     "available": float(balance["free"]),
                     "locked": float(balance["locked"])

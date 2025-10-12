@@ -36,6 +36,7 @@ class CryptoBrokerAccount(models.Model):
         ("kucoin", "Kucoin"),
         ("okx", "Okx"),
         ("coinbase", "Coinbase"),
+        ("apex", "Apex omni"),
         # Add other brokers here
     ]
 
@@ -93,6 +94,7 @@ class ForexBrokerAccount(models.Model):
         ("metatrader5", "Metatrader 5"),
         ("ninjatrader", "NinjaTrader"),
         ("dxtrade", "DXTrade"),
+        ("ctrader", "CTrader"),
         ("tradestation", "TradeStation"),
     ]
 

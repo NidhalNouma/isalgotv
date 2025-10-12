@@ -43,7 +43,7 @@
 
 <div class="group bg-text/5 backdrop-blur-3xl rounded-md overflow-hidden relative cursor-pointer">
   <a class="relative" href="{% url 'strategy' slug=strategy.slug %}">
-    <div class="relative h-48 overflow-hidden">
+    <div class="relative h-72 overflow-hidden">
       {% if strategy.short_video_url %}
         <video class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" muted loop playsinline poster="{{ strategy.image_url|default:'/static/images/default_strategy_image.jpg' }}">
           <source src="{{ strategy.short_video_url }}" type="video/mp4" />Your browser does not support the video tag.

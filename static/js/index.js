@@ -2003,6 +2003,26 @@ function showSelectedFiles(inputId, listId) {
   }
 }
 
+function openCtraderAuthWindow(clientIdInput, path) {
+  const clientId =
+    typeof clientIdInput === "string"
+      ? document.getElementById(clientIdInput)
+        ? document.getElementById(clientIdInput).value
+        : clientIdInput
+      : "";
+  if (clientId) {
+    const baseUrl = window.location.origin;
+    const redirect_url = `${baseUrl}${path}`;
+    const url = `https://id.ctrader.com/my/settings/openapi/grantingaccess?client_id=${clientId}&scope=trading&redirect_uri=${redirect_url}`;
+    console.log("ctrader auth: ", url);
+    window.open(
+      url,
+      "ctraderAuthWindow",
+      "width=600,height=700,left=100,top=100"
+    );
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   // Auto-play/pause videos on hover or touch within elements with class 'group'
   // Pause and reset all videos

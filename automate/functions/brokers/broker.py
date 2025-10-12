@@ -73,6 +73,9 @@ class BrokerClient(abc.ABC):
         This method should be implemented by subclasses.
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
+   
+    def adjust_symbol_name(self, symbol:str):
+        return symbol
 
     def get_decimals_from_step(self, size_str):
         """
@@ -99,6 +102,22 @@ class BrokerClient(abc.ABC):
         except Exception as e:
             return timezone.now()
 
+    
+    def calculate_profit(self, trade, close_price, volume):
+        side_upper = trade.side.upper()
+
+        if close_price != 0 and trade.entry_price != 0:
+            if side_upper in ("B", "BUY"):
+                profit = (close_price - Decimal(str(trade.entry_price))) * volume
+            elif side_upper in ("S", "SELL"):
+                profit = (Decimal(str(trade.entry_price)) - close_price) * volume
+            else:
+                profit = Decimal("0")
+        else:
+            profit = Decimal("0")
+
+        return profit
+
 
     def get_final_trade_details(self, trade, order_id=None) -> TradeDetails:
         if not order_id:
@@ -107,7 +126,8 @@ class BrokerClient(abc.ABC):
             trade_id = order_id
 
         try:
-            result = self.get_order_info(trade.symbol, trade_id)
+            symbol = self.adjust_symbol_name(trade.symbol)
+            result = self.get_order_info(symbol, trade_id)
 
             if result:
                 # Convert price and volume to Decimal for accurate calculation
@@ -120,21 +140,10 @@ class BrokerClient(abc.ABC):
                 except (InvalidOperation, ValueError):
                     volume_dec = Decimal('0')
 
-
-                side_upper = trade.side.upper()
-
                 profit = result.get('profit')
 
                 if profit in [None, 'None']:
-                    if price_dec != 0 and trade.entry_price != 0:
-                        if side_upper in ("B", "BUY"):
-                            profit = (price_dec - Decimal(str(trade.entry_price))) * volume_dec
-                        elif side_upper in ("S", "SELL"):
-                            profit = (Decimal(str(trade.entry_price)) - price_dec) * volume_dec
-                        else:
-                            profit = Decimal("0")
-                    else:
-                        profit = Decimal("0")
+                    profit = self.calculate_profit(trade, price_dec, volume_dec)
 
                 res = {
                     'order_id': str(result.get('order_id')),
@@ -235,9 +244,10 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                     if not symbol.endswith('M'):
                         symbol = symbol + 'M'
                     
-            if account.broker_type == 'bingx' or account.broker_type == 'kucoin' or account.broker_type == 'coinbase':
+            if account.broker_type in ('bingx', 'kucoin', 'coinbase', 'okx'):
                 symbol = symbol.replace("/", "-")
                 symbol = symbol.replace("_", "-")
+                symbol = symbol.replace(" ", "-")
                 if '-' not in symbol:
                     if symbol.endswith('USDT'):
                         symbol = symbol[:-4] + '-USDT'
@@ -272,9 +282,38 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                         symbol = symbol + '-PERP-INTX'
 
                 elif account.type == 'F':
-                    symbol = symbol + '-CDE'
+                    if symbol.endswith('-CDE') == False:
+                        symbol = symbol + '-CDE'
+                
+            if account.broker_type == 'okx':
+                if account.type == 'P': 
+                    if symbol.endswith('-SWAP') == False:
+                        symbol = symbol + '-SWAP'
+                
+            if account.broker_type == 'crypto':
+                if account.type == 'P': 
+                    if symbol.endswith('-PERP') == False:
+                        symbol = symbol + '-PERP'
 
         return symbol
+    
+    def calculate_profit(self, trade, close_price, volume):
+        profit = super().calculate_profit(trade, close_price, volume)
+        
+        try:
+            if profit != 0 and self.account_type != 'S':
+                exchange_info = self.get_exchange_info(trade.symbol)
+                if exchange_info and exchange_info.get('contract_val', None):
+                    contract_val = exchange_info.get('contract_val')
+                    profit = profit * Decimal(str(contract_val))
+
+                    # print(profit)
+
+            return profit
+        except Exception as e:
+            print(f'error calculating profit {str(e)}')
+            return profit
+
 
     def adjust_trade_quantity(self, exchange_info, side, quote_order_qty) -> float:
         """
@@ -342,7 +381,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                     if float(base_balance) <= 0:
                         raise ValueError("Insufficient base balance.")
                     
-                    elif float(base_balance) < float(quote_order_qty):
+                    if float(base_balance) < float(quote_order_qty):
                         # Format quantity to max base_decimals and return as string
                         qty_dec = Decimal(str(base_balance)).quantize(quant, rounding=ROUND_DOWN)
                         return format(qty_dec, f'.{precision}f')

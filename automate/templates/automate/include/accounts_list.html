@@ -1,12 +1,12 @@
 <div class="" id="at-accounts-list" trigger-modal="{{ trigger_modal }}" trigger-btn="{{ trigger_btn }}">
-  {% if crypto_accounts or forex_accounts %}
+  {% if accounts %}
     <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full items-start">
-      {% for account in crypto_accounts %}
-        {% include 'include/crypto_broker_card.html' with account=account %}
-      {% endfor %}
-      <span class="col-span-full"></span>
-      {% for account in forex_accounts %}
-        {% include 'include/forex_broker_card.html' with account=account %}
+      {% for account in accounts %}
+        {% if account.broker == 'crypto' %}
+          {% include 'include/crypto_broker_card.html' with account=account %}
+        {% elif account.broker == 'forex' %}
+          {% include 'include/forex_broker_card.html' with account=account %}
+        {% endif %}
       {% endfor %}
     </div>
   {% else %}

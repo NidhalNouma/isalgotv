@@ -20,11 +20,12 @@ class DxtradeClient(BrokerClient):
             self.password = password
             self.server = server
 
-        self.csrf = ""
-        self.API_URL = f"https://demo.dx.trade"
+        self.session_token = None
+        self.API_URL = f"https://{self.server}"
         self.account_id = None
         self.cookies = {}
         self.s = requests.Session()
+
         self.current_trade = current_trade
 
     @staticmethod
@@ -40,72 +41,46 @@ class DxtradeClient(BrokerClient):
             return {"error": str(e), "valid": False}
 
     def login(self):
-        """
-        1) POST /api/auth/login  with {"username","password","vendor"}
-        2) On HTTP 200: store cookies in self.cookies, then call self.fetch_csrf()
-        3) Optionally fetch positions (or accounts) to verify login success
-        """
-        url = f"{self.API_URL}/dxsca-web/login"
+        url = f"{self.API_URL}/dxsca/login"
         payload = {
             "username": self.username,
             "password": self.password,
-            "domain": self.server
+            "domain": 'default',
+            # "vendor": "mercury",
         }
-        print(payload)
+        
+        # print(payload)
         headers = {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
         resp = self.s.post(url, headers=headers, data=json.dumps(payload))
-        print(resp)
+        print(resp.text)
+
         if resp.status_code != 200:
             raise Exception(f"Login failed: HTTP {resp.status_code} - {resp.text}")
+        
 
-        # Save each cookie into self.cookies
-        for cookie in resp.cookies:
-            self.cookies[cookie.name] = cookie.value
+        # for cookie in resp.cookies:
+        #     self.cookies[cookie.name] = cookie.value
+        
+        resp_json = resp.json()
+        # After login
 
-        # Fetch CSRF token from the landing page
-        token = self.fetch_csrf()
-        if not token:
-            raise Exception("Login succeeded but failed to retrieve CSRF token.")
+        if resp_json.get('loginStatusTO', {}).get('statusCode'):
+            raise Exception(resp_json.get('loginStatusTO').get('statusCode'))
+        else:
+            token = self.fetch_csrf()
+            print('resp_json', token)
 
-        # (Optional) Fetch account info immediately to confirm
-        self.get_account_info()
-
-    def fetch_csrf(self):
-        """
-        GET /  (with only JSESSIONID in cookies)  → parse <meta name="csrf" content="..."> 
-        Saves self.csrf and returns it.
-        """
-        # Only send JSESSIONID (or any name containing "JSESSIONID")
-        cookies_in_req = {k: v for k, v in self.cookies.items() if "JSESSIONID" in k}
-
-        headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;"
-                      "q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
-                      "application/signed-exchange;v=b3;q=0.7",
-            "Cookie": "; ".join([f"{k}={v}" for k, v in cookies_in_req.items()])
-        }
-
-        resp = self.s.get(self.API_URL, headers=headers, cookies=cookies_in_req)
-        resp.raise_for_status()
-
-        soup = BeautifulSoup(resp.text, "html.parser")
-        meta = soup.find("meta", attrs={"name": "csrf"})
-        if meta and "content" in meta.attrs:
-            self.csrf = meta["content"]
-            return self.csrf
-
-        return None
+            return True
 
     def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = "") -> OpenTrade:
         """
         POST /api/orders/single
         Headers:
           Content-Type: application/json; charset=UTF-8
-          Cookie: all session cookies joined by "; "
-          X-CSRF-Token: self.csrf
+          Authorization: DXAPI <sessionToken>
           X-Requested-With: XMLHttpRequest
 
         Body (no spaces in JSON):
@@ -128,8 +103,7 @@ class DxtradeClient(BrokerClient):
         url = f"{self.API_URL}/api/orders/single"
         headers = {
             "Content-Type": "application/json; charset=UTF-8",
-            "Cookie": "; ".join([f"{k}={v}" for k, v in self.cookies.items()]),
-            "X-CSRF-Token": self.csrf,
+            "Authorization": f"DXAPI {self.session_token}",
             "X-Requested-With": "XMLHttpRequest"
         }
 
@@ -162,8 +136,7 @@ class DxtradeClient(BrokerClient):
         GET /api/accounts
         Headers:
           Content-Type: application/json; charset=UTF-8
-          Cookie: all session cookies joined by "; "
-          X-CSRF-Token: self.csrf
+          Authorization: DXAPI <sessionToken>
           X-Requested-With: XMLHttpRequest
 
         Returns the JSON‐decoded account info (balance, equity, etc.)
@@ -171,8 +144,7 @@ class DxtradeClient(BrokerClient):
         url = f"{self.API_URL}/api/accounts"
         headers = {
             "Content-Type": "application/json; charset=UTF-8",
-            "Cookie": "; ".join([f"{k}={v}" for k, v in self.cookies.items()]),
-            "X-CSRF-Token": self.csrf,
+            "Authorization": f"DXAPI {self.session_token}",
             "X-Requested-With": "XMLHttpRequest"
         }
 
@@ -185,9 +157,27 @@ class DxtradeClient(BrokerClient):
         return resp.json()
     
 
-    def close_trade(self, symbol, side, quantity) -> CloseTrade:
+    def get_final_trade_details(self, trade, order_id=None):
         pass
     
 
+    def close_trade(self, symbol, side, quantity) -> CloseTrade:
+        pass
+
     def get_order_info(self, symbol, order_id) -> OrderInfo:
+        pass
+
+    def get_account_balance(self, symbol = None):
+        pass
+    
+    def get_current_price(self, symbol):
+        pass
+    
+    def get_trading_pairs(self):
+        pass
+    
+    def get_history_candles(self, symbol, interval, limit = 500):
+        pass
+
+    def market_and_account_data(self, symbol, intervals, limit = 500):
         pass

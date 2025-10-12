@@ -1,9 +1,9 @@
 {% for log in logs %}
-  {% ifchanged log.created_at.date %}
-  <li class="mb-1 flex items-start">
-    <h3 class="text-md font-semibold text-text mb-2 {% if not forloop.first %} mt-2 {% endif %}">{{ log.created_at|date:'M d, Y' }}</h3>
-  </li>
-  {% endifchanged %}
+  {% comment %} {% ifchanged log.created_at.date %}
+    <li class="mb-1 flex items-start">
+      <h3 class="text-md font-semibold text-text mb-2 {% if not forloop.first %} mt-2 {% endif %}">{{ log.created_at|date:'M d, Y' }}</h3>
+    </li>
+  {% endifchanged %} {% endcomment %}
 
   <li class="mb-1 flex items-start">
     {% comment %} <span class="text-xs text-text/60 flex-shrink-0">{{ log.created_at|date:'H:i:s' }}</span> {% endcomment %}

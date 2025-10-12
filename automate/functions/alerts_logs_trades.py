@@ -7,8 +7,6 @@ import inspect
 
 from automate.models import *
 
-from automate.functions.brokers.broker import BrokerClient
-
 from automate.functions.brokers.binance import BinanceClient
 from automate.functions.brokers.binance_us import BinanceUSClient
 from automate.functions.brokers.bitget import BitgetClient
@@ -19,11 +17,14 @@ from automate.functions.brokers.bingx import BingxClient
 from automate.functions.brokers.bitmart import BitmartClient
 from automate.functions.brokers.kucoin import KucoinClient
 from automate.functions.brokers.coinbase import CoinbaseClient
+from automate.functions.brokers.okx import OkxClient
+from automate.functions.brokers.apex import ApexClient
 
 from automate.functions.brokers.trade_locker import TradeLockerClient
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.dxtrade import DxtradeClient
 from automate.functions.brokers.ninjatrader import NinjatraderClient
+from automate.functions.brokers.ctrader import CtraderClient
 
 # Map broker types to their client classes
 CLIENT_CLASSES = {
@@ -37,10 +38,13 @@ CLIENT_CLASSES = {
     'bitmart': BitmartClient,
     'kucoin': KucoinClient,
     'coinbase': CoinbaseClient,
+    'okx': OkxClient,
+    'apex': ApexClient,
 
     'tradelocker': TradeLockerClient,
     'ninjatrader': NinjatraderClient,
     'dxtrade': DxtradeClient,
+    'ctrader': CtraderClient,
     'metatrader4': MetatraderClient,
     'metatrader5': MetatraderClient,
 }
@@ -60,6 +64,8 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_t
         'bitmart': {'passphrase': phrase},
         'kucoin': {'passphrase': phrase},
         'coinbase': {},
+        'okx': {'passphrase': phrase},
+        'apex': {'passphrase': phrase},
     }
 
     client_cls = CLIENT_CLASSES.get(broker_type)
@@ -80,6 +86,8 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
         return NinjatraderClient.check_credentials(username, password, server, type)
     elif broker_type == 'dxtrade':
         return DxtradeClient.check_credentials(username, password, server)
+    elif broker_type == 'ctrader':
+        return CtraderClient.check_credentials(authorization_code=server, type=type)
     else:
         raise Exception("Unsupported broker type.")
 

@@ -12,6 +12,8 @@
   {% include 'svg/bitmex.html' with class=class %}
 {% elif broker_type == 'bitmart' %}
   {% include 'svg/bitmart.html' with class=class %}
+{% elif broker_type == 'bitunix' %}
+  {% include 'svg/bitunix.html' with class=class %}
 {% elif broker_type == 'mexc' %}
   {% include 'svg/mexc.html' with class=class %}
 {% elif broker_type == 'crypto' %}
@@ -24,6 +26,10 @@
   {% include 'svg/coinbase.html' with class=class %}
 {% elif broker_type == 'kraken' %}
   {% include 'svg/kraken.html' with class=class %}
+{% elif broker_type == 'hyperliquid' %}
+  {% include 'svg/hyperliquid.html' with class=class %}
+{% elif broker_type == 'apex' %}
+  {% include 'svg/apex.html' with class=class %}
 {% elif broker_type == 'metatrader4' %}
   {% include 'svg/metatrader4.html' with class=class %}
 {% elif broker_type == 'metatrader5' %}
@@ -34,6 +40,8 @@
   {% include 'svg/ninjatrader.html' with class=class %}
 {% elif broker_type == 'dxtrade' %}
   {% include 'svg/dxtrade.html' with class=class %}
+{% elif broker_type == 'ctrader' %}
+  {% include 'svg/ctrader.html' with class=class %}
 {% elif broker_type == 'tradestation' %}
   {% include 'svg/tradestation.html' with class=class %}
 {% else %}
