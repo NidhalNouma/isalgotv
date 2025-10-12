@@ -150,7 +150,7 @@
           <h4 class="text-text text-sm font-semibold text-center tracking-wider">Select one of our plans to get started.</h4>
         {% endif %}
 
-        <div class="text-left mt-6 w-full flex flex-col lg:flex-row items-center justify-center gap-8">
+        <div class="text-left mt-6 w-full mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-center gap-8">
           {% include 'include/price_item.html' with title='MONTHLY' get_started='true' %}
           {% include 'include/price_item.html' with title='YEARLY' save='Save $197' get_started='true' %}
           {% if prices|get_item:'LIFETIME' %}

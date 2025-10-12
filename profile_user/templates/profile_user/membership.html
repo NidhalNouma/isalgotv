@@ -107,7 +107,7 @@
     {% endif %}
 
     <main class="mt-8 mb-24">
-      <div class="mt-0 w-full flex flex-col lg:flex-row items-center justify-center gap-8">
+      <div class="mt-0 w-full mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-center gap-8">
         {% include 'include/price_item.html' with title='MONTHLY' %}
         {% include 'include/price_item.html' with title='YEARLY' save='Save $197' %}
         {% if prices|get_item:'LIFETIME' %}
