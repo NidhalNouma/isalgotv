@@ -74,12 +74,12 @@ def ctrader_auth_code(request):
     # Extract the 'code' parameter from the GET request
     auth_code = request.GET.get('code', None)
 
-    if auth_code:
-        # Return the code in a JSON response
-        return JsonResponse({"authorization_code": auth_code}, status=200)
-    else:
-        # If no code is found, return an error message
-        return JsonResponse({"error": "Authorization code not found in the request."}, status=400)
+    context = {
+        "auth_code": auth_code,
+        "error": None if auth_code else "Authorization code not found in the request."
+    }
+
+    return render(request, "automate/ctrader_auth_code.html", context=context)
 
 @require_http_methods([ "POST"])
 def add_broker(request, broker_type):

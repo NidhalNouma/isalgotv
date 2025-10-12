@@ -1,0 +1,63 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>Ctrader Authentication code</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="" />
+{% endblock %}
+
+{% block page %}
+  {% block navbar %}
+
+  {% endblock %}
+
+  <main class="my-auto mx-auto">
+    {% if auth_code %}
+      <h6 class="text-title font-semibold mb-2">Your Authentication code</h6>
+      <p id="auth-code" class="text-text/80 p-2 bg-text/10 text-sm rounded-md overflow-hidden">{{ auth_code }}</p>
+      <button class="btn-text mt-4" onclick="copyAndExit()">Copy and exit</button>
+    {% else %}
+      {% include 'include/errors.html' with error=error %}
+    {% endif %}
+    <script>
+      function copyAndExit() {
+        const authCodeElement = document.getElementById('auth-code')
+        const textToCopy = authCodeElement ? authCodeElement.textContent.trim() : ''
+      
+        if (!textToCopy) return
+      
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+              window.close()
+            })
+            .catch((err) => {
+              console.error('Failed to copy text: ', err)
+              alert('Could not copy the code. Please copy manually.')
+            })
+        } else {
+          // Fallback for browsers without Clipboard API
+          const textarea = document.createElement('textarea')
+          textarea.value = textToCopy
+          document.body.appendChild(textarea)
+          textarea.select()
+          try {
+            document.execCommand('copy')
+            window.close()
+          } catch (err) {
+            console.error('Fallback copy failed', err)
+            alert('Could not copy the code. Please copy manually.')
+          }
+          document.body.removeChild(textarea)
+        }
+      }
+    </script>
+  </main>
+
+  {% block footer %}
+
+  {% endblock %}
+{% endblock %}

@@ -41,15 +41,16 @@ class DxtradeClient(BrokerClient):
             return {"error": str(e), "valid": False}
 
     def login(self):
-        url = f"{self.API_URL}/dxsca/login"
+        url = f"{self.API_URL}/api/auth/login"
         payload = {
             "username": self.username,
             "password": self.password,
             "domain": 'default',
+            # "domain": self.server.split('.')[1],
             # "vendor": "mercury",
         }
         
-        # print(payload)
+        print(payload)
         headers = {
             "Content-Type": "application/json",
         }
@@ -60,18 +61,34 @@ class DxtradeClient(BrokerClient):
         if resp.status_code != 200:
             raise Exception(f"Login failed: HTTP {resp.status_code} - {resp.text}")
         
-
-        # for cookie in resp.cookies:
-        #     self.cookies[cookie.name] = cookie.value
-        
         resp_json = resp.json()
         # After login
+        for cookie in resp.cookies:
+            self.cookies[cookie.name] = cookie.value
+
+        if "JSESSIONID" in self.cookies:
+            session_id = self.cookies["JSESSIONID"]
+            print(f"JSESSIONID: {session_id}")
+        else:
+            print("Warning: no JSESSIONID cookie found.")
+
+        accounts = self.get_account_transactions()
+
+        print(accounts)
+        
+        
+        # #Try to fetch token from /api/auth/session
+        # session_resp = self.s.get(f"{self.API_URL}/api/auth/state")
+        # print("Session info:", session_resp.text)
+
+        # session_data = session_resp.json()
+
+        # print(session_data)
+
 
         if resp_json.get('loginStatusTO', {}).get('statusCode'):
             raise Exception(resp_json.get('loginStatusTO').get('statusCode'))
         else:
-            token = self.fetch_csrf()
-            print('resp_json', token)
 
             return True
 
@@ -131,6 +148,7 @@ class DxtradeClient(BrokerClient):
 
         return OpenTrade(**resp.json())
 
+
     def get_account_info(self) -> dict:
         """
         GET /api/accounts
@@ -144,7 +162,8 @@ class DxtradeClient(BrokerClient):
         url = f"{self.API_URL}/api/accounts"
         headers = {
             "Content-Type": "application/json; charset=UTF-8",
-            "Authorization": f"DXAPI {self.session_token}",
+            # "Authorization": f"DXAPI {self.session_token}",
+            "Cookie": f"JSESSIONID={self.session_token}",
             "X-Requested-With": "XMLHttpRequest"
         }
 

@@ -35,7 +35,8 @@ def disconnected(client, reason): # Callback for client disconnection
     print("\nCtrader Disconnected: ", reason)
 
 def onMessageReceived(client, message): # Callback for receiving all messages
-    print("Message received: \n( ", Protobuf.extract(message), " )")
+    pass
+    # print("Message received: \n( ", Protobuf.extract(message), " )")
 
 def connected(client): # Callback for client connection
     print("\nCtrader Connected")
@@ -417,7 +418,58 @@ class CtraderClient(BrokerClient):
             self.close()
     
     def get_order_info(self, symbol, order_id):
-        return super().get_order_info(symbol, order_id)
+        """
+        Fetch detailed information about a specific order from cTrader API.
+        Returns details like open price, open time, lot size, id, stop loss, take profit, etc.
+        """
+        try:
+            symbol_id, symbol_name = self.get_symbol_id_by_name(symbol)
+
+            def run():
+                d = defer.Deferred()
+
+                def on_order_info(response):
+                    res = parse_payload(response)
+                    if hasattr(res, "order"):
+                        order = res.order
+                        order_data = MessageToDict(order, preserving_proto_field_name=True)
+
+                        # Extract and format key details
+                        info = {
+                            "order_id": order_data.get("order_id"),
+                            "symbol_id": symbol_id,
+                            "symbol_name": symbol_name,
+                            "trade_side": order_data.get("trade_side"),
+                            "open_price": self.getPriceFromRelative(
+                                int(order_data.get("digits", 5)),
+                                order_data.get("execution_price", 0)
+                            ) if "execution_price" in order_data else None,
+                            "open_time": order_data.get("open_timestamp", None),
+                            "volume": order_data.get("volume", None),
+                            "stop_loss": order_data.get("stop_loss", None),
+                            "take_profit": order_data.get("take_profit", None),
+                            "comment": order_data.get("comment", ""),
+                            "order_status": order_data.get("order_status", ""),
+                            "filled_volume": order_data.get("filled_volume", 0),
+                        }
+                        d.callback(info)
+                    else:
+                        d.errback(Exception(f"Order with ID {order_id} not found."))
+
+                req = ProtoOAGetOrderReq()
+                req.ctidTraderAccountId = self.account_id
+                req.orderId = int(order_id)
+                self.client.send(req).addCallback(on_order_info).addErrback(d.errback)
+                return d
+
+            result = threads.blockingCallFromThread(reactor, run)
+            print(f"📋 Order Info Retrieved: {result}")
+            return result
+
+        except Exception as e:
+            print("❌ Error fetching order info:", e)
+            return {"error": str(e)}
+        
         
     def get_current_price(self, symbol):
         """
