@@ -149,39 +149,42 @@
       </section>
     {% endif %}
 
-    <div class="group relative overflow-hidden mt-8">
-      <div class="absolute inset-0 bg-gradient-to-br from-text/10 to-text/5 rounded-md"></div>
-      <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500"></div>
+    <div class="group cursor-pointer relative overflow-hidden mt-8">
+      <a href="{% url 'docs_alerts' %}" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-r from-text/10 to-background rounded-md"></div>
+        <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500"></div>
 
-      <div class="relative p-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="flex items-center gap-4 mb-4 md:mb-0">
-          <div class="relative">
-            <div class="p-3 rounded-full bg-title/5 backdrop-blur">
-              <svg class="h-6 w-6 text-title" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell h-6 w-6 text-white">
-                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-              </svg>
+        <div class="relative p-6 flex flex-col md:flex-row items-center justify-between">
+          <div class="flex items-center gap-4 mb-4 md:mb-0">
+            <div class="relative">
+              <div class="p-3 rounded-full bg-title/5 backdrop-blur">
+                <svg class="h-6 w-6 scale-150 text-title" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell h-6 w-6 text-white">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                </svg>
+              </div>
+              <span class="absolute top-0 right-0 h-3 w-3">
+                <span class="animate-ping absolute top-1.5 inline-flex h-full w-full rounded-full bg-title/80 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-title/60"></span>
+              </span>
             </div>
-            <span class="absolute top-0 right-0 h-3 w-3">
-              <span class="animate-ping absolute top-1.5 inline-flex h-full w-full rounded-full bg-title/80 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-title/60"></span>
-            </span>
-          </div>
 
-          <div class="flex-1">
-            <h3 class="text-lg font-bold text-title mb-1">Get notified on every action</h3>
-            <p class="text-text text-sm">Set up TradingView alerts for your trading strategies</p>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-title mb-1">Get notified on every action</h3>
+              <p class="text-text text-sm">
+                Set up TradingView alerts for your trading strategies
+                <span class="inline-flex items-center group-hover:to-text/90 bg-gradient-to-t text-background from-text/80 to-text/60 rounded-full ml-1 px-2 py-0.5 text-sm font-medium transition-all">
+                  <span class="font-medium">See how</span>
+                  <svg class="h-4 w-4 ml-2 group-hover:scale-125 transition-transform stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5">
+                    <path d="M7 7h10v10"></path>
+                    <path d="M7 17 17 7"></path>
+                  </svg>
+                </span>
+              </p>
+            </div>
           </div>
         </div>
-
-        <a href="{% url 'docs_alerts' %}" target="_blank" class="btn-accent w-full max-w-xs md:w-fit">
-          <span class="font-medium">See how</span>
-          <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5">
-            <path d="M7 7h10v10"></path>
-            <path d="M7 17 17 7"></path>
-          </svg>
-        </a>
-      </div>
+      </a>
     </div>
 
     <section class="mt-8">
@@ -199,39 +202,41 @@
       </div>
     </section>
 
-    <div class="group relative overflow-hidden mt-8">
-      <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 rounded-md"></div>
-      <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500"></div>
+    <div class="group cursor-pointer relative overflow-hidden mt-8">
+      <a href="{% url 'automate' %}">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-background rounded-md"></div>
+        <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent_50%)] transition-opacity duration-500"></div>
 
-      <div class="relative p-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="flex items-center gap-4 mb-4 md:mb-0">
-          <div class="relative">
-            <div class="p-3 rounded-full bg-primary/5 backdrop-blur">
-              <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow">
-                <rect width="8" height="8" x="3" y="3" rx="2" />
-                <path d="M7 11v4a2 2 0 0 0 2 2h4" />
-                <rect width="8" height="8" x="13" y="13" rx="2" />
-              </svg>
-              {% comment %} <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap h-6 w-6 text-amber-400">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-              </svg> {% endcomment %}
+        <div class="relative p-6 flex flex-col md:flex-row items-center justify-between">
+          <div class="flex items-center gap-4 mb-4 md:mb-0">
+            <div class="relative">
+              <div class="p-3 rounded-full bg-primary/10 backdrop-blur">
+                <svg class="h-6 aspect-auto scale-[2] text-primary" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
+                </svg>
+                {% comment %} <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap h-6 w-6 text-amber-400">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg> {% endcomment %}
+              </div>
+            </div>
+
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-title mb-1">Automate alerts once ready</h3>
+              <p class="text-text text-sm">
+                Set up your alerts and let automation handle the rest
+
+                <span class="inline-flex items-center text-background group-hover:to-accent/80 bg-gradient-to-t from-accent/80 to-accent/60 rounded-full ml-1 px-2 py-0.5 text-sm font-medium transition-all">
+                  <span class="font-medium">Start now</span>
+                  <svg class="h-4 w-4 ml-2 group-hover:scale-125 transition-transform stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5">
+                    <path d="M7 7h10v10"></path>
+                    <path d="M7 17 17 7"></path>
+                  </svg>
+                </span>
+              </p>
             </div>
           </div>
-
-          <div class="flex-1">
-            <h3 class="text-lg font-bold text-title mb-1">Automate alerts once ready</h3>
-            <p class="text-text text-sm">Set up your alerts and let automation handle the rest</p>
-          </div>
         </div>
-
-        <a href="{% url 'automate' %}" class="btn-accent w-full max-w-xs md:w-fit">
-          <span class="font-medium">Start now</span>
-          <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5">
-            <path d="M7 7h10v10"></path>
-            <path d="M7 17 17 7"></path>
-          </svg>
-        </a>
-      </div>
+      </a>
     </div>
 
     {% if new_results|length >= 2 %}
@@ -269,22 +274,27 @@
 </main>
 
 {% if not user_profile.discord_username %}
-  <div class="w-full p-4 rounded flex flex-col sm:flex-row items-center relative mb-16 bg-[#7289da]/30 overflow-hidden">
-    <div class="flex items-center sm:mb-0 mb-2">
-      <svg class="w-16 aspect-square p-2 fill-[#7289da]/80 scale-125" stroke-width="0" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
-      </svg>
-      <div class="mx-3">
-        <h3 class="text-title text-lg font-bold">Join our Discord Community!</h3>
-        <p class="text-text text-xs font-medium mt-1">Connect with traders, share strategies, and get support</p>
+  <div class="group cursor-pointer w-full p-4 rounded flex flex-col sm:flex-row items-center relative mb-16 bg-gradient-to-r from-[#7289da]/80 via-[#7289da]/20 to-background overflow-hidden">
+    <a href="https://discord.gg/wVsXdGSMFg" target="_blank">
+      <div class="flex items-center sm:mb-0 mb-2">
+        <svg class="w-16 aspect-square p-2 fill-[#7289da] scale-[2.4] -z-10" stroke-width="0" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
+        </svg>
+        <div class="mx-3">
+          <h3 class="text-title text-lg font-bold">Join our Discord Community!</h3>
+          <p class="text-text text-xs font-medium mt-1">
+            Connect with traders, share strategies, and get support
+
+            <span class="inline-flex items-center dark:text-background group-hover:to-[#7289da]80 bg-gradient-to-t from-[#7289da]/80 to-[#7289da]/60 rounded-full ml-1 px-2 py-0.5 text-sm font-medium transition-all">
+              Join us<svg class="h-4 w-4 ml-2 group-hover:scale-125 transition-transform stroke-text bg-background rounded-full p-0.5" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" x2="21" y1="14" y2="3"></line>
+              </svg>
+            </span>
+          </p>
+        </div>
       </div>
-    </div>
-    <a href="https://discord.gg/wVsXdGSMFg" target="_blank" class="btn-text sm:w-fit w-full text-base py-3 px-4 !from-[#7289da] !to-[#7289da] ml-auto font-semibold">
-      Join us<svg class="h-4 aspect-square ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-        <polyline points="15 3 21 3 21 9"></polyline>
-        <line x1="10" x2="21" y1="14" y2="3"></line>
-      </svg>
     </a>
   </div>
 {% endif %}

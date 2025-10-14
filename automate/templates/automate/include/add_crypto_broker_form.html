@@ -104,8 +104,8 @@
   <div id="add-{{ broker_type }}-form-errors" class=""></div>
 
   <div class="w-full">
-    <button id="btn-add-{{ broker_type }}" type="submit" class="btn-primary mb-2 w-full mx-auto" onclick="onAutomateAccountAdd('{{ broker_type }}', 'add-{{ broker_type }}-form-errors', event)">
-      Connect <svg xmlns="http://www.w3.org/2000/svg" class="h-4 aspect-square ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+    <button id="btn-add-{{ broker_type }}" type="submit" class="group btn-primary mb-2 w-full mx-auto" onclick="onAutomateAccountAdd('{{ broker_type }}', 'add-{{ broker_type }}-form-errors', event)">
+      Connect <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:scale-110 transition-transform h-4 aspect-square ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
     </button>
     <button id="spinner-add-{{ broker_type }}" disabled type="button" class="btn-primary mb-2 w-full mx-auto hidden">
       Connecting <svg aria-hidden="true" role="status" class="h-4 aspect-square ml-1.5 text-text animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -98,7 +98,7 @@
                 </div>
 
                 {% if strategy not in user_profile.strategies.all %}
-                  <div id="access-mb" class="w-full flex mt-2">
+                  <div id="access-mb" class="group w-full flex mt-2">
                     <form class="inline-flex" hx-post="{% url 'give_access' strategy.id %}?pg=st" hx-target="#access-mb" hx-swap="outerHTML">
                       {% csrf_token %}
                       <button class="btn-accent font-semibold whitespace-nowrap" type="submit" id="btn-acc-{{ strategy.id }}" onclick="openLoader('', '-acc-{{ strategy.id }}', 'flex');">
@@ -151,20 +151,20 @@
 
       <section class="w-full">
         {% if user.is_authenticated and not has_subscription and strategy.premium or not strategy.is_live and not has_subscription or not user.is_authenticated %}
-          <section class="w-full pb-3 pt-6 nav-bg rounded sticky top-10 z-10 mb-2">
+          <section class="group w-full pb-3 pt-6 nav-bg rounded sticky top-10 z-10 mb-2">
             <div class="text-center py-2">
               <h1 class="text-title/60 font-semibold text-xl mb-2">Unlock access to this strategy and more</h1>
               <h1 class="text-title/60 font-semibold text-lg mb-2">Gain access to some of the best and most powerful trading strategies in the market</h1>
               <div class="mt-4">
                 {% if not user.is_authenticated %}
                   <a href="{% url 'register' %}" class="btn-primary font-semibold whitespace-nowrap text-base">
-                    Unlock access<svg class="h-6 w-6 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    Unlock access<svg class="h-6 w-6 ml-1 group-hover:scale-150 transition-transform " stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
                     </svg>
                   </a>
                 {% else %}
                   <button onclick="toggleGetStarted()" class="btn-primary font-semibold whitespace-nowrap text-base">
-                    Unlock access<svg class="h-6 w-6 ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    Unlock access<svg class="h-6 w-6 ml-1 group-hover:scale-150 transition-transform " stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
                     </svg>
                   </button>

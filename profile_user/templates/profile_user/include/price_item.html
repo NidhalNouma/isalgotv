@@ -161,8 +161,8 @@
             </div>
           {% endif %}
         {% else %}
-          <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary font-semibold">
-            Get Started<svg class="h-3.5 w-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="group w-full btn-secondary font-semibold">
+            Get Started<svg class="group-hover:scale-110 transition-transform h-3.5 w-3.5 dark:stroke-background stroke-title rounded-full bg-current p-0.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
           </button>
