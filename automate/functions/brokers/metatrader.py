@@ -1,6 +1,7 @@
 import requests
 import random
 import string
+import time
 
 from django.utils.dateparse import parse_datetime
 
@@ -278,8 +279,8 @@ class MetatraderClient(BrokerClient):
             }
 
             response = requests.post(url, json=payload, headers=headers)
+            end_exe = time.perf_counter()
             data = response.json()
-            # print("Response status code:", response, data)
 
             order_id = data.get("orderId")
 
@@ -307,6 +308,7 @@ class MetatraderClient(BrokerClient):
                 'time': open_time,
                 'qty': lot_size,
                 'currency': currency if currency else '',
+                'end_exe': end_exe
             }
 
         except Exception as e:
@@ -351,7 +353,9 @@ class MetatraderClient(BrokerClient):
         
         try:
             response = requests.post(url, json=data, headers=headers)
+            end_exe = time.perf_counter()
             resp_data = response.json()
+
             if resp_data.get("error"):
                 return {"error": resp_data.get("message")}
             else:
@@ -359,6 +363,7 @@ class MetatraderClient(BrokerClient):
                     'message': f"Trade closed for order ID {id}.", 
                     "order_id": trade.order_id,
                     'qty': partial_close,
+                    'end_exe': end_exe
                 }
                 # return resp_data
         except Exception as e:

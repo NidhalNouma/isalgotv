@@ -234,7 +234,9 @@ class BingxClient(CryptoBrokerClient):
 
             response = self._send_request('POST', endpoint, order_params)
 
+            end_exe = time.perf_counter()
             print("Response:", response)
+
             if response.get("code") is not None:
                 if response.get("code") != 0:
                     error_msg = response.get('msg')
@@ -271,7 +273,8 @@ class BingxClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             
             else:
@@ -285,6 +288,7 @@ class BingxClient(CryptoBrokerClient):
                     'time': self.convert_timestamp(order_data.get('transactTime', '')),
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
         except Exception as e:
             raise ValueError(str(e))

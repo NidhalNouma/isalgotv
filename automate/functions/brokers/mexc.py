@@ -1,4 +1,5 @@
 import requests
+import time
 from urllib.parse import urlencode
 
 from automate.functions.brokers.broker import CryptoBrokerClient
@@ -223,6 +224,7 @@ class MexcClient(CryptoBrokerClient):
             }
             response = self._new_order(order_params)
             
+            end_exe = time.perf_counter()
             order_data = response
 
             order_id = order_data["orderId"]
@@ -247,7 +249,8 @@ class MexcClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             
             else:
@@ -261,6 +264,7 @@ class MexcClient(CryptoBrokerClient):
                     'time': self.convert_timestamp(order_data.get('time', '')),
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
         except Exception as e:
             raise ValueError(str(e))
@@ -300,14 +304,17 @@ class MexcClient(CryptoBrokerClient):
             print("Order params:", order_params)
 
             response = self._new_futures_order(order_params)
-            
+        
+            end_exe = time.perf_counter()
             order_id = response["data"]
+
             return {
                 "order_id": order_id,
                 "symbol": symbol,
                 "side": side.upper(),
                 "price": 0,
                 "qty": quantity,
+                "end_exe": end_exe
             }
         except Exception as e:
             raise ValueError(str(e))
@@ -327,6 +334,7 @@ class MexcClient(CryptoBrokerClient):
                 "reduceOnly": "true",
             }
             response = self._new_futures_order(order_params)
+            end_exe = time.perf_counter()
             if response.get("code") != 200:
                 raise ValueError(response.get("message", "Futures order placement failed"))
             order_id = response["data"]
@@ -336,6 +344,7 @@ class MexcClient(CryptoBrokerClient):
                 "side": t_side.upper(),
                 "price": 0,
                 "qty": quantity,
+                "end_exe": end_exe
             }
         except Exception as e:
             raise ValueError(str(e))

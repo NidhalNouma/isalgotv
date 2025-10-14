@@ -1,5 +1,6 @@
 # if account type == F it uses the contract value as the size of the trade and not the base asset
 
+import time
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
@@ -177,6 +178,7 @@ class OkxClient(CryptoBrokerClient):
             # print(params)
 
             request = self.api.trade.place_order(**params)
+            end_exe = time.perf_counter()
             data = request.get('data')
 
             # print(request)
@@ -215,7 +217,8 @@ class OkxClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             else:
                 return {
@@ -227,6 +230,7 @@ class OkxClient(CryptoBrokerClient):
                     'price': 0,
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
 
         except Exception as e:

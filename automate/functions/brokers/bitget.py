@@ -194,10 +194,9 @@ class BitgetClient(CryptoBrokerClient):
                 except Exception as e:
                     print("Error setting position mode or coin:", str(e))
 
-            # print("body ==> ", body)
-
             # Send the trade request
             response = self._send_request('POST', endpoint, body)
+            end_exe = time.perf_counter()
 
             if "msg" in response and response.get('code') != '00000':
                 raise Exception(response.get('msg'))
@@ -228,7 +227,8 @@ class BitgetClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             else:
                 return {
@@ -241,6 +241,7 @@ class BitgetClient(CryptoBrokerClient):
                     # 'fees': response['fills'][0]['commission'],
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
             
         

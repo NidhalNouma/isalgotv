@@ -2,6 +2,7 @@ from binance.spot import Spot
 from binance.cm_futures import CMFutures
 from binance.um_futures import UMFutures
 from binance.error import ClientError
+import time
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
@@ -151,6 +152,8 @@ class BinanceClient(CryptoBrokerClient):
                     order_params['positionSide'] = 'LONG' if side.upper() == 'SELL' else 'SHORT'
 
             response = self.client.new_order(**order_params)
+
+            end_exe = time.perf_counter()
             
             if trade_type == "C":
                 currency_asset = sys_info.get('base_asset')
@@ -176,7 +179,8 @@ class BinanceClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency':  order_details.get('currency') if order_details.get('currency') not in (None, 'None') else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             else:
                 return {
@@ -192,6 +196,7 @@ class BinanceClient(CryptoBrokerClient):
                         else adjusted_quantity
                     ),
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
 
         

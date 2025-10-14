@@ -1,5 +1,6 @@
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+import time
 
 from pybit.unified_trading import HTTP
 from pybit.exceptions import InvalidRequestError, FailedRequestError
@@ -160,6 +161,7 @@ class BybitClient(CryptoBrokerClient):
                     time_in_force='IOC'
                 )
 
+            end_exe = time.perf_counter()
             # print('r', response)
             if response['retCode'] != 0:
                 raise Exception(response['retMsg'])
@@ -186,7 +188,8 @@ class BybitClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') not in (None, "None") else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             
             else:
@@ -198,6 +201,7 @@ class BybitClient(CryptoBrokerClient):
                     "side": side.upper(),
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
             
         except (InvalidRequestError, FailedRequestError) as e:

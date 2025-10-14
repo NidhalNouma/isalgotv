@@ -1,6 +1,7 @@
 import hmac
 import hashlib
 import requests
+import time
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
@@ -169,6 +170,7 @@ class CryptoComClient(CryptoBrokerClient):
             # print(order_params)
 
             response = self.new_order(order_params)
+            end_exe = time.perf_counter()
             if response.get("code") != 0:
                 raise ValueError(response.get("message", "Order placement failed"))
             
@@ -189,6 +191,7 @@ class CryptoComClient(CryptoBrokerClient):
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
                     'currency': quote_asset,
+                    "end_exe": end_exe
                 }
             else:
                 return {
@@ -199,6 +202,7 @@ class CryptoComClient(CryptoBrokerClient):
                     'qty': adjusted_quantity,
                     'price': order_data.get('price', '0'),
                     'currency': quote_asset,
+                    "end_exe": end_exe
                 }
         
         except Exception as e:
@@ -230,6 +234,7 @@ class CryptoComClient(CryptoBrokerClient):
             }
 
             response = self.new_order(order_params)
+            end_exe = time.perf_counter()
             if response.get("code") != 0:
                 raise ValueError(response.get("message", "Order placement failed"))
             
@@ -240,6 +245,7 @@ class CryptoComClient(CryptoBrokerClient):
                 "side": t_side.upper(),
                 "price": order_data.get("price", "0"),
                 "qty": adjusted_quantity,
+                "end_exe": end_exe
             }
         except Exception as e:
             raise ValueError(str(e))

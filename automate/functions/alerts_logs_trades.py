@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.utils import timezone
 from django.db import transaction
 import inspect
+import time
 
 from automate.models import *
 
@@ -135,13 +136,22 @@ def get_trade_data(account, trade):
         print('close trade error: ', str(e))
         raise e
     
-def save_log(response_status, alert_message, response_message, account, trade = None):
+def save_log(response_status, alert_message, response_message, account, latency_start, end_exe=None, trade=None):
+    latency = time.perf_counter() - latency_start
+
+    trade_latency = 0
+    if end_exe:
+        trade_latency = end_exe - latency_start
+    print(f"Trade Latency: {trade_latency:.6f} | Latency: {latency:.6f} seconds")
+
     if type(account) == CryptoBrokerAccount:
         log = LogMessage.objects.create(
             response_status=response_status,
             alert_message=alert_message,
             response_message=response_message,
             trade=trade,
+            latency=latency,
+            trade_latency=trade_latency,
             
             content_type=ContentType.objects.get_for_model(CryptoBrokerAccount),
             object_id=account.id
@@ -151,7 +161,8 @@ def save_log(response_status, alert_message, response_message, account, trade = 
             response_status=response_status,
             alert_message=alert_message,
             response_message=response_message,
-            trade=trade,
+            latency=latency,
+            trade_latency=trade_latency,
             
             content_type=ContentType.objects.get_for_model(ForexBrokerAccount),
             object_id=account.id
@@ -252,7 +263,7 @@ def update_trade_after_close(trade, closed_volume, closed_trade):
     price = closed_trade.get('price', 0)
     closed_order_id = closed_trade.get('closed_order_id', '')
 
-    closed_trade_details = closed_trade.get('trade_details', None)
+    closed_trade_details = closed_trade.get('trade_details', None) or closed_trade.get('closed_trade_details', None)
 
     trade.closed_trade_details = closed_trade_details
 

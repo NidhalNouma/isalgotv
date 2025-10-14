@@ -229,6 +229,8 @@ class KucoinClient(CryptoBrokerClient):
                 if data.get('code') == "200000":
                     order_id = data.get('data', {}).get('orderId')
 
+            end_exe = time.perf_counter()
+
             if order_id:
                 
                 if not self.current_trade:
@@ -251,7 +253,8 @@ class KucoinClient(CryptoBrokerClient):
                         'fees': order_details.get('fees', ''),
                         'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
-                        'trade_details': trade_details
+                        'trade_details': trade_details,
+                        "end_exe": end_exe
                     }
                 
                 else:
@@ -263,6 +266,7 @@ class KucoinClient(CryptoBrokerClient):
                         "side": side.upper(),
                         'qty': adjusted_quantity,
                         'currency': currency_asset,
+                        "end_exe": end_exe
                     }
         
         except RestError as e:

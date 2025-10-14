@@ -1,5 +1,6 @@
 from coinbase.rest import RESTClient, products
 from datetime import datetime, timezone
+import time
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
@@ -98,6 +99,7 @@ class CoinbaseClient(CryptoBrokerClient):
             else:
                 raise Exception('Order type is not supported.')
             
+            end_exe = time.perf_counter()
             result = response.to_dict()
             # print(response)
 
@@ -132,7 +134,8 @@ class CoinbaseClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') not in (None, "None") else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             
             else:
@@ -144,6 +147,7 @@ class CoinbaseClient(CryptoBrokerClient):
                     "side": side.upper(),
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
             
         except Exception as e:
@@ -158,6 +162,8 @@ class CoinbaseClient(CryptoBrokerClient):
                 return self.open_trade(symbol=symbol, side=opposite_side, quantity=quantity)
 
             response = self.client.close_position(client_order_id=None, product_id=symbol, size=quantity)
+
+            end_exe = time.perf_counter()
 
  
             result = response.to_dict()
@@ -187,7 +193,8 @@ class CoinbaseClient(CryptoBrokerClient):
                     'price': order_details.get('price', '0'),
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             
             else:
@@ -198,6 +205,7 @@ class CoinbaseClient(CryptoBrokerClient):
                     'symbol': symbol,
                     "side": side.upper(),
                     'qty': quantity,
+                    "end_exe": end_exe
                 }
             
 

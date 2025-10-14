@@ -188,6 +188,8 @@ class BitmartClient(CryptoBrokerClient):
 
             print("Adjusted quantity:", adjusted_quantity)
 
+            end_exe = None
+
             if self.account_type == 'S':
                 order_params = {
                     "symbol": order_symbol,
@@ -201,6 +203,8 @@ class BitmartClient(CryptoBrokerClient):
                     order_params['size'] = adjusted_quantity
 
                 response = self.API.post_submit_order(**order_params)
+
+                end_exe = time.perf_counter()
 
                 if response[0].get('code') != 1000:
                     raise Exception(response[0].get('message'))
@@ -236,6 +240,8 @@ class BitmartClient(CryptoBrokerClient):
                 }
                 response = self.API.post_submit_order(**order_params)
 
+                end_exe = time.perf_counter()
+
                 if response[0].get('code') != 1000:
                     raise Exception(response[0].get('msg'))
                 else:
@@ -263,7 +269,8 @@ class BitmartClient(CryptoBrokerClient):
                     'fees': order_details.get('fees', ''),
                     'currency': order_details.get('currency') if order_details.get('currency') is not None else currency_asset,
 
-                    'trade_details': trade_details
+                    'trade_details': trade_details,
+                    "end_exe": end_exe
                 }
             
             else:
@@ -275,6 +282,7 @@ class BitmartClient(CryptoBrokerClient):
                     "side": side.upper(),
                     'qty': adjusted_quantity,
                     'currency': currency_asset,
+                    "end_exe": end_exe
                 }
 
         except cloud_exceptions.APIException as apiException:

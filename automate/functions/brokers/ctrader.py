@@ -2,6 +2,7 @@ import requests
 import uuid
 import threading
 import datetime, calendar
+import time
 from ctrader_open_api import Client, Protobuf, TcpProtocol, Auth, EndPoints
 from ctrader_open_api.messages.OpenApiCommonMessages_pb2 import *
 from ctrader_open_api.messages.OpenApiMessages_pb2 import *
@@ -93,11 +94,11 @@ def parse_payload(payload):
 
 class CtraderClient(BrokerClient):
 
-    def __init__(self, account=None, authorization_code=None, type: str = 'demo'):
-        
+    def __init__(self, account=None, authorization_code=None, type: str = 'demo', current_trade=None):
+
         self.type = type
         self.port = EndPoints.PROTOBUF_PORT
-        self.host = EndPoints.PROTOBUF_LIVE_HOST if type.lower() == "l" else EndPoints.PROTOBUF_DEMO_HOST
+        self.host = EndPoints.PROTOBUF_LIVE_HOST if type.lower() == ('l', 'live') else EndPoints.PROTOBUF_DEMO_HOST
         
         self.account_id = None
         if account: 
@@ -109,9 +110,17 @@ class CtraderClient(BrokerClient):
         tokens = self.get_access_token(authorization_code)
         self.access_token = tokens.get('access_token')
         self.refresh_token = tokens.get('refresh_token')
-        self.tokens = f'{self.access_token}||{self.refresh_token}'
+        self.expires_at = tokens.get('expires_at')
+        self.tokens = f'{self.access_token}||{self.refresh_token}||{self.expires_at}'
+
+        is_new_token = tokens.get('is_new_token')
+        if is_new_token and account:
+            self.save_token()
 
         self.symbols = set()
+        self.assets = set()
+
+        self.current_trade = current_trade
         
         if not self.account_id:
             acc = self.get_first_account()
@@ -125,7 +134,7 @@ class CtraderClient(BrokerClient):
     def client(self):
         return d_client
 
-    def close(self):
+    def save_token(self):
         if self._id:
             account = ForexBrokerAccount.objects.get(id=self._id)
             if account:
@@ -158,6 +167,27 @@ class CtraderClient(BrokerClient):
 
             code = codes[0]
             refresh_token = codes[1] if len(codes) > 1 else None
+            expires_at = codes[2] if len(codes) > 2 else None
+
+            if expires_at:
+                expire_time = datetime.datetime.fromisoformat(expires_at)
+                now = datetime.datetime.now(datetime.timezone.utc)
+
+                # Compute remaining time
+                remaining = expire_time - now
+                print(f'Token still valid for {remaining}')
+
+                # Check if more than one day (24 hours)
+                if remaining.total_seconds() > (24 * 60 * 60):
+                    return {
+                        'access_token': code,
+                        'expires_at': expires_at,
+                        'refresh_token': refresh_token,
+                        'is_new_token': False
+                    }
+                            
+
+            print('Getting new token ...')
             
             if refresh_token:
                 data = {
@@ -189,10 +219,15 @@ class CtraderClient(BrokerClient):
             if res_json.get('errorCode', None):
                 raise Exception(res_json.get('description', 'Error ocuured please try again!'))
             elif res_json.get('accessToken', None):
+                expires_in = int(res_json.get('expiresIn'))
+                expires_at = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=expires_in)).isoformat()
+  
                 return {
                     'access_token': res_json.get('accessToken'),
-                    'expires_in': res_json.get('expiresIn'),
-                    'refresh_token': res_json.get('refresh_token')
+                    'expires_in': expires_in,
+                    'expires_at': expires_at,
+                    'refresh_token': res_json.get('refresh_token'),
+                    'is_new_token': True
                 }
         
         except Exception as e:
@@ -260,11 +295,7 @@ class CtraderClient(BrokerClient):
         except Exception as e:
             raise Exception(f"Account authorization failed: {e}")
 
-    def get_account_balance(self):
-        """
-        Requests and returns the account balance for the current account_id.
-        Assumes the account is already authorized.
-        """
+    def get_account_info(self):
         def run():
             d = defer.Deferred()
             print(f"Requesting balance for account ID: {self.account_id}")
@@ -273,17 +304,30 @@ class CtraderClient(BrokerClient):
 
             def on_info(info):
                 info = parse_payload(info)
-                print("📊 Trader info:", info)
-                if hasattr(info, "trader") and hasattr(info.trader, "balance"):
-                    d.callback(info.trader.balance)
-                else:
-                    d.errback(Exception("Balance not found."))
+                # print("📊 Trader info:", info)
+                d.callback(info.trader)
 
             self.client.send(info_req).addCallback(on_info).addErrback(d.errback)
             return d
 
         balance = threads.blockingCallFromThread(reactor, run)
         return balance
+
+    def get_account_balance(self):
+        account = self.get_account_info()
+
+        if hasattr(account, "balance"):
+            return account.balance
+        else:
+            raise Exception("depositAssetId not found in trader info")
+    
+    def get_account_currency(self):
+        try:
+            account = self.get_account_info()
+            deposit_asset_id = account.depositAssetId
+            return self.get_asset_by_id(deposit_asset_id)
+        except Exception as e:
+            raise Exception(f"Failed to get account currency: {e}")
     
     def open_trade(self, symbol, action_type: str, lot_size, custom_id=''):
         """
@@ -293,13 +337,14 @@ class CtraderClient(BrokerClient):
 
         try:
             # Get symbol ID
-            symbol_id, symbol_name = self.get_symbol_id_by_name(symbol)
+            symbol_info= self.get_symbol_info(symbol)
+            symbol_id = symbol_info.get('symbolId')
+            symbol_lot_size = symbol_info.get('lotSize')
 
             # Determine BUY or SELL
             side = ProtoOATradeSide.BUY if action_type.lower() in ["buy", "long"] else ProtoOATradeSide.SELL
 
-            # Convert lot size to volume (1 lot = 100,000 units)
-            volume = int(float(lot_size) * 100000)
+            volume = int(float(lot_size) * float(symbol_lot_size))
 
             # Unique client order ID
             client_order_id = custom_id if custom_id else str(uuid.uuid4())[:12]
@@ -337,86 +382,183 @@ class CtraderClient(BrokerClient):
 
             # Run synchronously
             result = threads.blockingCallFromThread(reactor, run)
+            end_exe = time.perf_counter()
             print(f"✅ Trade opened successfully: {result}")
-            return result
+            order_id = result.get('orderId')
+
+            orderInfo = self.get_order_info(symbol, order_id)
+            return {
+                'message': f"Trade opened with order ID {order_id}.",
+                'order_id': orderInfo.get('position_id'),
+                'symbol': symbol,
+                'price': orderInfo.get('price'),
+                'time': orderInfo.get('time'),
+                'qty': volume,
+                'currency': self.get_account_currency(),
+                'end_exe': end_exe,
+            }
 
         except Exception as e:
             print("❌ Error opening trade:", e)
             return {"error": str(e)}
 
-        finally:
-            self.close()
-
     def close_trade(self, symbol, order_type, partial_close=0):
         try:
             trade = self.current_trade
+            position_id_toclose = trade.order_id
 
-            symbol_id, symbol_name = self.get_symbol_id_by_name(symbol)
+            close_volume = int(float(partial_close))
 
             def run():
                 d = defer.Deferred()
 
-                def on_positions_response(response):
-                    res = parse_payload(response)
-
-                    if not hasattr(res, "position") or len(res.position) == 0:
-                        d.errback(Exception("No open positions found."))
-                        return
-
-                    # Find the position for this symbol
-                    position_to_close = None
-                    for pos in res.position:
-                        if pos.symbolId == symbol_id:
-                            position_to_close = pos
-                            break
-
-                    if not position_to_close:
-                        d.errback(Exception(f"No open position found for {symbol_name}."))
-                        return
-
-                    # Determine how much volume to close
-                    total_volume = int(position_to_close.volume)
-                    if partial_close > 0:
-                        close_volume = int(float(partial_close) * 100000)
-                        if close_volume > total_volume:
-                            close_volume = total_volume
+                def on_close_response(close_res):
+                    close_res = parse_payload(close_res)
+                    if hasattr(close_res, "position"):
+                        position_info = MessageToDict(close_res.position, preserving_proto_field_name=True)
+                        d.callback(position_info)
                     else:
-                        close_volume = total_volume
+                        d.errback(Exception("Failed to close position or invalid response."))
 
-                    # Build and send close request
-                    def on_close_response(close_res):
-                        close_res = parse_payload(close_res)
-                        if hasattr(close_res, "position"):
-                            position_info = MessageToDict(close_res.position, preserving_proto_field_name=True)
-                            d.callback(position_info)
-                        else:
-                            d.errback(Exception("Failed to close position or invalid response."))
+                req = ProtoOAClosePositionReq()
+                req.ctidTraderAccountId = self.account_id
+                req.positionId = int(position_id_toclose)
+                req.volume = close_volume
 
-                    req = ProtoOAClosePositionReq()
-                    req.ctidTraderAccountId = self.account_id
-                    req.positionId = position_to_close.positionId
-                    req.volume = close_volume
-
-                    self.client.send(req).addCallback(on_close_response).addErrback(d.errback)
-
-                # First, get all open positions
-                positions_req = ProtoOAGetPositionsReq()
-                positions_req.ctidTraderAccountId = self.account_id
-                self.client.send(positions_req).addCallback(on_positions_response).addErrback(d.errback)
+                self.client.send(req).addCallback(on_close_response).addErrback(d.errback)
                 return d
 
             result = threads.blockingCallFromThread(reactor, run)
+            end_exe = time.perf_counter()
             print(f"✅ Trade closed successfully: {result}")
-            return result
 
+            time.sleep(1)
+            closed_positions = self.get_closed_position_by_id(result.get("positionId"), self.convert_time_to_timestamp(trade.entry_time))
+
+            return {
+                'message': f"Trade closed for position ID {position_id_toclose}.", 
+                "symbol": symbol,
+                'qty': close_volume,
+                'order_id': '',
+                "closed_order_id": result.get('orderId', ''),
+                "trade_details": closed_positions,
+                'end_exe': end_exe,
+            }
 
         except Exception as e:
             print("❌ Error closing trade:", e)
             return {"error": str(e)}
 
-        finally:
-            self.close()
-    
+    def get_positions(self):
+        """
+        Retrieves all open positions for the account.
+        """
+        def run():
+            d = defer.Deferred()
+
+            def on_response(response):
+                res = parse_payload(response)
+
+                if hasattr(res, "position"):
+                    positions = [p for p in res.position]
+                    d.callback(positions)
+                else:
+                    d.callback([])
+            
+            req = ProtoOAReconcileReq()
+            req.ctidTraderAccountId = self.account_id
+            self.client.send(req).addCallback(on_response).addErrback(d.errback)
+            return d
+
+        try:
+            positions = threads.blockingCallFromThread(reactor, run)
+            return positions
+        except Exception as e:
+            raise Exception(f"Failed to get positions: {e}")
+        
+    def get_closed_position_by_id(self, position_id, fromTimestamp:int = None):
+        """
+        Retrieve details of a closed position using its position ID from the deal history.
+        """
+        def run():
+            d = defer.Deferred()
+            def on_deal_list(response):
+                res = parse_payload(response)
+                if hasattr(res, "deal"):
+                    matched_deals = []
+                    for deal in res.deal:
+                        if getattr(deal, "positionId", None) == int(position_id):
+                            deal_info = MessageToDict(deal, preserving_proto_field_name=True)
+                            matched_deals.append(deal_info)
+                    if matched_deals:
+                        d.callback(matched_deals)
+                        return
+                d.errback(Exception(f"No deals found for position ID {position_id}."))
+            
+            req = ProtoOADealListReq()
+            req.ctidTraderAccountId = self.account_id
+
+            # Define a time window (e.g., last 30 days)
+            now = datetime.datetime.now(datetime.timezone.utc)
+
+            if not fromTimestamp:
+                from_time = int(calendar.timegm((now - datetime.timedelta(days=30)).utctimetuple()) * 1000)
+                to_time = int(calendar.timegm(now.utctimetuple()) * 1000)
+            else:
+                from_time = int(fromTimestamp)
+                to_time = int(calendar.timegm(now.utctimetuple()) * 1000)
+
+            req.fromTimestamp = from_time
+            req.toTimestamp = to_time
+            # Optionally limit or filter by fromTimestamp if you want recent only
+            self.client.send(req).addCallback(on_deal_list).addErrback(d.errback)
+            return d
+
+        try:
+            deal_info = threads.blockingCallFromThread(reactor, run)
+            simplified = []
+
+            for deal in deal_info:
+                try:
+                    close_detail = deal.get("closePositionDetail", {})
+                    if not close_detail:
+                        continue
+                    money_digits = int(close_detail.get("moneyDigits", 2))
+
+                    # Convert values using moneyDigits for precision
+                    profit_raw = float(close_detail.get("grossProfit", 0))
+                    swap_raw = float(close_detail.get("swap", 0))
+                    commission_raw = float(close_detail.get("commission", 0))
+
+                    # Apply scaling for actual monetary values
+                    profit = profit_raw / (10 ** money_digits)
+                    fee = abs((commission_raw + swap_raw) / (10 ** money_digits))
+
+                    price = float(deal.get("executionPrice", 0))
+                    time = self.convert_timestamp(deal.get("executionTimestamp"))
+                    volume = float(deal.get("volume", 0))
+                    symbolId = str(deal.get("symbolId", ""))
+                    side = str(deal.get("tradeSide", ""))
+
+                    simplified.append({
+                        "orderId": deal.get("orderId"),
+                        "dealId": deal.get("dealId"),
+                        "symbolId": symbolId,
+                        "side": side,
+                        "close_time": str(time),
+                        "close_price": price,
+                        "volume": volume,
+                        "fees": fee,
+                        "profit": profit,
+                    })
+                except Exception as e:
+                    print(f"⚠️ Error simplifying deal {deal.get('dealId')}: {e}")
+                    continue
+
+            return list(reversed(simplified))
+        except Exception as e:
+            raise Exception(f"Failed to get closed position {position_id}: {e}")
+        
     def get_order_info(self, symbol, order_id):
         """
         Fetch detailed information about a specific order from cTrader API.
@@ -434,29 +576,25 @@ class CtraderClient(BrokerClient):
                         order = res.order
                         order_data = MessageToDict(order, preserving_proto_field_name=True)
 
+                        trade_data = order_data.get('tradeData')
+
                         # Extract and format key details
                         info = {
-                            "order_id": order_data.get("order_id"),
+                            "trade_id": order_data.get("orderId"),
                             "symbol_id": symbol_id,
-                            "symbol_name": symbol_name,
-                            "trade_side": order_data.get("trade_side"),
-                            "open_price": self.getPriceFromRelative(
-                                int(order_data.get("digits", 5)),
-                                order_data.get("execution_price", 0)
-                            ) if "execution_price" in order_data else None,
-                            "open_time": order_data.get("open_timestamp", None),
-                            "volume": order_data.get("volume", None),
-                            "stop_loss": order_data.get("stop_loss", None),
-                            "take_profit": order_data.get("take_profit", None),
-                            "comment": order_data.get("comment", ""),
-                            "order_status": order_data.get("order_status", ""),
-                            "filled_volume": order_data.get("filled_volume", 0),
+                            "symbol": symbol_name,
+                            "side": trade_data.get("tradeSide"),
+                            "qty": order_data.get("executedVolume", None),
+                            "price": order_data.get('executionPrice'),
+                            "time": self.convert_timestamp(trade_data.get("openTimestamp", None)),
+                            "position_id": order_data.get("positionId", None),
+                            "fees": 0
                         }
                         d.callback(info)
                     else:
                         d.errback(Exception(f"Order with ID {order_id} not found."))
 
-                req = ProtoOAGetOrderReq()
+                req = ProtoOAOrderDetailsReq()
                 req.ctidTraderAccountId = self.account_id
                 req.orderId = int(order_id)
                 self.client.send(req).addCallback(on_order_info).addErrback(d.errback)
@@ -590,8 +728,8 @@ class CtraderClient(BrokerClient):
         """
 
         # Get symbol id and details
-        symbol_id, symbol_name = self.get_symbol_id_by_name(symbol)
-        symbol_info = self.get_symbol_info(symbol_name)
+        symbol_info = self.get_symbol_info(symbol=symbol)
+        symbol_id = symbol_info.get('symbolId')
         digits = int(symbol_info.get("digits", 5))
 
         # Map interval string to ProtoOATrendbarPeriod
@@ -611,7 +749,7 @@ class CtraderClient(BrokerClient):
             raise Exception(f"Unsupported interval '{interval}'")
 
         # Compute time range
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc)
         # The API example uses weeks — we’ll compute based on limit and period
         if "m" in interval:
             delta = datetime.timedelta(minutes=limit)
@@ -632,6 +770,7 @@ class CtraderClient(BrokerClient):
 
             def on_trendbars_response(response):
                 res = parse_payload(response)
+                # print(res)
 
                 if not hasattr(res, "trendbar") or len(res.trendbar) == 0:
                     d.errback(Exception("No trendbar data returned."))
@@ -645,7 +784,7 @@ class CtraderClient(BrokerClient):
                     open_ = self.getPriceFromRelative(digits, tb.low + tb.deltaOpen)
                     close = self.getPriceFromRelative(digits, tb.low + tb.deltaClose)
                     trendbars.append({
-                        "timestamp": tb.utcTimestamp,
+                        "timestamp": self.convert_timestamp(tb.utcTimestampInMinutes * 60 * 1000),
                         "low": low,
                         "high": high,
                         "open": open_,
@@ -708,8 +847,6 @@ class CtraderClient(BrokerClient):
         Returns a dictionary containing details like tick size, min lot size, max lot size, precision, description, etc.
         """
         symbol_id, symbol_name = self.get_symbol_id_by_name(symbol)
-
-        print(symbol_id)
 
         def run():
             d = defer.Deferred()
@@ -776,11 +913,64 @@ class CtraderClient(BrokerClient):
         except Exception as e:
             raise Exception(f"Failed to get symbol ID for '{symbol_name}': {e}")
 
+    def get_asset_by_id(self, asset_id: int):
+        """
+        Fetch the asset name (e.g., USD, EUR) for a given asset_id using ProtoOAAssetListReq.
+        """
+
+        for ass in self.assets:
+            name, ass_id = str(ass).split('|')
+            if asset_id == int(ass_id):
+                return name
+            
+        def run():
+            d = defer.Deferred()
+
+            def on_asset_list(response):
+                response = parse_payload(response)
+                if hasattr(response, "asset"):
+                    for asset in response.asset:
+                        if str(asset.assetId) == str(asset_id):
+                            d.callback(asset.name)
+                            return
+                d.errback(Exception(f"Asset with ID {asset_id} not found."))
+
+            req = ProtoOAAssetListReq()
+            req.ctidTraderAccountId = self.account_id
+            self.client.send(req).addCallback(on_asset_list).addErrback(d.errback)
+            return d
+
+        try:
+            asset_name = threads.blockingCallFromThread(reactor, run)
+            self.assets.add(f'{asset_name}|{str(asset_id)}')
+            return asset_name
+        except Exception as e:
+            raise Exception(f"Failed to get asset name for ID {asset_id}: {e}")
+
     
 
     def getPriceFromRelative(self, symbol_digits, relative):
         """Convert relative integer price to float based on symbol digits."""
         return round(relative / (10 ** symbol_digits), symbol_digits)
+  
+    def market_and_account_data(self, symbol: str, intervals: list, limit: int = 500) -> dict:
+        try:
+            symbol_info = self.get_symbol_info(symbol)
+            history_candles = {} 
+            for interval in intervals:
+                if interval not in ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']:
+                    return {'error': f"Interval {interval} is not supported. use one of ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']"}
+                
+                candles = self.get_history_candles(symbol, interval, limit)
+                history_candles[interval] = candles
+            account_balance = self.get_account_balance()
+            current_price = self.get_current_price(symbol)
 
-    def market_and_account_data(self, symbol, intervals, limit = 500):
-        return super().market_and_account_data(symbol, intervals, limit)
+            return {
+                "history_candles": history_candles,
+                "account_info": account_balance,
+                "current_price": current_price,
+                "symbol_info": symbol_info
+            }
+        except Exception as e:
+            return {'error': str(e)}

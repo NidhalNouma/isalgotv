@@ -3,7 +3,7 @@
 
 <main class="mt-4 md:flex block justify-between mb-8">
   <section class="">
-    {% if not has_subscription %}
+    {% comment %} {% if not has_subscription %}
       <section class="grid xl:grid-cols-3 md:grid-cols-1 gap-6 mb-4">
         <div class="group relative overflow-hidden">
           <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
@@ -104,7 +104,7 @@
           </div>
         </div>
       </section>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     <section class="">
       <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">

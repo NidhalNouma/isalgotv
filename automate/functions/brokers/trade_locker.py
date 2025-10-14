@@ -1,5 +1,6 @@
 from tradelocker import TLAPI
 import requests
+import time
 from datetime import datetime
 from django.utils import timezone
 
@@ -41,6 +42,8 @@ class TradeLockerClient(BrokerClient):
                 return {'error': f"Symbol {symbol} not found."}
             # Create a market order
             order_id = tl.create_order(instrument_id, quantity=quantity, side=side.lower(), type_="market")
+
+            end_exe = time.perf_counter()
             
             if order_id:
                 position_id = tl.get_position_id_from_order_id(order_id)
@@ -64,6 +67,7 @@ class TradeLockerClient(BrokerClient):
                         'fees': trade_details.get('fees', 0),
                         'closed_order_id': order_id,
                         'currency': currency if currency else '',
+                        'end_exe': end_exe
                     }
             else:
                 return {'error': "Failed to open trade."}
@@ -81,6 +85,7 @@ class TradeLockerClient(BrokerClient):
             
             tl = self.tl
             result = tl.close_position(position_id = int(trade.order_id), close_quantity = float(quantity))
+            end_exe = time.perf_counter()
             trade_details = self.get_order_info(symbol, trade.order_id, trade.closed_order_id)
 
             if trade_details:
@@ -89,12 +94,14 @@ class TradeLockerClient(BrokerClient):
                         "id": trade.order_id,
                         'qty': quantity,
                         "closed_order_id": trade_details.get('trade_id', ''),
+                        "end_exe": end_exe
                     }
             else:
                 return {
                         'message': f"Trade closed for order ID {trade.order_id}.", 
                         "id": trade.order_id,
                         'qty': trade.volume,
+                        "end_exe": end_exe
                     }
         
         except Exception as e:

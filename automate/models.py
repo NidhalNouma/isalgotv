@@ -214,6 +214,24 @@ class TradeDetails(models.Model):
     object_id = models.PositiveIntegerField()
     account = GenericForeignKey('content_type', 'object_id')
 
+    def get_total_filled_volume(self):
+        """
+        Calculates the total filled volume across all fills.
+        Returns a Decimal for precision.
+        """
+        total_volume = float('0')
+        if not self.fills:
+            return total_volume
+
+        for fill in self.fills:
+            try:
+                volume = float(str(fill.get('volume', 0)))
+                total_volume += volume
+            except (TypeError, InvalidOperation):
+                continue
+
+        return total_volume
+
     def add_fill(self, trade_data):
         """
         Append a new fill entry to the fills JSONField. fill_data can be a dict or JSON string.
@@ -231,12 +249,7 @@ class TradeDetails(models.Model):
         else:
             raise TypeError("trade_data must be a dict or JSON string")
 
-        # Ensure timestamp
-        if "timestamp" not in trade_data or not trade_data["timestamp"]:
-            trade_data["timestamp"] = timezone.now().isoformat()
-
         try:
-
             self.exit_time = trade_data.get('close_time', timezone.now)
 
             close_price = trade_data.get('close_price', 0)
@@ -251,8 +264,7 @@ class TradeDetails(models.Model):
                 self.exit_price = Decimal('0')
                 self.profit = self.profit + Decimal('0')
                 self.fees = self.fees + Decimal('0')
-
-            # Append new fill record
+                            # Append new fill record
             self.fills = self.fills or []
             self.fills.append(trade_data)
 
@@ -293,19 +305,28 @@ class TradeDetails(models.Model):
                         self.add_fill(trade_data)
                 
         except Exception as e:
-            print(e)
+            print('Pre adjustment trade error: ', e)
             pass
 
     def save(self, *args, **kwargs):
-        # Run adjustments before saving
-        if float(self.remaining_volume) <= 0:
-            self.status = 'C'
-        elif float(self.remaining_volume) < float(self.volume):
-            self.status = 'P'
-        else:
-            self.status = 'O'
-        self.pre_save_adjustments()
-        super(TradeDetails, self).save(*args, **kwargs)
+        try:
+            # Run adjustments before saving
+            if float(self.remaining_volume) <= 0:
+                self.status = 'C'
+            elif float(self.remaining_volume) < float(self.volume):
+                self.status = 'P'
+            else:
+                self.status = 'O'
+            self.pre_save_adjustments()
+
+            filled_volume = float(self.volume) - self.get_total_filled_volume()
+            if filled_volume > float(self.remaining_volume):
+                self.remaining_volume = filled_volume
+            
+            super(TradeDetails, self).save(*args, **kwargs)
+        except Exception as e:
+            print('saving trade error: ', e)
+            pass 
 
 class LogMessage(models.Model):
     STATUS = [
@@ -319,6 +340,9 @@ class LogMessage(models.Model):
     response_message = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    latency = models.FloatField(blank=True, default=0.0, help_text="Latency in seconds")
+    trade_latency = models.FloatField(blank=True, default=0.0, help_text="Trade Latency in seconds")
 
     trade = models.ForeignKey(TradeDetails, on_delete=models.CASCADE, related_name="Trade", blank=True, null=True)
 

@@ -1,7 +1,9 @@
 import re
+import time
 from automate.functions.alerts_logs_trades import *
 
-def manage_alert(alert_message, account):
+def manage_alert(alert_message, account):    
+    start = time.perf_counter()
     try:
         print("Webhook request for account #" + str(account.id) + ": " + alert_message)
 
@@ -35,11 +37,12 @@ def manage_alert(alert_message, account):
 
         if action == 'Entry':
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
+            end_exe = trade.get('end_exe', None)
             # print('Trade:', trade)
             if trade.get('error') is not None:
                 raise Exception(trade.get('error'))
             saved_trade = save_new_trade(custom_id, symbol, side, trade, account, strategy_id)
-            save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, saved_trade)
+            save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, start, end_exe, saved_trade)
 
         elif action == 'Exit':
             trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
@@ -49,17 +52,19 @@ def manage_alert(alert_message, account):
             volume_close = volume_to_close(trade_to_close, partial)
             closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
 
+            end_exe = closed_trade.get('end_exe', None)
+
             if closed_trade.get('error') is not None:
                 raise Exception(closed_trade.get('error'))
             
             closed_volume = closed_trade.get('qty', volume_close)
 
             trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
-            save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, trade)
+            save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
 
     except Exception as e:   
         print('API Error: %s' % e)
-        save_log("E", alert_message, str(e), account)
+        save_log("E", alert_message, str(e), account, latency_start=start)
         return {"error": str(e)}
 
 

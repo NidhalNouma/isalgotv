@@ -101,6 +101,18 @@ class BrokerClient(abc.ABC):
             return dt_aware
         except Exception as e:
             return timezone.now()
+    
+    def convert_time_to_timestamp(self, dt):
+        try:
+            # Ensure timezone-aware datetime (UTC)
+            if timezone.is_naive(dt):
+                dt = timezone.make_aware(dt, timezone=timezone.utc)
+
+            ts_ms = int(dt.timestamp() * 1000)
+            return ts_ms
+        except Exception:
+            # Return current time if conversion fails
+            return int(timezone.now().timestamp() * 1000)
 
     
     def calculate_profit(self, trade, close_price, volume):

@@ -1,5 +1,5 @@
 import requests
-
+import time
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
 
@@ -116,6 +116,8 @@ class BinanceUSClient(CryptoBrokerClient):
             print("Quantity:", quantity, "Qty:", adjusted_quantity)
 
             response = self._send_request('POST', '/api/v3/order', params)
+
+            end_exe = time.perf_counter()
             
             if response.get('msg') is not None:
                 raise Exception(response.get('msg'))
@@ -137,17 +139,19 @@ class BinanceUSClient(CryptoBrokerClient):
                     'time': order_details.get('time', ''),
                     'fees': order_details.get('fees', ''),
                     'currency': quote_asset,
+                    "end_exe": end_exe
                 }
             else:
                 return {
-                'message': f"Trade opened with order ID {response.get('orderId')}.",
-                'order_id': response.get('orderId'),
-                'symbol': response.get('symbol', symbol),
+                    'message': f"Trade opened with order ID {response.get('orderId')}.",
+                    'order_id': response.get('orderId'),
+                    'symbol': response.get('symbol', symbol),
 
-                'price': response['fills'][0]['price'],
-                # 'fees': response['fills'][0]['commission'],
-                'qty': response.get('executedQty', adjusted_quantity),
-                'currency': quote_asset,
+                    'price': response['fills'][0]['price'],
+                    # 'fees': response['fills'][0]['commission'],
+                    'qty': response.get('executedQty', adjusted_quantity),
+                    'currency': quote_asset,
+                    "end_exe": end_exe
                 }
 
         except Exception as e:
@@ -177,6 +181,8 @@ class BinanceUSClient(CryptoBrokerClient):
 
             response = self._send_request('POST', '/api/v3/order', params)
 
+            end_exe = time.perf_counter()
+
             if response.get('msg') is not None:
                 raise Exception(response.get('msg'))
 
@@ -189,6 +195,7 @@ class BinanceUSClient(CryptoBrokerClient):
                 "side": t_side.upper(),
                 'price': response['fills'][0]['price'],
                 'qty': response.get('executedQty', adjusted_quantity),
+                "end_exe": end_exe
             }
         except Exception as e:        
             return {'error': str(e)}
