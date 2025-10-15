@@ -105,11 +105,31 @@
         <!-- Modal body -->
         <form hx-post="{% url 'membership-cancel' %}" hx-target="#setting-membership" class="max-w-md p-6 pt-1 mx-auto mt-1">
           {% csrf_token %}
-          {% include 'include/warnings.html' with warning="By canceling your membership you'll no longer have access to our products after the current period end." class=' !bg-background ' %}
+
+          <div class="rounded-md px-4 mb-8">
+            <h6 class="text-title font-bold">Before You Cancel</h6>
+            <ul class="text-text text-sm space-y-2 my-4">
+              <li>
+                &#9679; If you’re unsure how to get the most out of our products, please <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">contact us</a> we’re happy to guide you or schedule a one-on-one call to help you succeed.
+              </li>
+              <li>
+                &#9679; Got a trading idea or an improvement suggestion? We’d <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">love to hear it</a> share your thoughts with us, and we’ll do our best to make it happen. Your.
+              </li>
+              <li>
+                &#9679; If you didn’t enjoy our products, we’d really appreciate your <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">feedback</a>. Your thoughts help us improve and serve you better.
+              </li>
+            </ul>
+
+            <p class="text-error text-sm font-semibold">By canceling your membership, you will no longer have access to our premium products after the current billing period ends.</p>
+          </div>
 
           <div class="mt-6 flex items-center justify-around">
-            <button data-modal-hide="staticModal-cancel" type="submit" class="btn-icon mr-auto" onclick="openLoader('-p-cancel', '', 'flex');hideModel('staticModal-cancel');">Cancel</button>
-            <button onclick="hideModel('staticModal-cancel')" type="button" class="btn-icon mr-auto font-semibold">&larr; Return</button>
+            <button data-modal-hide="staticModal-cancel" type="submit" class="btn-icon text-error hover:text-error/80 mr-auto" onclick="openLoader('-p-cancel', '', 'flex');hideModel('staticModal-cancel');">Cancel</button>
+            <button onclick="hideModel('staticModal-cancel')" type="button" class="btn-icon mr-auto font-semibold">
+              Keep it<svg class="h-3.5 aspect-auto ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </button>
           </div>
         </form>
       </div>

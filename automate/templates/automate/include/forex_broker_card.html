@@ -191,11 +191,20 @@
         <form hx-post="{% url 'delete_broker' account.broker_type account.id %}" hx-target="#at-accounts" class="max-w-md p-6 pt-1 mx-auto mt-1">
           {% csrf_token %}
 
-          <p class="text-text/80 text-sm text-center mb-6">This action cannot be undone. All trading data and settings will be permanently removed.</p>
+          <div class=" rounded-md px-4 mb-8">
+            <h6 class="text-title font-bold">Before You Delete</h6>
+            <ul class="text-text text-sm space-y-2 my-4">
+              <li class="">&#9312;  Update or disable all TradingView alerts using this account.</li>
+              <li class="">&#9313;  Close any open positions you want to manage manually.</li>
+              <li class="">&#9314;  Consider pausing the account instead of deleting if you might reconnect later.</li>
+            </ul>
+            
+            <p class="text-error text-sm font-semibold">This action cannot be undone. All trading data and settings will be permanently removed.</p>
+          </div>
 
           <div class="mt-6 flex items-center justify-around">
             <button type="submit" class="text-error hover:text-error/80 transition-all font-normal text-sm" onclick="openLoader('', '-forex-account-delete-{{ account.id }}'); hideModel('forex-account-delete-{{ account.id }}');">Delete</button>
-            <button onclick="hideModel('forex-account-delete-{{ account.id }}')" type="button" class="text-text hover:text-text/80 transition-all font-normal text-sm">Cancel</button>
+            <button onclick="hideModel('forex-account-delete-{{ account.id }}')" type="button" class="text-title hover:text-title/80 transition-all font-normal text-sm">Keep it</button>
           </div>
         </form>
       </div>
