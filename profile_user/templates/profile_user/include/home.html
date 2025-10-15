@@ -116,7 +116,7 @@
 
       <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
         {% for strategy in most_viewed_strategies %}
-          {% if forloop.last %}
+          {% if forloop.last and comments|length > 0 %}
             <div class="flex flex-col justify-around gap-2">
               {% if comments %}
                 <div class="p-2">
@@ -250,7 +250,7 @@
 
         <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           {% for result in new_results %}
-            {% if forloop.last %}
+            {% if forloop.last and comments|length > 1 %}
               <div class="flex flex-col justify-around gap-2">
                 {% with numbers='1,2,3,4,5,6,7,8'|cut:',' %}
                   {% with random_number=numbers|random|add:0 %}

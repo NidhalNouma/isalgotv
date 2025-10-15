@@ -20,12 +20,14 @@ class CustomSocialSignupView(SignupView):
         return redirect('home')
 
 def index(request):
+    import random
     if request.user.is_authenticated:
         return redirect('home')
     
     context = {'prices': settings.PRICES, **random_strategies_results_context() }
     
-    return render(request, "main_app/index.html", context=context)
+    template = random.choice(["main_app/index.html", "profile_user/home.html"])
+    return render(request, template, context)
 
 
 def redirect_to_home(request):
@@ -41,4 +43,3 @@ def redirect_admin_login(request):
 def redirect_admin_logout(request):
     logout(request)
     return redirect('login')
- 
