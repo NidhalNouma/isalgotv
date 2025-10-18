@@ -1,5 +1,8 @@
 {% load custom_tags %}
 <form class="relative w-full max-w-md mx-auto flex flex-col gap-y-4" id="add-{{ broker_type }}-form" hx-post="{% url 'add_forex_broker_account' broker_type %}" hx-target="#at-accounts" hx-wait="swap">
+  {% if broker_type == 'metatrader4' or broker_type == 'metatrader5' %}
+    {% include 'include/warnings.html' with class='w-full' warning='We use a third-party connection to link your trading account. Occasionally, this connection may experience temporary downtime due to server maintenance or external provider issues.' %}
+  {% endif %}
   <div class="w-full">
     <label for="{{ broker_type }}_name" class="input-label">Name</label>
     <input type="text" id="{{ broker_type }}_name" name="{{ broker_type }}_name" class="input-text w-full" placeholder="Account 1" />

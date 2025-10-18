@@ -1,5 +1,16 @@
-<div class="tradingview-widget-container w-full">
+<div class="tradingview-widget-container w-full relative">
   <div id="tradingview-mini-symbol-{{ symbol }}"></div>
+
+  <!-- Launch Chart Button -->
+  <div class="absolute bottom-2 right-2">
+    <a href="https://www.tradingview.com/chart/?symbol={{ symbol }}" target="_blank" rel="noopener noreferrer" class="btn-text border-none">
+      Launch Chart<svg class="h-3.5 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" x2="21" y1="14" y2="3"></line>
+      </svg>
+    </a>
+  </div>
 </div>
 
 <script>
