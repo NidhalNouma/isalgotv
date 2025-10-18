@@ -21,7 +21,7 @@ from automate.functions.brokers.coinbase import CoinbaseClient
 from automate.functions.brokers.okx import OkxClient
 from automate.functions.brokers.apex import ApexClient
 
-from automate.functions.brokers.trade_locker import TradeLockerClient
+from automate.functions.brokers.tradelocker import TradeLockerClient
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.dxtrade import DxtradeClient
 from automate.functions.brokers.ninjatrader import NinjatraderClient

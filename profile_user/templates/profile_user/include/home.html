@@ -187,6 +187,19 @@
       </a>
     </div>
 
+    {% if quick_chart_symbols|length > 0 %}
+      <section class="mt-8">
+        <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Quick Charts</h6>
+        <script src="https://s3.tradingview.com/tv.js"></script>
+
+        <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+          {% for symbol in quick_chart_symbols %}
+            {% include 'include/tv_mini_symbol_overview.html' with symbol=symbol %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
     <section class="mt-8">
       <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
         Explore Latest Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -266,6 +279,18 @@
             {% else %}
               {% include 'include/quick_result.html' with result=result %}
             {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if recent_news|length >= 2 %}
+      <section class="mt-8">
+        <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Market Stories</h6>
+
+        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+          {% for article in recent_news|slice:':6' %}
+            {% include 'include/news_card.html' with article=article %}
           {% endfor %}
         </div>
       </section>

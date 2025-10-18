@@ -1,0 +1,20 @@
+<div class="max-w-full bg-background rounded-md overflow-hidden">
+  <img class="w-full h-48 object-cover rounded-t-lg" src="{{ article.urlToImage }}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618044733300-9472054094ee?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2342';" alt="{{ article.title }}" />
+  <div class="py-4">
+    <h2 class="text-xl font-bold text-title mb-2 line-clamp-2">{{ article.title }}</h2>
+    <p class="text-text text-sm mb-4 line-clamp-5">{{ article.description }}</p>
+    {% if article.publishedAt %}
+      <div class="flex justify-between items-center text-text/60 text-xs mb-0.5">
+        <span>{{ article.publishedAt|date:'F j, Y' }}</span>
+        {% comment %} <span class="font-semibold">{{ article.source.name }}</span> {% endcomment %}
+      </div>
+    {% endif %}
+    <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="btn-a gap-1 text-xs">
+      Read More<svg class="h-3 aspect-auto" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" x2="21" y1="14" y2="3"></line>
+      </svg>
+    </a>
+  </div>
+</div>

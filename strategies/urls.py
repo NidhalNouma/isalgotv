@@ -3,7 +3,7 @@ from .views import *
 
 urlpatterns = [
     # path('home/', home, name='home'),
-    path('all/', get_strategies, name='strategies'),
+    path('', get_strategies, name='strategies'),
     path('<int:id>/add_comment', add_comment, name='submit_comment'),
     path('<int:id>/add_result', add_result, name='submit_result'),
     path('<int:id>/add_comment_reply', add_comment_reply, name='submit_comment_reply'),

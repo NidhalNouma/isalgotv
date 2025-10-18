@@ -79,6 +79,93 @@ QUESTIONS = [
     "Do you know that I can answer any specific questions you have about using Isalgo tools and features?"
 ]
 
+quick_chart_symbols = [
+    'ICMARKETS:XAUUSD',
+    'ICMARKETS:EURUSD',
+    'ICMARKETS:USDJPY',
+    'ICMARKETS:GBPJPY',
+    'ICMARKETS:GBPUSD',
+    'ICMARKETS:USDCHF',
+    'ICMARKETS:USDCAD',
+    'ICMARKETS:AUDUSD',
+    'BINANCE:BTCUSDT',
+    'BINANCE:ADAUSDT',
+    'OKX:ETHUSDT',
+    'BINANCE:BNBUSDT',
+    'BINANCE:XRPUSDT',
+    'BITGET:LTCUSDT',
+    'BYBIT:SOLUSDT',
+    'BINANCE:DOGEUSDT',
+    'KUCOIN:DOTUSDT',
+    'COINBASE:AVAXUSD',
+    'BINANCE:SHIBUSDT',
+    'KUCOIN:VETUSDT',
+    'KUCOIN:AXSUSDT',
+    'KUCOIN:THETAUSDT',
+    'BITMART:NEARUSDT',
+    'BITMART:MANAUSDT',
+    'BITMART:SANDUSDT',
+    'BITMART:CHZUSDT',
+]
+
+def market_news():
+    """
+    Fetch recent 10 news articles related to forex, stock, and crypto markets.
+    """
+
+    NEWS_API_KEY = env('NEWS_API_KEY')
+    if not NEWS_API_KEY:
+        return JsonResponse({"error": "Missing NEWS_API_KEY in settings."}, status=500)
+
+    url = "https://newsapi.org/v2/everything"
+    query = (
+        "forex trading strategies OR crypto trading strategies OR forex market news "
+        "OR crypto trading stories OR cryptocurrency market updates"
+    )
+
+    params = {
+        "q": query,
+        "language": "en",
+        "pageSize": 30,
+        "sortBy": "publishedAt",
+        "apiKey": NEWS_API_KEY,
+    }
+
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        if data.get("status") != "ok":
+            return []
+
+        articles = data.get("articles", [])
+        r_articales = []
+        for article in articles:
+            if article.get("url") and article.get("title") and article.get("description") and article.get("urlToImage"):
+
+                published_at = article.get("publishedAt")
+                if published_at:
+                    try:
+                        # Convert ISO 8601 string (with trailing Z) to a datetime object
+                        published_at = datetime.datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ")
+                    except ValueError:
+                        published_at = None
+                else:
+                    published_at = None
+
+                r_articales.append({
+                    "title": article.get("title"),
+                    "description": article.get("description"),
+                    "url": article.get("url"),
+                    "urlToImage": article.get("urlToImage"),
+                    "publishedAt": published_at,
+                    "source": article.get("source", {}).get("name"),
+                })
+
+        return r_articales
+    except requests.RequestException as e:
+        return []
+
 def random_strategies_results_context():
     cash_timeout = 3600 * 6
     context = {}
@@ -130,6 +217,15 @@ def random_strategies_results_context():
     random.shuffle(comments)
     context['comments'] = comments
 
+
+    recent_news = cache.get('recent_news')
+    if recent_news is None:
+        recent_news = market_news()
+        cache.set('recent_news', recent_news, timeout=cash_timeout)
+    recent_news = market_news()
+
+    context['recent_news'] = recent_news
+    context['quick_chart_symbols'] = random.sample(quick_chart_symbols, 6)
     return context
 
 

@@ -45,8 +45,8 @@
     --color-accent: 0 0% 0%;
 
     --color-background: 188 16% 92%; /* hex - #e7edee */
-    --color-profit: 178 40% 40%;
-    --color-loss: 343 80% 40%;
+    --color-profit: 170 90% 32%;
+    --color-loss: 355 91% 65%;
     --color-text: 0 0% 20%;
     --color-text-light: 0 0% 90%;
     --color-title: 0 0% 0%;
@@ -60,8 +60,8 @@
     --color-accent: 0 0% 100%;
 
     --color-background: 0 0% 0%;
-    --color-profit: 178 40% 50%;
-    --color-loss: 330 100% 55%;
+    --color-profit: 170 90% 32%;
+    --color-loss: 355 91% 65%;
     --color-text: 0 0% 80%;
     --color-text-light: 0 0% 90%;
     --color-title: 0 0% 100%;

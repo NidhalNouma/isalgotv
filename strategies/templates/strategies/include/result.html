@@ -5,7 +5,7 @@
 <div id="result-{{ result.id }}" class="mb-2 py-2 flex flex-col w-full max-w-full">
   <div class="flex flex-row justify-between items-center mb-3">
     <div class="mr-2.5 flex items-center gap-2">
-      <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
+      <a class="text-text/80 bg-text/5 hover:bg-text/20 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
       <div class="inline-flex items-center gap-1 text-text/80">
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
@@ -53,7 +53,7 @@
     <div class="grid grid-cols-2 gap-4">
       <div class="space-y-4">
         <div class="flex flex-col gap-4">
-          <div class="p-4 rounded-lg bg-profit/10 w-full">
+          <div class="p-4 rounded-lg bg-profit/5 w-full">
             <div class="flex items-center gap-2 mb-2">
               <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
@@ -67,7 +67,7 @@
             </div>
           </div>
 
-          <div class="p-4 rounded-lg bg-loss/10 w-full">
+          <div class="p-4 rounded-lg bg-loss/5 w-full">
             <div class="flex items-center gap-2 mb-2">
               <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
@@ -83,7 +83,7 @@
         </div>
 
         <div class="w-full">
-          <button id="result-perfermance-{{ result.id }}" onclick="openModel('result-modal-{{ result.id }}')" class="bg-primary text-background text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full truncate">
+          <button id="result-perfermance-{{ result.id }}" onclick="openModel('result-modal-{{ result.id }}')" class="btn-primary dark:text-background w-full truncate">
             <span class="inline md:hidden">P&P</span><span class="hidden md:inline">Properties and Performance</span><svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="8" height="6" x="5" y="4" rx="1" />
               <rect width="8" height="6" x="11" y="14" rx="1" />
@@ -94,7 +94,7 @@
       </div>
 
       <div class="space-y-4">
-        <div class="p-4 bg-primary/10 rounded-lg">
+        <div class="p-4 bg-primary/5 rounded-lg">
           <div class="flex items-center gap-2 mb-3">
             <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" x2="18" y1="20" y2="10" />
@@ -124,7 +124,7 @@
         </div>
 
         <div class="w-full">
-          <button onclick="loadTradesData('{{ result.id }}') ;openModel('result-trades-list-{{ result.id }}')" class="bg-text/10 text-text text-sm font-semibold px-1.5 py-2 rounded flex items-center justify-center w-full">
+          <button onclick="loadTradesData('{{ result.id }}') ;openModel('result-trades-list-{{ result.id }}')" class="btn-text w-full">
             <span class="inline md:hidden">Trades</span><span class="hidden md:inline">List of trades</span><svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list">
               <path d="M3 12h.01" />
               <path d="M3 18h.01" />
@@ -144,7 +144,7 @@
         </div>
       </div>
 
-      {% comment %} <div class="p-4 bg-title/10 rounded-lg">
+      {% comment %} <div class="p-4 bg-title/5 rounded-lg">
         <div class="flex items-center gap-2 mb-3">
           <svg class="w-4 h-4 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" x2="12" y1="2" y2="22" />
