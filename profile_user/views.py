@@ -112,26 +112,25 @@ def market_news():
     """
     Fetch recent 10 news articles related to forex, stock, and crypto markets.
     """
-
-    NEWS_API_KEY = env('NEWS_API_KEY')
-    if not NEWS_API_KEY:
-        return JsonResponse({"error": "Missing NEWS_API_KEY in settings."}, status=500)
-
-    url = "https://newsapi.org/v2/everything"
-    query = (
-        "forex trading strategies OR crypto trading strategies OR forex market news "
-        "OR crypto trading stories OR cryptocurrency market updates"
-    )
-
-    params = {
-        "q": query,
-        "language": "en",
-        "pageSize": 30,
-        "sortBy": "publishedAt",
-        "apiKey": NEWS_API_KEY,
-    }
-
     try:
+        NEWS_API_KEY = env('NEWS_API_KEY')
+        if not NEWS_API_KEY:
+            return JsonResponse({"error": "Missing NEWS_API_KEY in settings."}, status=500)
+
+        url = "https://newsapi.org/v2/everything"
+        query = (
+            "forex trading strategies OR crypto trading strategies OR forex market news "
+            "OR crypto trading stories OR cryptocurrency market updates"
+        )
+
+        params = {
+            "q": query,
+            "language": "en",
+            "pageSize": 30,
+            "sortBy": "publishedAt",
+            "apiKey": NEWS_API_KEY,
+        }
+
         response = requests.get(url, params=params)
         data = response.json()
 
