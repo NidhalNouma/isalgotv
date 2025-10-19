@@ -11,7 +11,15 @@
       <div
         class="flex items-center justify-between p-4 rounded-t sticky top-0 nav-bg z-50"
       >
-        <h3 class="   text-lg sm:text-xl font-semibold text-text">{{result.performance.broker}}:{{result.pair}}</h3>
+        <h3 class="text-lg sm:text-xl font-semibold text-text">{{result.performance.broker}}:{{result.pair}} 
+          <a href="https://www.tradingview.com/chart/?symbol={{result.performance.broker}}:{{result.pair}} " target="_blank" rel="noopener noreferrer" class="btn-text border-none">
+            Launch Chart<svg class="h-3.5 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" x2="21" y1="14" y2="3"></line>
+            </svg>
+          </a>
+        </h3>
         <button
           type="button"
           onclick="hideModel('result-modal-{{result.id}}')"
