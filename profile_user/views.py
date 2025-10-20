@@ -118,7 +118,7 @@ def market_news():
             return JsonResponse({"error": "Missing NEWS_API_KEY in settings."}, status=500)
 
         url = "https://newsapi.org/v2/everything"
-        query = "forex trading OR crypto trading"
+        query = "TradingView Or trading strategies OR forex trading strategies OR crypto trading strategies OR stock trading strategies"
 
         params = {
             "q": query,
