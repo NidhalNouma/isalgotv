@@ -2,6 +2,8 @@ import re
 import time
 from automate.functions.alerts_logs_trades import *
 
+from django.db import transaction
+
 def manage_alert(alert_message, account):    
     start = time.perf_counter()
     try:

@@ -291,14 +291,15 @@ class TradeDetails(models.Model):
                 # print(trade_response)
                 if trade_response:
                     if isinstance(trade_response, list):
-                        self.fills = []
+                        if len(trade_response) > len(self.fills):
+                            self.fills = []
 
-                        self.profit = 0
-                        self.fees = 0
-                        # trade_data is an “array” of fills or orders
-                        for data in trade_response:
-                            # handle each dict in the list
-                            self.add_fill(data)
+                            self.profit = 0
+                            self.fees = 0
+                            # trade_data is an “array” of fills or orders
+                            for data in trade_response:
+                                # handle each dict in the list
+                                self.add_fill(data)
 
                     else:
                         trade_data = trade_response 
@@ -320,7 +321,8 @@ class TradeDetails(models.Model):
             self.pre_save_adjustments()
 
             filled_volume = float(self.volume) - self.get_total_filled_volume()
-            if filled_volume > float(self.remaining_volume):
+            print('Filled volume:', filled_volume)
+            if filled_volume < float(self.remaining_volume):
                 self.remaining_volume = filled_volume
             
             super(TradeDetails, self).save(*args, **kwargs)

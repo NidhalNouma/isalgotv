@@ -1,5 +1,6 @@
 from django import template
 from dateutil.relativedelta import relativedelta
+from django.utils.timesince import timesince
 
 register = template.Library()
 
@@ -89,3 +90,13 @@ def format_profit(value):
         return value  # If conversion fails, return the original value
 
 
+@register.filter
+def concise_timesince(value):
+    """
+    Return only the first part of Django's timesince (e.g. '5 months' instead of '5 months, 2 weeks').
+    """
+    try:
+        result = timesince(value)
+        return result.split(",")[0].strip()
+    except Exception:
+        return ""

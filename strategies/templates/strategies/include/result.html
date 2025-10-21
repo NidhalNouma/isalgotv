@@ -186,7 +186,7 @@
 
   <div class="mb-0.5 mt-1.5 flex items-center">
     <span class="text-text/50 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ result.created_by.get_tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ result.created_by.get_tradingview_username }}</a></span>
-    <span class="mx-3 text-text/50 text-xs">{{ result.created_at|timesince }} ago</span>
+    <span class="mx-3 text-text/50 text-xs">{{ result.created_at|concise_timesince }} ago</span>
 
     <div class="">
       <button id="shareButton-{{ result.id }}" class="text-text/80 flex items-center text-xs px-0 rounded box-border">

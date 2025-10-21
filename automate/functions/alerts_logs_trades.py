@@ -2,8 +2,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from decimal import Decimal
 from django.utils import timezone
-from django.db import transaction
-import inspect
 import time
 
 from automate.models import *
@@ -231,29 +229,14 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
     t_side = "B" if str.lower(side) == "buy" else "S"
 
     content_type = ContentType.objects.get_for_model(account.__class__)
-
-    if inspect.iscoroutinefunction(get_trade_for_update):
-        async def _async_inner():
-            async with transaction.atomic():
-                return await TradeDetails.objects.select_for_update().filter(
-                    custom_id=custom_id,
-                    symbol=symbol ,
-                    side=t_side,
-                    strategy_id=strategy_id,
-                    content_type=content_type,
-                    object_id=account.id
-                ).alast()
-        return _async_inner()
-    else:
-        with transaction.atomic():
-            trade = TradeDetails.objects.select_for_update().filter(
-                custom_id=custom_id,
-                symbol=symbol,
-                side=t_side,
-                strategy_id=strategy_id,
-                content_type=content_type,
-                object_id=account.id
-            ).last()
+    trade = TradeDetails.objects.select_for_update().filter(
+        custom_id=custom_id,
+        symbol=symbol,
+        side=t_side,
+        strategy_id=strategy_id,
+        content_type=content_type,
+        object_id=account.id
+    ).last()
 
     return trade
 
