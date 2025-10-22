@@ -187,6 +187,21 @@ class BrokerClient(abc.ABC):
             print("Error:", e)
             return None
 
+    def close_opposite_trades(self, trades: List[TradeDetails]) -> List[CloseTrade]:
+        closed_trades = []
+        for trade in trades:
+            try:
+                self.current_trade = trade
+                result = self.close_trade(
+                    trade.symbol,
+                    trade.side,
+                    trade.remaining_volume,
+                )
+                closed_trades.append({ **result, 'orig_trade': trade })
+            except Exception as e:
+                print(f"Error closing trade {trade.order_id}: {e}")
+        return closed_trades
+
 
 class CryptoBrokerClient(BrokerClient, abc.ABC):
     

@@ -402,7 +402,7 @@ class CtraderClient(BrokerClient):
             print("❌ Error opening trade:", e)
             return {"error": str(e)}
 
-    def close_trade(self, symbol, order_type, partial_close=0):
+    def close_trade(self, symbol, side, partial_close=0):
         try:
             trade = self.current_trade
             position_id_toclose = trade.order_id
@@ -439,7 +439,7 @@ class CtraderClient(BrokerClient):
                 'message': f"Trade closed for position ID {position_id_toclose}.", 
                 "symbol": symbol,
                 'qty': close_volume,
-                'order_id': '',
+                'order_id': self.current_trade.order_id,
                 "closed_order_id": result.get('orderId', ''),
                 "trade_details": closed_positions,
                 'end_exe': end_exe,

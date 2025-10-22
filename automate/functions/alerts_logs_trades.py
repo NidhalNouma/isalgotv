@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
+from django.db import transaction
 
 from decimal import Decimal
 from django.utils import timezone
@@ -91,7 +92,7 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
         raise Exception("Unsupported broker type.")
 
     
-def open_trade_by_account(account, symbol, side, volume, custom_id):
+def open_trade_by_account(account, symbol, side, volume, custom_id, opposit_trades=[]):
     try:
         broker_type = account.broker_type
         
@@ -100,8 +101,11 @@ def open_trade_by_account(account, symbol, side, volume, custom_id):
             raise Exception(f"Unsupported broker type: {broker_type}")
         
         client = client_cls(account=account)
-        
-        return client.open_trade(symbol, side, volume, custom_id)
+
+        closed_trades = client.close_opposite_trades(opposit_trades)
+        trade = client.open_trade(symbol, side, volume, custom_id)
+
+        return trade, closed_trades
     except Exception as e:
         print('open trade error: ', str(e))
         raise e
@@ -246,15 +250,16 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
     t_side = "B" if str.lower(side) == "buy" else "S"
 
     content_type = ContentType.objects.get_for_model(account.__class__)
-    trade = TradeDetails.objects.select_for_update().filter(
-        custom_id=custom_id,
-        symbol=symbol,
-        side=t_side,
-        status__in=["O", "P"],
-        strategy_id=strategy_id,
-        content_type=content_type,
-        object_id=account.id
-    ).last()
+    with transaction.atomic():
+        trade = TradeDetails.objects.select_for_update().filter(
+            custom_id=custom_id,
+            symbol=symbol,
+            side=t_side,
+            status__in=["O", "P"],
+            strategy_id=strategy_id,
+            content_type=content_type,
+            object_id=account.id
+        ).last()
 
     return trade
 

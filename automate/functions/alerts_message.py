@@ -42,7 +42,17 @@ def manage_alert(alert_message, account):
         if action == 'Entry':
             if reverse:
                 custom_id = f"{custom_id}R{reverse}"
-            trade = open_trade_by_account(account, symbol, side, volume, custom_id)
+                trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
+
+            trade, closed_trades = open_trade_by_account(account, symbol, side, volume, custom_id, trades_to_close if reverse else [])
+
+            for closed_trade in closed_trades:
+                end_exe_ct = closed_trade.get('end_exe', None)
+                orig_trade = closed_trade.get('orig_trade')
+                closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
+                rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
+                save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
+
             end_exe = trade.get('end_exe', None)
             # print('Trade:', trade)
             if trade.get('error') is not None:
@@ -67,24 +77,6 @@ def manage_alert(alert_message, account):
 
             trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
             save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
-
-        if action == 'Entry':
-            if reverse:
-                trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
-                for trade_to_close in trades_to_close:
-                    volume_close = trade_to_close.remaining_volume
-                    closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
-
-                    end_exe = closed_trade.get('end_exe', None)
-
-                    if closed_trade.get('error') is not None:
-                        continue
-                        raise Exception(closed_trade.get('error'))
-                    
-                    closed_volume = closed_trade.get('qty', volume_close)
-
-                    trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
-                    save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
 
     except Exception as e:   
         print('API Error: %s' % e)

@@ -1,0 +1,27 @@
+<div class="mx-auto w-full rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden py-4 px-6 max-w-lg mb-6">
+  <div class="flex items-center justify-between w-full mb-6">
+    <h5 class="text-title font-semibold">AI system content</h5>
+
+    <form hx-post="{% url 'ai_system_content' %}" hx-target="#setting-ai-system-content">
+      {% csrf_token %}
+      <button onclick="" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-a-arrow-down">
+          <path d="M3.5 13h6" />
+          <path d="m2 16 4.5-9 4.5 9" />
+          <path d="M18 7v9" />
+          <path d="m14 12 4 4 4-4" />
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  {% if system_content %}
+    <div id="ai_system_content_text" class="space-y-6 text-text whitespace-pre-line text-sm p-2.5 bg-text/10 max-h-80 overflow-y-scroll no-scrollbar rounded-md">{{ system_content }}</div>
+    <button class="btn-icon mt-6" type="button" onclick="copyPlainText('ai_system_content_text');">
+      Copy<svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3 aspect-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy">
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+      </svg>
+    </button>
+  {% endif %}
+</div>
