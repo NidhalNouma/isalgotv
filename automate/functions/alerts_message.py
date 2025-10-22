@@ -39,19 +39,26 @@ def manage_alert(alert_message, account):
         if not volume and action == 'Entry':
             raise Exception("No volume found in alert message.")
 
+        
+        if reverse:
+            custom_id = f"{custom_id}R{reverse}"
+
         if action == 'Entry':
             if reverse:
-                custom_id = f"{custom_id}R{reverse}"
                 trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
 
             trade, closed_trades = open_trade_by_account(account, symbol, side, volume, custom_id, trades_to_close if reverse else [])
 
             for closed_trade in closed_trades:
                 end_exe_ct = closed_trade.get('end_exe', None)
-                orig_trade = closed_trade.get('orig_trade')
-                closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
-                rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
-                save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
+                if closed_trade.get('error') is not None:
+                    save_log("E", alert_message, f'Opposite order closing error: {closed_trade.get('error')}', account, start, end_exe_ct)
+                else:
+                    orig_trade = closed_trade.get('orig_trade')
+                    closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
+                    rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
+
+                    save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
 
             end_exe = trade.get('end_exe', None)
             # print('Trade:', trade)

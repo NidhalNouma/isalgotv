@@ -2,5 +2,5 @@
 
 {% render_template 'include/add_broker_list.html' as broker_list %}
 
-{% render_template 'include/broker_modal_header.html' broker_type='Add your account' hide_icons='true' as header_html %}
-{% include 'include/modal.html' with modal_id='add-broker-modal' header=header_html body=broker_list class='!max-w-xl' body_class='!max-w-full ' %}
+{% render_template 'include/broker_modal_header.html' broker_type='Connect your account' hide_icons='true' as header_html %}
+{% include 'include/modal.html' with modal_id='add-broker-modal' header=header_html body=broker_list class='!max-w-xl' body_class='!max-w-full' %}

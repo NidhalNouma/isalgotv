@@ -192,6 +192,7 @@ class BrokerClient(abc.ABC):
         for trade in trades:
             try:
                 self.current_trade = trade
+                print(f"Closing oposite trade {trade.order_id} for symbol {trade.symbol} and side {trade.side}")
                 result = self.close_trade(
                     trade.symbol,
                     trade.side,
@@ -200,6 +201,7 @@ class BrokerClient(abc.ABC):
                 closed_trades.append({ **result, 'orig_trade': trade })
             except Exception as e:
                 print(f"Error closing trade {trade.order_id}: {e}")
+                closed_trades.append({ 'error': str(e), 'orig_trade': trade })
         return closed_trades
 
 
