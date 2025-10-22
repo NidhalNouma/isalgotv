@@ -209,6 +209,23 @@ def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
     
     return trade
 
+def get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse_id):
+    t_side = "B" if str.lower(side) == "sell" else "S"
+
+    content_type = ContentType.objects.get_for_model(account.__class__)
+
+    trade = TradeDetails.objects.filter(
+        custom_id__contains=f"R{reverse_id}",
+        symbol=symbol,
+        side=t_side,
+        status__in=["O", "P"],
+        strategy_id=strategy_id,
+        content_type=content_type,
+        object_id=account.id
+    )
+
+    return trade
+
 def get_trade(custom_id, symbol, side, account, strategy_id):
     t_side = "B" if str.lower(side) == "buy" else "S"
 
@@ -233,6 +250,7 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
         custom_id=custom_id,
         symbol=symbol,
         side=t_side,
+        status__in=["O", "P"],
         strategy_id=strategy_id,
         content_type=content_type,
         object_id=account.id

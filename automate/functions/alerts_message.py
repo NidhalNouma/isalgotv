@@ -20,6 +20,8 @@ def manage_alert(alert_message, account):
         partial = alert_data.get('Partial')
         volume = alert_data.get('Volume')
 
+        reverse = alert_data.get('Reverse')
+
         strategy_id = alert_data.get('strategy_ID', None)
 
         if not custom_id:
@@ -38,6 +40,8 @@ def manage_alert(alert_message, account):
             raise Exception("No volume found in alert message.")
 
         if action == 'Entry':
+            if reverse:
+                custom_id = f"{custom_id}R{reverse}"
             trade = open_trade_by_account(account, symbol, side, volume, custom_id)
             end_exe = trade.get('end_exe', None)
             # print('Trade:', trade)
@@ -64,6 +68,24 @@ def manage_alert(alert_message, account):
             trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
             save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
 
+        if action == 'Entry':
+            if reverse:
+                trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
+                for trade_to_close in trades_to_close:
+                    volume_close = trade_to_close.remaining_volume
+                    closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
+
+                    end_exe = closed_trade.get('end_exe', None)
+
+                    if closed_trade.get('error') is not None:
+                        continue
+                        raise Exception(closed_trade.get('error'))
+                    
+                    closed_volume = closed_trade.get('qty', volume_close)
+
+                    trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
+                    save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
+
     except Exception as e:   
         print('API Error: %s' % e)
         save_log("E", alert_message, str(e), account, latency_start=start)
@@ -89,10 +111,10 @@ def extract_alert_data(alert_message):
         
         if key == 'D':
             data['Action'] = 'Entry'
-            data['Type'] = value
+            data['Type'] = str(value).upper()
         elif key == 'X':
             data['Action'] = 'Exit'
-            data['Type'] = value
+            data['Type'] = str(value).upper()
         elif key == 'A':
             data['Asset'] = str(value).upper()
         elif key == 'V':
@@ -103,5 +125,9 @@ def extract_alert_data(alert_message):
             data['ID'] = value
         elif key == 'ST' or key == 'ST_ID' or key == "SR":
             data['strategy_ID'] = value
+
+        elif key == 'R':
+            data['Reverse'] = value
+        
     
     return data
