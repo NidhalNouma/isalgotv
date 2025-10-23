@@ -51,10 +51,11 @@ def manage_alert(alert_message, account):
 
             for closed_trade in closed_trades:
                 end_exe_ct = closed_trade.get('end_exe', None)
+                orig_trade = closed_trade.get('orig_trade')
+                print('Closed trade:', closed_trade)
                 if closed_trade.get('error') is not None:
                     save_log("E", alert_message, f'Opposite order closing error: {closed_trade.get('error')}', account, start, end_exe_ct)
                 else:
-                    orig_trade = closed_trade.get('orig_trade')
                     closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
                     rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
 

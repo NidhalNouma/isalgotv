@@ -153,10 +153,10 @@ class CoinbaseClient(CryptoBrokerClient):
         except Exception as e:
             raise Exception(str(e))
         
-    def close_trade(self, symbol, side, quantity) -> CloseTrade:
+    def close_trade(self, symbol: str, side: str, quantity) -> CloseTrade:
         try:
             symbol = self.adjust_symbol_name(symbol)
-            opposite_side = "sell" if side.lower() == "buy" else "buy"
+            opposite_side = "sell" if side.upper()  in ("BUY", "B") else "buy"
 
             if self.account_type == 'S':
                 return self.open_trade(symbol=symbol, side=opposite_side, quantity=quantity)

@@ -275,7 +275,7 @@ class MexcClient(CryptoBrokerClient):
             if self.account_type == "F":
                 return self.close_mexc_futures_trade(symbol, side, quantity)
             
-            t_side = "SELL" if side.upper() == "BUY" else "BUY"
+            t_side = "SELL" if side.upper() in ("BUY", "B") else "BUY"
             return self.open_trade(symbol, t_side, quantity)
         except Exception as e:
             raise ValueError(str(e))
@@ -325,7 +325,7 @@ class MexcClient(CryptoBrokerClient):
         try:
             symbol = self.adjust_symbol_name(symbol)
             # Reverse the side for closing the position
-            t_side = 4 if side.upper() == "BUY" else 2
+            t_side = 4 if side.upper() in ("BUY", "B") else 2
             order_params = {
                 "symbol": symbol,
                 "side": t_side,

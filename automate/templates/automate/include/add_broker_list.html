@@ -1,6 +1,6 @@
 {% with btn_class='relative bg-text/10 border border-text/10 hover:bg-text/20 w-full text-text ihover:text-text/80 py-2.5 rounded flex items-center justify-center transition-all' %}
   <div class="px-2 sm:px-6 grid grid-cols-2 gap-3">
-    <h6 class="col-span-full text-text/80 font-semibold text-base">Centralized Exchanges</h6>
+    <h6 class="col-span-full text-text/80 font-semibold text-sm">Centralized Exchanges</h6>
     <button onclick="hideModel('add-broker-modal'); openModel('add-binance-modal', false); mountStripeElement('binance');" class="{{ btn_class }}">{% include 'svg/binance.html' with class='aspect-auto h-4 fill-current max-w-[80%]' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-binanceus-modal', false); mountStripeElement('binanceus');" class="{{ btn_class }}">{% include 'svg/binance_us.html' with class='aspect-auto h-4 fill-current max-w-[80%]' %}</button>
 
@@ -44,7 +44,7 @@
       </div>
     </button> {% endcomment %}
 
-    <h6 class="col-span-full text-text/80 font-semibold text-base mt-2">Decentralized Exchanges</h6>
+    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Decentralized Exchanges</h6>
 
     <button disabled onclick="hideModel('add-broker-modal'); openModel('add-hyperliquid-modal', false); mountStripeElement('hyperliquid');" class="{{ btn_class }}">
       {% include 'svg/hyperliquid.html' with class='h-3.5 aspect-auto fill-current text-current' %}
@@ -57,8 +57,20 @@
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
     </button>
+    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-aster-modal', false); mountStripeElement('aster');" class="{{ btn_class }}">
+      {% include 'svg/aster.html' with class='h-4 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button>
+    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-edgex-modal', false); mountStripeElement('edgex');" class="{{ btn_class }}">
+      {% include 'svg/edgex.html' with class='h-4 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button>
 
-    <h6 class="col-span-full text-text/80 font-semibold text-base mt-2">Futures, Forex, Stocks and more</h6>
+    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Futures, Forex, Stocks and more</h6>
     
     <button onclick="hideModel('add-broker-modal'); openModel('add-ctrader-modal', false); mountStripeElement('ctrader');" class="{{ btn_class }}">
       {% include 'svg/ctrader.html' with class='h-4 aspect-auto fill-current text-current' %}

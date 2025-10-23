@@ -207,7 +207,7 @@ class BinanceClient(CryptoBrokerClient):
         
     def close_trade(self, symbol: str, side: str, quantity: float) -> CloseTrade:
         """Close a trade on Binance."""
-        t_side = "SELL" if side.upper() == "BUY" else "BUY"
+        t_side = "SELL" if side.upper() in ("BUY", "B") else "BUY"
         return self.open_trade(symbol, t_side, quantity, oc=True)
         
  

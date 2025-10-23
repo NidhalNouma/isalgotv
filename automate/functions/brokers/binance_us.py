@@ -159,7 +159,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return {'error': str(e)}
 
     def close_trade(self, symbol, side, quantity) -> CloseTrade:
-        t_side = "SELL" if side.upper() == "BUY" else "BUY"
+        t_side = "SELL" if side.upper() in ("BUY", "B") else "BUY"
         try:
             symbol_info = self.get_exchange_info(symbol)
 

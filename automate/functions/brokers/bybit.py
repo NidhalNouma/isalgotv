@@ -209,9 +209,9 @@ class BybitClient(CryptoBrokerClient):
         except Exception as e:
             return {'error': str(e)}
 
-    def close_trade(self, symbol, side, quantity) -> CloseTrade:
+    def close_trade(self, symbol: str, side: str, quantity) -> CloseTrade:
         """Close a trade on Bybit."""
-        opposite_side = "sell" if side.lower() == "buy" else "buy"
+        opposite_side = "sell" if side.upper() in ("BUY", "B") else "buy"
 
         return self.open_trade(symbol, opposite_side, quantity, oc=True)
 

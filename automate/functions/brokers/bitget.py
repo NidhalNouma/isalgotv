@@ -249,9 +249,9 @@ class BitgetClient(CryptoBrokerClient):
             print('error opening bitget trade: ', str(e))
             return {'error': str(e)}
 
-    def close_trade(self, symbol, side, quantity) -> CloseTrade:
+    def close_trade(self, symbol: str, side: str, quantity) -> CloseTrade:
         if self.account_type == "S":
-            opposite_side = "sell" if side.lower() == "buy" else "buy"
+            opposite_side = "sell" if side.upper() in ("BUY", "B") else "buy"
         else:
             opposite_side = side.lower()
         try:

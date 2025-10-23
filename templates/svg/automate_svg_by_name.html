@@ -30,6 +30,10 @@
   {% include 'svg/hyperliquid.html' with class=class %}
 {% elif broker_type == 'apex' %}
   {% include 'svg/apex.html' with class=class %}
+{% elif broker_type == 'aster' %}
+  {% include 'svg/aster.html' with class=class %}
+{% elif broker_type == 'edgex' %}
+  {% include 'svg/edgex.html' with class=class %}
 {% elif broker_type == 'metatrader4' %}
   {% include 'svg/metatrader4.html' with class=class %}
 {% elif broker_type == 'metatrader5' %}

@@ -247,7 +247,7 @@ def get_trade(custom_id, symbol, side, account, strategy_id):
     return trade
 
 def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
-    t_side = "B" if str.lower(side) == "buy" else "S"
+    t_side = "B" if str.upper(side) == "BUY" else "S"
 
     content_type = ContentType.objects.get_for_model(account.__class__)
     with transaction.atomic():

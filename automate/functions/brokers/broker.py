@@ -192,7 +192,7 @@ class BrokerClient(abc.ABC):
         for trade in trades:
             try:
                 self.current_trade = trade
-                print(f"Closing oposite trade {trade.order_id} for symbol {trade.symbol} and side {trade.side}")
+                # print(f"Closing oposite trade {trade.order_id} for symbol {trade.symbol} and side {trade.side}")
                 result = self.close_trade(
                     trade.symbol,
                     trade.side,
