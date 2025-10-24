@@ -107,24 +107,27 @@
           />
         </div>
       {% endif %}
-      <div class="w-full">
-        <label for="{{account.id}}_{{account.broker_type}}_server" class="input-label">
-          {%if account.broker_type == 'ctrader'%}Authorization code{%else%}Server{%endif%}
-          {%if account.broker_type == 'ctrader'%}
-            {% comment %} <button class="btn-icon" onclick="">Get code <svg class="h-3.5 aspect-auto fill-current stroke-current ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12v4a1 1 0 0 1-1 1h-4"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M17 8V7"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M7 17h.01"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="5" height="5" rx="1"/></svg></button> {% endcomment %}
-            <button class="btn-icon text-xs" type="button" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">Get code <svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
-          {%endif%}
-        </label>
-        <input
-          type="text"
-          id="{{account.id}}_{{account.broker_type}}_server"
-          name="{{account.id}}_{{account.broker_type}}_server"
-          class="input-text w-full"
-          placeholder=""
-          value="{{account.server}}"
-        />
-      </div>
-      {% if account.broker_type == 'dxtrade' or account.broker_type == 'tradelocker' %}
+
+      {% if account.broker_type != "hankotrade" %}
+        <div class="w-full">
+          <label for="{{account.id}}_{{account.broker_type}}_server" class="input-label">
+            {%if account.broker_type == 'ctrader'%}Authorization code{%else%}Server{%endif%}
+            {%if account.broker_type == 'ctrader'%}
+              {% comment %} <button class="btn-icon" onclick="">Get code <svg class="h-3.5 aspect-auto fill-current stroke-current ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12v4a1 1 0 0 1-1 1h-4"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M17 8V7"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M7 17h.01"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="5" height="5" rx="1"/></svg></button> {% endcomment %}
+              <button class="btn-icon text-xs" type="button" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">Get code <svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+            {%endif%}
+          </label>
+          <input
+            type="text"
+            id="{{account.id}}_{{account.broker_type}}_server"
+            name="{{account.id}}_{{account.broker_type}}_server"
+            class="input-text w-full"
+            placeholder=""
+            value="{{account.server}}"
+          />
+        </div>
+      {% endif %}
+      {% if account.broker_type == 'dxtrade' or account.broker_type == 'tradelocker' or account.broker_type == 'hankotrade' %}
         <div class="w-full">
           <label for="type" class="input-label">Type</label>
 

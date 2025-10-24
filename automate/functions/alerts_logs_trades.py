@@ -25,6 +25,7 @@ from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.dxtrade import DxtradeClient
 from automate.functions.brokers.ninjatrader import NinjatraderClient
 from automate.functions.brokers.ctrader import CtraderClient
+from automate.functions.brokers.acttrader import HankoTradeClient
 
 # Map broker types to their client classes
 CLIENT_CLASSES = {
@@ -47,6 +48,7 @@ CLIENT_CLASSES = {
     'ctrader': CtraderClient,
     'metatrader4': MetatraderClient,
     'metatrader5': MetatraderClient,
+    'hankotrade': HankoTradeClient,
 }
 
 def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_type="S"):
@@ -88,6 +90,8 @@ def check_forex_credentials(broker_type, username, password, server, type="D"):
         return DxtradeClient.check_credentials(username, password, server)
     elif broker_type == 'ctrader':
         return CtraderClient.check_credentials(authorization_code=server, type=type)
+    elif broker_type == 'hankotrade':
+        return HankoTradeClient.check_credentials(username, password, type)
     else:
         raise Exception("Unsupported broker type.")
 

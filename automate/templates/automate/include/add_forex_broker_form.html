@@ -22,26 +22,28 @@
       <input type="text" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="--------" />
     </div>
   {% endif %}
-  <div class="w-full">
-    <label for="{{ broker_type }}_server" class="input-label">
-      {% if broker_type == 'ctrader' %}
-        Authorization code
-      {% else %}
-        Server
-      {% endif %}
-      {% if broker_type == 'ctrader' %}
-        <button class="btn-icon text-xs" type="button" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">
-          Get code<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </button>
-      {% endif %}
-    </label>
-    <input type="text" id="{{ broker_type }}_server" name="{{ broker_type }}_server" class="input-text w-full" placeholder="NEXT-LIVE" />
-  </div>
+  {% if broker_type != "hankotrade" %}
+    <div class="w-full">
+      <label for="{{ broker_type }}_server" class="input-label">
+        {% if broker_type == 'ctrader' %}
+          Authorization code
+        {% else %}
+          Server
+        {% endif %}
+        {% if broker_type == 'ctrader' %}
+          <button class="btn-icon text-xs" type="button" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">
+            Get code<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </button>
+        {% endif %}
+      </label>
+      <input type="text" id="{{ broker_type }}_server" name="{{ broker_type }}_server" class="input-text w-full" placeholder="NEXT-LIVE" />
+    </div>
+  {% endif %}
 
-  {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' %}
+  {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' or broker_type == 'hankotrade' %}
     <div class="w-full">
       <label for="type" class="input-label">Type</label>
 

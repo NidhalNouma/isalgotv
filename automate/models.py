@@ -95,6 +95,7 @@ class ForexBrokerAccount(models.Model):
         ("ninjatrader", "NinjaTrader"),
         ("dxtrade", "DXTrade"),
         ("ctrader", "CTrader"),
+        ("hankotrade", "HankoTrade"),
         ("tradestation", "TradeStation"),
     ]
 

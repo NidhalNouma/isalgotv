@@ -121,6 +121,8 @@ def add_broker(request, broker_type):
                 if broker_type == 'ctrader':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
+                elif broker_type == 'hankotrade':
+                    form_data['server'] = 'xxx'
                 form = AddForexBrokerAccountForm(form_data) 
 
             else:
@@ -246,6 +248,8 @@ def edit_broker(request, broker_type, pk):
                 if broker_type == 'ctrader':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
+                elif broker_type == 'hankotrade':
+                    form_data['server'] = 'xxx'
                 form = AddForexBrokerAccountForm(form_data, instance=account) 
             else:
                 raise Exception("Invalid Broker Type")
