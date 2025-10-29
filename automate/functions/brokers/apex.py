@@ -1,4 +1,4 @@
-# from apexomni.constants import APEX_HTTP_MAIN
+# from apexomni.constants import APEX_HTTP_MAIN, APEX_OMNI_HTTP_TEST
 # from apexomni.http_private_v3 import HttpPrivate_v3
 # from apexomni.http_public import HttpPublic
 
@@ -16,8 +16,3 @@ class ApexClient(CryptoBrokerClient):
     #             api_key_credentials={'key': api_key, 'secret': api_secret, 'passphrase': passphrase},
     #         )
     #     self.public_client = HttpPublic(APEX_HTTP_MAIN)
-
-    
-    # @staticmethod
-    # def check_credentials(api_key, api_secret, passphrase, account_type="S"):
-    #     pass

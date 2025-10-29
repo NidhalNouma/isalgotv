@@ -19,6 +19,7 @@ from automate.functions.brokers.kucoin import KucoinClient
 from automate.functions.brokers.coinbase import CoinbaseClient
 from automate.functions.brokers.okx import OkxClient
 from automate.functions.brokers.apex import ApexClient
+from automate.functions.brokers.edgex import EdgexClient
 
 from automate.functions.brokers.tradelocker import TradeLockerClient
 from automate.functions.brokers.metatrader import MetatraderClient
@@ -41,6 +42,7 @@ CLIENT_CLASSES = {
     'coinbase': CoinbaseClient,
     'okx': OkxClient,
     'apex': ApexClient,
+    'edgex': EdgexClient,
 
     'tradelocker': TradeLockerClient,
     'ninjatrader': NinjatraderClient,

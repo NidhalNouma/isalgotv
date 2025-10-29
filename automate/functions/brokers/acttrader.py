@@ -2,7 +2,6 @@ import requests
 import time
 from dateutil import parser
 from django.utils import timezone
-from uuid import uuid4
 
 
 from automate.functions.brokers.broker import BrokerClient
@@ -160,8 +159,6 @@ class ActTrader(BrokerClient):
             }
 
             order_type = 1 if str.upper(side) in ("BUY", "B") else 0
-
-            custom_id = custom_id + f"_{str(uuid4())}"
 
             params = {
                 "token": self.accessToken,
@@ -477,7 +474,7 @@ class HankoTradeClient(ActTrader):
         super().__init__(account, username, password, server, type, current_trade)
 
         if self.type == 'L':
-            self.API_URL = f"http://s257.hankotrade.com:10101"
+            self.API_URL = f"http://s257.hankotrade.com:10001"
         else:
             self.API_URL = f"http://s257demo.hankotrade.com:10101"
 

@@ -115,7 +115,7 @@ def extract_alert_data(alert_message):
             data['Type'] = str(value).upper()
         elif key == 'A':
             data['Asset'] = str(value).upper()
-        elif key == 'V':
+        elif key == 'V' or key == 'Q':
             data['Volume'] = value
         elif key == 'P':
             data['Partial'] = value

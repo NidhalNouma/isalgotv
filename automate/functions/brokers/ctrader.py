@@ -197,8 +197,8 @@ class CtraderClient(BrokerClient):
                     "refresh_token": refresh_token,
                 }
             else:
-                scheme = "http" if ("local" in settings.PARENT_HOST or "127" in settings.PARENT_HOST) else "https"
-                redirect_url = f"{scheme}://{settings.PARENT_HOST}{reverse('ctrader_auth_code')}"
+                host = f"http://{settings.PARENT_HOST}" if ("local" in settings.PARENT_HOST or "127" in settings.PARENT_HOST) else f"https://www.{settings.PARENT_HOST}"
+                redirect_url = f"{host}{reverse('ctrader_auth_code')}"
                 data = {
                     "grant_type": "authorization_code",
                     "client_id": CLIENT_ID,
