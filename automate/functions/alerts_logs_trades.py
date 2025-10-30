@@ -19,7 +19,8 @@ from automate.functions.brokers.kucoin import KucoinClient
 from automate.functions.brokers.coinbase import CoinbaseClient
 from automate.functions.brokers.okx import OkxClient
 from automate.functions.brokers.apex import ApexClient
-from automate.functions.brokers.edgex import EdgexClient
+
+from automate.functions.brokers.hyperliquid import HyperliquidClient
 
 from automate.functions.brokers.tradelocker import TradeLockerClient
 from automate.functions.brokers.metatrader import MetatraderClient
@@ -42,7 +43,7 @@ CLIENT_CLASSES = {
     'coinbase': CoinbaseClient,
     'okx': OkxClient,
     'apex': ApexClient,
-    'edgex': EdgexClient,
+    'hyperliquid': HyperliquidClient,
 
     'tradelocker': TradeLockerClient,
     'ninjatrader': NinjatraderClient,
@@ -70,6 +71,8 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_t
         'coinbase': {},
         'okx': {'passphrase': phrase},
         'apex': {'passphrase': phrase},
+        'edgex': {},
+        'hyperliquid': {},
     }
 
     client_cls = CLIENT_CLASSES.get(broker_type)

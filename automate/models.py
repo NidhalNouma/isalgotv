@@ -322,7 +322,6 @@ class TradeDetails(models.Model):
             self.pre_save_adjustments()
 
             filled_volume = float(self.volume) - self.get_total_filled_volume()
-            # print('Filled volume:', filled_volume)
             if filled_volume < float(self.remaining_volume):
                 self.remaining_volume = filled_volume
             
