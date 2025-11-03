@@ -85,15 +85,18 @@ def ctrader_auth_code(request):
 def add_broker(request, broker_type):
     try:
         if request.method == 'POST':
+            profile_user = request.user_profile
 
             crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
-            payment_method = request.POST.get('pm_id')
 
-            if not payment_method or payment_method == "None":
-                response = render(request, 'include/errors.html', {'error': 'No payment method has been detected.'})
-                return retarget(response, f'#add-{broker_type}-form-errors')
+            if profile_user.automate_free_access == False:
+                payment_method = request.POST.get('pm_id')
+
+                if not payment_method or payment_method == "None":
+                    response = render(request, 'include/errors.html', {'error': 'No payment method has been detected.'})
+                    return retarget(response, f'#add-{broker_type}-form-errors')
 
             if broker_type in crypto_broker_types:
                 form_data = {
@@ -105,6 +108,8 @@ def add_broker(request, broker_type):
                     'created_by' : request.user.user_profile,
                     'broker_type': broker_type
                 }
+                if broker_type == 'apex':
+                    form_data['pass_phrase'] = form_data['pass_phrase'] + '||' + str(request.POST.get(f'{broker_type}_omni_key'))   
                 form = AddCryptoBrokerAccountForm(form_data) 
 
             elif broker_type in forex_broker_types:
@@ -138,40 +143,41 @@ def add_broker(request, broker_type):
 
                 print(valid)
                 if valid.get('valid') == True:
+                    account = form.save(commit=False)
                     # Add a subscription
-                    profile_user = request.user_profile
                     customer_id = profile_user.customer_id_value
 
-                    stripe.PaymentMethod.attach(
-                        payment_method,
-                        customer=customer_id,
-                    )
+                    if profile_user.automate_free_access == False:
+                        stripe.PaymentMethod.attach(
+                            payment_method,
+                            customer=customer_id,
+                        )
 
-                    price_id = PRICE_LIST.get('CRYPTO', '')
-                    if broker_type in forex_broker_types:
-                        price_id = PRICE_LIST.get('FOREX', '')
-                    if broker_type == 'metatrader4' or broker_type == 'metatrader5':
-                        price_id = PRICE_LIST.get('METATRADER', '')
+                        price_id = PRICE_LIST.get('CRYPTO', '')
+                        if broker_type in forex_broker_types:
+                            price_id = PRICE_LIST.get('FOREX', '')
+                        if broker_type == 'metatrader4' or broker_type == 'metatrader5':
+                            price_id = PRICE_LIST.get('METATRADER', '')
 
-                    metadata = {
-                        "profile_user_id": str(profile_user.id), 
-                        "broker_type": broker_type,
-                    }
-                    
-                    subscription = stripe.Subscription.create(
-                        customer=customer_id,
-                        items=[{
-                            'price': price_id,
-                        }],
-                        default_payment_method=payment_method,
-                        payment_behavior="error_if_incomplete",
-                        trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
-                        metadata=metadata
-                    )
+                        metadata = {
+                            "profile_user_id": str(profile_user.id), 
+                            "broker_type": broker_type,
+                        }
+                        
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[{
+                                'price': price_id,
+                            }],
+                            default_payment_method=payment_method,
+                            payment_behavior="error_if_incomplete",
+                            trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
+                            metadata=metadata
+                        )
 
-
-                    account = form.save(commit=False)
-                    account.subscription_id = subscription.id
+                        account.subscription_id = subscription.id
+                    else:
+                        account.subscription_id = 'free_access'
 
                     if valid.get('account_api_id'):
                         account.account_api_id = valid.get('account_api_id')
@@ -232,6 +238,8 @@ def edit_broker(request, broker_type, pk):
                     'created_by' : request.user.user_profile,
                     'broker_type': account.broker_type
                 }
+                if broker_type == 'apex':
+                    form_data['pass_phrase'] = form_data['pass_phrase'] + '||' + str(request.POST.get(f'{account.id}_{broker_type}_omni_key'))
                 form = AddCryptoBrokerAccountForm(form_data, instance=account) 
 
             elif broker_type in forex_broker_types:
@@ -262,13 +270,18 @@ def edit_broker(request, broker_type, pk):
                     valid = check_forex_credentials(broker_type, form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
 
                 if valid.get('valid') == True:
-                    if not account.subscription_id:
-                        raise Exception("No subscription found.")
-                    
-                    subscription = stripe.Subscription.retrieve(account.subscription_id)
+                    if request.user_profile.automate_free_access == False:
+                         # Check subscription
+                        if not account.subscription_id:
+                            raise Exception("No subscription found.")
+                        
+                        subscription = stripe.Subscription.retrieve(account.subscription_id)
 
-                    if not subscription or subscription.status != "active":
-                        raise Exception("Subscription is not active. Please activate your subscription.")
+                        if not subscription or subscription.status != "active":
+                            raise Exception("Subscription is not active. Please activate your subscription.")
+
+                        account.subscription_id = subscription.id
+
 
                     if valid.get('account_api_id'):
                         account.account_api_id = valid.get('account_api_id')
@@ -282,8 +295,6 @@ def edit_broker(request, broker_type, pk):
                         account.type = 'L' if str(account_type).lower() in ('live', 'l') else 'D'
                     
                     account = form.save(commit=False)
-                    
-                    account.subscription_id = subscription.id
                     account.save()
 
                     context = context_accounts_by_user(request)
@@ -327,19 +338,21 @@ def toggle_broker(request, broker_type, pk):
             if "error" in deploy_undeploy:
                 raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
 
-        if model_instance.subscription_id:
-            if not model_instance.active:
-                # Pause the subscription by setting the status to "paused"
-                stripe.Subscription.modify(
-                    model_instance.subscription_id,
-                    pause_collection={"behavior": "keep_as_draft"}
-                )
-            else:
-                # Resume by setting it back to "active"
-                stripe.Subscription.modify(
-                    model_instance.subscription_id,
-                    pause_collection=''
-                )
+        if request.user_profile.automate_free_access == False:
+             # Pause/Resume subscription
+            if model_instance.subscription_id:
+                if not model_instance.active:
+                    # Pause the subscription by setting the status to "paused"
+                    stripe.Subscription.modify(
+                        model_instance.subscription_id,
+                        pause_collection={"behavior": "keep_as_draft"}
+                    )
+                else:
+                    # Resume by setting it back to "active"
+                    stripe.Subscription.modify(
+                        model_instance.subscription_id,
+                        pause_collection=''
+                    )
 
         model_instance.save()
 

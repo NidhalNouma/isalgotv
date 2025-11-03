@@ -15,14 +15,16 @@
     >
       <h3 class="text-lg font-semibold text-title flex items-center capitalize space-x-3">
         <span id="add-{{account.id}}_{{account.broker_type}}-form-btn" class="pointer-events-none" onclick='swapDivBtn("edit-{{account.id}}_{{account.broker_type}}-sub", "add-{{account.id}}_{{account.broker_type}}-form")'>Edit Account</span>
-        <span class="">|</span>
-        <form 
-          hx-post="{% url 'get_account_subscription_data' account.broker_type account.id account.subscription_id %}" 
-          hx-target="#edit-{{account.id}}_{{account.broker_type}}-sub"
-          hx-wait="swap"
-        >
-          {% csrf_token %}
-          <button type="submit" id="edit-{{account.id}}_{{account.broker_type}}-sub-btn" class="text-title/80 cursor-pointer hover:text-title/60 transition-all" onclick='swapDivBtn("add-{{account.id}}_{{account.broker_type}}-form", "edit-{{account.id}}_{{account.broker_type}}-sub")'>Subscription</button>
+        {% if account.subscription_id != 'free_access' %}
+          <span class="">|</span>
+          <form 
+            hx-post="{% url 'get_account_subscription_data' account.broker_type account.id account.subscription_id %}" 
+            hx-target="#edit-{{account.id}}_{{account.broker_type}}-sub"
+            hx-wait="swap"
+          >
+            {% csrf_token %}
+            <button type="submit" id="edit-{{account.id}}_{{account.broker_type}}-sub-btn" class="text-title/80 cursor-pointer hover:text-title/60 transition-all" onclick='swapDivBtn("add-{{account.id}}_{{account.broker_type}}-form", "edit-{{account.id}}_{{account.broker_type}}-sub")'>Subscription</button>
+          {% endif %}
         </form>
       </h3>
       <button

@@ -34,6 +34,8 @@
   {% include 'svg/aster.html' with class=class %}
 {% elif broker_type == 'edgex' %}
   {% include 'svg/edgex.html' with class=class %}
+{% elif broker_type == 'lighter' %}
+  {% include 'svg/lighter.html' with class=class %}
 {% elif broker_type == 'metatrader4' %}
   {% include 'svg/metatrader4.html' with class=class %}
 {% elif broker_type == 'metatrader5' %}

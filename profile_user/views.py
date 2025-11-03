@@ -1041,6 +1041,8 @@ def stripe_webhook(request):
             email = None
             try:
                 profile_user = User_Profile.objects.get(id=int(profile_user_id))
+                if profile_user.automate_free_access:
+                    return JsonResponse({"status": "success", "message": "Webhook received", "data": {"profile_user_id": profile_user_id, "reason": "free_access"}}, status=200)
                 user = profile_user.user
                 email = user.email
             except Exception as e:

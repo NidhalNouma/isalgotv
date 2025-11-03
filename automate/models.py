@@ -60,7 +60,7 @@ class CryptoBrokerAccount(models.Model):
 
     active = models.BooleanField(default=True)
 
-    pass_phrase = models.CharField(max_length=150, blank=True, null=True)  # Optional for brokers that need it
+    pass_phrase = models.CharField(max_length=300, blank=True, null=True)  # Optional for brokers that need it
 
     custom_id = models.CharField(max_length=30, default="")
     

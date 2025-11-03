@@ -672,13 +672,20 @@ async function onPayFormStripeSubmit(title) {
   return true;
 }
 
-async function onAutomateAccountAdd(title, errorDivName, event) {
+async function onAutomateAccountAdd(title, errorDivName, freeAccess, event) {
   event.preventDefault();
 
   openLoader("", "-add-" + title, "flex");
 
   if (document.getElementById("add-" + title + "-form-errors"))
     document.getElementById("add-" + title + "-form-errors").innerHTML = "";
+
+  let form = document.getElementById("add-" + title + "-form");
+
+  if (freeAccess === "True") {
+    form.dispatchEvent(new Event("submit"));
+    return true;
+  }
 
   const nameInput = document.getElementById("cardName-" + title);
   const pmValue = document.getElementById("pm-" + title);
@@ -735,7 +742,6 @@ async function onAutomateAccountAdd(title, errorDivName, event) {
     }
   }
 
-  let form = document.getElementById("add-" + title + "-form");
   form.dispatchEvent(new Event("submit"));
 
   return true;

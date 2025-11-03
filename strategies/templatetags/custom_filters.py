@@ -100,3 +100,19 @@ def concise_timesince(value):
         return result.split(",")[0].strip()
     except Exception:
         return ""
+
+@register.filter(name="str_split")
+def str_split(value, delimiter):
+    try:
+        parts = value.split(delimiter)
+        return parts
+    except Exception:
+        return []
+    
+
+@register.filter
+def index(value, i):
+    try:
+        return value[i]
+    except Exception:
+        return ""

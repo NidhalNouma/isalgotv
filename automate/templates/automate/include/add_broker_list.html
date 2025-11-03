@@ -46,25 +46,22 @@
 
     <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Decentralized Exchanges</h6>
 
+    <button onclick="hideModel('add-broker-modal'); openModel('add-apex-modal', false); mountStripeElement('apex');" class="{{ btn_class }}">
+      {% include 'svg/apex.html' with class='h-4 aspect-auto fill-current text-current' %}
+    </button>
     <button disabled onclick="hideModel('add-broker-modal'); openModel('add-hyperliquid-modal', false); mountStripeElement('hyperliquid');" class="{{ btn_class }}">
       {% include 'svg/hyperliquid.html' with class='h-3.5 aspect-auto fill-current text-current' %}
       <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
-    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-apex-modal', false); mountStripeElement('apex');" class="{{ btn_class }}">
-      {% include 'svg/apex.html' with class='h-4 aspect-auto fill-current text-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
-    </button>
     <button disabled onclick="hideModel('add-broker-modal'); openModel('add-aster-modal', false); mountStripeElement('aster');" class="{{ btn_class }}">
       {% include 'svg/aster.html' with class='h-4 aspect-auto fill-current text-current' %}
       <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
     </button>
-    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-edgex-modal', false); mountStripeElement('edgex');" class="{{ btn_class }}">
-      {% include 'svg/edgex.html' with class='h-4 aspect-auto fill-current text-current' %}
+    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-lighter-modal', false); mountStripeElement('lighter');" class="{{ btn_class }}">
+      {% include 'svg/lighter.html' with class='h-4.5 aspect-auto fill-current text-current' %}
       <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
