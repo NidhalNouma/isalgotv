@@ -44,8 +44,8 @@ User_Profile._meta.verbose_name_plural = "Trader Profiles"
 @admin.register(User_Profile)
 class UserProfileAdmin(ModelAdmin):
 
-    list_display =  ('user_email', 'has_subscription', 'is_lifetime', 'automate_free_access', 'user_created_at')
-    search_fields = ['user__email', 'has_subscription', 'customer_id', 'automate_free_access', 'is_lifetime'] 
+    list_display =  ('user_email', 'has_subscription', 'is_lifetime', 'user_created_at')
+    search_fields = ['user__email', 'has_subscription', 'customer_id', 'is_lifetime'] 
 
     # Custom method to display `user.email`
     def user_email(self, obj):

@@ -672,7 +672,7 @@ async function onPayFormStripeSubmit(title) {
   return true;
 }
 
-async function onAutomateAccountAdd(title, errorDivName, freeAccess, event) {
+async function onAutomateAccountAdd(title, errorDivName, event) {
   event.preventDefault();
 
   openLoader("", "-add-" + title, "flex");
@@ -682,20 +682,20 @@ async function onAutomateAccountAdd(title, errorDivName, freeAccess, event) {
 
   let form = document.getElementById("add-" + title + "-form");
 
-  if (freeAccess === "True") {
-    form.dispatchEvent(new Event("submit"));
-    return true;
-  }
-
   const nameInput = document.getElementById("cardName-" + title);
   const pmValue = document.getElementById("pm-" + title);
 
   const paymentsList = document.getElementById("payment-card-list-" + title);
-  console.log("Checking card for " + title + " ... " + pmValue.value);
-
+  
   const errorDiv = document.getElementById(errorDivName);
   if (errorDiv) errorDiv.innerHTML = "";
-
+  
+  if (!pmValue && !paymentsList) {
+    form.dispatchEvent(new Event("submit"));
+    return true;
+  }
+  
+  console.log("Checking card for " + title + " ... " + pmValue.value);
   if (
     pmValue.value.length === 0 ||
     pmValue.value === "None" ||

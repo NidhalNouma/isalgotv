@@ -135,3 +135,23 @@ def currency_symbol(code):
         return CURRENCY_SYMBOLS.get(code.upper(), code)
     except Exception:
         return code
+
+
+@register.filter(name='automate_access')
+def automate_access(access_list, broker_name):
+    """
+    Check if the broker_name is in the comma-separated access_list string.
+    """
+    try:
+        access_list = access_list.lower()
+        denied = "-" + broker_name
+        if denied in access_list:
+            return False
+
+        if "all" in access_list or "*" in access_list:
+            return True
+
+        access_items = [item.strip() for item in access_list.split(',')]
+        return broker_name in access_items
+    except Exception:
+        return False

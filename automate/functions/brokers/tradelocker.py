@@ -112,7 +112,7 @@ class TradeLockerClient(BrokerClient):
             if client.account_id:
                 return {'message': "API credentials are valid.", "valid": True}
             else:
-                return {'error': "Failed to retrieve accounts.", "valid": False}
+                return {'error': "Failed to retrieve account. Invalid credentials.", "valid": False}
         except Exception as e:
             return {'error': str(e), "valid": False}
 

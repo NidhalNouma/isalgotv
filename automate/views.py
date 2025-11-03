@@ -16,6 +16,8 @@ from automate.tasks import *
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.ctrader import CLIENT_ID
 
+from profile_user.templatetags.custom_tags import automate_access
+
 from collections import defaultdict
 from django.utils.timezone import localtime
 
@@ -91,9 +93,12 @@ def add_broker(request, broker_type):
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
 
-            if profile_user.automate_free_access == False:
-                payment_method = request.POST.get('pm_id')
+            payment_method = request.POST.get('pm_id')
+            doesnt_require_payment = automate_access(profile_user.automate_access, broker_type)
 
+            print("Require Payment:", doesnt_require_payment)
+
+            if doesnt_require_payment == False:
                 if not payment_method or payment_method == "None":
                     response = render(request, 'include/errors.html', {'error': 'No payment method has been detected.'})
                     return retarget(response, f'#add-{broker_type}-form-errors')
@@ -147,7 +152,7 @@ def add_broker(request, broker_type):
                     # Add a subscription
                     customer_id = profile_user.customer_id_value
 
-                    if profile_user.automate_free_access == False:
+                    if doesnt_require_payment == False:
                         stripe.PaymentMethod.attach(
                             payment_method,
                             customer=customer_id,
@@ -270,7 +275,7 @@ def edit_broker(request, broker_type, pk):
                     valid = check_forex_credentials(broker_type, form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
 
                 if valid.get('valid') == True:
-                    if request.user_profile.automate_free_access == False:
+                    if account.subscription_id != 'free_access':
                          # Check subscription
                         if not account.subscription_id:
                             raise Exception("No subscription found.")
@@ -338,7 +343,7 @@ def toggle_broker(request, broker_type, pk):
             if "error" in deploy_undeploy:
                 raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
 
-        if request.user_profile.automate_free_access == False:
+        if model_instance.subscription_id != 'free_access':
              # Pause/Resume subscription
             if model_instance.subscription_id:
                 if not model_instance.active:
@@ -372,12 +377,8 @@ def delete_broker(request, broker_type, pk):
 
         if broker_type in crypto_broker_types:
             obj = CryptoBrokerAccount.objects.get(pk=pk)
-            if obj.subscription_id:
+            if obj.subscription_id and obj.subscription_id != 'free_access':
                 stripe.Subscription.cancel(obj.subscription_id)
-                # stripe.Subscription.modify(
-                #     obj.subscription_id,
-                #     cancel_at_period_end=True  # Subscription will be canceled but remain active until the next billing cycle
-                # )
             obj.delete()  
         elif broker_type in forex_broker_types:
             obj = ForexBrokerAccount.objects.get(pk=pk)
@@ -387,12 +388,8 @@ def delete_broker(request, broker_type, pk):
                 if "error" in delete_response:
                     raise Exception(f"Failed to delete metatrader account: {delete_response['error']}")
 
-            if obj.subscription_id:
+            if obj.subscription_id and obj.subscription_id != 'free_access':
                 stripe.Subscription.cancel(obj.subscription_id)
-                # stripe.Subscription.modify(
-                #     obj.subscription_id,
-                #     cancel_at_period_end=True 
-                # )
 
             obj.delete()
         else:

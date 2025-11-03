@@ -32,7 +32,7 @@ class User_Profile(models.Model):
     subscription_id = models.CharField(max_length=100, blank=True)
     has_subscription = models.BooleanField(default=False)
 
-    automate_free_access = models.BooleanField(default=False)
+    automate_access = models.CharField(max_length=100, default="")
     
     stripe_obj = models.JSONField(blank=True, null=True, encoder=PrettyJSONEncoder)
     stripe_last_checked = models.DateTimeField(blank=True, null=True)

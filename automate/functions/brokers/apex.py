@@ -1,7 +1,6 @@
 from http import client
 import time 
 from apexomni.constants import APEX_OMNI_HTTP_MAIN, APEX_HTTP_MAIN, NETWORKID_MAIN
-from apexomni.http_private_v3 import HttpPrivate_v3
 from apexomni.http_private_sign import HttpPrivateSign
 from apexomni.http_public import HttpPublic
 
@@ -51,7 +50,7 @@ class ApexClient(CryptoBrokerClient):
             return {'message': "API credentials are valid.", "valid": True}
         except Exception as e:
             print(f"An error occurred during credential check: {e}")
-            return {'message': "API credentials are invalid.", "valid": False}
+            return {'error': "API credentials are invalid.", "valid": False}
 
 
     def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None, oc = False):
@@ -216,6 +215,7 @@ class ApexClient(CryptoBrokerClient):
 
     def get_current_price(self, symbol):
         try:
+            symbol = symbol.replace("-", "")
             ticker = self.public_client.ticker_v3(symbol=symbol)
             for item in ticker['data']:
                 if item['symbol'] == symbol:
@@ -272,6 +272,7 @@ class ApexClient(CryptoBrokerClient):
 
     def get_history_candles(self, symbol, interval, limit = 500):
         try:
+            symbol = symbol.replace("-", "")
             if limit > 200:
                 limit = 200
 
