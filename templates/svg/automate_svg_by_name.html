@@ -52,6 +52,8 @@
   {% include 'svg/hankotrade.html' with class=class %}
 {% elif broker_type == 'tradestation' %}
   {% include 'svg/tradestation.html' with class=class %}
+{% elif broker_type == 'tradovate' %}
+  {% include 'svg/tradovate.html' with class=class %}
 {% else %}
   <h3 class="text-title">{{ broker_type }}</h3>
 {% endif %}

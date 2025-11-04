@@ -116,6 +116,30 @@ def extract_alert_data(alert_message):
         elif key == 'A':
             data['Asset'] = str(value).upper()
         elif key == 'V' or key == 'Q':
+            expr = str(value).strip()
+            try:
+                # If the expression ends with %<digits>, separate rounding part
+                if '%' in expr:
+                    expr, digits = expr.split('%', 1)
+                    digits = int(digits) if digits else 0
+                else:
+                    digits = None
+
+                # Allow only safe characters (numbers, ., *, /)
+                if not re.match(r'^[0-9\.\*/\s]+$', expr):
+                    raise ValueError(f"Invalid volume expression: {expr}")
+
+                # Safely evaluate the math part
+                result = eval(expr)
+
+                # Round if digits were provided
+                if digits is not None:
+                    result = round(float(result), digits)
+
+                value = result
+            except Exception as e:
+                raise ValueError(f"Error parsing volume '{value}': {e}")
+
             data['Volume'] = value
         elif key == 'P':
             data['Partial'] = value

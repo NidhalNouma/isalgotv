@@ -406,7 +406,7 @@ class TradeLockerClient(BrokerClient):
 
             raw_ts = last_trade['lastModified']
             # Assume timestamp is in milliseconds
-            dt_naive = datetime.fromtimestamp(raw_ts / 1000.0)
+            dt_naive = datetime.fromtimestamp(int(raw_ts) / 1000.0)
             time_dt = timezone.make_aware(dt_naive, timezone.utc)
             
             res = {
