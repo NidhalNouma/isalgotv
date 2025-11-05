@@ -15,6 +15,8 @@ class ActTrader(BrokerClient):
         self.API_URL = ""
         self.account_id = None
 
+        self.symbols_map = {}
+
         if account:
             self.username = account.username
             self.password = account.password
@@ -119,6 +121,10 @@ class ActTrader(BrokerClient):
     def get_symbol_info(self, symbol):
         try:
             symbol = self.adjust_symbol_name(symbol)
+
+            if symbol in self.symbols_map:
+                return self.symbols_map[symbol]
+            
             url = f"{self.API_URL}/api/v2/market/symbols"
             headers = {
                 "Content-Type": "application/json",
@@ -137,12 +143,26 @@ class ActTrader(BrokerClient):
                 instruments = response.get('result', [])
                 for inst in instruments:
                     if inst['Symbol'] == symbol:
+                        tradeSizeDegits = str(inst.get('MinTradeSize', '1'))
+                        inst['tradeSizeDegits'] = tradeSizeDegits.count('0')
+                        self.symbols_map[symbol] = inst
                         return inst
                 raise Exception(f"Symbol {symbol} not found.")
             else:
                 raise Exception("Failed to get symbol info: " + response.get('message', 'Unknown error'))
         except Exception as e:
             raise Exception("Get symbol Error: %s" % e) 
+        
+    def set_quantity_size(self, quantity: float, min_size: float, trade_size_digits: int) -> float:
+        factor = quantity / (10 ** trade_size_digits)
+        factor = round(factor)
+        quantity = factor * (10 ** trade_size_digits)
+
+        print('Adjusted quantity:', quantity)
+
+        if quantity < float(min_size):
+            quantity = float(min_size)
+        return quantity
 
     def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = "") -> OpenTrade:
         try:
@@ -151,7 +171,11 @@ class ActTrader(BrokerClient):
             symbol_info = self.get_symbol_info(symbol)
             # print('Symbol info:', symbol_info)
             contract_size = symbol_info.get('ContractSize', 1)
-            quantity = round(quantity, 2) * float(contract_size)
+            min_size = symbol_info.get('MinTradeSize', 1)
+            trade_size_digits = symbol_info.get('tradeSizeDegits', 0)
+
+            quantity = float(quantity) * float(contract_size)
+            quantity = self.set_quantity_size(quantity, min_size, trade_size_digits)
 
             url = f"{self.API_URL}/api/v2/trading/placemarket"
             headers = {
@@ -201,11 +225,14 @@ class ActTrader(BrokerClient):
         try:
             symbol = self.adjust_symbol_name(symbol)
 
-            # symbol_info = self.get_symbol_info(symbol)
-            # contract_size = symbol_info.get('ContractSize', 1)
+            symbol_info = self.get_symbol_info(symbol)
+            # print('Symbol info:', symbol_info)
+            contract_size = symbol_info.get('ContractSize', 1)
+            trade_min_size = symbol_info.get('MinTradeSize', 1) 
+            trade_size_digits = symbol_info.get('tradeSizeDegits', 0)
             
-            quantity = float(quantity) 
-
+            quantity = self.set_quantity_size(float(quantity), trade_min_size, trade_size_digits)
+                
             url = f"{self.API_URL}/api/v2/trading/closetrade"
             headers = {
                 "Content-Type": "application/json",
@@ -214,9 +241,11 @@ class ActTrader(BrokerClient):
 
             order_type = 0 if str.upper(side) in ("BUY", "B") else 1
 
+            order_id =  self.current_trade.order_id
+
             params = {
                 "token": self.accessToken,
-                "trade": self.current_trade.order_id,
+                "trade": order_id,
                 "symbol": symbol,
                 "side": order_type,
                 "quantity": quantity
@@ -230,9 +259,9 @@ class ActTrader(BrokerClient):
 
             if response.get('success', False):
                 trade_info = response.get('result', {})
-                order_id =  self.current_trade.order_id
                 
                 closed_position = self.get_closed_trades(symbol, order_id)
+                # print('Closed position info:', closed_position)
 
                 return {
                     'message': f"Trade closed with order ID {order_id}.",
