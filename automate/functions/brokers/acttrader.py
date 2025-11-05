@@ -149,8 +149,9 @@ class ActTrader(BrokerClient):
             symbol = self.adjust_symbol_name(symbol)
 
             symbol_info = self.get_symbol_info(symbol)
+            # print('Symbol info:', symbol_info)
             contract_size = symbol_info.get('ContractSize', 1)
-            quantity = float(quantity) * float(contract_size)
+            quantity = round(quantity, 2) * float(contract_size)
 
             url = f"{self.API_URL}/api/v2/trading/placemarket"
             headers = {
