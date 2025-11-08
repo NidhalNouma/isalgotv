@@ -34,6 +34,7 @@ class CryptoBrokerAccount(models.Model):
         ("bitmart", "BitMart"),
         ("crypto", "Crypto.com"),
         ("kucoin", "Kucoin"),
+        ("kraken", "Kraken"),
         ("okx", "Okx"),
         ("coinbase", "Coinbase"),
         ("apex", "Apex omni"),

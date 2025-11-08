@@ -1,4 +1,4 @@
-{% with btn_class='relative bg-text/10 border border-text/10 hover:bg-text/20 w-full text-text ihover:text-text/80 py-2.5 rounded flex items-center justify-center transition-all' %}
+{% with btn_class='relative bg-text/5 border border-text/10 hover:bg-text/20 w-full text-text ihover:text-text/80 py-2.5 rounded flex items-center justify-center transition-all' %}
   <div class="px-2 sm:px-6 grid grid-cols-2 gap-3">
     <h6 class="col-span-full text-text/80 font-semibold text-sm">Centralized Exchanges</h6>
     <button onclick="hideModel('add-broker-modal'); openModel('add-binance-modal', false); mountStripeElement('binance');" class="{{ btn_class }}">{% include 'svg/binance.html' with class='aspect-auto h-4 fill-current max-w-[80%]' %}</button>
@@ -14,15 +14,12 @@
     <button onclick="hideModel('add-broker-modal'); openModel('add-okx-modal', false); mountStripeElement('okx');" class="{{ btn_class }}">{% include 'svg/okx.html' with class='h-3 aspect-auto fill-current text-current' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-coinbase-modal', false); mountStripeElement('coinbase');" class="{{ btn_class }}">{% include 'svg/coinbase.html' with class='h-3 aspect-auto fill-current' %}</button>
 
-    <button onclick="hideModel('add-broker-modal'); openModel('add-crypto-modal', false); mountStripeElement('crypto');" class="{{ btn_class }}">{% include 'svg/crypto.html' with class='h-5 aspect-auto fill-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-mexc-modal', false); mountStripeElement('mexc');" class="{{ btn_class }}">{% include 'svg/mexc.html' with class='my-0.5 h-2.5 aspect-auto fill-current' %}</button>
-
-        <button disabled onclick="hideModel('add-kraken-modal'); openModel('add-kraken-modal', false); mountStripeElement('kraken');" class="{{ btn_class }}">
-      {% include 'svg/kraken.html' with class='h-3.5 aspect-auto fill-current text-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-crypto-modal', false); mountStripeElement('crypto');" class="{{ btn_class }} py-2">{% include 'svg/crypto.html' with class='h-4.5 aspect-auto fill-current' %}</button>
+    
+    <button onclick="hideModel('add-kraken-modal'); openModel('add-kraken-modal', false); mountStripeElement('kraken');" class="{{ btn_class }}">
+      {% include 'svg/kraken.html' with class='h-3 aspect-auto fill-current text-current' %}
     </button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-mexc-modal', false); mountStripeElement('mexc');" class="{{ btn_class }}">{% include 'svg/mexc.html' with class='my-0.5 h-2.5 aspect-auto fill-current' %}</button>
 
     <button disabled onclick="hideModel('add-broker-modal'); openModel('add-bitunix-modal', false); mountStripeElement('bitunix');" class="{{ btn_class }}">
       {% include 'svg/bitunix.html' with class='h-3.5 aspect-auto fill-current text-current' %}

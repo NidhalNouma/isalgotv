@@ -145,6 +145,12 @@ class ActTrader(BrokerClient):
                     if inst['Symbol'] == symbol:
                         tradeSizeDegits = str(inst.get('MinTradeSize', '1'))
                         inst['tradeSizeDegits'] = tradeSizeDegits.count('0')
+
+                        if inst.get('MinTradeSize', 1) > 1:
+                            inst['tradeSizeDegits'] = int(inst['tradeSizeDegits'])
+                        elif inst.get('MinTradeSize', 1) < 1:
+                            inst['tradeSizeDegits'] = -int(inst['tradeSizeDegits'])
+
                         self.symbols_map[symbol] = inst
                         return inst
                 raise Exception(f"Symbol {symbol} not found.")
@@ -154,9 +160,13 @@ class ActTrader(BrokerClient):
             raise Exception("Get symbol Error: %s" % e) 
         
     def set_quantity_size(self, quantity: float, min_size: float, trade_size_digits: int) -> float:
+        min_size_decimals = len(str(min_size).split('.')[1]) if '.' in str(min_size) else 0
+
         factor = quantity / (10 ** trade_size_digits)
-        factor = round(factor)
+        factor = round(factor, min_size_decimals)
         quantity = factor * (10 ** trade_size_digits)
+
+        quantity = round(quantity, min_size_decimals)
 
         print('Adjusted quantity:', quantity)
 

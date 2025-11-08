@@ -18,6 +18,7 @@ from automate.functions.brokers.bitmart import BitmartClient
 from automate.functions.brokers.kucoin import KucoinClient
 from automate.functions.brokers.coinbase import CoinbaseClient
 from automate.functions.brokers.okx import OkxClient
+from automate.functions.brokers.kraken import KrakenClient
 from automate.functions.brokers.apex import ApexClient
 
 from automate.functions.brokers.hyperliquid import HyperliquidClient
@@ -42,6 +43,7 @@ CLIENT_CLASSES = {
     'kucoin': KucoinClient,
     'coinbase': CoinbaseClient,
     'okx': OkxClient,
+    'kraken': KrakenClient,
     'apex': ApexClient,
     'hyperliquid': HyperliquidClient,
 
@@ -69,6 +71,7 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_t
         'bitmart': {'passphrase': phrase},
         'kucoin': {'passphrase': phrase},
         'coinbase': {},
+        'kraken': {},
         'okx': {'passphrase': phrase},
         'apex': {'passphrase': phrase},
         'edgex': {},

@@ -28,7 +28,7 @@ class OkxClient(CryptoBrokerClient):
             if account:
                 return {'message': "API credentials are valid.", "valid": True}
             else:
-                return {'message': "API credentials are invalid.", "valid": False}
+                return {'error': "API credentials are invalid.", "valid": False}
 
         except Exception as e:
             print("ClientError:", e)

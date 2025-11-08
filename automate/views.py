@@ -96,7 +96,7 @@ def add_broker(request, broker_type):
             payment_method = request.POST.get('pm_id')
             doesnt_require_payment = automate_access(profile_user.automate_access, broker_type)
 
-            print("Require Payment:", doesnt_require_payment)
+            print("Doesn't require payment:", doesnt_require_payment)
 
             if doesnt_require_payment == False:
                 if not payment_method or payment_method == "None":

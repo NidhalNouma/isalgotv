@@ -52,8 +52,9 @@ class TradeLockerClient(BrokerClient):
                 return {"error": "Login failed."}
         except Exception as e:
             print("Error:", e)
-            return {"error": str(e)}
-        
+            response = e.response.json() if hasattr(e, 'response') else {}
+            raise Exception("Login failed: " + str(response.get('message') if response else str(e)))
+
     def _get_config(self):
         try:
             if self.config:

@@ -79,12 +79,14 @@ class BinanceUSClient(CryptoBrokerClient):
             print('Error getting exchange info:', e)
             raise Exception(f"Error getting exchange info for {symbol}: {str(e)}")
 
-    def get_account_balance(self) -> AccountBalance:
+    def get_account_balance(self, symbol=None) -> AccountBalance:
         try:
             """Fetch the available balance for a specific asset."""
             response = self._send_request('GET', '/api/v3/account')
             balances = {item['asset']: {'available': float(item['free']), 'locked': 0} for item in response['balances']}
             # print("Account balances:", balances)
+            if symbol:
+                return {symbol: balances.get(symbol, {"available": 0, "locked": 0})}
             return balances
         except Exception as e:
             print('Error getting account balance:', e)

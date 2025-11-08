@@ -144,12 +144,18 @@ def extract_alert_data(alert_message):
         elif key == 'P':
             data['Partial'] = value
         elif key == 'ID' or key == 'NUM':
+            # print('Parsing ID value:', value)
             data['ID'] = value
+            id_parts = value.split('.')
+            if len(id_parts) > 1:
+                for part in id_parts:
+                    if part.startswith('Is'):
+                        st_id = part.replace('Is', '').strip()
+                        data['strategy_ID'] = st_id
         elif key == 'ST' or key == 'ST_ID' or key == "SR":
             data['strategy_ID'] = value
 
         elif key == 'R':
             data['Reverse'] = value
-        
-    
+    print('Extracted alert data:', data)
     return data

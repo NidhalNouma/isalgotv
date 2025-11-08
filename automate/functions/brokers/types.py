@@ -8,6 +8,7 @@ class ExchangeInfo(TypedDict):
     quote_asset: str
     base_decimals: str
     quote_decimals: str
+    contract_val: NotRequired[float]
 
 class AssetBalance(TypedDict):
     available: float

@@ -260,69 +260,65 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
         raise NotImplementedError("This method should be implemented by subclasses.")
     
 
-    def adjust_symbol_name(self, symbol:str):
+    def adjust_symbol_name(self, symbol: str):
         account = self.account
+        if not account:
+            return symbol
 
-        if account:
-            if account.broker_type == 'binance' and account.type == "C":
-                if not symbol.endswith("_PERP"):
-                    symbol = symbol + "_PERP"
+        broker = account.broker_type.lower()
+        acc_type = account.type.upper()
 
-            if account.broker_type == 'kucoin' and account.type != "S":
-                    symbol = symbol.replace('-', '')
-                    if not symbol.endswith('M'):
-                        symbol = symbol + 'M'
-                    
-            if account.broker_type in ('bingx', 'kucoin', 'coinbase', 'okx'):
-                symbol = symbol.replace("/", "-")
-                symbol = symbol.replace("_", "-")
-                symbol = symbol.replace(" ", "-")
-                if '-' not in symbol:
-                    if symbol.endswith('USDT'):
-                        symbol = symbol[:-4] + '-USDT'
-                    elif symbol.endswith('USDC'):
-                        symbol = symbol[:-4] + '-USDC'
-                    elif symbol.endswith('BTC'):
-                        symbol = symbol[:-3] + '-BTC'
-                    elif symbol.endswith('ETH'):
-                        symbol = symbol[:-3] + '-ETH'
-                    elif symbol.endswith('DAI'):
-                        symbol = symbol[:-3] + '-DAI'
-                    elif symbol.endswith('USD'):
-                        symbol = symbol[:-3] + '-USD'
-                    elif symbol.endswith('EUR'):
-                        symbol = symbol[:-3] + '-EUR'
-                    elif symbol.endswith('GBP'):
-                        symbol = symbol[:-3] + '-GBP'
-            
-            if account.broker_type == 'coinbase':
-                symbol = symbol.replace(" ", "-")
-                # Remove leading dash if present
-                if symbol.startswith('-'):
-                    symbol = symbol[1:]
+        # --- Helper: format symbol for known quote assets ---
+        def ensure_dash_format(sym):
+            sym = sym.replace("/", "-").replace("_", "-").replace(" ", "-")
+            if "-" not in sym:
+                for quote in ["USDT", "USDC", "BTC", "ETH", "DAI", "USD", "EUR", "GBP"]:
+                    if sym.endswith(quote):
+                        return f"{sym[:-len(quote)]}-{quote}"
+            return sym
 
-                if account.type == 'P':
-                    if symbol.endswith('PERP'):
-                        if '-' not in symbol:
-                            symbol = symbol[:-4] + '-PERP'
+        # --- Binance Futures ---
+        if broker == "binance" and acc_type == "C":
+            if not symbol.endswith("_PERP"):
+                symbol += "_PERP"
 
-                        symbol = symbol + '-INTX'
-                    else:
-                        symbol = symbol + '-PERP-INTX'
+        # --- Kucoin Futures ---
+        elif broker == "kucoin" and acc_type != "S":
+            symbol = symbol.replace("-", "")
+            if not symbol.endswith("M"):
+                symbol += "M"
 
-                elif account.type == 'F':
-                    if symbol.endswith('-CDE') == False:
-                        symbol = symbol + '-CDE'
-                
-            if account.broker_type == 'okx':
-                if account.type == 'P': 
-                    if symbol.endswith('-SWAP') == False:
-                        symbol = symbol + '-SWAP'
-                
-            if account.broker_type == 'crypto':
-                if account.type == 'P': 
-                    if symbol.endswith('-PERP') == False:
-                        symbol = symbol + '-PERP'
+        # --- Brokers with unified dash format ---
+        elif broker in ("bingx", "kucoin", "coinbase", "okx"):
+            symbol = ensure_dash_format(symbol)
+
+        # --- Coinbase specific handling ---
+        if broker == "coinbase":
+            symbol = symbol.lstrip("-")  # remove any leading dash
+
+            if acc_type == "P":
+                if not symbol.endswith("PERP"):
+                    symbol += "-PERP"
+                if not symbol.endswith("INTX"):
+                    symbol += "-INTX"
+            elif acc_type == "F" and not symbol.endswith("-CDE"):
+                symbol += "-CDE"
+
+        # --- OKX perpetual contracts ---
+        elif broker == "okx" and acc_type == "P":
+            if not symbol.endswith("-SWAP"):
+                symbol += "-SWAP"
+
+        # --- Crypto perpetuals ---
+        elif broker == "crypto" and acc_type == "P":
+            if not symbol.endswith("-PERP"):
+                symbol += "-PERP"
+
+        # --- Kraken Futures ---
+        elif broker == "kraken" and acc_type == "F":
+            base_symbol = symbol.replace(" ", "")
+            if "PF_" not in base_symbol and "FF_" not in base_symbol:
+                symbol = f"PF_{base_symbol}" if base_symbol.endswith("USD") else f"FF_{base_symbol.replace('-', '_')}"
 
         return symbol
     
