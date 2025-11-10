@@ -26,6 +26,8 @@
   {% include 'svg/coinbase.html' with class=class %}
 {% elif broker_type == 'kraken' %}
   {% include 'svg/kraken.html' with class=class %}
+{% elif broker_type == 'zedcex' %}
+  {% include 'svg/zedcex.html' with class=class %}
 {% elif broker_type == 'hyperliquid' %}
   {% include 'svg/hyperliquid.html' with class=class %}
 {% elif broker_type == 'apex' %}

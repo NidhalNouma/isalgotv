@@ -38,6 +38,7 @@ class CryptoBrokerAccount(models.Model):
         ("okx", "Okx"),
         ("coinbase", "Coinbase"),
         ("apex", "Apex omni"),
+        ('hyperliquid', 'Hyperliquid'),
         # Add other brokers here
     ]
 

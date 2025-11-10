@@ -248,31 +248,59 @@ class KrakenClient(CryptoBrokerClient):
 
             order_type = "buy" if side.lower() == "buy" else "sell"
 
-            body = {
-                    "ordertype": "market",
-                    "type": order_type,
-                    "pair": order_symbol,
-                    "volume": str(adjusted_quantity),
-                    # "timeinforce": "IOC",
+            if self.account_type == "F":
+                body = {
+                    "symbol": order_symbol,
+                    "side": order_type.upper(),
+                    "orderType": "MARKET",
+                    "size": adjusted_quantity,
                 }
-            if oc and self.account_type.upper() != "S":
-                # body["timeinforce"] = "IOC"
-                body["reduce_only"] = "true"
+                if oc:
+                    body["reduceOnly"] = True
 
-            response = self._request(
-                method="POST",
-                path="/0/private/AddOrder",
-                body=body,
-            )
-            end_exe = time.perf_counter()
-            data = json.loads(response.read())
+                response = self._request(
+                    method="POST",
+                    path="/derivatives/api/v3/sendorder",
+                    body=body,
+                )
+                end_exe = time.perf_counter()
+                data = json.loads(response.read())
 
-            print("Open trade response data:", data)
+                print("Open trade response data:", data)
 
-            if "error" in data and len(data["error"]) > 0:
-                raise Exception("Error opening trade: " + str(data["error"]))
-            result = data.get("result", {})
-            order_id = result.get("txid", [None])[0]
+                if "error" in data and len(data["error"]) > 0:
+                    raise Exception("Error opening trade: " + str(data["error"]))
+                result = data.get("sendStatus", {})
+                order_id = result.get("order_id", None)
+            
+            elif self.account_type == "S":
+                body = {
+                        "ordertype": "mkt",
+                        "side": order_type,
+                        "symbol": order_symbol,
+                        "size": str(adjusted_quantity),
+                        # "timeinforce": "IOC",
+                    }
+                if oc and self.account_type.upper() != "S":
+                    # body["timeinforce"] = "IOC"
+                    body["reduce_only"] = "true"
+
+                response = self._request(
+                    method="POST",
+                    path="/0/private/AddOrder",
+                    body=body,
+                )
+                end_exe = time.perf_counter()
+                data = json.loads(response.read())
+
+                print("Open trade response data:", data)
+
+                if "error" in data and len(data["error"]) > 0:
+                    raise Exception("Error opening trade: " + str(data["error"]))
+                result = data.get("result", {})
+                order_id = result.get("txid", [None])[0]
+            else:
+                raise Exception("Unsupported account type for opening trades: " + self.account_type)
             
 
             if not self.current_trade:
@@ -297,6 +325,8 @@ class KrakenClient(CryptoBrokerClient):
                     'trade_details': trade_details,
                     "end_exe": end_exe
                 }
+            else:
+                raise Exception("Failed to retrieve order details after opening trade.")
         except Exception as e:
             raise e
 

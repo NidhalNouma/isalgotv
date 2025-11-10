@@ -20,7 +20,6 @@ from automate.functions.brokers.coinbase import CoinbaseClient
 from automate.functions.brokers.okx import OkxClient
 from automate.functions.brokers.kraken import KrakenClient
 from automate.functions.brokers.apex import ApexClient
-
 from automate.functions.brokers.hyperliquid import HyperliquidClient
 
 from automate.functions.brokers.tradelocker import TradeLockerClient
