@@ -46,23 +46,25 @@ class DxtradeClient(BrokerClient):
             "username": self.username,
             "password": self.password,
             "domain": 'default',
-            # "domain": self.server.split('.')[1],
-            # "vendor": "mercury",
+            "vendor": self.server,
         }
         
         print(payload)
         headers = {
             "Content-Type": "application/json",
+            "Accept": "application/json",
         }
 
         resp = self.s.post(url, headers=headers, data=json.dumps(payload))
         print(resp.text)
+        print("response status code:", resp.status_code)
 
         if resp.status_code != 200:
             raise Exception(f"Login failed: HTTP {resp.status_code} - {resp.text}")
         
         resp_json = resp.json()
         # After login
+        print("response header:", resp.headers)
         for cookie in resp.cookies:
             self.cookies[cookie.name] = cookie.value
 
@@ -72,7 +74,7 @@ class DxtradeClient(BrokerClient):
         else:
             print("Warning: no JSESSIONID cookie found.")
 
-        accounts = self.get_account_transactions()
+        accounts = self.get_account_info()
 
         print(accounts)
         

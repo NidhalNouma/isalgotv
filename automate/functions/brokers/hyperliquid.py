@@ -1,3 +1,5 @@
+# PERP Contract are in base Coin in case of not enough balance the size will be adjusted to max available 
+
 from hyperliquid.info import Info
 from hyperliquid.utils import constants
 from hyperliquid.exchange import Exchange
@@ -21,14 +23,6 @@ class HyperliquidClient(CryptoBrokerClient):
         if address != account.address:
             print("Running with agent address:", account.address)
         info = Info(base_url, skip_ws, perp_dexs=perp_dexs)
-        user_state = info.user_state(address)
-        spot_user_state = info.spot_user_state(address)
-        margin_summary = user_state["marginSummary"]
-        if float(margin_summary["accountValue"]) == 0 and len(spot_user_state["balances"]) == 0:
-            print("Not running the example because the provided account has no equity.")
-            url = info.base_url.split(".", 1)[1]
-            error_string = f"No accountValue:\nIf you think this is a mistake, make sure that {address} has a balance on {url}.\nIf address shown is your API wallet address, update the config to specify the address of your account, not the address of the API wallet."
-            raise Exception(error_string)
         exchange = Exchange(account, base_url, account_address=address, perp_dexs=perp_dexs)
         return address, info, exchange
 
@@ -47,7 +41,13 @@ class HyperliquidClient(CryptoBrokerClient):
         try:
             client = HyperliquidClient(api_key=api_key, api_secret=api_secret, account_type=account_type)
             user_state = client.info.user_state(client.address)
-            print(user_state)
+            spot_user_state = client.info.spot_user_state(client.address)
+            margin_summary = user_state["marginSummary"]
+            if float(margin_summary["accountValue"]) == 0 and len(spot_user_state["balances"]) == 0:
+                print("Not running the example because the provided account has no equity.")
+                url = client.info.base_url.split(".", 1)[1]
+                error_string = f"No accountValue:\nIf you think this is a mistake, make sure that {client.address} has a balance on {url}.\nIf address shown is your API wallet address, update the config to specify the address of your account, not the address of the API wallet."
+                raise Exception(error_string)
 
             if 'error' in user_state:
                 return {'error': user_state['error'], "valid": False}
@@ -80,6 +80,8 @@ class HyperliquidClient(CryptoBrokerClient):
                 order = self.exchange.market_open(coin, is_buy=is_buy, sz=float(adjusted_quantity))
 
             end_exe = time.perf_counter()
+            if not order:
+                raise Exception("No response from exchange when opening trade.")
 
             order_data = order.get('response', {}).get('data', {}).get('statuses', [])[0]
 
@@ -130,22 +132,29 @@ class HyperliquidClient(CryptoBrokerClient):
             if not orders or 'error' in orders:
                 raise Exception(f"Error fetching order info: {orders.get('error', 'No data returned')}")
 
-            trade = next((o for o in orders if o.get('oid') == order_id), None)
-            if not trade:
+            trades = [o for o in orders if o.get('oid') == order_id]
+
+            if len(trades) == 0:
                 raise Exception(f"Order with ID {order_id} not found.")
 
-            fees = trade.get('fee', 0)
+            total_size = sum(float(trade.get('sz', 0)) for trade in trades)
+            
+            total_pnl = sum(float(trade.get('closedPnl', 0)) for trade in trades)
+            total_fees = sum(float(trade.get('fee', 0)) for trade in trades)
+
+            trade = trades[0]
+            # return trades
             r = {
                 'order_id': str(trade.get('oid')),
                 'symbol': str(trade.get('coin')),
-                'volume': str(trade.get('sz')),
+                'volume': str(total_size),
                 'side': str(trade.get('side')),
                 
                 'time': self.convert_timestamp(trade.get('time')),
                 'price': str(trade.get('px')),
 
-                'profit': str(trade.get('closedPnl')),
-                'fees': str(fees),
+                'profit': str(total_pnl),
+                'fees': str(total_fees),
 
                 'currency': str(trade.get('feeToken')),
 

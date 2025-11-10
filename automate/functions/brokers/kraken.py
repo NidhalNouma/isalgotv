@@ -337,6 +337,8 @@ class KrakenClient(CryptoBrokerClient):
     def get_order_info(self, symbol, order_id):
         try:
             # print("Fetching order info for order ID:", order_id)
+            account_type = self.account_type
+            self.account_type = "S"
             response = self._request(
                 method="POST",
                 path="/0/private/TradesHistory",
@@ -345,6 +347,8 @@ class KrakenClient(CryptoBrokerClient):
                     "end": order_id,
                 },
             )
+            self.account_type = account_type
+
             data = json.loads(response.read())
             if "error" in data and len(data["error"]) > 0:
                 raise Exception("Error fetching order info: " + str(data["error"]))
