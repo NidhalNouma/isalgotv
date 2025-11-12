@@ -2,7 +2,7 @@
 <form class="relative w-full max-w-md mx-auto flex flex-col gap-y-4" id="add-{{ broker_type }}-form" hx-post="{% url 'add_crypto_broker_account' broker_type %}" hx-target="#at-accounts" hx-wait="swap">
   <div class="w-full">
     <label for="{{ broker_type }}_name" class="input-label">Name</label>
-    <input type="text" id="{{ broker_type }}_name" name="{{ broker_type }}_name" class="input-text w-full" placeholder="Account 1" />
+    <input type="text" id="{{ broker_type }}_name" name="{{ broker_type }}_name" class="input-text w-full" placeholder="Give your account a name" />
   </div>
   <div class="w-full">
     <label for="{{ broker_type }}_apiKey" class="input-label">
@@ -12,16 +12,16 @@
         API key
       {% endif %}
     </label>
-    <input type="text" id="{{ broker_type }}_apiKey" name="{{ broker_type }}_apiKey" class="input-text w-full" placeholder="AK-nmc..." />
+    <input type="text" id="{{ broker_type }}_apiKey" name="{{ broker_type }}_apiKey" class="input-text w-full" placeholder="{% if broker_type == 'hyperliquid' %}Your wallet address{% else %}Your API key{% endif %}" />
   </div>
   <div class="w-full">
-    <label for="{{ broker_type }}_secretKey" class="input-label">API secret key</label>
-    <input type="text" id="{{ broker_type }}_secretKey" name="{{ broker_type }}_secretKey" class="input-text w-full" placeholder="--------" />
+    <label for="{{ broker_type }}_secretKey" class="input-label">Secret key</label>
+    <input type="text" id="{{ broker_type }}_secretKey" name="{{ broker_type }}_secretKey" class="input-text w-full" placeholder="Your secret key" />
   </div>
   {% if broker_type == 'bitget' or broker_type == 'kucoin' or broker_type == 'okx' or broker_type == 'apex' %}
     <div class="w-full">
       <label for="{{ broker_type }}_passphrase" class="input-label">Passphrase</label>
-      <input type="text" id="{{ broker_type }}_passphrase" name="{{ broker_type }}_pass_phrase" class="input-text w-full" placeholder="phrase" />
+      <input type="text" id="{{ broker_type }}_passphrase" name="{{ broker_type }}_pass_phrase" class="input-text w-full" placeholder="Your passphrase" />
     </div>
   {% endif %}
   {% if broker_type == 'bitmart' %}
@@ -111,7 +111,9 @@
   </div>
 
   {% csrf_token %}
+  {% if broker_type != 'apex' and broker_type != 'hyperliquid' %}
   {% include 'include/infos.html' with info='Ensure that the IP address <span class="font-bold mx-0.5">'|add:server_ip|add:'</span> is added to the list of trusted IPs.' class=' w-full' %}
+  {% endif %}
 
   {% if user_profile.automate_access|automate_access:broker_type == False %}
     {% include 'include/broker_payment.html' with title=broker_type price=prices|get_item:'CRYPTO' %}

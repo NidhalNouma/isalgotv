@@ -83,10 +83,10 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_t
     params = CREDENTIAL_PARAMS[broker_type]
     return client_cls.check_credentials(api_key, api_secret, account_type=account_type, **params)
 
-def check_forex_credentials(broker_type, username, password, server, type="D"):
+def check_forex_credentials(broker_type, username, password, server, type="D", account_id=None):
     
     if broker_type == 'tradelocker':
-        return TradeLockerClient.check_credentials(username, password, server, type)
+        return TradeLockerClient.check_credentials(username, password, server, type, account_id=account_id)
     elif broker_type == 'metatrader4':
         return MetatraderClient.check_credentials(username, username, password, server, "mt4")
     elif broker_type == 'metatrader5':

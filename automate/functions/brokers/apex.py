@@ -1,3 +1,6 @@
+# Perps: Quantity is in base asset units. 
+# Hedge trading is not supported.
+
 from http import client
 import time 
 from apexomni.constants import APEX_OMNI_HTTP_MAIN, APEX_HTTP_MAIN, NETWORKID_MAIN
@@ -102,12 +105,16 @@ class ApexClient(CryptoBrokerClient):
                 raise Exception(f"Error {response['code']}: {response.get('message', 'Unknown error')}")
 
             order_id = response.get('orderId')
+            if not order_id:
+                raise Exception("Order ID not found in response.")
+
             if not self.current_trade:
                 order_details = self.get_order_info(order_symbol, order_id)
                 trade_details = None 
-            else :
+            else:
                 order_details = self.get_final_trade_details(self.current_trade, order_id)
                 trade_details = order_details
+
             if order_details:
                 return {
                     'message': f"Trade opened with order ID {order_id}.",

@@ -69,7 +69,7 @@
           id="{{account.id}}_{{account.broker_type}}_name"
           name="{{account.id}}_{{account.broker_type}}_name"
           class="input-text w-full"
-          placeholder="Account 1"
+          placeholder="Give your account a name"
           value="{{account.name}}"
         />
       </div>
@@ -86,7 +86,7 @@
           id="{{account.id}}_{{account.broker_type}}_apiKey"
           name="{{account.id}}_{{account.broker_type}}_apiKey"
           class="input-text w-full"
-          placeholder="AK-nmc..."
+          placeholder="{% if account.broker_type == 'hyperliquid' %}Your wallet address{% else %}Your API key{% endif %}"
           value="{{account.apiKey}}"
         />
       </div>
@@ -94,14 +94,14 @@
         <label
           for="{{account.id}}_{{account.broker_type}}_secretKey"
           class="input-label"
-          >API secret key</label
+          >Secret key</label
         >
         <input
           type="password"
           id="{{account.id}}_{{account.broker_type}}_secretKey"
           name="{{account.id}}_{{account.broker_type}}_secretKey"
           class="input-text w-full"
-          placeholder="--------"
+          placeholder="Your API secret key"
           value="{{account.secretKey}}"
         />
       </div>
@@ -115,7 +115,7 @@
           id="{{account.id}}_{{account.broker_type}}_passphrase"
           name="{{account.id}}_{{account.broker_type}}_pass_phrase"
           class="input-text w-full"
-          placeholder="phrase"
+          placeholder="Your passphrase"
           {% if account.broker_type == "apex" %}
           value="{{account.pass_phrase|str_split:'||'|index:0}}"
           {% else %}

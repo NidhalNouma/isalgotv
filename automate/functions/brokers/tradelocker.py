@@ -6,10 +6,10 @@ from django.utils import timezone
 from automate.functions.brokers.broker import BrokerClient
 
 class TradeLockerClient(BrokerClient):
-    
-    def __init__(self, account = None, username = None, password = None, server = None, type='L', current_trade=None):
+
+    def __init__(self, account = None, username = None, password = None, server = None, type='L', current_trade=None, account_id=None):
         self.access_token = None
-        self.account_id = None
+        self.account_id = account_id
         self.account_number = None
         self.account_currency = None
         self.account_balance = None
@@ -21,6 +21,7 @@ class TradeLockerClient(BrokerClient):
             self.username = account.username
             self.password = account.password
             self.server = account.server
+            self.account_id = account.account_api_id if account.account_api_id else None
             self.enviroment_url = "https://live.tradelocker.com" if account.type == 'L' else "https://demo.tradelocker.com"
         else:
             self.username = username
@@ -69,10 +70,17 @@ class TradeLockerClient(BrokerClient):
     def _get_account(self):
         try:
             data = self._send_request("GET", "/backend-api/auth/jwt/all-accounts")
-            account = data.get("accounts", [{}])[0]
+            if not self.account_id:
+                first_account = data.get("accounts", [{}])[0]
+                self.account_id = first_account.get("id")
+            else:
+                accounts = data.get("accounts", [])
+                account = next((acc for acc in accounts if str(acc.get("id")) == str(self.account_id)), None)
+                if not account:
+                    raise ValueError("Account ID not found.")
+                
             self.account_number = account.get("accNum")
             self.account_currency = account.get("currency")
-            self.account_id = account.get("id")
             self.account_balance = account.get("accountBalance")
 
             return account
@@ -106,12 +114,12 @@ class TradeLockerClient(BrokerClient):
             return {"error": str(e)}
 
     @staticmethod
-    def check_credentials(username, password, server, type):
+    def check_credentials(username, password, server, type, account_id=None):
         try:
-            client = TradeLockerClient(username=username, password=password, server=server, type=type)
+            client = TradeLockerClient(username=username, password=password, server=server, type=type, account_id=account_id)
 
             if client.account_id:
-                return {'message': "API credentials are valid.", "valid": True}
+                return {'message': "API credentials are valid.", "valid": True, "account_api_id": client.account_id}
             else:
                 return {'error': "Failed to retrieve account. Invalid credentials.", "valid": False}
         except Exception as e:
@@ -280,7 +288,12 @@ class TradeLockerClient(BrokerClient):
 
     def get_order_info(self, symbol, position_id):
         try:
-            positions = self.get_open_trades()
+            positions = self.retry_until_response(
+                func=self.get_open_trades,
+                is_desired_response=lambda resp: isinstance(resp, list) and len(resp) > 0,
+                max_attempts=3,
+                delay_seconds=4
+            )
             trade_info = [pos for pos in positions if str(pos.get("id")) == str(position_id)]
 
             if len(trade_info) > 0:
@@ -361,7 +374,13 @@ class TradeLockerClient(BrokerClient):
 
     def get_final_trade_details(self, trade):
 
-        closed_positions = self.get_closed_trades(trade.order_id, trade.entry_time, trade.closed_order_id)
+        closed_positions = self.retry_until_response(
+            func=self.get_closed_trades,
+            is_desired_response=lambda resp: isinstance(resp, list) and len(resp) > 0,
+            args=[trade.order_id, trade.entry_time, trade.closed_order_id],
+            max_attempts=3,
+            delay_seconds=4
+        )
 
         last_position = closed_positions[0] if closed_positions else None
 

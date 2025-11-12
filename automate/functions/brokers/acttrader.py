@@ -1,3 +1,5 @@
+# Size will be in lot size and it will be converted to unit size based on the contract size of the symbol.
+
 import requests
 import time
 from dateutil import parser
@@ -204,6 +206,8 @@ class ActTrader(BrokerClient):
                 "commentary": custom_id
             }
 
+            # print('Open trade params:', params, contract_size, min_size)
+
             response = self.s.get(url, params=params, headers=headers)
 
             end_exe = time.perf_counter()
@@ -225,7 +229,7 @@ class ActTrader(BrokerClient):
                     'end_exe': end_exe,
                 }
             else:
-                raise Exception("Failed to open trade: " + response.get('message', 'Unknown error'))
+                raise Exception(response.get('message', 'Unknown error'))
         except Exception as e:
             raise Exception("Open trade Error: %s" % e)
             

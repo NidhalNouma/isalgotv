@@ -133,6 +133,8 @@ def add_broker(request, broker_type):
                     form_data['password'] = 'xxx'
                 elif broker_type == 'hankotrade':
                     form_data['server'] = 'xxx'
+                elif broker_type == 'tradelocker':
+                    form_data['account_api_id'] = request.POST.get(f'{broker_type}_account_id')
                 form = AddForexBrokerAccountForm(form_data) 
 
             else:
@@ -144,7 +146,7 @@ def add_broker(request, broker_type):
                     valid = check_crypto_credentials(broker_type ,form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('pass_phrase', ""), form_data.get('type'))
 
                 elif broker_type in forex_broker_types:
-                    valid = check_forex_credentials(broker_type ,form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
+                    valid = check_forex_credentials(broker_type ,form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'), account_id=form_data.get('account_api_id'))
 
                 print(valid)
                 if valid.get('valid') == True:
@@ -263,6 +265,8 @@ def edit_broker(request, broker_type, pk):
                     form_data['password'] = 'xxx'
                 elif broker_type == 'hankotrade':
                     form_data['server'] = 'xxx'
+                elif broker_type == 'tradelocker':
+                    form_data['account_api_id'] = request.POST.get(f'{account.id}_{broker_type}_account_id')
                 form = AddForexBrokerAccountForm(form_data, instance=account) 
             else:
                 raise Exception("Invalid Broker Type")
@@ -272,7 +276,7 @@ def edit_broker(request, broker_type, pk):
                     valid = check_crypto_credentials(broker_type, form_data.get('apiKey'), form_data.get('secretKey'), form_data.get('pass_phrase'), form_data.get('type'))
 
                 elif broker_type in forex_broker_types:
-                    valid = check_forex_credentials(broker_type, form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'))
+                    valid = check_forex_credentials(broker_type, form_data.get('username'), form_data.get('password'), form_data.get('server'), form_data.get('type'), account_id=form_data.get('account_api_id'))
 
                 if valid.get('valid') == True:
                     if account.subscription_id != 'free_access':

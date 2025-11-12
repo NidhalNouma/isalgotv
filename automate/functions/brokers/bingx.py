@@ -1,3 +1,8 @@
+# CoinM size is in contracts with base currency as margin
+# USDT-M size is in units of the base currency with USDT as margin
+# CoinM and USDT-M futures: Hedge mode available by setting Position Mode to Hedge Mode otherwise One-way mode
+# Spot size is in units of the base currency
+
 import time
 import requests
 import json
@@ -118,6 +123,8 @@ class BingxClient(CryptoBrokerClient):
             endpoint = '/openApi/cswap/v1/market/contracts'
 
         response = self._send_request('GET', endpoint, params)
+        if response.get("code") != 0:
+            raise ValueError(response.get("msg", "Could not fetch exchange info"))
         response_data = response.get("data")
 
         if self.account_type == 'S':
@@ -206,10 +213,13 @@ class BingxClient(CryptoBrokerClient):
             # data = self.get_order_info(symbol, '1926362720564678657')
             # raise Exception(data)
 
+            adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
+
             if self.account_type == 'C':
                 currency_asset = base_asset
+                adjusted_quantity = int(round(float(adjusted_quantity)))
 
-            adjusted_quantity = self.adjust_trade_quantity(sys_info, side, float(quantity))
+            
             # adjusted_quantity = quantity
             print("Adjusted quantity:", adjusted_quantity)
 
@@ -230,12 +240,12 @@ class BingxClient(CryptoBrokerClient):
                 # order_params["type"] = 'STOP_MARKET'
                 pass
 
-            print(order_params)
+            # print(order_params)
 
             response = self._send_request('POST', endpoint, order_params)
 
             end_exe = time.perf_counter()
-            print("Response:", response)
+            # print("Response:", response)
 
             if response.get("code") is not None:
                 if response.get("code") != 0:
@@ -313,10 +323,16 @@ class BingxClient(CryptoBrokerClient):
                 endpoint = '/openApi/swap/v2/trade/order'
             elif self.account_type == 'C':
                 endpoint = '/openApi/cswap/v1/trade/allFillOrders'
-                time.sleep(2)
-
-            response_data = self._send_request('GET', endpoint, params)
             
+            response_data = self.retry_until_response(
+                func=self._send_request,
+                is_desired_response=lambda resp: isinstance(resp, dict) and resp.get("code") == 0,
+                args=['GET', endpoint, params],
+                max_attempts=3,
+                delay_seconds=4,
+                skip_first_attempt=self.account_type == 'C'
+            )
+
             if isinstance(response_data, dict) and response_data.get("code") == 0:
                 trade = response_data.get("data")
 

@@ -1,3 +1,6 @@
+# Only spot trading is supported.
+# Spot: Quantity is in base asset units.
+
 import requests
 import time
 from automate.functions.brokers.types import *

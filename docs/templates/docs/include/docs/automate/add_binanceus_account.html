@@ -1,100 +1,96 @@
 {% load static %}
 <article class="docs">
-    <section id="what-is-binanceus">
-        <aside>
-            <h3>What's Binance.US?</h3>
-            <p>
-                Binance.US is the United States-regulated arm of Binance, specifically designed for U.S. residents. It provides a secure and compliant platform for trading cryptocurrencies with features including:
-            </p>
-            <ul>
-                <li>Regulated cryptocurrency trading for U.S. residents</li>
-                <li>Competitive trading fees</li>
-                <li>Secure API integration for automated trading</li>
-                <li>Compliance with U.S. regulations and requirements</li>
-            </ul>
-        </aside>
-    </section>
-    
-    <section id="api-binanceus">
-        <aside>
-            <h3>API Key Setup Process</h3>
-            <p>
-                follow the steps below to configure your API Keys.
-            </p>
-        </aside>
-    </section>
+  <section id="what-is-binanceus">
+    <aside>
+      <h3>What's Binance.US?</h3>
+      <p>Binance.US is the United States-regulated arm of Binance, specifically designed for U.S. residents. It provides a secure and compliant platform for trading cryptocurrencies with features including:</p>
+      <ul>
+        <li>Regulated cryptocurrency trading for U.S. residents</li>
+        <li>Competitive trading fees</li>
+        <li>Secure API integration for automated trading</li>
+        <li>Compliance with U.S. regulations and requirements</li>
+      </ul>
+    </aside>
+  </section>
 
-    <div class="mb-4">
-        {% include 'include/warnings.html' with warning="Never share your API keys with anyone. We use industry-standard encryption to secure your credentials." %}
-    </div>
+  <section id="api-binanceus">
+    <aside>
+      <h3>API Key Setup Process</h3>
+      <p>follow the steps below to configure your API Keys.</p>
+    </aside>
+  </section>
 
-    <section>
-        <aside>
-            <h3><span>1</span> Create a Binance.US Account</h3>
-            <div>
-                <p>
-                    If you don’t already have a Binance.US account, please sign up <a href="https://www.binance.us/register" target="_blank">here</a>.
-                </p>
-            </div>
-        </aside>
-    </section>
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your API keys with anyone. We use industry-standard encryption to secure your credentials.' %}
+  </div>
 
-    <section>
-        <aside>
-            <h3><span>2</span> Navigate to API Management</h3>
-            <div>
-                <ol>
-                    <li>Log in to your Binance.US account.</li>
-                    <li>Click your Email/Username at the top-right corner.</li>
-                    <li>Select "API Management" from the dropdown menu.
-                        <img onclick="showModalImages(this)" src='{% static "images/docs/automate/binance_us/step-2.png" %}' alt="Binance.US - API Management" loading="lazy" />
-                    </li>
-                </ol>
-            </div>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>1</span> Create a Binance.US Account</h3>
+      <div>
+        <p>
+          If you don’t already have a Binance.US account, please sign up <a href="https://binance.us/universal_JHHGDSKDJ/auth/registration?ref=" target="_blank">here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
 
-    <section>
-        <aside>
-            <h3><span>3</span> Generate an API Key</h3>
-            <div>
-                <ol>
-                    <li>
-                        Enter a name for your key.
-                        <img onclick="showModalImages(this)" src='{% static "images/docs/automate/binance_us/step-3.png" %}' alt="Binance.US - API Key name" loading="lazy" />
-                    </li>
-                    <li>click "Create API".</li>
-                </ol>
-            </div>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>2</span> Navigate to API Management</h3>
+      <div>
+        <ol>
+          <li>Log in to your Binance.US account.</li>
+          <li>Click your Email/Username at the top-right corner.</li>
+          <li>
+            Select "API Management" from the dropdown menu.
+            <img onclick="showModalImages(this)" src="{% static 'images/docs/automate/binance_us/step-2.png' %}" alt="Binance.US - API Management" loading="lazy" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
 
-    <section>
-        <aside>
-            <h3><span>4</span> Configure Security Settings</h3>
-            <div>
-                <ol>
-                    <li>
-                        Click "Edit restrictions."
-                        <img onclick="showModalImages(this)" src='{% static "images/docs/automate/binance_us/step-4.png" %}' alt="Binance.US - Edit Restrictions" loading="lazy" />
-                    </li>
-                    <li>Enable "Restrict access to trusted IPs only" and add our server’s IP address.
-                        <img onclick="showModalImages(this)" src='{% static "images/docs/automate/binance_us/step-5.png" %}' alt="Binance.US - Add our server’s IP address to the Trusted IP" loading="lazy" />
-                    </li>
-                    <li>Enable "Spot Trading."</li>
-                    <li>Copy your API keys and then click "Save."</li>
-                </ol>
-                <p class="font-semibold pt-2">IMPORTANT: Ensure you copy your secret key before saving changes.</p>
-            </div>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>3</span> Generate an API Key</h3>
+      <div>
+        <ol>
+          <li>
+            Enter a name for your key.
+            <img onclick="showModalImages(this)" src="{% static 'images/docs/automate/binance_us/step-3.png' %}" alt="Binance.US - API Key name" loading="lazy" />
+          </li>
+          <li>click "Create API".</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
 
-    <section id="complete-binanceus">
-        <aside>
-            <h3>Complete Integration</h3>
-            <p>
-                Once you have your API keys, return to our platform's Automate section and use them to link your Binance account with our automation system. This will enable automated trading based on your TradingView alerts.
-            </p>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>4</span> Configure Security Settings</h3>
+      <div>
+        <ol>
+          <li>
+            Click "Edit restrictions."
+            <img onclick="showModalImages(this)" src="{% static 'images/docs/automate/binance_us/step-4.png' %}" alt="Binance.US - Edit Restrictions" loading="lazy" />
+          </li>
+          <li>
+            Enable "Restrict access to trusted IPs only" and add our server’s IP address.
+            <img onclick="showModalImages(this)" src="{% static 'images/docs/automate/binance_us/step-5.png' %}" alt="Binance.US - Add our server’s IP address to the Trusted IP" loading="lazy" />
+          </li>
+          <li>Enable "Spot Trading."</li>
+          <li>Copy your API keys and then click "Save."</li>
+        </ol>
+        <p class="font-semibold pt-2">IMPORTANT: Ensure you copy your secret key before saving changes.</p>
+      </div>
+    </aside>
+  </section>
+
+  <section id="complete-binanceus">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your API keys, return to our platform's Automate section and use them to link your Binance account with our automation system. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
 </article>

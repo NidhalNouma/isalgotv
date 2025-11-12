@@ -204,6 +204,44 @@ class BrokerClient(abc.ABC):
                 closed_trades.append({ 'error': str(e), 'orig_trade': trade })
         return closed_trades
 
+    def retry_until_response(self, func, is_desired_response, args=None, kwargs=None, max_attempts=3, delay_seconds=5, skip_first_attempt=False):
+        """
+        Runs a function repeatedly until it returns the desired response or max attempts are reached.
+
+        :param func: The function to execute.
+        :param is_desired_response: A callable that checks if the response is valid, 
+                                    or a dict/expected value to compare directly.
+        :param args: Positional arguments for the function.
+        :param kwargs: Keyword arguments for the function.
+        :param max_attempts: Maximum number of attempts.
+        :param delay_seconds: Delay in seconds between attempts.
+        :return: The response from the function if successful, else None.
+        """
+        args = args or []
+        kwargs = kwargs or {}
+
+        for attempt in range(1, max_attempts + 1):
+            if skip_first_attempt and attempt == 1:
+                print(f"⏭️ Skipping first call on attempt {attempt}")
+            else:
+                response = func(*args, **kwargs)
+                
+                # If the checker is a function
+                if callable(is_desired_response):
+                    success = is_desired_response(response)
+                else:
+                    success = response == is_desired_response
+
+                if success:
+                    print(f"✅ Success on attempt {attempt}")
+                    return response
+
+                print(f"⚠️ Attempt {attempt} failed. Retrying in {delay_seconds} seconds...")
+            time.sleep(delay_seconds)
+
+        print("❌ Max attempts reached. Returning last response.")
+        return response
+
 
 class CryptoBrokerClient(BrokerClient, abc.ABC):
     
