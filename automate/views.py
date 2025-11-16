@@ -131,7 +131,7 @@ def add_broker(request, broker_type):
                 if broker_type == 'ctrader':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
-                elif broker_type == 'hankotrade':
+                elif broker_type == 'hankotrade' or broker_type == 'alpaca':
                     form_data['server'] = 'xxx'
                 elif broker_type == 'tradelocker':
                     form_data['account_api_id'] = request.POST.get(f'{broker_type}_account_id')
@@ -263,7 +263,7 @@ def edit_broker(request, broker_type, pk):
                 if broker_type == 'ctrader':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
-                elif broker_type == 'hankotrade':
+                elif broker_type == 'hankotrade' or broker_type == 'alpaca':
                     form_data['server'] = 'xxx'
                 elif broker_type == 'tradelocker':
                     form_data['account_api_id'] = request.POST.get(f'{account.id}_{broker_type}_account_id')

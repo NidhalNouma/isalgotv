@@ -16,7 +16,10 @@ import shortuuid
 
 
 def generate_short_unique_id(prefix, id):
-    short_id = shortuuid.ShortUUID().random(length=14 - len(prefix) - 1)  # Subtract the length of prefix and the hyphen
+    max_length = 14 - len(prefix) - 1  # Subtract length of prefix and hyphen
+    if max_length < 6:  # Ensure there's enough space for uniqueness
+        max_length = 6
+    short_id = shortuuid.ShortUUID().random(length=max_length)  
     return f"{prefix}{id}x{short_id}"
 
 
@@ -99,6 +102,7 @@ class ForexBrokerAccount(models.Model):
         ("ctrader", "CTrader"),
         ("hankotrade", "HankoTrade"),
         ("tradestation", "TradeStation"),
+        ("alpaca", "Alpaca"),
     ]
 
     TYPE = [

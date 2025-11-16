@@ -170,7 +170,7 @@
             </div>
           </li>
           {% endif %}
-          {% if account.broker_type == "binance" or account.broker_type == 'bingx' or account.broker_type == 'bitmart' %}
+          {% if account.broker_type == "binance" or account.broker_type == 'bingx' %}
           <li class="w-full">
             <div class="flex items-center ps-3">
               <input
@@ -261,36 +261,17 @@
             </div>
           </li>
           {% endif %} 
-          {% if account.broker_type == "bybit" %}
-          <li class="w-full">
-            <div class="flex items-center ps-3">
-              <input
-                id="{{account.id}}_{{account.broker_type}}-type-D"
-                type="radio"
-                value="D"
-                name="{{account.id}}_{{account.broker_type}}_type"
-                class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0"
-                {% if account.type == "D" %}checked{% endif %}
-              />
-              <label
-                for="{{account.id}}_{{account.broker_type}}-type-D"
-                class="w-full py-3 ms-2 input-label mb-0 cursor-pointer"
-                >Derivatives</label
-              >
-            </div>
-          </li>
-          {% endif %}
 
           {% if account.broker_type == 'coinbase' or account.broker_type == "okx" or account.broker_type == "crypto" or account.broker_type == "apex" or account.broker_type == "hyperliquid" %}
             <li class="w-full">
               <div class="flex items-center ps-3">
                 <input {% if account.type == "P" %}checked{% endif %} id="{{account.id}}_{{account.broker_type}}-type-P" type="radio" value="P" name="{{account.id}}_{{account.broker_type}}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
-                <label for="{{account.id}}_{{account.broker_type}}-type-P" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">Perps {% if account.broker_type == "okx" %}Futures{% endif %}</label>
+                <label for="{{account.id}}_{{account.broker_type}}-type-P" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">{% if account.broker_type == "okx" %}Futures{% else %}Perps{% endif %}</label>
               </div>
             </li>
           {% endif %}
 
-          {% if account.broker_type == 'mexc' or account.broker_type == 'kucoin' or account.broker_type == 'coinbase' or account.broker_type == "okx" or account.broker_type == "kraken" %}
+          {% if account.broker_type == 'mexc' or account.broker_type == 'bitmart' or account.broker_type == 'bybit' or account.broker_type == 'kucoin' or account.broker_type == 'coinbase' or account.broker_type == "okx" or account.broker_type == "kraken" %}
             <li class="w-full">
               <div class="flex items-center ps-3">
                 <input {% if account.type == "F" %}checked{% endif %} id="{{account.id}}_{{account.broker_type}}-type-F" type="radio" value="F" name="{{account.id}}_{{account.broker_type}}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />

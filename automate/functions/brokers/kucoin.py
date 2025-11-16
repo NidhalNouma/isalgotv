@@ -1,4 +1,9 @@
-# if account type == F it uses the contract value as the size of the trade and not the base asset
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# Futures include USDT-Margined, Coin-Margined, and USDC-Margined contracts.
+# Futures: Quantity is in contracts. Margin is set to ISOLATED with 25x leverage. 
+# Futures (USDT-Margined, USDC-Margined): Account balance needs to have enough quote asset to open positions.
+# Futures (Coin-Margined): Account balance needs to have enough base asset to open positions.
+# Futures: Position mode can be set to hedge mode on the exchange platform.
 
 import time
 import math
@@ -66,6 +71,7 @@ class KucoinClient(CryptoBrokerClient):
             # print('error msf', e.msg)
             return {'error': str(e.msg)}
         except Exception as e:
+            # print('error msf', str(e))
             return {'error': str(e)}
         
     def get_exchange_info(self, symbol) -> ExchangeInfo:
@@ -101,6 +107,8 @@ class KucoinClient(CryptoBrokerClient):
 
                 response = response.get('common_response')
                 sym_info = response.get('data', {})
+
+                # print(sym_info, type(sym_info), sym_info)
                 
                 if sym_info:
                     base_asset = sym_info.get('baseCurrency')
@@ -208,7 +216,7 @@ class KucoinClient(CryptoBrokerClient):
 
             else:
 
-                clientOid = f'{side}-{custom_id}-{int(time.time())}'
+                clientOid = custom_id.replace('.', '-') if custom_id else f"{side}-{int(time.time() * 1000)}"
                 add_order_req = (
                     AddFutureOrderReqBuilder()
                     .set_client_oid(clientOid)
@@ -217,7 +225,7 @@ class KucoinClient(CryptoBrokerClient):
                     .set_size(math.ceil(float(adjusted_quantity)))
                     .set_type('market')
                     .set_reduce_only(oc)
-                    .set_leverage(3)
+                    .set_leverage(25)
                     .set_margin_mode('ISOLATED')
                     .build()
                 )
@@ -282,9 +290,15 @@ class KucoinClient(CryptoBrokerClient):
 
     def get_order_info(self, symbol, order_id) -> OrderInfo:
         try:
-            time.sleep(2)
-            if self.account_type == 'S':
+            def trade_found(resp, order_id):
+                data = resp.to_dict().get('common_response', {})
+                if data.get('code') != "200000":
+                    raise Exception('Error fetching trade info')
+                trades = data.get('data', {}).get('items', [])
+                trade = next((item for item in trades if item.get('orderId') == order_id), None)
+                return trade is not None
 
+            if self.account_type == 'S':
                 order_req = (
                     GetTradeHistoryReqBuilder()
                     .set_symbol(symbol)
@@ -293,9 +307,18 @@ class KucoinClient(CryptoBrokerClient):
                 )
 
                 api = self.rest_service.get_spot_service().get_order_api()
-                request = api.get_trade_history(order_req).to_dict()
+                # request = api.get_trade_history(order_req).to_dict()
 
-                data = request.get('common_response', {})
+                request = self.retry_until_response(
+                    func=api.get_trade_history,
+                    args=(order_req,),
+                    is_desired_response=lambda resp: trade_found(resp, order_id),
+                    max_attempts=4,
+                    delay_seconds=2,
+                    skip_first_attempt=False,
+                )
+
+                data = request.to_dict().get('common_response', {})
                 trades = data.get('data', {}).get('items', [])
 
                 trade = next((item for item in trades if item.get('orderId') == order_id), None)
@@ -326,7 +349,7 @@ class KucoinClient(CryptoBrokerClient):
                     r = {
                         'order_id': str(trade.get('orderId') or trade.get('id')),
                         'symbol': str(trade.get('symbol')),
-                        'volume': str(trade.get('size')),
+                        'volume': str(math.abs(trade.get('size'))),
                         'side': str(trade.get('side')),
                         
                         'time': self.convert_timestamp(trade.get('createdAt')),
@@ -355,9 +378,18 @@ class KucoinClient(CryptoBrokerClient):
                 )
 
                 api = self.rest_service.get_futures_service().get_order_api()
-                request = api.get_trade_history(order_req).to_dict()
+                # request = api.get_trade_history(order_req).to_dict()
 
-                data = request.get('common_response', {})
+                request = self.retry_until_response(
+                    func=api.get_trade_history,
+                    args=(order_req,),
+                    is_desired_response=lambda resp: trade_found(resp, order_id),
+                    max_attempts=4,
+                    delay_seconds=2,
+                    skip_first_attempt=False,
+                )
+
+                data = request.to_dict().get('common_response', {})
                 trades = data.get('data', {}).get('items', [])
                 
                 trade = next((item for item in trades if item.get('orderId') == order_id), None)

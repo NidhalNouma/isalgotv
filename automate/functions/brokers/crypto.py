@@ -1,3 +1,8 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# Perpetual: Quantity is in base asset units. 
+# Perpetual: Available for certain accounts only.
+# Perpetual: Not fully tested yet.
+
 import hmac
 import hashlib
 import requests
@@ -16,7 +21,7 @@ class CryptoComClient(CryptoBrokerClient):
         try:
             client = CryptoComClient(api_key=api_key, api_secret=secret, account_type=account_type)
             account_info = client.get_account_info()
-            print("Account Info:", account_info)  # Debugging line to check the response
+            # print("Account Info:", account_info)  # Debugging line to check the response
             if account_info.get("code") != 0:
                 return {"error": account_info.get("message", "Invalid credentials"), "valid": False}
             return {"message": "API credentials are valid.", "valid": True}
@@ -166,7 +171,7 @@ class CryptoComClient(CryptoBrokerClient):
                 "quantity": str(adjusted_quantity),
             }
             if custom_id:
-                order_params["client_oid"] = custom_id
+                order_params["client_oid"] = custom_id.replace('.', '-').replace('_', '-')
             # print(order_params)
 
             response = self.new_order(order_params)

@@ -12,17 +12,25 @@
       {% if broker_type == 'tradelocker' %}
         <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
         <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your account email/username" />
+      {% elif broker_type == 'alpaca' %}
+        <label for="{{ broker_type }}_username" class="input-label">API Key</label>
+        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your API key" />
       {% else %}
         <label for="{{ broker_type }}_username" class="input-label">Number/ID</label>
         <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your account number/ID" />
       {% endif %}
     </div>
     <div class="w-full">
-      <label for="{{ broker_type }}_secretKey" class="input-label">Password</label>
-      <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="Your account password" />
+      {% if broker_type == 'alpaca' %}
+        <label for="{{ broker_type }}_password" class="input-label">Secret Key</label>
+        <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="Your API secret key" />
+      {% else %}
+        <label for="{{ broker_type }}_password" class="input-label">Password</label>
+        <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="Your account password" />
+      {% endif %}
     </div>
   {% endif %}
-  {% if broker_type != 'hankotrade' %}
+  {% if broker_type != 'hankotrade' and broker_type != 'alpaca' %}
     <div class="w-full">
       <label for="{{ broker_type }}_server" class="input-label">
         {% if broker_type == 'ctrader' %}
@@ -39,7 +47,15 @@
           </button>
         {% endif %}
       </label>
-      <input type="text" id="{{ broker_type }}_server" name="{{ broker_type }}_server" class="input-text w-full" placeholder="{% if broker_type == 'ctrader' %}Get your authorization code and past it here{% else %}Your account server{% endif %}" />
+      <input type="text"
+        id="{{ broker_type }}_server"
+        name="{{ broker_type }}_server"
+        class="input-text w-full"
+        placeholder="{% if broker_type == 'ctrader' %}
+          Get your authorization code and past it here
+        {% else %}
+          Your account server
+        {% endif %}" />
     </div>
   {% endif %}
   {% if broker_type == 'tradelocker' %}
@@ -49,7 +65,7 @@
     </div>
   {% endif %}
 
-  {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' or broker_type == 'hankotrade' %}
+  {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' or broker_type == 'hankotrade' or broker_type == 'alpaca' %}
     <div class="w-full">
       <label for="type" class="input-label">Type</label>
 

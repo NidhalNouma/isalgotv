@@ -1,3 +1,10 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# Perpetual and Futures: User needs to set the API portfolio to perpetual on the exchange platform. https://www.coinbase.com/settings/api
+# Perpretual: Quantity is in base asset units. leverage is set to 20x. 
+
+# Perpetual and Futures: Hedge mode is not supported.
+
+
 from coinbase.rest import RESTClient, products
 from datetime import datetime, timezone
 import time
@@ -25,8 +32,6 @@ class CoinbaseClient(CryptoBrokerClient):
             # print(accounts)
             
             return {'message': "API credentials are valid.", 'valid': True}
-        
-            return {'error': 'API credentials are not valid.', 'valid': False}
         except Exception as e:
             return {'error': str(e), 'valid': False}
 
@@ -93,9 +98,9 @@ class CoinbaseClient(CryptoBrokerClient):
             print("Adjusted quantity:", adjusted_quantity)
 
             if str.lower(side) == 'buy':            
-                response = self.client.market_order_buy(client_order_id=None, product_id=order_symbol, base_size=quantity, leverage="10" if self.account_type != 'S' else "1")
+                response = self.client.market_order_buy(client_order_id=None, product_id=order_symbol, base_size=str(adjusted_quantity), leverage="20" if self.account_type != 'S' else "1")
             elif str.lower(side) == 'sell':            
-                response = self.client.market_order_sell(client_order_id=None, product_id=order_symbol, base_size=quantity, leverage="10" if self.account_type != 'S' else "1")
+                response = self.client.market_order_sell(client_order_id=None, product_id=order_symbol, base_size=str(adjusted_quantity), leverage="20" if self.account_type != 'S' else "1")
             else:
                 raise Exception('Order type is not supported.')
             
@@ -161,13 +166,22 @@ class CoinbaseClient(CryptoBrokerClient):
             if self.account_type == 'S':
                 return self.open_trade(symbol=symbol, side=opposite_side, quantity=quantity)
 
-            response = self.client.close_position(client_order_id=None, product_id=symbol, size=quantity)
+            symbol_info = self.get_exchange_info(symbol)
+            if not symbol_info:
+                raise Exception('Symbol was not found!')
+            
+            order_symbol = symbol_info.get('symbol')
+
+            quantity = self.adjust_trade_quantity(symbol_info, opposite_side, quantity)
+            # print("Closing trade:", symbol, opposite_side, quantity)
+
+            response = self.client.close_position(client_order_id=None, product_id=order_symbol, size=str(quantity))
+            # print(response)
 
             end_exe = time.perf_counter()
 
  
             result = response.to_dict()
-            # print(response)
 
             if result.get('success') == False:
                 raise Exception(result.get('error_response', {}).get('message', 'Error occured.'))

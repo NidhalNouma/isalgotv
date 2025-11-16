@@ -1,3 +1,9 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# USDT-M Futures: Quantity is in base asset units. Margin mode set to isolated. Margin coin set to USDT. Leverage can be adjusted on the exchange platform.
+# Coin-M Futures: Quantity is in base asset units. Margin mode set to isolated. Margin coin set to USDE. Leverage can be adjusted on the exchange platform.
+# USDC-M Futures: Quantity is in base asset units. Margin mode set to isolated. Margin coin set to USDC. Leverage can be adjusted on the exchange platform.
+# USDT-M, Coin-M, and USDC-M Futures: Hedge mode can be set on the exchange platform.
+
 import time
 import hmac
 import hashlib
@@ -322,6 +328,8 @@ class BitgetClient(CryptoBrokerClient):
                     trade = response[0]
             else:
                 trade = response
+
+            # print("trade details => ", trade)
             
 
             if trade:

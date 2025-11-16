@@ -1,3 +1,5 @@
+# By default, Tradelocker will use the first account found if no account_id is provided.
+
 import requests
 import time
 from datetime import datetime

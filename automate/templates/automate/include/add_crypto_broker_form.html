@@ -48,7 +48,7 @@
         </div>
       </li>
       {% endif %}
-      {% if broker_type == 'binance' or broker_type == 'bingx' or broker_type == 'bitmart' %}
+      {% if broker_type == 'binance' or broker_type == 'bingx' %}
         <li class="w-full">
           <div class="flex items-center ps-3">
             <input id="{{ broker_type }}-type-M" type="radio" value="U" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
@@ -71,6 +71,8 @@
             <label for="{{ broker_type }}-type-F" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">USDT-M</label>
           </div>
         </li>
+        {% endif %}
+        {% if broker_type == 'bitget' %}
         <li class="w-full">
           <div class="flex items-center ps-3">
             <input id="{{ broker_type }}-type-C" type="radio" value="C" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
@@ -83,27 +85,20 @@
             <label for="{{ broker_type }}-type-Uc" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">USDC-M</label>
           </div>
         </li>
-      {% endif %} {% if broker_type == 'bybit' %}
-        <li class="w-full">
-          <div class="flex items-center ps-3">
-            <input id="{{ broker_type }}-type-D" type="radio" value="D" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
-            <label for="{{ broker_type }}-type-D" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">Derivatives</label>
-          </div>
-        </li>
-      {% endif %}
+      {% endif %} 
       {% if broker_type == 'coinbase' or broker_type == 'okx' or broker_type == 'crypto' or broker_type == 'apex' or broker_type == 'hyperliquid' %}
         <li class="w-full">
           <div class="flex items-center ps-3">
             <input id="{{ broker_type }}-type-P" type="radio" value="P" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" {% if broker_type == 'apex' or broker_type == 'hyperliquid' %} checked {% endif %} />
-            <label for="{{ broker_type }}-type-P" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">Perps{% if broker_type == 'okx' %}Futures{% endif %}</label>
+            <label for="{{ broker_type }}-type-P" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">{% if broker_type == 'okx' %}Futures{% else %}Perps{% endif %}</label>
           </div>
         </li>
       {% endif %}
-      {% if broker_type == 'mexc' or broker_type == 'kucoin' or broker_type == 'coinbase' or broker_type == 'okx' or broker_type == 'kraken' %}
+      {% if broker_type == 'bitmart' or broker_type == 'bybit' or broker_type == 'kucoin' or broker_type == 'coinbase' or broker_type == 'okx' or broker_type == 'kraken' %}
         <li class="w-full">
           <div class="flex items-center ps-3">
             <input id="{{ broker_type }}-type-F" type="radio" value="F" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
-            <label for="{{ broker_type }}-type-F" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">{% if broker_type == 'okx' %}Expiry{% endif %}Futures</label>
+            <label for="{{ broker_type }}-type-F" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">{% if broker_type == 'okx' %}Expiry{% endif %} Futures</label>
           </div>
         </li>
       {% endif %}

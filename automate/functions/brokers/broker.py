@@ -1,3 +1,4 @@
+import math
 from django.utils import timezone
 import abc
 
@@ -333,8 +334,9 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
         # --- Coinbase specific handling ---
         if broker == "coinbase":
             symbol = symbol.lstrip("-")  # remove any leading dash
-
             if acc_type == "P":
+                if symbol.endswith("-PERP-INTX"):
+                    return symbol
                 if not symbol.endswith("PERP"):
                     symbol += "-PERP"
                 if not symbol.endswith("INTX"):
@@ -368,7 +370,8 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 exchange_info = self.get_exchange_info(trade.symbol)
                 if exchange_info and exchange_info.get('contract_val', None):
                     contract_val = exchange_info.get('contract_val')
-                    profit = profit * Decimal(str(contract_val))
+                    contract_val_abs_dec = Decimal(str(abs(contract_val)))
+                    profit = profit * contract_val_abs_dec
 
                     # print(profit)
 

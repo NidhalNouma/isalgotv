@@ -1,3 +1,8 @@
+# Futures works only with USDT
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# USDT-M Futures: Quantity is in base asset units. Margin and leverage can be adjusted on the exchange platform.
+# USDT-M: Position mode will be set to hedge mode.
+
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
 import time
@@ -5,7 +10,6 @@ import time
 from pybit.unified_trading import HTTP
 from pybit.exceptions import InvalidRequestError, FailedRequestError
 
-# Derivatives of the CryptoBrokerClient for Bybit works only with USDT
 
 class BybitClient(CryptoBrokerClient):
     BYBIT_API_URL = 'https://api.bybit.com/v5'
@@ -49,6 +53,8 @@ class BybitClient(CryptoBrokerClient):
                 raise Exception(response['retMsg'])
 
             data = response['result']['list'][0]
+
+            # print("Bybit exchange info data => ", data)
             
             if self.category == 'spot':
                 b_precison = data['lotSizeFilter']['basePrecision']
@@ -238,6 +244,8 @@ class BybitClient(CryptoBrokerClient):
                     trade = response[0]
             else:
                 trade = response
+            
+            # print("Bybit trade details => ", trade)
 
             if trade:
                 # print('Trade details:', trade)

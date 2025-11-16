@@ -1,3 +1,8 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# USD@M (USDT-M , USDC-M): Quantity is in base asset units.
+# USD@M (COIN-M): Quantity is in contract units.
+# USD@M (USDT-M , USDC-M , COIN-M): Hedge Mode is available by setting the position mode to hedge mode.
+# USD@M (USDT-M , USDC-M , COIN-M): Margin and leverage settings can be adjusted on the exchange platform.
 
 from bitmart.api_spot import APISpot
 from bitmart.api_contract import APIContract
@@ -222,11 +227,6 @@ class BitmartClient(CryptoBrokerClient):
                 currency_asset = sys_info.get('quote_asset')
                 if currency_asset == 'USD':
                     currency_asset = sys_info.get('base_asset')
-                # try:
-                #     self.API.set_pos
-                
-                # except cloud_exceptions.APIException as apiException:
-                #     print(f"Error switching position mode: ${apiException.response}")
 
                 _side = 1 if str.upper(side) == "BUY" else 4 if str.upper(side) == "SELL" else 0
                 if oc:
@@ -342,8 +342,14 @@ class BitmartClient(CryptoBrokerClient):
                     return r 
                 
             else:
-                time.sleep(2)
-                response = self.API.get_trades(contract_symbol=symbol)
+                response = self.retry_until_response(
+                    func=self.API.get_trades,
+                    is_desired_response=lambda resp: resp[0].get('code') == 1000 and any(item.get('order_id') == order_id for item in resp[0].get('data', [])),
+                    kwargs={'contract_symbol': symbol},
+                    max_attempts=3,
+                    delay_seconds=2,
+                    # skip_first_attempt=True
+                )
 
                 if response[0].get('code') != 1000:
                     raise Exception(response[0].get('msg'))

@@ -1,3 +1,6 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# Futures: Trading not supported by the exchange.
+
 import requests
 import time
 from urllib.parse import urlencode

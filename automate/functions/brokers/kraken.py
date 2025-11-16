@@ -1,3 +1,6 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# Futures: Available for certain account types. Doesn't include expiry and stocks (Not tested yet)
+
 
 import time
 import http.client
@@ -8,10 +11,8 @@ import hmac
 import base64
 import json
 
-
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
-
 
 class KrakenClient(CryptoBrokerClient):
     symbol_cache = {}
@@ -77,9 +78,6 @@ class KrakenClient(CryptoBrokerClient):
             else:
                 headers["API-Key"] = self.api_key
                 headers["API-Sign"] = self._get_signature(query_str+body_str, nonce, path)
-
-        print(headers)
-        print(self.api_secret)
 
         req = urllib.request.Request(
             method=method,
@@ -245,6 +243,7 @@ class KrakenClient(CryptoBrokerClient):
 
             quote_asset = symbol_info.get('quote_asset')
             order_symbol = symbol_info.get('symbol')
+            pair = symbol_info.get('pair', order_symbol)
 
             order_type = "buy" if side.lower() == "buy" else "sell"
 
@@ -252,7 +251,7 @@ class KrakenClient(CryptoBrokerClient):
                 body = {
                     "symbol": order_symbol,
                     "side": order_type.upper(),
-                    "orderType": "MARKET",
+                    "orderType": "mkt",
                     "size": adjusted_quantity,
                 }
                 if oc:
@@ -275,15 +274,14 @@ class KrakenClient(CryptoBrokerClient):
             
             elif self.account_type == "S":
                 body = {
-                        "ordertype": "mkt",
-                        "side": order_type,
-                        "symbol": order_symbol,
-                        "size": str(adjusted_quantity),
+                        "ordertype": "market",
+                        "type": order_type,
+                        "pair": order_symbol,
+                        "volume": str(adjusted_quantity),
                         # "timeinforce": "IOC",
                     }
-                if oc and self.account_type.upper() != "S":
-                    # body["timeinforce"] = "IOC"
-                    body["reduce_only"] = "true"
+                
+                print("Open trade body:", body)
 
                 response = self._request(
                     method="POST",

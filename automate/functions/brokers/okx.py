@@ -1,4 +1,8 @@
 # if account type == F it uses the contract value as the size of the trade and not the base asset
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# Perpetual (USDT-M, USDC-M, COIN-M): Quantity is contract units. Margin is set to isolated by default. Leverage can be set on the exchange.
+# Perpetual (USDT-M, USDC-M, COIN-M): Hedge mode is available by setting position side to hedge mode on the exchange.
+# Expiry futures: asset name should be like BTC-USD-230329 for March 29, 2023 expiry.
 
 import time
 
@@ -6,8 +10,6 @@ from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
 
 from okx import OkxRestClient
-
-
 
 class OkxClient(CryptoBrokerClient):
 
@@ -76,6 +78,7 @@ class OkxClient(CryptoBrokerClient):
     def get_exchange_info(self, symbol):
         try:
             symbol = self.adjust_symbol_name(symbol=symbol)
+            # print("Fetching exchange info for symbol:", symbol)
             
             info = self.api.publicdata.get_instruments(instType=self.inst_type , instId=symbol)
 
@@ -150,6 +153,12 @@ class OkxClient(CryptoBrokerClient):
             order_symbol = sys_info.get('symbol')
             adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, quantity)
 
+            # if not oc and self.account_type == 'P':
+            #     contract_val = sys_info.get('contract_val', 1)
+            #     contract_size = float(adjusted_quantity) / float(contract_val) 
+            #     adjusted_quantity = self.adjust_trade_quantity(sys_info, side, contract_size)
+
+
             print("Adjusted quantity:", adjusted_quantity)
 
             params = {
@@ -158,15 +167,9 @@ class OkxClient(CryptoBrokerClient):
                 "sz": adjusted_quantity,
                 "ordType": "market",
                 'tdMode': 'cash' if self.account_type == 'S' else 'isolated',
-                "clOrdId": custom_id,    
             }
 
             if self.account_type != 'S':
-                # if not oc and self.account_type == 'P':
-                #     contract_val = sys_info.get('contract_val', 1)
-                #     contract_size = float(adjusted_quantity) / float(contract_val) 
-                #     params['sz'] = str(contract_size)
-
                 params['ccy'] = currency_asset
                 params["posSide"] = "long" if str.lower(side) == "buy" else "short" if str.lower(side) == "sell" else "net"
                 if oc:

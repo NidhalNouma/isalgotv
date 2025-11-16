@@ -1,3 +1,5 @@
+# Size will be in lot size and it will be converted to unit size based on the contract size of the symbol.
+
 import requests
 import uuid
 import threading

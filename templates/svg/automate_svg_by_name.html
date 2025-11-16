@@ -28,6 +28,8 @@
   {% include 'svg/kraken.html' with class=class %}
 {% elif broker_type == 'zedcex' %}
   {% include 'svg/zedcex.html' with class=class %}
+{% elif broker_type == 'defx' %}
+  {% include 'svg/defx.html' with class=class %}
 {% elif broker_type == 'hyperliquid' %}
   {% include 'svg/hyperliquid.html' with class=class %}
 {% elif broker_type == 'apex' %}
@@ -56,6 +58,8 @@
   {% include 'svg/tradestation.html' with class=class %}
 {% elif broker_type == 'tradovate' %}
   {% include 'svg/tradovate.html' with class=class %}
+{% elif broker_type == 'alpaca' %}
+  {% include 'svg/alpaca.html' with class=class %}
 {% else %}
   <h3 class="text-title">{{ broker_type }}</h3>
 {% endif %}

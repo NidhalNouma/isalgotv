@@ -28,6 +28,7 @@ from automate.functions.brokers.dxtrade import DxtradeClient
 from automate.functions.brokers.ninjatrader import NinjatraderClient
 from automate.functions.brokers.ctrader import CtraderClient
 from automate.functions.brokers.acttrader import HankoTradeClient
+from automate.functions.brokers.alpaca import AlpacaClient
 
 # Map broker types to their client classes
 CLIENT_CLASSES = {
@@ -47,6 +48,7 @@ CLIENT_CLASSES = {
     'hyperliquid': HyperliquidClient,
 
     'tradelocker': TradeLockerClient,
+    'alpaca': AlpacaClient,
     'ninjatrader': NinjatraderClient,
     'dxtrade': DxtradeClient,
     'ctrader': CtraderClient,
@@ -99,6 +101,8 @@ def check_forex_credentials(broker_type, username, password, server, type="D", a
         return CtraderClient.check_credentials(authorization_code=server, type=type)
     elif broker_type == 'hankotrade':
         return HankoTradeClient.check_credentials(username, password, type)
+    elif broker_type == 'alpaca':
+        return AlpacaClient.check_credentials(username=username, password=password, type=type)
     else:
         raise Exception("Unsupported broker type.")
 

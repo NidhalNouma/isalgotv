@@ -1,4 +1,5 @@
 # PERP Contract are in base Coin in case of not enough balance the size will be adjusted to max available 
+# Hedge mode is not supported
 
 from hyperliquid.info import Info
 from hyperliquid.utils import constants

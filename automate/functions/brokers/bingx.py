@@ -1,7 +1,8 @@
 # CoinM size is in contracts with base currency as margin
 # USDT-M size is in units of the base currency with USDT as margin
 # CoinM and USDT-M futures: Hedge mode available by setting Position Mode to Hedge Mode otherwise One-way mode
-# Spot size is in units of the base currency
+# CoinM and USDT-M futures: Margin and leverage settings can be adjusted on the exchange platform.
+# Spot size is in units of the base currency. Account balance need to have enough base asset and quote asset to trade in both directions.
 
 import time
 import requests

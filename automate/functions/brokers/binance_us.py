@@ -1,4 +1,4 @@
-# Only spot trading is supported.
+# Only spot trading is supported. Account balance needs to have enough base and quote asset to trade in both directions.
 # Spot: Quantity is in base asset units.
 
 import requests
@@ -86,10 +86,24 @@ class BinanceUSClient(CryptoBrokerClient):
         try:
             """Fetch the available balance for a specific asset."""
             response = self._send_request('GET', '/api/v3/account')
-            balances = {item['asset']: {'available': float(item['free']), 'locked': 0} for item in response['balances']}
-            # print("Account balances:", balances)
-            if symbol:
-                return {symbol: balances.get(symbol, {"available": 0, "locked": 0})}
+            response_balances = response.get('balances', [])
+            balances = {}
+
+            for item in response_balances:
+                asset = item.get('asset')
+                free_balance = float(item.get('free', 0))
+                locked_balance = float(item.get('locked', 0))
+                total_balance = free_balance + locked_balance
+
+                if symbol and asset not in symbol:
+                    continue
+
+                balances[asset] = {
+                    'available': str(free_balance),
+                    'locked': str(locked_balance),
+                    'total': str(total_balance)
+                }
+
             return balances
         except Exception as e:
             print('Error getting account balance:', e)
@@ -295,7 +309,7 @@ class BinanceUSClient(CryptoBrokerClient):
                     'low': float(item[3]),
                     'close': float(item[4]),
                     'volume': float(item[5]),
-                    'close_time': self.convert_timestamp(item[6]),
+                    'time': self.convert_timestamp(item[6]),
                     'quote_asset_volume': float(item[7]),
                     'number_of_trades': int(item[8]),
                     'taker_buy_base_asset_volume': float(item[9]),
@@ -318,8 +332,8 @@ class BinanceUSClient(CryptoBrokerClient):
             if isinstance(response, dict) and response.get('code') is not None:
                 raise Exception(response.get('msg', 'Error fetching order book'))
 
-            bids = [[float(price), float(qty)] for price, qty in response.get('bids', [])]
-            asks = [[float(price), float(qty)] for price, qty in response.get('asks', [])]
+            bids = [[{"price": float(price), "qty": float(qty)}] for price, qty in response.get('bids', [])]
+            asks = [[{"price": float(price), "qty": float(qty)}] for price, qty in response.get('asks', [])]
 
             return {
                 'lastUpdateId': response.get('lastUpdateId'),

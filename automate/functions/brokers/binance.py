@@ -1,3 +1,9 @@
+# Spot: Quantity is in base asset units. Account balance needs to have enough base and quote asset to trade in both directions.
+# USDM: Quantity is in base asset units.
+# COINM: Quantity is in contract units.
+# USDM and COINM: Ensure that the account is set to Hedge Mode for dual-side trading.
+# USDM and COINM: Margin and leverage settings can be adjusted on the exchange platform.
+
 from binance.spot import Spot
 from binance.cm_futures import CMFutures
 from binance.um_futures import UMFutures
@@ -142,10 +148,10 @@ class BinanceClient(CryptoBrokerClient):
             }
 
             if self.account_type != "S":
-                try:
-                    self.client.change_position_mode(dualSidePosition=True)
-                except ClientError as e:
-                    print("Error changing position mode:", str(e.error_message))
+                # try:
+                #     self.client.change_position_mode(dualSidePosition=True)
+                # except ClientError as e:
+                #     print("Error changing position mode:", str(e.error_message))
 
                 order_params['positionSide'] = 'LONG' if side.upper() == 'BUY' else 'SHORT'
                 if oc:
