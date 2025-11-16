@@ -1,0 +1,27 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your Metatrader5 Account for Automated Trading</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your Metatrader5 account to IsAlgo's automation system. Follow this step-by-step guide to set up your login details and automate your TradingView strategy execution with Metatrader5 easily and securely." />
+{% endblock %}
+
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Automate' %}
+
+      {% include 'include/docs/automate/add_metatrader5_account.html' %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'What is Metatrader', 'href': '#what-is-metatrader5'}, {'name': 'Login details', 'href': '#api-metatrader5'}, {'name': 'Complete Integration', 'href': '#complete-metatrader5'}]" %}
+      {% with nav_items=nav_json|load_json %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
+      {% endwith %}
+    {% endwith %}
+  </main>
+{% endblock %}

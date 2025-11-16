@@ -1,0 +1,98 @@
+{% load static %}
+<article class="docs">
+  <section id="what-is-kraken">
+    <aside>
+      <h3>What's Kraken?</h3>
+      <p>
+        Kraken is one of the world's largest cryptocurrency exchanges by trading volume. It offers a comprehensive platform for trading various cryptocurrencies, including spot trading, futures, options, and more. <br />The platform is known for its:
+      </p>
+      <ul>
+        <li>High liquidity and trading volume</li>
+        <li>Wide range of supported cryptocurrencies</li>
+        <li>Advanced trading features</li>
+        <li>Robust API for automated trading</li>
+      </ul>
+    </aside>
+  </section>
+  <section id="api-kraken">
+    <aside>
+      <h3>API Key Setup Process</h3>
+      <p>follow the steps below to configure your API Keys.</p>
+    </aside>
+  </section>
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your API keys with anyone. Our platform uses industry-standard encryption to protect your credentials.' %}
+  </div>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create a Kraken Account</h3>
+      <div>
+        <p>
+          Sign up for a Kraken account if you don't have one.
+          <a href="https://invite.kraken.com/JDNW/aj9a2j0n" target="_blank">Sign up here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>2</span> Access API Management</h3>
+      <div>
+        <ol>
+          <li>
+            Log in to your <a href="https://pro.kraken.com/" target="_blank">Kraken Pro account</a>
+          </li>
+          <li>
+            Click on your profile icon in the top-right corner
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-1.png' %}" alt="Kraken - profile icon" />
+          </li>
+          <li>
+            Select "Settings" from the dropdown menu
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-2.png' %}" alt="Kraken - API Management" />
+          </li>
+          <li>
+            Navigate to the "Connections & API" tab
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-4.png' %}" alt="Kraken - API Tab" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>3</span> Create API Key</h3>
+      <div>
+        <ol>
+          <li>Click "Create API Key"</li>
+          <li>
+            Give your API key a descriptive name.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-5.png' %}" alt="Kraken - API key name" />
+          </li>
+          <li>
+            Set permissions to "Query Funds" and "Orders and trades".
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-6.png' %}" alt="Kraken - set API key permissions" />
+          </li>
+          <li>
+            Enable IP address restriction and add our server's IP address: <span>{{ server_ip }}</span>
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-8.png' %}" alt="Kraken - add our server IP address to the whitelist" />
+          </li>
+          <li>Click "Generate Key"</li>
+          <li>
+            Make sure to copy and securely store your API Key and Secret Key as they will be shown only once.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/kraken/step-10.png' %}" alt="Kraken - API key and secret" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section id="complete-kraken">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your API keys, return to our platform's Automate section and use them to link your Kraken account with our automation system. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

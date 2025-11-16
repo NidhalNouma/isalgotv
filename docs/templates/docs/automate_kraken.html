@@ -1,0 +1,27 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your Kraken Account for Automated Trading</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your Kraken account to IsAlgo's automation system. Follow this step-by-step guide to set up your API keys and automate trades directly from your TradingView strategies." />
+{% endblock %}
+
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Automate' %}
+
+      {% include 'include/docs/automate/add_kraken_account.html' %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'What is Kraken', 'href': '#what-is-kraken'}, {'name': 'API Key Setup', 'href': '#api-kraken'}, {'name': 'Complete Integration', 'href': '#complete-kraken'}]" %}
+      {% with nav_items=nav_json|load_json %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
+      {% endwith %}
+    {% endwith %}
+  </main>
+{% endblock %}

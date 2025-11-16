@@ -1,0 +1,27 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your OKX Account for Automated Trading</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your OKX account to IsAlgo's automation system. Set up your API keys and start automating trades directly from your TradingView strategies. Simple step-by-step guide." />
+{% endblock %}
+
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Automate' %}
+
+      {% include 'include/docs/automate/add_okx_account.html' %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'What is OKX?', 'href': '#what-is-okx'}, {'name': 'API Key Setup', 'href': '#api-okx'}, {'name': 'Complete Integration', 'href': '#complete-okx'}]" %}
+      {% with nav_items=nav_json|load_json %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
+      {% endwith %}
+    {% endwith %}
+  </main>
+{% endblock %}

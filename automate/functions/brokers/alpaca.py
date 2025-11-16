@@ -74,13 +74,20 @@ class AlpacaClient(BrokerClient):
             print('Error closing trade:', str(e))
             return {'error': str(e)}
 
-
     def get_order_info(self, symbol, order_id):
         try:
             order = self.client.get_order_by_id(order_id=order_id)
             return order
 
         
+        except Exception as e:
+            raise Exception(e)
+
+    def get_position(self, symbol, order_id):
+        try:
+            pos = self.client.get_open_position(symbol_or_asset_id=symbol)
+            return pos
+
         except Exception as e:
             raise Exception(e)
 

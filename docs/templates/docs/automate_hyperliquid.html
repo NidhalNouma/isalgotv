@@ -1,0 +1,27 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>IsAlgo Documentation | Connect Your Hyperliquid Account for Automated Trading</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="Learn how to securely connect your Hyperliquid account to IsAlgo's automation system. Set up your API keys and start automating trades directly from your TradingView strategies. Simple step-by-step guide." />
+{% endblock %}
+
+{% block page %}
+  <main class="docs-main">
+    {% include 'include/docs/side_nav.html' %}
+    <div class="docs-container">
+      {% include 'include/docs/side_nav_mobile.html' with title='Automate' %}
+
+      {% include 'include/docs/automate/add_hyperliquid_account.html' %}
+    </div>
+
+    {% load custom_tags %}
+    {% with nav_json="[{'name': 'What is Hyperliquid?', 'href': '#what-is-hyperliquid'}, {'name': 'API Key Setup', 'href': '#api-hyperliquid'}, {'name': 'Complete Integration', 'href': '#complete-hyperliquid'}]" %}
+      {% with nav_items=nav_json|load_json %}
+        {% include 'include/docs/right_nav.html' with nav_items=nav_items %}
+      {% endwith %}
+    {% endwith %}
+  </main>
+{% endblock %}

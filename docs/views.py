@@ -59,11 +59,38 @@ def automate_bitmart(request):
 def automate_kucoin(request):
     return render(request, "docs/automate_kucoin.html")
 
+def automate_okx(request):
+    return render(request, "docs/automate_okx.html")
+
+def automate_kraken(request):
+    return render(request, "docs/automate_kraken.html")
+
+def automate_apex(request):
+    return render(request, "docs/automate_apex.html")
+
+def automate_hyperliquid(request):
+    return render(request, "docs/automate_hyperliquid.html")
+
 def automate_coinbase(request):
     return render(request, "docs/automate_coinbase.html")
 
 def automate_tradelocker(request):
     return render(request, "docs/automate_tradelocker.html")
+
+def automate_ctrader(request):
+    return render(request, "docs/automate_ctrader.html")
+
+def automate_hankotrade(request):
+    return render(request, "docs/automate_hankotrade.html")
+
+def automate_alpaca(request):
+    return render(request, "docs/automate_alpaca.html")
+
+def automate_metatrader4(request):
+    return render(request, "docs/automate_metatrader4.html")
+
+def automate_metatrader5(request):
+    return render(request, "docs/automate_metatrader5.html")
 
 def question(request):
     return render(request, "docs/question.html")

@@ -1,0 +1,84 @@
+{% load static %}
+<article class="docs">
+  <section id="what-is-ctrader">
+    <aside>
+      <h3>What's cTrader?</h3>
+      <p>cTrader is a widely used trading platform that offers a robust trading environment for both beginners and experienced traders. It provides:</p>
+      <ul>
+        <li>Advanced charting and analysis tools</li>
+        <li>Automated trading capabilities</li>
+        <li>Secure and reliable execution</li>
+        <li>Extensive broker support</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="api-ctrader">
+    <aside>
+      <h3>cTrader credentials</h3>
+      <p>Follow the steps below to get your cTrader credentials.</p>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Choose a cTrader Broker</h3>
+      <div>
+        <p>To get started with cTrader, choose one of the brokers that support it:</p>
+        <p>Here are some brokers that support cTrader:</p>
+        <ul>
+          <li>
+            <a class="!text-text" href="https://www.icmarkets.com/global/en/" target="_blank">ICMarkets</a>
+          </li>
+          <li>
+            <a class="!text-text" href="https://pepperstone.com/en-au/" target="_blank">Pepperstone</a>
+          </li>
+          <li>
+            <a class="!text-text" href="https://www.fxpro.com/?ib=hSYMJvb8&utm_source=meta&utm_medium=paid_social&utm_campaign=23187477566&adset_id=187920511335&utm_content=780945078205&gad_source=1" target="_blank">FXPro</a>
+          </li>
+        </ul>
+        <p>
+          To see all brokers supporting cTrader, visit the <a class="!text-text" href="https://ctrader.com/brokers" target="_blank">cTrader Brokers List</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>2</span> Create a cTrader Account</h3>
+      <div>
+        <ol>
+          <li>If you don’t already have a cTrader account, visit the website of your chosen broker from the list above.</li>
+          <li>Create an account or log in if you already have one.</li>
+          <li>Open a cTrader trading account (demo or live) from the broker's dashboard.</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>3</span> Get Your cTrader Authentication Code</h3>
+      <div>
+        <ol>
+          <li>
+            Get your cTrader authentication code <button class="!text-text underline" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">here</button> or by clicking on Get code from our automate dashboard when you're adding a cTrader account.
+          </li>
+          <li>
+            From your accounts list select only one account to generate the authentication code for it. If select multiple accounts, the code will be generated for the first one only.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/ctrader/step-1.png' %}" alt="cTrader - Select account to generate authentication code" />
+          </li>
+          <li>Click on "Allow access" to generate your authentication code.</li>
+          <li>Copy the generated authentication code.</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+  <section id="complete-ctrader">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your authentication code, return to our platform's Automate section to link your cTrader account. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

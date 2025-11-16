@@ -1,0 +1,64 @@
+{% comment %}https://alpaca.markets/{% endcomment %}
+
+{% load static %}
+<article class="docs">
+  <section id="what-is-alpaca">
+    <aside>
+      <h3>What's Alpaca?</h3>
+      <p>Alpaca is a commission-free trading platform that provides an API for algorithmic trading. It offers:</p>
+      <ul>
+        <li>Commission-free trading</li>
+        <li>Robust API for algorithmic trading</li>
+        <li>Access to US stock markets</li>
+        <li>Paper trading environment</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="api-alpaca">
+    <aside>
+      <h3>API key setup</h3>
+      <p>Follow the steps below to configure your API Keys.</p>
+    </aside>
+  </section>
+
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your API keys with anyone. Our platform uses industry-standard encryption to protect your credentials.' %}
+  </div>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create an Alpaca Account</h3>
+      <div>
+        <p>
+          Sign up for an Alpaca account if you don't have one.
+          <a href="https://alpaca.markets/" target="_blank">Sign up here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>2</span> Get API Keys</h3>
+      <div>
+        <ol>
+          <li>Log in to your Alpaca account</li>
+          <li>
+            In the Home page, scroll down to the "API Key" section
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/alpaca/step-1.png' %}" alt="Alpaca - API key and secret" />
+          </li>
+          <li>Click on "Regenerate" to generate a new set of keys</li>
+          <li>Copy your API Key and Secret Key for use in our platform</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section id="complete-alpaca">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your API Key and Secret Key, return to our platform's Automate section to link your Alpaca account. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

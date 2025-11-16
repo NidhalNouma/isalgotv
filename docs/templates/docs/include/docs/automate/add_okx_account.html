@@ -1,0 +1,95 @@
+{% load static %}
+<article class="docs">
+  <section id="what-is-okx">
+    <aside>
+      <h3>What's OKX?</h3>
+      <p>
+        OKX is one of the world's largest cryptocurrency exchanges by trading volume. It offers a comprehensive platform for trading various cryptocurrencies, including spot trading, futures, options, and more. <br />The platform is known for its:
+      </p>
+      <ul>
+        <li>High liquidity and trading volume</li>
+        <li>Wide range of supported cryptocurrencies</li>
+        <li>Advanced trading features</li>
+        <li>Robust API for automated trading</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="api-okx">
+    <aside>
+      <h3>API Key Setup Process</h3>
+      <p>follow the steps below to configure your API Keys.</p>
+    </aside>
+  </section>
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your API keys with anyone. Our platform uses industry-standard encryption to protect your credentials.' %}
+  </div>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create an OKX Account</h3>
+      <div>
+        <p>
+          Sign up for an OKX account if you don't have one.
+          <a href="https://okx.com/join/57922525" target="_blank">Sign up here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+  <section>
+    <aside>
+      <h3><span>2</span> Access API Management</h3>
+      <div>
+        <ol>
+          <li>Log in to your OKX account</li>
+          <li>
+            Click on your profile icon in the top-right corner
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-1.png' %}" alt="OKX - profile icon" />
+          </li>
+          <li>
+            Select "API" from the dropdown menu
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-2.png' %}" alt="OKX - API Management" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+  <section>
+    <aside>
+      <h3><span>3</span> Create API Key</h3>
+      <div>
+        <ol>
+          <li>Click "Create API Key"</li>
+          <li>
+            Give your API key a descriptive name.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-4.png' %}" alt="OKX - API key name" />
+          </li>
+          <li>
+            Add our server's IP address to the allowlist: <span>{{ server_ip }}</span>
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-5.png' %}" alt="OKX - add our server IP address to the whitelist" />
+          </li>
+          <li>
+            Set permissions to "Trade".
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-6.png' %}" alt="OKX - set API key permissions" />
+          </li>
+          <li>
+            Set a passphrase for your API key.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-7.png' %}" alt="OKX - set API key passphrase" />
+          </li>
+          <li>Click "Submit all" to create the API keys.</li>
+          <li>
+            Make sure to copy and securely store your API Key, Secret Key and passphrase as they will be shown only once.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/okx/step-8.png' %}" alt="OKX - API key and secret" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section id="complete-okx">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your API keys, return to our platform's Automate section and use them to link your OKX account with our automation system. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

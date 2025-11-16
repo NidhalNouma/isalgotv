@@ -1,67 +1,78 @@
 {% load static %}
 <article class="docs">
+  <section id="what-is-tradelocker">
+    <aside>
+      <h3>What's TradeLocker?</h3>
+      <p>TradeLocker is a trading platform that connects traders with brokers and proprietary trading firms. It offers:</p>
+      <ul>
+        <li>Access to multiple brokers and prop firms</li>
+        <li>Secure trading environment</li>
+        <li>Performance tracking</li>
+        <li>Integration capabilities with trading platforms</li>
+      </ul>
+    </aside>
+  </section>
 
-    <section id="what-is-tradelocker">
-        <aside>
-            <h3>What's TradeLocker?</h3>
-            <p>
-                TradeLocker is a trading platform that connects traders with brokers and proprietary trading firms. It offers:
-            </p>
-            <ul>
-                <li>Access to multiple brokers and prop firms</li>
-                <li>Secure trading environment</li>
-                <li>Performance tracking</li>
-                <li>Integration capabilities with trading platforms</li>
-            </ul>
-        </aside>
-    </section>
-    
-    <section id="api-tradelocker">
-        <aside>
-            <h3>TradeLocker login details</h3>
-            <p>
-                follow the steps below to ge your TradeLocker login details.
-            </p>
-        </aside>
-    </section>
+  <section id="api-tradelocker">
+    <aside>
+      <h3>TradeLocker login details</h3>
+      <p>follow the steps below to ge your TradeLocker login details.</p>
+    </aside>
+  </section>
 
-    <section>
-        <aside>
-            <h3><span>1</span> Create a TradeLocker Account</h3>
-            <div>
-                <ol>
-                    <li>If you don’t already have a TradeLocker account, Visit <a href="https://tradelocker.com/start-trading/" target="_blank">TradeLocker</a>.</li>
-                    <li>Create an account or log in if you already have one.</li>
-                    <li>Choose a broker/prop to trade with from the list of brokers supported by TradeLocker and sign up to it.</li>
-                </ol>
-            </div>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>1</span> Create a TradeLocker Account</h3>
+      <div>
+        <ol>
+          <li>
+            If you don’t already have a TradeLocker account, Visit <a href="https://tradelocker.com/start-trading/" target="_blank">TradeLocker</a>.
+          </li>
+          <li>Create an account or log in if you already have one.</li>
+          <li>Choose a broker/prop to trade with from the list of brokers supported by TradeLocker and sign up to it.</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
 
-    <section>
-        <aside>
-            <h3><span>2</span> Access Your TradeLocker Credentials</h3>
-            <div>
-                <p>After signing up with your chosen broker/prop firm:</p>
-                <ol>
-                    <li>Check your email for TradeLocker login credentials.</li>
-                    <li>Save these credentials securely - you'll need them for platform integration.</li>
-                </ol>
-            </div>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>2</span> Access Your TradeLocker Credentials</h3>
+      <div>
+        <p>After signing up with your chosen broker/prop firm:</p>
+        <ol>
+          <li>Check your email for TradeLocker login credentials.</li>
+          <li>Save these credentials securely - you'll need them for platform integration.</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
 
-    <div class="mb-4">
-        {% include 'include/warnings.html' with warning="Never share your login details with anyone. We use industry-standard encryption to secure your credentials." %}
-    </div>
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your login details with anyone. We use industry-standard encryption to secure your credentials.' %}
+  </div>
 
-    <section id="complete-tradelocker">
-        <aside>
-            <h3>Complete Integration</h3>
-            <p>
-                Once you have your TradeLocker login credentials, return to our platform's Automate section to link your TradeLocker account. This will enable automated trading through our system based on your TradingView alerts.
-            </p>
-        </aside>
-    </section>
+  <section>
+    <aside>
+      <h3><span>3</span> Get your account ID</h3>
+      <div>
+        <p>You can find your account ID in the TradeLocker trading platform.</p>
+        <ol>
+          <li>Log in to the TradeLocker trading platform.</li>
+          <li>
+            Click on your profile icon in the bottom left corner to find your account ID.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tradelocker/step-1.png' %}" alt="TradeLocker - API key and secret" />
+          </li>
+        </ol>
+      </div>
+      <p>By default we will use the first account if you have multiple accounts and you didn't specify a specific account ID.</p>
+    </aside>
+  </section>
 
+  <section id="complete-tradelocker">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your TradeLocker login credentials, return to our platform's Automate section to link your TradeLocker account. This will enable automated trading through our system based on your TradingView alerts.</p>
+    </aside>
+  </section>
 </article>
