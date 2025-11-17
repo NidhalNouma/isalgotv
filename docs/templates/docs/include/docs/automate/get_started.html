@@ -4,8 +4,8 @@
     <aside>
       <h3>How it works</h3>
       <p>TradingView's alert system provides a powerful webhook feature that enables automated trading. When an alert triggers, it sends the alert message to a specified webhook URL, which then forwards the instruction to your broker for execution.</p>
-
-      <img onclick="showModalImages(this)" src="https://isalgotest.s3.amazonaws.com/docs/webhook_url_tv.png" />
+      <p>To utilize this feature, you need to set up alerts in TradingView with messages formatted according to our automation system's requirements. Once configured, TradingView will send these alerts to the webhook URL provided by our platform, allowing for seamless trade execution based on your strategies.</p>
+      {% comment %} <img onclick="showModalImages(this)" src="https://isalgotest.s3.amazonaws.com/docs/webhook_url_tv.png" /> {% endcomment %}
     </aside>
   </section>
 
@@ -14,8 +14,8 @@
       <h3>Built-in Automation System</h3>
       <p>Our platform features a built-in automation system designed to handle TradingView webhook alerts seamlessly. Key benefits include:</p>
       <ul>
-        <li>Support for multiple crypto and forex brokers.</li>
-        <li>Simple broker integration process.</li>
+        <li>Support for multiple crypto, stock, and forex accounts.</li>
+        <li>Simple accounts integration process.</li>
         <li>Comprehensive documentation and setup guides.</li>
         <li>Real-time trade execution monitoring.</li>
       </ul>
@@ -31,16 +31,20 @@
       <p>To begin automating your trades, follow these essential steps:</p>
       <ol class="pl-2 pt-2">
         <li>
-          <span>Link Your Broker</span>
-          <p>Connect your preferred broker by navigating to the Automate page and following the broker-specific integration steps. We support various crypto and forex brokers with secure API integration.</p>
-        </li>
-        <li class="mt-4">
-          <span>Configure Alert Messages</span>
-          <p>Set up your strategy/indicator alert messages in the format required by your automation system. You can generate the correct format using our Alert Playground.</p>
+          <span>Link Your Trading Account</span>
+          <p>
+            Connect your preferred trading account by navigating to <a class="text-text" href="{% url 'automate' %}">the Automate page</a> and following the account-specific integration steps. We support various crypto, stock, and forex accounts with secure API integration.
+          </p>
         </li>
         <li class="mt-4">
           <span>Get Your Webhook URL</span>
-          <p>Obtain your unique webhook URL by adding a broker in the Automate page of our platform. This URL will receive and process your TradingView alerts.</p>
+          <p>After linking your trading account, obtain your unique webhook URL from the Automate page. This URL will receive and process your TradingView alerts.</p>
+        </li>
+        <li class="mt-4">
+          <span>Configure Alert Messages</span>
+          <p>
+            Set up your strategy/indicator alert messages in the format required by your automation system. You can generate the correct format using our <a href="{% url 'docs_automate_playground' %}">Alert Playground.</a>
+          </p>
         </li>
         <li class="mt-4">
           <span>Test Your Setup</span>

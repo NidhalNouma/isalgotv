@@ -2,91 +2,100 @@ import re
 import time
 from automate.functions.alerts_logs_trades import *
 
-def manage_alert(alert_message, account):    
-    start = time.perf_counter()
+def manage_alert(message, account):    
     try:
-        print("Webhook request for account #" + str(account.id) + ": " + alert_message)
+        start = time.perf_counter()
+        alert_messages = str(message).splitlines()
 
-        alert_data = extract_alert_data(alert_message)
-        
-        action = alert_data.get('Action')
-        custom_id = alert_data.get('ID')
+        for alert_message in alert_messages:
+            try:
+                print("Webhook request for account #" + str(account.id) + ": " + alert_message)
 
-        symbol = alert_data.get('Asset')
-        side = alert_data.get('Type')
+                alert_data = extract_alert_data(alert_message)
+                
+                action = alert_data.get('Action')
+                custom_id = alert_data.get('ID')
 
-        partial = alert_data.get('Partial')
-        volume = alert_data.get('Volume')
+                symbol = alert_data.get('Asset')
+                side = alert_data.get('Type')
 
-        reverse = alert_data.get('Reverse')
+                partial = alert_data.get('Partial')
+                volume = alert_data.get('Volume')
 
-        strategy_id = alert_data.get('strategy_ID', None)
+                reverse = alert_data.get('Reverse')
 
-        if not custom_id:
-            raise Exception("No ID found in alert message.")
+                strategy_id = alert_data.get('strategy_ID', None)
 
-        if not action:
-            raise Exception("No action found in alert message.")
+                if not custom_id:
+                    raise Exception("No ID found in alert message.")
 
-        if not symbol:
-            raise Exception("No symbol found in alert message.")
+                if not action:
+                    raise Exception("No action found in alert message.")
 
-        if not side:
-            raise Exception("No side found in alert message.")
+                if not symbol:
+                    raise Exception("No symbol found in alert message.")
 
-        if not volume and action == 'Entry':
-            raise Exception("No volume found in alert message.")
+                if not side:
+                    raise Exception("No side found in alert message.")
 
-        
-        if reverse:
-            custom_id = f"{custom_id}R{reverse}"
+                if not volume and action == 'Entry':
+                    raise Exception("No volume found in alert message.")
 
-        if action == 'Entry':
-            if reverse:
-                trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
+                
+                if reverse:
+                    custom_id = f"{custom_id}R{reverse}"
 
-            trade, closed_trades = open_trade_by_account(account, symbol, side, volume, custom_id, trades_to_close if reverse else [])
+                if action == 'Entry':
+                    if reverse:
+                        trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
 
-            for closed_trade in closed_trades:
-                end_exe_ct = closed_trade.get('end_exe', None)
-                orig_trade = closed_trade.get('orig_trade')
-                print('Closed trade:', closed_trade)
-                if closed_trade.get('error') is not None:
-                    save_log("E", alert_message, f'Opposite order closing error: {closed_trade.get('error')}', account, start, end_exe_ct)
-                else:
-                    closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
-                    rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
+                    trade, closed_trades = open_trade_by_account(account, symbol, side, volume, custom_id, trades_to_close if reverse else [])
 
-                    save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
+                    for closed_trade in closed_trades:
+                        end_exe_ct = closed_trade.get('end_exe', None)
+                        orig_trade = closed_trade.get('orig_trade')
+                        print('Closed trade:', closed_trade)
+                        if closed_trade.get('error') is not None:
+                            save_log("E", alert_message, f'Opposite order closing error: {closed_trade.get('error')}', account, start, end_exe_ct)
+                        else:
+                            closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
+                            rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
 
-            end_exe = trade.get('end_exe', None)
-            # print('Trade:', trade)
-            if trade.get('error') is not None:
-                raise Exception(trade.get('error'))
-            saved_trade = save_new_trade(custom_id, symbol, side, trade, account, strategy_id)
-            save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, start, end_exe, saved_trade)
+                            save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
 
-        elif action == 'Exit':
-            trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
-            if not trade_to_close:
-                raise Exception(f"No trade found to close with ID: {custom_id}")
+                    end_exe = trade.get('end_exe', None)
+                    # print('Trade:', trade)
+                    if trade.get('error') is not None:
+                        raise Exception(trade.get('error'))
+                    saved_trade = save_new_trade(custom_id, symbol, side, trade, account, strategy_id)
+                    save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, start, end_exe, saved_trade)
 
-            volume_close = volume_to_close(trade_to_close, partial)
-            closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
+                elif action == 'Exit':
+                    trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
+                    if not trade_to_close:
+                        raise Exception(f"No trade found to close with ID: {custom_id}")
 
-            end_exe = closed_trade.get('end_exe', None)
+                    volume_close = volume_to_close(trade_to_close, partial)
+                    closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
 
-            if closed_trade.get('error') is not None:
-                raise Exception(closed_trade.get('error'))
-            
-            closed_volume = closed_trade.get('qty', volume_close)
+                    end_exe = closed_trade.get('end_exe', None)
 
-            trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
-            save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
+                    if closed_trade.get('error') is not None:
+                        raise Exception(closed_trade.get('error'))
+                    
+                    closed_volume = closed_trade.get('qty', volume_close)
 
-    except Exception as e:   
-        print('API Error: %s' % e)
-        save_log("E", alert_message, str(e), account, latency_start=start)
+                    trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
+                    save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
+
+            except Exception as e:   
+                print('API Error: %s' % e)
+                save_log("E", alert_message, str(e), account, latency_start=start)
+
+        return {"status": "completed"}
+    except Exception as e:
+        print('General Error: %s' % e)
+        save_log("E", message, str(e), account, latency_start=start)
         return {"error": str(e)}
 
 
