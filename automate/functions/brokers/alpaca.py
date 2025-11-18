@@ -61,8 +61,8 @@ class AlpacaClient(BrokerClient):
                 symbol=symbol,
                 qty=quantity,
                 side=req_side,
-                time_in_force=TimeInForce.IOC,
-                client_order_id=custom_id
+                time_in_force=TimeInForce.GTC,
+                # client_order_id=custom_id
             )
 
             market_order = self.client.submit_order(order_data=order_req)
@@ -89,9 +89,6 @@ class AlpacaClient(BrokerClient):
                 'end_exe': end_exe
             }
 
-            # order_info = self.get_order_info(symbol, close_id)
-            # return order_info
-
         except Exception as e:
             print('Error closing trade:', str(e))
             return {'error': str(e)}
@@ -102,14 +99,14 @@ class AlpacaClient(BrokerClient):
                 func=self.client.get_order_by_id,
                 is_desired_response=lambda resp: resp is not None and resp.status == 'filled',
                 kwargs={'order_id': order_id},
-                max_attempts=4,
+                max_attempts=5,
                 delay_seconds=1,
             )
             
             if not order:
                 raise Exception('Order NA.')
             if order.status != 'filled':
-                raise Exception('Order not filled yet.')
+                raise Exception('Order placed but not filled yet.')
 
             # print(order)
             
