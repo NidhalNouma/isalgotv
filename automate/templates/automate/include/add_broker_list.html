@@ -1,5 +1,46 @@
 {% with btn_class='relative bg-text/5 border border-text/10 hover:bg-text/20 w-full text-text ihover:text-text/80 py-2.5 rounded flex items-center justify-center transition-all' %}
   <div class="px-2 sm:px-6 grid grid-cols-2 gap-3">
+    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Futures, Forex, Stocks and more</h6>
+
+    <button onclick="hideModel('add-broker-modal'); openModel('add-alpaca-modal', false); mountStripeElement('alpaca');" class="{{ btn_class }}">{% include 'svg/alpaca.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-tradelocker-modal', false); mountStripeElement('tradelocker');" class="{{ btn_class }} !py-1.5">{% include 'svg/tradelocker.html' with class='h-6 aspect-auto fill-current' %}</button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader4-modal', false); mountStripeElement('metatrader4');" class="{{ btn_class }}">{% include 'svg/metatrader4.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader5-modal', false); mountStripeElement('metatrader5');" class="{{ btn_class }}">{% include 'svg/metatrader5.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-ctrader-modal', false); mountStripeElement('ctrader');" class="{{ btn_class }}">{% include 'svg/ctrader.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-hankotrade-modal', false); mountStripeElement('hankotrade');" class="{{ btn_class }}">{% include 'svg/hankotrade.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
+
+    {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-dxtrade-modal', false); mountStripeElement('dxtrade');" class="{{ btn_class }}">{% include 'svg/dxtrade.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button> {% endcomment %}
+
+    {% comment %} <button disabled onclick="hideModel('add-broker-modal'); openModel('add-tradovate-modal', false); mountStripeElement('tradovate');" class="{{ btn_class }}">
+      {% include 'svg/tradovate.html' with class='h-5 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button>
+    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-tradestation-modal', false); mountStripeElement('tradestation');" class="{{ btn_class }}">
+      {% include 'svg/tradestation.html' with class='h-3.5 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button> {% endcomment %}
+
+    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Decentralized Exchanges</h6>
+
+    <button onclick="hideModel('add-broker-modal'); openModel('add-apex-modal', false); mountStripeElement('apex');" class="{{ btn_class }}">{% include 'svg/apex.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
+    <button onclick="hideModel('add-broker-modal'); openModel('add-hyperliquid-modal', false); mountStripeElement('hyperliquid');" class="{{ btn_class }}">{% include 'svg/hyperliquid.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
+    {% comment %} <button disabled onclick="hideModel('add-broker-modal'); openModel('add-lighter-modal', false); mountStripeElement('lighter');" class="{{ btn_class }}">
+      {% include 'svg/lighter.html' with class='h-4.5 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button>
+    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-aster-modal', false); mountStripeElement('aster');" class="{{ btn_class }}">
+      {% include 'svg/aster.html' with class='h-4 aspect-auto fill-current text-current' %}
+      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
+        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
+      </div>
+    </button> {% endcomment %}
+
     <h6 class="col-span-full text-text/80 font-semibold text-sm">Centralized Exchanges</h6>
     <button onclick="hideModel('add-broker-modal'); openModel('add-binance-modal', false); mountStripeElement('binance');" class="{{ btn_class }}">{% include 'svg/binance.html' with class='aspect-auto h-4 fill-current max-w-[80%]' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-bitget-modal', false); mountStripeElement('bitget');" class="{{ btn_class }}">{% include 'svg/bitget.html' with class='text-current h-4' %}</button>
@@ -30,47 +71,6 @@
     {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-zedcex-modal', false); mountStripeElement('zedcex');" class="{{ btn_class }} py-2">{% include 'svg/zedcex.html' with class='h-5 aspect-auto fill-current' %}</button> {% endcomment %}
     {% comment %} <button disabled onclick="hideModel('add-broker-modal'); openModel('add-webull-modal', false); mountStripeElement('webull');" class="{{ btn_class }}">
       {% include 'svg/webull.html' with class='h-3.5 aspect-auto fill-current text-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
-    </button> {% endcomment %}
-
-    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Decentralized Exchanges</h6>
-
-    <button onclick="hideModel('add-broker-modal'); openModel('add-apex-modal', false); mountStripeElement('apex');" class="{{ btn_class }}">{% include 'svg/apex.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-hyperliquid-modal', false); mountStripeElement('hyperliquid');" class="{{ btn_class }}">{% include 'svg/hyperliquid.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
-    {% comment %} <button disabled onclick="hideModel('add-broker-modal'); openModel('add-lighter-modal', false); mountStripeElement('lighter');" class="{{ btn_class }}">
-      {% include 'svg/lighter.html' with class='h-4.5 aspect-auto fill-current text-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
-    </button>
-    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-aster-modal', false); mountStripeElement('aster');" class="{{ btn_class }}">
-      {% include 'svg/aster.html' with class='h-4 aspect-auto fill-current text-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
-    </button> {% endcomment %}
-
-    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Futures, Forex, Stocks and more</h6>
-
-    <button onclick="hideModel('add-broker-modal'); openModel('add-tradelocker-modal', false); mountStripeElement('tradelocker');" class="{{ btn_class }} !py-1.5">{% include 'svg/tradelocker.html' with class='h-6 aspect-auto fill-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-alpaca-modal', false); mountStripeElement('alpaca');" class="{{ btn_class }}">{% include 'svg/alpaca.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader4-modal', false); mountStripeElement('metatrader4');" class="{{ btn_class }}">{% include 'svg/metatrader4.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader5-modal', false); mountStripeElement('metatrader5');" class="{{ btn_class }}">{% include 'svg/metatrader5.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-ctrader-modal', false); mountStripeElement('ctrader');" class="{{ btn_class }}">{% include 'svg/ctrader.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
-    <button onclick="hideModel('add-broker-modal'); openModel('add-hankotrade-modal', false); mountStripeElement('hankotrade');" class="{{ btn_class }}">{% include 'svg/hankotrade.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
-
-    {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-dxtrade-modal', false); mountStripeElement('dxtrade');" class="{{ btn_class }}">{% include 'svg/dxtrade.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button> {% endcomment %}
-
-    {% comment %} <button disabled onclick="hideModel('add-broker-modal'); openModel('add-tradovate-modal', false); mountStripeElement('tradovate');" class="{{ btn_class }}">
-      {% include 'svg/tradovate.html' with class='h-5 aspect-auto fill-current text-current' %}
-      <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
-        <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
-      </div>
-    </button>
-    <button disabled onclick="hideModel('add-broker-modal'); openModel('add-tradestation-modal', false); mountStripeElement('tradestation');" class="{{ btn_class }}">
-      {% include 'svg/tradestation.html' with class='h-3.5 aspect-auto fill-current text-current' %}
       <div class="absolute inset-0 bg-background/40 rounded-md flex items-center justify-center">
         <p class="text-text/80 text-xs mt-auto ml-auto">Under development</p>
       </div>
