@@ -1,3 +1,6 @@
+# Trading is in One way only hedging is not supported
+# Offers Stocks, Funds, Crypto, Indices, and options
+
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest, ClosePositionRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
@@ -7,11 +10,14 @@ from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
 from datetime import datetime, timedelta, timezone
 
 from automate.functions.brokers.broker import BrokerClient
+from automate.functions.brokers.types import *
+import time
 
 class AlpacaClient(BrokerClient):
     def __init__(self, account=None, username=None, password=None, server=None, type='L', current_trade=None):
         self.symbols_cache = {}
         self.current_trade = current_trade
+        self.account_currency = self.current_trade.currency if self.current_trade else None
 
         if account:
             self.api_key = account.username
@@ -60,15 +66,31 @@ class AlpacaClient(BrokerClient):
             )
 
             market_order = self.client.submit_order(order_data=order_req)
-            return market_order
+            end_exe = time.perf_counter()
+            order_id = market_order.id
+
+            order_info = self.get_order_info(symbol=symbol, order_id=order_id)
+            return {**order_info, 'end_exe': end_exe}
         except Exception as e:
             print('Error opening trade:', str(e))
             return {'error': str(e)}
         
     def close_trade(self, symbol, side, quantity):
         try:
-            close_pos_req = ClosePositionRequest(qty=quantity)
+            close_pos_req = ClosePositionRequest(qty=str(quantity))
             close_market = self.client.close_position(symbol_or_asset_id=symbol, close_options=close_pos_req)
+            end_exe = time.perf_counter()
+            close_id = close_market.id
+
+            return {
+                'message': f"Trade closed for order ID {id}.", 
+                "closed_order_id": close_id,
+                'qty': close_market.qty,
+                'end_exe': end_exe
+            }
+
+            # order_info = self.get_order_info(symbol, close_id)
+            # return order_info
 
         except Exception as e:
             print('Error closing trade:', str(e))
@@ -76,8 +98,32 @@ class AlpacaClient(BrokerClient):
 
     def get_order_info(self, symbol, order_id):
         try:
-            order = self.client.get_order_by_id(order_id=order_id)
-            return order
+            order = self.retry_until_response(
+                func=self.client.get_order_by_id,
+                is_desired_response=lambda resp: resp is not None and resp.status == 'filled',
+                kwargs={'order_id': order_id},
+                max_attempts=4,
+                delay_seconds=1,
+            )
+            
+            if not order:
+                raise Exception('Order NA.')
+            if order.status != 'filled':
+                raise Exception('Order not filled yet.')
+
+            # print(order)
+            
+            order_data = OrderInfo(
+                symbol=order.symbol,
+                order_id=order.id,
+                volume=order.filled_qty,
+                side=order.side,
+                time=order.filled_at,
+                price=order.filled_avg_price,
+                currency=self.currency,
+                fees=0,
+            )
+            return order_data
 
         
         except Exception as e:
@@ -99,7 +145,19 @@ class AlpacaClient(BrokerClient):
             print(f"Error fetching account info: {e}")
             return None
 
-    def get_account_balance(self):
+    @property
+    def currency(self):
+        if self.account_currency:
+            return self.account_currency
+        account = self.get_account_info()
+        if account:
+            # cache the currency for future calls
+            self.account_currency = getattr(account, 'currency', None)
+            return self.account_currency
+        # return None when account info is not available
+        return None
+
+    def get_account_balance(self, symbol: str = None):
         try:
             account = self.client.get_account()
             return {
@@ -122,8 +180,9 @@ class AlpacaClient(BrokerClient):
             print(f"Error fetching trading pairs: {e}")
             return []
 
-    def get_symbol_info(self, symbol):
+    def get_symbol_info(self, symbol: str):
         try:
+            symbol = symbol.upper()
             if symbol in self.symbols_cache:
                 return self.symbols_cache[symbol]
             asset = self.client.get_asset(symbol)
@@ -241,12 +300,44 @@ class AlpacaClient(BrokerClient):
             print(f"Error fetching historical candles for {symbol}: {e}")
             return []
 
-    def market_and_account_data(self, symbol, intervals, limit = 500):
-        try:
-            symbol_info = self.get_symbol_info(symbol=symbol)
 
+    def market_and_account_data(self, symbol: str, intervals: List[str], limit: int = 500) -> dict:
+        try:
+            history_candles = {}
+            
+            try:
+                symbol_info = self.get_symbol_info(symbol=symbol)
+                symbol = symbol_info.symbol
+            except Exception as e:
+                symbol_info = {}
+                print("Error fetching symbol info:", e)
+
+            for intv in intervals:
+                if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
+                    raise ValueError(f"Invalid interval: {intv}")
+                history_candles[intv] = self.get_history_candles(symbol, intv, limit=limit)
+
+            try:
+                account_balance = self.get_account_balance()
+            except Exception as e:
+                account_balance = {}
+                print("Error fetching account balance:", e)
+
+            try:
+                price = self.get_current_price(symbol)
+            except Exception as e:
+                price = "NA"
+                print("Error fetching price:", e)
+
+            return {
+                'history_candles': history_candles,
+                'account_balance': account_balance,
+                'symbol_info': symbol_info,
+                'current_price': price,
+            }
+        
         except Exception as e:
-            print('')
+            raise ValueError(str(e))
 
 
         

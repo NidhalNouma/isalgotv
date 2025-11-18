@@ -193,7 +193,7 @@ def save_log(response_status, alert_message, response_message, account, latency_
 def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
     order_id = opend_trade.get('order_id') 
     # symbol = opend_trade.get('symbol')
-    volume = opend_trade.get('qty')
+    volume = opend_trade.get('qty') or opend_trade.get('volume')
     price = opend_trade.get('price', 0)
     time = opend_trade.get('time', timezone.now())
     currency = opend_trade.get('currency', '')
