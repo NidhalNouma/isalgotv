@@ -99,7 +99,7 @@ class AlpacaClient(BrokerClient):
                 func=self.client.get_order_by_id,
                 is_desired_response=lambda resp: resp is not None and resp.status == 'filled',
                 kwargs={'order_id': order_id},
-                max_attempts=5,
+                max_attempts=8,
                 delay_seconds=1,
             )
             

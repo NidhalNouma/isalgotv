@@ -158,7 +158,14 @@ class TradeLockerClient(BrokerClient):
             end_exe = time.perf_counter()
             
             if order_id:
-                order = self.get_order(order_id)
+                # order = self.get_order(order_id)
+                order = self.retry_until_response(
+                    func=self.get_order,
+                    is_desired_response=lambda resp: resp is not None,
+                    args=[order_id],
+                    max_attempts=5,
+                    delay_seconds=3
+                )
                 position_id = order.get('positionId') if order else None
                 if position_id:
                     trade_details = self.get_order_info(symbol, position_id)
@@ -293,8 +300,8 @@ class TradeLockerClient(BrokerClient):
             positions = self.retry_until_response(
                 func=self.get_open_trades,
                 is_desired_response=lambda resp: isinstance(resp, list) and len(resp) > 0,
-                max_attempts=3,
-                delay_seconds=4
+                max_attempts=5,
+                delay_seconds=3
             )
             trade_info = [pos for pos in positions if str(pos.get("id")) == str(position_id)]
 

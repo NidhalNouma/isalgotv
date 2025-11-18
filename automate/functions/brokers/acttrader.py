@@ -244,8 +244,12 @@ class ActTrader(BrokerClient):
             contract_size = symbol_info.get('ContractSize', 1)
             trade_min_size = symbol_info.get('MinTradeSize', 1) 
             trade_size_digits = symbol_info.get('tradeSizeDegits', 0)
+
+            trade_to_close = self.get_open_trade(symbol, self.current_trade.order_id)
             
             quantity = self.set_quantity_size(float(quantity), trade_min_size, trade_size_digits)
+            if float(quantity) > float(trade_to_close['qty']):
+                quantity = float(trade_to_close['qty'])
                 
             url = f"{self.API_URL}/api/v2/trading/closetrade"
             headers = {
@@ -373,6 +377,7 @@ class ActTrader(BrokerClient):
                         parsed_time = timezone.make_aware(parsed_time)
                 else:
                     parsed_time = None
+                
                 return {
                     "trade_id": trade.get("TradeID"),
                     "symbol": trade.get("Symbol"),

@@ -56,21 +56,19 @@ class CryptoBrokerAccount(models.Model):
     ]
 
     broker_type = models.CharField(max_length=20, choices=BROKER_TYPES)
-
     type = models.CharField(max_length=2, choices=TYPE, default="S")
 
     name = models.CharField(max_length=100)
     apiKey = models.CharField(max_length=200)
     secretKey = encrypt(models.CharField(max_length=350))
-
-    active = models.BooleanField(default=True)
-
     pass_phrase = models.CharField(max_length=300, blank=True, null=True)  # Optional for brokers that need it
 
+    active = models.BooleanField(default=True)
     custom_id = models.CharField(max_length=30, default="")
+
+    additional_info = models.JSONField(default=dict, blank=True)
     
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -119,13 +117,14 @@ class ForexBrokerAccount(models.Model):
     username = models.CharField(max_length=150, blank=True, null=True) 
     password = encrypt(models.CharField(max_length=150))
     server = models.CharField(max_length=150)
-    
     account_api_id = models.CharField(max_length=100, default="")
 
     custom_id = models.CharField(max_length=100, default="")
     active = models.BooleanField(default=True)
-    created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
 
+    additional_info = models.JSONField(default=dict, blank=True)
+
+    created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -319,17 +318,18 @@ class TradeDetails(models.Model):
     def save(self, *args, **kwargs):
         try:
             # Run adjustments before saving
+            self.pre_save_adjustments()
+
+            filled_volume = float(self.volume) - self.get_total_filled_volume()
+            if filled_volume < float(self.remaining_volume):
+                self.remaining_volume = filled_volume
+
             if float(self.remaining_volume) <= 0:
                 self.status = 'C'
             elif float(self.remaining_volume) < float(self.volume):
                 self.status = 'P'
             else:
                 self.status = 'O'
-            self.pre_save_adjustments()
-
-            filled_volume = float(self.volume) - self.get_total_filled_volume()
-            if filled_volume < float(self.remaining_volume):
-                self.remaining_volume = filled_volume
             
             super(TradeDetails, self).save(*args, **kwargs)
         except Exception as e:
