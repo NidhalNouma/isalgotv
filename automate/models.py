@@ -317,6 +317,13 @@ class TradeDetails(models.Model):
 
     def save(self, *args, **kwargs):
         try:
+            if float(self.remaining_volume) <= 0:
+                self.status = 'C'
+            elif float(self.remaining_volume) < float(self.volume):
+                self.status = 'P'
+            else:
+                self.status = 'O'
+
             # Run adjustments before saving
             self.pre_save_adjustments()
 
@@ -326,10 +333,7 @@ class TradeDetails(models.Model):
 
             if float(self.remaining_volume) <= 0:
                 self.status = 'C'
-            elif float(self.remaining_volume) < float(self.volume):
-                self.status = 'P'
-            else:
-                self.status = 'O'
+
             
             super(TradeDetails, self).save(*args, **kwargs)
         except Exception as e:

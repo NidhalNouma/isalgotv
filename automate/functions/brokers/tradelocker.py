@@ -200,6 +200,13 @@ class TradeLockerClient(BrokerClient):
             
             trade = self.current_trade
 
+            position = self.get_order_info(symbol, trade.order_id)
+            if not position:
+                raise Exception("Open trade not found.")
+
+            if position and  float(quantity) > float(position.get('qty')) and float(position.get('qty')) > 0:
+                quantity = position.get('qty')
+
             json = {
                 "qty": float(quantity),
             }

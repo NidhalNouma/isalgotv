@@ -311,3 +311,84 @@ def volume_to_close(trade, partial):
     else:
         # Return the full volume as a fixed-point decimal string
         return format(Decimal(trade.volume), 'f')
+
+
+def process_alerts_trades(alerts_data, account, start):
+    try:
+        broker_type = account.broker_type
+        
+        client_cls = CLIENT_CLASSES.get(broker_type)
+        if client_cls is None:
+            raise Exception(f"Unsupported broker type: {broker_type}")
+        
+        client = client_cls(account=account)
+
+
+        for alert_data in alerts_data:
+            try:
+                alert_message = alert_data.get('alert_message')
+
+                action = alert_data.get('Action')
+                custom_id = alert_data.get('ID')
+
+                symbol = alert_data.get('Asset')
+                side = alert_data.get('Type')
+
+                partial = alert_data.get('Partial')
+                volume = alert_data.get('Volume')
+
+                strategy_id = alert_data.get('strategy_ID', None)
+
+                reverse = alert_data.get('reverse', None)
+
+                if action == 'Entry':
+                    if reverse:
+                        trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
+                    
+                    closed_trades = client.close_opposite_trades(trades_to_close) if reverse else []
+                    trade = client.open_trade(symbol, side, volume, custom_id)
+
+                    for closed_trade in closed_trades:
+                        end_exe_ct = closed_trade.get('end_exe', None)
+                        orig_trade = closed_trade.get('orig_trade')
+                        print('Closed trade:', closed_trade)
+                        if closed_trade.get('error') is not None:
+                            save_log("E", alert_message, f'Opposite order closing error: {closed_trade.get("error")}', account, start, end_exe_ct)
+                        else:
+                            closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
+                            rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
+
+                            save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
+
+                    end_exe = trade.get('end_exe', None)
+                    # print('Trade:', trade)
+                    if trade.get('error') is not None:
+                        raise Exception(trade.get('error'))
+                    saved_trade = save_new_trade(custom_id, symbol, side, trade, account, strategy_id)
+                    save_log("S", alert_message, f'Order with ID {trade.get("order_id")} was placed successfully.', account, start, end_exe, saved_trade)
+                elif action == 'Exit':
+                    trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
+                    if not trade_to_close:
+                        raise Exception(f"No trade found to close with ID: {custom_id}")
+
+                    volume_close = volume_to_close(trade_to_close, partial)
+                    client.current_trade = trade_to_close
+                    closed_trade = client.close_trade(symbol, side, volume_close)
+
+                    end_exe = closed_trade.get('end_exe', None)
+
+                    if closed_trade.get('error') is not None:
+                        raise Exception(closed_trade.get('error'))
+                    
+                    closed_volume = closed_trade.get('qty', volume_close)
+
+                    trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
+                    save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
+
+            except Exception as e:   
+                print('PA Error: %s' % e)
+                save_log("E", alert_message, str(e), account, latency_start=start)
+
+    except Exception as e:
+        print('process alerts trades error: ', str(e))
+        raise e

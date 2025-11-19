@@ -1,11 +1,13 @@
 import re
 import time
-from automate.functions.alerts_logs_trades import *
+from automate.functions.alerts_logs_trades import process_alerts_trades, save_log
 
 def manage_alert(message, account):    
     try:
         start = time.perf_counter()
         alert_messages = str(message).splitlines()
+
+        alerts_data = []
 
         for alert_message in alert_messages:
             try:
@@ -37,62 +39,39 @@ def manage_alert(message, account):
 
                 if not side:
                     raise Exception("No side found in alert message.")
+                
+                if side not in ['BUY', 'SELL']:
+                    raise Exception("Invalid side value in alert message. Must be 'BUY' or 'SELL'.")
 
                 if not volume and action == 'Entry':
                     raise Exception("No volume found in alert message.")
 
-                
                 if reverse:
                     custom_id = f"{custom_id}R{reverse}"
 
-                if action == 'Entry':
-                    if reverse:
-                        trades_to_close = get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse)
-
-                    trade, closed_trades = open_trade_by_account(account, symbol, side, volume, custom_id, trades_to_close if reverse else [])
-
-                    for closed_trade in closed_trades:
-                        end_exe_ct = closed_trade.get('end_exe', None)
-                        orig_trade = closed_trade.get('orig_trade')
-                        print('Closed trade:', closed_trade)
-                        if closed_trade.get('error') is not None:
-                            save_log("E", alert_message, f'Opposite order closing error: {closed_trade.get('error')}', account, start, end_exe_ct)
-                        else:
-                            closed_volume = closed_trade.get('qty', orig_trade.remaining_volume)
-                            rtrade = update_trade_after_close(orig_trade, closed_volume, closed_trade)
-
-                            save_log("S", alert_message, f'Opposite order with ID {closed_trade.get("order_id")} was closed successfully due to reverse signal.', account, start, end_exe_ct, rtrade)
-
-                    end_exe = trade.get('end_exe', None)
-                    # print('Trade:', trade)
-                    if trade.get('error') is not None:
-                        raise Exception(trade.get('error'))
-                    saved_trade = save_new_trade(custom_id, symbol, side, trade, account, strategy_id)
-                    save_log("S", alert_message, f'Order with ID {trade.get('order_id')} was placed successfully.', account, start, end_exe, saved_trade)
-
-                elif action == 'Exit':
-                    trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
-                    if not trade_to_close:
-                        raise Exception(f"No trade found to close with ID: {custom_id}")
-
-                    volume_close = volume_to_close(trade_to_close, partial)
-                    closed_trade = close_trade_by_account(account, trade_to_close, symbol, side, volume_close)
-
-                    end_exe = closed_trade.get('end_exe', None)
-
-                    if closed_trade.get('error') is not None:
-                        raise Exception(closed_trade.get('error'))
-                    
-                    closed_volume = closed_trade.get('qty', volume_close)
-
-                    trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
-                    save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
+                alerts_data.append({**alert_data, 'custom_id': custom_id, 'reverse': reverse, 'alert_message': alert_message})
 
             except Exception as e:   
                 print('API Error: %s' % e)
                 save_log("E", alert_message, str(e), account, latency_start=start)
 
-        return {"status": "completed"}
+        def _partial_val(item):
+            p = item.get('Partial')
+            if p is None:
+                return 0.0
+            try:
+                s = str(p).strip()
+                if s.endswith('%'):
+                    s = s[:-1]
+                return float(s)
+            except Exception:
+                return 0.0
+
+        alerts_data.sort(key=lambda x: (0, -_partial_val(x)) if str(x.get('Action', '')).lower() == 'exit' else (1, 0))
+
+        process_alerts_trades(alerts_data, account, start=start)
+
+        return {"status": "completed", "processed_alerts": len(alerts_data), "latency": time.perf_counter() - start}
     except Exception as e:
         print('General Error: %s' % e)
         save_log("E", message, str(e), account, latency_start=start)
