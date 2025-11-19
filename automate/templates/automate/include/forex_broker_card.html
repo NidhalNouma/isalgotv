@@ -128,7 +128,7 @@
         </button>
         <span>|</span>
 
-        <form hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{ account.broker_type }}-{{ account.id }}" hx-swap="outerHTML">
+        <form id="logs-form-{{ account.id }}" hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{ account.broker_type }}-{{ account.id }}" hx-swap="outerHTML">
           {% csrf_token %}
           <button type="submit" onclick="openDrawer('drawer-forex-logs-{{ account.id }}', 'bottom')" class="btn-a gap-1">
             <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -147,7 +147,7 @@
         </form>
         <span>|</span>
 
-    <form hx-get="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+    <form id="trades-form-{{ account.id }}" hx-get="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
         type="submit"

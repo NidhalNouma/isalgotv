@@ -196,7 +196,7 @@
     </button>
     <span>|</span>
       
-    <form hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+    <form id="logs-form-{{ account.id }}" hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
         type="submit"
@@ -209,7 +209,7 @@
     </form>
       <span>|</span>
 
-    <form hx-get="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
+    <form id="trades-form-{{ account.id }}" hx-get="{% url 'get_trades' account.broker_type account.id %}" hx-target="#trades-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
         type="submit"
