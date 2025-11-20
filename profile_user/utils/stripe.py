@@ -68,21 +68,21 @@ def check_coupon_fn(coupon_id, plan_id, price, customer_id):
 
             coupon_off = str(-coupon.amount_off) + '$'
         
-        if coupon_id.find("QUAT") >= 0 or coupon_id.find("QUAR") >= 0:
-            if plan_id != "QUARTERLY":
-                raise Exception("Coupon code is not valid for this plan.")
-        elif coupon_id.find("MN") >= 0:
-            if plan_id != "MONTHLY":
-                raise Exception("Coupon code is not valid for this plan.")
-        elif coupon_id.find("LIFETIME") >= 0:
-            if plan_id != "LIFETIME":
-                raise Exception("Coupon code is not valid for this plan.")
-        if plan_id == "LIFETIME":
-            if coupon_id.find("BETA") >= 0:
-                price = orig_price
-                raise Exception("This is a beta plan, you cannot use it on lifetime plan.")
-            elif coupon_id.find("LIFETIME") < 0:
-                raise Exception("Coupon code is not valid for lifetime plan.")
+        # if coupon_id.find("QUAT") >= 0 or coupon_id.find("QUAR") >= 0:
+        #     if plan_id != "QUARTERLY":
+        #         raise Exception("Coupon code is not valid for this plan.")
+        # elif coupon_id.find("MN") >= 0:
+        #     if plan_id != "MONTHLY":
+        #         raise Exception("Coupon code is not valid for this plan.")
+        # elif coupon_id.find("LIFETIME") >= 0:
+        #     if plan_id != "LIFETIME":
+        #         raise Exception("Coupon code is not valid for this plan.")
+        # if plan_id == "LIFETIME":
+        #     if coupon_id.find("BETA") >= 0:
+        #         price = orig_price
+        #         raise Exception("This is a beta plan, you cannot use it on lifetime plan.")
+        #     elif coupon_id.find("LIFETIME") < 0:
+        #         raise Exception("Coupon code is not valid for lifetime plan.")
             
         return (price, coupon_off, promo_id)
     except Exception as e:
