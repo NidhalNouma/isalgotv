@@ -223,7 +223,8 @@ class BrokerClient(abc.ABC):
 
         for attempt in range(1, max_attempts + 1):
             if skip_first_attempt and attempt == 1:
-                print(f"⏭️ Skipping first call on attempt {attempt}")
+                # print(f"⏭️ Skipping first call on attempt {attempt} for function {func.__name__}")
+                pass
             else:
                 response = func(*args, **kwargs)
                 
@@ -234,13 +235,13 @@ class BrokerClient(abc.ABC):
                     success = response == is_desired_response
 
                 if success:
-                    print(f"✅ Success on attempt {attempt}")
+                    # print(f"✅ Success on attempt {attempt} for function {func.__name__}")
                     return response
 
-                print(f"⚠️ Attempt {attempt} failed. Retrying in {delay_seconds} seconds...")
+                print(f"⚠️ Attempt {attempt} failed. Retrying in {delay_seconds} seconds for function {func.__name__}...")
             time.sleep(delay_seconds)
 
-        print("❌ Max attempts reached. Returning last response.")
+        print(f"❌ Max attempts reached for function {func.__name__}. Returning last response.")
         return response
 
 

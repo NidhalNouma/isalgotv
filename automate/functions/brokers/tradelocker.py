@@ -36,11 +36,15 @@ class TradeLockerClient(BrokerClient):
 
     def _login(self):
         try:
-            request = requests.post(f"{self.enviroment_url}/backend-api/auth/jwt/token", json={
-                "email": self.username,
-                "password": self.password,
-                "server": self.server
-            })
+            request = requests.post(
+                f"{self.enviroment_url}/backend-api/auth/jwt/token",
+                json={
+                    "email": self.username,
+                    "password": self.password,
+                    "server": self.server
+                },
+                timeout=5
+            )
             request.raise_for_status()
             data = request.json()
             self.access_token = data.get("accessToken")
@@ -99,13 +103,37 @@ class TradeLockerClient(BrokerClient):
             headers["accNum"] = str(self.account_number)
         try:
             if method == "GET":
-                response = requests.get(url, headers=headers, params=data)
+                response = self.retry_until_response(
+                    func=requests.get,
+                    is_desired_response=lambda resp: resp.status_code < 500,
+                    kwargs={'url': url, 'headers': headers, 'params': data, 'timeout': 5},
+                    max_attempts=3,
+                    delay_seconds=2
+                )
             elif method == "POST":
-                response = requests.post(url, headers=headers, json=data)
+                response = self.retry_until_response(
+                    func=requests.post,
+                    is_desired_response=lambda resp: resp.status_code < 500,
+                    kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
+                    max_attempts=3,
+                    delay_seconds=2
+                )
             elif method == "PUT":
-                response = requests.put(url, headers=headers, json=data)
+                response = self.retry_until_response(
+                    func=requests.put,
+                    is_desired_response=lambda resp: resp.status_code < 500,
+                    kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
+                    max_attempts=3,
+                    delay_seconds=2
+                )
             elif method == "DELETE":
-                response = requests.delete(url, headers=headers, json=data)
+                response = self.retry_until_response(
+                    func=requests.delete,
+                    is_desired_response=lambda resp: resp.status_code < 500,
+                    kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
+                    max_attempts=3,
+                    delay_seconds=2
+                )
             else:
                 raise ValueError("Invalid HTTP method.")
 
@@ -632,4 +660,3 @@ class TradeLockerClient(BrokerClient):
             }
         except Exception as e:
             return {'error': str(e)}
-
