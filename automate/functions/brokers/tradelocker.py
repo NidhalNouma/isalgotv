@@ -107,7 +107,7 @@ class TradeLockerClient(BrokerClient):
                     func=requests.get,
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'params': data, 'timeout': 5},
-                    max_attempts=3,
+                    max_attempts=5,
                     delay_seconds=2
                 )
             elif method == "POST":
@@ -115,7 +115,7 @@ class TradeLockerClient(BrokerClient):
                     func=requests.post,
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
-                    max_attempts=3,
+                    max_attempts=5,
                     delay_seconds=2
                 )
             elif method == "PUT":
@@ -123,7 +123,7 @@ class TradeLockerClient(BrokerClient):
                     func=requests.put,
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
-                    max_attempts=3,
+                    max_attempts=5,
                     delay_seconds=2
                 )
             elif method == "DELETE":
@@ -131,7 +131,7 @@ class TradeLockerClient(BrokerClient):
                     func=requests.delete,
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
-                    max_attempts=3,
+                    max_attempts=5,
                     delay_seconds=2
                 )
             else:

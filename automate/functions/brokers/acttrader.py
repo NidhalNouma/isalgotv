@@ -46,9 +46,18 @@ class ActTrader(BrokerClient):
             return {"error": None, "valid": True}
         except Exception as e:
             return {"error": str(e), "valid": False}
+        
+    def _send_request(self, method, endpoint, params=None, data=None, headers=None, auth=None, timeout=10):
+        url = f"{self.API_URL}{endpoint}"
+        if headers is None:
+            headers = {}
+        headers["Authorization"] = f"Bearer {self.accessToken}"
+        
+        response = self.s.request(method, url, params=params, json=data, headers=headers, auth=auth, timeout=timeout)
+        response.raise_for_status()
+        return response.json()
 
     def login(self):
-        url = f"{self.API_URL}/api/v2/auth/token"
         params = {
             "lifetime": 20 # Token lifetime in minutes
         }
@@ -61,8 +70,7 @@ class ActTrader(BrokerClient):
         # Basic Auth credentials
         auth = (self.username,  self.password)
 
-        response = self.s.get(url, params=params, headers=headers, auth=auth)
-        response = response.json()
+        response = self._send_request("GET", "/api/v2/auth/token", params=params, headers=headers, auth=auth)
 
         if response.get('success', False):
             self.accessToken = response.get('result', '')
@@ -74,7 +82,6 @@ class ActTrader(BrokerClient):
         
     def get_account_info(self):
         try:
-            url = f"{self.API_URL}/api/v2/account/accounts"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -85,9 +92,8 @@ class ActTrader(BrokerClient):
                 "token": self.accessToken
             }
 
-            response = self.s.get(url, params=params, headers=headers)
-            response = response.json()
-
+            response = self._send_request("GET", "/api/v2/account/accounts", params=params, headers=headers)
+            
             if response.get('success', False):
                 accounts = response.get('result', [])
                 # print('Accounts found:', accounts)
@@ -127,7 +133,6 @@ class ActTrader(BrokerClient):
             if symbol in self.symbols_map:
                 return self.symbols_map[symbol]
             
-            url = f"{self.API_URL}/api/v2/market/symbols"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -138,8 +143,7 @@ class ActTrader(BrokerClient):
                 "symbol": symbol
             }
 
-            response = self.s.get(url, params=params, headers=headers)
-            response = response.json()
+            response =self._send_request("GET", "/api/v2/market/symbols", params=params, headers=headers)
 
             if response.get('success', False):
                 instruments = response.get('result', [])
@@ -188,8 +192,7 @@ class ActTrader(BrokerClient):
 
             quantity = float(quantity) * float(contract_size)
             quantity = self.set_quantity_size(quantity, min_size, trade_size_digits)
-
-            url = f"{self.API_URL}/api/v2/trading/placemarket"
+            
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -205,13 +208,11 @@ class ActTrader(BrokerClient):
                 "quantity": quantity,
                 "commentary": custom_id
             }
-
             # print('Open trade params:', params, contract_size, min_size)
 
-            response = self.s.get(url, params=params, headers=headers)
+            response = self._send_request("GET", "/api/v2/trading/placemarket", params=params, headers=headers)
 
             end_exe = time.perf_counter()
-            response = response.json()
 
             if response.get('success', False):
                 trade_info = response.get('result', {})
@@ -251,7 +252,6 @@ class ActTrader(BrokerClient):
             if float(quantity) > float(trade_to_close['qty']):
                 quantity = float(trade_to_close['qty'])
                 
-            url = f"{self.API_URL}/api/v2/trading/closetrade"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -269,10 +269,9 @@ class ActTrader(BrokerClient):
                 "quantity": quantity
             }
 
-            response = self.s.get(url, params=params, headers=headers)
+            response = self._send_request("GET", "/api/v2/trading/closetrade", params=params, headers=headers)
 
             end_exe = time.perf_counter()
-            response = response.json()
             # print('Close trade response:', response)
 
             if response.get('success', False):
@@ -307,7 +306,6 @@ class ActTrader(BrokerClient):
         try:
             symbol = self.adjust_symbol_name(symbol)
 
-            url = f"{self.API_URL}/api/v2/trading/opentrades"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -317,8 +315,7 @@ class ActTrader(BrokerClient):
                 "token": self.accessToken
             }
 
-            response = self.s.get(url, params=params, headers=headers)
-            response = response.json()
+            response = self._send_request("GET", "/api/v2/trading/opentrades", params=params, headers=headers)
 
             if response.get('success', False):
                 open_trades = response.get('result', [])
@@ -361,8 +358,7 @@ class ActTrader(BrokerClient):
                 "token": self.accessToken
             }
 
-            response = self.s.get(url, params=params, headers=headers)
-            response = response.json()
+            response = self._send_request("GET", "/api/v2/trading/opentrades", params=params, headers=headers)
 
             if response.get('success', False):
                 open_trades = response.get('result', [])
@@ -396,7 +392,6 @@ class ActTrader(BrokerClient):
     def get_closed_trades(self, symbol: str, trade_id: str, from_date: str = None, to_date: str = None) -> list:
         try:
             symbol = self.adjust_symbol_name(symbol)
-            url = f"{self.API_URL}/api/v2/trading/tradehistory"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -413,8 +408,7 @@ class ActTrader(BrokerClient):
             if to_date:
                 params['to'] = to_date
 
-            response = self.s.get(url, params=params, headers=headers)
-            response = response.json()
+            response = self._send_request("GET", "/api/v2/trading/tradehistory", params=params, headers=headers)
 
             if response.get('success', False):
                 closed_trades = response.get('result', [])
@@ -473,7 +467,6 @@ class ActTrader(BrokerClient):
 
     def get_trading_pairs(self):
         try:
-            url = f"{self.API_URL}/api/v2/market/symbols"
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -483,8 +476,7 @@ class ActTrader(BrokerClient):
                 "token": self.accessToken
             }
 
-            response = self.s.get(url, params=params, headers=headers)
-            response = response.json()
+            response = self._send_request("GET", "/api/v2/market/symbols", params=params, headers=headers)
 
             if response.get('success', False):
                 instruments = response.get('result', [])
