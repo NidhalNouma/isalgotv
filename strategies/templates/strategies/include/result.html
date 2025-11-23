@@ -184,9 +184,10 @@
 
   {% include 'include/images.html' with images=result.images.all %}
 
-  <div class="mb-0.5 mt-1.5 flex items-center">
+  <div class="mb-0.5 mt-1.5 space-x-3 flex items-center">
     <span class="text-text/50 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ result.created_by.get_tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ result.created_by.get_tradingview_username }}</a></span>
-    <span class="mx-3 text-text/50 text-xs">{{ result.created_at|concise_timesince }} ago</span>
+    {% comment %} <span class="text-text/50 text-xs">{{ result.created_at|concise_timesince }} ago</span> {% endcomment %}
+    <span class="text-text/50 text-xs">{{ result.test_start_at|date:'M d Y' }} &#8594; {{ result.test_end_at|date:'M d Y' }}</span>
 
     <div class="">
       <button id="shareButton-{{ result.id }}" class="text-text/80 flex items-center text-xs px-0 rounded box-border">
@@ -235,21 +236,17 @@
       })
     </script>
   </div>
-
   <div id="replies-{{ result.id }}-result" class="">
     {% include 'include/result_replies.html' %}
   </div>
 </div>
 
 <script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function () {
-    if (getNumberOfLines("paragraph-result-{{result.id}}") <= 3) {
-      document
-        .getElementById("paragraph-result-{{result.id}}")?
-        .classList.add("line-clamp-3");
-      document
-        .getElementById("show-paragraph-result-{{result.id}}")?
-        .classList.add("hidden");
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.getElementById('paragraph-result-{{result.id}}') === null) return
+    if (getNumberOfLines('paragraph-result-{{result.id}}') <= 3) {
+      document.getElementById('paragraph-result-{{result.id}}').classList.add('line-clamp-3')
+      document.getElementById('show-paragraph-result-{{result.id}}').classList.add('hidden')
     }
-  });
+  })
 </script>

@@ -686,15 +686,15 @@ async function onAutomateAccountAdd(title, errorDivName, event) {
   const pmValue = document.getElementById("pm-" + title);
 
   const paymentsList = document.getElementById("payment-card-list-" + title);
-  
+
   const errorDiv = document.getElementById(errorDivName);
   if (errorDiv) errorDiv.innerHTML = "";
-  
+
   if (!pmValue && !paymentsList) {
     form.dispatchEvent(new Event("submit"));
     return true;
   }
-  
+
   console.log("Checking card for " + title + " ... " + pmValue.value);
   if (
     pmValue.value.length === 0 ||
@@ -1491,8 +1491,24 @@ function transformToTimeProfitForChart(data) {
     return { time: [], profit: [startBalance] };
   }
 
+  const theader = data[0];
+
+  const tIndex = theader.indexOf("Date/Time");
+  const pIndexName = theader.find(
+    (text) =>
+      ["Net P&L", "Profit"].some((keyword) => text.includes(keyword)) &&
+      !text.includes("%")
+  );
+  const pIndex = theader.indexOf(pIndexName);
+
+  if (tIndex === -1 || pIndex === -1) {
+    console.error("Required columns not found in header.");
+    return { time: [], profit: [startBalance] };
+  }
+
   // skip header and filter only exit rows
   const rows = data.slice(1);
+
   const exitRows = rows.filter(
     (row) =>
       typeof row[1] === "string" && row[1].toLowerCase().startsWith("exit")
@@ -1506,12 +1522,14 @@ function transformToTimeProfitForChart(data) {
 
   // accumulate profit
   exitRows.forEach((row) => {
-    const t = row[3];
-    const p = parseFloat(row[6]) || 0;
+    let t = row[tIndex];
+    const p = parseFloat(row[pIndex]) || 0;
     cumulative += p;
     time.push(t);
     profit.push(cumulative);
   });
+
+  // console.log("Transformed series:", { time, profit });
 
   return { time, profit };
 }
@@ -1727,6 +1745,7 @@ function loadChart(id) {
 
 function getNumberOfLines(id) {
   const element = document.getElementById(id);
+  if (!element) return 0;
   let lineHeight = parseFloat(window.getComputedStyle(element).lineHeight);
   let totalHeight = element.scrollHeight;
   // console.log(totalHeight, totalHeight / lineHeight);
