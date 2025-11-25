@@ -2132,3 +2132,14 @@ document.addEventListener("DOMContentLoaded", function () {
     observer_dn.observe(el);
   });
 });
+
+function getTopPositionFromParent(elementId, parentId) {
+  const element = document.getElementById(elementId);
+  const rect = element.getBoundingClientRect();
+  const parent = document.getElementById(parentId);
+  const parentRect = parent.getBoundingClientRect();
+  if (parentRect.top > rect.top) {
+    return 0;
+  }
+  return parentRect.top - rect.top;
+}
