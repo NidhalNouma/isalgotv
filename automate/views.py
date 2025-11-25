@@ -341,12 +341,6 @@ def toggle_broker(request, broker_type, pk):
 
         model_instance.active = not model_instance.active
 
-        if broker_type == "metatrader4" or broker_type == "metatrader5":
-            # Undeploy/Deploy the account
-            deploy_undeploy = MetatraderClient(account=model_instance).deploy_undeploy_account(deploy=model_instance.active)
-            if "error" in deploy_undeploy:
-                raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
-
         if model_instance.subscription_id != 'free_access':
              # Pause/Resume subscription
             if model_instance.subscription_id:
@@ -362,6 +356,12 @@ def toggle_broker(request, broker_type, pk):
                         model_instance.subscription_id,
                         pause_collection=''
                     )
+
+        if broker_type == "metatrader4" or broker_type == "metatrader5":
+            # Undeploy/Deploy the account
+            deploy_undeploy = MetatraderClient(account=model_instance).deploy_undeploy_account(deploy=model_instance.active)
+            if "error" in deploy_undeploy:
+                raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
 
         model_instance.save()
 
