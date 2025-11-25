@@ -229,7 +229,6 @@ def edit_broker(request, broker_type, pk):
             crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
-
             if broker_type == "metatrader4" or broker_type == "metatrader5":
                 raise Exception("Editing of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed.")
 

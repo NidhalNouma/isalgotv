@@ -128,8 +128,10 @@ class MetatraderClient(BrokerClient):
                 return {"error": data.get("message"),  "valid": False}
             
             data["valid"] = True
-            data["account_api_id"] = data.get("id", "")
-            data["account_type"] = 'demo' if 'demo' in str(data.get("server", "")).lower() else 'live'
+            account_api_id = data.get("id", "")
+            data["account_api_id"] = account_api_id
+            client.account_api_id = account_api_id
+            data["account_type"] = 'D' if 'demo' in account_server.lower() else 'L'
             return data
         except Exception as e:
             print("Error:", e)
@@ -206,7 +208,7 @@ class MetatraderClient(BrokerClient):
             print("Error:", e)
             return {"error": str(e)}
             
-    def get_account_information(self):
+    def get_account_info(self):
         """
         Get account information for a given account API id.
         
@@ -235,7 +237,7 @@ class MetatraderClient(BrokerClient):
         
     def get_trade_currency(self):
         try:
-            acc = self.get_account_information()
+            acc = self.get_account_info()
             currency = acc.get('currency', None)
             return currency
         except Exception as e:
