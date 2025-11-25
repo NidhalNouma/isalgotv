@@ -235,9 +235,15 @@ function changeHidden(id1, id2, className) {
   }
 }
 
-function toggleHiddenData(dataKey, key) {
+function toggleHiddenData(dataKey, key, defaultState = null) {
   document.querySelectorAll(`tr[${dataKey}="${key}"]`).forEach((row) => {
-    row.classList.toggle("hidden");
+    if (defaultState === null) {
+      row.classList.toggle("hidden");
+    } else if (defaultState === true) {
+      row.classList.add("hidden");
+    } else if (defaultState === false) {
+      row.classList.remove("hidden");
+    }
   });
 }
 

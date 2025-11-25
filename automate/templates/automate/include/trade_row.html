@@ -4,25 +4,27 @@
   <td class="px-4 py-3 text-xs text-text/80 truncate">
     <span class="text-[0.7rem]">{{ trade.order_id }}</span> <br /> <span class="text-[0.7rem]">{{ trade.custom_id }}</span>
   </td>
-  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 text-xs text-text truncate flex items-center my-auto h-full gap-0.5">
-    {% if trade.status == 'O' %}
-      <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
-    {% elif trade.status == 'P' %}
-      <span class="text-text bg-text/10 group-hover:bg-text/20 transition-colors px-2 py-0.5 rounded-md">Partially Closed</span>
-    {% elif trade.status == 'C' %}
-      <span class="text-accent/60 bg-accent/5 group-hover:bg-accent/20 transition-colors px-2 py-0.5 rounded-md">Closed</span>
-    {% else %}
-      <span class="text-text/80">NA</span>
-    {% endif %}
+  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs text-text truncate align-middle">
+    <div class="flex items-center justify-center gap-0.5">
+      {% if trade.status == 'O' %}
+        <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
+      {% elif trade.status == 'P' %}
+        <span class="text-text bg-text/10 group-hover:bg-text/20 transition-colors px-2 py-0.5 rounded-md">Partially Closed</span>
+      {% elif trade.status == 'C' %}
+        <span class="text-accent/60 bg-accent/5 group-hover:bg-accent/20 transition-colors px-2 py-0.5 rounded-md">Closed</span>
+      {% else %}
+        <span class="text-text/80">NA</span>
+      {% endif %}
 
-    {% if trade.fills|length > 0 %}
-      <svg class="h-3 aspect-auto text-text/80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="m3 16 4 4 4-4" />
-        <path d="M7 20V4" />
-        <path d="m21 8-4-4-4 4" />
-        <path d="M17 4v16" />
-      </svg>
-    {% endif %}
+      {% if trade.fills|length > 0 %}
+        <svg class="h-3 aspect-auto text-text/80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 16 4 4 4-4" />
+          <path d="M7 20V4" />
+          <path d="m21 8-4-4-4 4" />
+          <path d="M17 4v16" />
+        </svg>
+      {% endif %}
+    </div>
   </td>
   <td class="px-4 py-3 text-xs text-text truncate">{{ trade.symbol }}</td>
   <td class="px-4 py-3 text-xs truncate">
@@ -85,15 +87,15 @@
   </td>
   {% if trade.status != 'C' %}
     <td class="px-4 py-3 text-xs truncate text-error">
-      <form id="form-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" hx-post="{% url 'close_trade' broker_type id trade.id %}" hx-target="#form-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" hx-swap="outerHTML">
+      <form id="form-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" hx-post="{% url 'close_trade' broker_type id trade.id %}" hx-target="#form-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" hx-swap="outerHTML" >
         {% csrf_token %}
         <div id="close-trade-{{ broker_type }}-{{ id }}-{{ trade.id }}" class="absolute hidden flex-col space-y-3 right-0 top-0 z-50 w-64 p-4 rounded-md bg-background border border-text/20 overflow-wrap break-words shadow-lg">
           <h6 class="text-sm text-text font-normal">Closing trade</h6>
-          <input type="number" name="close_volume" min="0" max="{{ trade.remaining_volume|trim_zeros }}" value="{{ trade.remaining_volume|trim_zeros }}" step="any" inputmode="decimal" pattern="[0-9]+([.,][0-9]+)?" class="input-text" placeholder="Volume to close" />
-          <p class="max-w-full w-full text-error text-xs break-words mt-1" id="{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade-form-errors"></p>
+          <input type="number" name="close_volume" min="0" max="{{ trade.remaining_volume|trim_zeros }}" value="{{ trade.remaining_volume|trim_zeros }}" step="any" inputmode="decimal" pattern="[0-9]+([.,][0-9]+)?" class="input-text" placeholder="Volume to close" oninvalid="closeLoader('', '-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade', 'flex')" />
+          <p class="max-w-full w-full text-error text-xs break-words mt-1 overflow-auto" id="{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade-form-errors"></p>
           <div class="flex justify-between gap-2 w-full">
             <button type="button" class="btn-icon !font-light" onclick="document.getElementById('close-trade-{{ broker_type }}-{{ id }}-{{ trade.id }}').classList.add('hidden'); document.getElementById('close-trade-{{ broker_type }}-{{ id }}-{{ trade.id }}').classList.remove('flex'); closeLoader('', '-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade', 'flex')">Cancel</button>
-            <button id="btn-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" type="submit" class="btn-text !border-none !font-light" onclick="openLoader('', '-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade', 'flex');">
+            <button id="btn-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" type="submit" class="btn-text !border-none !font-light" onclick="openLoader('', '-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade', 'flex'); toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}', true);">
               Close<svg class="h-3.5 aspect-square ml-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" fill="currentColor">
                 <path fill-rule="evenodd" d="M6 2C3.79086 2 2 3.79086 2 6V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V6C22 3.79086 20.2091 2 18 2H6ZM4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6ZM15.7063 8.29204C16.0968 8.68256 16.0968 9.31573 15.7063 9.70625L13.4134 11.9991L15.7063 14.292C16.0968 14.6826 16.0968 15.3157 15.7063 15.7063C15.3157 16.0968 14.6826 16.0968 14.292 15.7063L11.9991 13.4134L9.70625 15.7063C9.31573 16.0968 8.68256 16.0968 8.29204 15.7063C7.90151 15.3157 7.90151 14.6826 8.29204 14.292L10.5849 11.9991L8.29204 9.70625C7.90151 9.31573 7.90151 8.68256 8.29204 8.29204C8.68256 7.90151 9.31573 7.90151 9.70625 8.29204L11.9991 10.5849L14.292 8.29204C14.6826 7.90151 15.3157 7.90151 15.7063 8.29204Z" clip-rule="evenodd" />
               </svg>

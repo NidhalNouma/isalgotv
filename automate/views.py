@@ -727,7 +727,10 @@ def get_broker_trades(request, broker_type, pk):
 @require_http_methods(["POST"])
 def close_trade(request, broker_type, pk, trade_id):
     try:
-        volume = float(request.POST.get('close_volume', 0))
+        volume_str = request.POST.get('close_volume')
+        if not volume_str:
+            raise ValueError("Close volume not provided.")
+        volume = float(volume_str)
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
@@ -740,16 +743,23 @@ def close_trade(request, broker_type, pk, trade_id):
 
         content_type = ContentType.objects.get_for_model(type(account))
         trade = TradeDetails.objects.get(content_type=content_type, object_id=pk, id=trade_id)
+        fills_lengths = len(trade.fills)
 
         # Call the function to close the trade
         close_response = close_open_trade(account, trade, volume)
         if close_response:
-            response = render(request, 'include/trade_row.html', context={'trade': trade, 'broker_type': broker_type, 'id': pk})
+            # Update the trade fills with any new fills from the close response
+            new_fills = close_response.fills
+            new_fills = new_fills[fills_lengths:] if new_fills and len(new_fills) > 0 else []
+
+            closed_trade = {**trade.__dict__, 'fills': new_fills}
+
+            response = render(request, 'include/trade_row.html', context={'trade': closed_trade, 'broker_type': broker_type, 'id': pk})
             return retarget(response, f'#trade-{broker_type}-{pk}-{trade.id}')
         else:
             raise Exception("Failed to close the trade.")
     except Exception as e:
-        html_error = f'<p class="max-w-full w-full text-error text-xs break-words mt-0.5" id="{broker_type}-{pk}-{trade_id}-closetrade-form-errors">{str(e)}</p>'
+        html_error = f'<p class="max-w-full w-full text-error text-xs break-words mt-0.5 overflow-auto" id="{broker_type}-{pk}-{trade_id}-closetrade-form-errors">{str(e)}</p>'
         response = HttpResponse(html_error, content_type="text/html")
         # response = render(request, "include/errors.html", context={'error': e, 'class': 'text-xs'})
         return retarget(response, f'#{broker_type}-{pk}-{trade_id}-closetrade-form-errors')
