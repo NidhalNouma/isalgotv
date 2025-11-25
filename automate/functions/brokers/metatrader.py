@@ -352,7 +352,17 @@ class MetatraderClient(BrokerClient):
         }
         
         try:
-            response = requests.post(url, json=data, headers=headers)
+            response = self.retry_until_response(
+                func=requests.post,
+                is_desired_response=lambda r: r.status_code == 200,
+                args=(url,),
+                kwargs={
+                    "json": data,
+                    "headers": headers
+                },
+                max_attempts=4,
+                delay_seconds=2
+            )
             end_exe = time.perf_counter()
             resp_data = response.json()
 

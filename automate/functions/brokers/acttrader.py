@@ -53,7 +53,21 @@ class ActTrader(BrokerClient):
             headers = {}
         headers["Authorization"] = f"Bearer {self.accessToken}"
         
-        response = self.s.request(method, url, params=params, json=data, headers=headers, auth=auth, timeout=timeout)
+        # response = self.s.request(method, url, params=params, json=data, headers=headers, auth=auth, timeout=timeout)
+        response = self.retry_until_response(
+            func=self.s.request,
+            is_desired_response=lambda r: r.status_code == 200,
+            args=(method, url),
+            kwargs={
+                "params": params,
+                "json": data,
+                "headers": headers,
+                "auth": auth,
+                "timeout": timeout
+            },
+            max_attempts=4,
+            delay_seconds=2
+        )
         response.raise_for_status()
         return response.json()
 

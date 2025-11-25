@@ -1,16 +1,16 @@
 {% load custom_tags %}
 
-<tr onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="hover:bg-text/10 cursor-pointer transition-colors">
+<tr class="transition-colors hover:bg-text/5 group" id="trade-{{ broker_type }}-{{ id }}-{{ trade.id }}">
   <td class="px-4 py-3 text-xs text-text/80 truncate">
     <span class="text-[0.7rem]">{{ trade.order_id }}</span> <br /> <span class="text-[0.7rem]">{{ trade.custom_id }}</span>
   </td>
-  <td class="px-4 text-xs text-text truncate flex items-center my-auto h-full gap-0.5">
+  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 text-xs text-text truncate flex items-center my-auto h-full gap-0.5">
     {% if trade.status == 'O' %}
       <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
     {% elif trade.status == 'P' %}
-      <span class="text-text bg-text/10 px-2 py-0.5 rounded-md">Partially Closed</span>
+      <span class="text-text bg-text/10 group-hover:bg-text/20 transition-colors px-2 py-0.5 rounded-md">Partially Closed</span>
     {% elif trade.status == 'C' %}
-      <span class="text-accent/60 bg-accent/5 px-2 py-0.5 rounded-md">Closed</span>
+      <span class="text-accent/60 bg-accent/5 group-hover:bg-accent/20 transition-colors px-2 py-0.5 rounded-md">Closed</span>
     {% else %}
       <span class="text-text/80">NA</span>
     {% endif %}
@@ -83,11 +83,31 @@
       <span class="text-text/60">NA</span>
     {% endif %}
   </td>
+  {% if trade.status != 'C' %}
+    <td class="px-4 py-3 text-xs truncate text-error">
+      <form hx-post="{% url 'close_trade' broker_type id trade.id %}" hx-target="this" hx-swap="outerHTML">
+        {% csrf_token %}
+        <button type="submit" class="btn-text !border-none !font-light" id="btn-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade" onclick="openLoader('', '-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade', 'flex')">
+          Close<svg class="h-3.5 aspect-square ml-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 2C3.79086 2 2 3.79086 2 6V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V6C22 3.79086 20.2091 2 18 2H6ZM4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6ZM15.7063 8.29204C16.0968 8.68256 16.0968 9.31573 15.7063 9.70625L13.4134 11.9991L15.7063 14.292C16.0968 14.6826 16.0968 15.3157 15.7063 15.7063C15.3157 16.0968 14.6826 16.0968 14.292 15.7063L11.9991 13.4134L9.70625 15.7063C9.31573 16.0968 8.68256 16.0968 8.29204 15.7063C7.90151 15.3157 7.90151 14.6826 8.29204 14.292L10.5849 11.9991L8.29204 9.70625C7.90151 9.31573 7.90151 8.68256 8.29204 8.29204C8.68256 7.90151 9.31573 7.90151 9.70625 8.29204L11.9991 10.5849L14.292 8.29204C14.6826 7.90151 15.3157 7.90151 15.7063 8.29204Z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <button type="button" class="hidden btn-text !border-none !font-light" disabled id="spinner-{{ broker_type }}-{{ id }}-{{ trade.id }}-closetrade">
+          Close<svg aria-hidden="true" role="status" class="h-3.5 aspect-square ml-1.5 text-text animate-spin text-center" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="fill-text/60" d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" />
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+          </svg>
+        </button>
+      </form>
+    </td>
+  {% else %}
+    <td></td>
+  {% endif %}
 </tr>
 
 {% if trade.fills|length > 0 %}
   {% for subtrade in trade.fills %}
-    <tr sub-trade="sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}" class="hidden hover:bg-text/10 transition-colors">
+    <tr sub-trade="sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}" class="hidden hover:bg-text/5 transition-colors">
       <td></td>
       <td></td>
       <td></td>

@@ -369,7 +369,7 @@ def process_alerts_trades(alerts_data, account, start):
                 elif action == 'Exit':
                     trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
                     if not trade_to_close:
-                        raise Exception(f"No trade found to close with ID: {custom_id}")
+                        raise Exception(f"No trade found to close with ID: {custom_id} or it may have been closed already.")
 
                     volume_close = volume_to_close(trade_to_close, partial)
                     client.current_trade = trade_to_close
@@ -391,4 +391,25 @@ def process_alerts_trades(alerts_data, account, start):
 
     except Exception as e:
         print('process alerts trades error: ', str(e))
+        raise e
+
+def close_open_trade(account, trade):
+    try:
+        broker_type = account.broker_type
+        
+        client_cls = CLIENT_CLASSES.get(broker_type)
+        if client_cls is None:
+            raise Exception(f"Unsupported broker type: {broker_type}")
+        
+        client = client_cls(account=account, current_trade=trade)
+        close_trade = client.close_trade(trade.symbol, "BUY" if trade.side == "S" else "SELL", trade.remaining_volume)
+        if close_trade.get('error') is not None:
+            raise Exception(close_trade.get('error'))
+        
+        closed_volume = close_trade.get('qty', trade.remaining_volume)
+        trade = update_trade_after_close(trade, closed_volume, close_trade)
+        return trade
+        
+    except Exception as e:
+        print('close open trade error: ', str(e))
         raise e

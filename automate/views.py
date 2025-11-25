@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 from django.views.decorators.csrf import csrf_exempt
 
-from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials
+from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials, close_open_trade
 from automate.functions.alerts_message import manage_alert
 from automate.models import *
 from automate.forms import *
@@ -723,6 +723,32 @@ def get_broker_trades(request, broker_type, pk):
         context = {'error': e}
         response = render(request, "include/errors.html", context=context)
         return response
+
+@require_http_methods(["POST"])
+def close_trade(request, broker_type, pk, trade_id):
+    try:
+        crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+        forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+        if broker_type in crypto_broker_types:
+            account = CryptoBrokerAccount.objects.get(pk=pk)
+        elif broker_type in forex_broker_types:
+            account = ForexBrokerAccount.objects.get(pk=pk)
+        else:
+            raise ValueError("Invalid Broker Type")
+
+        content_type = ContentType.objects.get_for_model(type(account))
+        trade = TradeDetails.objects.get(content_type=content_type, object_id=pk, id=trade_id)
+
+        # Call the function to close the trade
+        close_response = close_open_trade(account, trade)
+        if close_response:
+            response = render(request, 'include/trade_row.html', context={'trade': trade, 'broker_type': broker_type, 'id': pk})
+            return retarget(response, f'#trade-{broker_type}-{pk}-{trade.id}')
+        else:
+            raise Exception("Failed to close the trade.")
+    except Exception as e:
+        return HttpResponse(str(e), content_type="text/plain", status=200)
 
 @require_http_methods(["POST"])
 @csrf_exempt
