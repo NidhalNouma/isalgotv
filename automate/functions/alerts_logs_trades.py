@@ -393,7 +393,7 @@ def process_alerts_trades(alerts_data, account, start):
         print('process alerts trades error: ', str(e))
         raise e
 
-def close_open_trade(account, trade):
+def close_open_trade(account, trade, volume=None):
     try:
         broker_type = account.broker_type
         
@@ -402,7 +402,9 @@ def close_open_trade(account, trade):
             raise Exception(f"Unsupported broker type: {broker_type}")
         
         client = client_cls(account=account, current_trade=trade)
-        close_trade = client.close_trade(trade.symbol, "BUY" if trade.side == "S" else "SELL", trade.remaining_volume)
+        volume_to_close = volume if volume is not None and volume > 0 and volume <= trade.remaining_volume else trade.remaining_volume
+
+        close_trade = client.close_trade(trade.symbol, "BUY" if trade.side == "S" else "SELL", volume_to_close)
         if close_trade.get('error') is not None:
             raise Exception(close_trade.get('error'))
         
