@@ -13,9 +13,10 @@ from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import BrokerClient
 
 class MetatraderClient(BrokerClient):
+    region = "london"
     api_url = "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai"
-    api_data_url = "https://mt-client-api-v1.new-york.agiliumtrade.ai"
-    api_market_data_url = "https://mt-market-data-client-api-v1.new-york.agiliumtrade.ai"
+    api_data_url = f"https://mt-client-api-v1.{region}.agiliumtrade.ai"
+    api_market_data_url = f"https://mt-market-data-client-api-v1.{region}.agiliumtrade.ai"
 
     def generate_random_string(self, length):
         """Generate a random alphanumeric string of the given length."""
@@ -66,13 +67,15 @@ class MetatraderClient(BrokerClient):
         if account:
             self.account = account
             self.account_api_id = account.account_api_id
+            if self.account.additional_info and isinstance(self.account.additional_info, dict):
+                self.region = self.account.additional_info.get("region", self.region)
         else:
             pass
 
         self.current_trade = current_trade
 
     @staticmethod
-    def check_credentials(account_name, account_number, account_password, account_server, account_type, profile_id=""):
+    def check_credentials(account_name: str, account_number: str, account_password: str, account_server: str, account_type: str, profile_id=""):
         """
         Add a new MT API account.
         
@@ -105,7 +108,7 @@ class MetatraderClient(BrokerClient):
             "name": account_name,
             "server": account_server,
             "platform": account_type,
-            "region": "new-york",
+            "region": client.region,
             'type': "cloud-g2", # cloud-g2 or cloud-g1 for higher performance (costs more)
             "manualTrades": True,
             "metastatsApiEnabled": False,
@@ -132,6 +135,9 @@ class MetatraderClient(BrokerClient):
             data["account_api_id"] = account_api_id
             client.account_api_id = account_api_id
             data["account_type"] = 'D' if 'demo' in account_server.lower() else 'L'
+            data["additional_info"] = {
+                "region": client.region,
+            }
             return data
         except Exception as e:
             print("Error:", e)

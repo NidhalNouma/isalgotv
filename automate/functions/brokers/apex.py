@@ -60,7 +60,6 @@ class ApexClient(CryptoBrokerClient):
         try:
             trade_type = self.account_type
             sys_info = self.get_exchange_info(symbol)
-            # print(sys_info)
 
             if not sys_info:
                 raise Exception('Symbol was not found!')

@@ -398,6 +398,9 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 raise ValueError("Invalid symbol format or exchange info not found.")
 
             balances = self.get_account_balance()
+
+            if not balances:
+                raise ValueError("Could not fetch account info. Please check your API credentials.")
             
             base_balance = balances.get(base_asset, {}).get('available', 0)
             quote_balance = balances.get(quote_asset, {}).get('available', 0)

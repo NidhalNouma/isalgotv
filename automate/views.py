@@ -197,6 +197,9 @@ def add_broker(request, broker_type):
                         account_type = valid.get('account_type')
                         account.type = 'L' if str(account_type).lower() in ('live', 'l') else 'D'
 
+                    if valid.get('additional_info'):
+                        account.additional_info = valid.get('additional_info', {})
+
                     account.save()
 
                     context = context_accounts_by_user(request)
@@ -301,6 +304,9 @@ def edit_broker(request, broker_type, pk):
                     if valid.get('account_type'):
                         account_type = valid.get('account_type')
                         account.type = 'L' if str(account_type).lower() in ('live', 'l') else 'D'
+
+                    if valid.get('additional_info'):
+                        account.additional_info = valid.get('additional_info', {})
                     
                     account = form.save(commit=False)
                     account.save()
@@ -751,7 +757,7 @@ def close_trade(request, broker_type, pk, trade_id):
             new_fills = close_response.fills
             new_fills = new_fills[fills_lengths:] if new_fills and len(new_fills) > 0 else []
 
-            closed_trade = {**trade.__dict__, 'fills': new_fills}
+            closed_trade = {**trade.__dict__, 'strategy': trade.strategy, 'fills': new_fills}
 
             response = render(request, 'include/trade_row.html', context={'trade': closed_trade, 'broker_type': broker_type, 'id': pk})
             return retarget(response, f'#trade-{broker_type}-{pk}-{trade.id}')

@@ -204,6 +204,11 @@ def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
     
     if isinstance(account, (CryptoBrokerAccount, ForexBrokerAccount)):
         content_type = ContentType.objects.get_for_model(account.__class__)
+
+        try:
+            strategy = Strategy.objects.get(id=strategy_id) if strategy_id else None
+        except Strategy.DoesNotExist:
+            strategy = None
         
         trade = TradeDetails.objects.create(
             custom_id=custom_id,
@@ -220,7 +225,7 @@ def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
             trade_type=getattr(account, 'type', None),
             content_type=content_type,
             object_id=account.id,
-            strategy=Strategy.objects.filter(id=strategy_id).first()
+            strategy=strategy
         )
 
     else:
