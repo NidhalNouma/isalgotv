@@ -101,6 +101,7 @@ class ForexBrokerAccount(models.Model):
         ("hankotrade", "HankoTrade"),
         ("tradestation", "TradeStation"),
         ("alpaca", "Alpaca"),
+        ('tastytrade', 'Tastytrade'),
     ]
 
     TYPE = [
@@ -212,6 +213,7 @@ class TradeDetails(models.Model):
     status = models.CharField(max_length=1, choices=STATUS, default='O')
 
     fills = models.JSONField(default=list, blank=True, validators=[validate_fills])
+    additional_info = models.JSONField(default=dict, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

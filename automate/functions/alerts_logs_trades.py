@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
+from django.db.models import Q
 
 from decimal import Decimal
 from django.utils import timezone
@@ -199,6 +200,7 @@ def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
     currency = opend_trade.get('currency', '')
     fees = opend_trade.get('fees', 0)
     closed_order_id = opend_trade.get('closed_order_id', '')
+    additional_info = opend_trade.get('additional_info', {})
 
     t_side = "B" if str.lower(side) == "buy" else "S"
     
@@ -220,6 +222,7 @@ def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
             entry_price=price,
             entry_time=time,
             currency=currency,
+            additional_info=additional_info,
             fees=fees,
             closed_order_id=closed_order_id,
             trade_type=getattr(account, 'type', None),
@@ -243,9 +246,10 @@ def get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse_id
         symbol=symbol,
         side=t_side,
         status__in=["O", "P"],
-        strategy_id=strategy_id,
         content_type=content_type,
         object_id=account.id
+    ).filter(
+        Q(strategy_id=strategy_id) | Q(strategy__isnull=True)
     )
 
     return trade
@@ -259,9 +263,10 @@ def get_trade(custom_id, symbol, side, account, strategy_id):
         custom_id=custom_id,
         symbol=symbol,
         side=t_side,
-        strategy_id=strategy_id,
         content_type=content_type,
         object_id=account.id
+    ).first(
+        Q(strategy_id=strategy_id) | Q(strategy__isnull=True)
     ).last()
 
     return trade
@@ -276,9 +281,10 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
             symbol=symbol,
             side=t_side,
             status__in=["O", "P"],
-            strategy_id=strategy_id,
             content_type=content_type,
             object_id=account.id
+        ).filter(
+            Q(strategy_id=strategy_id) | Q(strategy__isnull=True)
         ).last()
 
     return trade

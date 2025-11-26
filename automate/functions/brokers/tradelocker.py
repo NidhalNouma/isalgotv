@@ -18,6 +18,7 @@ class TradeLockerClient(BrokerClient):
         self.config = None
 
         self.instruments_cache = {}
+        self.symbols_cache = {}
 
         if account:
             self.username = account.username
@@ -159,6 +160,7 @@ class TradeLockerClient(BrokerClient):
         try:
             # Fetch the instrument ID for the given symbol
             instrument = self.get_instrument(symbol)
+            # print(instrument)
 
             instrument_id = instrument.get("tradableInstrumentId") if instrument else None
             if not instrument_id:
@@ -168,6 +170,17 @@ class TradeLockerClient(BrokerClient):
 
             if not route:
                 return {'error': f"No trading route available for symbol {symbol}."}
+
+            symbol_info = self.get_symbol_info(symbol)
+            if symbol_info.get('error'):
+                return {'error': f"Failed to get symbol info for {symbol}: {symbol_info.get('error')}"}
+
+            lot_step = symbol_info.get("lotStep") if symbol_info else 0.01
+            lot_step_decimals = str(lot_step)[::-1].find('.') if '.' in str(lot_step) else 0
+            
+            # quantity = (float(quantity) // float(lot_step)) * float(lot_step)
+            quantity = float(quantity).__round__(lot_step_decimals)
+            # print(quantity, lot_step, lot_step_decimals)
             
             json = {
                 "tradableInstrumentId": instrument_id,
@@ -212,7 +225,11 @@ class TradeLockerClient(BrokerClient):
                         'fees': trade_details.get('fees', 0),
                         'closed_order_id': order_id,
                         'currency': self.account_currency if self.account_currency else '',
-                        'end_exe': end_exe
+                        'end_exe': end_exe,
+                        'additional_info': {
+                            'instrument': instrument,
+                            'symbol_info': symbol_info,
+                        }
                     }
             else:
                 return {'error': "Failed to open trade."}
@@ -619,6 +636,9 @@ class TradeLockerClient(BrokerClient):
         
     def get_symbol_info(self, symbol):
         try:
+            if symbol in self.symbols_cache:
+                return self.symbols_cache[symbol]
+
             instrument = self.get_instrument(symbol)
             if not instrument:
                 return {'error': f"Symbol {symbol} not found."}
@@ -633,6 +653,7 @@ class TradeLockerClient(BrokerClient):
                 data = self._send_request("GET", f"/backend-api/trade/instruments/{instrument_id}", data=params)
                 if data.get('s') == 'ok':
                     d = data.get('d', {})
+                    self.symbols_cache[symbol] = d
                     return d
             
             return {'error': f"Symbol info for {symbol} not found."}
