@@ -196,7 +196,7 @@ stack-data==0.6.3
 StrEnum==0.4.15
 stripe==8.4.0
 sympy==1.11.1
-tastytrade-sdk==1.2.0
+# tastytrade-sdk==1.2.0
 tenacity==9.1.2
 termcolor==2.4.0
 tiktoken==0.9.0
@@ -217,7 +217,7 @@ vine==5.1.0
 wcwidth==0.2.13
 web3==7.14.0
 websocket-client==1.8.0
-websockets==11.0.3
+websockets==12.0
 wheel==0.45.1
 xxhash==3.5.0
 yarl==1.9.4
