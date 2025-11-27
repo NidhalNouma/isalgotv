@@ -131,9 +131,9 @@ def add_broker(request, broker_type):
                 if broker_type == 'ctrader':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
-                elif broker_type == 'hankotrade' or broker_type == 'alpaca':
+                elif broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade':
                     form_data['server'] = 'xxx'
-                elif broker_type == 'tradelocker':
+                elif broker_type == 'tradelocker' or broker_type == 'tastytrade':
                     form_data['account_api_id'] = request.POST.get(f'{broker_type}_account_id')
                 form = AddForexBrokerAccountForm(form_data) 
 
@@ -265,9 +265,9 @@ def edit_broker(request, broker_type, pk):
                 if broker_type == 'ctrader':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
-                elif broker_type == 'hankotrade' or broker_type == 'alpaca':
+                elif broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade':
                     form_data['server'] = 'xxx'
-                elif broker_type == 'tradelocker':
+                elif broker_type == 'tradelocker' or broker_type == 'tastytrade':
                     form_data['account_api_id'] = request.POST.get(f'{account.id}_{broker_type}_account_id')
                 form = AddForexBrokerAccountForm(form_data, instance=account) 
             else:
@@ -334,6 +334,9 @@ def edit_broker(request, broker_type, pk):
 def toggle_broker(request, broker_type, pk):
 
     try:
+        if broker_type == "metatrader4" or broker_type == "metatrader5":
+            raise Exception("Toggling of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed.")
+        
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
@@ -362,11 +365,11 @@ def toggle_broker(request, broker_type, pk):
                         pause_collection=''
                     )
 
-        if broker_type == "metatrader4" or broker_type == "metatrader5":
-            # Undeploy/Deploy the account
-            deploy_undeploy = MetatraderClient(account=model_instance).deploy_undeploy_account(deploy=model_instance.active)
-            if "error" in deploy_undeploy:
-                raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
+        # if broker_type == "metatrader4" or broker_type == "metatrader5":
+        #     # Undeploy/Deploy the account
+        #     deploy_undeploy = MetatraderClient(account=model_instance).deploy_undeploy_account(deploy=model_instance.active)
+        #     if "error" in deploy_undeploy:
+        #         raise Exception(f"Failed to {'deploy' if model_instance.active else 'undeploy'} metatrader account: {deploy_undeploy['error']}")
 
         model_instance.save()
 
@@ -646,7 +649,7 @@ def export_broker_logs(request, broker_type, pk):
 
         csvfile = StringIO()
         csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(['time', 'status', 'message', 'response', 'latency', 'trade latency'])
+        csvwriter.writerow(['time', 'status', 'message', 'response', 'latency', 'Execution latency'])
 
         for log in logs_qs:
             csvwriter.writerow([localtime(log.created_at).strftime('%Y-%m-%d %H:%M:%S'), log.response_status, log.alert_message, log.response_message, log.latency, log.trade_latency])

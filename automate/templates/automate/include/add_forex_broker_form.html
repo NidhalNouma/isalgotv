@@ -9,7 +9,7 @@
   </div>
   {% if broker_type != 'ctrader' %}
     <div class="w-full">
-      {% if broker_type == 'tradelocker' %}
+      {% if broker_type == 'tradelocker' or broker_type == 'tastytrade' %}
         <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
         <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your account email/username" />
       {% elif broker_type == 'alpaca' %}
@@ -30,7 +30,7 @@
       {% endif %}
     </div>
   {% endif %}
-  {% if broker_type != 'hankotrade' and broker_type != 'alpaca' %}
+  {% if broker_type != 'hankotrade' and broker_type != 'alpaca' and broker_type != 'tastytrade' %}
     <div class="w-full">
       <label for="{{ broker_type }}_server" class="input-label">
         {% if broker_type == 'ctrader' %}
@@ -54,14 +54,15 @@
         placeholder="{% if broker_type == 'ctrader' %}Get your authorization code and past it here{% else %}Your account server {% endif %}" />
     </div>
   {% endif %}
-  {% if broker_type == 'tradelocker' %}
+
+  {% if broker_type == 'tradelocker' or broker_type == 'tastytrade' %}
     <div class="w-full">
       <label for="{{ broker_type }}_account_id" class="input-label">Account ID</label>
       <input type="text" id="{{ broker_type }}_account_id" name="{{ broker_type }}_account_id" class="input-text w-full" placeholder="Your account ID" />
     </div>
   {% endif %}
 
-  {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' or broker_type == 'hankotrade' or broker_type == 'alpaca' %}
+  {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' or broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade' %}
     <div class="w-full">
       <label for="type" class="input-label">Type</label>
 

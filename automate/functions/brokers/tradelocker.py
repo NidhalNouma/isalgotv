@@ -277,7 +277,7 @@ class TradeLockerClient(BrokerClient):
                 return {
                         'message': f"Trade closed for order ID {trade.order_id}.", 
                         "id": trade.order_id,
-                        'qty': trade.volume,
+                        'qty': quantity,
                         "end_exe": end_exe
                     }
         

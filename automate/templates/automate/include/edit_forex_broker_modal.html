@@ -74,7 +74,7 @@
       </div>
       {% if account.broker_type != 'ctrader' %}
         <div class="w-full">
-          {% if account.broker_type == 'tradelocker' %}
+          {% if account.broker_type == 'tradelocker' or account.broker_type == 'tastytrade' %}
             <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
             <input 
             type="text"
@@ -135,7 +135,7 @@
         </div>
       {% endif %}
 
-      {% if account.broker_type != "hankotrade" and account.broker_type != "alpaca" %}
+      {% if account.broker_type != "hankotrade" and account.broker_type != "alpaca" and account.broker_type != "tastytrade" %}
         <div class="w-full">
           <label for="{{account.id}}_{{account.broker_type}}_server" class="input-label">
             {%if account.broker_type == 'ctrader'%}Authorization code{%else%}Server{%endif%}
@@ -155,7 +155,7 @@
         </div>
       {% endif %}
 
-      {% if account.broker_type == "tradelocker" %}
+      {% if account.broker_type == "tradelocker" or account.broker_type == "tastytrade" %}
         <div class="w-full">
           <label
             for="{{account.id}}_{{account.broker_type}}_account_id"
@@ -173,7 +173,7 @@
         </div>
       {% endif %}
 
-      {% if account.broker_type == 'dxtrade' or account.broker_type == 'tradelocker' or account.broker_type == 'hankotrade' or account.broker_type == 'alpaca' %}
+      {% if account.broker_type == 'dxtrade' or account.broker_type == 'tradelocker' or account.broker_type == 'hankotrade' or account.broker_type == 'alpaca' or account.broker_type == 'tastytrade' %}
         <div class="w-full">
           <label for="type" class="input-label">Type</label>
 

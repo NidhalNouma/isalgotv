@@ -49,7 +49,12 @@
           {{ log.response_message }} <br />
           <span class="text-xs text-text/60 inline-block">Triggered: {{ log.created_at|date:'D d M Y H:i:s' }}</span>
           {% if log.trade_latency > 0 %}
-            <span class="bg-error/10 text-text text-xs px-1 rounded-md">Latency: {{ log.trade_latency|floatformat:3 }} sec</span>
+            <span class="bg-error/10 text-text text-xs px-1 rounded-md">
+              Exe latency: {{ log.trade_latency|floatformat:3 }} sec
+            </span>
+          {% endif %}
+          {% if log.latency and user.is_staff %}
+            <span class="bg-error/10 text-text text-xs px-1 ml-1 rounded-md">Latency: {{ log.latency|floatformat:3 }} sec</span>
           {% endif %}
         </p>
       </div>

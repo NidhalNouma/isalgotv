@@ -56,7 +56,7 @@ class ActTrader(BrokerClient):
         # response = self.s.request(method, url, params=params, json=data, headers=headers, auth=auth, timeout=timeout)
         response = self.retry_until_response(
             func=self.s.request,
-            is_desired_response=lambda r: r.status_code == 200,
+            is_desired_response=lambda r: r.status_code >= 200 and r.status_code < 300,
             args=(method, url),
             kwargs={
                 "params": params,
