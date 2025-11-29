@@ -9,6 +9,7 @@ from apexomni.http_public import HttpPublic
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+import math
 
 
 class ApexClient(CryptoBrokerClient):
@@ -67,8 +68,10 @@ class ApexClient(CryptoBrokerClient):
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
 
-            adjusted_quantity =  self.adjust_trade_quantity(sys_info, side, quantity)
-            adjusted_quantity =  quantity
+            base_decimals = sys_info.get('base_decimals', 8)
+
+            factor = 10 ** base_decimals
+            adjusted_quantity = math.ceil(float(quantity) * factor) / factor
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
@@ -102,6 +105,7 @@ class ApexClient(CryptoBrokerClient):
 
             if 'code' in response:
                 raise Exception(f"Error {response['code']}: {response.get('message', 'Unknown error')}")
+
 
             order_id = response.get('orderId')
             if not order_id:

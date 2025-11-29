@@ -72,13 +72,14 @@ class TastytradeClient(BrokerClient):
         except Exception as e:
             return {'error': str(e), 'valid': False}
         
-    def _send_request(self, method, endpoint, params=None, data=None, headers=None, auth=None, timeout=10):
+    def _send_request(self, method, endpoint, params=None, data=None, headers=None, auth=None, timeout=10, with_auth_header=True, max_retries=4):
         url = f"{self.API_URL}{endpoint}"
         if headers is None:
             headers = {}
-        headers["Authorization"] = f"{self.accessToken}"
+
+        if with_auth_header and self.accessToken:
+            headers["Authorization"] = f"{self.accessToken}"
         
-        # response = self.s.request(method, url, params=params, json=data, headers=headers, auth=auth, timeout=timeout)
         response = self.retry_until_response(
             func=self.s.request,
             is_desired_response=lambda r: r.status_code >= 200 and r.status_code < 300,
@@ -90,10 +91,18 @@ class TastytradeClient(BrokerClient):
                 "auth": auth,
                 "timeout": timeout
             },
-            max_attempts=4,
+            max_attempts=max_retries,
             delay_seconds=2
         )
-        response.raise_for_status()
+        if response.status_code < 200 or response.status_code >= 300:
+            error = response.json().get("error", response.text)
+            if type(error) == dict:
+                if error.get('errors'):
+                    message_errors = [e.get('message', str(e)) for e in error.get('errors')]
+                    error = "\n".join(message_errors)
+                else:
+                    error = error.get('message', str(error))
+            raise Exception(f"HTTP Error {response.status_code}: {error}")
         return response.json()
     
     def _login(self):
@@ -103,11 +112,11 @@ class TastytradeClient(BrokerClient):
                 "password": self.password,
                 "remember-me": True
             }
-            if self.remember_me_token:
-                login_data["remember-me-token"] = self.remember_me_token
-                login_data.pop("password", None)  # Remove password if remember-me-token is used
+            # if self.remember_me_token:
+            #     login_data["remember-token"] = self.remember_me_token
+            #     login_data.pop("password", None)  # Remove password if remember-me-token is used
 
-            response = self._send_request("POST", "/sessions", data=login_data)
+            response = self._send_request("POST", "/sessions", data=login_data, with_auth_header=False, max_retries=1)
             data = response.get("data", {})
             if data.get("error"):
                 raise Exception(f"Login failed: {data.get('error')}")
@@ -192,6 +201,7 @@ class TastytradeClient(BrokerClient):
                 action = "Buy to Close" if side.lower() == "buy" else "Sell to Close"
 
             sym_info = self.get_symbol_info(symbol)
+            print(sym_info)
             if not sym_info:
                 raise Exception(f"Symbol info not found for {symbol}")
             
@@ -203,7 +213,7 @@ class TastytradeClient(BrokerClient):
                 "time-in-force": "Day",
                 "legs": [
                     {
-                    "instrument-type": symbol_type,
+                    "instrument-type": "Equity" if not symbol_type else symbol_type,
                     "action": action,
                     "quantity": quantity,
                     "symbol": symbol_name
@@ -211,11 +221,13 @@ class TastytradeClient(BrokerClient):
                 ]
             }
 
-            response = self._send_request("POST", f"/accounts/{self.account_number}/orders/dry-run", data=data)
+            response = self._send_request("POST", f"/accounts/{self.account_number}/orders/dry-run", data=data, max_retries=1)
             end_exe = time.perf_counter()
             if response.get("error"):
                 raise Exception(response.get('error'))
             order_data = response.get("data", {})
+            print(f"Trade opened successfully for {symbol}: {order_data}")
+            return order_data
         except Exception as e:
             print(f"Error opening trade for {symbol}: {e}")
             raise e
