@@ -14,7 +14,8 @@ from automate.forms import *
 from automate.tasks import *
 
 from automate.functions.brokers.metatrader import MetatraderClient
-from automate.functions.brokers.ctrader import CLIENT_ID
+from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
+from automate.functions.brokers.deriv import APP_ID as DERIV_APP_ID
 
 from profile_user.templatetags.custom_tags import automate_access
 
@@ -56,7 +57,8 @@ def context_accounts_by_user(request):
 
     context = {
         'accounts': all_accounts,
-        'ctrader_client_id': CLIENT_ID,
+        'ctrader_client_id': CTRADER_CLIENT_ID,
+        'deriv_app_id': DERIV_APP_ID,
     }
     return context
 
@@ -82,6 +84,53 @@ def ctrader_auth_code(request):
     }
 
     return render(request, "automate/ctrader_auth_code.html", context=context)
+
+@require_http_methods(["GET"])
+def deriv_auth_code(request):
+    # Extract the 'code' parameter from the GET request
+
+    params = request.GET
+    # Normalize keys to lowercase for robust lookup
+    lower_params = {k.lower(): params.get(k) for k in params.keys()}
+
+    user_accounts = []
+
+    # Find all acct keys like acct, acct1, acct2, ...
+    acct_keys = [k for k in lower_params.keys() if k.startswith('acct')]
+    indices = set()
+    import re
+    for k in acct_keys:
+        m = re.match(r'acct(\d*)$', k)
+        if m:
+            idx = m.group(1) or '1'
+            indices.add(idx)
+
+    # If there's no numbered keys but a plain 'acct' exists, treat it as index '1'
+    if not indices and 'acct' in lower_params:
+        indices.add('1')
+
+    def idx_key(x):
+        return int(x) if x.isdigit() else x
+
+    for idx in sorted(indices, key=idx_key):
+        acct = lower_params.get(f'acct{idx}') or lower_params.get('acct')
+        token = lower_params.get(f'token{idx}') or lower_params.get('token')
+        cur = lower_params.get(f'cur{idx}') or lower_params.get('cur')
+
+        if acct:
+            user_accounts.append({
+                'index': idx,
+                'acct': acct.strip(),
+                'token': token.strip() if token else None,
+                'cur': cur.strip() if cur else None,
+            })
+
+    context = {
+        'accounts': user_accounts,
+        'error': None if len(user_accounts) > 0 else "No account information found in the request."
+    }
+
+    return render(request, "automate/deriv_auth_code.html", context=context)
 
 @require_http_methods([ "POST"])
 def add_broker(request, broker_type):

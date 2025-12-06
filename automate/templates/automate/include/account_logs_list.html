@@ -19,15 +19,23 @@
             <circle cx="12" cy="12" r="10" />
             <path d="m9 12 2 2 4-4" />
           </svg>
+        {% elif log.response_status == 'I' %}
+          <svg class="h-3.5 shrink-0 aspect-square text-text/80 bg-text/10 rounded-full inline align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        {% elif log.response_status == 'W' %}
+          <svg class="h-3.5 shrink-0 aspect-square text-warning/80 bg-warning/10 rounded-full inline align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
         {% endif %}
         <p class="text-xs text-text/80 flex-1 mr-1.5">{{ log.alert_message }}</p>
       </div>
       <div class="flex items-start gap-2">
-        <svg class="w-3.5 aspect-square shrink-0 {% if log.response_status == 'E' %}
-             text-error/80 bg-error/10
-          {% elif log.response_status == 'S' %}
-             text-success/80 bg-success/10
-          {% endif %} rounded-full inline align-top"
+        <svg class="w-3.5 aspect-square shrink-0 {% if log.response_status == 'E' %} text-error/80 bg-error/10 {% elif log.response_status == 'S' %} text-success/80 bg-success/10 {% elif log.response_status == 'I' %} text-text/80 bg-text/10 {% elif log.response_status == 'W' %} text-warning/80 bg-warning/10 {% endif %} rounded-full inline align-top"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -41,17 +49,11 @@
           <polyline points="15 10 20 15 15 20" />
           <path d="M4 4v7a4 4 0 0 0 4 4h12" />
         </svg>
-        <p class=" text-sm flex-1 mr-1.5 {% if log.response_status == 'E' %}
-             text-error/80
-          {% elif log.response_status == 'S' %}
-             text-success/80
-          {% endif %}">
+        <p class=" text-sm flex-1 mr-1.5 {% if log.response_status == 'E' %} text-error/80 {% elif log.response_status == 'S' %} text-success/80 {% elif log.response_status == 'I' %} text-text/80 {% elif log.response_status == 'W' %} text-warning/80 {% endif %}">
           {{ log.response_message }} <br />
           <span class="text-xs text-text/60 inline-block">Triggered: {{ log.created_at|date:'D d M Y H:i:s' }}</span>
           {% if log.trade_latency > 0 %}
-            <span class="bg-error/10 text-text text-xs px-1 rounded-md">
-              Exe latency: {{ log.trade_latency|floatformat:3 }} sec
-            </span>
+            <span class="bg-error/10 text-text text-xs px-1 rounded-md">Exe latency: {{ log.trade_latency|floatformat:3 }} sec</span>
           {% endif %}
           {% if log.latency and user.is_staff %}
             <span class="bg-error/10 text-text text-xs px-1 ml-1 rounded-md">Latency: {{ log.latency|floatformat:3 }} sec</span>

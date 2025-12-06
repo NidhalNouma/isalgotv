@@ -131,7 +131,7 @@ def extract_alert_data(alert_message):
             data['Volume'] = value
         elif key == 'P':
             data['Partial'] = value
-        elif key == 'ID' or key == 'NUM':
+        elif key == 'ID' or key == 'SID':
             # print('Parsing ID value:', value)
             data['ID'] = value
             id_parts = value.split('.')

@@ -98,6 +98,7 @@ class ForexBrokerAccount(models.Model):
         ("ninjatrader", "NinjaTrader"),
         ("dxtrade", "DXTrade"),
         ("ctrader", "CTrader"),
+        ("deriv", "Deriv"),
         ("hankotrade", "HankoTrade"),
         ("tradestation", "TradeStation"),
         ("alpaca", "Alpaca"),
@@ -346,6 +347,8 @@ class LogMessage(models.Model):
     STATUS = [
         ("E", "Error"),
         ("S", "Success"),
+        ("I", "Info"),
+        ("W", "Warning"),
     ]
 
     response_status = models.CharField(max_length=1, choices=STATUS)

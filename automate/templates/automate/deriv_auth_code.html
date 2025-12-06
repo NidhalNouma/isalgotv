@@ -1,0 +1,72 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>Deriv Authentication code</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="" />
+{% endblock %}
+
+{% block page %}
+  {% block navbar %}
+
+  {% endblock %}
+
+  <main class="my-auto mx-auto">
+    {% if accounts and accounts|length > 0 %}
+      <div class="max-w-md mx-auto p-6 text-text/80 rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold mb-4">Deriv Authorization Codes</h1>
+        <p class="mb-4">Please copy the following authorization codes for your Deriv accounts. Click the button to copy and close this window.</p>
+        <ul class="list-disc list-inside mb-6">
+          {% for account in accounts %}
+            <li>
+              <strong>{{ account.acct }} ({{ account.cur }}):</strong>
+              <span id="auth-code">{{ account.token }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% else %}
+      {% include 'include/errors.html' with error=error %}
+    {% endif %}
+    <script>
+      function copyAndExit() {
+        const authCodeElement = document.getElementById('auth-code')
+        const textToCopy = authCodeElement ? authCodeElement.textContent.trim() : ''
+      
+        if (!textToCopy) return
+      
+        if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(textToCopy)
+            .then(function () {
+              window.close()
+            })
+            .catch(function (err) {
+              console.error('Failed to copy text: ', err)
+              alert('Could not copy the code. Please copy manually.')
+            })
+        } else {
+          // Fallback for browsers without Clipboard API
+          const textarea = document.createElement('textarea')
+          textarea.value = textToCopy
+          document.body.appendChild(textarea)
+          textarea.select()
+          try {
+            document.execCommand('copy')
+            window.close()
+          } catch (err) {
+            console.error('Fallback copy failed', err)
+            alert('Could not copy the code. Please copy manually.')
+          }
+          document.body.removeChild(textarea)
+        }
+      }
+    </script>
+  </main>
+
+  {% block footer %}
+
+  {% endblock %}
+{% endblock %}

@@ -68,6 +68,8 @@
   {% include 'svg/robinhood.html' with class=class %}
 {% elif broker_type == 'tastytrade' %}
   {% include 'svg/tastytrade.html' with class=class %}
+{% elif broker_type == 'deriv' %}
+  {% include 'svg/deriv.html' with class=class %}
 {% else %}
   <h3 class="text-title">{{ broker_type }}</h3>
 {% endif %}

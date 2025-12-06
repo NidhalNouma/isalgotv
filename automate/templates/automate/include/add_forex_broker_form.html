@@ -7,7 +7,7 @@
     <label for="{{ broker_type }}_name" class="input-label">Name</label>
     <input type="text" id="{{ broker_type }}_name" name="{{ broker_type }}_name" class="input-text w-full" placeholder="Give your account a name" />
   </div>
-  {% if broker_type != 'ctrader' %}
+  {% if broker_type != 'ctrader' and broker_type != 'deriv' %}
     <div class="w-full">
       {% if broker_type == 'tradelocker' or broker_type == 'tastytrade' %}
         <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
@@ -33,29 +33,36 @@
   {% if broker_type != 'hankotrade' and broker_type != 'alpaca' and broker_type != 'tastytrade' %}
     <div class="w-full">
       <label for="{{ broker_type }}_server" class="input-label">
-        {% if broker_type == 'ctrader' %}
-          Authorization code
+        {% if broker_type == 'ctrader' or broker_type == 'deriv' %}
+          Authorization Token
         {% else %}
           Server
         {% endif %}
         {% if broker_type == 'ctrader' %}
           <button class="btn-icon text-xs" type="button" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">
-            Get code<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            Get Token<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
           </button>
+        {% elif broker_type == 'deriv' %}
+          <a href="https://oauth.deriv.com/oauth2/authorize?app_id={{ deriv_app_id }}&affiliate_token=AE6E51CC-4CFE-480F-9CC9-FD177F318574&utm_campaign=dynamicworks" target="_blank" class="btn-icon text-xs">
+            Get Token<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
         {% endif %}
       </label>
       <input type="text"
         id="{{ broker_type }}_server"
         name="{{ broker_type }}_server"
         class="input-text w-full"
-        placeholder="{% if broker_type == 'ctrader' %}Get your authorization code and past it here{% else %}Your account server {% endif %}" />
+        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}Get your authorization token and past it here{% else %}Your account server {% endif %}" />
     </div>
   {% endif %}
 
-  {% if broker_type == 'tradelocker' or broker_type == 'tastytrade' %}
+  {% if broker_type == 'tradelocker' or broker_type == 'tastytrade' or broker_type == 'deriv' %}
     <div class="w-full">
       <label for="{{ broker_type }}_account_id" class="input-label">Account ID</label>
       <input type="text" id="{{ broker_type }}_account_id" name="{{ broker_type }}_account_id" class="input-text w-full" placeholder="Your account ID" />

@@ -23,6 +23,7 @@ urlpatterns = [
     path('accounts/list/', get_accounts_list_json, name='get_account_list_json'),
 
     path('ctrader/auth/', ctrader_auth_code, name='ctrader_auth_code'),
+    path('deriv/auth/', deriv_auth_code, name='deriv_auth_code'),
 
 
     path('c/<str:custom_id>', handle_webhook_crypto, name='webhook_crypto_request'),

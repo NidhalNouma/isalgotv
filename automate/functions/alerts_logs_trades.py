@@ -334,7 +334,10 @@ def process_alerts_trades(alerts_data, account, start):
         
         client_cls = CLIENT_CLASSES.get(broker_type)
         if client_cls is None:
-            raise Exception(f"Unsupported broker type: {broker_type}")
+            exce = {
+                'error': f"Unsupported broker type: {broker_type}"
+            }
+            raise Exception(exce)
         
         client = client_cls(account=account)
 
@@ -378,13 +381,19 @@ def process_alerts_trades(alerts_data, account, start):
                     end_exe = trade.get('end_exe', None)
                     # print('Trade:', trade)
                     if trade.get('error') is not None:
-                        raise Exception(trade.get('error'))
+                        exce = {
+                            'error': f"Order opening error: {trade.get('error')}"
+                        }
+                        raise Exception(exce)
                     saved_trade = save_new_trade(custom_id, symbol, side, trade, account, strategy_id)
                     save_log("S", alert_message, f'Order with ID {trade.get("order_id")} was placed successfully.', account, start, end_exe, saved_trade)
                 elif action == 'Exit':
                     trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
                     if not trade_to_close:
-                        raise Exception(f"No trade found to close with ID: {custom_id} or it may have been closed already.")
+                        exce = {
+                            'info': f'No trade found to close with ID: {custom_id} or it may have been closed already.'
+                        }
+                        raise Exception(exce)
 
                     volume_close = volume_to_close(trade_to_close, partial)
                     client.current_trade = trade_to_close
@@ -393,16 +402,33 @@ def process_alerts_trades(alerts_data, account, start):
                     end_exe = closed_trade.get('end_exe', None)
 
                     if closed_trade.get('error') is not None:
-                        raise Exception(closed_trade.get('error'))
+                        exce = {
+                            'error': f"Order closing error: {closed_trade.get('error')}"
+                        }
+                        raise Exception(exce)
                     
                     closed_volume = closed_trade.get('qty', volume_close)
 
                     trade = update_trade_after_close(trade_to_close, closed_volume, closed_trade)
                     save_log("S", alert_message, f'Order with ID {trade_to_close.order_id} was closed successfully.', account, start, end_exe, trade)
 
-            except Exception as e:   
-                print('PA Error: %s' % e)
-                save_log("E", alert_message, str(e), account, latency_start=start)
+            except Exception as error_info:   
+                print('PA Error: %s' % error_info)
+
+                if isinstance(error_info, Exception) and hasattr(error_info, 'args') and len(error_info.args) > 0:
+                    error_info = error_info.args[0]
+
+                if isinstance(error_info, dict):
+                    if 'error' in error_info:
+                        save_log("E", alert_message, str(error_info['error']), account, latency_start=start)
+                    elif 'warning' in error_info:
+                        save_log("W", alert_message, str(error_info['warning']), account, latency_start=start)  
+                    elif 'info' in error_info:
+                        save_log("I", alert_message, str(error_info['info']), account, latency_start=start)
+                    else:
+                        save_log("E", alert_message, str(error_info), account, latency_start=start)
+                else:
+                    save_log("E", alert_message, str(error_info), account, latency_start=start)
 
     except Exception as e:
         print('process alerts trades error: ', str(e))

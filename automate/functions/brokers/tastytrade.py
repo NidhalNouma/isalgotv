@@ -221,11 +221,20 @@ class TastytradeClient(BrokerClient):
                 ]
             }
 
-            response = self._send_request("POST", f"/accounts/{self.account_number}/orders/dry-run", data=data, max_retries=1)
+            response = self._send_request("POST", f"/accounts/{self.account_number}/orders", data=data, max_retries=1)
             end_exe = time.perf_counter()
             if response.get("error"):
                 raise Exception(response.get('error'))
-            order_data = response.get("data", {})
+            data = response.get("data", {})
+            order_data = data.get("order", {})
+
+            if not order_data:
+                raise Exception("Order data not found in response")
+            
+            order_id = order_data.get("id", None)
+            if not order_id:
+                raise Exception("Order ID not found in order data")
+            
             print(f"Trade opened successfully for {symbol}: {order_data}")
             return order_data
         except Exception as e:
@@ -233,10 +242,32 @@ class TastytradeClient(BrokerClient):
             raise e
 
     def close_trade(self, symbol, side, quantity):
-        pass
+        t_side = "sell" if side.lower() == "buy" else "buy"
+        return self.open_trade(symbol, t_side, quantity, oc=True)
+
 
     def get_order_info(self, symbol, order_id):
-        pass
+        try:
+            response = self._send_request("GET", f"/accounts/{self.account_number}/orders/{order_id}")
+            if response.get("error"):
+                raise Exception(response.get('error'))
+            data = response.get("data", {})
+            return data
+        except Exception as e:
+            print(f"Error fetching order info for {symbol}, order ID {order_id}: {e}")
+            raise e
+
+    def get_positions(self):
+        try:
+            response = self._send_request("GET", f"/accounts/{self.account_number}/positions")
+            if response.get("error"):
+                raise Exception(response.get('error'))
+            data = response.get("data", {})
+            positions = data.get("items", [])
+            return positions
+        except Exception as e:
+            print(f"Error fetching positions: {e}")
+            raise e
 
     def get_trading_pairs(self):
         pass
