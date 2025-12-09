@@ -3,7 +3,7 @@
     <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Futures, Forex, Stocks and more</h6>
 
     <button onclick="hideModel('add-broker-modal'); openModel('add-alpaca-modal', false); mountStripeElement('alpaca');" class="{{ btn_class }}">{% include 'svg/alpaca.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button>
-    {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-tastytrade-modal', false); mountStripeElement('tastytrade');" class="{{ btn_class }}">{% include 'svg/tastytrade.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button> {% endcomment %}
+    <button onclick="hideModel('add-broker-modal'); openModel('add-tastytrade-modal', false); mountStripeElement('tastytrade');" class="{{ btn_class }}">{% include 'svg/tastytrade.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button>
 
     <button onclick="hideModel('add-broker-modal'); openModel('add-tradelocker-modal', false); mountStripeElement('tradelocker');" class="{{ btn_class }} !py-1.5">{% include 'svg/tradelocker.html' with class='h-6 aspect-auto fill-current' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-ctrader-modal', false); mountStripeElement('ctrader');" class="{{ btn_class }}">{% include 'svg/ctrader.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
@@ -11,7 +11,7 @@
     {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-robinhood-modal', false); mountStripeElement('robinhood');" class="{{ btn_class }}">{% include 'svg/robinhood.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button> {% endcomment %}
 
     {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-magnofx-modal', false); mountStripeElement('magnofx');" class="{{ btn_class }}">{% include 'svg/magnofx.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button> {% endcomment %}
-    {% comment %} <button onclick="hideModel('add-broker-modal'); openModel('add-deriv-modal', false); mountStripeElement('deriv');" class="{{ btn_class }}">{% include 'svg/deriv.html' with class='h-4 aspect-auto fill-current text-current' %}</button> {% endcomment %}
+    <button onclick="hideModel('add-broker-modal'); openModel('add-deriv-modal', false); mountStripeElement('deriv');" class="{{ btn_class }}">{% include 'svg/deriv.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-hankotrade-modal', false); mountStripeElement('hankotrade');" class="{{ btn_class }}">{% include 'svg/hankotrade.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
 
     <button onclick="hideModel('add-broker-modal'); openModel('add-metatrader4-modal', false); mountStripeElement('metatrader4');" class="{{ btn_class }}">{% include 'svg/metatrader4.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>

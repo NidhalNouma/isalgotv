@@ -12,17 +12,42 @@
   {% block navbar %}
 
   {% endblock %}
+  <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
+    <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
+    <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">
+      <div class="flex">
+        <a href="/" class="flex items-center">
+          <div class="flex justify-center items-end">
+            <svg class="sm:h-9 h-8 aspect-square fill-title stroke-title" viewBox="0 0 302 428" xmlns="http://www.w3.org/2000/svg">
+              <path d="M211.404 5L211.404 102.073" stroke-width="10" stroke-linecap="round" />
+              <path d="M203.638 82.6582H219.169C222.029 82.6582 224.346 86.1351 224.346 90.4241V152.551C224.346 156.84 222.029 160.317 219.169 160.317H203.638C200.778 160.317 198.46 156.84 198.46 152.551V90.4241C198.46 86.1351 200.778 82.6582 203.638 82.6582Z" stroke-width="15" />
+              <path d="M97.9228 350.173L82.7244 349.97C79.9265 349.933 77.6832 346.437 77.7139 342.161L78.1584 280.231C78.1891 275.955 80.4821 272.52 83.28 272.557L98.4784 272.76C101.276 272.797 103.52 276.293 103.489 280.568L103.044 342.499C103.014 346.774 100.721 350.21 97.9228 350.173Z" stroke-width="15" />
+              <path d="M90.3241 351.011L90.3241 422.421" stroke-width="10" stroke-linecap="round" />
+              <path d="M18.9213 127.582C8.02681 137.789 1.78067 149.872 0.340851 164.059C-1.57142 182.902 4.55596 199.113 18.891 212.921C28.9832 222.643 41.8664 227.94 55.3822 232.327C79.6901 240.217 103.996 248.113 128.336 255.922C130.624 256.656 131.54 257.591 131.405 259.867C131.223 262.953 131.671 266.065 131.675 269.165C131.712 299.984 131.668 330.803 131.776 361.621C131.792 366.107 131.763 370.283 127.277 373.366C125.943 374.283 125.182 375.95 124.33 377.359C118.441 387.094 118.719 396.922 125.082 406.204C131.337 415.328 141.054 419.725 152.872 419.122C165.618 418.471 174.737 412.28 179.426 401.673C184.272 390.709 182.071 380.394 173.3 371.557C170.91 369.149 169.839 366.819 169.846 363.592C169.937 321.504 169.835 279.416 169.988 237.328C170.003 233.42 168.546 231.761 164.564 230.464C132.124 219.898 99.77 209.118 67.3868 198.411C62.832 196.905 58.3622 195.258 54.4411 192.602C34.1485 178.855 39.3168 156.014 56.0194 147.657C69.4852 140.919 82.4802 133.417 95.746 126.349C97.8978 125.202 98.6712 123.823 98.6535 121.617C98.5638 110.463 98.6334 99.3077 98.6097 88.1532C98.5995 83.3534 97.7505 82.8281 93.2104 85.2459C77.7509 93.4787 62.3417 101.789 46.9502 110.125C37.3547 115.323 27.3506 119.996 18.9213 127.582ZM291.176 226.931C289.203 224.537 287.366 222.067 285.166 219.809C274.858 209.231 261.201 203.678 246.992 199.036C223.188 191.259 199.337 183.597 175.439 176.058C171.381 174.778 169.753 173.074 169.79 168.94C170.034 141.693 169.928 114.444 169.929 87.195C169.929 83.8617 170.019 80.522 169.822 77.1971C169.676 74.7372 168.413 73.5887 165.52 74.9425C155.903 79.4432 146.289 79.4173 136.631 74.9188C132.786 73.1273 131.39 73.9797 131.27 78.0217C131.178 81.118 131.268 84.2188 131.283 87.3175C131.453 123.414 131.67 159.511 131.714 195.608C131.718 198.814 132.931 200.24 136.191 201.305C169.568 212.212 202.732 223.647 236.295 234.091C240.398 235.367 244.459 236.822 247.948 239.174C256.886 245.199 261.385 253.059 259.685 263.345C258.338 271.492 252.969 277.111 245.54 281.254C232.329 288.619 219.037 295.868 205.685 303.021C203.046 304.434 201.994 306.086 202.024 308.822C202.145 319.973 202.059 331.126 202.098 342.279C202.103 343.592 201.53 345.285 203.241 346.007C204.822 346.674 206.098 345.432 207.39 344.754C227.204 334.368 246.942 323.861 266.839 313.607C301.494 295.748 312.378 257.863 291.176 226.931Z" />
+              <circle cx="151.003" cy="43.8285" r="21.5721" />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <button class="btn-icon" onclick="window.close()">
+        <svg class="w-6 aspect-auto" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
 
   <main class="my-auto mx-auto">
     {% if auth_code %}
-      <h6 class="text-title font-semibold mb-2">Your Authentication code</h6>
+      <label class="input-label" for="auth-code">Your Authentication code</label>
       <p id="auth-code" class="text-text/80 break-all p-2 bg-text/10 text-sm rounded-md overflow-hidden">{{ auth_code }}</p>
-      <button class="btn-text mt-4" onclick="copyAndExit()">Copy and close</button>
+      <button class="btn-text mt-4" onclick="copyCode()">Copy authentication code</button>
     {% else %}
       {% include 'include/errors.html' with error=error %}
     {% endif %}
     <script>
-      function copyAndExit() {
+      function copyCode() {
         const authCodeElement = document.getElementById('auth-code')
         const textToCopy = authCodeElement ? authCodeElement.textContent.trim() : ''
       
@@ -32,7 +57,7 @@
           navigator.clipboard
             .writeText(textToCopy)
             .then(function () {
-              window.close()
+              // window.close()
             })
             .catch(function (err) {
               console.error('Failed to copy text: ', err)
@@ -46,7 +71,7 @@
           textarea.select()
           try {
             document.execCommand('copy')
-            window.close()
+            // window.close()
           } catch (err) {
             console.error('Fallback copy failed', err)
             alert('Could not copy the code. Please copy manually.')

@@ -28,6 +28,7 @@ from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.dxtrade import DxtradeClient
 from automate.functions.brokers.ninjatrader import NinjatraderClient
 from automate.functions.brokers.ctrader import CtraderClient
+from automate.functions.brokers.deriv import DerivClient
 from automate.functions.brokers.acttrader import HankoTradeClient
 from automate.functions.brokers.alpaca import AlpacaClient
 from automate.functions.brokers.tastytrade import TastytradeClient
@@ -55,6 +56,7 @@ CLIENT_CLASSES = {
     'ninjatrader': NinjatraderClient,
     'dxtrade': DxtradeClient,
     'ctrader': CtraderClient,
+    'deriv': DerivClient,
     'metatrader4': MetatraderClient,
     'metatrader5': MetatraderClient,
     'hankotrade': HankoTradeClient,
@@ -99,9 +101,11 @@ def check_forex_credentials(broker_type, username, password, server, type="D", a
     elif broker_type == 'ninjatrader':
         return NinjatraderClient.check_credentials(username, password, server, type)
     elif broker_type == 'dxtrade':
-        return DxtradeClient.check_credentials(username, password, server)
+        return DxtradeClient.check_credentials(username, password, server, type=type)
     elif broker_type == 'ctrader':
         return CtraderClient.check_credentials(authorization_code=server, type=type)
+    elif broker_type == 'deriv':
+        return DerivClient.check_credentials(token=server, account_id=account_id, type=type)
     elif broker_type == 'hankotrade':
         return HankoTradeClient.check_credentials(username, password, type)
     elif broker_type == 'alpaca':

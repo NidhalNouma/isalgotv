@@ -177,12 +177,12 @@ def add_broker(request, broker_type):
                     'broker_type': broker_type
                 }
 
-                if broker_type == 'ctrader':
+                if broker_type == 'ctrader' or broker_type == 'deriv':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
-                elif broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade':
+                if broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade':
                     form_data['server'] = 'xxx'
-                elif broker_type == 'tradelocker' or broker_type == 'tastytrade':
+                if broker_type == 'tradelocker' or broker_type == 'tastytrade' or broker_type == 'deriv':
                     form_data['account_api_id'] = request.POST.get(f'{broker_type}_account_id')
                 form = AddForexBrokerAccountForm(form_data) 
 
@@ -311,13 +311,14 @@ def edit_broker(request, broker_type, pk):
                     'created_by' : request.user.user_profile,
                     'broker_type': broker_type
                 }
-                if broker_type == 'ctrader':
+                if broker_type == 'ctrader' or broker_type == 'deriv':
                     form_data['username'] = 'xxx'
                     form_data['password'] = 'xxx'
-                elif broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade':
+                if broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade':
                     form_data['server'] = 'xxx'
-                elif broker_type == 'tradelocker' or broker_type == 'tastytrade':
+                if broker_type == 'tradelocker' or broker_type == 'tastytrade' or broker_type == 'deriv':
                     form_data['account_api_id'] = request.POST.get(f'{account.id}_{broker_type}_account_id')
+
                 form = AddForexBrokerAccountForm(form_data, instance=account) 
             else:
                 raise Exception("Invalid Broker Type")

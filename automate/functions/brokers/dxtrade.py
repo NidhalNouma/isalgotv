@@ -29,7 +29,7 @@ class DxtradeClient(BrokerClient):
         self.current_trade = current_trade
 
     @staticmethod
-    def check_credentials(username, password, server):
+    def check_credentials(username, password, server, type='L'):
         """
         Tries to log in with the given credentials. Returns {"error": str, "valid": False} on failure.
         """
