@@ -2,6 +2,7 @@
 # Multiplier contracts only
 # Partial closures not supported
 # Forex, Commodities, Indices and Crypto supported via MULTUP and MULTDOWN contracts
+# Multiplier is set to 500 by default for better profit potential
 
 import asyncio
 import websockets
@@ -111,7 +112,10 @@ class DerivClient(BrokerClient):
                 "message": "Deriv credentials are valid.",
                 "account_api_id": account_id,
                 "account_type": account_type,
-                "additional_info": account_info
+                "additional_info": {
+                    'account_info': account_info,
+                    'multiplier': 500
+                }
             }
         except Exception as e:
             return {
@@ -292,7 +296,7 @@ class DerivClient(BrokerClient):
     def account_currency(self):
         try:
             if self.account:
-                curr = self.account.additional_info.get('currency', None)
+                curr = self.account.additional_info.get('account_info', {}).get('currency', None)
                 if curr:
                     return curr
                 
@@ -335,12 +339,13 @@ class DerivClient(BrokerClient):
     def get_proposal(self, symbol, side, quantity):
         try:
             symbol_info = self.get_symbol_info(symbol)
+            multiplier = 500 if self.account and self.account.additional_info.get('multiplier') is None else self.account.additional_info.get('multiplier', 500)
             proposal = self._send_request({
                 "proposal": 1,
                 "amount": quantity,
                 "basis": "stake",
                 "contract_type": "MULTUP" if side.lower() == "buy" else "MULTDOWN",
-                "multiplier": 50,
+                "multiplier": multiplier,
                 "currency": self.account_currency,
                 "symbol": symbol_info.get("symbol")
             })

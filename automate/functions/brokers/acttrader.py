@@ -66,7 +66,7 @@ class ActTrader(BrokerClient):
                 "timeout": timeout
             },
             max_attempts=4,
-            delay_seconds=2
+            delay_seconds=5
         )
         response.raise_for_status()
         return response.json()

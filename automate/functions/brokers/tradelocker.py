@@ -109,7 +109,7 @@ class TradeLockerClient(BrokerClient):
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'params': data, 'timeout': 5},
                     max_attempts=5,
-                    delay_seconds=2
+                    delay_seconds=4
                 )
             elif method == "POST":
                 response = self.retry_until_response(
@@ -117,7 +117,7 @@ class TradeLockerClient(BrokerClient):
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
                     max_attempts=5,
-                    delay_seconds=2
+                    delay_seconds=4
                 )
             elif method == "PUT":
                 response = self.retry_until_response(
@@ -125,7 +125,7 @@ class TradeLockerClient(BrokerClient):
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
                     max_attempts=5,
-                    delay_seconds=2
+                    delay_seconds=4
                 )
             elif method == "DELETE":
                 response = self.retry_until_response(
@@ -133,7 +133,7 @@ class TradeLockerClient(BrokerClient):
                     is_desired_response=lambda resp: resp.status_code < 500,
                     kwargs={'url': url, 'headers': headers, 'json': data, 'timeout': 5},
                     max_attempts=5,
-                    delay_seconds=2
+                    delay_seconds=4
                 )
             else:
                 raise ValueError("Invalid HTTP method.")
