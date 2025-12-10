@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
+from automate.functions.brokers.deriv import APP_ID as DERIV_APP_ID
 
 # Create your views here.
 
@@ -78,7 +80,16 @@ def automate_tradelocker(request):
     return render(request, "docs/automate_tradelocker.html")
 
 def automate_ctrader(request):
-    return render(request, "docs/automate_ctrader.html")
+    context = {
+        "ctrader_client_id": CTRADER_CLIENT_ID,
+    }
+    return render(request, "docs/automate_ctrader.html", context=context)
+
+def automate_deriv(request):
+    context = {
+        "deriv_app_id": DERIV_APP_ID,
+    }
+    return render(request, "docs/automate_deriv.html", context=context)
 
 def automate_hankotrade(request):
     return render(request, "docs/automate_hankotrade.html")

@@ -34,6 +34,7 @@ urlpatterns = [
     path('automate/coinbase', automate_coinbase, name='docs_automate_broker_coinbase'),
     path('automate/tradelocker', automate_tradelocker, name='docs_automate_broker_tradelocker'),
     path('automate/ctrader', automate_ctrader, name='docs_automate_broker_ctrader'),
+    path('automate/deriv', automate_deriv, name='docs_automate_broker_deriv'),
     path('automate/hankotrade', automate_hankotrade, name='docs_automate_broker_hankotrade'),
     path('automate/alpaca', automate_alpaca, name='docs_automate_broker_alpaca'),
     path('automate/metatrader4', automate_metatrader4, name='docs_automate_broker_metatrader4'),

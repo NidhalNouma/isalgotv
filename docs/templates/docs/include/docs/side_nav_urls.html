@@ -138,6 +138,9 @@
           <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_broker_ctrader' %}font-semibold text-title{% else %}text-text{% endif %}" href="{% url 'docs_automate_broker_ctrader' %}">cTrader</a>
         </li>
         <li class="{{ li_class }}">
+          <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_broker_deriv' %}font-semibold text-title{% else %}text-text{% endif %}" href="{% url 'docs_automate_broker_deriv' %}">Deriv</a>
+        </li>
+        <li class="{{ li_class }}">
           <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_broker_hankotrade' %}font-semibold text-title{% else %}text-text{% endif %}" href="{% url 'docs_automate_broker_hankotrade' %}">HankoTrade</a>
         </li>
       </ul>

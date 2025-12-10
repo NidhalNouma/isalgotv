@@ -4,8 +4,8 @@
   <td class="px-4 py-3 text-xs text-text/80 truncate">
     <span class="text-[0.7rem]">{{ trade.order_id }}</span> <br /> <span class="text-[0.7rem]">{{ trade.custom_id }}</span>
   </td>
-  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs text-text truncate align-middle">
-    <div class="flex items-center justify-center gap-0.5">
+  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs text-text truncate">
+    <div class="flex items-center justify-start gap-0.5" >
       {% if trade.status == 'O' %}
         <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
       {% elif trade.status == 'P' %}

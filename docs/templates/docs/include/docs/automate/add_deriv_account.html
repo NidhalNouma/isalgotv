@@ -1,0 +1,104 @@
+{% load static %}
+<article class="docs">
+  <section id="what-is-deriv">
+    <aside>
+      <h3>What's Deriv?</h3>
+      <p>Deriv is an online multi‑asset trading platform that allows you to trade forex, commodities, indices, cryptocurrencies, and synthetic indices with a fast, secure, and intuitive experience.</p>
+      <ul>
+        <li>Advanced charting and analysis tools</li>
+        <li>User friendly interface suitable for beginners and experts</li>
+        <li>Wide range of markets and instruments</li>
+        <li>Automated and manual trading options</li>
+        <li>Reliable execution and 24/7 synthetic markets</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="">
+    <aside>
+      <h3>What can you trade in Deriv?</h3>
+      <p>With Deriv, you can trade a wide range of financial instruments, including:</p>
+      <ul>
+        <li>
+          <strong>Forex</strong>: Major, minor, and exotic currency pairs.
+        </li>
+        <li>
+          <strong>Commodities</strong>: Gold, silver, and other commodities.
+        </li>
+        <li>
+          <strong>Indices</strong>: Popular global stock indices.
+        </li>
+        <li>
+          <strong>Cryptocurrencies</strong>: Bitcoin, Ethereum, and other cryptocurrencies may be available.
+        </li>
+      </ul>
+      <p>
+        <strong>Note:</strong> Only Options trading accounts are supported through this account type. <br />
+        This account type supports multiplier contracts only and does not support partial closures.
+      </p>
+    </aside>
+  </section>
+
+  <section id="api-deriv">
+    <aside>
+      <h3>Deriv credentials</h3>
+      <p>Follow the steps below to get your Deriv credentials.</p>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create a Deriv Account</h3>
+      <div>
+        <ol>
+          <li>
+            If you don’t already have a Deriv account, <a class="!text-text" href="https://deriv.partners/rx?sidc=0F26E2BF-4C0D-4B96-BB1C-42E71F832804&utm_campaign=dynamicworks&utm_medium=affiliate&utm_source=CU185811" target="_blank">visit the Deriv website</a> to create one.
+          </li>
+          <li>Log in to your Deriv account.</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>2</span> Get your Options Trading Account ID</h3>
+      <div>
+        <ol>
+          <li>
+            Select <strong>Options</strong> from the nav bar.
+          </li>
+          <li>Activate your Options trading account if you haven't done so already.</li>
+          <li>
+            Your Options Trading Account ID is displayed below your account balance.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/deriv/step-1.png' %}" alt="Deriv - Select account to generate authentication token" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>3</span> Get Your Deriv Authentication Token</h3>
+      <div>
+        <ol>
+          <li>
+            Get your Deriv authentication token <a class="!text-text underline" href="https://oauth.deriv.com/oauth2/authorize?app_id={{ deriv_app_id }}&affiliate_token=AE6E51CC-4CFE-480F-9CC9-FD177F318574&utm_campaign=dynamicworks" target="_blank">here</a> or by clicking on Get Token from our automate dashboard when you're adding a Deriv account.
+          </li>
+          <li>
+            Click <strong>Continue</strong> to generate your authentication token.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/deriv/step-2.png' %}" alt="Deriv - Select account to generate authentication token" />
+          </li>
+          <li>From your accounts list copy the token of your options trading account.</li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+  <section id="complete-deriv">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your authentication token and options trading account ID, return to our platform's Automate section to link your Deriv account. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

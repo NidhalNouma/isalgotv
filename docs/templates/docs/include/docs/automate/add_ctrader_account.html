@@ -84,18 +84,18 @@
 
   <section>
     <aside>
-      <h3><span>3</span> Get Your cTrader Authentication Code</h3>
+      <h3><span>3</span> Get Your cTrader Authentication Token</h3>
       <div>
         <ol>
           <li>
-            Get your cTrader authentication code <button class="!text-text underline" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">here</button> or by clicking on Get code from our automate dashboard when you're adding a cTrader account.
+            Get your cTrader authentication token <button class="!text-text underline" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">here</button> or by clicking on Get Token from our automate dashboard when you're adding a cTrader account.
           </li>
           <li>
-            From your accounts list select only one account to generate the authentication code for it. If select multiple accounts, the code will be generated for the first one only.
-            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/ctrader/step-1.png' %}" alt="cTrader - Select account to generate authentication code" />
+            From your accounts list select only one account to generate the authentication token for it. If select multiple accounts, the token will be generated for the first one only.
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/ctrader/step-1.png' %}" alt="cTrader - Select account to generate authentication token" />
           </li>
-          <li>Click on "Allow access" to generate your authentication code.</li>
-          <li>Copy the generated authentication code.</li>
+          <li>Click on "Allow access" to generate your authentication token.</li>
+          <li>Copy the generated authentication token.</li>
         </ol>
       </div>
     </aside>
@@ -103,7 +103,7 @@
   <section id="complete-ctrader">
     <aside>
       <h3>Complete Integration</h3>
-      <p>Once you have your authentication code, return to our platform's Automate section to link your cTrader account. This will enable automated trading based on your TradingView alerts.</p>
+      <p>Once you have your authentication token, return to our platform's Automate section to link your cTrader account. This will enable automated trading based on your TradingView alerts.</p>
     </aside>
   </section>
 </article>

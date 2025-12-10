@@ -1,3 +1,8 @@
+# Only Options trading accounts are supported through this API
+# Multiplier contracts only
+# Partial closures not supported
+# Forex, Commodities, Indices and Crypto supported via MULTUP and MULTDOWN contracts
+
 import asyncio
 import websockets
 import json
@@ -98,11 +103,14 @@ class DerivClient(BrokerClient):
             # print("Account Info:", account_info)
             if account_info.get('account_category') not in ['trading']:
                 raise Exception("Account is not a trading account.")
+            
+            account_type = 'L' if account_info.get('is_virtual', 0) == 1 else 'D'
 
             return {
                 "valid": True,  
                 "message": "Deriv credentials are valid.",
                 "account_api_id": account_id,
+                "account_type": account_type,
                 "additional_info": account_info
             }
         except Exception as e:
@@ -138,15 +146,17 @@ class DerivClient(BrokerClient):
     
     def open_trade(self, symbol, side, quantity, custom_id=''):
         try:
-
-            adjusted_quantity = quantity
+            decimals = 2
+            adjusted_quantity = round(float(quantity), decimals)
             proposal = self.get_proposal(symbol, side, adjusted_quantity)
             if not proposal:
                 raise Exception("Failed to get proposal for the trade.")
+            
+            print(f"Opening trade for {symbol}: side={side}, qty={adjusted_quantity}")
 
             request = {
                 "buy": proposal.get("id"),
-                "price": quantity,
+                "price": adjusted_quantity,
             }
             req = self._send_request(request)
             order_id = req.get("buy", {}).get("contract_id", None)
@@ -164,7 +174,7 @@ class DerivClient(BrokerClient):
                 'order_id': order_id,
                 'symbol': symbol,
                 'side': side,
-                'qty': quantity,
+                'qty': adjusted_quantity,
                 'price': order_info.get("price"),
                 'time': order_info.get("time"),
                 'fees': order_info.get("fees", 0),
@@ -209,7 +219,7 @@ class DerivClient(BrokerClient):
                 "contract_id": order_id
             })
             cntr = trade_info.get("proposal_open_contract", {})
-            print(cntr)
+            # print(cntr)
             
             if not cntr:
                 raise Exception(f"No information found for order ID {order_id}.")
@@ -314,7 +324,7 @@ class DerivClient(BrokerClient):
                 return self.symbols_cache[symbol]
             pairs = self.get_trading_pairs()
             for item in pairs:
-                if item.get("display_name") == symbol or str(item.get("display_name", "")).replace("/", "") == symbol:
+                if str(item.get("display_name")).upper() == symbol.upper() or str(item.get("display_name", "")).replace("/", "").upper() == symbol.upper() or str(item.get("symbol")).upper() == symbol.upper():
                     self.symbols_cache[symbol] = item
                     return item
             raise Exception(f"Symbol {symbol} not found.")
