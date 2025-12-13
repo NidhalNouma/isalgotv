@@ -58,13 +58,13 @@ class CryptoBrokerAccount(models.Model):
     broker_type = models.CharField(max_length=20, choices=BROKER_TYPES)
     type = models.CharField(max_length=2, choices=TYPE, default="S")
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=150)
     apiKey = models.CharField(max_length=200)
     secretKey = encrypt(models.CharField(max_length=350))
     pass_phrase = models.CharField(max_length=300, blank=True, null=True)  # Optional for brokers that need it
 
     active = models.BooleanField(default=True)
-    custom_id = models.CharField(max_length=30, default="")
+    custom_id = models.CharField(max_length=120, default="")
 
     additional_info = models.JSONField(default=dict, blank=True)
     
@@ -115,13 +115,13 @@ class ForexBrokerAccount(models.Model):
     type = models.CharField(max_length=1, choices=TYPE, default="D")
 
 
-    name = models.CharField(max_length=100)
-    username = models.CharField(max_length=150, blank=True, null=True) 
-    password = encrypt(models.CharField(max_length=150))
+    name = models.CharField(max_length=150)
+    username = models.CharField(max_length=600, blank=True, null=True) 
+    password = encrypt(models.CharField(max_length=600))
     server = models.CharField(max_length=150)
-    account_api_id = models.CharField(max_length=100, default="")
+    account_api_id = models.CharField(max_length=150, default="")
 
-    custom_id = models.CharField(max_length=100, default="")
+    custom_id = models.CharField(max_length=120, default="")
     active = models.BooleanField(default=True)
 
     additional_info = models.JSONField(default=dict, blank=True)

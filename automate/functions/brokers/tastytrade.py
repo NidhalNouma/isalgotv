@@ -1,5 +1,6 @@
 import time
 import requests
+from django.utils.dateparse import parse_datetime
 
 from automate.functions.brokers.broker import BrokerClient
 from automate.functions.brokers.types import *
@@ -14,14 +15,11 @@ class TastytradeClient(BrokerClient):
 
         self.account_currency = self.current_trade.currency if self.current_trade else None
 
-        self.remember_me_token = None
-
         if account:
             self.username = account.username
             self.password = account.password
             self.account_number = account.account_api_id if account.account_api_id else None
             self.type = account.type
-            self.remember_me_token = account.additional_info.get('remember_me_token') if account.additional_info else None
         else:
             self.username = username
             self.password = password
@@ -32,7 +30,9 @@ class TastytradeClient(BrokerClient):
         if self.type.lower() in ['d', 'demo']:
             self.API_URL = "https://api.cert.tastyworks.com"
 
-        self._login()
+            self._login_with_password()
+        else:
+            self._login()
 
     @staticmethod
     def check_credentials(username: str, password: str, server: str, type: str, account_id: str = None):
@@ -62,8 +62,6 @@ class TastytradeClient(BrokerClient):
 
             if account_info:
                 additional_info = {}
-                if client.remember_me_token:
-                    additional_info = {'remember_me_token': client.remember_me_token}
                     
                 return {'valid': True, 'message': "Credentials are valid.", 'additional_info': additional_info, 'account_api_id': client.account_number}
             else:
@@ -108,20 +106,36 @@ class TastytradeClient(BrokerClient):
     def _login(self):
         try:
             login_data = {
+                "grant_type": "refresh_token",
+                "refresh_token": self.username,
+                "client_secret": self.password
+            }
+
+            response = self._send_request("POST", "/oauth/token", data=login_data, with_auth_header=False, max_retries=1)
+
+            if response.get("error"):
+                raise Exception(f"Login failed: {response.get('error')}")
+            accessToken = response.get("access_token")
+            if not accessToken:
+                raise Exception("Login failed: Access token not found.")
+            self.accessToken = f"Bearer {accessToken}"
+        except Exception as e:
+            print(f"Login error: {e}")
+            raise e
+    
+    def _login_with_password(self):
+        try:
+            login_data = {
                 "login": self.username,
                 "password": self.password,
                 "remember-me": True
             }
-            # if self.remember_me_token:
-            #     login_data["remember-token"] = self.remember_me_token
-            #     login_data.pop("password", None)  # Remove password if remember-me-token is used
 
             response = self._send_request("POST", "/sessions", data=login_data, with_auth_header=False, max_retries=1)
             data = response.get("data", {})
             if data.get("error"):
                 raise Exception(f"Login failed: {data.get('error')}")
             self.accessToken = data.get("session-token")
-            self.remember_me_token = data.get("remember-token")
             if not self.accessToken:
                 raise Exception("Login failed: Access token not found.")
         except Exception as e:
@@ -155,7 +169,21 @@ class TastytradeClient(BrokerClient):
             return None
 
     def get_account_balance(self, symbol = None):
-        return self.get_account_info()
+        try:
+            account = self.get_account_info()
+            if not account:
+                raise Exception("Account info not found")
+            cash_balance = account.get("cash-balance", 0.0)
+            currency = account.get("currency", "USD")
+            net_liquidating_value = account.get("net-liquidating-value", 0.0)
+            return {
+                "cash_balance": cash_balance,
+                "net_liquidating_value": net_liquidating_value,
+                "currency": currency,
+            }
+        except Exception as e:
+            print(f"Error fetching account balance: {e}")
+            return None
 
     def get_symbol_info(self, symbol: str):
         if symbol in self.symbols_cache:
@@ -170,6 +198,7 @@ class TastytradeClient(BrokerClient):
             if data.get('error'):
                 print(f"Error fetching symbol info for {symbol}: {data.get('error')}")
                 raise Exception(data.get('error'))
+            # print(f"Symbol search response data for {symbol}: {data}")
             if data.get("items"):
                 symbol_info = data["items"][0]  # Assuming the first item is the desired symbol
                 self.symbols_cache[symbol] = symbol_info
@@ -213,10 +242,10 @@ class TastytradeClient(BrokerClient):
                 "time-in-force": "Day",
                 "legs": [
                     {
-                    "instrument-type": "Equity" if not symbol_type else symbol_type,
-                    "action": action,
-                    "quantity": quantity,
-                    "symbol": symbol_name
+                        "instrument-type": "Equity" if not symbol_type else symbol_type,
+                        "action": action,
+                        "quantity": quantity,
+                        "symbol": symbol_name
                     }
                 ]
             }
@@ -234,9 +263,13 @@ class TastytradeClient(BrokerClient):
             order_id = order_data.get("id", None)
             if not order_id:
                 raise Exception("Order ID not found in order data")
+
+            order_info = self.get_order_info(symbol, order_id)
+            if not order_info:
+                raise Exception("Failed to retrieve order info after placing order")
             
-            print(f"Trade opened successfully for {symbol}: {order_data}")
-            return order_data
+            print(f"Trade opened successfully for {symbol}: {order_info}")
+            return order_info
         except Exception as e:
             print(f"Error opening trade for {symbol}: {e}")
             raise e
@@ -246,7 +279,7 @@ class TastytradeClient(BrokerClient):
         return self.open_trade(symbol, t_side, quantity, oc=True)
 
 
-    def get_order_info(self, symbol, order_id):
+    def get_order_by_id(self, symbol, order_id):
         try:
             response = self._send_request("GET", f"/accounts/{self.account_number}/orders/{order_id}")
             if response.get("error"):
@@ -256,6 +289,56 @@ class TastytradeClient(BrokerClient):
         except Exception as e:
             print(f"Error fetching order info for {symbol}, order ID {order_id}: {e}")
             raise e
+        
+    def get_order_info(self, symbol, order_id, max_wait=10):
+        for i in range(max_wait):
+            try:
+                resp = self._send_request(
+                    "GET",
+                    f"/accounts/{self.account_number}/transactions",
+                    params={"type": "Trade", "symbol": symbol},
+                    max_retries=1
+                )
+                print(f"Fill poll response: {resp}")
+
+                items = resp.get("data", {}).get("items", [])
+                for t in items:
+                    if t.get("order-id") == order_id:
+                        order_type = str(t.get("transaction-sub-type", "")).lower()
+                        if order_type == "buy to open":
+                            order_type = "BUY"
+                        elif order_type == "sell to open":
+                            order_type = "SELL"
+
+                        price =  t.get("price", 0.0)
+                        qty = t.get("quantity", 0.0)
+                        profit = 0.0
+                        if self.current_trade:
+                            open_price = self.current_trade.entry_price
+                            if order_type == "SELL":
+                                profit = (price - open_price) * qty
+                            else:
+                                profit = (open_price - price) * qty
+
+                        return {
+                            'symbol': t.get("symbol"),
+                            "type": order_type,
+                            "quantity": qty,
+                            "price": price,
+                            "time": str(parse_datetime(t.get("executed-at"))),
+
+                            "fees": float(t.get("regulatory-fees", 0)) + float(t.get("commission", 0)) + float(t.get("clearing-fees", 0)),
+                            "profit": profit,
+                            "currency": t.get("currency"),
+                            "additional_info": t
+                        }
+
+            except Exception as e:
+                print(f"Fill poll error: {e}")
+
+            time.sleep(1)
+
+        return None
 
     def get_positions(self):
         try:
@@ -270,7 +353,16 @@ class TastytradeClient(BrokerClient):
             raise e
 
     def get_trading_pairs(self):
-        pass
+        try:
+            response = self._send_request("GET", "/symbols/trading-pairs")
+            if response.get("error"):
+                raise Exception(response.get('error'))
+            data = response.get("data", {})
+            pairs = data.get("items", [])
+            return pairs
+        except Exception as e:
+            print(f"Error fetching trading pairs: {e}")
+            raise e
 
     def get_history_candles(self, symbol, timeframe, limit=100):
         pass

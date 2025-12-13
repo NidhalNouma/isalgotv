@@ -239,7 +239,8 @@ class BrokerClient(abc.ABC):
                     return response
 
                 print(f"⚠️ Attempt {attempt} failed. Retrying in {delay_seconds} seconds for function {func.__name__}...")
-            time.sleep(delay_seconds)
+            if max_attempts > 1 and attempt < max_attempts:
+                time.sleep(delay_seconds)
 
         print(f"❌ Max attempts reached for function {func.__name__}. Returning last response.")
         return response

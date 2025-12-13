@@ -200,49 +200,53 @@ def save_log(response_status, alert_message, response_message, account, latency_
     return log
 
 def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
-    order_id = opend_trade.get('order_id') 
-    # symbol = opend_trade.get('symbol')
-    volume = opend_trade.get('qty') or opend_trade.get('volume')
-    price = opend_trade.get('price', 0)
-    time = opend_trade.get('time', timezone.now())
-    currency = opend_trade.get('currency', '')
-    fees = opend_trade.get('fees', 0)
-    closed_order_id = opend_trade.get('closed_order_id', '')
-    additional_info = opend_trade.get('additional_info', {})
+    try:
+        order_id = opend_trade.get('order_id') 
+        # symbol = opend_trade.get('symbol')
+        volume = opend_trade.get('qty') or opend_trade.get('volume')
+        price = opend_trade.get('price', 0)
+        time = opend_trade.get('time', timezone.now())
+        currency = opend_trade.get('currency', '')
+        fees = opend_trade.get('fees', 0)
+        closed_order_id = opend_trade.get('closed_order_id', '')
+        additional_info = opend_trade.get('additional_info', {})
 
-    t_side = "B" if str.lower(side) == "buy" else "S"
-    
-    if isinstance(account, (CryptoBrokerAccount, ForexBrokerAccount)):
-        content_type = ContentType.objects.get_for_model(account.__class__)
-
-        try:
-            strategy = Strategy.objects.get(id=strategy_id) if strategy_id else None
-        except Strategy.DoesNotExist:
-            strategy = None
+        t_side = "B" if str.lower(side) == "buy" else "S"
         
-        trade = TradeDetails.objects.create(
-            custom_id=custom_id,
-            order_id=order_id,
-            symbol=symbol,
-            side=t_side,
-            volume=volume,
-            remaining_volume=volume,
-            entry_price=price,
-            entry_time=time,
-            currency=currency,
-            additional_info=additional_info,
-            fees=fees,
-            closed_order_id=closed_order_id,
-            trade_type=getattr(account, 'type', None),
-            content_type=content_type,
-            object_id=account.id,
-            strategy=strategy
-        )
+        if isinstance(account, (CryptoBrokerAccount, ForexBrokerAccount)):
+            content_type = ContentType.objects.get_for_model(account.__class__)
 
-    else:
-        raise ValueError(f"Unsupported account model: {type(account)}")
-    
-    return trade
+            try:
+                strategy = Strategy.objects.get(id=strategy_id) if strategy_id else None
+            except Strategy.DoesNotExist:
+                strategy = None
+            
+            trade = TradeDetails.objects.create(
+                custom_id=custom_id,
+                order_id=order_id,
+                symbol=symbol,
+                side=t_side,
+                volume=volume,
+                remaining_volume=volume,
+                entry_price=price,
+                entry_time=time,
+                currency=currency,
+                additional_info=additional_info,
+                fees=fees,
+                closed_order_id=closed_order_id,
+                trade_type=getattr(account, 'type', None),
+                content_type=content_type,
+                object_id=account.id,
+                strategy=strategy
+            )
+
+        else:
+            raise ValueError(f"Unsupported account model: {type(account)}")
+        
+        return trade
+    except Exception as e:
+        print('save new trade error: ', str(e))
+        raise e
 
 def get_previous_trade(custom_id, symbol, side, account, strategy_id, reverse_id):
     t_side = "B" if str.lower(side) == "sell" else "S"
@@ -298,21 +302,29 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
     return trade
 
 def update_trade_after_close(trade, closed_volume, closed_trade):
+    try:
+        closed_volume = closed_trade.get('qty', closed_volume)
+        price = closed_trade.get('price', 0)
+        closed_order_id = closed_trade.get('closed_order_id', '')
 
-    closed_volume = closed_trade.get('qty', closed_volume)
-    price = closed_trade.get('price', 0)
-    closed_order_id = closed_trade.get('closed_order_id', '')
+        closed_trade_details = closed_trade.get('trade_details', None) or closed_trade.get('closed_trade_details', None)
 
-    closed_trade_details = closed_trade.get('trade_details', None) or closed_trade.get('closed_trade_details', None)
+        trade.closed_trade_details = closed_trade_details
 
-    trade.closed_trade_details = closed_trade_details
+        if 'open_price' in closed_trade:
+            trade.entry_price = float(closed_trade['open_price'])
+        if 'open_time' in closed_trade:
+            trade.entry_time = closed_trade['open_time']
 
-    trade.exit_price = float(price)
-    trade.closed_order_id = closed_order_id
-    trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
-    trade.save()
+        trade.exit_price = float(price)
+        trade.closed_order_id = closed_order_id
+        trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
+        trade.save()
 
-    return trade
+        return trade
+    except Exception as e:
+        print('update trade after close error: ', str(e))
+        raise e
 
 def volume_to_close(trade, partial):
     if partial:

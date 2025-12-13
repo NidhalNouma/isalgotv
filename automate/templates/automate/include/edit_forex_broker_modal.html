@@ -74,7 +74,7 @@
       </div>
       {% if account.broker_type != 'ctrader' and account.broker_type != 'deriv' %}
         <div class="w-full">
-          {% if account.broker_type == 'tradelocker' or account.broker_type == 'tastytrade' %}
+          {% if account.broker_type == 'tradelocker' %}
             <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
             <input 
             type="text"
@@ -85,6 +85,15 @@
             value="{{account.username}}" />
             {% elif account.broker_type == 'alpaca' %}
             <label for="{{ broker_type }}_username" class="input-label">API Key</label>
+            <input 
+            type="text"
+            id="{{account.id}}_{{account.broker_type}}_username"
+            name="{{account.id}}_{{account.broker_type}}_username"
+            class="input-text w-full"
+            placeholder="Your API key"
+            value="{{account.username}}" />
+            {% elif account.broker_type == 'tastytrade' %}
+            <label for="{{ broker_type }}_username" class="input-label">Refresh Token</label>
             <input 
             type="text"
             id="{{account.id}}_{{account.broker_type}}_username"
@@ -103,11 +112,11 @@
           {% endif %}
         </div>
         <div class="w-full">
-          {% if account.broker_type == 'alpaca' %}
+          {% if account.broker_type == 'alpaca' or account.broker_type == 'tastytrade' %}
           <label
             for="{{account.id}}_{{account.broker_type}}_password"
             class="input-label"
-            >Secret Key</label
+            >{% if account.broker_type == 'alpaca' %}Secret Key{% elif account.broker_type == 'tastytrade' %}Client Secret{% endif %}</label
           >
           <input
             type="password"
