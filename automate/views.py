@@ -70,6 +70,28 @@ def index(request):
     
     return render(request, "automate/automate.html", context=context_accounts_by_user(request))
 
+def get_account_data(request, public_id):
+    # Ensure the user is logged in
+    if not request.user.is_authenticated:
+        return render(request, "automate/automate.html", context={})
+    
+    user_profile = request.user.user_profile  
+
+    crypto_account = CryptoBrokerAccount.objects.filter(public_id=public_id).first()
+    if crypto_account:
+        account = crypto_account
+    else:
+        forex_account = ForexBrokerAccount.objects.filter(public_id=public_id).first()
+        if forex_account:
+            account = forex_account
+        else:
+            return render(request, "404.html", status=404)
+
+    context = context_accounts_by_user(request)
+    context['selected_account'] = account
+
+    return render(request, "automate/automate.html", context=context)
+
 def webhook_404(request, exception):
     return HttpResponse("Page not found!", content_type="text/plain")
 
@@ -798,6 +820,9 @@ def close_trade(request, broker_type, pk, trade_id):
             account = ForexBrokerAccount.objects.get(pk=pk)
         else:
             raise ValueError("Invalid Broker Type")
+        
+        if account.created_by != request.user.user_profile:
+            raise PermissionError("You do not have permission to close trades on this account.")
 
         content_type = ContentType.objects.get_for_model(type(account))
         trade = TradeDetails.objects.get(content_type=content_type, object_id=pk, id=trade_id)

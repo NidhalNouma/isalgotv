@@ -37,6 +37,7 @@ urlpatterns = [
     path('automate/deriv', automate_deriv, name='docs_automate_broker_deriv'),
     path('automate/hankotrade', automate_hankotrade, name='docs_automate_broker_hankotrade'),
     path('automate/alpaca', automate_alpaca, name='docs_automate_broker_alpaca'),
+    path('automate/tastytrade', automate_tastytrade, name='docs_automate_broker_tastytrade'),
     path('automate/metatrader4', automate_metatrader4, name='docs_automate_broker_metatrader4'),
     path('automate/metatrader5', automate_metatrader5, name='docs_automate_broker_metatrader5'),
 

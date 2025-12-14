@@ -1,0 +1,141 @@
+{% comment %}https://tastytrade.com/welcome/?referralCode=RVH485QH35{% endcomment %}
+
+{% load static %}
+<article class="docs">
+  <section id="what-is-tastytrade">
+    <aside>
+      <h3>What's Tastytrade?</h3>
+      <p>Tastytrade is a commission-free trading platform that provides an API for algorithmic trading. It offers:</p>
+      <ul>
+        <li>Commission-free trading for stocks, ETFs, futures, and crypto</li>
+        <li>Advanced trading tools and analytics</li>
+        <li>Educational resources for traders of all levels</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section id="">
+    <aside>
+      <h3>What can you trade with Tastytrade?</h3>
+      <p>With Tastytrade, you can trade the following assets:</p>
+      <ul>
+        <li>Stocks</li>
+        <li>ETFs</li>
+        <li>Futures</li>
+        <li>Crypto</li>
+      </ul>
+      <p>Hedge trading is not available, only One-Way Mode is supported.</p>
+    </aside>
+  </section>
+
+  <section id="api-tastytrade">
+    <aside>
+      <h3>Credentials setup</h3>
+      <p>Follow the steps below to link your Tastytrade account.</p>
+    </aside>
+  </section>
+
+  <div class="mb-4">
+    {% include 'include/warnings.html' with warning='Never share your credentials with anyone. Our platform uses industry-standard encryption to protect your credentials.' %}
+  </div>
+
+  <section>
+    <aside>
+      <h3><span>1</span> Create an Tastytrade Account</h3>
+      <div>
+        <p>
+          Sign up for an Tastytrade account if you don't have one.
+          <a href="https://tastytrade.com/welcome/?referralCode=RVH485QH35" target="_blank">Sign up here</a>.
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>2</span> Get your client secret</h3>
+      <div>
+        <ol>
+          <li>Log in to your Tastytrade account</li>
+          <li>From the top navbar select "Manage"</li>
+          <li>
+            In the left sidebar, click on "Profile"
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-1.png' %}" alt="Tastytrade - Profile" />
+          </li>
+          <li>
+            Select the "API" from the profile options
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-2.png' %}" alt="Tastytrade - API " />
+          </li>
+          <li>
+            Click on "OAuth Applications" tab
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-3.png' %}" alt="Tastytrade - OAuth Applications" />
+          </li>
+          <li>Click on "Create New Application" button if you don't have any existing application</li>
+          <li>
+            Fill in the application details as follows:<ul>
+              <li>
+                <strong>Application Name:</strong> Choose a name for your application (e.g., "Automate Trading App")
+              </li>
+              <li>
+                <strong>Scopes:</strong> Select the following scopes:<ul>
+                  <li>Read</li>
+                  <li>Trade</li>
+                  <li>OpenId</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Redirect URI:</strong> Use the following URI: <code>https://www.isalgo.com/automate/tastytrade/callback</code>
+              </li>
+            </ul>
+          </li>
+          <li>After filling in the details, click on "Finish" to create the application and obtain your Client Secret.</li>
+          <li>
+            If you have existing applications, click on "Manage" then "Settings" of the application you want to use
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-4.2.png' %}" alt="Tastytrade - Manage OAuth Application" />
+          </li>
+          <li>
+            Click on "Regenerate" to get a new Client Secret
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-7.png' %}" alt="Tastytrade - Regenerate Client Secret" />
+          </li>
+          <li>
+            Copy your Client Secret for use in our platform
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-8.png' %}" alt="Tastytrade - Client Secret" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <aside>
+      <h3><span>3</span> Get your refresh token</h3>
+      <div>
+        <ol>
+          <li>
+            In the OAth Applications tab, click on "Manage" then "Create Grant" of the application you want to use
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-4.png' %}" alt="Tastytrade - Create Grant" />
+          </li>
+          <li>
+            In the Scopes section, select the following scopes:<ul>
+              <li>Read</li>
+              <li>Trade</li>
+              <li>OpenId</li>
+            </ul>And then click on "Create"
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-5.png' %}" alt="Tastytrade - Scopes Selection" />
+          </li>
+          <li>
+            Copy your refresh token for use in our platform
+            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tastytrade/step-6.png' %}" alt="Tastytrade - Refresh Token" />
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+  <section id="complete-tastytrade">
+    <aside>
+      <h3>Complete Integration</h3>
+      <p>Once you have your Client Secret and refresh token, return to our platform's Automate section to link your Tastytrade account. This will enable automated trading based on your TradingView alerts.</p>
+    </aside>
+  </section>
+</article>

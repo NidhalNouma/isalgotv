@@ -4,6 +4,7 @@ from automate.views import *
 urlpatterns = [
     # path('home/', home, name='home'),
     path('', index, name='automate'),
+    path('<str:public_id>/', get_account_data, name='get_account_data'),
     path('add-crypto-broker/<str:broker_type>/', add_broker, name='add_crypto_broker_account'),
     path('edit-crypto-broker/<str:broker_type>/<int:pk>/', edit_broker, name='edit_crypto_broker_account'),
 

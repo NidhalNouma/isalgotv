@@ -126,6 +126,9 @@
           <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_broker_tradelocker' %}font-semibold text-title{% else %}text-text{% endif %}" href="{% url 'docs_automate_broker_tradelocker' %}">TradeLocker</a>
         </li>
         <li class="{{ li_class }}">
+          <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_broker_tastytrade' %}font-semibold text-title{% else %}text-text{% endif %}" href="{% url 'docs_automate_broker_tastytrade' %}">Tastytrade</a>
+        </li>
+        <li class="{{ li_class }}">
           <a class="whitespace-nowrap w-full text-start text-sm hover:text-title {% if request.resolver_match.view_name == 'docs_automate_broker_alpaca' %}font-semibold text-title{% else %}text-text{% endif %}" href="{% url 'docs_automate_broker_alpaca' %}">Alpaca</a>
         </li>
         <li class="{{ li_class }}">

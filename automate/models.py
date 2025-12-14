@@ -7,20 +7,18 @@ from django.core.exceptions import ValidationError
 from decimal import Decimal, InvalidOperation
 
 from profile_user.models import User_Profile
-
 from strategies.models import Strategy
 
 import json
 from django.utils import timezone
 import shortuuid
 
-
-def generate_short_unique_id(prefix, id):
+def generate_short_unique_id(prefix, id, sepparator='x'):
     max_length = 14 - len(prefix) - 1  # Subtract length of prefix and hyphen
     if max_length < 6:  # Ensure there's enough space for uniqueness
         max_length = 6
     short_id = shortuuid.ShortUUID().random(length=max_length)  
-    return f"{prefix}{id}x{short_id}"
+    return f"{prefix}{id}{sepparator}{short_id}"
 
 
 # Crypto brokers ----------------------------------------------------------------
@@ -65,14 +63,28 @@ class CryptoBrokerAccount(models.Model):
 
     active = models.BooleanField(default=True)
     custom_id = models.CharField(max_length=120, default="")
+    public_id = models.CharField(max_length=120, default="")
 
     additional_info = models.JSONField(default=dict, blank=True)
+    performance_data = models.JSONField(default=dict, blank=True)
     
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     subscription_id = models.CharField(max_length=100, blank=False)
+
+    def generate_public_id(self, replace=False, save=True):
+        if self.public_id == "" or replace:
+            self.public_id = generate_short_unique_id("pubc", self.id, 'i')
+            if save:
+                self.save()
+                
+    def generate_custom_id(self, replace=False, save=True):
+        if self.custom_id == "" or replace:
+            self.custom_id = generate_short_unique_id(self.broker_type, self.id)
+            if save:
+                self.save()
 
     def save(self, *args, **kwargs):        # Ensure subscription_id is provided
         if not self.subscription_id:
@@ -83,10 +95,10 @@ class CryptoBrokerAccount(models.Model):
         super(CryptoBrokerAccount, self).save(*args, **kwargs)
 
         # Only generate a custom_id if it's a new record and custom_id is not set
-        if creating and self.custom_id == "":
-            self.custom_id = generate_short_unique_id(self.broker_type, self.id)
+        if creating:
+            self.generate_custom_id(save=False)
+            self.generate_public_id(save=False)
             super(CryptoBrokerAccount, self).save(*args, **kwargs) 
-            
 
 # Forex brokers ----------------------------------------------------------------
 
@@ -111,9 +123,7 @@ class ForexBrokerAccount(models.Model):
     ]
 
     broker_type = models.CharField(max_length=20, choices=BROKER_TYPES)
-
     type = models.CharField(max_length=1, choices=TYPE, default="D")
-
 
     name = models.CharField(max_length=150)
     username = models.CharField(max_length=600, blank=True, null=True) 
@@ -121,16 +131,30 @@ class ForexBrokerAccount(models.Model):
     server = models.CharField(max_length=150)
     account_api_id = models.CharField(max_length=150, default="")
 
-    custom_id = models.CharField(max_length=120, default="")
     active = models.BooleanField(default=True)
+    custom_id = models.CharField(max_length=120, default="")
+    public_id = models.CharField(max_length=120, default="")
 
     additional_info = models.JSONField(default=dict, blank=True)
+    performance_data = models.JSONField(default=dict, blank=True)
 
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     subscription_id = models.CharField(max_length=100, blank=False)
+
+    def generate_public_id(self, replace=False, save=True):
+        if self.public_id == "" or replace:
+            self.public_id = generate_short_unique_id("pubf", self.id, 'i')
+            if save:
+                self.save()
+
+    def generate_custom_id(self, replace=False, save=True):
+        if self.custom_id == "" or replace:
+            self.custom_id = generate_short_unique_id(self.broker_type, self.id)
+            if save:
+                self.save()
 
     def save(self, *args, **kwargs):
         if not self.subscription_id:
@@ -141,12 +165,11 @@ class ForexBrokerAccount(models.Model):
         super(ForexBrokerAccount, self).save(*args, **kwargs)
 
         # Only generate a custom_id if it's a new record and custom_id is not set
-        if creating and self.custom_id == "":
-            self.custom_id = generate_short_unique_id(self.broker_type, self.id)
+        if creating:
+            self.generate_custom_id(save=False)
+            self.generate_public_id(save=False)
             super(ForexBrokerAccount, self).save(*args, **kwargs) 
-
-
-
+        
 # Trades and Logs ----------------------------------------------------------------
 
 def validate_fills(value):
@@ -207,6 +230,7 @@ class TradeDetails(models.Model):
 
     fees = models.DecimalField(decimal_places=10, max_digits=40, default=0)
     profit = models.DecimalField(decimal_places=10, max_digits=40, default=0)
+    net_profit = models.DecimalField(decimal_places=10, max_digits=40, default=0)
 
     side = models.CharField(max_length=1, choices=TYPE)
  
@@ -337,7 +361,8 @@ class TradeDetails(models.Model):
             if float(self.remaining_volume) <= 0:
                 self.status = 'C'
 
-            
+            self.net_profit = self.profit - self.fees
+
             super(TradeDetails, self).save(*args, **kwargs)
         except Exception as e:
             print('saving trade error: ', e)

@@ -94,6 +94,9 @@ def automate_deriv(request):
 def automate_hankotrade(request):
     return render(request, "docs/automate_hankotrade.html")
 
+def automate_tastytrade(request):
+    return render(request, "docs/automate_tastytrade.html")
+
 def automate_alpaca(request):
     return render(request, "docs/automate_alpaca.html")
 
