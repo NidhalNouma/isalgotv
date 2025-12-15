@@ -71,11 +71,6 @@ def index(request):
     return render(request, "automate/automate.html", context=context_accounts_by_user(request))
 
 def get_account_data(request, public_id):
-    # Ensure the user is logged in
-    if not request.user.is_authenticated:
-        return render(request, "automate/automate.html", context={})
-    
-    user_profile = request.user.user_profile  
 
     crypto_account = CryptoBrokerAccount.objects.filter(public_id=public_id).first()
     if crypto_account:
@@ -86,11 +81,63 @@ def get_account_data(request, public_id):
             account = forex_account
         else:
             return render(request, "404.html", status=404)
+        
+    only_closed_trades = True
+    if request.user and request.user.is_superuser:
+        only_closed_trades = False
+    elif request.user and request.user.is_authenticated:
+        if request.user.user_profile == account.created_by:
+            only_closed_trades = False 
 
-    context = context_accounts_by_user(request)
-    context['selected_account'] = account
+    trades = TradeDetails.objects.filter(
+        content_type=ContentType.objects.get_for_model(type(account)),
+        object_id=account.id,
+        status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+    ).order_by('-created_at')[:20]
 
-    return render(request, "automate/automate.html", context=context)
+    closed_trades = TradeDetails.objects.filter(   
+        content_type=ContentType.objects.get_for_model(type(account)),
+        object_id=account.id,
+        status='C'
+    )
+    total_closed = closed_trades.count()
+    total_wins = closed_trades.filter(profit__gt=0).count()
+    total_losses = closed_trades.filter(profit__lt=0).count()
+    win_rate = (total_wins / total_closed * 100) if total_closed > 0 else 0
+
+    total_buy_trades = TradeDetails.objects.filter(
+        content_type=ContentType.objects.get_for_model(type(account)),
+        object_id=account.id,
+        status='C',
+        side='B'
+    ).count()
+    total_sell_trades = TradeDetails.objects.filter(
+        content_type=ContentType.objects.get_for_model(type(account)),
+        object_id=account.id,
+        status='C',
+        side='S'
+    ).count()
+
+    overview_data = {
+        'closed_trades': total_closed,
+        'total_buy_trades': total_buy_trades,
+        'total_sell_trades': total_sell_trades, 
+        'winning_trades': total_wins,
+        'losing_trades': total_losses,
+        'win_rate': round(win_rate, 2),
+    }
+
+    context = {
+        'account': account,
+        'overview_data': overview_data,
+        'trades': trades,
+        'id': account.id,
+        'broker_type': account.broker_type,
+        'next_start': 20,
+        'only_closed_trades': only_closed_trades,
+    }
+
+    return render(request, "automate/account_data.html", context=context)
 
 def webhook_404(request, exception):
     return HttpResponse("Page not found!", content_type="text/plain")
@@ -779,9 +826,15 @@ def get_broker_trades(request, broker_type, pk):
             account_model = ForexBrokerAccount
         else:
             raise ValueError("Invalid Broker Type")
+        
+        only_closed_trades = request.GET.get('only_closed_trades', 'false').lower() == 'true'
 
         content_type = ContentType.objects.get_for_model(account_model)
-        all_trades = TradeDetails.objects.filter(content_type=content_type, object_id=pk).order_by('-exit_time')
+        all_trades = TradeDetails.objects.filter(
+            content_type=content_type, 
+            object_id=pk, status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+        ).order_by('-exit_time')
+        
         trade_list = all_trades[start:start+limit]
 
         # Determine next start offset for pagination
@@ -793,6 +846,7 @@ def get_broker_trades(request, broker_type, pk):
             'id': pk,
             'broker_type': broker_type,
             'next_start': next_start,
+            'only_closed_trades': only_closed_trades,
         }
         if start == 0:
             return render(request, 'include/account_trades.html', context=context)

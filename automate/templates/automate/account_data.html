@@ -1,0 +1,51 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>{{ overview_data.win_rate|default:'0' }}% win rate | {{ account.name }}</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="{{ account.broker_type }} account overview for {{ account.name }} with a {{ overview_data.win_rate|default:'0' }}% win rate" />
+{% endblock %}
+
+{% block page %}
+  <section class="mt-2">
+    {% if account.broker_type == 'mexc' or account.broker_type == 'okx' %}
+      {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-5 aspect-auto fill-text/80 text-text/80 mb-2' %}
+    {% else %}
+      {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-6 aspect-auto fill-text/80 text-text/80 mb-2' %}
+    {% endif %}
+
+    <h2 class="text-lg font-bold text-title/80">{{ account.name }}</h2>
+  </section>
+
+  <section class="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-text/5 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Total trades</h4>
+      <p class="text-lg font-medium text-text/80">{{ overview_data.closed_trades|default:'0' }}</p>
+    </div>
+    <div class="bg-profit/10 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Winning trades</h4>
+      <p class="text-lg font-medium text-profit">{{ overview_data.winning_trades|default:'0' }}</p>
+    </div>
+    <div class="bg-loss/10 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Losing trades</h4>
+      <p class="text-lg font-medium text-loss">{{ overview_data.losing_trades|default:'0' }}</p>
+    </div>
+    <div class="bg-text/5 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Win rate</h4>
+      <p class="text-lg font-medium text-text/80">{{ overview_data.win_rate|default:'0' }}%</p>
+    </div>
+  </section>
+
+  <section class="mt-6 w-full">
+    {% comment %}Chart{% endcomment %}
+  </section>
+
+  <section class="mt-6 w-full">
+    <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>
+    <div class="h-96 w-full">
+      {% include 'automate/include/account_trades.html' with broker_type=account.broker_type id=account.id only_closed_trades=only_closed_trades %}
+    </div>
+  </section>
+{% endblock %}

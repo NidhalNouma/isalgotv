@@ -1,33 +1,35 @@
 {% load custom_tags %}
 
-<tr class="relative transition-colors hover:bg-text/10 group" id="trade-{{ broker_type }}-{{ id }}-{{ trade.id }}">
-  <td class="px-4 py-3 text-xs text-text/80 truncate">
-    <span class="text-[0.7rem]">{{ trade.order_id }}</span> <br /> <span class="text-[0.7rem]">{{ trade.custom_id }}</span>
-  </td>
-  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs text-text truncate">
-    <div class="flex items-center justify-start gap-0.5" >
-      {% if trade.status == 'O' %}
-        <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
-      {% elif trade.status == 'P' %}
-        <span class="text-text bg-text/10 group-hover:bg-text/20 transition-colors px-2 py-0.5 rounded-md">Partially Closed</span>
-      {% elif trade.status == 'C' %}
-        <span class="text-accent/60 bg-accent/5 group-hover:bg-accent/20 transition-colors px-2 py-0.5 rounded-md">Closed</span>
-      {% else %}
-        <span class="text-text/80">NA</span>
-      {% endif %}
+<tr class="relative transition-colors hover:bg-text/10 group space-y-4" id="trade-{{ broker_type }}-{{ id }}-{{ trade.id }}">
+  {% if not only_closed_trades %}
+    <td class="px-4 py-3 text-xs text-text/80 truncate">
+      <span class="text-[0.7rem]">{{ trade.order_id }}</span> <br /> <span class="text-[0.7rem]">{{ trade.custom_id }}</span>
+    </td>
+    <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs text-text truncate">
+      <div class="flex items-center justify-start gap-0.5">
+        {% if trade.status == 'O' %}
+          <span class="text-success bg-success/10 px-2 py-0.5 rounded-md">Open</span>
+        {% elif trade.status == 'P' %}
+          <span class="text-text bg-text/10 group-hover:bg-text/20 transition-colors px-2 py-0.5 rounded-md">Partially Closed</span>
+        {% elif trade.status == 'C' %}
+          <span class="text-accent/60 bg-accent/5 group-hover:bg-accent/20 transition-colors px-2 py-0.5 rounded-md">Closed</span>
+        {% else %}
+          <span class="text-text/80">NA</span>
+        {% endif %}
 
-      {% if trade.fills|length > 0 %}
-        <svg class="h-3 aspect-auto text-text/80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m3 16 4 4 4-4" />
-          <path d="M7 20V4" />
-          <path d="m21 8-4-4-4 4" />
-          <path d="M17 4v16" />
-        </svg>
-      {% endif %}
-    </div>
-  </td>
-  <td class="px-4 py-3 text-xs text-text truncate">{{ trade.symbol }}</td>
-  <td class="px-4 py-3 text-xs truncate">
+        {% if trade.fills|length > 0 %}
+          <svg class="h-3 aspect-auto text-text/80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 16 4 4 4-4" />
+            <path d="M7 20V4" />
+            <path d="m21 8-4-4-4 4" />
+            <path d="M17 4v16" />
+          </svg>
+        {% endif %}
+      </div>
+    </td>
+  {% endif %}
+  <td class="px-4 py-6 text-xs text-text truncate">{{ trade.symbol }}</td>
+  <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs truncate">
     {% if trade.side == 'B' %}
       <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-md">BUY</span>
     {% elif trade.side == 'S' %}

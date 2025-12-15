@@ -268,7 +268,7 @@ class TastytradeClient(BrokerClient):
             if not order_info:
                 raise Exception("Failed to retrieve order info after placing order")
             
-            print(f"Trade opened successfully for {symbol}: {order_info}")
+            # print(f"Trade opened successfully for {symbol}: {order_info}")
             return order_info
         except Exception as e:
             print(f"Error opening trade for {symbol}: {e}")
@@ -299,7 +299,7 @@ class TastytradeClient(BrokerClient):
                     params={"type": "Trade", "symbol": symbol},
                     max_retries=1
                 )
-                print(f"Fill poll response: {resp}")
+                # print(f"Fill poll response: {resp}")
 
                 items = resp.get("data", {}).get("items", [])
                 for t in items:
