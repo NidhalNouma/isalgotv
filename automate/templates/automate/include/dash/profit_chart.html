@@ -1,0 +1,47 @@
+
+<div class="w-full">
+    <div id="currencies-btns" class="space-x-2">
+        {% for currency, info in data.items %}
+            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}})" class="bg-text/5 px-3 py-1 text-sm font-semibold rounded-md {% if info.final_profit >= 0 %}text-profit border-profit{% else %}text-loss border-loss{% endif %}">{{ info.final_profit }} <span class="text-xs">{{ currency }}</span></button> 
+        {% endfor %}
+    </div>
+  <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !max-w-full sm:!h-96 !h-72 bg-background backdrop-blur-3xl rounded-lg"></canvas>
+</div>
+<script type="text/javascript">
+
+    const buttons = document.getElementById('currencies-btns').getElementsByTagName('button');
+
+    function currencyBtnClicked(currency) {
+        for (let i = 0; i < buttons.length; i++) {
+            const btn = buttons[i];
+            if(btn.id === 'btn-' + currency) {
+                btn.classList.add('border');
+            } else {
+                btn.classList.remove('border');
+            }
+        }
+        event.currentTarget.classList.remove('btn-outline-primary');
+        event.currentTarget.classList.add('btn-primary');
+    }
+
+    function initChart(event, currency, data) {
+        event?.preventDefault();
+        currencyBtnClicked(currency);
+        loadAccountProfitCharts('{{ account.id }}', data);
+    }
+
+  (function() {
+    function autoClickFirstButton() {
+        if (buttons.length > 0) {
+            //console.log('Auto clicking the first currency button', buttons[0].id);
+            buttons[0].click();
+        }
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', autoClickFirstButton);
+    } else {
+        autoClickFirstButton();
+    }
+  })();
+</script>

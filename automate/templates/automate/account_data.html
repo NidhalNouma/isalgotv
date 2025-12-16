@@ -8,6 +8,12 @@
   <meta name="description" content="{{ account.broker_type }} account overview for {{ account.name }} with a {{ overview_data.win_rate|default:'0' }}% win rate" />
 {% endblock %}
 
+{% block head %}
+  <!-- Load Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static '/js/chart.js' %}"></script>
+{% endblock %}
+
 {% block page %}
   <section class="mt-2">
     {% if account.broker_type == 'mexc' or account.broker_type == 'okx' %}
@@ -16,33 +22,23 @@
       {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-6 aspect-auto fill-text/80 text-text/80 mb-2' %}
     {% endif %}
 
-    <h2 class="text-lg font-bold text-title/80">{{ account.name }}</h2>
+    {% comment %} <h2 class="text-lg font-bold text-title/80">{{ account.name }}</h2> {% endcomment %}
   </section>
 
   <section class="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    <div class="bg-text/5 p-4 rounded-lg">
-      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Total trades</h4>
-      <p class="text-lg font-medium text-text/80">{{ overview_data.closed_trades|default:'0' }}</p>
-    </div>
-    <div class="bg-profit/10 p-4 rounded-lg">
-      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Winning trades</h4>
-      <p class="text-lg font-medium text-profit">{{ overview_data.winning_trades|default:'0' }}</p>
-    </div>
-    <div class="bg-loss/10 p-4 rounded-lg">
-      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Losing trades</h4>
-      <p class="text-lg font-medium text-loss">{{ overview_data.losing_trades|default:'0' }}</p>
-    </div>
-    <div class="bg-text/5 p-4 rounded-lg">
-      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">Win rate</h4>
-      <p class="text-lg font-medium text-text/80">{{ overview_data.win_rate|default:'0' }}%</p>
-    </div>
+    {% include 'include/dash/number_card.html' with title='Total trades' value=overview_data.closed_trades buy_value=overview_data.total_buy_trades sell_value=overview_data.total_sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Winning trades' value=overview_data.winning_trades value_class='text-profit/80' buy_value=overview_data.winning_buy_trades sell_value=overview_data.winning_sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Losing trades' value=overview_data.losing_trades value_class='text-loss/80' buy_value=overview_data.losing_buy_trades sell_value=overview_data.losing_sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Win rate' value=overview_data.win_rate|stringformat:'s'|add:'%' buy_value=overview_data.buy_win_rate|default:'0'|stringformat:'s'|add:'%' sell_value=overview_data.sell_win_rate|default:'0'|stringformat:'s'|add:'%' %}
   </section>
 
-  <section class="mt-6 w-full">
-    {% comment %}Chart{% endcomment %}
-  </section>
+  {% if chart_data %}
+    <section class="mt-6 w-full">
+      {% include 'automate/include/dash/profit_chart.html' with account=account data=chart_data %}
+    </section>
+  {% endif %}
 
-  <section class="mt-6 w-full">
+  <section class="mt-6 w-full mb-12">
     <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>
     <div class="h-96 w-full">
       {% include 'automate/include/account_trades.html' with broker_type=account.broker_type id=account.id only_closed_trades=only_closed_trades %}

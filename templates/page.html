@@ -40,10 +40,6 @@
     <meta name="twitter:url" content="https://www.isalgo.com" />
     <meta name="twitter:image" content="{% static 'images/seo-meta-img.png' %}" />
 
-    {% block head %}
-
-    {% endblock %}
-
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}
@@ -65,6 +61,9 @@
     <script src="{% static 'js/index.js' %}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 
+    {% block head %}
+
+    {% endblock %}
     <!-- Google Tag Manager -->
     <script>
       ;(function (w, d, s, l, i) {

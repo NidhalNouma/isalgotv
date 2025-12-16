@@ -1,0 +1,20 @@
+<div class="bg-text/5 p-4 rounded-lg">
+  <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">{{ title }}</h4>
+  <div class="flex justify-start items-end">
+    <h5 class="text-5xl font-medium {{ value_class|default:'text-text/80' }}">{{ value|default:'0' }}</h5>
+    <div class="ml-2 flex flex-col space-y-1">
+      <h5 class="text-xs text-primary flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-md">
+        {{ buy_value|default:'0' }}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 aspect-auto text-current">
+          <path d="M16 7h6v6" />
+          <path d="m22 7-8.5 8.5-5-5L2 17" />
+        </svg>
+      </h5>
+      <h5 class="text-xs text-title/80 flex items-center gap-1 bg-title/10 px-2 py-1 rounded-md">
+        {{ sell_value|default:'0' }}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 aspect-auto text-current">
+          <path d="M16 17h6v-6" />
+          <path d="m22 17-8.5-8.5-5 5L2 7" />
+        </svg>
+      </h5>
+    </div>
+  </div>
+</div>

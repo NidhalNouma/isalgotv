@@ -105,31 +105,74 @@ def get_account_data(request, public_id):
     total_losses = closed_trades.filter(profit__lt=0).count()
     win_rate = (total_wins / total_closed * 100) if total_closed > 0 else 0
 
-    total_buy_trades = TradeDetails.objects.filter(
-        content_type=ContentType.objects.get_for_model(type(account)),
-        object_id=account.id,
-        status='C',
-        side='B'
-    ).count()
-    total_sell_trades = TradeDetails.objects.filter(
-        content_type=ContentType.objects.get_for_model(type(account)),
-        object_id=account.id,
-        status='C',
-        side='S'
-    ).count()
+    total_buy_trades = closed_trades.filter(side='B').count()
+    total_buy_trades_percent = (total_buy_trades / total_closed * 100) if total_closed > 0 else 0 
+    total_sell_trades = closed_trades.filter(side='S').count()
+    total_sell_trades_percent = (total_sell_trades / total_closed * 100) if total_closed > 0 else 0
+    total_winning_buy_trades = closed_trades.filter(side='B', profit__gt=0).count()
+    total_winning_buy_trades_percent = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades > 0 else 0
+    total_winning_sell_trades = closed_trades.filter(side='S', profit__gt=0).count()
+    total_winning_sell_trades_percent = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+    total_losing_buy_trades = closed_trades.filter(side='B', profit__lt=0).count()
+    total_losing_buy_trades_percent = (total_losing_buy_trades / total_buy_trades * 100) if total_buy_trades > 0 else 0
+    total_losing_sell_trades = closed_trades.filter(side='S', profit__lt=0).count()
+    total_losing_sell_trades_percent = (total_losing_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+    buy_win_rate = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades > 0 else 0
+    sell_win_rate = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+
+    daily_profits_per_currency = defaultdict(lambda: defaultdict(float))
+        
+    for trade in closed_trades:
+        trade_date = localtime(trade.exit_time).date()
+        currency = trade.currency
+        if currency:
+            daily_profits_per_currency[currency][trade_date] += float(trade.profit or 0)
+    
+    start_day = account.created_at.date()
+    end_day = datetime.datetime.now().date()
+    days_difference = [start_day + datetime.timedelta(days=i) for i in range((end_day - start_day).days + 1)]
+
+
+    chart_data = {}
+    for currency, profits_by_date in daily_profits_per_currency.items():
+        sorted_dates = sorted(profits_by_date.keys())
+        cumulative_profit = 0
+        data_points = []
+        for date in days_difference:
+            daily_profit = profits_by_date.get(date, 0)
+            cumulative_profit += daily_profit
+            data_points.append({
+                'date': date.strftime('%b %d, %Y'),
+                'profit': cumulative_profit,
+                'daily_profit': daily_profit,
+            })
+
+        chart_data[currency] = {
+            'data': data_points,
+            'final_profit': cumulative_profit,
+        }
+        
+    # print("Chart Data:", chart_data)
 
     overview_data = {
         'closed_trades': total_closed,
-        'total_buy_trades': total_buy_trades,
-        'total_sell_trades': total_sell_trades, 
+        'total_buy_trades': str(round(total_buy_trades_percent, 2)) + '%',
+        'total_sell_trades': str(round(total_sell_trades_percent, 2)) + '%', 
         'winning_trades': total_wins,
+        'winning_buy_trades': str(round(total_winning_buy_trades_percent, 2)) + '%',
+        'winning_sell_trades': str(round(total_winning_sell_trades_percent, 2)) + '%',
         'losing_trades': total_losses,
+        'losing_buy_trades': str(round(total_losing_buy_trades_percent, 2)) + '%',
+        'losing_sell_trades': str(round(total_losing_sell_trades_percent, 2)) + '%',
         'win_rate': round(win_rate, 2),
+        'buy_win_rate': round(buy_win_rate, 2),
+        'sell_win_rate': round(sell_win_rate, 2),
     }
 
     context = {
         'account': account,
         'overview_data': overview_data,
+        'chart_data': chart_data,
         'trades': trades,
         'id': account.id,
         'broker_type': account.broker_type,
