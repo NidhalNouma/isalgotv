@@ -130,7 +130,12 @@ def get_account_data(request, public_id):
     
     start_day = account.created_at.date()
     end_day = datetime.datetime.now().date()
-    days_difference = [start_day + datetime.timedelta(days=i) for i in range((end_day - start_day).days + 1)]
+    days = (end_day - start_day).days + 1
+    if days < 3:
+        start_day = end_day - datetime.timedelta(days=2)
+        days = 3
+    
+    days_difference = [start_day + datetime.timedelta(days=i) for i in range(days)]
 
 
     chart_data = {}
