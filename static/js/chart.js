@@ -68,6 +68,12 @@ function loadChart(id) {
   // Safely escape Django JSON for inclusion in JS
   const raw = document.getElementById("trades-data-" + id).textContent;
   const data = JSON.parse(raw);
+
+  // Destroy existing chart instance if it exists
+  const existingChart = Chart.getChart("profitChart-" + id);
+  if (existingChart) {
+    existingChart.destroy();
+  }
   const series = transformToTimeProfitForChart(data);
   const minValue = Math.min(...series.profit);
 
@@ -196,7 +202,13 @@ function loadAccountProfitCharts(id, data) {
   const series = {
     date: labels,
     profit: profitData,
+    dailyProfit: data.map((item) => item.daily_profit),
   };
+
+  const existingChart = Chart.getChart("accountProfitChart-" + id);
+  if (existingChart) {
+    existingChart.destroy();
+  }
 
   new Chart(ctx, {
     type: "line",
@@ -230,7 +242,7 @@ function loadAccountProfitCharts(id, data) {
           pointRadius: 0,
           pointHoverRadius: 0,
           pointHitRadius: 10,
-          tension: 0.3,
+          tension: 0.1,
         },
       ],
     },
@@ -251,6 +263,18 @@ function loadAccountProfitCharts(id, data) {
           bodyColor: getCssVariableColor("--color-text"),
           padding: 8,
           cornerRadius: 4,
+          callbacks: {
+            title: (tooltipItems) => {
+              return tooltipItems[0].label;
+            },
+            label: (tooltipItem) => {
+              const profit = `Profit: ${tooltipItem.formattedValue}`;
+              const dailyProfit = `Daily Profit: ${
+                series.dailyProfit[tooltipItem.dataIndex]
+              }`;
+              return [profit, dailyProfit];
+            },
+          },
         },
       },
       interaction: {

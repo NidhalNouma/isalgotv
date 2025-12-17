@@ -1,8 +1,8 @@
 
 <div class="w-full">
-    <div id="currencies-btns" class="space-x-2">
+    <div id="currencies-btns" class="space-x-2 space-y-2 mb-2">
         {% for currency, info in data.items %}
-            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}})" class="bg-text/5 px-3 py-1 text-sm font-semibold rounded-md {% if info.final_profit >= 0 %}text-profit border-profit{% else %}text-loss border-loss{% endif %}">{{ info.final_profit }} <span class="text-xs ml-0.5 font-normal">{{ currency }}</span></button> 
+            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}})" class="bg-text/5 px-3 py-1 text-sm font-semibold rounded-md border-0 {% if info.final_profit >= 0 %}text-profit border-profit{% else %}text-loss border-loss{% endif %}">{{ info.final_profit }} <span class="text-xs ml-0.5 font-normal">{{ currency }}</span></button> 
         {% endfor %}
     </div>
   <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !max-w-full sm:!h-96 !h-72 bg-background backdrop-blur-3xl rounded-lg"></canvas>
@@ -16,8 +16,12 @@
             const btn = buttons[i];
             if(btn.id === 'btn-' + currency) {
                 btn.classList.add('border');
+                btn.classList.remove('border-0');
+                btn.classList.add('border-1');
             } else {
                 btn.classList.remove('border');
+                btn.classList.remove('border-1');
+                btn.classList.add('border-0');
             }
         }
         event.currentTarget.classList.remove('btn-outline-primary');
