@@ -39,6 +39,32 @@
     </section>
   {% endif %}
 
+  <section class="w-full flex flex-col md:flex-row items-start justify-between md:gap-6">
+    {% if assets %}
+      <section class="mt-6 w-full bg-text/5 p-4 rounded-lg">
+        <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Traded Assets</h4>
+        <div class="flex flex-wrap gap-2">
+          {% for asset in assets.items %}
+            {% include 'include/dash/data_card.html' with title=asset.0 value=asset.1.trades buy_value=asset.1.buy_trades sell_value=asset.1.sell_trades profit_value=asset.1.wins loss_value=asset.1.losses %}
+            {% comment %} <span class="bg-text/10 text-text/80 text-xs font-medium px-3 py-1 rounded-full border border-text/20">{{ asset.1.trades }} {{ asset.0 }}</span> {% endcomment %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if sources %}
+      <section class="mt-6 w-full bg-text/5 p-4 rounded-lg">
+        <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Sources Used</h4>
+        <div class="flex flex-wrap gap-2">
+          {% for source in sources.items %}
+            {% url 'strategy' slug=source.0.slug as source_url %}
+            {% include 'include/dash/data_card.html' with url=source_url title=source.0 value=source.1.trades buy_value=source.1.buy_trades sell_value=source.1.sell_trades profit_value=source.1.wins loss_value=source.1.losses %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </section>
+
   {% if trades|length > 0 %}
     <section class="mt-6 w-full mb-12 bg-text/5 p-4 rounded-lg">
       <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>

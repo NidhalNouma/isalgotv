@@ -23,6 +23,7 @@ from collections import defaultdict
 from django.utils.timezone import localtime
 
 from asgiref.sync import sync_to_async, async_to_sync
+from decimal import Decimal, ROUND_HALF_UP
 
 import environ
 env = environ.Env()
@@ -100,6 +101,7 @@ def get_account_data(request, public_id):
         object_id=account.id,
         status='C'
     ).order_by('-created_at')
+
     total_closed = closed_trades.count()
     total_wins = closed_trades.filter(profit__gt=0).count()
     total_losses = closed_trades.filter(profit__lt=0).count()
@@ -121,21 +123,40 @@ def get_account_data(request, public_id):
     sell_win_rate = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
 
     daily_profits_per_currency = defaultdict(lambda: defaultdict(float))
+    assets = {}
+    sources = {}
         
     for trade in closed_trades:
         trade_date = localtime(trade.exit_time).date()
         currency = trade.currency
-        if currency:
-            profit_value = float(trade.profit or 0)
+        asset = trade.symbol
+        side = trade.side
+        source = trade.strategy
+        profit_value = float(trade.profit or 0)
+        assets[asset] = {
+            'trades': assets.get(asset, {}).get('trades', 0) + 1,
+            'wins': assets.get(asset, {}).get('wins', 0) + (1 if profit_value > 0 else 0),
+            'losses': assets.get(asset, {}).get('losses', 0) + (1 if profit_value < 0 else 0),
+            'buy_trades': assets.get(asset, {}).get('buy_trades', 0) + (1 if side == 'B' else 0),
+            'sell_trades': assets.get(asset, {}).get('sell_trades', 0) + (1 if side == 'S' else 0),
+            'profit' : {
+                currency: float(assets.get(asset, {}).get('profit', {}).get(currency, 0) + profit_value)
+            }
+        }
+        if source:
+            sources[source] = {
+                'trades': sources.get(source, {}).get('trades', 0) + 1,
+                'wins': sources.get(source, {}).get('wins', 0) + (1 if profit_value > 0 else 0),
+                'losses': sources.get(source, {}).get('losses', 0) + (1 if profit_value < 0 else 0),
+                'buy_trades': sources.get(source, {}).get('buy_trades', 0) + (1 if side == 'B' else 0),
+                'sell_trades': sources.get(source, {}).get('sell_trades', 0) + (1 if side == 'S' else 0),
+                'profit': {
+                    currency: float(sources.get(source, {}).get('profit', {}).get(currency, 0) + profit_value)
+                }
+            }
+        if currency and currency not in ['', None, 'None']:
             current_value = daily_profits_per_currency[currency][trade_date]
-            
-            # Determine decimal places from both values
-            profit_decimals = len(str(profit_value).split('.')[-1]) if '.' in str(profit_value) else 0
-            current_decimals = len(str(current_value).split('.')[-1]) if '.' in str(current_value) else 0
-            max_decimals = max(profit_decimals, current_decimals)
-            
-            # Add and round to the maximum decimal places
-            daily_profits_per_currency[currency][trade_date] = round(current_value + profit_value, max_decimals)
+            daily_profits_per_currency[currency][trade_date] = current_value + profit_value
     
     start_day = account.created_at.date()
     end_day = datetime.datetime.now().date()
@@ -187,6 +208,8 @@ def get_account_data(request, public_id):
         'account': account,
         'overview_data': overview_data,
         'chart_data': chart_data,
+        'assets': assets,
+        'sources': sources,
         'trades': closed_trades,
         'next_start': total_closed,
         'only_closed_trades': only_closed_trades,
