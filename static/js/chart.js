@@ -235,8 +235,8 @@ function loadAccountProfitCharts(id, data) {
             backgroundColor: (ctx) => {
               const y = ctx.p1.parsed.y;
               return y < 0
-                ? getCssVariableColor("--color-loss", 0.04)
-                : getCssVariableColor("--color-profit", 0.04);
+                ? getCssVariableColor("--color-loss", 0.01)
+                : getCssVariableColor("--color-profit", 0.01);
             },
           },
           pointRadius: 0,

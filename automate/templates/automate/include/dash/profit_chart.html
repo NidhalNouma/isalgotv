@@ -5,7 +5,7 @@
             <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}})" class="bg-text/5 px-3 py-1 text-sm font-semibold rounded-md border-0 {% if info.final_profit >= 0 %}text-profit border-profit{% else %}text-loss border-loss{% endif %}">{{ info.final_profit }} <span class="text-xs ml-0.5 font-normal">{{ currency }}</span></button> 
         {% endfor %}
     </div>
-  <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !max-w-full sm:!h-96 !h-72 bg-background backdrop-blur-3xl rounded-lg"></canvas>
+  <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !max-w-full sm:!h-96 !h-72 bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
 </div>
 <script type="text/javascript">
 

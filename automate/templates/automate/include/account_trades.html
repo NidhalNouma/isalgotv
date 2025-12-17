@@ -3,7 +3,7 @@
     {% if trades %}
       <div class="overflow-x-auto w-full no-scrollbar max-h-full h-full">
         <table class="w-full relative h-auto" id="trades-table-{{ broker_type }}-{{ id }}">
-          <thead class="sticky left-0 right-0 w-full top-0 z-10 nav-bg">
+          <thead class="sticky left-0 right-0 w-full top-0 z-10 {{ thead_class|default:'nav-bg' }}">
             <tr class="">
               {% if not only_closed_trades %}
                 <th class="px-4 py-3 text-left text-xs font-medium text-text/60 truncate">ID</th>

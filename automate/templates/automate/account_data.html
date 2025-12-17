@@ -33,13 +33,14 @@
   </section>
 
   {% if chart_data %}
-    <section class="mt-6 w-full">
+    <section class="mt-6 w-full bg-text/5 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Performance</h4>
       {% include 'automate/include/dash/profit_chart.html' with account=account data=chart_data %}
     </section>
   {% endif %}
 
   {% if trades|length > 0 %}
-    <section class="mt-6 w-full mb-12">
+    <section class="mt-6 w-full mb-12 bg-text/5 p-4 rounded-lg">
       <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>
       <div class="h-96 w-full">
         {% include 'automate/include/account_trades.html' with broker_type=account.broker_type id=account.id only_closed_trades=only_closed_trades %}

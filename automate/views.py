@@ -83,23 +83,23 @@ def get_account_data(request, public_id):
             return render(request, "404.html", status=404)
         
     only_closed_trades = True
-    if request.user and request.user.is_superuser:
-        only_closed_trades = False
-    elif request.user and request.user.is_authenticated:
-        if request.user.user_profile == account.created_by:
-            only_closed_trades = False 
+    # if request.user and request.user.is_superuser:
+    #     only_closed_trades = False
+    # elif request.user and request.user.is_authenticated:
+    #     if request.user.user_profile == account.created_by:
+    #         only_closed_trades = False 
 
-    trades = TradeDetails.objects.filter(
-        content_type=ContentType.objects.get_for_model(type(account)),
-        object_id=account.id,
-        status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-    ).order_by('-created_at')[:20]
+    # trades = TradeDetails.objects.filter(
+    #     content_type=ContentType.objects.get_for_model(type(account)),
+    #     object_id=account.id,
+    #     status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+    # ).order_by('-created_at')[:20]
 
     closed_trades = TradeDetails.objects.filter(   
         content_type=ContentType.objects.get_for_model(type(account)),
         object_id=account.id,
         status='C'
-    )
+    ).order_by('-created_at')
     total_closed = closed_trades.count()
     total_wins = closed_trades.filter(profit__gt=0).count()
     total_losses = closed_trades.filter(profit__lt=0).count()
@@ -126,7 +126,16 @@ def get_account_data(request, public_id):
         trade_date = localtime(trade.exit_time).date()
         currency = trade.currency
         if currency:
-            daily_profits_per_currency[currency][trade_date] += float(trade.profit or 0)
+            profit_value = float(trade.profit or 0)
+            current_value = daily_profits_per_currency[currency][trade_date]
+            
+            # Determine decimal places from both values
+            profit_decimals = len(str(profit_value).split('.')[-1]) if '.' in str(profit_value) else 0
+            current_decimals = len(str(current_value).split('.')[-1]) if '.' in str(current_value) else 0
+            max_decimals = max(profit_decimals, current_decimals)
+            
+            # Add and round to the maximum decimal places
+            daily_profits_per_currency[currency][trade_date] = round(current_value + profit_value, max_decimals)
     
     start_day = account.created_at.date()
     end_day = datetime.datetime.now().date()
@@ -178,11 +187,11 @@ def get_account_data(request, public_id):
         'account': account,
         'overview_data': overview_data,
         'chart_data': chart_data,
-        'trades': trades,
+        'trades': closed_trades,
+        'next_start': total_closed,
+        'only_closed_trades': only_closed_trades,
         'id': account.id,
         'broker_type': account.broker_type,
-        'next_start': 20,
-        'only_closed_trades': only_closed_trades,
     }
 
     return render(request, "automate/account_data.html", context=context)
