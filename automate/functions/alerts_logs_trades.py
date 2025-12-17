@@ -305,6 +305,7 @@ def update_trade_after_close(trade, closed_volume, closed_trade):
     try:
         closed_volume = closed_trade.get('qty', closed_volume)
         price = closed_trade.get('price', 0)
+        time = closed_trade.get('time', timezone.now())
         closed_order_id = closed_trade.get('closed_order_id', '')
 
         closed_trade_details = closed_trade.get('trade_details', None) or closed_trade.get('closed_trade_details', None)
@@ -317,6 +318,7 @@ def update_trade_after_close(trade, closed_volume, closed_trade):
             trade.entry_time = closed_trade['open_time']
 
         trade.exit_price = float(price)
+        trade.exit_time = time
         trade.closed_order_id = closed_order_id
         trade.remaining_volume = float(trade.remaining_volume) - float(closed_volume)
         trade.save()

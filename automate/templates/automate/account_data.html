@@ -39,7 +39,7 @@
     </section>
   {% endif %}
 
-  <section class="w-full flex flex-col md:flex-row items-start justify-between md:gap-6">
+  <section class="w-full flex {% if assets.items|length < 5 %}flex-col md:flex-row{% else %}flex-col{% endif %} items-start justify-between md:gap-6">
     {% if assets %}
       <section class="mt-6 w-full bg-text/5 p-4 rounded-lg">
         <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Traded Assets</h4>
@@ -69,7 +69,7 @@
     <section class="mt-6 w-full mb-12 bg-text/5 p-4 rounded-lg">
       <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>
       <div class="h-96 w-full">
-        {% include 'automate/include/account_trades.html' with broker_type=account.broker_type id=account.id only_closed_trades=only_closed_trades %}
+        {% include 'automate/include/account_trades.html' with broker_type=account.broker_type id=account.id only_closed_trades=only_closed_trades thead_class='' %}
       </div>
     </section>
   {% endif %}

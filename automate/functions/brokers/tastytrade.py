@@ -269,7 +269,25 @@ class TastytradeClient(BrokerClient):
                 raise Exception("Failed to retrieve order info after placing order")
             
             # print(f"Trade opened successfully for {symbol}: {order_info}")
-            return order_info
+            if oc:
+                return {
+                    "message": f"Trade closed successfully for {symbol}",
+                    "order_id": order_id,
+                    "symbol": symbol,
+                    "side": side,
+                    "trade_details": {
+                        **order_info,
+                        "close_time": order_info.get("time"),
+                        "close_price": order_info.get("price")
+                    },
+                    "end_exe": end_exe
+                }
+            return {
+                "message": f"Trade opened successfully for {symbol}",
+                "order_id": order_id,
+                "end_exe": end_exe,
+                **order_info
+            }
         except Exception as e:
             print(f"Error opening trade for {symbol}: {e}")
             raise e
@@ -314,16 +332,17 @@ class TastytradeClient(BrokerClient):
                         qty = t.get("quantity", 0.0)
                         profit = 0.0
                         if self.current_trade:
-                            open_price = self.current_trade.entry_price
+                            open_price = float(self.current_trade.entry_price)
                             if order_type == "SELL":
-                                profit = (price - open_price) * qty
+                                profit = (float(price) - open_price) * float(qty)
                             else:
-                                profit = (open_price - price) * qty
+                                profit = (open_price - float(price)) * float(qty)
 
                         return {
+                            'order_id': t.get('order-id'),
                             'symbol': t.get("symbol"),
                             "type": order_type,
-                            "quantity": qty,
+                            "qty": qty,
                             "price": price,
                             "time": str(parse_datetime(t.get("executed-at"))),
 
