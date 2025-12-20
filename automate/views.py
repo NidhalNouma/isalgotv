@@ -9,9 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials, close_open_trade
 from automate.functions.alerts_message import manage_alert
+from automate.functions.performance import backfill_account_performance
 from automate.models import *
 from automate.forms import *
 from automate.tasks import *
+from django.db.models import Count, Sum, Q
 
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
@@ -23,7 +25,6 @@ from collections import defaultdict
 from django.utils.timezone import localtime
 
 from asgiref.sync import sync_to_async, async_to_sync
-from decimal import Decimal, ROUND_HALF_UP
 
 import environ
 env = environ.Env()
@@ -71,8 +72,9 @@ def index(request):
     
     return render(request, "automate/automate.html", context=context_accounts_by_user(request))
 
-def get_account_data(request, public_id):
 
+def get_account_data(request, public_id):
+    # Get the account (crypto or forex)
     crypto_account = CryptoBrokerAccount.objects.filter(public_id=public_id).first()
     if crypto_account:
         account = crypto_account
@@ -82,95 +84,76 @@ def get_account_data(request, public_id):
             account = forex_account
         else:
             return render(request, "404.html", status=404)
-        
+
     only_closed_trades = True
-    # if request.user and request.user.is_superuser:
-    #     only_closed_trades = False
-    # elif request.user and request.user.is_authenticated:
-    #     if request.user.user_profile == account.created_by:
-    #         only_closed_trades = False 
+    ct = ContentType.objects.get_for_model(type(account))
 
-    # trades = TradeDetails.objects.filter(
-    #     content_type=ContentType.objects.get_for_model(type(account)),
-    #     object_id=account.id,
-    #     status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-    # ).order_by('-created_at')[:20]
+    # Fetch AccountPerformance
+    account_perf = AccountPerformance.objects.filter(content_type=ct, object_id=account.id).first()
 
-    closed_trades = TradeDetails.objects.filter(   
-        content_type=ContentType.objects.get_for_model(type(account)),
-        object_id=account.id,
-        status='C'
-    ).order_by('-created_at')
+    if not account_perf:
+        account_perf = backfill_account_performance(ct, account.id, create=True)
+    if not account_perf:
+        return render(request, "404.html", status=404)
 
-    total_closed = closed_trades.count()
-    total_wins = closed_trades.filter(profit__gt=0).count()
-    total_losses = closed_trades.filter(profit__lt=0).count()
-    win_rate = (total_wins / total_closed * 100) if total_closed > 0 else 0
+    # Aggregate overview data
+    total_closed = account_perf.total_trades
+    total_wins = account_perf.winning_trades
+    total_losses = account_perf.losing_trades
+    total_buy_trades = account_perf.buy_total_trades
+    total_sell_trades = account_perf.sell_total_trades
+    total_winning_buy_trades = account_perf.buy_winning_trades
+    total_winning_sell_trades = account_perf.sell_winning_trades
+    total_losing_buy_trades = account_perf.buy_losing_trades
+    total_losing_sell_trades = account_perf.sell_losing_trades
 
-    total_buy_trades = closed_trades.filter(side='B').count()
-    total_buy_trades_percent = (total_buy_trades / total_closed * 100) if total_closed > 0 else 0 
-    total_sell_trades = closed_trades.filter(side='S').count()
-    total_sell_trades_percent = (total_sell_trades / total_closed * 100) if total_closed > 0 else 0
-    total_winning_buy_trades = closed_trades.filter(side='B', profit__gt=0).count()
-    total_winning_buy_trades_percent = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades > 0 else 0
-    total_winning_sell_trades = closed_trades.filter(side='S', profit__gt=0).count()
-    total_winning_sell_trades_percent = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
-    total_losing_buy_trades = closed_trades.filter(side='B', profit__lt=0).count()
-    total_losing_buy_trades_percent = (total_losing_buy_trades / total_buy_trades * 100) if total_buy_trades > 0 else 0
-    total_losing_sell_trades = closed_trades.filter(side='S', profit__lt=0).count()
-    total_losing_sell_trades_percent = (total_losing_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
-    buy_win_rate = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades > 0 else 0
-    sell_win_rate = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+    # Calculate percentages
+    win_rate = (total_wins / total_closed * 100) if total_closed else 0
+    total_buy_trades_percent = (total_buy_trades / total_closed * 100) if total_closed else 0
+    total_sell_trades_percent = (total_sell_trades / total_closed * 100) if total_closed else 0
+    total_winning_buy_trades_percent = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades else 0
+    total_winning_sell_trades_percent = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades else 0
+    total_losing_buy_trades_percent = (total_losing_buy_trades / total_buy_trades * 100) if total_buy_trades else 0
+    total_losing_sell_trades_percent = (total_losing_sell_trades / total_sell_trades * 100) if total_sell_trades else 0
+    buy_win_rate = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades else 0
+    sell_win_rate = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades else 0
 
+    overview_data = {
+        'closed_trades': total_closed,
+        'total_buy_trades': f"{round(total_buy_trades_percent, 2)}%",
+        'total_sell_trades': f"{round(total_sell_trades_percent, 2)}%",
+        'winning_trades': total_wins,
+        'winning_buy_trades': f"{round(total_winning_buy_trades_percent, 2)}%",
+        'winning_sell_trades': f"{round(total_winning_sell_trades_percent, 2)}%",
+        'losing_trades': total_losses,
+        'losing_buy_trades': f"{round(total_losing_buy_trades_percent, 2)}%",
+        'losing_sell_trades': f"{round(total_losing_sell_trades_percent, 2)}%",
+        'win_rate': round(win_rate, 2),
+        'buy_win_rate': round(buy_win_rate, 2),
+        'sell_win_rate': round(sell_win_rate, 2),
+    }
+
+    # --------------------------------------------------
+    # Chart data using DayPerformance + DayCurrencyPerformance
+    # --------------------------------------------------
     daily_profits_per_currency = defaultdict(lambda: defaultdict(float))
-    assets = {}
-    sources = {}
-        
-    for trade in closed_trades:
-        trade_date = localtime(trade.exit_time).date()
-        currency = trade.currency
-        asset = trade.symbol
-        side = trade.side
-        source = trade.strategy
-        profit_value = float(trade.profit or 0)
-        assets[asset] = {
-            'trades': assets.get(asset, {}).get('trades', 0) + 1,
-            'wins': assets.get(asset, {}).get('wins', 0) + (1 if profit_value > 0 else 0),
-            'losses': assets.get(asset, {}).get('losses', 0) + (1 if profit_value < 0 else 0),
-            'buy_trades': assets.get(asset, {}).get('buy_trades', 0) + (1 if side == 'B' else 0),
-            'sell_trades': assets.get(asset, {}).get('sell_trades', 0) + (1 if side == 'S' else 0),
-            'profit' : {
-                currency: float(assets.get(asset, {}).get('profit', {}).get(currency, 0) + profit_value)
-            }
-        }
-        if source:
-            sources[source] = {
-                'trades': sources.get(source, {}).get('trades', 0) + 1,
-                'wins': sources.get(source, {}).get('wins', 0) + (1 if profit_value > 0 else 0),
-                'losses': sources.get(source, {}).get('losses', 0) + (1 if profit_value < 0 else 0),
-                'buy_trades': sources.get(source, {}).get('buy_trades', 0) + (1 if side == 'B' else 0),
-                'sell_trades': sources.get(source, {}).get('sell_trades', 0) + (1 if side == 'S' else 0),
-                'profit': {
-                    currency: float(sources.get(source, {}).get('profit', {}).get(currency, 0) + profit_value)
-                }
-            }
-        if currency and currency not in ['', None, 'None']:
-            current_value = daily_profits_per_currency[currency][trade_date]
-            daily_profits_per_currency[currency][trade_date] = current_value + profit_value
-    
+
+    if account_perf:
+        for day in account_perf.day_performances.prefetch_related('currencies').all():
+            for currency_perf in day.currencies.all():
+                daily_profits_per_currency[currency_perf.currency][day.date] += float(currency_perf.total_profit or 0)
+
+    # Determine date range
     start_day = account.created_at.date()
     end_day = datetime.datetime.now().date()
     days = (end_day - start_day).days + 1
     if days < 3:
         start_day = end_day - datetime.timedelta(days=2)
         days = 3
-    
     days_difference = [start_day + datetime.timedelta(days=i) for i in range(days)]
-
 
     chart_data = {}
     for currency, profits_by_date in daily_profits_per_currency.items():
-        sorted_dates = sorted(profits_by_date.keys())
         cumulative_profit = 0
         data_points = []
         for date in days_difference:
@@ -181,28 +164,51 @@ def get_account_data(request, public_id):
                 'profit': cumulative_profit,
                 'daily_profit': daily_profit,
             })
-
         chart_data[currency] = {
             'data': data_points,
             'final_profit': cumulative_profit,
         }
-        
-    # print("Chart Data:", chart_data)
 
-    overview_data = {
-        'closed_trades': total_closed,
-        'total_buy_trades': str(round(total_buy_trades_percent, 2)) + '%',
-        'total_sell_trades': str(round(total_sell_trades_percent, 2)) + '%', 
-        'winning_trades': total_wins,
-        'winning_buy_trades': str(round(total_winning_buy_trades_percent, 2)) + '%',
-        'winning_sell_trades': str(round(total_winning_sell_trades_percent, 2)) + '%',
-        'losing_trades': total_losses,
-        'losing_buy_trades': str(round(total_losing_buy_trades_percent, 2)) + '%',
-        'losing_sell_trades': str(round(total_losing_sell_trades_percent, 2)) + '%',
-        'win_rate': round(win_rate, 2),
-        'buy_win_rate': round(buy_win_rate, 2),
-        'sell_win_rate': round(sell_win_rate, 2),
-    }
+    # --------------------------------------------------
+    # Assets and Sources using precomputed performances
+    # --------------------------------------------------
+    assets = {}
+    sources = {}
+    if account_perf:
+        for asset_perf in account_perf.asset_performances.prefetch_related('currencies').all():
+            profit_dict = {c.currency: float(c.total_profit or 0) for c in asset_perf.currencies.all()}
+            assets[asset_perf.asset] = {
+                'trades': asset_perf.total_trades,
+                'wins': asset_perf.winning_trades,
+                'losses': asset_perf.losing_trades,
+                'buy_trades': asset_perf.buy_total_trades,
+                'sell_trades': asset_perf.sell_total_trades,
+                'profit': profit_dict,
+            }
+        for strategy_perf in account_perf.strategy_performances.prefetch_related('currencies', 'strategy').all():
+            profit_dict = {c.currency: float(c.total_profit or 0) for c in strategy_perf.currencies.all()}
+            sources[str(strategy_perf.strategy)] = {
+                'trades': strategy_perf.total_trades,
+                'wins': strategy_perf.winning_trades,
+                'losses': strategy_perf.losing_trades,
+                'buy_trades': strategy_perf.buy_total_trades,
+                'sell_trades': strategy_perf.sell_total_trades,
+                'profit': profit_dict,
+            }
+
+        
+    only_closed_trades = True
+    # if request.user and request.user.is_superuser:
+    #     only_closed_trades = False
+    # elif request.user and request.user.is_authenticated:
+    #     if request.user.user_profile == account.created_by:
+    #         only_closed_trades = False 
+    
+    trades = TradeDetails.objects.filter(
+        content_type=ct,
+        object_id=account.id,
+        status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+    ).order_by('-created_at')[:20]
 
     context = {
         'account': account,
@@ -210,8 +216,8 @@ def get_account_data(request, public_id):
         'chart_data': chart_data,
         'assets': assets,
         'sources': sources,
-        'trades': closed_trades,
-        'next_start': total_closed,
+        'trades': trades,  
+        'next_start': trades.count(),
         'only_closed_trades': only_closed_trades,
         'id': account.id,
         'broker_type': account.broker_type,

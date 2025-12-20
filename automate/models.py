@@ -1,9 +1,10 @@
-from django.db import models
+from django.db import IntegrityError, models
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django_cryptography.fields import encrypt
 from django.contrib.postgres.fields import JSONField 
 from django.core.exceptions import ValidationError
+from django.db.models import F
 from decimal import Decimal, InvalidOperation
 
 from profile_user.models import User_Profile
@@ -66,13 +67,21 @@ class CryptoBrokerAccount(models.Model):
     public_id = models.CharField(max_length=120, default="")
 
     additional_info = models.JSONField(default=dict, blank=True)
-    performance_data = models.JSONField(default=dict, blank=True)
     
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     subscription_id = models.CharField(max_length=100, blank=False)
+
+    @property
+    def performance(self):
+        if not hasattr(self, '_cached_performance'):
+            self._cached_performance = AccountPerformance.objects.filter(
+                content_type=ContentType.objects.get_for_model(self),
+                object_id=self.id
+            ).first()
+        return self._cached_performance
 
     def generate_public_id(self, replace=False, save=True):
         if self.public_id == "" or replace:
@@ -136,13 +145,21 @@ class ForexBrokerAccount(models.Model):
     public_id = models.CharField(max_length=120, default="")
 
     additional_info = models.JSONField(default=dict, blank=True)
-    performance_data = models.JSONField(default=dict, blank=True)
 
     created_by = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     subscription_id = models.CharField(max_length=100, blank=False)
+    
+    @property
+    def performance(self):
+        if not hasattr(self, '_cached_performance'):
+            self._cached_performance = AccountPerformance.objects.filter(
+                content_type=ContentType.objects.get_for_model(self),
+                object_id=self.id
+            ).first()
+        return self._cached_performance
 
     def generate_public_id(self, replace=False, save=True):
         if self.public_id == "" or replace:
@@ -185,10 +202,10 @@ def validate_fills(value):
             raise ValidationError(f"Fill at index {idx} must be an object")
         missing = required_keys - item.keys()
         extra = set(item.keys()) - required_keys
-        if missing:
-            raise ValidationError(f"Fill at index {idx} missing keys: {', '.join(missing)}")
-        if extra:
-            raise ValidationError(f"Fill at index {idx} has unexpected keys: {', '.join(extra)}")
+        # if missing:
+        #     raise ValidationError(f"Fill at index {idx} missing keys: {', '.join(missing)}")
+        # if extra:
+        #     raise ValidationError(f"Fill at index {idx} has unexpected keys: {', '.join(extra)}")
 
 
 class TradeDetails(models.Model):
@@ -230,7 +247,10 @@ class TradeDetails(models.Model):
 
     fees = models.DecimalField(decimal_places=10, max_digits=40, default=0)
     profit = models.DecimalField(decimal_places=10, max_digits=40, default=0)
-    net_profit = models.DecimalField(decimal_places=10, max_digits=40, default=0)
+
+    @property
+    def net_profit(self):
+        return self.profit - self.fees
 
     side = models.CharField(max_length=1, choices=TYPE)
  
@@ -252,13 +272,13 @@ class TradeDetails(models.Model):
         Calculates the total filled volume across all fills.
         Returns a Decimal for precision.
         """
-        total_volume = float('0')
+        total_volume = Decimal('0')
         if not self.fills:
             return total_volume
 
         for fill in self.fills:
             try:
-                volume = float(str(fill.get('volume', 0)))
+                volume = Decimal(str(fill.get('volume', 0)))
                 total_volume += volume
             except (TypeError, InvalidOperation):
                 continue
@@ -344,9 +364,9 @@ class TradeDetails(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-            if float(self.remaining_volume) <= 0:
+            if Decimal(self.remaining_volume) <= 0:
                 self.status = 'C'
-            elif float(self.remaining_volume) < float(self.volume):
+            elif Decimal(self.remaining_volume) < Decimal(self.volume):
                 self.status = 'P'
             else:
                 self.status = 'O'
@@ -354,14 +374,12 @@ class TradeDetails(models.Model):
             # Run adjustments before saving
             self.pre_save_adjustments()
 
-            filled_volume = float(self.volume) - self.get_total_filled_volume()
-            if filled_volume < float(self.remaining_volume):
+            filled_volume = Decimal(self.volume) - Decimal(self.get_total_filled_volume())
+            if filled_volume < Decimal(self.remaining_volume):
                 self.remaining_volume = filled_volume
 
-            if float(self.remaining_volume) <= 0:
+            if Decimal(self.remaining_volume) <= 0:
                 self.status = 'C'
-
-            self.net_profit = self.profit - self.fees
 
             super(TradeDetails, self).save(*args, **kwargs)
         except Exception as e:
@@ -392,3 +410,350 @@ class LogMessage(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
+# Account analytics models ------------------------------------------------------------
+
+# --------------------------------------------------
+# TradeAppliedPerformance 
+# --------------------------------------------------
+
+class TradeAppliedPerformance(models.Model):
+    trade = models.ForeignKey(
+        TradeDetails,
+        on_delete=models.CASCADE,
+        related_name="applied_performances"
+    )
+
+    performance_type = models.CharField(max_length=32)
+    performance_id = models.PositiveBigIntegerField()
+
+    applied_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["trade", "performance_type", "performance_id"],
+                name="unique_trade_performance_application_v2"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["trade"]),
+            models.Index(fields=["performance_type", "performance_id"]),
+        ]
+
+    def __str__(self):
+        return f"{self.trade_id} → {self.performance_type}:{self.performance_id}"
+
+
+# --------------------------------------------------
+# BasePerformance
+# --------------------------------------------------
+
+class BasePerformance(models.Model):
+    total_trades = models.PositiveIntegerField(default=0)
+    winning_trades = models.PositiveIntegerField(default=0)
+    losing_trades = models.PositiveIntegerField(default=0)
+
+    buy_total_trades = models.PositiveIntegerField(default=0)
+    buy_winning_trades = models.PositiveIntegerField(default=0)
+    buy_losing_trades = models.PositiveIntegerField(default=0)
+
+    sell_total_trades = models.PositiveIntegerField(default=0)
+    sell_winning_trades = models.PositiveIntegerField(default=0)
+    sell_losing_trades = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def win_rate(self):
+        return (self.winning_trades / self.total_trades * 100) if self.total_trades else Decimal("0")
+
+    @classmethod
+    def apply_trade_stats(cls, perf_id, *, trade):
+        """
+        Atomic update of trade counters.
+        """
+        profit = trade.profit
+        side = trade.side
+
+        return cls.objects.filter(id=perf_id).update(
+            total_trades=F("total_trades") + 1,
+            winning_trades=F("winning_trades") + (1 if profit > 0 else 0),
+            losing_trades=F("losing_trades") + (1 if profit < 0 else 0),
+
+            buy_total_trades=F("buy_total_trades") + (1 if side == "B" else 0),
+            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and profit > 0 else 0),
+            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and profit < 0 else 0),
+
+            sell_total_trades=F("sell_total_trades") + (1 if side == "S" else 0),
+            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and profit > 0 else 0),
+            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and profit < 0 else 0),
+        )
+
+# --------------------------------------------------
+# AccountPerformance 
+# --------------------------------------------------
+
+class AccountPerformance(BasePerformance):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name="account_performances")
+    object_id = models.PositiveIntegerField()
+    account = GenericForeignKey("content_type", "object_id")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["content_type", "object_id"],
+                name="unique_account_performance"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
+
+    def __str__(self):
+        return f"AccountPerformance({self.object_id})"
+
+
+# --------------------------------------------------
+# AssetPerformance 
+# --------------------------------------------------
+
+class AssetPerformance(BasePerformance):
+    account_performance = models.ForeignKey(
+        AccountPerformance,
+        on_delete=models.CASCADE,
+        related_name="asset_performances"
+    )
+
+    asset = models.CharField(max_length=50)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["account_performance", "asset"],
+                name="unique_asset_per_account"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["account_performance", "asset"]),
+        ]
+
+    def __str__(self):
+        return f"{self.asset} ({self.account_performance_id})"
+
+
+# --------------------------------------------------
+# StrategyPerformance
+# --------------------------------------------------
+
+class StrategyPerformance(BasePerformance):
+    account_performance = models.ForeignKey(
+        AccountPerformance,
+        on_delete=models.CASCADE,
+        related_name="strategy_performances"
+    )
+
+    strategy = models.ForeignKey(
+        Strategy,
+        on_delete=models.CASCADE
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["account_performance", "strategy"],
+                name="unique_strategy_per_account"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.strategy.name} ({self.account_performance_id})"
+
+
+# --------------------------------------------------
+# DayPerformance 
+# --------------------------------------------------
+
+class DayPerformance(BasePerformance):
+    account_performance = models.ForeignKey(
+        AccountPerformance,
+        on_delete=models.CASCADE,
+        related_name="day_performances"
+    )
+
+    date = models.DateField()
+
+    assets = models.ManyToManyField(
+        "AssetPerformance",
+        through="DayAssetPerformance",
+        related_name="day_performances"
+    )
+
+    strategies = models.ManyToManyField(
+        "StrategyPerformance",
+        through="DayStrategyPerformance",
+        related_name="day_performances"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["account_performance", "date"],
+                name="unique_day_per_account"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["account_performance", "date"]),
+            models.Index(fields=["date"]),
+        ]
+
+class DayAssetPerformance(models.Model):
+    day_performance = models.ForeignKey(
+        DayPerformance,
+        on_delete=models.CASCADE
+    )
+
+    asset_performance = models.ForeignKey(
+        AssetPerformance,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["day_performance", "asset_performance"],
+                name="unique_asset_per_day"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["day_performance"]),
+            models.Index(fields=["asset_performance"]),
+        ]
+
+class DayStrategyPerformance(models.Model):
+    day_performance = models.ForeignKey(
+        DayPerformance,
+        on_delete=models.CASCADE
+    )
+
+    strategy_performance = models.ForeignKey(
+        StrategyPerformance,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["day_performance", "strategy_performance"],
+                name="unique_strategy_per_day"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["day_performance"]),
+            models.Index(fields=["strategy_performance"]),
+        ]
+
+# --------------------------------------------------
+# Currency Performances 
+# --------------------------------------------------
+
+class CurrencyBasePerformance(models.Model):
+    currency = models.CharField(max_length=10)
+    total_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    total_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def apply_trade_stats(cls, perf_id, *, trade):
+        """
+        Atomic update of profit and fees.
+        """
+        return cls.objects.filter(id=perf_id).update(
+            total_profit=F("total_profit") + Decimal(str(trade.profit)),
+            total_fees=F("total_fees") + Decimal(str(trade.fees)),
+        )
+
+
+class AssetCurrencyPerformance(CurrencyBasePerformance):
+    asset_performance = models.ForeignKey(
+        AssetPerformance,
+        on_delete=models.CASCADE,
+        related_name="currencies"
+    )
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["asset_performance", "currency"],
+                name="unique_asset_currency"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.currency} ({self.asset_performance_id})"
+
+
+class StrategyCurrencyPerformance(CurrencyBasePerformance):
+    strategy_performance = models.ForeignKey(
+        StrategyPerformance,
+        on_delete=models.CASCADE,
+        related_name="currencies"
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["strategy_performance", "currency"],
+                name="unique_strategy_currency"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.currency} ({self.strategy_performance_id})"
+
+
+class DayCurrencyPerformance(CurrencyBasePerformance):
+    day_performance = models.ForeignKey(
+        DayPerformance,
+        on_delete=models.CASCADE,
+        related_name="currencies"
+    )
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["day_performance", "currency"],
+                name="unique_day_currency"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.currency} ({self.day_performance_id})"
+    
+class AccountCurrencyPerformance(CurrencyBasePerformance):
+    account_performance = models.ForeignKey(
+        AccountPerformance,
+        on_delete=models.CASCADE,
+        related_name="currencies"
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["account_performance", "currency"],
+                name="unique_account_currency"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.currency} ({self.account_performance_id})"
+    

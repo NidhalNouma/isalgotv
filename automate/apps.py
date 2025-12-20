@@ -3,3 +3,8 @@ from django.apps import AppConfig
 class AutomateConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'automate'
+
+
+    def ready(self):
+        import automate.signals
+        import automate.signals_accounts
