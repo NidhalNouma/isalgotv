@@ -210,6 +210,29 @@ function loadAccountProfitCharts(id, data) {
     existingChart.destroy();
   }
 
+  // Create custom plugin for vertical line
+  const verticalLinePlugin = {
+    id: "verticalLine",
+    beforeDatasetsDraw: (chart) => {
+      if (chart.tooltip?._active?.length) {
+        const ctx = chart.ctx;
+        const activePoint = chart.tooltip._active[0];
+        const x = activePoint.element.x;
+        const topY = chart.scales.y.top;
+        const bottomY = chart.scales.y.bottom;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, topY);
+        ctx.lineTo(x, bottomY);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = getCssVariableColor("--color-text", 0.2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    },
+  };
+
   new Chart(ctx, {
     type: "line",
     data: {
@@ -261,15 +284,15 @@ function loadAccountProfitCharts(id, data) {
           backgroundColor: getCssVariableColor("--color-background"),
           titleColor: getCssVariableColor("--color-title"),
           bodyColor: getCssVariableColor("--color-text"),
-          padding: 8,
+          padding: 12,
           cornerRadius: 4,
           callbacks: {
             title: (tooltipItems) => {
               return tooltipItems[0].label;
             },
             label: (tooltipItem) => {
-              const profit = `Profit: ${tooltipItem.formattedValue}`;
-              const dailyProfit = `Daily Profit: ${
+              const profit = `Cumulative P&L: ${tooltipItem.formattedValue}`;
+              const dailyProfit = `Daily P&L: ${
                 series.dailyProfit[tooltipItem.dataIndex]
               }`;
               return [profit, dailyProfit];
@@ -292,5 +315,6 @@ function loadAccountProfitCharts(id, data) {
         },
       },
     },
+    plugins: [verticalLinePlugin],
   });
 }

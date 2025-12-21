@@ -21,6 +21,9 @@ def apply_trade_to_performance(trade: TradeDetails):
         raise ValueError("Trade has no linked account")
     
     currency = trade.currency
+    if not currency or currency in ("None", None, ""):
+        raise ValueError("Trade has no currency")
+    
     asset = trade.symbol
     trade_date = trade.exit_time.date()
     strategy = trade.strategy

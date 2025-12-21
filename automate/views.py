@@ -187,7 +187,7 @@ def get_account_data(request, public_id):
             }
         for strategy_perf in account_perf.strategy_performances.prefetch_related('currencies', 'strategy').all():
             profit_dict = {c.currency: float(c.total_profit or 0) for c in strategy_perf.currencies.all()}
-            sources[str(strategy_perf.strategy)] = {
+            sources[strategy_perf.strategy] = {
                 'trades': strategy_perf.total_trades,
                 'wins': strategy_perf.winning_trades,
                 'losses': strategy_perf.losing_trades,

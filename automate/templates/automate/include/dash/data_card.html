@@ -1,11 +1,11 @@
-<div class="bg-transparent text-text/80 text-xs font-medium px-3 py-1 rounded-lg border border-text/20">
+<div class="bg-text/5 text-text/80 text-xs font-medium p-4 rounded-lg">
   {% if url %}
     <h5 class="text-sm text-title/80 font-semibold"><a href="{{ url }}">{{ title }}</a></h5>
   {% else %}
     <h5 class="text-sm text-title/80 font-semibold">{{ title }}</h5>
   {% endif %}
+  <h5 class="text-4xl font-semibold {{ value_class|default:'text-text/80' }}">{{ value|default:'0' }}</h5>
   <div class="mt-1.5 flex justify-start items-center gap-2">
-    <h5 class="text-4xl font-semibold {{ value_class|default:'text-text/80' }}">{{ value|default:'0' }}</h5>
     <div class="flex flex-col space-y-1">
       <span class="text-xs text-profit flex items-center gap-1 bg-profit/10 px-2 py-1 rounded-md">{{ profit_value|default:'0' }} +</span>
       <span class="text-xs text-loss/80 flex items-center gap-1 bg-loss/10 px-2 py-1 rounded-md">{{ loss_value|default:'0' }} -</span>

@@ -2,7 +2,7 @@
 <div class="w-full">
     <div id="currencies-btns" class="space-x-2 space-y-2 mb-2">
         {% for currency, info in data.items %}
-            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}})" class="bg-text/5 px-3 py-1 text-sm font-semibold rounded-md border-0 {% if info.final_profit >= 0 %}text-profit border-profit{% else %}text-loss border-loss{% endif %}">{{ info.final_profit|floatformat:8|trim_zeros }} <span class="text-xs ml-0.5 font-normal">{{ currency }}</span></button> 
+            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.final_profit}})" class="px-3 py-1 text-sm font-semibold rounded-lg border-transparent border {% if info.final_profit >= 0 %}text-profit bg-profit/10{% else %}text-loss bg-loss/10{% endif %}">{{ info.final_profit|floatformat:8|trim_zeros }} <span class="text-xs ml-0.5 font-normal">{{ currency }}</span></button> 
         {% endfor %}
     </div>
   <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !max-w-full sm:!h-96 !h-72 bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
@@ -11,26 +11,30 @@
 
     const buttons = document.getElementById('currencies-btns').getElementsByTagName('button');
 
-    function currencyBtnClicked(currency) {
+    function currencyBtnClicked(currency, profit) {
         for (let i = 0; i < buttons.length; i++) {
             const btn = buttons[i];
             if(btn.id === 'btn-' + currency) {
-                btn.classList.add('border');
-                btn.classList.remove('border-0');
-                btn.classList.add('border-1');
+                btn.classList.remove('border-transparent');
+                if(profit >= 0) {
+                    btn.classList.add('border-profit');
+                } else {
+                    btn.classList.add('border-loss');
+                }
             } else {
-                btn.classList.remove('border');
-                btn.classList.remove('border-1');
-                btn.classList.add('border-0');
+                btn.classList.remove('border-profit', 'border-loss');
+                btn.classList.add('border-transparent');
             }
         }
         event.currentTarget.classList.remove('btn-outline-primary');
         event.currentTarget.classList.add('btn-primary');
     }
 
-    function initChart(event, currency, data) {
+    function initChart(event, currency, data, profit) {
         event?.preventDefault();
-        currencyBtnClicked(currency);
+
+        console.log('Currency button clicked:', currency, 'with profit:', profit);
+        currencyBtnClicked(currency, profit);
         loadAccountProfitCharts('{{ account.id }}', data);
     }
 

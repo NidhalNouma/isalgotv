@@ -202,10 +202,10 @@ def validate_fills(value):
             raise ValidationError(f"Fill at index {idx} must be an object")
         missing = required_keys - item.keys()
         extra = set(item.keys()) - required_keys
-        # if missing:
-        #     raise ValidationError(f"Fill at index {idx} missing keys: {', '.join(missing)}")
-        # if extra:
-        #     raise ValidationError(f"Fill at index {idx} has unexpected keys: {', '.join(extra)}")
+        if missing:
+            raise ValidationError(f"Fill at index {idx} missing keys: {', '.join(missing)}")
+        if extra:
+            raise ValidationError(f"Fill at index {idx} has unexpected keys: {', '.join(extra)}")
 
 
 class TradeDetails(models.Model):
