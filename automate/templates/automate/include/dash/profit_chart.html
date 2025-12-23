@@ -1,15 +1,62 @@
 {% load custom_tags %}
 <div class="w-full">
-    <div id="currencies-btns" class="space-x-2 space-y-2 mb-2">
+    <div id="currencies-btns" class="space-x-2 space-y-2 mb-4">
         {% for currency, info in data.items %}
-            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.final_profit}})" class="px-3 py-1 text-sm font-semibold rounded-lg border-transparent border {% if info.final_profit >= 0 %}text-profit bg-profit/10{% else %}text-loss bg-loss/10{% endif %}">{{ info.final_profit|floatformat:8|trim_zeros }} <span class="text-xs ml-0.5 font-normal">{{ currency }}</span></button> 
+            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.final_profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.final_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
         {% endfor %}
     </div>
-  <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !max-w-full sm:!h-96 !h-72 bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
+    <div class="w-full">
+        {% for currency, info in data.items %}
+            <div id="pnl-cards-{{currency}}" class="hidden grid-cols-2 md:grid-cols-4 items-center justify-center gap-4 w-full">
+                {% if info.today_profit >= 0 %}
+                    {% include 'include/dash/pnl_card.html' with type="profit" title='Today PnL' value=info.today_profit %}
+                {% else %}
+                    {% include 'include/dash/pnl_card.html' with type="loss" title='Today PnL' value=info.today_profit %}
+                {% endif %}
+                {% if info.final_profit >= 0 %}
+                    {% include 'include/dash/pnl_card.html' with type="profit" title='Total PnL' value=info.final_profit %}
+                {% else %}
+                    {% include 'include/dash/pnl_card.html' with type="loss" title='Total PnL' value=info.final_profit %}
+                {% endif %}
+                {% include 'include/dash/pnl_card.html' with type="profit" title='Max Profit' value=info.max_profit %}
+                {% include 'include/dash/pnl_card.html' with type="loss" title='Max DD' value=info.max_drawdown %}
+                {% comment %} {% include 'include/dash/pnl_card.html' with title='Total trades' value=overview_data.closed_trades %} {% endcomment %}
+            </div>
+        {% endfor %}
+        <div class="relative w-full !h-64 md:!h-80 mt-4">
+            <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
+        </div>
+
+        {% for currency, info in data.items %}
+            <div id="period-{{currency}}" class="hidden w-full">
+                <div class="w-full bg-text/5 rounded-md my-1">
+                    <div class="flex items-center justify-center truncate gap-1.5 bg-text/10 text-xs py-1 font-semibold text-text/80 text-center px-0.25 leading-none rounded-md" style="width: 100%">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="10" x2="14" y1="2" y2="2" />
+                            <line x1="12" x2="15" y1="14" y2="11" />
+                            <circle cx="12" cy="14" r="8" />
+                        </svg>
+                        {{ info.number_of_days }} Days 
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 <script type="text/javascript">
 
     const buttons = document.getElementById('currencies-btns').getElementsByTagName('button');
+    const pnlCardsContainers = {
+        {% for currency, info in data.items %}
+            '{{currency}}': document.getElementById('pnl-cards-{{currency}}'),
+        {% endfor %}
+    };
+
+    const periodContainers = {
+        {% for currency, info in data.items %}
+            '{{currency}}': document.getElementById('period-{{currency}}'),
+        {% endfor %}
+    };
 
     function currencyBtnClicked(currency, profit) {
         for (let i = 0; i < buttons.length; i++) {
@@ -21,9 +68,16 @@
                 } else {
                     btn.classList.add('border-loss');
                 }
+                pnlCardsContainers[currency].classList.remove('hidden');
+                pnlCardsContainers[currency].classList.add('grid');
+                periodContainers[currency].classList.remove('hidden');
+                
             } else {
                 btn.classList.remove('border-profit', 'border-loss');
                 btn.classList.add('border-transparent');
+                pnlCardsContainers[btn.id.replace('btn-', '')].classList.add('hidden');
+                pnlCardsContainers[btn.id.replace('btn-', '')].classList.remove('grid');
+                periodContainers[btn.id.replace('btn-', '')].classList.add('hidden');
             }
         }
         event.currentTarget.classList.remove('btn-outline-primary');
@@ -33,7 +87,7 @@
     function initChart(event, currency, data, profit) {
         event?.preventDefault();
 
-        console.log('Currency button clicked:', currency, 'with profit:', profit);
+        // console.log('Currency button clicked:', currency, 'with profit:', profit);
         currencyBtnClicked(currency, profit);
         loadAccountProfitCharts('{{ account.id }}', data);
     }

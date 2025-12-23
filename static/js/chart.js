@@ -62,6 +62,76 @@ function transformToTimeProfitForChart(data) {
   return { time, profit };
 }
 
+function getChartOptions(tooltipCallbacks) {
+  return {
+    animation: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: 0,
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+        position: "nearest",
+        // caretPadding: 20, // distance from line
+        // boxPaadding: 6, // padding inside tooltip box
+        // yAlign: "center", // force tooltip above point
+        // xAlign: "left", // force tooltip to the right of point
+        displayColors: false,
+        backgroundColor: getCssVariableColor("--color-background"),
+        titleColor: getCssVariableColor("--color-title"),
+        bodyColor: getCssVariableColor("--color-text"),
+        padding: 12,
+        cornerRadius: 4,
+        callbacks: tooltipCallbacks,
+      },
+    },
+    interaction: {
+      mode: "index",
+      intersect: false,
+      axis: "x",
+    },
+    scales: {
+      x: {
+        display: false,
+        grid: { display: false, drawBorder: false },
+      },
+      y: {
+        display: false,
+        grid: { display: false, drawBorder: false },
+      },
+    },
+  };
+}
+
+function getPlugins() {
+  // Create custom plugin for vertical line
+  const verticalLinePlugin = {
+    id: "verticalLine",
+    beforeDatasetsDraw: (chart) => {
+      if (chart.tooltip?._active?.length) {
+        const ctx = chart.ctx;
+        const activePoint = chart.tooltip._active[0];
+        const x = activePoint.element.x;
+        const topY = chart.scales.y.top;
+        const bottomY = chart.scales.y.bottom;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, topY);
+        ctx.lineTo(x, bottomY);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = getCssVariableColor("--color-text", 0.2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    },
+  };
+  return [verticalLinePlugin];
+}
+
 function loadChart(id) {
   const ctx = document.getElementById("profitChart-" + id).getContext("2d");
   // `data` should be your original 2D data array; transform it with your helper function
@@ -115,77 +185,44 @@ function loadChart(id) {
         },
       ],
     },
-    options: {
-      animation: false,
-      responsive: true,
-      layout: {
-        padding: 0,
+    options: getChartOptions({
+      title: (tooltipItems) => {
+        // Parse Excel serial (assuming UTC) to JS Date
+        const serial = parseFloat(tooltipItems[0].label);
+        // Excel epoch starts at 1899-12-30
+        const utcDays = serial - 25569;
+        const utcMs = utcDays * 86400 * 1000;
+        const date = new Date(utcMs);
+        // Month names for display
+        const monthNames = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        // Helper to pad numbers
+        const pad = (n) => (n < 10 ? "0" + n : n);
+        const year = date.getUTCFullYear();
+        const month = monthNames[date.getUTCMonth()];
+        const day = pad(date.getUTCDate());
+        const hours = pad(date.getUTCHours());
+        const minutes = pad(date.getUTCMinutes());
+        return `${day} ${month} ${year}   ${hours}:${minutes}`;
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          enabled: true,
-          displayColors: false,
-          backgroundColor: getCssVariableColor("--color-background"),
-          titleColor: getCssVariableColor("--color-title"),
-          bodyColor: getCssVariableColor("--color-text"),
-          padding: 8,
-          cornerRadius: 4,
-          callbacks: {
-            title: (tooltipItems) => {
-              // Parse Excel serial (assuming UTC) to JS Date
-              const serial = parseFloat(tooltipItems[0].label);
-              // Excel epoch starts at 1899-12-30
-              const utcDays = serial - 25569;
-              const utcMs = utcDays * 86400 * 1000;
-              const date = new Date(utcMs);
-              // Month names for display
-              const monthNames = [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-              ];
-              // Helper to pad numbers
-              const pad = (n) => (n < 10 ? "0" + n : n);
-              const year = date.getUTCFullYear();
-              const month = monthNames[date.getUTCMonth()];
-              const day = pad(date.getUTCDate());
-              const hours = pad(date.getUTCHours());
-              const minutes = pad(date.getUTCMinutes());
-              return `${day} ${month} ${year}   ${hours}:${minutes}`;
-            },
-            label: (tooltipItem) => {
-              // Display the profit value
-              return `Profit: ${tooltipItem.formattedValue}`;
-            },
-          },
-        },
+      label: (tooltipItem) => {
+        // Display the profit value
+        return `Profit: ${tooltipItem.formattedValue}`;
       },
-      interaction: {
-        mode: "nearest",
-        intersect: false,
-      },
-      scales: {
-        x: {
-          display: false,
-          grid: { display: false, drawBorder: false },
-        },
-        y: {
-          min: minValue,
-          display: false,
-          grid: { display: false, drawBorder: false },
-        },
-      },
-    },
+    }),
+    plugins: getPlugins(),
   });
 }
 
@@ -209,29 +246,6 @@ function loadAccountProfitCharts(id, data) {
   if (existingChart) {
     existingChart.destroy();
   }
-
-  // Create custom plugin for vertical line
-  const verticalLinePlugin = {
-    id: "verticalLine",
-    beforeDatasetsDraw: (chart) => {
-      if (chart.tooltip?._active?.length) {
-        const ctx = chart.ctx;
-        const activePoint = chart.tooltip._active[0];
-        const x = activePoint.element.x;
-        const topY = chart.scales.y.top;
-        const bottomY = chart.scales.y.bottom;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(x, topY);
-        ctx.lineTo(x, bottomY);
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = getCssVariableColor("--color-text", 0.2);
-        ctx.stroke();
-        ctx.restore();
-      }
-    },
-  };
 
   new Chart(ctx, {
     type: "line",
@@ -269,52 +283,18 @@ function loadAccountProfitCharts(id, data) {
         },
       ],
     },
-    options: {
-      animation: false,
-      responsive: true,
-      maintainAspectRatio: false,
-      layout: {
-        padding: 0,
+    options: getChartOptions({
+      title: (tooltipItems) => {
+        return tooltipItems[0].label;
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          enabled: true,
-          displayColors: false,
-          backgroundColor: getCssVariableColor("--color-background"),
-          titleColor: getCssVariableColor("--color-title"),
-          bodyColor: getCssVariableColor("--color-text"),
-          padding: 12,
-          cornerRadius: 4,
-          callbacks: {
-            title: (tooltipItems) => {
-              return tooltipItems[0].label;
-            },
-            label: (tooltipItem) => {
-              const profit = `Cumulative P&L: ${tooltipItem.formattedValue}`;
-              const dailyProfit = `Daily P&L: ${
-                series.dailyProfit[tooltipItem.dataIndex]
-              }`;
-              return [profit, dailyProfit];
-            },
-          },
-        },
+      label: (tooltipItem) => {
+        const profit = `Cumulative P&L: ${tooltipItem.formattedValue}`;
+        const dailyProfit = `Daily P&L: ${
+          series.dailyProfit[tooltipItem.dataIndex]
+        }`;
+        return [profit, dailyProfit];
       },
-      interaction: {
-        mode: "nearest",
-        intersect: false,
-      },
-      scales: {
-        x: {
-          display: false,
-          grid: { display: false, drawBorder: false },
-        },
-        y: {
-          display: false,
-          grid: { display: false, drawBorder: false },
-        },
-      },
-    },
-    plugins: [verticalLinePlugin],
+    }),
+    plugins: getPlugins(),
   });
 }

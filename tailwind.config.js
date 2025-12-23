@@ -53,6 +53,9 @@ module.exports = {
       height: {
         4.5: "1.125rem",
       },
+      width: {
+        4.5: "1.125rem",
+      },
       animationDelay: {
         100: "100ms",
         150: "150ms",

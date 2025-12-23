@@ -135,16 +135,21 @@
 
     <div class="block justify-between mx-auto max-w-5xl">
       <section class="backdrop-blur-2xl z-40 w-full pt-1 mb-6">
-        <div class="mr-auto flex justify-start gap-2 sm:gap-3 mt-2">
+        <div class="mr-auto flex justify-start gap-2 sm:gap-3 mt-2 overflow-x-auto no-scrollbar ">
           <button id="strategyBtn" class="btn-primary text-background sm:text-base text-sm font-semibold rounded-full">
             <svg class="h-5 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="2" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
               <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
             </svg>Strategy
           </button>
-          <button id="settingsBtn" class="btn-primary text-background bg-text/20 text-text/80 sm:text-base text-sm font-semibold rounded-full">
-            <svg class="h-5 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <button id="performanceBtn" class="btn-primary text-background bg-text/20 text-text/80 sm:text-base text-sm font-semibold rounded-full">
+            <svg class="w-4.5 aspect-auto mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
-            </svg>Results
+            </svg>Performance
+          </button>
+          <button id="settingsBtn" class="btn-primary text-background bg-text/20 text-text/80 sm:text-base text-sm font-semibold rounded-full">
+            <svg class="h-4 aspect-square mr-1 fill-current" viewBox="0 0 61 79" xmlns="http://www.w3.org/2000/svg">
+              <path d="M55.2164 68.871H46.5656V78.7097H39.1507V68.871H30.5L42.8582 54.1129L55.2164 68.871ZM61 34.0911L47.6532 45.8976C43.5997 49.5379 37.5194 49.6855 33.3177 46.2911L23.0851 38.125C22.3979 37.5802 21.5386 37.296 20.6604 37.323C19.7822 37.35 18.9422 37.6865 18.2901 38.2726L4.94327 50.079L0 44.6185L13.3468 32.7629C15.3149 31.0189 17.8413 30.027 20.4758 29.964C23.1103 29.9009 25.6817 30.7708 27.7318 32.4185L37.9149 40.5847C39.3485 41.7161 41.3752 41.6177 42.7099 40.4371L56.0567 28.6306L61 34.0911ZM21.8493 9.83871H30.5L18.1418 24.5968L5.78363 9.83871H14.4344V0H21.8493V9.83871Z" />
+            </svg>Reports
           </button>
           <button id="commentsBtn" class="btn-primary text-background bg-text/20 text-text/80 sm:text-base text-sm font-semibold rounded-full">
             <svg class="h-5 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
@@ -198,6 +203,10 @@
           {% endif %}
         </div>
 
+        <div class="" id="performanceDiv">
+          {% comment %} {% include 'include/performance.html' %} {% endcomment %}
+        </div>
+
         <div class="" id="commentsDiv">
           {% include 'include/comments.html' %}
         </div>
@@ -228,9 +237,11 @@
     const showCommentsBtn = document.getElementById('commentsBtn')
     const showSettingsBtn = document.getElementById('settingsBtn')
     const showStrategyBtn = document.getElementById('strategyBtn')
+    const showPerformanceBtn = document.getElementById('performanceBtn')
     const commentsDiv = document.getElementById('commentsDiv')
     const settingsDiv = document.getElementById('FullResultsDiv')
     const strategyDiv = document.getElementById('strategyDiv')
+    const performanceDiv = document.getElementById('performanceDiv')
     
     let cssClass = ['bg-text/20', 'text-text/80']
     
@@ -238,6 +249,7 @@
     strategyDiv.style.display = 'block'
     settingsDiv.style.display = 'none'
     commentsDiv.style.display = 'none'
+    performanceDiv.style.display = 'none'
     
     // Add event listeners to the buttons
     showStrategyBtn.addEventListener('click', () => {
@@ -245,9 +257,11 @@
       strategyDiv.style.display = 'block'
       commentsDiv.style.display = 'none'
       settingsDiv.style.display = 'none'
+      performanceDiv.style.display = 'none'
       showCommentsBtn.classList.add(...cssClass)
       showSettingsBtn.classList.add(...cssClass)
       showStrategyBtn.classList.remove(...cssClass)
+      showPerformanceBtn.classList.add(...cssClass)
     })
     
     showCommentsBtn.addEventListener('click', () => {
@@ -255,9 +269,11 @@
       commentsDiv.style.display = 'block'
       settingsDiv.style.display = 'none'
       strategyDiv.style.display = 'none'
+      performanceDiv.style.display = 'none'
       showCommentsBtn.classList.remove(...cssClass)
       showSettingsBtn.classList.add(...cssClass)
       showStrategyBtn.classList.add(...cssClass)
+      showPerformanceBtn.classList.add(...cssClass)
     })
     
     showSettingsBtn.addEventListener('click', () => {
@@ -265,10 +281,25 @@
       settingsDiv.style.display = 'block'
       commentsDiv.style.display = 'none'
       strategyDiv.style.display = 'none'
+      performanceDiv.style.display = 'none'
     
       showCommentsBtn.classList.add(...cssClass)
       showStrategyBtn.classList.add(...cssClass)
       showSettingsBtn.classList.remove(...cssClass)
+      showPerformanceBtn.classList.add(...cssClass)
+    })
+    
+    showPerformanceBtn.addEventListener('click', () => {
+      // Show the settings div and hide the comments div
+      performanceDiv.style.display = 'block'
+      commentsDiv.style.display = 'none'
+      strategyDiv.style.display = 'none'
+      settingsDiv.style.display = 'none'
+    
+      showCommentsBtn.classList.add(...cssClass)
+      showStrategyBtn.classList.add(...cssClass)
+      showSettingsBtn.classList.add(...cssClass)
+      showPerformanceBtn.classList.remove(...cssClass)
     })
     
     showStrategyBtn.click()
@@ -291,9 +322,21 @@
       else scrollToResultOrComment('commentsDiv')
     }
     
+    function showPerformances() {
+      const showPerformanceBtn = document.getElementById('performanceBtn')
+      showPerformanceBtn.click()
+      scrollToResultOrComment('performanceDiv')
+    }
+    
+    function showStrategy() {
+      const showStrategyBtn = document.getElementById('strategyBtn')
+      showStrategyBtn.click()
+      scrollToResultOrComment('strategyDiv')
+    }
+    
     window.addEventListener('load', function () {
       const urlParams = new URLSearchParams(window.location.search)
-      const resultParam = urlParams.get('result')
+      const resultParam = urlParams.get('report')
     
       if (resultParam) {
         showResults(resultParam)
@@ -304,36 +347,6 @@
       if (commentParam) {
         showComments(commentParam)
       }
-    })
-    
-    const btnsList = document.getElementById('btns-list')
-    const backToTopButton = document.getElementById('backToTopBtn')
-    let lastScrollY = window.scrollY
-    
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        const currentScrollY = window.scrollY
-    
-        if (currentScrollY < lastScrollY) {
-          // User is scrolling up, show the button
-          backToTopButton.style.display = 'flex'
-        } else {
-          // User is scrolling down, hide the button
-          backToTopButton.style.display = 'none'
-        }
-    
-        lastScrollY = currentScrollY
-      } else {
-        // Hide the button when the user is near the top
-        backToTopButton.style.display = 'none'
-      }
-    })
-    
-    backToTopButton.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Smooth scroll animation
-      })
     })
   </script>
 

@@ -2,9 +2,9 @@
 
 <div class="w-full">
   <div class="flex items-center gap-2 mb-3">
-    <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'results' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
+    <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'reports' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
     {% if not hide_title %}
-      <a class="grow" href="{% url 'strategy' slug=result.strategy.slug %}?result={{ result.id }}">
+      <a class="grow" href="{% url 'strategy' slug=result.strategy.slug %}?report={{ result.id }}">
         <h6 class="group text-sm text-text hover:text-text/80 transition-colors font-medium truncate line-clamp-1">
           <span>{{ result.strategy.name }}</span>
           <svg class="inline-flex w-3.5 aspect-square ml-0.5 fill-background bg-text group-hover:bg-text/80 rounded-full transition-colors" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +15,7 @@
     {% endif %}
   </div>
 
-  <a class="" href="{% url 'strategy' slug=result.strategy.slug %}?result={{ result.id }}">
+  <a class="" href="{% url 'strategy' slug=result.strategy.slug %}?report={{ result.id }}">
     <div class="mb-3">
       <div class="flex items-center gap-2 mb-1.5">
         <svg class="w-4 h-4 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -16,14 +16,14 @@
 {% endblock %}
 
 {% block page %}
-  <h1 class="main-title">Results</h1>
+  <h1 class="main-title">Reports</h1>
 
   <main class="mt-0 mb-16">
     {% if results|length > 0 %}
       {% if pairs|length > 1 %}
         <section class="flex items-center pt-6 mb-3 py-4 px-1 sticky z-10 top-12 sm:top-12 nav-bg cursor-pointer overflow-y-auto scrollbar-hide">
           {% if selected_pair %}
-            <a class="mr-2" href="{% url 'results' %}">
+            <a class="mr-2" href="{% url 'reports' %}">
               <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">
                 {{ selected_pair }}
 
@@ -35,7 +35,7 @@
           {% endif %}
           {% for pair in pairs %}
             {% if pair != selected_pair %}
-              <a class="mr-2" href="{% url 'results' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
+              <a class="mr-2" href="{% url 'reports' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
             {% endif %}
           {% endfor %}
         </section>

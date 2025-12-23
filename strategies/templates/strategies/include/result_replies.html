@@ -64,7 +64,7 @@
     {% endif %} {% endwith %}
   
   
-  {% include "include/add_reply.html" with name="result" id=result.id url='submit_result_reply' %}
+  {% include "include/add_reply.html" with name="result" id=result.id url='submit_report_reply' %}
   
   <div class="hidden ml-auto w-11/12 mt-2" id="replies-{{ result.id }}-result-list">
     {% include "include/replies.html" with replies=result.replies.all %}

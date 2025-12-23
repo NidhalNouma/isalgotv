@@ -1,6 +1,6 @@
 {% load custom_tags %}
 
-<form class="flex flex-col" id="add-result-form" hx-post="{% url 'submit_result' strategy.id %}" hx-target="#resultsDiv" enctype="multipart/form-data" hx-wait="swap" novalidate>
+<form class="flex flex-col" id="add-result-form" hx-post="{% url 'submit_report' strategy.id %}" hx-target="#resultsDiv" enctype="multipart/form-data" hx-wait="swap" novalidate>
   {% csrf_token %}
 
   {% render_template 'include/add_result_performance.html' as result_performance %}

@@ -7,6 +7,7 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
+from automate.models import StrategyPerformance, DayPerformance, DayCurrencyPerformance
 
 from profile_user.utils.notifcations import send_notification
 
@@ -24,7 +25,7 @@ def get_strategies(request):
     context =  {'strategies': strategies, 'show_banner': True}
     return render(request, 'strategies.html', context)
 
-def get_results(request):
+def get_reports(request):
     pair_name = request.GET.get('pair')
 
     unique_pairs = StrategyResults.objects.values_list('pair', flat=True).distinct()
@@ -63,6 +64,74 @@ def get_strategy(request, slug):
         results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
+
+        # strategy_performances = (
+        #     StrategyPerformance.objects
+        #     .select_related("account_performance")
+        #     .prefetch_related(
+        #         "currencies",
+        #         "assets",
+        #         "days",
+        #     )
+        # )
+
+        # strategy_performances = (
+        #     StrategyPerformance.objects
+        #     .select_related(
+        #         "account_performance",
+        #         "strategy",
+        #     )
+        #     .prefetch_related(
+        #         "currencies",
+        #         Prefetch(
+        #             "day_performances",
+        #             queryset=DayPerformance.objects.prefetch_related("assets"),
+        #         ),
+        #     )
+        #     .filter(strategy=strategy)
+        # )
+        # strategy_performances = (
+        #     StrategyPerformance.objects
+        #     .select_related(
+        #         "account_performance",
+        #         "strategy",
+        #     )
+        #     .prefetch_related(
+        #         "currencies",
+        #         Prefetch(
+        #             "day_performances",
+        #             queryset=DayPerformance.objects.prefetch_related("currencies"),
+        #         ),
+        #     )
+        #     .filter(strategy=strategy)
+        # )
+
+        # strategy.performance_data = []  # ✅ collect per-account performances
+
+        # for perf in strategy_performances:
+        #     strategy.performance_data.append({
+        #         'account_id': perf.account_performance_id,
+        #         'total_trades': perf.total_trades,
+        #         'winning_trades': perf.winning_trades,
+        #         'losing_trades': perf.losing_trades,
+        #         'win_rate': perf.win_rate,
+        #         'currencies': {
+        #             c.currency: float(c.total_profit or 0)
+        #             for c in perf.currencies.all()
+        #         },
+        #         'daily_performances': [
+        #             {
+        #                 'date': d.date,
+        #                 'total_trades': d.total_trades,
+        #                 'currencies': {
+        #                     dc.currency: float(dc.total_profit or 0)
+        #                     for dc in d.currencies.all()
+        #                 }
+        #             }
+        #             for d in perf.day_performances.all()
+        #         ],
+        #     })
+        # print('strategy.performance_data', strategy.performance_data)
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
     except Strategy.DoesNotExist:
@@ -132,7 +201,7 @@ def add_comment(request, id):
             return retarget(response, "#add-comment-form-errors")
 
 @require_http_methods([ "POST"])
-def add_result(request, id):
+def add_report(request, id):
     strategy = Strategy.objects.get(pk=id)
 
     if request.method == 'POST':
@@ -264,7 +333,7 @@ def add_comment_reply(request, id):
             return retarget(response, "#reply-form-errors-"+str(id)+"-comment")
 
 @require_http_methods([ "POST"])
-def add_result_reply(request, id):
+def add_report_reply(request, id):
     result = StrategyResults.objects.get(pk=id)
 
     if request.method == 'POST':

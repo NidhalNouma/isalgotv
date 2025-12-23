@@ -461,6 +461,9 @@ class BasePerformance(models.Model):
     sell_winning_trades = models.PositiveIntegerField(default=0)
     sell_losing_trades = models.PositiveIntegerField(default=0)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
         abstract = True
 
@@ -499,9 +502,6 @@ class AccountPerformance(BasePerformance):
     object_id = models.PositiveIntegerField()
     account = GenericForeignKey("content_type", "object_id")
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -529,8 +529,6 @@ class AssetPerformance(BasePerformance):
     )
 
     asset = models.CharField(max_length=50)
-
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
@@ -562,8 +560,6 @@ class StrategyPerformance(BasePerformance):
         Strategy,
         on_delete=models.CASCADE
     )
-
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
@@ -601,8 +597,6 @@ class DayPerformance(BasePerformance):
         through="DayStrategyPerformance",
         related_name="day_performances"
     )
-
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
@@ -670,6 +664,9 @@ class CurrencyBasePerformance(models.Model):
     currency = models.CharField(max_length=10)
     total_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
     total_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True

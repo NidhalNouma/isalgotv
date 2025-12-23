@@ -125,6 +125,19 @@
           </a>
         </li>
         <li>
+          <a href="{% url 'reports' %}"
+          class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'reports' %}
+          text-title
+          {% else %}
+          text-text/80
+          {% endif %} hover:text-title hover:font-medium transition-all"
+          aria-current="page">
+          <svg class="h-4 aspect-square mr-1 fill-current" viewBox="0 0 61 79" xmlns="http://www.w3.org/2000/svg">
+            <path d="M55.2164 68.871H46.5656V78.7097H39.1507V68.871H30.5L42.8582 54.1129L55.2164 68.871ZM61 34.0911L47.6532 45.8976C43.5997 49.5379 37.5194 49.6855 33.3177 46.2911L23.0851 38.125C22.3979 37.5802 21.5386 37.296 20.6604 37.323C19.7822 37.35 18.9422 37.6865 18.2901 38.2726L4.94327 50.079L0 44.6185L13.3468 32.7629C15.3149 31.0189 17.8413 30.027 20.4758 29.964C23.1103 29.9009 25.6817 30.7708 27.7318 32.4185L37.9149 40.5847C39.3485 41.7161 41.3752 41.6177 42.7099 40.4371L56.0567 28.6306L61 34.0911ZM21.8493 9.83871H30.5L18.1418 24.5968L5.78363 9.83871H14.4344V0H21.8493V9.83871Z" />
+          </svg>Reports
+        </a>
+      {% comment %} </li>
+        <li>
           <a href="{% url 'results' %}"
           class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'results' %}
           text-title
@@ -134,9 +147,9 @@
           aria-current="page">
           <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
-          </svg>Results
+          </svg>Performances
         </a>
-      </li>
+      </li> {% endcomment %}
       <li>
         <a href="{% url 'automate' %}"
           class="flex items-center text-sm py-2 pl-3 pr-4 {% if request.resolver_match.view_name == 'automate' %}

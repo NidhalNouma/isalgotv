@@ -25,10 +25,10 @@
     {% comment %} <h2 class="text-lg font-bold text-title/80">{{ account.name }}</h2> {% endcomment %}
   </section>
 
-  <section class="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <section class="mt-4 w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     {% include 'include/dash/number_card.html' with title='Total trades' value=overview_data.closed_trades buy_value=overview_data.total_buy_trades sell_value=overview_data.total_sell_trades %}
-    {% include 'include/dash/number_card.html' with title='Winning trades' value=overview_data.winning_trades value_class='text-profit/80' buy_value=overview_data.winning_buy_trades sell_value=overview_data.winning_sell_trades %}
-    {% include 'include/dash/number_card.html' with title='Losing trades' value=overview_data.losing_trades value_class='text-loss/80' buy_value=overview_data.losing_buy_trades sell_value=overview_data.losing_sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Winning trades' value=overview_data.winning_trades value_class='text-profit' buy_value=overview_data.winning_buy_trades sell_value=overview_data.winning_sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Losing trades' value=overview_data.losing_trades value_class='text-loss' buy_value=overview_data.losing_buy_trades sell_value=overview_data.losing_sell_trades %}
     {% include 'include/dash/number_card.html' with title='Win rate' value=overview_data.win_rate|stringformat:'s'|add:'%' buy_value=overview_data.buy_win_rate|default:'0'|stringformat:'s'|add:'%' sell_value=overview_data.sell_win_rate|default:'0'|stringformat:'s'|add:'%' %}
   </section>
 

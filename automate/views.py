@@ -138,35 +138,54 @@ def get_account_data(request, public_id):
     # --------------------------------------------------
     daily_profits_per_currency = defaultdict(lambda: defaultdict(float))
 
+    # start_day = account.created_at.date()
+    # end_day = datetime.datetime.now().date()
+    start_day = datetime.date.today()
+    end_day = datetime.date(1970, 1, 1)
+
     if account_perf:
         for day in account_perf.day_performances.prefetch_related('currencies').all():
+            if day.date < start_day:
+                start_day = day.date
+            if day.date > end_day:
+                end_day = day.date
             for currency_perf in day.currencies.all():
                 daily_profits_per_currency[currency_perf.currency][day.date] += float(currency_perf.total_profit or 0)
 
+
     # Determine date range
-    start_day = account.created_at.date()
-    end_day = datetime.datetime.now().date()
+    start_day = start_day - datetime.timedelta(days=1)
     days = (end_day - start_day).days + 1
     if days < 3:
         start_day = end_day - datetime.timedelta(days=2)
         days = 3
     days_difference = [start_day + datetime.timedelta(days=i) for i in range(days)]
+    
 
     chart_data = {}
     for currency, profits_by_date in daily_profits_per_currency.items():
         cumulative_profit = 0
+        max_drawdown = 0
+        max_profit = 0
         data_points = []
         for date in days_difference:
             daily_profit = profits_by_date.get(date, 0)
             cumulative_profit += daily_profit
+            max_drawdown = min(max_drawdown, cumulative_profit)
+            max_profit = max(max_profit, cumulative_profit)
             data_points.append({
                 'date': date.strftime('%b %d, %Y'),
                 'profit': cumulative_profit,
                 'daily_profit': daily_profit,
             })
+        today_date = datetime.date.today()
         chart_data[currency] = {
             'data': data_points,
             'final_profit': cumulative_profit,
+            'max_drawdown': max_drawdown,
+            'max_profit': max_profit,
+            'today_profit': profits_by_date.get(today_date, 0),
+            'number_of_days': days,
         }
 
     # --------------------------------------------------

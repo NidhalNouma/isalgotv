@@ -1,8 +1,11 @@
 <div class="border border-text/10 p-4 rounded-lg">
-  <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-2">{{ title }}</h4>
-  <div class="flex justify-start items-end">
-    <h5 class="text-5xl font-medium {{ value_class|default:'text-text/80' }}">{{ value|default:'0' }}</h5>
-    <div class="ml-2 flex flex-col space-y-1">
+  <div class="flex items-center gap-2 mb-1">
+    {{ svg }}
+    <span class="text-sm font-medium text-text">{{ title }}</span>
+  </div>
+  <div class="flex flex-col gap-2">
+    <h6 class="text-3xl font-bold {{ value_class|default:'text-text' }}">{{ value|default:'0' }}</h6>
+    <div class="flex flex-row gap-2">
       <h5 class="text-xs text-primary flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-md">
         {{ buy_value|default:'0' }}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 aspect-auto text-current">
           <path d="M16 7h6v6" />
