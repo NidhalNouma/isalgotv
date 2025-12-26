@@ -1,9 +1,13 @@
 {% load custom_tags %}
 <div class="w-full">
-    <div id="currencies-btns" class="flex items-center gap-3 overflow-x-auto no-scrollbar mb-4">
-        {% for currency, info in data.items %}
-            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.cumulative.profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
-        {% endfor %}
+    <div class="relative mb-4">
+        <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
+        <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
+        <div id="currencies-btns" class="flex items-center gap-3 overflow-x-auto no-scrollbar pr-8">
+            {% for currency, info in data.items %}
+                <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.cumulative.profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
+            {% endfor %}
+        </div>
     </div>
     <div class="w-full">
         {% for currency, info in data.items %}

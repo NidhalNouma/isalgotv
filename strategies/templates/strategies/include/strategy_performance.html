@@ -11,3 +11,12 @@
     {% include 'automate/include/dash/profit_chart.html' with account=account data=chart_data %}
   </section>
 {% endif %}
+
+{% if trades|length > 0 %}
+  <section class="mt-6 w-full border border-text/10 mb-12 p-4 rounded-lg">
+    <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>
+    <div class="h-96 w-full">
+      {% include 'automate/include/account_trades.html' with broker_type='strategy' id=strategy.id only_closed_trades=only_closed_trades thead_class='' %}
+    </div>
+  </section>
+{% endif %}

@@ -113,7 +113,7 @@ def get_account_data(request, public_id):
         content_type=ct,
         object_id=account.id,
         status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-    ).order_by('-created_at')[:20]
+    ).order_by('-exit_time')[:20]
 
     context = {
         'account': account,
@@ -808,24 +808,33 @@ def get_broker_trades(request, broker_type, pk):
         start = int(request.GET.get('start', 0))
         limit = 30
 
-        crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
-        forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+        only_closed_trades = str(request.GET.get('only_closed_trades', 'false')).lower() == 'true'
 
-        if broker_type in crypto_broker_types:
-            account_model = CryptoBrokerAccount
-        elif broker_type in forex_broker_types:
-            account_model = ForexBrokerAccount
+        if broker_type == 'strategy':
+            strategy_id = pk
+            all_trades = TradeDetails.objects.filter(
+                strategy_id=strategy_id,
+                status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+            ).order_by('-exit_time')
         else:
-            raise ValueError("Invalid Broker Type")
-        
-        only_closed_trades = request.GET.get('only_closed_trades', 'false').lower() == 'true'
 
-        content_type = ContentType.objects.get_for_model(account_model)
-        all_trades = TradeDetails.objects.filter(
-            content_type=content_type, 
-            object_id=pk, status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-        ).order_by('-exit_time')
-        
+            crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+            forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+            if broker_type in crypto_broker_types:
+                account_model = CryptoBrokerAccount
+            elif broker_type in forex_broker_types:
+                account_model = ForexBrokerAccount
+            else:
+                raise ValueError("Invalid Broker Type")
+            
+
+            content_type = ContentType.objects.get_for_model(account_model)
+            all_trades = TradeDetails.objects.filter(
+                content_type=content_type, 
+                object_id=pk, status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+            ).order_by('-exit_time')
+            
         trade_list = all_trades[start:start+limit]
 
         # Determine next start offset for pagination
