@@ -1,3 +1,4 @@
+{% load custom_tags %}
 {% if type == 'profit' %}
   <div class="bg-profit/5 p-4 rounded-lg">
     <div class="flex items-center gap-2 mb-1">
@@ -8,7 +9,7 @@
       <span class="text-sm font-medium text-profit">{{ title }}</span>
     </div>
     <div class="flex flex-col justify-start items-start">
-      <h6 class="text-3xl font-bold text-profit">{{ value|default:'0' }}</h6>
+      <h6 class="text-3xl font-bold text-profit">{{ value|floatformat:8|trim_zeros|default:'0' }}</h6>
 
       {% if buy_value or sell_value %}
         <div class="flex flex-row gap-2 mt-2">
@@ -39,7 +40,7 @@
     </div>
 
     <div class="flex flex-col justify-start items-start">
-      <h6 class="text-3xl font-bold text-loss">{{ value|default:'0' }}</h6>
+      <h6 class="text-3xl font-bold text-loss">{{ value|floatformat:8|trim_zeros|default:'0' }}</h6>
       {% if buy_value or sell_value %}
         <div class="flex flex-row gap-2 mt-2">
           <h5 class="text-xs text-primary flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-md">

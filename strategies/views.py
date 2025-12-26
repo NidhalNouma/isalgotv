@@ -7,7 +7,8 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
-from automate.models import StrategyPerformance, DayPerformance, DayCurrencyPerformance
+from automate.models import StrategyPerformance
+from automate.functions.performance import get_strategy_performance_data, get_days_performance, get_overview_performance_data, get_asset_performance_data
 
 from profile_user.utils.notifcations import send_notification
 
@@ -48,10 +49,6 @@ def get_ideas(request):
     return render(request, 'ideas.html', context)
 
 def get_strategy(request, slug):
-    strategy = {}
-    comments = {}
-    results = {}
-    
     try:
         strategy = Strategy.objects.select_related('created_by').prefetch_related(
                 'images',
@@ -65,80 +62,23 @@ def get_strategy(request, slug):
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
 
-        # strategy_performances = (
-        #     StrategyPerformance.objects
-        #     .select_related("account_performance")
-        #     .prefetch_related(
-        #         "currencies",
-        #         "assets",
-        #         "days",
-        #     )
-        # )
+        strategy_performances = StrategyPerformance.objects.filter(strategy=strategy).first()
 
-        # strategy_performances = (
-        #     StrategyPerformance.objects
-        #     .select_related(
-        #         "account_performance",
-        #         "strategy",
-        #     )
-        #     .prefetch_related(
-        #         "currencies",
-        #         Prefetch(
-        #             "day_performances",
-        #             queryset=DayPerformance.objects.prefetch_related("assets"),
-        #         ),
-        #     )
-        #     .filter(strategy=strategy)
-        # )
-        # strategy_performances = (
-        #     StrategyPerformance.objects
-        #     .select_related(
-        #         "account_performance",
-        #         "strategy",
-        #     )
-        #     .prefetch_related(
-        #         "currencies",
-        #         Prefetch(
-        #             "day_performances",
-        #             queryset=DayPerformance.objects.prefetch_related("currencies"),
-        #         ),
-        #     )
-        #     .filter(strategy=strategy)
-        # )
+        overview_performance = get_overview_performance_data(strategy_performances)
+        chart_performance = get_days_performance(strategy_performances)
+        # asset_performance = get_asset_performance_data(strategy_performances)
 
-        # strategy.performance_data = []  # ✅ collect per-account performances
+        print('overview_performance', overview_performance)
 
-        # for perf in strategy_performances:
-        #     strategy.performance_data.append({
-        #         'account_id': perf.account_performance_id,
-        #         'total_trades': perf.total_trades,
-        #         'winning_trades': perf.winning_trades,
-        #         'losing_trades': perf.losing_trades,
-        #         'win_rate': perf.win_rate,
-        #         'currencies': {
-        #             c.currency: float(c.total_profit or 0)
-        #             for c in perf.currencies.all()
-        #         },
-        #         'daily_performances': [
-        #             {
-        #                 'date': d.date,
-        #                 'total_trades': d.total_trades,
-        #                 'currencies': {
-        #                     dc.currency: float(dc.total_profit or 0)
-        #                     for dc in d.currencies.all()
-        #                 }
-        #             }
-        #             for d in perf.day_performances.all()
-        #         ],
-        #     })
-        # print('strategy.performance_data', strategy.performance_data)
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
+
+        context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': results, 'overview_data': overview_performance, 'chart_data': chart_performance}
+        return render(request, 'strategy.html', context)
+    
     except Strategy.DoesNotExist:
         raise Http404("The object does not exist.")
     
-    context =  {'strategy': strategy, 'results': results, 'comments': comments, 'random_results': results}
-    return render(request, 'strategy.html', context)
 
 def get_strategy_id(request, id):
     

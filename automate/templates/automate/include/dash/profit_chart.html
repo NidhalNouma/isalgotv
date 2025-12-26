@@ -1,8 +1,8 @@
 {% load custom_tags %}
 <div class="w-full">
-    <div id="currencies-btns" class="space-x-2 space-y-2 mb-4">
+    <div id="currencies-btns" class="flex items-center gap-3 overflow-x-auto no-scrollbar mb-4">
         {% for currency, info in data.items %}
-            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.final_profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.final_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
+            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.cumulative.profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
         {% endfor %}
     </div>
     <div class="w-full">
@@ -13,14 +13,14 @@
                 {% else %}
                     {% include 'include/dash/pnl_card.html' with type="loss" title='Today PnL' value=info.today_profit %}
                 {% endif %}
-                {% if info.final_profit >= 0 %}
-                    {% include 'include/dash/pnl_card.html' with type="profit" title='Total PnL' value=info.final_profit %}
+                {% if info.cumulative.profit >= 0 %}
+                    {% include 'include/dash/pnl_card.html' with type="profit" title='Total PnL' value=info.cumulative.profit %}
                 {% else %}
-                    {% include 'include/dash/pnl_card.html' with type="loss" title='Total PnL' value=info.final_profit %}
+                    {% include 'include/dash/pnl_card.html' with type="loss" title='Total PnL' value=info.cumulative.profit %}
                 {% endif %}
                 {% include 'include/dash/pnl_card.html' with type="profit" title='Max Profit' value=info.max_profit %}
                 {% include 'include/dash/pnl_card.html' with type="loss" title='Max DD' value=info.max_drawdown %}
-                {% comment %} {% include 'include/dash/pnl_card.html' with title='Total trades' value=overview_data.closed_trades %} {% endcomment %}
+                {% comment %} {% include 'include/dash/pnl_card.html' with title='Total trades' value=info.cumulative.trades %} {% endcomment %}
             </div>
         {% endfor %}
         <div class="relative w-full !h-64 md:!h-80 mt-4">

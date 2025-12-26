@@ -26,9 +26,9 @@
   </section>
 
   <section class="mt-4 w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    {% include 'include/dash/number_card.html' with title='Total trades' value=overview_data.closed_trades buy_value=overview_data.total_buy_trades sell_value=overview_data.total_sell_trades %}
-    {% include 'include/dash/number_card.html' with title='Winning trades' value=overview_data.winning_trades value_class='text-profit' buy_value=overview_data.winning_buy_trades sell_value=overview_data.winning_sell_trades %}
-    {% include 'include/dash/number_card.html' with title='Losing trades' value=overview_data.losing_trades value_class='text-loss' buy_value=overview_data.losing_buy_trades sell_value=overview_data.losing_sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Total trades' value=overview_data.trades buy_value=overview_data.buy_trades sell_value=overview_data.sell_trades %}
+    {% include 'include/dash/number_card.html' with title='Winning trades' value=overview_data.winning_trades value_class='text-profit' buy_value=overview_data.buy_winning_trades sell_value=overview_data.sell_winning_trades %}
+    {% include 'include/dash/number_card.html' with title='Losing trades' value=overview_data.losing_trades value_class='text-loss' buy_value=overview_data.buy_losing_trades sell_value=overview_data.sell_losing_trades %}
     {% include 'include/dash/number_card.html' with title='Win rate' value=overview_data.win_rate|stringformat:'s'|add:'%' buy_value=overview_data.buy_win_rate|default:'0'|stringformat:'s'|add:'%' sell_value=overview_data.sell_win_rate|default:'0'|stringformat:'s'|add:'%' %}
   </section>
 
@@ -45,7 +45,7 @@
         <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Traded Assets</h4>
         <div class="flex flex-wrap gap-2">
           {% for asset in assets.items %}
-            {% include 'include/dash/data_card.html' with title=asset.0 value=asset.1.trades buy_value=asset.1.buy_trades sell_value=asset.1.sell_trades profit_value=asset.1.wins loss_value=asset.1.losses %}
+            {% include 'include/dash/data_card.html' with title=asset.0 value=asset.1.trades buy_value=asset.1.buy_trades sell_value=asset.1.sell_trades profit_value=asset.1.winning_trades loss_value=asset.1.losing_trades %}
             {% comment %} <span class="bg-text/10 text-text/80 text-xs font-medium px-3 py-1 rounded-full border border-text/20">{{ asset.1.trades }} {{ asset.0 }}</span> {% endcomment %}
           {% endfor %}
         </div>
@@ -58,7 +58,7 @@
         <div class="flex flex-wrap gap-2">
           {% for source in sources.items %}
             {% url 'strategy' slug=source.0.slug as source_url %}
-            {% include 'include/dash/data_card.html' with url=source_url title=source.0 value=source.1.trades buy_value=source.1.buy_trades sell_value=source.1.sell_trades profit_value=source.1.wins loss_value=source.1.losses %}
+            {% include 'include/dash/data_card.html' with url=source_url title=source.0 value=source.1.trades buy_value=source.1.buy_trades sell_value=source.1.sell_trades profit_value=source.1.winning_trades loss_value=source.1.losing_trades %}
           {% endfor %}
         </div>
       </section>

@@ -9,11 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials, close_open_trade
 from automate.functions.alerts_message import manage_alert
-from automate.functions.performance import backfill_account_performance
+from automate.functions.performance import backfill_account_performance, get_days_performance, get_overview_performance_data, get_asset_performance_data, get_strategy_performance_data
 from automate.models import *
 from automate.forms import *
 from automate.tasks import *
-from django.db.models import Count, Sum, Q
 
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
@@ -95,125 +94,12 @@ def get_account_data(request, public_id):
         account_perf = backfill_account_performance(ct, account.id, create=True)
     if not account_perf:
         return render(request, "404.html", status=404)
-
-    # Aggregate overview data
-    total_closed = account_perf.total_trades
-    total_wins = account_perf.winning_trades
-    total_losses = account_perf.losing_trades
-    total_buy_trades = account_perf.buy_total_trades
-    total_sell_trades = account_perf.sell_total_trades
-    total_winning_buy_trades = account_perf.buy_winning_trades
-    total_winning_sell_trades = account_perf.sell_winning_trades
-    total_losing_buy_trades = account_perf.buy_losing_trades
-    total_losing_sell_trades = account_perf.sell_losing_trades
-
-    # Calculate percentages
-    win_rate = (total_wins / total_closed * 100) if total_closed else 0
-    total_buy_trades_percent = (total_buy_trades / total_closed * 100) if total_closed else 0
-    total_sell_trades_percent = (total_sell_trades / total_closed * 100) if total_closed else 0
-    total_winning_buy_trades_percent = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades else 0
-    total_winning_sell_trades_percent = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades else 0
-    total_losing_buy_trades_percent = (total_losing_buy_trades / total_buy_trades * 100) if total_buy_trades else 0
-    total_losing_sell_trades_percent = (total_losing_sell_trades / total_sell_trades * 100) if total_sell_trades else 0
-    buy_win_rate = (total_winning_buy_trades / total_buy_trades * 100) if total_buy_trades else 0
-    sell_win_rate = (total_winning_sell_trades / total_sell_trades * 100) if total_sell_trades else 0
-
-    overview_data = {
-        'closed_trades': total_closed,
-        'total_buy_trades': f"{round(total_buy_trades_percent, 2)}%",
-        'total_sell_trades': f"{round(total_sell_trades_percent, 2)}%",
-        'winning_trades': total_wins,
-        'winning_buy_trades': f"{round(total_winning_buy_trades_percent, 2)}%",
-        'winning_sell_trades': f"{round(total_winning_sell_trades_percent, 2)}%",
-        'losing_trades': total_losses,
-        'losing_buy_trades': f"{round(total_losing_buy_trades_percent, 2)}%",
-        'losing_sell_trades': f"{round(total_losing_sell_trades_percent, 2)}%",
-        'win_rate': round(win_rate, 2),
-        'buy_win_rate': round(buy_win_rate, 2),
-        'sell_win_rate': round(sell_win_rate, 2),
-    }
-
-    # --------------------------------------------------
-    # Chart data using DayPerformance + DayCurrencyPerformance
-    # --------------------------------------------------
-    daily_profits_per_currency = defaultdict(lambda: defaultdict(float))
-
-    # start_day = account.created_at.date()
-    # end_day = datetime.datetime.now().date()
-    start_day = datetime.date.today()
-    end_day = datetime.date(1970, 1, 1)
-
-    if account_perf:
-        for day in account_perf.day_performances.prefetch_related('currencies').all():
-            if day.date < start_day:
-                start_day = day.date
-            if day.date > end_day:
-                end_day = day.date
-            for currency_perf in day.currencies.all():
-                daily_profits_per_currency[currency_perf.currency][day.date] += float(currency_perf.total_profit or 0)
-
-
-    # Determine date range
-    start_day = start_day - datetime.timedelta(days=1)
-    days = (end_day - start_day).days + 1
-    if days < 3:
-        start_day = end_day - datetime.timedelta(days=2)
-        days = 3
-    days_difference = [start_day + datetime.timedelta(days=i) for i in range(days)]
     
+    overview_data = get_overview_performance_data(account_perf)
+    chart_performance = get_days_performance(account_perf)
 
-    chart_data = {}
-    for currency, profits_by_date in daily_profits_per_currency.items():
-        cumulative_profit = 0
-        max_drawdown = 0
-        max_profit = 0
-        data_points = []
-        for date in days_difference:
-            daily_profit = profits_by_date.get(date, 0)
-            cumulative_profit += daily_profit
-            max_drawdown = min(max_drawdown, cumulative_profit)
-            max_profit = max(max_profit, cumulative_profit)
-            data_points.append({
-                'date': date.strftime('%b %d, %Y'),
-                'profit': cumulative_profit,
-                'daily_profit': daily_profit,
-            })
-        today_date = datetime.date.today()
-        chart_data[currency] = {
-            'data': data_points,
-            'final_profit': cumulative_profit,
-            'max_drawdown': max_drawdown,
-            'max_profit': max_profit,
-            'today_profit': profits_by_date.get(today_date, 0),
-            'number_of_days': days,
-        }
-
-    # --------------------------------------------------
-    # Assets and Sources using precomputed performances
-    # --------------------------------------------------
-    assets = {}
-    sources = {}
-    if account_perf:
-        for asset_perf in account_perf.asset_performances.prefetch_related('currencies').all():
-            profit_dict = {c.currency: float(c.total_profit or 0) for c in asset_perf.currencies.all()}
-            assets[asset_perf.asset] = {
-                'trades': asset_perf.total_trades,
-                'wins': asset_perf.winning_trades,
-                'losses': asset_perf.losing_trades,
-                'buy_trades': asset_perf.buy_total_trades,
-                'sell_trades': asset_perf.sell_total_trades,
-                'profit': profit_dict,
-            }
-        for strategy_perf in account_perf.strategy_performances.prefetch_related('currencies', 'strategy').all():
-            profit_dict = {c.currency: float(c.total_profit or 0) for c in strategy_perf.currencies.all()}
-            sources[strategy_perf.strategy] = {
-                'trades': strategy_perf.total_trades,
-                'wins': strategy_perf.winning_trades,
-                'losses': strategy_perf.losing_trades,
-                'buy_trades': strategy_perf.buy_total_trades,
-                'sell_trades': strategy_perf.sell_total_trades,
-                'profit': profit_dict,
-            }
+    assets = get_asset_performance_data(account_perf)
+    sources = get_strategy_performance_data(account_perf)
 
         
     only_closed_trades = True
@@ -232,7 +118,7 @@ def get_account_data(request, public_id):
     context = {
         'account': account,
         'overview_data': overview_data,
-        'chart_data': chart_data,
+        'chart_data': chart_performance,
         'assets': assets,
         'sources': sources,
         'trades': trades,  

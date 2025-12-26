@@ -231,15 +231,16 @@ function loadAccountProfitCharts(id, data) {
     .getElementById("accountProfitChart-" + id)
     .getContext("2d");
 
-  //   console.log("Loading chart with data:", data);
+  // console.log("Loading chart with data:", data);
 
   labels = data.map((item) => item.date);
-  profitData = data.map((item) => item.profit);
+  profitData = data.map((item) => item.cumulative.profit);
 
   const series = {
     date: labels,
     profit: profitData,
-    dailyProfit: data.map((item) => item.daily_profit),
+    dailyProfit: data.map((item) => item.today_data.profit),
+    daily_trades: data.map((item) => item.today_data.trades),
   };
 
   const existingChart = Chart.getChart("accountProfitChart-" + id);
@@ -292,7 +293,10 @@ function loadAccountProfitCharts(id, data) {
         const dailyProfit = `Daily P&L: ${
           series.dailyProfit[tooltipItem.dataIndex]
         }`;
-        return [profit, dailyProfit];
+        const dailyTrades = `Daily Trades: ${
+          series.daily_trades[tooltipItem.dataIndex]
+        }`;
+        return [profit, dailyProfit, dailyTrades];
       },
     }),
     plugins: getPlugins(),

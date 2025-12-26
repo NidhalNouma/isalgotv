@@ -449,10 +449,6 @@ class TradeAppliedPerformance(models.Model):
 # --------------------------------------------------
 
 class BasePerformance(models.Model):
-    total_trades = models.PositiveIntegerField(default=0)
-    winning_trades = models.PositiveIntegerField(default=0)
-    losing_trades = models.PositiveIntegerField(default=0)
-
     buy_total_trades = models.PositiveIntegerField(default=0)
     buy_winning_trades = models.PositiveIntegerField(default=0)
     buy_losing_trades = models.PositiveIntegerField(default=0)
@@ -468,29 +464,46 @@ class BasePerformance(models.Model):
         abstract = True
 
     @property
+    def total_trades(self):
+        return self.buy_total_trades + self.sell_total_trades
+    
+    @property
+    def winning_trades(self):
+        return self.buy_winning_trades + self.sell_winning_trades
+    
+    @property
+    def losing_trades(self):
+        return self.buy_losing_trades + self.sell_losing_trades
+
+    @property
     def win_rate(self):
         return (self.winning_trades / self.total_trades * 100) if self.total_trades else Decimal("0")
+    
+    @classmethod
+    def with_totals_trades(cls):
+        return cls.objects.annotate(
+            total_trades=F("buy_total_trades") + F("sell_total_trades"),
+            winning_trades=F("buy_winning_trades") + F("sell_winning_trades"),
+            losing_trades=F("buy_losing_trades") + F("sell_losing_trades"),
+        )
 
     @classmethod
-    def apply_trade_stats(cls, perf_id, *, trade):
+    def apply_trade_stats(cls, perf_id, *, trade: TradeDetails):
         """
         Atomic update of trade counters.
         """
+        net_profit = trade.net_profit
         profit = trade.profit
         side = trade.side
 
         return cls.objects.filter(id=perf_id).update(
-            total_trades=F("total_trades") + 1,
-            winning_trades=F("winning_trades") + (1 if profit > 0 else 0),
-            losing_trades=F("losing_trades") + (1 if profit < 0 else 0),
-
             buy_total_trades=F("buy_total_trades") + (1 if side == "B" else 0),
-            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and profit > 0 else 0),
-            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and profit < 0 else 0),
+            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and net_profit > 0 else 0),
+            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and net_profit < 0 else 0),
 
             sell_total_trades=F("sell_total_trades") + (1 if side == "S" else 0),
-            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and profit > 0 else 0),
-            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and profit < 0 else 0),
+            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and net_profit > 0 else 0),
+            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and net_profit < 0 else 0),
         )
 
 # --------------------------------------------------
@@ -514,7 +527,7 @@ class AccountPerformance(BasePerformance):
         ]
 
     def __str__(self):
-        return f"AccountPerformance({self.object_id})"
+        return f"AccountPerformance({self.content_type.model}:{self.object_id})"
 
 
 # --------------------------------------------------
@@ -660,26 +673,71 @@ class DayStrategyPerformance(models.Model):
 # Currency Performances 
 # --------------------------------------------------
 
-class CurrencyBasePerformance(models.Model):
+class CurrencyBasePerformance(BasePerformance):
     currency = models.CharField(max_length=10)
-    total_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
-    total_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    buy_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    sell_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
 
-    class Meta:
-        abstract = True
+    buy_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    sell_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+
+    @property
+    def total_profit(self):
+        return self.buy_profit + self.sell_profit
+    
+    @property
+    def total_fees(self):
+        return self.buy_fees + self.sell_fees
+    
+    @property
+    def net_buy_profit(self):
+        return self.buy_profit - self.buy_fees
+    
+    @property
+    def net_sell_profit(self):
+        return self.sell_profit - self.sell_fees
+    
+    @property
+    def net_profit(self):
+        return self.net_buy_profit + self.net_sell_profit
 
     @classmethod
-    def apply_trade_stats(cls, perf_id, *, trade):
+    def with_totals_pnl(cls):
+        return cls.objects.annotate(
+            profits=F("buy_profit") + F("sell_profit"),
+            fees=F("buy_fees") + F("sell_fees"),
+            net_profits=F("buy_profit") + F("sell_profit") - (F("buy_fees") + F("sell_fees")),
+        )
+
+    @classmethod
+    def apply_trade_and_profit_stats(cls, perf_id, *, trade: TradeDetails):
         """
         Atomic update of profit and fees.
         """
+    
+        net_profit = trade.net_profit
+        profit = trade.profit
+        fees = trade.fees
+        side = trade.side
+
         return cls.objects.filter(id=perf_id).update(
-            total_profit=F("total_profit") + Decimal(str(trade.profit)),
-            total_fees=F("total_fees") + Decimal(str(trade.fees)),
+            buy_total_trades=F("buy_total_trades") + (1 if side == "B" else 0),
+            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and net_profit > 0 else 0),
+            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and net_profit < 0 else 0),
+
+            sell_total_trades=F("sell_total_trades") + (1 if side == "S" else 0),
+            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and net_profit > 0 else 0),
+            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and net_profit < 0 else 0),
+
+            buy_profit=F("buy_profit") + (Decimal(str(profit)) if side == "B" else 0),
+            sell_profit=F("sell_profit") + (Decimal(str(profit)) if side == "S" else 0),
+
+            buy_fees=F("buy_fees") + (Decimal(str(fees)) if side == "B" else 0),
+            sell_fees=F("sell_fees") + (Decimal(str(fees)) if side == "S" else 0),
         )
+    class Meta:
+        abstract = True
 
 
 class AssetCurrencyPerformance(CurrencyBasePerformance):

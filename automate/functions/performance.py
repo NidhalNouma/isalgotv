@@ -1,8 +1,10 @@
 
 from django.db import transaction
 from django.db.utils import IntegrityError
+from typing import TypedDict, Any, NotRequired
 
 from automate.models import *
+import datetime
 
 @transaction.atomic
 def apply_trade_to_performance(trade: TradeDetails):
@@ -72,7 +74,7 @@ def apply_trade_to_performance(trade: TradeDetails):
     )
 
     def update_account_currency():
-        AccountCurrencyPerformance.apply_trade_stats(
+        AccountCurrencyPerformance.apply_trade_and_profit_stats(
             perf_id=acc_curr.id,
             trade=trade,
         )
@@ -99,7 +101,7 @@ def apply_trade_to_performance(trade: TradeDetails):
     )
 
     def update_asset_currency():
-        AssetCurrencyPerformance.apply_trade_stats(perf_id=asset_curr.id, trade=trade)
+        AssetCurrencyPerformance.apply_trade_and_profit_stats(perf_id=asset_curr.id, trade=trade)
 
     apply_once("asset_currency", asset_curr.id, update_asset_currency)
 
@@ -122,7 +124,7 @@ def apply_trade_to_performance(trade: TradeDetails):
         )
 
         def update_strategy_currency():
-            StrategyCurrencyPerformance.apply_trade_stats(perf_id=strategy_curr.id, trade=trade)
+            StrategyCurrencyPerformance.apply_trade_and_profit_stats(perf_id=strategy_curr.id, trade=trade)
 
         apply_once("strategy_currency", strategy_curr.id, update_strategy_currency)
 
@@ -156,7 +158,7 @@ def apply_trade_to_performance(trade: TradeDetails):
     )
 
     def update_day_currency():
-        DayCurrencyPerformance.apply_trade_stats(perf_id=day_curr.id, trade=trade)
+        DayCurrencyPerformance.apply_trade_and_profit_stats(perf_id=day_curr.id, trade=trade)
 
     apply_once("day_currency", day_curr.id, update_day_currency)
 
@@ -194,3 +196,296 @@ def backfill_account_performance(content_type, object_id, create=True):
         object_id=object_id,
     ).first()
     return account_perf
+
+
+def d(val):
+    """Safe Decimal → float converter"""
+    if val is None:
+        return 0.0
+    if isinstance(val, Decimal):
+        return float(val)
+    return float(val)
+
+
+class OverviewPerformanceData(TypedDict):
+    trades: int
+    winning_trades: int
+    losing_trades: int
+    win_rate: float
+    buy_trades: int
+    buy_winning_trades: int
+    buy_losing_trades: int
+    buy_win_rate: float
+    sell_trades: int
+    sell_winning_trades: int
+    sell_losing_trades: int
+    sell_win_rate: float
+
+def get_overview_performance_data(performance) -> OverviewPerformanceData:
+    """
+    Get overview performance data for this account_performance.
+    """
+
+    data: OverviewPerformanceData = OverviewPerformanceData(
+        trades=performance.total_trades,
+        winning_trades=performance.winning_trades,  
+        losing_trades=performance.losing_trades,
+        win_rate=round((performance.winning_trades / performance.total_trades * 100) if performance.total_trades > 0 else 0.0, 2),
+        buy_trades=performance.buy_total_trades,
+        buy_winning_trades=performance.buy_winning_trades,
+        buy_losing_trades=performance.buy_losing_trades,
+        buy_win_rate=round((performance.buy_winning_trades / performance.buy_total_trades * 100) if performance.buy_total_trades > 0 else 0.0, 2),
+        sell_trades=performance.sell_total_trades,
+        sell_winning_trades=performance.sell_winning_trades,
+        sell_losing_trades=performance.sell_losing_trades,
+        sell_win_rate=round((performance.sell_winning_trades / performance.sell_total_trades * 100) if performance.sell_total_trades > 0 else 0.0, 2),
+    )
+
+    return data
+
+
+class PerformanceData(TypedDict):
+    profit: float = 0.0
+    buy_profit: float = 0.0
+    sell_profit: float = 0.0
+    fees: float = 0.0
+    buy_fees: float = 0.0
+    sell_fees: float = 0.0
+    net_profit: float = 0.0
+    buy_net_profit: float = 0.0
+    sell_net_profit: float = 0.0
+    trades: int = 0
+    winning_trades: int = 0
+    losing_trades: int = 0
+    buy_trades: int = 0
+    buy_winning_trades: int = 0
+    buy_losing_trades: int = 0
+    sell_trades: int = 0
+    sell_winning_trades: int = 0
+    sell_losing_trades: int = 0
+
+def empty_performance_data() -> PerformanceData:
+    return PerformanceData(
+        profit=0.0,
+        buy_profit=0.0,
+        sell_profit=0.0,
+        fees=0.0,
+        buy_fees=0.0,
+        sell_fees=0.0,
+        net_profit=0.0,
+        buy_net_profit=0.0,
+        sell_net_profit=0.0,
+        trades=0,
+        winning_trades=0,
+        losing_trades=0,
+        buy_trades=0,
+        buy_winning_trades=0,
+        buy_losing_trades=0,
+        sell_trades=0,
+        sell_winning_trades=0,
+        sell_losing_trades=0,
+    )
+class DayPerformanceData(TypedDict):
+    date: str
+    cumulative: PerformanceData
+    today_data: PerformanceData
+    max_profit: float
+    max_drawdown: float
+
+class ChartDayPerformance(TypedDict):
+    date: str
+    data: list[DayPerformanceData]
+    cumulative: PerformanceData
+    max_profit: float
+    max_drawdown: float
+    today_profit: float
+    number_of_days: int
+    
+
+def get_days_performance(performance):
+    """
+    Get all DayPerformance for this account_performance.
+    """
+
+    start_day = datetime.date.today()
+    end_day = datetime.date(1970, 1, 1)
+
+    per = performance.day_performances.prefetch_related('currencies').all()
+
+    day_perf_per_currency = {}
+
+    if performance:
+        for day_perf in per:
+            if day_perf.date < start_day:
+                start_day = day_perf.date
+            if day_perf.date > end_day:
+                end_day = day_perf.date
+
+            for curr in day_perf.currencies.all():
+                day_perf_per_currency[curr.currency] = day_perf_per_currency.get(curr.currency, {})
+                prev_data = day_perf_per_currency[curr.currency].get(day_perf.date, empty_performance_data())
+                day_perf_per_currency[curr.currency][day_perf.date] = PerformanceData(
+                    profit=d(curr.total_profit) + prev_data['profit'],
+                    fees=d(curr.total_fees) + prev_data['fees'],
+                    buy_fees=d(curr.buy_fees) + prev_data['buy_fees'],
+                    sell_fees=d(curr.sell_fees) + prev_data['sell_fees'],
+                    buy_profit=d(curr.buy_profit) + prev_data['buy_profit'],
+                    sell_profit=d(curr.sell_profit) + prev_data['sell_profit'],
+                    net_profit=d(curr.net_profit) + prev_data['net_profit'],
+                    trades=curr.total_trades + prev_data['trades'],
+                    winning_trades=curr.winning_trades + prev_data['winning_trades'],
+                    losing_trades=curr.losing_trades + prev_data['losing_trades'],
+                    buy_trades=curr.buy_total_trades + prev_data['buy_trades'],
+                    buy_winning_trades=curr.buy_winning_trades + prev_data['buy_winning_trades'],
+                    buy_losing_trades=curr.buy_losing_trades + prev_data['buy_losing_trades'],
+                    sell_trades=curr.sell_total_trades + prev_data['sell_trades'],
+                    sell_winning_trades=curr.sell_winning_trades + prev_data['sell_winning_trades'],
+                    sell_losing_trades=curr.sell_losing_trades + prev_data['sell_losing_trades'],
+                )
+
+
+    start_day = start_day - datetime.timedelta(days=1)
+    days = (end_day - start_day).days + 1
+    if days < 3:
+        start_day = end_day - datetime.timedelta(days=2)
+        days = 3
+    days_difference = [start_day + datetime.timedelta(days=i) for i in range(days)]
+
+    chart_data = {}
+
+    for currency, perf_data in day_perf_per_currency.items():
+        chart_data[currency] = ChartDayPerformance(
+            data=[],
+            cumulative=empty_performance_data(),
+            max_profit=0,
+            max_drawdown=0,
+            number_of_days=days,
+        )
+        cumulative_data = empty_performance_data()
+        day_data: list[DayPerformanceData] = []
+        for day in days_difference:
+            daily_data = perf_data.get(day, empty_performance_data())
+
+            for key in daily_data.keys():
+                cumulative_data[key] = cumulative_data.get(key, 0) + daily_data.get(key, 0)
+
+            max_profit = max(chart_data[currency]['max_profit'], cumulative_data.get('profit', 0))
+            max_drawdown = min(chart_data[currency]['max_drawdown'], cumulative_data.get('profit', 0))
+            chart_data[currency]['max_profit'] = max_profit
+            chart_data[currency]['max_drawdown'] = max_drawdown 
+
+            day_data.append(DayPerformanceData(
+                date=day.strftime('%b %d, %Y'),
+                cumulative=cumulative_data.copy(),
+                today_data=daily_data,
+                max_profit=max_profit,
+                max_drawdown=max_drawdown,
+            ))
+
+        
+        today_date = datetime.date.today()
+        chart_data[currency]['today_profit'] = perf_data.get(today_date, PerformanceData()).get('profit', 0)
+        chart_data[currency]['data'] = day_data
+        chart_data[currency]['cumulative'] = cumulative_data
+
+
+    return chart_data
+    
+class PerformanceData(TypedDict):
+    trades: int = 0
+    winning_trades: int = 0
+    losing_trades: int = 0
+    win_rate: float = 0.0
+    buy_trades: int = 0
+    buy_winning_trades: int = 0
+    buy_losing_trades: int = 0
+    buy_win_rate: float = 0.0
+    sell_trades: int = 0
+    sell_winning_trades: int = 0
+    sell_losing_trades: int = 0
+    sell_win_rate: float = 0.0
+
+    class ProfitData(TypedDict):
+        profit: float = 0.0
+        buy_profit: float = 0.0
+        sell_profit: float = 0.0
+        fees: float = 0.0
+        buy_fees: float = 0.0
+        sell_fees: float = 0.0
+        net_profit: float = 0.0
+        buy_net_profit: float = 0.0
+        sell_net_profit: float = 0.0
+
+    profit: dict[str, ProfitData] = {}
+
+def get_asset_performance_data(performance) -> PerformanceData:
+    """
+    Get asset performance data for this account_performance.
+    """
+    data = {}
+
+    for asset_perf in performance.asset_performances.prefetch_related('currencies').all():
+        profit_dic = {c.currency: {
+            "profit": d(c.total_profit),
+            "buy_profit": d(c.buy_profit),
+            "sell_profit": d(c.sell_profit),
+            "fees": d(c.total_fees),
+            "buy_fees": d(c.buy_fees),
+            "sell_fees": d(c.sell_fees),
+            "net_profit": d(c.net_profit),
+            "buy_net_profit": d(c.net_buy_profit),
+            "sell_net_profit": d(c.net_sell_profit),
+        } for c in asset_perf.currencies.all()}
+
+        data[asset_perf.asset] = PerformanceData(
+            trades=asset_perf.total_trades,
+            winning_trades=asset_perf.winning_trades,  
+            losing_trades=asset_perf.losing_trades,
+            win_rate=round((asset_perf.winning_trades / asset_perf.total_trades * 100) if asset_perf.total_trades > 0 else 0.0, 2),
+            buy_trades=asset_perf.buy_total_trades,
+            buy_winning_trades=asset_perf.buy_winning_trades,
+            buy_losing_trades=asset_perf.buy_losing_trades,
+            buy_win_rate=round((asset_perf.buy_winning_trades / asset_perf.buy_total_trades * 100) if asset_perf.buy_total_trades > 0 else 0.0, 2),
+            sell_trades=asset_perf.sell_total_trades,
+            sell_winning_trades=asset_perf.sell_winning_trades,
+            sell_losing_trades=asset_perf.sell_losing_trades,
+            sell_win_rate=round((asset_perf.sell_winning_trades / asset_perf.sell_total_trades * 100) if asset_perf.sell_total_trades > 0 else 0.0, 2),
+            profit=profit_dic
+        )
+    return data
+
+def get_strategy_performance_data(performance) -> PerformanceData:
+    """
+    Get strategy performance data for this account_performance.
+    """
+    data = {}
+
+    for strategy_perf in performance.strategy_performances.prefetch_related('currencies', 'strategy').all():
+        profit_dic = {c.currency: {
+            "profit": d(c.total_profit),
+            "buy_profit": d(c.buy_profit),
+            "sell_profit": d(c.sell_profit),
+            "fees": d(c.total_fees),
+            "buy_fees": d(c.buy_fees),
+            "sell_fees": d(c.sell_fees),
+            "net_profit": d(c.net_profit),
+            "buy_net_profit": d(c.net_buy_profit),
+            "sell_net_profit": d(c.net_sell_profit),
+        } for c in strategy_perf.currencies.all()}
+
+        data[strategy_perf.strategy] = PerformanceData(
+            trades=strategy_perf.total_trades,
+            winning_trades=strategy_perf.winning_trades,  
+            losing_trades=strategy_perf.losing_trades,
+            win_rate=round((strategy_perf.winning_trades / strategy_perf.total_trades * 100) if strategy_perf.total_trades > 0 else 0.0, 2),
+            buy_trades=strategy_perf.buy_total_trades,
+            buy_winning_trades=strategy_perf.buy_winning_trades,
+            buy_losing_trades=strategy_perf.buy_losing_trades,
+            buy_win_rate=round((strategy_perf.buy_winning_trades / strategy_perf.buy_total_trades * 100) if strategy_perf.buy_total_trades > 0 else 0.0, 2),
+            sell_trades=strategy_perf.sell_total_trades,
+            sell_winning_trades=strategy_perf.sell_winning_trades,
+            sell_losing_trades=strategy_perf.sell_losing_trades,
+            sell_win_rate=round((strategy_perf.sell_winning_trades / strategy_perf.sell_total_trades * 100) if strategy_perf.sell_total_trades > 0 else 0.0, 2),
+            profit=profit_dic
+        )
+    return data
