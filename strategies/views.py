@@ -13,13 +13,21 @@ from automate.functions.performance import get_strategy_performance_data, get_da
 from profile_user.utils.notifcations import send_notification
 
 from django.db.models.functions import Random
-from django.db.models import F
+from django.db.models import Q
 
 def get_strategies(request):
+    filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium'])
+    
+    if request.user.is_authenticated: 
+        filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium']) | Q(is_live=True, premium='VIP', created_by=request.user)
+
+    superuser = request.user.is_superuser if request.user.is_authenticated else False
+    if superuser:
+        filter = Q()
     
     strategies = Strategy.objects.prefetch_related(
         Prefetch('images', queryset=StrategyImages.objects.all())
-    )
+    ).filter(filter)
     
     # print(strategies)
 
@@ -27,16 +35,26 @@ def get_strategies(request):
     return render(request, 'strategies.html', context)
 
 def get_reports(request):
+
+    filter = {
+        "strategy__is_live": True,
+        "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
+    }
+
+    superuser = request.user.is_superuser if request.user.is_authenticated else False
+    if superuser:
+        filter = {}
+
     pair_name = request.GET.get('pair')
 
-    unique_pairs = StrategyResults.objects.values_list('pair', flat=True).distinct()
+    unique_pairs = StrategyResults.objects.filter(**filter).values_list('pair', flat=True).distinct()
     unique_pairs_list = unique_pairs
 
 
     if pair_name:
-        results = StrategyResults.objects.filter(pair=pair_name).order_by('-created_at')
+        results = StrategyResults.objects.filter(pair=pair_name, **filter).order_by('-created_at')
     else:
-        results = StrategyResults.objects.all().order_by('-created_at')
+        results = StrategyResults.objects.filter(**filter).order_by('-created_at')
     
     # print(strategies)
 
@@ -44,7 +62,17 @@ def get_reports(request):
     return render(request, 'results.html', context)
 
 def get_ideas(request):
-    ideas = StrategyComments.objects.all().order_by('-created_at')
+
+    filter = {
+        "strategy__is_live": True,
+        "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
+    }
+
+    superuser = request.user.is_superuser if request.user.is_authenticated else False
+    if superuser:
+        filter = {}
+
+    ideas = StrategyComments.objects.filter(**filter).order_by('-created_at')
     context =  {'ideas': ideas }
     return render(request, 'ideas.html', context)
 
@@ -53,6 +81,9 @@ def get_strategy(request, slug):
         strategy = Strategy.objects.select_related('created_by').prefetch_related(
                 'images',
             ).get(slug=slug)
+        
+        if not strategy.is_live and (not request.user.is_authenticated or not request.user.is_superuser):
+            raise Http404("The object does not exist.")
 
         comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),

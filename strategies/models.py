@@ -196,6 +196,13 @@ class Strategy(models.Model):
         ("S", "Strategy"),
         ("I", "Indicator"),
     ]
+
+    PREMIUM_CHOICES = [
+        ('Free', 'Free'),
+        ('Premium', 'Premium'),
+        ('Beta', 'Beta'),
+        ('VIP', 'VIP'),
+    ]
      
     type = models.CharField(max_length=1, choices=TYPE, default="S")
     version = models.CharField(max_length=10, default="1.0")
@@ -219,7 +226,7 @@ class Strategy(models.Model):
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     is_live = models.BooleanField(default=False)
-    premium = models.BooleanField(default=True)
+    premium = models.CharField(max_length=10, choices=PREMIUM_CHOICES, default='Premium')
     
     images = GenericRelation(StrategyImages) 
     

@@ -14,9 +14,9 @@ def give_access(strategy_id, profile_id, access):
     add_or_reemove = "add" if access == True else "remove"
     url = f"https://www.tradingview.com/pine_perm/{add_or_reemove}/"
     try:
-        r = {"error": "", "access": None}
-        profile = User_Profile.objects.get(pk = profile_id)
         strategy = Strategy.objects.get(pk = strategy_id)
+        profile = User_Profile.objects.get(pk = profile_id)
+        r = {"error": "", "access": None, 'strategy': strategy}
 
         if not profile.tradingview_username:
             r['error'] = "Please set your TradingView username in your profile settings."
@@ -26,18 +26,22 @@ def give_access(strategy_id, profile_id, access):
             return r
         
         if access:
-          if strategy.premium and profile.has_subscription == False and profile.is_lifetime == False:
+          if profile.has_subscription == False and profile.is_lifetime == False and strategy.premium in ['Premium', 'VIP', 'Beta']:
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
               r['error'] = "This strategy is premium. Please upgrade your plan to access it."
               r['upgrade'] = True
               return r
           
-          if not strategy.is_live and not profile.is_lifetime:
+          if not profile.is_lifetime and strategy.premium == 'Beta':
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
               r['error'] = "This is a beta strategy. only availble for lifetime users."
               r['upgrade'] = True
+              return r
+          
+          if strategy.premium == 'VIP' and strategy.created_by != profile.user:
+              r['error'] = "This is a VIP strategy, only the creator can access it."
               return r
 
         data = {

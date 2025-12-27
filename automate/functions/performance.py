@@ -226,6 +226,22 @@ def get_overview_performance_data(performance) -> OverviewPerformanceData:
     Get overview performance data for this account_performance.
     """
 
+    if not performance:
+        return OverviewPerformanceData(
+            trades=0,
+            winning_trades=0,
+            losing_trades=0,
+            win_rate=0.0,
+            buy_trades=0,
+            buy_winning_trades=0,
+            buy_losing_trades=0,
+            buy_win_rate=0.0,
+            sell_trades=0,
+            sell_winning_trades=0,
+            sell_losing_trades=0,
+            sell_win_rate=0.0,
+        )
+
     data: OverviewPerformanceData = OverviewPerformanceData(
         trades=performance.total_trades,
         winning_trades=performance.winning_trades,  
@@ -306,6 +322,9 @@ def get_days_performance(performance):
     """
     Get all DayPerformance for this account_performance.
     """
+
+    if not performance:
+        return {}
 
     start_day = datetime.date.today()
     end_day = datetime.date(1970, 1, 1)
@@ -391,7 +410,7 @@ def get_days_performance(performance):
 
     return chart_data
     
-class PerformanceData(TypedDict):
+class ASPerformanceData(TypedDict):
     trades: int = 0
     winning_trades: int = 0
     losing_trades: int = 0
@@ -418,10 +437,13 @@ class PerformanceData(TypedDict):
 
     profit: dict[str, ProfitData] = {}
 
-def get_asset_performance_data(performance) -> PerformanceData:
+def get_asset_performance_data(performance) -> ASPerformanceData:
     """
     Get asset performance data for this account_performance.
     """
+    if not performance:
+        return {}
+    
     data = {}
 
     for asset_perf in performance.asset_performances.prefetch_related('currencies').all():
@@ -437,7 +459,7 @@ def get_asset_performance_data(performance) -> PerformanceData:
             "sell_net_profit": d(c.net_sell_profit),
         } for c in asset_perf.currencies.all()}
 
-        data[asset_perf.asset] = PerformanceData(
+        data[asset_perf.asset] = ASPerformanceData(
             trades=asset_perf.total_trades,
             winning_trades=asset_perf.winning_trades,  
             losing_trades=asset_perf.losing_trades,
@@ -454,10 +476,13 @@ def get_asset_performance_data(performance) -> PerformanceData:
         )
     return data
 
-def get_strategy_performance_data(performance) -> PerformanceData:
+def get_strategy_performance_data(performance) -> ASPerformanceData:
     """
     Get strategy performance data for this account_performance.
     """
+    if not performance:
+        return {}
+    
     data = {}
 
     for strategy_perf in performance.strategy_performances.prefetch_related('currencies', 'strategy').all():
@@ -473,7 +498,7 @@ def get_strategy_performance_data(performance) -> PerformanceData:
             "sell_net_profit": d(c.net_sell_profit),
         } for c in strategy_perf.currencies.all()}
 
-        data[strategy_perf.strategy] = PerformanceData(
+        data[strategy_perf.strategy] = ASPerformanceData(
             trades=strategy_perf.total_trades,
             winning_trades=strategy_perf.winning_trades,  
             losing_trades=strategy_perf.losing_trades,

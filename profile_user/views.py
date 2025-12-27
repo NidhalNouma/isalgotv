@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import trigger_client_event
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.core.cache import cache
 
 from profile_user.models import User_Profile, Notification
@@ -166,10 +166,20 @@ def random_strategies_results_context():
     cash_timeout = 3600 * 6
     context = {}
 
+    strategy_filter = {
+        'is_live': True,
+        'premium__in': ['Free', 'Beta', 'Premium'],
+    }
+
+    result_strategy_filter = {
+        'strategy__is_live': True,
+        'strategy__premium__in': ['Free', 'Beta', 'Premium'],
+    }
+
     # Cache key names for each query
     new_strategies = cache.get('new_strategies')
     if new_strategies is None:
-        new_strategies = list(Strategy.objects.order_by('-created_at')[:8])
+        new_strategies = list(Strategy.objects.filter(**strategy_filter).order_by('-created_at')[:8])
         cache.set('new_strategies', new_strategies, timeout=cash_timeout)
         
     random.shuffle(new_strategies)
@@ -178,7 +188,7 @@ def random_strategies_results_context():
     most_viewed_strategies = cache.get('most_viewed_strategies')
     if most_viewed_strategies is None:
         most_viewed_strategies = list(
-            Strategy.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:8]
+            Strategy.objects.filter(**strategy_filter).annotate(like_count=Count('likes')).order_by('-like_count')[:8]
         )
         cache.set('most_viewed_strategies', most_viewed_strategies, timeout=cash_timeout)
 
@@ -188,7 +198,7 @@ def random_strategies_results_context():
     best_results = cache.get('best_results')
     if best_results is None:
         best_results = list(
-            StrategyResults.objects.annotate(
+            StrategyResults.objects.filter(**result_strategy_filter).annotate(
                 positive_votes_count=Count('positive_votes')
             ).order_by('-positive_votes_count')[:8]
         )
@@ -199,7 +209,7 @@ def random_strategies_results_context():
 
     new_results = cache.get('new_results')
     if new_results is None:
-        new_results = list(StrategyResults.objects.all().order_by('-created_at')[:8])
+        new_results = list(StrategyResults.objects.filter(**result_strategy_filter).order_by('-created_at')[:8])
         cache.set('new_results', new_results, timeout=cash_timeout)
 
     random.shuffle(new_results)
@@ -207,7 +217,7 @@ def random_strategies_results_context():
 
     comments = cache.get('comments')
     if comments is None:
-        comments = list(StrategyComments.objects.all().order_by('-created_at')[:4])
+        comments = list(StrategyComments.objects.filter(**result_strategy_filter).order_by('-created_at')[:4])
         cache.set('comments', comments, timeout=cash_timeout)
 
     random.shuffle(comments)
@@ -268,7 +278,16 @@ def settings_page(request):
 
 @login_required(login_url='login')
 def access_page(request):
-    strategies = Strategy.objects.all()
+    strategy_filter = {
+        'is_live': True,
+        'premium__in': ['Free', 'Beta', 'Premium'],
+    }
+
+    superuser = request.user.is_superuser
+    if superuser:
+        strategy_filter = {}
+
+    strategies = Strategy.objects.filter(**strategy_filter)
     context = {
         "strategies": strategies,
         # 'show_banner': True
@@ -402,11 +421,24 @@ def edit_tradingview_username(request):
         profile_user.tradingview_username = tv_username
         profile_user.save()
 
-        strategies = Strategy.objects.filter(is_live=True, premium=False)
+        access_filter = {
+            'is_live': True,
+            'premium__in': ['Free'],
+        }
+
+        strategies = Strategy.objects.filter(**access_filter)
         if request.has_subscription:
-            strategies = Strategy.objects.filter(is_live=True)
+            access_filter = {
+                'is_live': True,
+                'premium__in': ['Free', 'Premium'],
+            }
+            strategies = Strategy.objects.filter(**access_filter)
         if profile_user.is_lifetime:
-            strategies = Strategy.objects.all()
+            access_filter = {
+                'is_live': True,
+                'premium__in': ['Free', 'Beta', 'Premium'],
+            }
+            strategies = Strategy.objects.filter(**access_filter)
 
         for strategy in strategies:
             if strategy.is_live:
@@ -478,6 +510,10 @@ def edit_discord_username(request):
 def get_access(request, strategy_id):
     pg = request.GET.get('pg')
 
+    strategies_filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium']) | Q(is_live=True, premium='VIP', created_by=request.user)
+    if request.user.is_superuser:
+        strategies_filter = Q()
+
     if request.user:
         profile_user = request.user_profile
 
@@ -495,7 +531,7 @@ def get_access(request, strategy_id):
                 # response = render(request, 'include/errors.html', context = {"error": error})
                 # return retarget(response, "#get-access-errors")
             else:
-                strategies = Strategy.objects.all()
+                strategies = Strategy.objects.filter(strategies_filter)
                 return render(request, 'include/access_list.html', context = {"strategies": strategies, "error_id": strategy_id, "error": error})
 
     if pg == "st":
@@ -503,7 +539,7 @@ def get_access(request, strategy_id):
         response = render(request, 'include/get_access_model.html', context)
         return response
     else:
-        strategies = Strategy.objects.all()
+        strategies = Strategy.objects.filter(strategies_filter)
         return render(request, 'include/access_list.html', context = {"strategies": strategies})
     
 
