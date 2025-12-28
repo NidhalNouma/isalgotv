@@ -13,7 +13,26 @@
 {% block page %}
   <h1 class="main-title">Strategies</h1>
 
-  <main class="mt-8 mb-16">
+  <main class="mt-0 mb-16">
+    <section class="flex items-center pt-6 mb-3 py-4 px-1 sticky z-10 top-12 sm:top-12 nav-bg cursor-pointer overflow-y-auto scrollbar-hide">
+      {% if selected_type %}
+        <a class="mr-2" href="{% url 'strategies' %}">
+          <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">
+            {{ selected_type }}
+
+            <svg class="h-4 w-4 ml-1.5 hover:text-primary/80 transition-all" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+              <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
+            </svg>
+          </span>
+        </a>
+      {% endif %}
+      {% for type in available_types %}
+        {% if type != selected_type %}
+          <a class="mr-2" href="{% url 'strategies' %}?type={{ type }}"><span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ type }}</span></a>
+        {% endif %}
+      {% endfor %}
+    </section>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 max-w-full mx-auto gap-12">
       {% for strategy in strategies %}
         {% include 'include/quick_strategy.html' with strategy=strategy %}
@@ -22,7 +41,7 @@
       {% endfor %}
     </div>
 
-    {% if strategies|length < 40 %}
+    {% if strategies|length < 40 and not selected_type %}
       <div class="mt-10">
         <p class="font-extrabold text-6xl text-center uppercase text-accent">
           More <span class="text-secondary">coming soon</span>

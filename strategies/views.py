@@ -16,14 +16,24 @@ from django.db.models.functions import Random
 from django.db.models import Q
 
 def get_strategies(request):
-    filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium'])
+    availble_types = ['Free', 'Premium', 'Beta']
+    types = availble_types.copy()
+    type = request.GET.get('type', None)
+
+    if type in types:
+        types = [type]
+
+
+    filter = Q(is_live=True, premium__in=types)
     
     if request.user.is_authenticated: 
-        filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium']) | Q(is_live=True, premium='VIP', created_by=request.user)
+        if not type:
+            filter = Q(is_live=True, premium__in=types) | Q(is_live=True, premium='VIP', created_by=request.user)
 
     superuser = request.user.is_superuser if request.user.is_authenticated else False
     if superuser:
-        filter = Q()
+        if not type:
+            filter = Q()
     
     strategies = Strategy.objects.prefetch_related(
         Prefetch('images', queryset=StrategyImages.objects.all())
@@ -31,7 +41,7 @@ def get_strategies(request):
     
     # print(strategies)
 
-    context =  {'strategies': strategies, 'show_banner': True}
+    context =  {'strategies': strategies, 'show_banner': True, 'available_types': availble_types, 'selected_type': type}
     return render(request, 'strategies.html', context)
 
 def get_reports(request):
