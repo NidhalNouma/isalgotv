@@ -18,27 +18,32 @@
 {% block page %}
   <h1 class="main-title">Reports</h1>
 
-  <main class="mt-0 mb-16">
+  <main class="mt-1 mb-16">
     {% if results|length > 0 %}
       {% if pairs|length > 1 %}
-        <section class="flex items-center pt-6 mb-3 py-4 px-1 sticky z-10 top-12 sm:top-12 nav-bg cursor-pointer overflow-y-auto scrollbar-hide">
-          {% if selected_pair %}
-            <a class="mr-2" href="{% url 'reports' %}">
-              <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">
-                {{ selected_pair }}
+        <div class="sticky z-10 top-11 sm:top-11 mb-3">
+          <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
+          <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
 
-                <svg class="h-4 w-4 ml-1.5 hover:text-primary/80 transition-all" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
-                </svg>
-              </span>
-            </a>
-          {% endif %}
-          {% for pair in pairs %}
-            {% if pair != selected_pair %}
-              <a class="mr-2" href="{% url 'reports' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
+          <section class="flex items-center pt-6 py-4 px-1 pr-8 nav-bg cursor-pointer overflow-x-auto no-scrollbar">
+            {% if selected_pair %}
+              <a class="mr-2" href="{% url 'reports' %}">
+                <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">
+                  {{ selected_pair }}
+
+                  <svg class="h-4 w-4 ml-1.5 hover:text-primary/80 transition-all" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
+                  </svg>
+                </span>
+              </a>
             {% endif %}
-          {% endfor %}
-        </section>
+            {% for pair in pairs %}
+              {% if pair != selected_pair %}
+                <a class="mr-2" href="{% url 'reports' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:bg-text/30 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
+              {% endif %}
+            {% endfor %}
+          </section>
+        </div>
       {% endif %}
 
       <section class="grid sm:grid-cols-2 grid-cols-1 gap-4">

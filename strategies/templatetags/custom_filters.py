@@ -91,6 +91,20 @@ def format_profit(value):
 
 
 @register.filter
+def profit_color(value, default="text-text"):
+    try:
+        value = float(value)
+        if value > 0:
+            return "text-profit"
+        elif value < 0:
+            return "text-loss"
+        else:
+            return default
+    except ValueError:
+        return default
+
+
+@register.filter
 def concise_timesince(value):
     """
     Return only the first part of Django's timesince (e.g. '5 months' instead of '5 months, 2 weeks').

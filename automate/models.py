@@ -4,7 +4,9 @@ from django.contrib.contenttypes.models import ContentType
 from django_cryptography.fields import encrypt
 from django.contrib.postgres.fields import JSONField 
 from django.core.exceptions import ValidationError
-from django.db.models import F
+from django.db.models import F, Value
+from django.db.models.functions import Greatest, Least
+
 from decimal import Decimal, InvalidOperation
 
 from profile_user.models import User_Profile
@@ -250,7 +252,7 @@ class TradeDetails(models.Model):
 
     @property
     def net_profit(self):
-        return self.profit - self.fees
+        return self.profit - abs(self.fees)
 
     side = models.CharField(max_length=1, choices=TYPE)
  
@@ -308,6 +310,7 @@ class TradeDetails(models.Model):
             close_price = trade_data.get('close_price', 0)
             profit = trade_data.get('profit', 0)
             fees = trade_data.get('fees', 0)
+            trade_data['net_profit'] = Decimal(str(profit)) - abs(Decimal(str(fees)))
 
             try:
                 self.exit_price = Decimal(str(close_price))
@@ -478,6 +481,14 @@ class BasePerformance(models.Model):
     @property
     def win_rate(self):
         return (self.winning_trades / self.total_trades * 100) if self.total_trades else Decimal("0")
+
+    @property
+    def buy_win_rate(self):
+        return (self.buy_winning_trades / self.buy_total_trades * 100) if self.buy_total_trades else Decimal("0")
+
+    @property
+    def sell_win_rate(self):
+        return (self.sell_winning_trades / self.sell_total_trades * 100) if self.sell_total_trades else Decimal("0")
     
     @classmethod
     def with_totals_trades(cls):
@@ -496,14 +507,17 @@ class BasePerformance(models.Model):
         profit = trade.profit
         side = trade.side
 
+        is_a_win = net_profit > 0
+        is_a_loss = net_profit < 0
+
         return cls.objects.filter(id=perf_id).update(
             buy_total_trades=F("buy_total_trades") + (1 if side == "B" else 0),
-            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and net_profit > 0 else 0),
-            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and net_profit < 0 else 0),
+            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and is_a_win else 0),
+            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and is_a_loss else 0),
 
             sell_total_trades=F("sell_total_trades") + (1 if side == "S" else 0),
-            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and net_profit > 0 else 0),
-            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and net_profit < 0 else 0),
+            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and is_a_win else 0),
+            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and is_a_loss else 0),
         )
 
 # --------------------------------------------------
@@ -676,12 +690,63 @@ class DayStrategyPerformance(models.Model):
 class CurrencyBasePerformance(BasePerformance):
     currency = models.CharField(max_length=10)
 
-    buy_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
-    sell_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    buy_winning_net_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    sell_winning_net_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
 
-    buy_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
-    sell_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    buy_winning_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    sell_winning_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
 
+    buy_losing_net_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    sell_losing_net_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+
+    buy_losing_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    sell_losing_fees = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+
+    largest_buy_net_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    largest_sell_net_profit = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    largest_buy_net_loss = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+    largest_sell_net_loss = models.DecimalField(max_digits=40, decimal_places=10, default=0)
+
+    @property
+    def winning_net_profit(self):
+        return self.buy_winning_net_profit + self.sell_winning_net_profit
+    
+    @property
+    def losing_net_profit(self):
+        return self.buy_losing_net_profit + self.sell_losing_net_profit
+    
+    @property
+    def buy_winning_profit(self):
+        return self.buy_winning_net_profit + abs(self.buy_winning_fees)
+
+    @property
+    def sell_winning_profit(self):
+        return self.sell_winning_net_profit + abs(self.sell_winning_fees)
+
+    @property
+    def buy_losing_profit(self):
+        return self.buy_losing_net_profit + abs(self.buy_losing_fees)
+
+    @property
+    def sell_losing_profit(self):
+        return self.sell_losing_net_profit + abs(self.sell_losing_fees)
+    
+    @property
+    def buy_profit(self):
+        return self.buy_winning_profit + self.buy_losing_profit
+    
+    @property
+    def sell_profit(self):
+        return self.sell_winning_profit + self.sell_losing_profit
+    
+    @property
+    def buy_fees(self):
+        return abs(self.buy_winning_fees) + abs(self.buy_losing_fees)
+    
+    @property
+    def sell_fees(self):
+        return abs(self.sell_winning_fees) + abs(self.sell_losing_fees)
+    
     @property
     def total_profit(self):
         return self.buy_profit + self.sell_profit
@@ -691,23 +756,51 @@ class CurrencyBasePerformance(BasePerformance):
         return self.buy_fees + self.sell_fees
     
     @property
-    def net_buy_profit(self):
-        return self.buy_profit - self.buy_fees
+    def buy_net_profit(self):
+        return self.buy_winning_net_profit + self.buy_losing_net_profit
     
     @property
-    def net_sell_profit(self):
-        return self.sell_profit - self.sell_fees
+    def sell_net_profit(self):
+        return self.sell_winning_net_profit + self.sell_losing_net_profit
     
     @property
     def net_profit(self):
-        return self.net_buy_profit + self.net_sell_profit
+        return self.buy_net_profit + self.sell_net_profit
+    
+    @property
+    def buy_profit_factor(self):
+        return (self.buy_winning_net_profit / abs(self.buy_losing_net_profit)) if self.buy_losing_net_profit != 0 else Decimal("0")
+
+    @property
+    def sell_profit_factor(self):
+        return (self.sell_winning_net_profit / abs(self.sell_losing_net_profit)) if self.sell_losing_net_profit != 0 else Decimal("0")
+    
+    @property
+    def profit_factor(self):
+        return (self.winning_net_profit / abs(self.losing_net_profit)) if self.losing_net_profit != 0 else Decimal("0")
+
+    @property
+    def largest_net_profit(self):
+        return max(self.largest_buy_net_profit, self.largest_sell_net_profit)
+    
+    @property
+    def largest_net_loss(self):
+        return min(self.largest_buy_net_loss, self.largest_sell_net_loss)
 
     @classmethod
     def with_totals_pnl(cls):
         return cls.objects.annotate(
-            profits=F("buy_profit") + F("sell_profit"),
-            fees=F("buy_fees") + F("sell_fees"),
-            net_profits=F("buy_profit") + F("sell_profit") - (F("buy_fees") + F("sell_fees")),
+            buy_profit=F("buy_winning_net_profit") - F("buy_winning_fees") + F("buy_losing_net_profit") - F("buy_losing_fees"),
+            sell_profit=F("sell_winning_net_profit") - F("sell_winning_fees") + F("sell_losing_net_profit") - F("sell_losing_fees"),
+            total_profit=(F("buy_winning_net_profit") - F("buy_winning_fees") + F("buy_losing_net_profit") - F("buy_losing_fees")) +
+                         (F("sell_winning_net_profit") - F("sell_winning_fees") + F("sell_losing_net_profit") - F("sell_losing_fees")),
+            buy_fees=F("buy_winning_fees") + F("buy_losing_fees"),
+            sell_fees=F("sell_winning_fees") + F("sell_losing_fees"),
+            total_fees=F("buy_winning_fees") + F("buy_losing_fees") + F("sell_winning_fees") + F("sell_losing_fees"),
+            net_buy_profit=(F("buy_winning_net_profit") + F("buy_losing_net_profit")) - (F("buy_winning_fees") + F("buy_losing_fees")),
+            net_sell_profit=(F("sell_winning_net_profit") + F("sell_losing_net_profit")) - (F("sell_winning_fees") + F("sell_losing_fees")),
+            net_profit=((F("buy_winning_net_profit") + F("buy_losing_net_profit")) - (F("buy_winning_fees") + F("buy_losing_fees"))) +
+                        ((F("sell_winning_net_profit") + F("sell_losing_net_profit")) - (F("sell_winning_fees") + F("sell_losing_fees"))),  
         )
 
     @classmethod
@@ -721,20 +814,57 @@ class CurrencyBasePerformance(BasePerformance):
         fees = trade.fees
         side = trade.side
 
+        is_a_win = net_profit > 0
+        is_a_loss = net_profit < 0
+
+        update_kwargs = {}
+
+        # BUY side
+        if side == "B":
+            if is_a_win:
+                update_kwargs["largest_buy_net_profit"] = Greatest(
+                    F("largest_buy_net_profit"),
+                    Value(Decimal(net_profit))
+                )
+            elif is_a_loss:
+                update_kwargs["largest_buy_net_loss"] = Least(
+                    F("largest_buy_net_loss"),
+                    Value(Decimal(net_profit))
+                )
+
+        # SELL side
+        elif side == "S":
+            if is_a_win:
+                update_kwargs["largest_sell_net_profit"] = Greatest(
+                    F("largest_sell_net_profit"),
+                    Value(Decimal(net_profit))
+                )
+            elif is_a_loss:
+                update_kwargs["largest_sell_net_loss"] = Least(
+                    F("largest_sell_net_loss"),
+                    Value(Decimal(net_profit))
+                )
+
         return cls.objects.filter(id=perf_id).update(
             buy_total_trades=F("buy_total_trades") + (1 if side == "B" else 0),
-            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and net_profit > 0 else 0),
-            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and net_profit < 0 else 0),
+            buy_winning_trades=F("buy_winning_trades") + (1 if side == "B" and is_a_win else 0),
+            buy_losing_trades=F("buy_losing_trades") + (1 if side == "B" and is_a_loss else 0),
 
             sell_total_trades=F("sell_total_trades") + (1 if side == "S" else 0),
-            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and net_profit > 0 else 0),
-            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and net_profit < 0 else 0),
+            sell_winning_trades=F("sell_winning_trades") + (1 if side == "S" and is_a_win else 0),
+            sell_losing_trades=F("sell_losing_trades") + (1 if side == "S" and is_a_loss else 0),
 
-            buy_profit=F("buy_profit") + (Decimal(str(profit)) if side == "B" else 0),
-            sell_profit=F("sell_profit") + (Decimal(str(profit)) if side == "S" else 0),
+            buy_winning_net_profit=F("buy_winning_net_profit") + (Decimal(str(net_profit)) if side == "B" and is_a_win else 0),
+            sell_winning_net_profit=F("sell_winning_net_profit") + (Decimal(str(net_profit)) if side == "S" and is_a_win else 0),
+            buy_losing_net_profit=F("buy_losing_net_profit") + (Decimal(str(net_profit)) if side == "B" and is_a_loss else 0),
+            sell_losing_net_profit=F("sell_losing_net_profit") + (Decimal(str(net_profit)) if side == "S" and is_a_loss else 0),
 
-            buy_fees=F("buy_fees") + (Decimal(str(fees)) if side == "B" else 0),
-            sell_fees=F("sell_fees") + (Decimal(str(fees)) if side == "S" else 0),
+            buy_winning_fees=F("buy_winning_fees") + (Decimal(str(fees)) if side == "B" and is_a_win else 0),
+            sell_winning_fees=F("sell_winning_fees") + (Decimal(str(fees)) if side == "S" and is_a_win else 0),
+            buy_losing_fees=F("buy_losing_fees") + (Decimal(str(fees)) if side == "B" and is_a_loss else 0),
+            sell_losing_fees=F("sell_losing_fees") + (Decimal(str(fees)) if side == "S" and is_a_loss else 0),
+
+            **update_kwargs
         )
     class Meta:
         abstract = True

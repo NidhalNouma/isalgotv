@@ -27,6 +27,56 @@ def load_json(data):
 
 
 
+@register.filter
+def differance(value1, value2):
+    try:
+        return abs(Decimal(value1) - Decimal(value2))
+    except (InvalidOperation, TypeError):
+        return Decimal('0.0')
+    
+
+
+@register.filter
+def sum_percentage(value1, value2):
+    """
+    Calculate what percentage value1 is of value2.
+    E.g., to_percentage(50, 200) returns 25.0
+    """
+    try:
+        val1 = Decimal(value1)
+        val2 = Decimal(value2) + val1
+        if val1 <= 0:
+            return Decimal('0.0')
+        if val2 == 0:
+            return Decimal('0.0')
+        percentage = (val1 / val2) * 100
+        if percentage > 100:
+            percentage = Decimal('100.0')
+        elif percentage < 0:
+            percentage = Decimal('0.0')
+
+        return percentage
+    except (InvalidOperation, TypeError):
+        return Decimal('0.0')
+
+@register.filter
+def calc_win_rate(wins, total):
+    """
+    Calculate win rate as a percentage.
+    E.g., calc_win_rate(30, 100) returns 30.0
+    """
+    try:
+        wins_dec = Decimal(wins)
+        total_dec = Decimal(total)
+        if total_dec == 0:
+            return Decimal('0.0')
+        win_rate = (wins_dec / total_dec) * 100
+        win_rate = win_rate.quantize(Decimal('0.01'))  # Round to 2 decimal places
+        return win_rate
+    except (InvalidOperation, TypeError):
+        return Decimal('0.0')
+
+
 @register.filter(name='abbrev')
 def abbrev(value):
     """

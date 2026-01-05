@@ -1,0 +1,151 @@
+{% load custom_tags %}
+
+<div class="bg-text/5 text-text/80 text-xs font-medium p-2 rounded-lg flex flex-col w-full">
+  {% if url %}
+    <h5 class="text-lg text-title/80 font-semibold"><a href="{{ url }}">{{ title }}</a></h5>
+  {% else %}
+    <h5 class="text-lg text-title/80 font-semibold">{{ title }}</h5>
+  {% endif %}
+
+  <div class="mt-1.5 bg-text/5 p-1.5 rounded-md">
+    <div class="">
+      <label class="input-label mb-0 text-xs">Total trades</label>
+      <div class="mt-0.5">
+        <span class="text-base text-text/90">{{ info.trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <label class="input-label mb-0 text-xs">Win Rate</label>
+      <span class="text-base text-profit font-bold">{{ info.win_rate|default:'0' }}%</span>
+    </div>
+    <div class="w-full bg-text/5 rounded-md my-1">
+      <div class="h-full bg-profit py-0.5 rounded-md" style="width: {{ info.win_rate|default:'0' }}%"></div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <h6 class="text-loss text-sm">{{ info.losing_trades|default:'0' }} L</h6>
+      <h6 class="text-profit text-sm">{{ info.winning_trades|default:'0' }} W</h6>
+    </div>
+  </div>
+
+  <div class="mt-1.5 bg-text/5 p-1.5 rounded-md">
+    <div class="">
+      <label class="input-label mb-0 text-xs">Buy trades</label>
+      <div class="mt-0.5">
+        <span class="text-base text-text/90">{{ info.trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <label class="input-label mb-0 text-xs">Win Rate</label>
+      <span class="text-base text-profit font-bold">{{ info.buy_win_rate|default:'0' }}%</span>
+    </div>
+    <div class="w-full bg-text/5 rounded-md my-1">
+      <div class="h-full bg-profit py-0.5 rounded-md" style="width: {{ info.buy_win_rate|default:'0' }}%"></div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <h6 class="text-loss text-sm">{{ info.buy_losing_trades|default:'0' }} L</h6>
+      <h6 class="text-profit text-sm">{{ info.buy_winning_trades|default:'0' }} W</h6>
+    </div>
+  </div>
+
+  <div class="mt-1.5 bg-text/5 p-1.5 rounded-md">
+    <div class="">
+      <label class="input-label mb-0 text-xs">Sell trades</label>
+      <div class="mt-0.5">
+        <span class="text-base text-text/90">{{ info.sell_trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <label class="input-label mb-0 text-xs">Win Rate</label>
+      <span class="text-base text-profit font-bold">{{ info.sell_win_rate|default:'0' }}%</span>
+    </div>
+    <div class="w-full bg-text/5 rounded-md my-1">
+      <div class="h-full bg-profit py-0.5 rounded-md" style="width: {{ info.sell_win_rate|default:'0' }}%"></div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <h6 class="text-loss text-sm">{{ info.sell_losing_trades|default:'0' }} L</h6>
+      <h6 class="text-profit text-sm">{{ info.sell_winning_trades|default:'0' }} W</h6>
+    </div>
+  </div>
+
+  {% comment %} <div class="grid grid-cols-3 gap-2 mt-2">
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">Total</span>
+      <div class="mt-0.5">
+        <span class="text-base text-text/90">{{ info.trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">Buy</span>
+      <div class="mt-0.5">
+        <span class="text-base text-text/90">{{ info.buy_trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">Sell</span>
+      <div class="mt-0.5">
+        <span class="text-base text-text/90">{{ info.sell_trades|default:'0' }}</span>
+      </div>
+    </div>
+  </div> {% endcomment %}
+
+  {% comment %} <div class="grid grid-cols-2 gap-2 mt-2">
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">Win rate</span>
+      <div class="mt-0.5">
+        <span class="text-base text-profit/90">{{ info.win_rate|default:'0' }}%</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">W/L</span>
+      <div class="mt-0.5">
+        <span class="text-base text-profit">{{ info.winning_trades|default:'0' }}</span>
+        <span class="text-base text-text/80">/</span>
+        <span class="text-base text-loss">{{ info.losing_trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">Buy win rate</span>
+      <div class="mt-0.5">
+        <span class="text-base text-profit/90">{{ info.buy_win_rate|default:'0' }}%</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">W/L</span>
+      <div class="mt-0.5">
+        <span class="text-base text-profit">{{ info.buy_winning_trades|default:'0' }}</span>
+        <span class="text-base text-text/80">/</span>
+        <span class="text-base text-loss">{{ info.buy_losing_trades|default:'0' }}</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">Sell win rate</span>
+      <div class="mt-0.5">
+        <span class="text-base text-profit/90">{{ info.sell_win_rate|default:'0' }}%</span>
+      </div>
+    </div>
+    <div class="bg-text/5 p-1.5 rounded-md flex flex-col items-center">
+      <span class="input-label mb-0 text-xs justify-center">W/L</span>
+      <div class="mt-0.5">
+        <span class="text-base text-profit">{{ info.sell_winning_trades|default:'0' }}</span>
+        <span class="text-base text-text/80">/</span>
+        <span class="text-base text-loss">{{ info.sell_losing_trades|default:'0' }}</span>
+      </div>
+    </div>
+  </div> {% endcomment %}
+
+  <div class="mt-3 bg-text/5 p-1.5 rounded-md flex-1">
+    <h6 class="text-xs text-text/80 uppercase font-medium">Profit by Currency</h6>
+    <div class="mt-2 space-y-2 max-h-44 overflow-y-auto no-scrollbar">
+      {% for currency, data in info.profit.items %}
+        <div class="flex justify-between items-center bg-text/5 p-1 rounded-md">
+          <span class="text-xs text-text/80">{{ currency }}</span>
+          {% if data.profit >= 0 %}
+            <span class="text-sm text-profit">+{{ data.profit|floatformat:8|trim_zeros }}</span>
+          {% else %}
+            <span class="text-sm text-loss">{{ data.profit|floatformat:8|trim_zeros }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

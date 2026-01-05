@@ -1,0 +1,17 @@
+<div class="bg-text/5 text-text/80 text-xs font-medium p-4 rounded-lg">
+  <h5 class="text-sm text-title/80 font-semibold">{{ title }}</h5>
+  <h5 class="text-4xl font-semibold {{ value_class|default:'text-text/80' }}">{{ value|default:'0' }}</h5>
+  <div class="mt-1.5">
+    <div class="flex justify-between items-center gap-2">
+      <label class="input-label mb-0 text-xs">Win Rate</label>
+      <span class="text-lg text-profit font-bold">{{ win_rate|default:'0' }}%</span>
+    </div>
+    <div class="w-full bg-text/5 rounded-md my-1">
+      <div class="h-full bg-profit py-1 rounded-md" style="width: {{ win_rate|default:'0' }}%"></div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <h6 class="text-loss text-base">{{ loss|default:'0' }} L</h6>
+      <h6 class="text-profit text-base">{{ win|default:'0' }} W</h6>
+    </div>
+  </div>
+</div>

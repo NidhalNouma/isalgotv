@@ -1,8 +1,11 @@
-<section class="mt-4 w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-  {% include 'include/dash/number_card.html' with title='Total trades' value=overview_data.trades buy_value=overview_data.buy_trades sell_value=overview_data.sell_trades %}
+<section class="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% include 'include/dash/trades_card.html' with title='Total trades' value=overview_data.trades win_rate=overview_data.win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %}
+  {% include 'include/dash/trades_card.html' with title='Buy trades' value=overview_data.buy_trades win_rate=overview_data.buy_win_rate loss=overview_data.buy_losing_trades win=overview_data.buy_winning_trades %}
+  {% include 'include/dash/trades_card.html' with title='Sell trades' value=overview_data.sell_trades win_rate=overview_data.sell_win_rate loss=overview_data.sell_losing_trades win=overview_data.sell_winning_trades %}
+  {% comment %} {% include 'include/dash/number_card.html' with title='Total trades' value=overview_data.trades buy_value=overview_data.buy_trades sell_value=overview_data.sell_trades %}
   {% include 'include/dash/number_card.html' with title='Winning trades' value=overview_data.winning_trades value_class='text-profit' buy_value=overview_data.buy_winning_trades sell_value=overview_data.sell_winning_trades %}
   {% include 'include/dash/number_card.html' with title='Losing trades' value=overview_data.losing_trades value_class='text-loss' buy_value=overview_data.buy_losing_trades sell_value=overview_data.sell_losing_trades %}
-  {% include 'include/dash/number_card.html' with title='Win rate' value=overview_data.win_rate|stringformat:'s'|add:'%' buy_value=overview_data.buy_win_rate|default:'0'|stringformat:'s'|add:'%' sell_value=overview_data.sell_win_rate|default:'0'|stringformat:'s'|add:'%' %}
+  {% include 'include/dash/number_card.html' with title='Win rate' value=overview_data.win_rate|stringformat:'s'|add:'%' buy_value=overview_data.buy_win_rate|default:'0'|stringformat:'s'|add:'%' sell_value=overview_data.sell_win_rate|default:'0'|stringformat:'s'|add:'%' %} {% endcomment %}
 </section>
 
 {% if chart_data %}

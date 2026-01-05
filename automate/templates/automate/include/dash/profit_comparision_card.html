@@ -1,0 +1,45 @@
+{% load custom_tags %}
+
+<div class="p-4 bg-text/5 h-full rounded-lg shadow-sm flex flex-col">
+  <h5 class="text-sm text-title/80 font-semibold">{{ title|default:'Comparison' }}</h5>
+
+  <div class="mt-2 space-y-2">
+    <div class="flex justify-between items-center gap-2">
+      <span class="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-md gap-0.5 flex items-center">
+        BUY<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 aspect-auto text-primary/80">
+          <path d="M16 7h6v6"></path>
+          <path d="m22 7-8.5 8.5-5-5L2 17"></path>
+        </svg>
+      </span>
+      <span class="text-sm {% if buy_value >= 0 %} text-profit {% else %} text-loss {% endif %} font-semibold">{{ buy_value|floatformat:8|trim_zeros|default:'0' }}</span>
+    </div>
+    <div class="w-full bg-text/5 rounded-md my-1">
+      <div class="h-full bg-primary py-0.5 rounded-md" style="width: {{ buy_value|sum_percentage:sell_value|default:'0' }}%"></div>
+    </div>
+    <div class="flex justify-between items-center gap-2">
+      <span class="text-xs text-accent/80 bg-accent/10 px-2 py-0.5 rounded-md gap-0.5 flex items-center">
+        SELL<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 aspect-auto text-accent/60">
+          <path d="M16 17h6v-6"></path>
+          <path d="m22 17-8.5-8.5-5 5L2 7"></path>
+        </svg>
+      </span>
+      <span class="text-sm {% if sell_value >= 0 %} text-profit {% else %} text-loss {% endif %} font-semibold">{{ sell_value|floatformat:8|trim_zeros|default:'0' }}</span>
+    </div>
+    <div class="w-full bg-text/5 rounded-md my-1">
+      <div class="h-full bg-accent py-0.5 rounded-md" style="width: {{ sell_value|sum_percentage:buy_value|default:'0' }}%"></div>
+    </div>
+    {% comment %} <div class="flex justify-between items-center gap-2">
+      <h6 class="text-loss text-base">{{ loss|default:'0' }} L</h6>
+      <h6 class="text-profit text-base">{{ win|default:'0' }} W</h6>
+    </div> {% endcomment %}
+    {% comment %} <div class="pt-2">
+      {% if buy_value > sell_value %}
+        <div class="text-xs text-text/80">Buy performing {{ buy_value|differance:sell_value|floatformat:2 }}% better</div>
+      {% elif sell_value > buy_value %}
+        <div class="text-xs text-text/80">Sell performing {{ sell_value|differance:buy_value|floatformat:2 }}% better</div>
+      {% else %}
+        <div class="text-xs text-text/80">Equal performance on BUY and SELL trades</div>
+      {% endif %}
+    </div> {% endcomment %}
+  </div>
+</div>

@@ -62,7 +62,7 @@ function transformToTimeProfitForChart(data) {
   return { time, profit };
 }
 
-function getChartOptions(tooltipCallbacks) {
+function getChartOptions(tooltipCallbacks, xAxis = false, yAxis = false) {
   return {
     animation: false,
     responsive: true,
@@ -95,12 +95,94 @@ function getChartOptions(tooltipCallbacks) {
     },
     scales: {
       x: {
-        display: false,
+        display: xAxis,
         grid: { display: false, drawBorder: false },
+        border: { display: false },
+        ticks: {
+          color: getCssVariableColor("--color-text", 0.6),
+          font: {
+            size: 10,
+          },
+
+          maxRotation: 0,
+          minRotation: 0,
+          callback: function (value, index, ticks) {
+            const date = new Date(this.getLabelForValue(value));
+            const monthNames = [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ];
+            const month = date.getUTCMonth();
+            const day = date.getUTCDate();
+
+            // Check previous tick to see if it's the same month
+            // Limit to max 4-5 ticks by calculating step
+            const totalTicks = ticks.length;
+            const maxTicks = 5;
+            const step = Math.ceil(totalTicks / maxTicks);
+
+            // Only show tick if it's at the right step interval
+            if (index % step !== 0 && index !== totalTicks - 1) {
+              return ""; // Skip this tick
+            }
+
+            if (index === ticks.length - 1) {
+              // Always show last tick
+              return ``;
+            }
+
+            if (index > 0) {
+              const prevDate = new Date(
+                this.getLabelForValue(ticks[index - 1].value)
+              );
+              const prevMonth = prevDate.getUTCMonth();
+              if (month === prevMonth) {
+                // return ""; // Skip this tick
+              }
+            }
+
+            return `${monthNames[month]} ${day}`;
+          },
+        },
       },
       y: {
-        display: false,
+        display: yAxis,
+        position: "right",
         grid: { display: false, drawBorder: false },
+        border: { display: false },
+        ticks: {
+          color: getCssVariableColor("--color-text", 0.6),
+          font: {
+            size: 10,
+          },
+          callback: function (value, index, ticks) {
+            const totalTicks = ticks.length;
+            const maxTicks = 5;
+            const step = Math.ceil(totalTicks / maxTicks);
+
+            // Only show tick if it's at the right step interval
+            if (index % step !== 0 && index !== totalTicks - 1) {
+              return ""; // Skip this tick
+            }
+
+            if (index === ticks.length - 1) {
+              // Always show last tick
+              return ``;
+            }
+
+            return value;
+          },
+        },
       },
     },
   };
@@ -154,7 +236,7 @@ function loadChart(id) {
       datasets: [
         {
           data: series.profit,
-          borderWidth: 1,
+          borderWidth: 1.5,
           fill: true,
           // scriptable border color per line segment based on profit sign
           borderColor: function (context) {
@@ -234,13 +316,13 @@ function loadAccountProfitCharts(id, data) {
   // console.log("Loading chart with data:", data);
 
   labels = data.map((item) => item.date);
-  profitData = data.map((item) => item.cumulative.profit);
+  profitData = data.map((item) => item.total_net_profit);
 
   const series = {
     date: labels,
-    profit: profitData,
-    dailyProfit: data.map((item) => item.today_data.profit),
-    daily_trades: data.map((item) => item.today_data.trades),
+    net_profit: profitData,
+    daily_net_profit: data.map((item) => item.today_net_profit),
+    daily_trades: data.map((item) => item.today_trades),
   };
 
   const existingChart = Chart.getChart("accountProfitChart-" + id);
@@ -254,8 +336,8 @@ function loadAccountProfitCharts(id, data) {
       labels: series.date,
       datasets: [
         {
-          data: series.profit,
-          borderWidth: 1,
+          data: series.net_profit,
+          borderWidth: 1.5,
           fill: true,
           borderColor: function (context) {
             const value = context.dataset.data[context.dataIndex];
@@ -273,8 +355,8 @@ function loadAccountProfitCharts(id, data) {
             backgroundColor: (ctx) => {
               const y = ctx.p1.parsed.y;
               return y < 0
-                ? getCssVariableColor("--color-loss", 0.01)
-                : getCssVariableColor("--color-profit", 0.01);
+                ? getCssVariableColor("--color-loss", 0.04)
+                : getCssVariableColor("--color-profit", 0.04);
             },
           },
           pointRadius: 0,
@@ -284,21 +366,25 @@ function loadAccountProfitCharts(id, data) {
         },
       ],
     },
-    options: getChartOptions({
-      title: (tooltipItems) => {
-        return tooltipItems[0].label;
+    options: getChartOptions(
+      {
+        title: (tooltipItems) => {
+          return tooltipItems[0].label;
+        },
+        label: (tooltipItem) => {
+          const profit = `Cumulative net PnL: ${tooltipItem.formattedValue}`;
+          const dailyProfit = `Daily net PnL: ${
+            series.daily_net_profit[tooltipItem.dataIndex]
+          }`;
+          const dailyTrades = `Daily Trades: ${
+            series.daily_trades[tooltipItem.dataIndex]
+          }`;
+          return [profit, dailyProfit, dailyTrades];
+        },
       },
-      label: (tooltipItem) => {
-        const profit = `Cumulative P&L: ${tooltipItem.formattedValue}`;
-        const dailyProfit = `Daily P&L: ${
-          series.dailyProfit[tooltipItem.dataIndex]
-        }`;
-        const dailyTrades = `Daily Trades: ${
-          series.daily_trades[tooltipItem.dataIndex]
-        }`;
-        return [profit, dailyProfit, dailyTrades];
-      },
-    }),
+      true,
+      true
+    ),
     plugins: getPlugins(),
   });
 }

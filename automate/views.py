@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials, close_open_trade
 from automate.functions.alerts_message import manage_alert
-from automate.functions.performance import backfill_account_performance, get_days_performance, get_overview_performance_data, get_asset_performance_data, get_strategy_performance_data
+from automate.functions.performance import backfill_account_performance, get_days_performance, get_overview_performance_data, get_asset_performance_data, get_performance_currencies, get_strategy_performance_data
 from automate.models import *
 from automate.forms import *
 from automate.tasks import *
@@ -98,6 +98,8 @@ def get_account_data(request, public_id):
     overview_data = get_overview_performance_data(account_perf)
     chart_performance = get_days_performance(account_perf)
 
+    currencies_performance = get_performance_currencies(account_perf)
+
     assets = get_asset_performance_data(account_perf)
     sources = get_strategy_performance_data(account_perf)
 
@@ -119,6 +121,7 @@ def get_account_data(request, public_id):
         'account': account,
         'overview_data': overview_data,
         'chart_data': chart_performance,
+        'currencies_performance': currencies_performance,
         'assets': assets,
         'sources': sources,
         'trades': trades,  

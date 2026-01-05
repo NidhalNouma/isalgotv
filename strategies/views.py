@@ -8,7 +8,7 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
 from automate.models import StrategyPerformance, TradeDetails
-from automate.functions.performance import get_strategy_performance_data, get_days_performance, get_overview_performance_data, get_asset_performance_data
+from automate.functions.performance import get_performance_currencies, get_strategy_performance_data, get_days_performance, get_overview_performance_data, get_asset_performance_data
 
 from profile_user.utils.notifcations import send_notification
 
@@ -107,6 +107,7 @@ def get_strategy(request, slug):
 
         overview_performance = get_overview_performance_data(strategy_performances)
         chart_performance = get_days_performance(strategy_performances)
+        currencies_performance = get_performance_currencies(strategy_performances)
         # asset_performance = get_asset_performance_data(strategy_performances)
         trades = TradeDetails.objects.filter(
             strategy=strategy,
@@ -124,6 +125,8 @@ def get_strategy(request, slug):
             # 'random_results': results, 
             'overview_data': overview_performance, 
             'chart_data': chart_performance,
+            'currencies_performance': currencies_performance,
+            # 'asset_performance': asset_performance,
             'trades': trades,
             'next_start': trades.count(),
             'only_closed_trades': True,

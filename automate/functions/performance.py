@@ -280,6 +280,24 @@ class PerformanceData(TypedDict):
     sell_winning_trades: int = 0
     sell_losing_trades: int = 0
 
+    profit_factor: NotRequired[float]
+    buy_profit_factor: NotRequired[float]
+    sell_profit_factor: NotRequired[float]
+
+    gross_profit: NotRequired[float]
+    buy_gross_profit: NotRequired[float]
+    sell_gross_profit: NotRequired[float]
+    gross_loss: NotRequired[float]
+    buy_gross_loss: NotRequired[float]
+    sell_gross_loss: NotRequired[float]
+
+    largest_profit: NotRequired[float]
+    largest_loss: NotRequired[float]
+    buy_largest_profit: NotRequired[float]
+    buy_largest_loss: NotRequired[float]
+    sell_largest_profit: NotRequired[float]
+    sell_largest_loss: NotRequired[float]
+
 def empty_performance_data() -> PerformanceData:
     return PerformanceData(
         profit=0.0,
@@ -301,10 +319,67 @@ def empty_performance_data() -> PerformanceData:
         sell_winning_trades=0,
         sell_losing_trades=0,
     )
+
+def get_performance_currencies(performance):
+    """
+    Get performance data for this account_performance.
+    """
+
+    if not performance:
+        return empty_performance_data()
+
+    data = {}
+
+    for curr in performance.currencies.all():
+        data[curr.currency] = PerformanceData(
+            profit=d(curr.total_profit),
+            buy_profit=d(curr.buy_profit),
+            sell_profit=d(curr.sell_profit),
+            fees=d(curr.total_fees),
+            buy_fees=d(curr.buy_fees),
+            sell_fees=d(curr.sell_fees),
+            net_profit=d(curr.net_profit),
+            buy_net_profit=d(curr.buy_net_profit),
+            sell_net_profit=d(curr.sell_net_profit),
+            trades=curr.total_trades,
+            winning_trades=curr.winning_trades,
+            losing_trades=curr.losing_trades,
+            buy_trades=curr.buy_total_trades,
+            buy_winning_trades=curr.buy_winning_trades,
+            buy_losing_trades=curr.buy_losing_trades,
+            sell_trades=curr.sell_total_trades,
+            sell_winning_trades=curr.sell_winning_trades,
+            sell_losing_trades=curr.sell_losing_trades,
+
+            profit_factor=curr.profit_factor,
+            buy_profit_factor=curr.buy_profit_factor,
+            sell_profit_factor=curr.sell_profit_factor,
+
+            gross_profit=curr.winning_net_profit,
+            buy_gross_profit=curr.buy_winning_net_profit,
+            sell_gross_profit=curr.sell_winning_net_profit,
+            gross_loss=curr.losing_net_profit,
+            buy_gross_loss=curr.buy_losing_net_profit,
+            sell_gross_loss=curr.sell_losing_net_profit,
+
+            largest_profit=curr.largest_net_profit,
+            largest_loss=curr.largest_net_loss,
+            buy_largest_profit=curr.largest_buy_net_profit,
+            buy_largest_loss=curr.largest_buy_net_loss,
+            sell_largest_profit=curr.largest_sell_net_profit,
+            sell_largest_loss=curr.largest_sell_net_loss,
+        )
+
+    return data
 class DayPerformanceData(TypedDict):
     date: str
-    cumulative: PerformanceData
-    today_data: PerformanceData
+
+    total_profit: float
+    total_trades: int
+
+    today_profit: float
+    today_trades: int
+
     max_profit: float
     max_drawdown: float
 
@@ -312,10 +387,12 @@ class ChartDayPerformance(TypedDict):
     date: str
     data: list[DayPerformanceData]
     cumulative: PerformanceData
-    max_profit: float
+    max_net_profit: float
     max_drawdown: float
-    today_profit: float
+    today_net_profit: float
     number_of_days: int
+    avg_daily_net_profit: NotRequired[float]
+    avg_daily_trades: NotRequired[float]
     
 
 def get_days_performance(performance):
@@ -351,6 +428,8 @@ def get_days_performance(performance):
                     buy_profit=d(curr.buy_profit) + prev_data['buy_profit'],
                     sell_profit=d(curr.sell_profit) + prev_data['sell_profit'],
                     net_profit=d(curr.net_profit) + prev_data['net_profit'],
+                    buy_net_profit=d(curr.buy_net_profit) + prev_data['buy_net_profit'],
+                    sell_net_profit=d(curr.sell_net_profit) + prev_data['sell_net_profit'],
                     trades=curr.total_trades + prev_data['trades'],
                     winning_trades=curr.winning_trades + prev_data['winning_trades'],
                     losing_trades=curr.losing_trades + prev_data['losing_trades'],
@@ -376,10 +455,13 @@ def get_days_performance(performance):
         chart_data[currency] = ChartDayPerformance(
             data=[],
             cumulative=empty_performance_data(),
-            max_profit=0,
+            max_net_profit=0,
             max_drawdown=0,
-            number_of_days=days,
         )
+        number_of_days = 0
+        avg_daily_net_profit = 0.0
+        avg_daily_trades = 0.0
+
         cumulative_data = empty_performance_data()
         day_data: list[DayPerformanceData] = []
         for day in days_difference:
@@ -388,24 +470,37 @@ def get_days_performance(performance):
             for key in daily_data.keys():
                 cumulative_data[key] = cumulative_data.get(key, 0) + daily_data.get(key, 0)
 
-            max_profit = max(chart_data[currency]['max_profit'], cumulative_data.get('profit', 0))
-            max_drawdown = min(chart_data[currency]['max_drawdown'], cumulative_data.get('profit', 0))
-            chart_data[currency]['max_profit'] = max_profit
+            max_net_profit = max(chart_data[currency]['max_net_profit'], cumulative_data.get('net_profit', 0))
+            max_drawdown = min(chart_data[currency]['max_drawdown'], cumulative_data.get('net_profit', 0))
+            chart_data[currency]['max_net_profit'] = max_net_profit
             chart_data[currency]['max_drawdown'] = max_drawdown 
 
             day_data.append(DayPerformanceData(
                 date=day.strftime('%b %d, %Y'),
-                cumulative=cumulative_data.copy(),
-                today_data=daily_data,
-                max_profit=max_profit,
+
+                today_trades=daily_data.get('trades', 0),
+                today_net_profit=daily_data.get('net_profit', 0),
+                total_trades=cumulative_data.get('trades', 0),
+                total_net_profit=cumulative_data.get('net_profit', 0),
+
+                max_net_profit=max_net_profit,
                 max_drawdown=max_drawdown,
             ))
 
+            if daily_data.get('trades', 0) > 0:
+                number_of_days += 1
+                avg_daily_net_profit += daily_data.get('net_profit', 0)
+                avg_daily_trades += daily_data.get('trades', 0)
+
         
         today_date = datetime.date.today()
-        chart_data[currency]['today_profit'] = perf_data.get(today_date, PerformanceData()).get('profit', 0)
+        chart_data[currency]['today_profit'] = perf_data.get(today_date, {}).get('net_profit', 0)
         chart_data[currency]['data'] = day_data
         chart_data[currency]['cumulative'] = cumulative_data
+
+        chart_data[currency]['number_of_days'] = number_of_days
+        chart_data[currency]['avg_daily_net_profit'] = (avg_daily_net_profit / number_of_days) if number_of_days > 0 else 0.0
+        chart_data[currency]['avg_daily_trades'] = (avg_daily_trades / number_of_days) if number_of_days > 0 else 0.0
 
 
     return chart_data
@@ -455,8 +550,8 @@ def get_asset_performance_data(performance) -> ASPerformanceData:
             "buy_fees": d(c.buy_fees),
             "sell_fees": d(c.sell_fees),
             "net_profit": d(c.net_profit),
-            "buy_net_profit": d(c.net_buy_profit),
-            "sell_net_profit": d(c.net_sell_profit),
+            "buy_net_profit": d(c.buy_net_profit),
+            "sell_net_profit": d(c.sell_net_profit),
         } for c in asset_perf.currencies.all()}
 
         data[asset_perf.asset] = ASPerformanceData(
@@ -494,8 +589,8 @@ def get_strategy_performance_data(performance) -> ASPerformanceData:
             "buy_fees": d(c.buy_fees),
             "sell_fees": d(c.sell_fees),
             "net_profit": d(c.net_profit),
-            "buy_net_profit": d(c.net_buy_profit),
-            "sell_net_profit": d(c.net_sell_profit),
+            "buy_net_profit": d(c.buy_net_profit),
+            "sell_net_profit": d(c.sell_net_profit),
         } for c in strategy_perf.currencies.all()}
 
         data[strategy_perf.strategy] = ASPerformanceData(
