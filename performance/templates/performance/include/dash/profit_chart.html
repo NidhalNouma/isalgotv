@@ -5,28 +5,33 @@
         <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
         <div id="currencies-btns" class="flex items-center gap-3 overflow-x-auto no-scrollbar pr-8">
             {% for currency, info in data.items %}
-                <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.cumulative.net_profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.net_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
+            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.cumulative.net_profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.net_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
             {% endfor %}
         </div>
     </div>
     <div class="w-full">
         {% for currency, curr_perf in currencies_performance.items %}
             {% with info=data|get_item:currency %}
-                <div id="pnl-cards-{{currency}}" class="hidden grid-cols-2 md:grid-cols-4 items-start justify-center gap-4 w-full">
-                    {% include 'include/dash/perf_card.html' with title='Trades' value=curr_perf.trades label1='Buy' val1=curr_perf.buy_trades label2='Sell' val2=curr_perf.sell_trades %}
-                    {% include 'include/dash/perf_card.html' with title='Net PnL' value=curr_perf.net_profit|floatformat:8|trim_zeros|default:'0' v_color="auto" label1='PnL' val1=curr_perf.profit|floatformat:8|trim_zeros|default:'0' v1_color="auto" label2='Today PnL' val2=info.today_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
-                    {% include 'include/dash/perf_card.html' with title='Profit factor' value=curr_perf.profit_factor|floatformat:2|default:'0' label1='Buy' val1=curr_perf.buy_profit_factor|floatformat:2|default:'0' label2='Sell' val2=curr_perf.sell_profit_factor|floatformat:2|default:'0' %}
-                    {% include 'include/dash/perf_card.html' with title='Days traded' value=info.number_of_days label1='Avg Trades' val1=info.avg_daily_trades|floatformat:0|default:'0' label2='Avg Profit' val2=info.avg_daily_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
+                <div id="pnl-cards-{{currency}}" class="relative w-full hidden">
+                    <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
+                    <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
+
+                    <div class="flex items-start gap-4 w-full overflow-x-auto no-scrollbar pr-8">
+                        {% include 'include/dash/perf_card.html' with title='Trades' value=curr_perf.trades label1='Buy' val1=curr_perf.buy_trades label2='Sell' val2=curr_perf.sell_trades %}
+                        {% include 'include/dash/perf_card.html' with title='Net PnL' value=curr_perf.net_profit|floatformat:8|trim_zeros|default:'0' v_color="auto" label1='PnL' val1=curr_perf.profit|floatformat:8|trim_zeros|default:'0' v1_color="auto" label2='Today PnL' val2=info.today_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
+                        {% include 'include/dash/perf_card.html' with title='Profit factor' value=curr_perf.profit_factor|floatformat:2|default:'0' label1='Buy' val1=curr_perf.buy_profit_factor|floatformat:2|default:'0' label2='Sell' val2=curr_perf.sell_profit_factor|floatformat:2|default:'0' %}
+                        {% include 'include/dash/perf_card.html' with title='Days traded' value=info.number_of_days label1='Avg Trades' val1=info.avg_daily_trades|floatformat:0|default:'0' label2='Avg Profit' val2=info.avg_daily_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
+                    </div>
                 </div>
             {% endwith %}
         {% endfor %}
-        <div class="relative w-full !h-72 md:!h-96 mt-4">
-            <canvas id="accountProfitChart-{{ account.id }}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
+        <div class="relative w-full !h-80 md:!h-96 mt-4">
+            <canvas id="accountProfitChart-{{ id }}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
         </div>
 
 
         {% for currency, info in currencies_performance.items %}
-            <div id="perf-table-{{currency}}" class="hidden mt-6 w-full ih-96 overflow-y-auto no-scrollbar">
+            <div id="perf-table-{{currency}}" class="hidden mt-6 w-full ih-96 overflow-auto no-scrollbar">
                 <h6 class="text-title/80 text-sm font-semibold bg-text/10 rounded-md py-2 px-2">Details</h6>
                 {% include 'include/dash/perf_table.html' with perf=info %}
             </div>
@@ -62,14 +67,14 @@
                     btn.classList.add('border-loss');
                 }
                 pnlCardsContainers[currency].classList.remove('hidden');
-                pnlCardsContainers[currency].classList.add('grid');
+                pnlCardsContainers[currency].classList.add('block');
                 perfTables[currency].classList.remove('hidden');
                 
             } else {
                 btn.classList.remove('border-profit', 'border-loss');
                 btn.classList.add('border-transparent');
                 pnlCardsContainers[btn.id.replace('btn-', '')].classList.add('hidden');
-                pnlCardsContainers[btn.id.replace('btn-', '')].classList.remove('grid');
+                pnlCardsContainers[btn.id.replace('btn-', '')].classList.remove('block');
                 perfTables[btn.id.replace('btn-', '')].classList.add('hidden');
             }
         }
@@ -82,7 +87,7 @@
 
         // console.log('Currency button clicked:', currency, 'with profit:', profit);
         currencyBtnClicked(currency, profit);
-        loadAccountProfitCharts('{{ account.id }}', data);
+        loadAccountProfitCharts('{{ id }}', data);
     }
 
   (function() {

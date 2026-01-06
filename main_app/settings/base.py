@@ -46,6 +46,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'profile_user.apps.ProfileUserConfig',
     'strategies',
+    'performance',
     'automate',
     'tero',
     'docs',
@@ -116,6 +117,7 @@ TEMPLATES = [
                 BASE_DIR / "profile_user/templates/profile_user",
                 BASE_DIR / "docs/templates/docs",
                 BASE_DIR / "automate/templates/automate",
+                BASE_DIR / "performance/templates/performance",
                 BASE_DIR / "tero/templates/tero",
                 BASE_DIR / "strategies/templates/strategies"],
         'APP_DIRS': True,

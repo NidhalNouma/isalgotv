@@ -1,0 +1,28 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>{{ overview_data.win_rate|default:'0' }}% win rate | {{ account.name }}</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="{{ account.broker_type }} account overview for {{ account.name }} with a {{ overview_data.win_rate|default:'0' }}% win rate" />
+{% endblock %}
+
+{% block head %}
+  <!-- Load Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'js/chart.js' %}"></script>
+{% endblock %}
+
+{% block page %}
+  <section class="mt-2">
+    {% if account.broker_type == 'mexc' or account.broker_type == 'okx' %}
+      {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-5 aspect-auto fill-text/80 text-text/80 mb-2' %}
+    {% else %}
+      {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-6 aspect-auto fill-text/80 text-text/80 mb-2' %}
+    {% endif %}
+
+    {% comment %} <h2 class="text-lg font-bold text-title/80">{{ account.name }}</h2> {% endcomment %}
+  </section>
+  {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data id=account.id broker_type=account.broker_type assets=assets sources=sources trades=trades only_closed_trades=only_closed_trades %}
+{% endblock %}

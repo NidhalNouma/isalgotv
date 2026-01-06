@@ -176,7 +176,7 @@
         </div>
 
         <div class="mx-auto max-w-5xl" id="performanceDiv">
-          {% include 'include/strategy_performance.html' %}
+          {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data id=strategy.id broker_type='strategy' assets=assets trades=trades only_closed_trades=only_closed_trades %}
         </div>
 
         <div class="mx-auto max-w-5xl" id="commentsDiv">

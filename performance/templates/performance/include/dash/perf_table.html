@@ -1,0 +1,87 @@
+{% load custom_filters %}
+{% load custom_tags %}
+
+<table class="w-full text-text text-sm h-full overflow-y-auto no-scrollbar">
+  <thead class="sticky left-0 right-0 w-full top-0 z-10 nav-bg">
+    <tr class="text-text/60 text-xs font-medium border-b border-text/10 mb-2">
+      <th class="text-left py-4 px-4">Metric</th>
+      <th class="text-left px-4">ALL</th>
+      <th class="text-left px-4">BUY</th>
+      <th class="text-left px-4">SELL</th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-text/10">
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Trades</td>
+      <td class="px-4 text-left">{{ perf.trades }}</td>
+      <td class="px-4 text-left">{{ perf.buy_trades }}</td>
+      <td class="px-4 text-left">{{ perf.sell_trades }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Winning Trades</td>
+      <td class="px-4 text-left">{{ perf.winning_trades }}</td>
+      <td class="px-4 text-left">{{ perf.buy_winning_trades }}</td>
+      <td class="px-4 text-left">{{ perf.sell_winning_trades }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Losing Trades</td>
+      <td class="px-4 text-left">{{ perf.losing_trades }}</td>
+      <td class="px-4 text-left">{{ perf.buy_losing_trades }}</td>
+      <td class="px-4 text-left">{{ perf.sell_losing_trades }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Win Rate</td>
+      <td class="px-4 text-left">{{ perf.winning_trades|calc_win_rate:perf.trades }}%</td>
+      <td class="px-4 text-left">{{ perf.buy_winning_trades|calc_win_rate:perf.buy_trades }}%</td>
+      <td class="px-4 text-left">{{ perf.sell_winning_trades|calc_win_rate:perf.sell_trades }}%</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Net PnL</td>
+      <td class="px-4 text-left {{ perf.net_profit|profit_color }}">{{ perf.net_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.buy_net_profit|profit_color }}">{{ perf.buy_net_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.sell_net_profit|profit_color }}">{{ perf.sell_net_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">PnL</td>
+      <td class="px-4 text-left {{ perf.profit|profit_color }}">{{ perf.profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.buy_profit|profit_color }}">{{ perf.buy_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.sell_profit|profit_color }}">{{ perf.sell_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Fees</td>
+      <td class="px-4 text-left">{{ perf.fees|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left">{{ perf.buy_fees|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left">{{ perf.sell_fees|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Gross Profit</td>
+      <td class="px-4 text-left {{ perf.gross_profit|profit_color }}">{{ perf.gross_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.buy_gross_profit|profit_color }}">{{ perf.buy_gross_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.sell_gross_profit|profit_color }}">{{ perf.sell_gross_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Gross Loss</td>
+      <td class="px-4 text-left {{ perf.gross_loss|profit_color }}">{{ perf.gross_loss|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.buy_gross_loss|profit_color }}">{{ perf.buy_gross_loss|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.sell_gross_loss|profit_color }}">{{ perf.sell_gross_loss|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Profit Factor</td>
+      <td class="px-4 text-left">{{ perf.profit_factor|floatformat:2|default:'0' }}</td>
+      <td class="px-4 text-left">{{ perf.buy_profit_factor|floatformat:2|default:'0' }}</td>
+      <td class="px-4 text-left">{{ perf.sell_profit_factor|floatformat:2|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Largest Winning Trade</td>
+      <td class="px-4 text-left {{ perf.largest_profit|profit_color }}">{{ perf.largest_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.buy_largest_profit|profit_color }}">{{ perf.buy_largest_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.sell_largest_profit|profit_color }}">{{ perf.sell_largest_profit|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+    <tr class="hover:bg-text/10 transition-colors">
+      <td class="py-4 px-4 text-left text-xs text-text/60 font-medium">Largest Losing Trade</td>
+      <td class="px-4 text-left {{ perf.largest_loss|profit_color }}">{{ perf.largest_loss|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.buy_largest_loss|profit_color }}">{{ perf.buy_largest_loss|floatformat:8|trim_zeros|default:'0' }}</td>
+      <td class="px-4 text-left {{ perf.sell_largest_loss|profit_color }}">{{ perf.sell_largest_loss|floatformat:8|trim_zeros|default:'0' }}</td>
+    </tr>
+  </tbody>
+</table>

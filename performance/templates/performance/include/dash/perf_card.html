@@ -17,21 +17,21 @@
 {% load custom_tags %}
 {% load custom_filters %}
 
-<div class="bg-text/5 text-text/80 text-xs font-medium p-4 rounded-lg">
+<div class="bg-text/5 text-text/80 text-xs font-medium p-4 rounded-lg w-full min-w-[220px]">
   <h5 class="text-sm text-title/80 font-semibold">{{ title }}</h5>
 
 
-  <h5 class="text-4xl font-semibold {% if v_color == 'auto' %} {{ value|profit_color:'text-text/80' }} {% elif not v_color %} text-text/80 {% else %} {{ v_color }} {% endif %}">{{ value|floatformat:8|trim_zeros|default:'0' }}</h5>
+  <h5 class="text-2xl md:text-4xl font-semibold {% if v_color == 'auto' %} {{ value|profit_color:'text-text/80' }} {% elif not v_color %} text-text/80 {% else %} {{ v_color }} {% endif %}">{{ value|floatformat:8|trim_zeros|default:'0' }}</h5>
   {% if label1 or label2 %}
-    <div class="mt-2">
+    <div class="mt-2 block">
       {% if label1 %}
-        <div class="flex justify-between items-center gap-2">
+        <div class="flex justify-between items-center gap-6">
           <label class="input-label mb-0 text-xs">{{ label1 }}</label>
           <span class="text-sm font-normal {% if v1_color == 'auto' %} {{ val1|profit_color:'text-text/80' }} {% elif not v1_color %} text-text/80 {% else %} {{ v1_color }} {% endif %}">{{ val1|floatformat:8|trim_zeros|default:'0' }}</span>
         </div>
       {% endif %}
       {% if label2 %}
-        <div class="mt-0.5 flex justify-between items-center gap-2">
+        <div class="mt-0.5 flex justify-between items-center gap-6">
           <label class="input-label mb-0 text-xs">{{ label2 }}</label>
           <span class="text-sm font-normal {% if v2_color == 'auto' %} {{ val2|profit_color:'text-text/80' }} {% elif not v2_color %} text-text/80 {% else %} {{ v2_color }} {% endif %}">{{ val2|floatformat:8|trim_zeros|default:'0' }}</span>
         </div>

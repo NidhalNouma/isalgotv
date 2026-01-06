@@ -3,11 +3,12 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from typing import TypedDict, Any, NotRequired
 
-from automate.models import *
+from performance.models import *
+from automate.models import TradeDetails
 import datetime
 
 @transaction.atomic
-def apply_trade_to_performance(trade: TradeDetails):
+def apply_trade_to_performance(trade):
     """
     Apply a CLOSED trade to all performance models (v2).
     Safe for retries, parallel workers, and millions of trades.

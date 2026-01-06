@@ -5,10 +5,11 @@ from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
+from performance.functions.context import strategy_context_data
+
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
-from automate.models import StrategyPerformance, TradeDetails
-from automate.functions.performance import get_performance_currencies, get_strategy_performance_data, get_days_performance, get_overview_performance_data, get_asset_performance_data
+
 
 from profile_user.utils.notifcations import send_notification
 
@@ -102,19 +103,8 @@ def get_strategy(request, slug):
         results = strategy.strategyresults_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
-
-        strategy_performances = StrategyPerformance.objects.filter(strategy=strategy).first()
-
-        overview_performance = get_overview_performance_data(strategy_performances)
-        chart_performance = get_days_performance(strategy_performances)
-        currencies_performance = get_performance_currencies(strategy_performances)
-        # asset_performance = get_asset_performance_data(strategy_performances)
-        trades = TradeDetails.objects.filter(
-            strategy=strategy,
-            status__in=['C'] 
-        ).order_by('-exit_time')[:20]
-
-
+        
+        performance_context = strategy_context_data(strategy)
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
 
@@ -123,13 +113,7 @@ def get_strategy(request, slug):
             'results': results, 
             'comments': comments, 
             # 'random_results': results, 
-            'overview_data': overview_performance, 
-            'chart_data': chart_performance,
-            'currencies_performance': currencies_performance,
-            # 'asset_performance': asset_performance,
-            'trades': trades,
-            'next_start': trades.count(),
-            'only_closed_trades': True,
+            **performance_context,
         }
         return render(request, 'strategy.html', context)
     
