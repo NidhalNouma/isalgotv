@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials, close_open_trade
 from automate.functions.alerts_message import manage_alert
 from performance.functions.context import account_context_data
+
 from automate.models import *
 from automate.forms import *
 from automate.tasks import *
@@ -779,9 +780,16 @@ def get_broker_trades(request, broker_type, pk):
         only_closed_trades = str(request.GET.get('only_closed_trades', 'false')).lower() == 'true'
 
         if broker_type == 'strategy':
+
             strategy_id = pk
             all_trades = TradeDetails.objects.filter(
                 strategy_id=strategy_id,
+                status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+            ).order_by('-exit_time')
+        elif broker_type == 'asset':
+            asset_id = pk
+            all_trades = TradeDetails.objects.filter(
+                symbol=asset_id,
                 status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
             ).order_by('-exit_time')
         else:
@@ -800,7 +808,8 @@ def get_broker_trades(request, broker_type, pk):
             content_type = ContentType.objects.get_for_model(account_model)
             all_trades = TradeDetails.objects.filter(
                 content_type=content_type, 
-                object_id=pk, status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
+                object_id=pk, 
+                status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
             ).order_by('-exit_time')
             
         trade_list = all_trades[start:start+limit]

@@ -18,9 +18,9 @@
 
                     <div class="flex items-start gap-4 w-full overflow-x-auto no-scrollbar pr-8">
                         {% include 'include/dash/perf_card.html' with title='Trades' value=curr_perf.trades label1='Buy' val1=curr_perf.buy_trades label2='Sell' val2=curr_perf.sell_trades %}
-                        {% include 'include/dash/perf_card.html' with title='Net PnL' value=curr_perf.net_profit|floatformat:8|trim_zeros|default:'0' v_color="auto" label1='PnL' val1=curr_perf.profit|floatformat:8|trim_zeros|default:'0' v1_color="auto" label2='Today PnL' val2=info.today_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
+                        {% include 'include/dash/perf_card.html' with title='Net PnL' value=curr_perf.net_profit|floatformat:8|trim_zeros|default:'0' v_color="auto" label1='PnL' val1=curr_perf.profit|floatformat:8|trim_zeros|default:'0' v1_color="auto" label2='Today net PnL' val2=info.today_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
                         {% include 'include/dash/perf_card.html' with title='Profit factor' value=curr_perf.profit_factor|floatformat:2|default:'0' label1='Buy' val1=curr_perf.buy_profit_factor|floatformat:2|default:'0' label2='Sell' val2=curr_perf.sell_profit_factor|floatformat:2|default:'0' %}
-                        {% include 'include/dash/perf_card.html' with title='Days traded' value=info.number_of_days label1='Avg Trades' val1=info.avg_daily_trades|floatformat:0|default:'0' label2='Avg Profit' val2=info.avg_daily_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
+                        {% include 'include/dash/perf_card.html' with title='Days traded' value=info.number_of_days label1='Avg Trades' val1=info.avg_daily_trades|floatformat:0|default:'0' label2='Avg net PnL' val2=info.avg_daily_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
                     </div>
                 </div>
             {% endwith %}

@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
-from performance.functions.context import strategy_context_data
+from performance.functions.context import get_global_strategy_performance_context
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
@@ -104,7 +104,7 @@ def get_strategy(request, slug):
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
         
-        performance_context = strategy_context_data(strategy)
+        performance_context = {}#get_global_strategy_performance_context(strategy)
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
 

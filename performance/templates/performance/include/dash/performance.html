@@ -1,72 +1,74 @@
-{% comment %}
-<section class="mt-6 w-full border border-text/10 p-4 rounded-lg">
-  <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Overall</h4> {% endcomment %}
+{% if perf_emsg %}
+  <section class="w-full mt-4">
+    {% include 'include/infos.html' with info=perf_emsg %}
+  </section>
+{% else %}
   <section class="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     {% include 'include/dash/trades_card.html' with title='Total trades' value=overview_data.trades win_rate=overview_data.win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %}
     {% include 'include/dash/trades_card.html' with title='Buy trades' value=overview_data.buy_trades win_rate=overview_data.buy_win_rate loss=overview_data.buy_losing_trades win=overview_data.buy_winning_trades %}
     {% include 'include/dash/trades_card.html' with title='Sell trades' value=overview_data.sell_trades win_rate=overview_data.sell_win_rate loss=overview_data.sell_losing_trades win=overview_data.sell_winning_trades %}
     {% comment %} {% include 'include/dash/trades_comparision_card.html' with buy_win_rate=overview_data.buy_win_rate sell_win_rate=overview_data.sell_win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %} {% endcomment %}
   </section>
-  {% comment %}
-</section> {% endcomment %}
 
-{% if chart_data %}
-  <section class="mt-6 w-full border border-text/10 p-4 rounded-lg">
-    <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Performance</h4>
-    {% include 'performance/include/dash/profit_chart.html' with id=id data=chart_data %}
-  </section>
-{% endif %}
+  {% if chart_data %}
+    <section class="mt-6 w-full border border-text/10 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Performance</h4>
+      {% include 'performance/include/dash/profit_chart.html' with id=id data=chart_data %}
+    </section>
+  {% endif %}
 
-{% if assets %}
-  <section class="w-full border border-text/10 p-4 rounded-lg mt-6">
-    <div class="w-full flex items-center justify-between mb-4">
-      <h4 class="text-sm sm:text-base font-semibold text-title/80">Assets</h4>
-      <div class="relative">
-        <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-          <svg class="w-4 aspect-auto text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21 21-4.34-4.34" />
-            <circle cx="11" cy="11" r="8" />
-          </svg>
+  {% if assets %}
+    <section class="w-full border border-text/10 p-4 rounded-lg mt-6">
+      <div class="w-full flex items-center justify-between mb-4">
+        <h4 class="text-sm sm:text-base font-semibold text-title/80">Assets</h4>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+            <svg class="w-4 aspect-auto text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21 21-4.34-4.34" />
+              <circle cx="11" cy="11" r="8" />
+            </svg>
+          </div>
+          <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search assets..." onkeyup="filterAssets()" />
         </div>
-        <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search assets..." onkeyup="filterAssets()" />
       </div>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-      {% for asset in assets.items %}
-        {% include 'include/dash/asset_card.html' with title=asset.0 info=asset.1 %}
-      {% endfor %}
-    </div>
-  </section>
-{% endif %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+        {% for asset in assets.items %}
+          {% url 'asset_performance' asset=asset.0 perf_id=perf_id as asset_url %}
+          {% include 'include/dash/asset_card.html' with url=asset_url title=asset.0 info=asset.1 %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 
-{% if sources %}
-  <section class="w-full border border-text/10 p-4 rounded-lg mt-6">
-    <div class="w-full flex items-center justify-between mb-4">
-      <h4 class="text-sm sm:text-base font-semibold text-title/80">Sources</h4>
-      <div class="relative">
-        <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-          <svg class="w-4 aspect-auto text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21 21-4.34-4.34" />
-            <circle cx="11" cy="11" r="8" />
-          </svg>
+  {% if strategies %}
+    <section class="w-full border border-text/10 p-4 rounded-lg mt-6">
+      <div class="w-full flex items-center justify-between mb-4">
+        <h4 class="text-sm sm:text-base font-semibold text-title/80">Strategies</h4>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+            <svg class="w-4 aspect-auto text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21 21-4.34-4.34" />
+              <circle cx="11" cy="11" r="8" />
+            </svg>
+          </div>
+          <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search strategies..." onkeyup="filterStrategies()" />
         </div>
-        <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search sources..." onkeyup="filterSources()" />
       </div>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-      {% for source in sources.items %}
-        {% url 'strategy' slug=source.0.slug as source_url %}
-        {% include 'include/dash/asset_card.html' with url=source_url title=source.0 info=source.1 %}
-      {% endfor %}
-    </div>
-  </section>
-{% endif %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+        {% for strategy in strategies.items %}
+          {% url 'strategy_performance' strategy_id=strategy.0.id perf_id=perf_id as strategy_url %}
+          {% include 'include/dash/asset_card.html' with url=strategy_url title=strategy.0 info=strategy.1 %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 
-{% if trades|length > 0 %}
-  <section class="mt-6 w-full border border-text/10 mb-12 p-4 rounded-lg">
-    <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">List of Trades</h4>
-    <div class="h-96 w-full">
-      {% include 'automate/include/account_trades.html' with broker_type=broker_type id=id only_closed_trades=only_closed_trades thead_class='' %}
-    </div>
-  </section>
+  {% if trades|length > 0 %}
+    <section class="mt-6 w-full border border-text/10 p-4 rounded-lg">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Trades</h4>
+      <div class="h-96 w-full">
+        {% include 'automate/include/account_trades.html' with broker_type=broker_type id=id only_closed_trades=only_closed_trades thead_class='' %}
+      </div>
+    </section>
+  {% endif %}
 {% endif %}

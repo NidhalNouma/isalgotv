@@ -1,0 +1,34 @@
+{% extends 'page.html' %} {% load static %}
+
+{% block head_title %}
+  <title>{{ overview_data.win_rate|default:'0' }}% win rate | {{ account.name }}</title>
+{% endblock %}
+
+{% block head_description %}
+  <meta name="description" content="{{ account.broker_type }} account overview for {{ account.name }} with a {{ overview_data.win_rate|default:'0' }}% win rate" />
+{% endblock %}
+
+{% block head %}
+  <!-- Load Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'js/chart.js' %}"></script>
+{% endblock %}
+
+{% block page %}
+  <section class="mt-2 mb-12">
+    {% if account %}
+      {% if account.broker_type == 'mexc' or account.broker_type == 'okx' %}
+        {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-5 aspect-auto fill-text/80 text-text/80 mb-2' %}
+      {% else %}
+        {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-6 aspect-auto fill-text/80 text-text/80 mb-2' %}
+      {% endif %}
+    {% endif %}
+    <a href="{% url 'strategy' slug=strategy.slug %}" class="text-2xl font-bold text-title hover:underline">
+      {{ strategy.name }} <svg class="fill-current stroke-current h-6 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" d="M0 0h24v24H0V0z"></path>
+        <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+      </svg>
+    </a>
+    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data id=strategy.id broker_type='strategy' assets=assets sources=sources trades=trades only_closed_trades=only_closed_trades %}
+  </section>
+{% endblock %}

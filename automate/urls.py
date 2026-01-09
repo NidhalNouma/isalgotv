@@ -15,7 +15,7 @@ urlpatterns = [
     path('delete--broker/<str:broker_type>/<int:pk>/', delete_broker, name='delete_broker'),
     path('get-broker-logs/<str:broker_type>/<int:pk>/', get_broker_logs, name='get_logs'),
     path('get-broker-logs/<str:broker_type>/<int:pk>/export/', export_broker_logs, name='export_logs'),
-    path('get-broker-trades/<str:broker_type>/<int:pk>/', get_broker_trades, name='get_trades'),
+    path('get-broker-trades/<str:broker_type>/<str:pk>/', get_broker_trades, name='get_trades'),
     path('broker/<str:broker_type>/<int:pk>/close-trade/<int:trade_id>/', close_trade, name='close_trade'),
 
     path('get-sub-data/<str:broker_type>/<int:pk>/<str:account_subscription_id>/', account_subscription_data, name='get_account_subscription_data'),

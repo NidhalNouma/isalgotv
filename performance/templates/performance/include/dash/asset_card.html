@@ -2,7 +2,14 @@
 
 <div class="bg-text/5 text-text/80 text-xs font-medium p-2 rounded-lg flex flex-col w-full">
   {% if url %}
-    <h5 class="text-lg text-title/80 font-semibold"><a href="{{ url }}">{{ title }}</a></h5>
+    <a class="text-base text-title/80 font-semibold btn-a justify-between" href="{{ url }}">
+      {{ title }}
+      <span class="p-0.5 bg-text/20 rounded-full ml-1">
+        <svg class="h-3.5 aspect-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </span>
+    </a>
   {% else %}
     <h5 class="text-lg text-title/80 font-semibold">{{ title }}</h5>
   {% endif %}
@@ -139,10 +146,10 @@
       {% for currency, data in info.profit.items %}
         <div class="flex justify-between items-center bg-text/5 p-1 rounded-md">
           <span class="text-xs text-text/80">{{ currency }}</span>
-          {% if data.profit >= 0 %}
-            <span class="text-sm text-profit">+{{ data.profit|floatformat:8|trim_zeros }}</span>
+          {% if data.net_profit >= 0 %}
+            <span class="text-sm text-profit">+{{ data.net_profit|floatformat:8|trim_zeros }}</span>
           {% else %}
-            <span class="text-sm text-loss">{{ data.profit|floatformat:8|trim_zeros }}</span>
+            <span class="text-sm text-loss">{{ data.net_profit|floatformat:8|trim_zeros }}</span>
           {% endif %}
         </div>
       {% endfor %}
