@@ -1,0 +1,401 @@
+{% load custom_tags %}
+{% load custom_filters %}
+
+{% if perf_emsg %}
+  <section class="w-full mt-4">
+    {% include 'include/infos.html' with info=perf_emsg %}
+  </section>
+{% else %}
+
+  {# ===== SUMMARY STATS ROW ===== #}
+  <section class="mt-4 w-full grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div class="bg-gradient-to-br from-profit/20 to-profit/5 text-text/80 p-4 rounded-xl border border-profit/20">
+      <div class="flex items-center gap-2 mb-1">
+        <div class="w-8 h-8 rounded-full bg-profit/20 flex items-center justify-center">
+          <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+            <polyline points="16 7 22 7 22 13"></polyline>
+          </svg>
+        </div>
+        <span class="text-xs text-text/60 font-medium">Win Rate</span>
+      </div>
+      <h3 class="text-3xl font-bold text-profit">{{ overview_data.win_rate|default:'0' }}%</h3>
+      <p class="text-xs text-text/50 mt-1">{{ overview_data.winning_trades }} wins / {{ overview_data.trades }} total</p>
+    </div>
+    
+    <div class="bg-gradient-to-br from-blue-500/20 to-blue-500/5 text-text/80 p-4 rounded-xl border border-blue-500/20">
+      <div class="flex items-center gap-2 mb-1">
+        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+          <svg class="w-4 h-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+        </div>
+        <span class="text-xs text-text/60 font-medium">Total Trades</span>
+      </div>
+      <h3 class="text-3xl font-bold text-blue-400">{{ overview_data.trades|default:'0' }}</h3>
+      <p class="text-xs text-text/50 mt-1">{{ overview_data.buy_trades }} buy / {{ overview_data.sell_trades }} sell</p>
+    </div>
+    
+    <div class="bg-gradient-to-br from-amber-500/20 to-amber-500/5 text-text/80 p-4 rounded-xl border border-amber-500/20">
+      <div class="flex items-center gap-2 mb-1">
+        <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center">
+          <svg class="w-4 h-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <span class="text-xs text-text/60 font-medium">Buy Win Rate</span>
+      </div>
+      <h3 class="text-3xl font-bold text-amber-400">{{ overview_data.buy_win_rate|default:'0' }}%</h3>
+      <p class="text-xs text-text/50 mt-1">{{ overview_data.buy_winning_trades }} / {{ overview_data.buy_trades }} trades</p>
+    </div>
+    
+    <div class="bg-gradient-to-br from-purple-500/20 to-purple-500/5 text-text/80 p-4 rounded-xl border border-purple-500/20">
+      <div class="flex items-center gap-2 mb-1">
+        <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+          <svg class="w-4 h-4 text-purple-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <span class="text-xs text-text/60 font-medium">Sell Win Rate</span>
+      </div>
+      <h3 class="text-3xl font-bold text-purple-400">{{ overview_data.sell_win_rate|default:'0' }}%</h3>
+      <p class="text-xs text-text/50 mt-1">{{ overview_data.sell_winning_trades }} / {{ overview_data.sell_trades }} trades</p>
+    </div>
+  </section>
+
+  {# ===== BUY VS SELL COMPARISON ===== #}
+  <section class="mt-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+    {# Buy Performance Card #}
+    <div class="bg-text/5 border border-text/10 rounded-xl p-4">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-sm font-semibold text-title/80 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-profit"></span>
+          Buy Performance
+        </h4>
+        <span class="text-xs bg-profit/20 text-profit px-2 py-0.5 rounded-full">{{ overview_data.buy_win_rate }}% WR</span>
+      </div>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-text/60">Trades</span>
+          <span class="text-sm font-medium text-text/80">{{ overview_data.buy_trades }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-text/60">Winners</span>
+          <span class="text-sm font-medium text-profit">{{ overview_data.buy_winning_trades }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-text/60">Losers</span>
+          <span class="text-sm font-medium text-loss">{{ overview_data.buy_losing_trades }}</span>
+        </div>
+        
+        {# Win/Loss Bar #}
+        <div class="mt-2">
+          <div class="flex h-3 rounded-full overflow-hidden bg-text/10">
+            {% if overview_data.buy_trades > 0 %}
+              <div class="bg-profit" style="width: {{ overview_data.buy_win_rate }}%"></div>
+              <div class="bg-loss" style="width: {{ overview_data.buy_win_rate|differance:100 }}%"></div>
+            {% endif %}
+          </div>
+          <div class="flex justify-between mt-1">
+            <span class="text-xs text-profit">{{ overview_data.buy_winning_trades }} W</span>
+            <span class="text-xs text-loss">{{ overview_data.buy_losing_trades }} L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {# Sell Performance Card #}
+    <div class="bg-text/5 border border-text/10 rounded-xl p-4">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-sm font-semibold text-title/80 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-loss"></span>
+          Sell Performance
+        </h4>
+        <span class="text-xs bg-loss/20 text-loss px-2 py-0.5 rounded-full">{{ overview_data.sell_win_rate }}% WR</span>
+      </div>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-text/60">Trades</span>
+          <span class="text-sm font-medium text-text/80">{{ overview_data.sell_trades }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-text/60">Winners</span>
+          <span class="text-sm font-medium text-profit">{{ overview_data.sell_winning_trades }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-text/60">Losers</span>
+          <span class="text-sm font-medium text-loss">{{ overview_data.sell_losing_trades }}</span>
+        </div>
+        
+        {# Win/Loss Bar #}
+        <div class="mt-2">
+          <div class="flex h-3 rounded-full overflow-hidden bg-text/10">
+            {% if overview_data.sell_trades > 0 %}
+              <div class="bg-profit" style="width: {{ overview_data.sell_win_rate }}%"></div>
+              <div class="bg-loss" style="width: {{ overview_data.sell_win_rate|differance:100 }}%"></div>
+            {% endif %}
+          </div>
+          <div class="flex justify-between mt-1">
+            <span class="text-xs text-profit">{{ overview_data.sell_winning_trades }} W</span>
+            <span class="text-xs text-loss">{{ overview_data.sell_losing_trades }} L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# ===== CURRENCY BREAKDOWN CHARTS ===== #}
+  {% if currencies_performance %}
+    <section class="mt-6 w-full border border-text/10 rounded-xl p-4">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Currency Performance</h4>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for currency, perf in currencies_performance.items %}
+          <div class="bg-text/5 rounded-lg p-4 border border-text/5">
+            <div class="flex items-center justify-between mb-3">
+              <h5 class="text-lg font-bold text-title/90">{{ currency }}</h5>
+              <span class="text-xs px-2 py-0.5 rounded-full {% if perf.net_profit >= 0 %}bg-profit/20 text-profit{% else %}bg-loss/20 text-loss{% endif %}">
+                {% if perf.net_profit >= 0 %}+{% endif %}{{ perf.net_profit|floatformat:4|trim_zeros }}
+              </span>
+            </div>
+            
+            {# Mini stat grid #}
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-text/5 rounded p-2">
+                <span class="text-text/50 block">Trades</span>
+                <span class="font-medium text-text/80">{{ perf.trades }}</span>
+              </div>
+              <div class="bg-text/5 rounded p-2">
+                <span class="text-text/50 block">Win Rate</span>
+                <span class="font-medium text-profit">{% widthratio perf.winning_trades perf.trades 100 as wr %}{{ wr|default:'0' }}%</span>
+              </div>
+              <div class="bg-text/5 rounded p-2">
+                <span class="text-text/50 block">Gross Profit</span>
+                <span class="font-medium text-profit">{{ perf.gross_profit|floatformat:4|trim_zeros|default:'0' }}</span>
+              </div>
+              <div class="bg-text/5 rounded p-2">
+                <span class="text-text/50 block">Gross Loss</span>
+                <span class="font-medium text-loss">{{ perf.gross_loss|floatformat:4|trim_zeros|default:'0' }}</span>
+              </div>
+            </div>
+            
+            {# Profit Factor Bar #}
+            <div class="mt-3">
+              <div class="flex justify-between text-xs text-text/60 mb-1">
+                <span>Profit Factor</span>
+                <span class="font-medium {% if perf.profit_factor >= 1 %}text-profit{% else %}text-loss{% endif %}">{{ perf.profit_factor|floatformat:2|default:'0' }}</span>
+              </div>
+              <div class="h-2 rounded-full overflow-hidden bg-text/10">
+                {% with pf_width=perf.profit_factor|default:0 %}
+                  <div class="h-full {% if pf_width >= 1 %}bg-profit{% else %}bg-loss{% endif %}" style="width: {% if pf_width > 3 %}100{% else %}{{ pf_width|floatformat:0|default:0 }}0{% endif %}%"></div>
+                {% endwith %}
+              </div>
+            </div>
+            
+            {# Largest Trades #}
+            <div class="mt-3 pt-3 border-t border-text/10 grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <span class="text-text/50 block">Best Trade</span>
+                <span class="font-medium text-profit">+{{ perf.largest_profit|floatformat:4|trim_zeros|default:'0' }}</span>
+              </div>
+              <div>
+                <span class="text-text/50 block">Worst Trade</span>
+                <span class="font-medium text-loss">{{ perf.largest_loss|floatformat:4|trim_zeros|default:'0' }}</span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {# ===== DAILY PERFORMANCE CHART ===== #}
+  {% if chart_data %}
+    <section class="mt-6 w-full border border-text/10 rounded-xl p-4">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Daily Performance</h4>
+      
+      {# Currency Tabs #}
+      <div id="currency-tabs-{{ cid }}" class="flex flex-wrap gap-2 mb-4">
+        {% for currency, info in chart_data.items %}
+          <button 
+            data-currency="{{ currency }}" 
+            data-cid="{{ cid }}"
+            data-chart-data='{{ info.data|to_json }}'
+            data-profit="{{ info.cumulative.net_profit }}"
+            class="currency-tab-{{ cid }} px-3 py-1.5 text-xs font-medium rounded-lg transition-all
+              {% if forloop.first %}
+                bg-primary text-white
+              {% else %}
+                bg-text/10 text-text/60 hover:bg-text/20
+              {% endif %}"
+          >
+            {{ currency }}
+            <span class="ml-1 {% if info.cumulative.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+              {% if info.cumulative.net_profit >= 0 %}+{% endif %}{{ info.cumulative.net_profit|floatformat:2|trim_zeros }}
+            </span>
+          </button>
+        {% endfor %}
+      </div>
+      
+      {# Chart Stats Row #}
+      {% for currency, info in chart_data.items %}
+        <div id="chart-stats-{{ currency }}-{{ cid }}" class="chart-stats-{{ cid }} {% if not forloop.first %}hidden{% endif %} grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div class="bg-text/5 rounded-lg p-3">
+            <span class="text-xs text-text/50">Net Profit</span>
+            <p class="text-lg font-bold {% if info.cumulative.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+              {% if info.cumulative.net_profit >= 0 %}+{% endif %}{{ info.cumulative.net_profit|floatformat:4|trim_zeros }}
+            </p>
+          </div>
+          <div class="bg-text/5 rounded-lg p-3">
+            <span class="text-xs text-text/50">Max Profit</span>
+            <p class="text-lg font-bold text-profit">+{{ info.max_net_profit|floatformat:4|trim_zeros }}</p>
+          </div>
+          <div class="bg-text/5 rounded-lg p-3">
+            <span class="text-xs text-text/50">Max Drawdown</span>
+            <p class="text-lg font-bold text-loss">{{ info.max_drawdown|floatformat:4|trim_zeros }}</p>
+          </div>
+          <div class="bg-text/5 rounded-lg p-3">
+            <span class="text-xs text-text/50">Days Traded</span>
+            <p class="text-lg font-bold text-text/80">{{ info.number_of_days|default:'0' }}</p>
+          </div>
+        </div>
+      {% endfor %}
+      
+      {# Chart Canvas #}
+      <div class="relative w-full h-72 md:h-80">
+        <canvas id="perfChart2-{{ id }}-{{ cid }}" class="!w-full !h-full"></canvas>
+      </div>
+      
+      {# Average Stats #}
+      {% for currency, info in chart_data.items %}
+        <div id="avg-stats-{{ currency }}-{{ cid }}" class="avg-stats-{{ cid }} {% if not forloop.first %}hidden{% endif %} mt-4 flex flex-wrap gap-4 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-text/50">Avg Daily Profit:</span>
+            <span class="font-medium {% if info.avg_daily_net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+              {{ info.avg_daily_net_profit|floatformat:4|trim_zeros|default:'0' }}
+            </span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-text/50">Avg Daily Trades:</span>
+            <span class="font-medium text-text/80">{{ info.avg_daily_trades|floatformat:1|default:'0' }}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-text/50">Today's P/L:</span>
+            <span class="font-medium {% if info.today_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+              {{ info.today_profit|floatformat:4|trim_zeros|default:'0' }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+    
+    <script type="text/javascript">
+    (function() {
+      const chartId = '{{ id }}-{{ cid }}';
+      const cid = '{{ cid }}';
+      const tabsContainer = document.getElementById('currency-tabs-{{ cid }}');
+      const tabs = tabsContainer ? tabsContainer.querySelectorAll('.currency-tab-{{ cid }}') : [];
+      
+      function switchTab(btn, chartData) {
+        const currency = btn.dataset.currency;
+        
+        // Update tab styles
+        tabs.forEach(t => {
+          t.classList.remove('bg-primary', 'text-white');
+          t.classList.add('bg-text/10', 'text-text/60');
+        });
+        btn.classList.remove('bg-text/10', 'text-text/60');
+        btn.classList.add('bg-primary', 'text-white');
+        
+        // Show/hide stats
+        document.querySelectorAll('.chart-stats-{{ cid }}').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.avg-stats-{{ cid }}').forEach(el => el.classList.add('hidden'));
+        
+        const statsEl = document.getElementById('chart-stats-' + currency + '-{{ cid }}');
+        const avgEl = document.getElementById('avg-stats-' + currency + '-{{ cid }}');
+        if (statsEl) statsEl.classList.remove('hidden');
+        if (avgEl) avgEl.classList.remove('hidden');
+        
+        // Update chart
+        if (typeof loadAccountProfitCharts === 'function') {
+          loadAccountProfitCharts('perfChart2-' + chartId, chartData);
+        }
+      }
+      
+      tabs.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          try {
+            const chartData = JSON.parse(this.dataset.chartData);
+            switchTab(this, chartData);
+          } catch(err) {
+            console.error('Failed to parse chart data:', err);
+          }
+        });
+      });
+      
+      // Auto-click first tab
+      setTimeout(() => {
+        if (tabs.length > 0) tabs[0].click();
+      }, 0);
+    })();
+    </script>
+  {% endif %}
+
+  {# ===== RELATED ITEMS (STRATEGIES OR ASSETS) ===== #}
+  {% if strategies %}
+    <section class="mt-6 w-full border border-text/10 rounded-xl p-4">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Strategies Trading This Asset</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {% for strategy, info in strategies.items %}
+          {% url 'strategy_performance' strategy_id=strategy.id perf_id=perf_id as strategy_url %}
+          <a href="{{ strategy_url }}" class="bg-text/5 hover:bg-text/10 transition-colors rounded-lg p-3 block">
+            <div class="flex items-center justify-between mb-2">
+              <h5 class="font-medium text-title/80 truncate">{{ strategy.name }}</h5>
+              <span class="text-xs bg-text/10 px-2 py-0.5 rounded">{{ info.trades }} trades</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-text/60">Win Rate</span>
+              <span class="font-medium text-profit">{{ info.win_rate|default:'0' }}%</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+  
+  {% if assets %}
+    <section class="mt-6 w-full border border-text/10 rounded-xl p-4">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Assets Traded by This Strategy</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {% for asset, info in assets.items %}
+          {% url 'asset_performance' asset=asset perf_id=perf_id as asset_url %}
+          <a href="{{ asset_url }}" class="bg-text/5 hover:bg-text/10 transition-colors rounded-lg p-3 block">
+            <div class="flex items-center justify-between mb-2">
+              <h5 class="font-medium text-title/80">{{ asset }}</h5>
+              <span class="text-xs bg-text/10 px-2 py-0.5 rounded">{{ info.trades }} trades</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-text/60">Win Rate</span>
+              <span class="font-medium text-profit">{{ info.win_rate|default:'0' }}%</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {# ===== RECENT TRADES ===== #}
+  {% if trades|length > 0 %}
+    <section class="mt-6 w-full border border-text/10 rounded-xl p-4">
+      <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Recent Trades</h4>
+      <div class="h-80 w-full overflow-auto">
+        {% include 'automate/include/account_trades.html' with broker_type=broker_type id=id only_closed_trades=only_closed_trades thead_class='' %}
+      </div>
+    </section>
+  {% endif %}
+{% endif %}

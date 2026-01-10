@@ -1,102 +1,157 @@
 {% load custom_tags %}
-<div id="profit-chart-container-{{cid}}" class="w-full">
+<div id="profit-chart-container-{{cid}}" class="w-full ">
+    {# Currency Tabs - Scrollable #}
     <div class="relative mb-4">
-        <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
         <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
-        <div id="currencies-btns-{{cid}}" class="flex items-center gap-3 overflow-x-auto no-scrollbar pr-8">
+        <div id="currencies-btns-{{cid}}" class="flex flex-nowrap items-center gap-2 overflow-x-auto no-scrollbar pr-8">
             {% for currency, info in data.items %}
-            <button data-currency="{{currency}}" data-cid="{{cid}}" data-chart-data='{{info.data|to_json}}' data-profit="{{info.cumulative.net_profit}}" class="currency-btn-{{cid}} px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.net_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
+            <button 
+                data-currency="{{currency}}" 
+                data-cid="{{cid}}" 
+                data-chart-data='{{info.data|to_json}}' 
+                data-profit="{{info.cumulative.net_profit}}"
+                class="currency-btn-{{cid}} flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-text/5 text-text/60 "
+            >
+                {{ currency }}
+                <span class="ml-1 {% if info.cumulative.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                    {% if info.cumulative.net_profit >= 0 %}+{% endif %}{{ info.cumulative.net_profit|floatformat:2|trim_zeros }}
+                </span>
+            </button> 
             {% endfor %}
         </div>
     </div>
-    <div class="w-full">
-        {% for currency, curr_perf in currencies_performance.items %}
-            {% with info=data|get_item:currency %}
-                <div id="pnl-cards-{{currency}}-{{cid}}" class="relative w-full hidden">
-                    <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
-                    <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
-
-                    <div class="flex items-start gap-4 w-full overflow-x-auto no-scrollbar pr-8">
-                        {% include 'include/dash/perf_card.html' with title='Trades' value=curr_perf.trades label1='Buy' val1=curr_perf.buy_trades label2='Sell' val2=curr_perf.sell_trades %}
-                        {% include 'include/dash/perf_card.html' with title='Net PnL' value=curr_perf.net_profit|floatformat:8|trim_zeros|default:'0' v_color="auto" label1='PnL' val1=curr_perf.profit|floatformat:8|trim_zeros|default:'0' v1_color="auto" label2='Today net PnL' val2=info.today_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
-                        {% include 'include/dash/perf_card.html' with title='Profit factor' value=curr_perf.profit_factor|floatformat:2|default:'0' label1='Buy' val1=curr_perf.buy_profit_factor|floatformat:2|default:'0' label2='Sell' val2=curr_perf.sell_profit_factor|floatformat:2|default:'0' %}
-                        {% include 'include/dash/perf_card.html' with title='Days traded' value=info.number_of_days label1='Avg Trades' val1=info.avg_daily_trades|floatformat:0|default:'0' label2='Avg net PnL' val2=info.avg_daily_net_profit|floatformat:8|trim_zeros|default:'0' v2_color="auto" %}
+    
+    {# Stats Cards per Currency - Scrollable #}
+    {% for currency, curr_perf in currencies_performance.items %}
+        {% with info=data|get_item:currency %}
+            <div id="pnl-cards-{{currency}}-{{cid}}" class="pnl-cards-{{cid}} hidden relative w-full mb-4">
+                <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
+                <div class="flex flex-nowrap items-stretch gap-3 overflow-x-auto no-scrollbar pr-8">
+                    <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
+                        <span class="text-xs text-text/50">Trades</span>
+                        <p class="text-lg font-bold text-text/80">{{ curr_perf.trades }}</p>
+                    </div>
+                    <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
+                        <span class="text-xs text-text/50">Net Profit</span>
+                        <p class="text-lg font-bold {% if curr_perf.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                            {% if curr_perf.net_profit >= 0 %}+{% endif %}{{ curr_perf.net_profit|floatformat:4|trim_zeros }}
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
+                        <span class="text-xs text-text/50">Max Profit</span>
+                        <p class="text-lg font-bold text-profit">+{{ info.max_net_profit|floatformat:4|trim_zeros }}</p>
+                    </div>
+                    <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
+                        <span class="text-xs text-text/50">Max Drawdown</span>
+                        <p class="text-lg font-bold text-loss">{{ info.max_drawdown|floatformat:4|trim_zeros }}</p>
+                    </div>
+                    <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
+                        <span class="text-xs text-text/50">Profit Factor</span>
+                        <p class="text-lg font-bold {% if curr_perf.profit_factor >= 1 %}text-profit{% else %}text-loss{% endif %}">{{ curr_perf.profit_factor|floatformat:2|default:'0' }}</p>
+                    </div>
+                    <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
+                        <span class="text-xs text-text/50">Days Traded</span>
+                        <p class="text-lg font-bold text-text/80">{{ info.number_of_days|default:'0' }}</p>
                     </div>
                 </div>
-            {% endwith %}
-        {% endfor %}
-        <div class="relative w-full !h-80 md:!h-96 mt-4">
-            <canvas id="accountProfitChart-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
-        </div>
-
-
-        {% for currency, info in currencies_performance.items %}
-            <div id="perf-table-{{currency}}-{{cid}}" class="hidden mt-6 w-full ih-96 overflow-auto no-scrollbar">
-                <h6 class="text-title/80 text-sm font-semibold bg-text/10 rounded-md py-2 px-2">Details</h6>
-                {% include 'include/dash/perf_table.html' with perf=info %}
             </div>
-        {% endfor %}
-
+        {% endwith %}
+    {% endfor %}
+    
+    {# Chart Canvas #}
+    <div class="relative w-full h-72 md:h-80">
+        <canvas id="accountProfitChart-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
     </div>
+    
+    {# Average Stats per Currency #}
+    {% for currency, curr_perf in currencies_performance.items %}
+        {% with info=data|get_item:currency %}
+            <div id="avg-stats-{{currency}}-{{cid}}" class="avg-stats-{{cid}} hidden mt-4 flex flex-wrap gap-4 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="text-text/50">Avg Daily Profit:</span>
+                    <span class="font-medium {% if info.avg_daily_net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                        {{ info.avg_daily_net_profit|floatformat:4|trim_zeros|default:'0' }}
+                    </span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-text/50">Avg Daily Trades:</span>
+                    <span class="font-medium text-text/80">{{ info.avg_daily_trades|floatformat:0|default:'0' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-text/50">Today's P/L:</span>
+                    <span class="font-medium {% if info.today_net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                        {{ info.today_net_profit|floatformat:4|trim_zeros|default:'0' }}
+                    </span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-text/50">Best Trade:</span>
+                    <span class="font-medium text-profit">+{{ curr_perf.largest_profit|floatformat:4|trim_zeros|default:'0' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-text/50">Worst Trade:</span>
+                    <span class="font-medium text-loss">{{ curr_perf.largest_loss|floatformat:4|trim_zeros|default:'0' }}</span>
+                </div>
+            </div>
+        {% endwith %}
+    {% endfor %}
+
+    {# Details Table per Currency #}
+    {% for currency, info in currencies_performance.items %}
+        <div id="perf-table-{{currency}}-{{cid}}" class="perf-table-{{cid}} hidden mt-6 w-full overflow-auto no-scrollbar">
+            <h6 class="text-title/80 text-sm font-semibold bg-text/10 rounded-md py-2 px-2">Details</h6>
+            {% include 'include/dash/perf_table.html' with perf=info %}
+        </div>
+    {% endfor %}
 </div>
+
 <script type="text/javascript">
 (function() {
-    // Scoped variables for this specific chart instance
     const chartId = '{{ id }}-{{cid}}';
     const cid = '{{cid}}';
     const container = document.getElementById('profit-chart-container-{{cid}}');
     const buttonsContainer = document.getElementById('currencies-btns-{{cid}}');
     const buttons = buttonsContainer ? buttonsContainer.querySelectorAll('.currency-btn-{{cid}}') : [];
     
-    const pnlCardsContainers = {
-        {% for currency, info in data.items %}
-            '{{currency}}-{{cid}}': document.getElementById('pnl-cards-{{currency}}-{{cid}}'),
-        {% endfor %}
-    };
-
-    const perfTables = {
-        {% for currency, info in data.items %}
-            '{{currency}}-{{cid}}': document.getElementById('perf-table-{{currency}}-{{cid}}'),
-        {% endfor %}
-    };
-
-    function currencyBtnClicked(currencyId, profit) {
-        buttons.forEach(function(btn) {
-            const btnCurrencyId = btn.dataset.currency + '-' + btn.dataset.cid;
-            if(btnCurrencyId === currencyId) {
-                btn.classList.remove('border-transparent');
-                if(profit >= 0) {
-                    btn.classList.add('border-profit');
-                } else {
-                    btn.classList.add('border-loss');
-                }
-                if(pnlCardsContainers[currencyId]) {
-                    pnlCardsContainers[currencyId].classList.remove('hidden');
-                    pnlCardsContainers[currencyId].classList.add('block');
-                }
-                if(perfTables[currencyId]) {
-                    perfTables[currencyId].classList.remove('hidden');
-                }
-            } else {
-                btn.classList.remove('border-profit', 'border-loss');
-                btn.classList.add('border-transparent');
-                if(pnlCardsContainers[btnCurrencyId]) {
-                    pnlCardsContainers[btnCurrencyId].classList.add('hidden');
-                    pnlCardsContainers[btnCurrencyId].classList.remove('block');
-                }
-                if(perfTables[btnCurrencyId]) {
-                    perfTables[btnCurrencyId].classList.add('hidden');
-                }
-            }
+    function switchTab(btn, chartData) {
+        const currency = btn.dataset.currency;
+        const currencyId = currency + '-' + cid;
+        const profit = parseFloat(btn.dataset.profit);
+        
+        // Update tab styles
+        buttons.forEach(t => {
+            t.classList.remove('bg-profit/20', 'bg-loss/20', 'text-text');
+            t.classList.add('bg-text/5', 'text-text/60');
         });
+        btn.classList.remove('bg-text/5', 'text-text/60');
+        if(profit >= 0)
+            btn.classList.add('bg-profit/20', 'text-text');
+        else
+            btn.classList.add('bg-loss/20', 'text-text');
+        
+        // Show/hide pnl cards
+        container.querySelectorAll('.pnl-cards-{{cid}}').forEach(el => el.classList.add('hidden'));
+        const pnlCards = document.getElementById('pnl-cards-' + currencyId);
+        if (pnlCards) pnlCards.classList.remove('hidden');
+        
+        // Show/hide avg stats
+        container.querySelectorAll('.avg-stats-{{cid}}').forEach(el => el.classList.add('hidden'));
+        const avgStats = document.getElementById('avg-stats-' + currencyId);
+        if (avgStats) avgStats.classList.remove('hidden');
+        
+        // Show/hide perf tables
+        container.querySelectorAll('.perf-table-{{cid}}').forEach(el => el.classList.add('hidden'));
+        const perfTable = document.getElementById('perf-table-' + currencyId);
+        if (perfTable) perfTable.classList.remove('hidden');
+        
+        // Update chart
+        if (typeof loadAccountProfitCharts === 'function') {
+            loadAccountProfitCharts(chartId, chartData);
+        }
     }
 
     function handleButtonClick(event) {
         event.preventDefault();
         const btn = event.currentTarget;
-        const currency = btn.dataset.currency;
-        const currencyId = currency + '-' + btn.dataset.cid;
-        const profit = parseFloat(btn.dataset.profit);
         let chartData;
         try {
             chartData = JSON.parse(btn.dataset.chartData);
@@ -104,9 +159,7 @@
             console.error('Failed to parse chart data:', e);
             return;
         }
-        
-        currencyBtnClicked(currencyId, profit);
-        loadAccountProfitCharts(chartId, chartData);
+        switchTab(btn, chartData);
     }
 
     // Attach click handlers to buttons
@@ -121,12 +174,9 @@
         }
     }
     
-    // For HTMX loaded content, run immediately since DOM is already ready
-    // For initial page load, wait for DOMContentLoaded if needed
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', autoClickFirstButton);
     } else {
-        // Use setTimeout to ensure canvas is rendered
         setTimeout(autoClickFirstButton, 0);
     }
 })();

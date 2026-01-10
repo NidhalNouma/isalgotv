@@ -51,4 +51,98 @@ class DayPerformanceAdmin(ModelAdmin):
     
     list_display = ('id', 'date', 'account_performance')
     search_fields = ['account_performance__content_type__model', 'account_performance__object_id']
+
+
+@admin.register(TradeAppliedPerformance)
+class TradeAppliedPerformanceAdmin(ModelAdmin):
+    verbose_name = "Trade Applied Performance"
+    verbose_name_plural = "Trade Applied Performances"
+    
+    list_display = ('id', 'trade', 'performance_type', 'performance_id', 'applied_at')
+    search_fields = ['trade__symbol', 'performance_type']
+    list_filter = ['performance_type']
+
+
+@admin.register(DayAssetPerformance)
+class DayAssetPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Day Asset"
+    verbose_name_plural = "Performance - Day Assets"
+    
+    list_display = ('id', 'asset_performance', 'day_performance', 'buy_total_trades', 'sell_total_trades')
+
+
+@admin.register(DayStrategyPerformance)
+class DayStrategyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Day Strategy"
+    verbose_name_plural = "Performance - Day Strategies"
+    
+    list_display = ('id', 'strategy_performance', 'day_performance', 'buy_total_trades', 'sell_total_trades')
+
+
+@admin.register(AssetStrategyPerformance)
+class AssetStrategyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Asset Strategy"
+    verbose_name_plural = "Performance - Asset Strategies"
+    
+    list_display = ('id', 'asset_performance', 'strategy_performance', 'buy_total_trades', 'sell_total_trades')
+
+
+@admin.register(AssetCurrencyPerformance)
+class AssetCurrencyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Asset Currency"
+    verbose_name_plural = "Performance - Asset Currencies"
+    
+    list_display = ('id', 'currency', 'asset_performance', 'net_profit', 'profit_factor')
+    search_fields = ['currency']
+    list_filter = ['currency']
+
+
+@admin.register(StrategyCurrencyPerformance)
+class StrategyCurrencyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Strategy Currency"
+    verbose_name_plural = "Performance - Strategy Currencies"
+    
+    list_display = ('id', 'currency', 'strategy_performance', 'net_profit', 'profit_factor')
+    search_fields = ['currency']
+    list_filter = ['currency']
+
+
+@admin.register(DayCurrencyPerformance)
+class DayCurrencyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Day Currency"
+    verbose_name_plural = "Performance - Day Currencies"
+    
+    list_display = ('id', 'currency', 'day_performance', 'net_profit', 'profit_factor')
+    search_fields = ['currency']
+    list_filter = ['currency']
+
+
+@admin.register(DayAssetCurrencyPerformance)
+class DayAssetCurrencyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Day Asset Currency"
+    verbose_name_plural = "Performance - Day Asset Currencies"
+    
+    list_display = ('id', 'currency', 'day_asset_performance', 'net_profit', 'profit_factor')
+    search_fields = ['currency']
+    list_filter = ['currency']
+
+
+@admin.register(DayStrategyCurrencyPerformance)
+class DayStrategyCurrencyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Day Strategy Currency"
+    verbose_name_plural = "Performance - Day Strategy Currencies"
+    
+    list_display = ('id', 'currency', 'day_strategy_performance', 'net_profit', 'profit_factor')
+    search_fields = ['currency']
+    list_filter = ['currency']
+
+
+@admin.register(AssetStrategyCurrencyPerformance)
+class AssetStrategyCurrencyPerformanceAdmin(ModelAdmin):
+    verbose_name = "Performance - Asset Strategy Currency"
+    verbose_name_plural = "Performance - Asset Strategy Currencies"
+    
+    list_display = ('id', 'currency', 'asset_strategy_performance', 'net_profit', 'profit_factor')
+    search_fields = ['currency']
+    list_filter = ['currency']
     
