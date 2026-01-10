@@ -26,6 +26,15 @@ def load_json(data):
         return {}
 
 
+@register.filter
+def to_json(data):
+    """Convert Python object to JSON string for use in data attributes."""
+    from django.core.serializers.json import DjangoJSONEncoder
+    try:
+        return json.dumps(data, cls=DjangoJSONEncoder)
+    except (TypeError, ValueError):
+        return '[]'
+
 
 @register.filter
 def differance(value1, value2):

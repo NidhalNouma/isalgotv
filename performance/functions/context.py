@@ -4,7 +4,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from performance.models import (
     StrategyPerformance, AccountPerformance, AssetPerformance,
-    DayAssetPerformance, DayStrategyPerformance, AssetStrategyPerformance
 )
 from performance.functions.performance import *
 
@@ -27,16 +26,20 @@ def get_strategy_performance_context(strategy, perf_id):
         content_type=strategy_performances.account_performance.content_type,
         object_id=strategy_performances.account_performance.object_id,
         status__in=['C']
-    ).order_by('-exit_time')
+    ).order_by('-exit_time')[:20]
 
     return {
+        'cid': f'strategy-{account.id}-{strategy_performances.id}',
+        'perf_id': strategy_performances.account_performance.id,
         'account': account,
         'overview_data': overview_performance,
         'chart_data': chart_performance,
         'currencies_performance': currencies_performance,
         'assets': asset_performance,
         'trades': trades,
-        # 'next_start': trades.count(),
+        'trades_broker_type': f"strategy-{strategy_performances.account_performance.content_type.model}-{strategy_performances.account_performance.object_id}",
+        'trades_id': strategy,
+        'next_start': trades.count(),
         'only_closed_trades': True,
     }
 
@@ -59,16 +62,20 @@ def get_asset_performance_context(asset, perf_id):
         content_type=asset_performances.account_performance.content_type,
         object_id=asset_performances.account_performance.object_id,
         status__in=['C']
-    ).order_by('-exit_time')
+    ).order_by('-exit_time')[:20]
 
     return {
+        'cid': f'asset-{account.id}-{asset_performances.id}',
+        'perf_id': asset_performances.account_performance.id,
         'account': account,
         'overview_data': overview_performance,
         'chart_data': chart_performance,
         'currencies_performance': currencies_performance,
         'strategies': strategies,
         'trades': trades,
-        # 'next_start': trades.count(),
+        'trades_broker_type': f"asset-{asset_performances.account_performance.content_type.model}-{asset_performances.account_performance.object_id}",
+        'trades_id': asset,
+        'next_start': trades.count(),
         'only_closed_trades': True,
     }
 
@@ -106,6 +113,7 @@ def account_context_data(account):
     ).order_by('-exit_time')[:20]
 
     return {
+        'cid': f'account-{account_perf.id}',
         'perf_id': account_perf.id,
         'overview_data': overview_data,
         'chart_data': chart_performance,

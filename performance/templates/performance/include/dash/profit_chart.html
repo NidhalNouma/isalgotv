@@ -1,18 +1,18 @@
 {% load custom_tags %}
-<div class="w-full">
+<div id="profit-chart-container-{{cid}}" class="w-full">
     <div class="relative mb-4">
         <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
         <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
-        <div id="currencies-btns" class="flex items-center gap-3 overflow-x-auto no-scrollbar pr-8">
+        <div id="currencies-btns-{{cid}}" class="flex items-center gap-3 overflow-x-auto no-scrollbar pr-8">
             {% for currency, info in data.items %}
-            <button id="btn-{{currency}}" onclick="initChart(event, '{{currency}}' ,{{info.data}}, {{info.cumulative.net_profit}})" class="px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.net_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
+            <button data-currency="{{currency}}" data-cid="{{cid}}" data-chart-data='{{info.data|to_json}}' data-profit="{{info.cumulative.net_profit}}" class="currency-btn-{{cid}} px-4 py-1 text-sm font-semibold rounded-full border-transparent border {% if info.cumulative.net_profit >= 0 %}text-profit bg-profit/20{% else %}text-loss bg-loss/20{% endif %}">{{ currency }}</button> 
             {% endfor %}
         </div>
     </div>
     <div class="w-full">
         {% for currency, curr_perf in currencies_performance.items %}
             {% with info=data|get_item:currency %}
-                <div id="pnl-cards-{{currency}}" class="relative w-full hidden">
+                <div id="pnl-cards-{{currency}}-{{cid}}" class="relative w-full hidden">
                     <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
                     <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
 
@@ -26,12 +26,12 @@
             {% endwith %}
         {% endfor %}
         <div class="relative w-full !h-80 md:!h-96 mt-4">
-            <canvas id="accountProfitChart-{{ id }}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
+            <canvas id="accountProfitChart-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
         </div>
 
 
         {% for currency, info in currencies_performance.items %}
-            <div id="perf-table-{{currency}}" class="hidden mt-6 w-full ih-96 overflow-auto no-scrollbar">
+            <div id="perf-table-{{currency}}-{{cid}}" class="hidden mt-6 w-full ih-96 overflow-auto no-scrollbar">
                 <h6 class="text-title/80 text-sm font-semibold bg-text/10 rounded-md py-2 px-2">Details</h6>
                 {% include 'include/dash/perf_table.html' with perf=info %}
             </div>
@@ -40,68 +40,94 @@
     </div>
 </div>
 <script type="text/javascript">
-
-    const buttons = document.getElementById('currencies-btns').getElementsByTagName('button');
+(function() {
+    // Scoped variables for this specific chart instance
+    const chartId = '{{ id }}-{{cid}}';
+    const cid = '{{cid}}';
+    const container = document.getElementById('profit-chart-container-{{cid}}');
+    const buttonsContainer = document.getElementById('currencies-btns-{{cid}}');
+    const buttons = buttonsContainer ? buttonsContainer.querySelectorAll('.currency-btn-{{cid}}') : [];
+    
     const pnlCardsContainers = {
         {% for currency, info in data.items %}
-            '{{currency}}': document.getElementById('pnl-cards-{{currency}}'),
+            '{{currency}}-{{cid}}': document.getElementById('pnl-cards-{{currency}}-{{cid}}'),
         {% endfor %}
     };
 
     const perfTables = {
         {% for currency, info in data.items %}
-            '{{currency}}': document.getElementById('perf-table-{{currency}}'),
+            '{{currency}}-{{cid}}': document.getElementById('perf-table-{{currency}}-{{cid}}'),
         {% endfor %}
     };
 
-    console.log('Initialized perfTables:', perfTables);
-
-    function currencyBtnClicked(currency, profit) {
-        for (let i = 0; i < buttons.length; i++) {
-            const btn = buttons[i];
-            if(btn.id === 'btn-' + currency) {
+    function currencyBtnClicked(currencyId, profit) {
+        buttons.forEach(function(btn) {
+            const btnCurrencyId = btn.dataset.currency + '-' + btn.dataset.cid;
+            if(btnCurrencyId === currencyId) {
                 btn.classList.remove('border-transparent');
                 if(profit >= 0) {
                     btn.classList.add('border-profit');
                 } else {
                     btn.classList.add('border-loss');
                 }
-                pnlCardsContainers[currency].classList.remove('hidden');
-                pnlCardsContainers[currency].classList.add('block');
-                perfTables[currency].classList.remove('hidden');
-                
+                if(pnlCardsContainers[currencyId]) {
+                    pnlCardsContainers[currencyId].classList.remove('hidden');
+                    pnlCardsContainers[currencyId].classList.add('block');
+                }
+                if(perfTables[currencyId]) {
+                    perfTables[currencyId].classList.remove('hidden');
+                }
             } else {
                 btn.classList.remove('border-profit', 'border-loss');
                 btn.classList.add('border-transparent');
-                pnlCardsContainers[btn.id.replace('btn-', '')].classList.add('hidden');
-                pnlCardsContainers[btn.id.replace('btn-', '')].classList.remove('block');
-                perfTables[btn.id.replace('btn-', '')].classList.add('hidden');
+                if(pnlCardsContainers[btnCurrencyId]) {
+                    pnlCardsContainers[btnCurrencyId].classList.add('hidden');
+                    pnlCardsContainers[btnCurrencyId].classList.remove('block');
+                }
+                if(perfTables[btnCurrencyId]) {
+                    perfTables[btnCurrencyId].classList.add('hidden');
+                }
             }
+        });
+    }
+
+    function handleButtonClick(event) {
+        event.preventDefault();
+        const btn = event.currentTarget;
+        const currency = btn.dataset.currency;
+        const currencyId = currency + '-' + btn.dataset.cid;
+        const profit = parseFloat(btn.dataset.profit);
+        let chartData;
+        try {
+            chartData = JSON.parse(btn.dataset.chartData);
+        } catch(e) {
+            console.error('Failed to parse chart data:', e);
+            return;
         }
-        event.currentTarget.classList.remove('btn-outline-primary');
-        event.currentTarget.classList.add('btn-primary');
+        
+        currencyBtnClicked(currencyId, profit);
+        loadAccountProfitCharts(chartId, chartData);
     }
 
-    function initChart(event, currency, data, profit) {
-        event?.preventDefault();
+    // Attach click handlers to buttons
+    buttons.forEach(function(btn) {
+        btn.addEventListener('click', handleButtonClick);
+    });
 
-        // console.log('Currency button clicked:', currency, 'with profit:', profit);
-        currencyBtnClicked(currency, profit);
-        loadAccountProfitCharts('{{ id }}', data);
-    }
-
-  (function() {
+    // Auto-click first button
     function autoClickFirstButton() {
         if (buttons.length > 0) {
-            //console.log('Auto clicking the first currency button', buttons[0].id);
             buttons[0].click();
         }
     }
     
+    // For HTMX loaded content, run immediately since DOM is already ready
+    // For initial page load, wait for DOMContentLoaded if needed
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', autoClickFirstButton);
+        document.addEventListener('DOMContentLoaded', autoClickFirstButton);
     } else {
-        autoClickFirstButton();
+        // Use setTimeout to ensure canvas is rendered
+        setTimeout(autoClickFirstButton, 0);
     }
-  })();
+})();
 </script>

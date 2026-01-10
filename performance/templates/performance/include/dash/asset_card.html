@@ -1,15 +1,29 @@
 {% load custom_tags %}
 
 <div class="bg-text/5 text-text/80 text-xs font-medium p-2 rounded-lg flex flex-col w-full">
-  {% if url %}
-    <a class="text-base text-title/80 font-semibold btn-a justify-between" href="{{ url }}">
-      {{ title }}
-      <span class="p-0.5 bg-text/20 rounded-full ml-1">
-        <svg class="h-3.5 aspect-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m9 18 6-6-6-6"></path>
-        </svg>
-      </span>
-    </a>
+  {% if url and not no_drawer %}
+    {% if form %}
+      <form id="form-st-{{ form }}" hx-get="{{ url }}?inpage=true" hx-target="#as-{{ form }}" hx-swap="outerHTML" hx-trigger="submit once" class="w-full">
+        {% csrf_token %}
+        <button type="submit" onclick="openDrawer('drawer-{{ form }}', 'bottom'); if(this.dataset.loaded) { event.preventDefault(); } else { this.dataset.loaded = 'true'; }" class="text-base text-title/80 font-semibold btn-a justify-between w-full">
+          {{ title }}
+          <span class="p-0.5 bg-text/20 rounded-full ml-1">
+            <svg class="h-3.5 aspect-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </span>
+        </button>
+      </form>
+    {% else %}
+      <a class="text-base text-title/80 font-semibold btn-a justify-between" href="{{ url }}">
+        {{ title }}
+        <span class="p-0.5 bg-text/20 rounded-full ml-1">
+          <svg class="h-3.5 aspect-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </span>
+      </a>
+    {% endif %}
   {% else %}
     <h5 class="text-lg text-title/80 font-semibold">{{ title }}</h5>
   {% endif %}
@@ -156,3 +170,11 @@
     </div>
   </div>
 </div>
+
+{% if url and form %}
+  {% load custom_tags %}
+
+  {% render_template 'include/dash/st_performance.html' loading=True id='as-'|add:form as st_performance %}
+
+  {% include 'include/drawer_modal.html' with drawer_id='drawer-'|add:form body=st_performance side='bottom' class='h-[80vh] ' body_class='!h-[calc(100%-90px)] max-w-7xl mx-auto' href_title=href_title %}
+{% endif %}

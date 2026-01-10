@@ -22,6 +22,6 @@
       {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-6 aspect-auto fill-text/80 text-text/80 mb-2' %}
     {% endif %}
     <h2 class="text-2xl font-bold text-title">{{ asset }}</h2>
-    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data id=asset broker_type='asset' assets=assets sources=sources trades=trades only_closed_trades=only_closed_trades %}
+    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data id=asset broker_type=trades_broker_type assets=assets sources=sources trades=trades only_closed_trades=only_closed_trades %}
   </section>
 {% endblock %}

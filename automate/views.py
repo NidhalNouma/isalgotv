@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from automate.functions.alerts_logs_trades import check_crypto_credentials, check_forex_credentials, close_open_trade
 from automate.functions.alerts_message import manage_alert
-from performance.functions.context import account_context_data
 
 from automate.models import *
 from automate.forms import *
@@ -71,33 +70,6 @@ def index(request):
         return render(request, "automate/automate.html", context={})
     
     return render(request, "automate/automate.html", context=context_accounts_by_user(request))
-
-
-def get_account_data(request, public_id):
-    # Get the account (crypto or forex)
-    crypto_account = CryptoBrokerAccount.objects.filter(public_id=public_id).first()
-    if crypto_account:
-        account = crypto_account
-    else:
-        forex_account = ForexBrokerAccount.objects.filter(public_id=public_id).first()
-        if forex_account:
-            account = forex_account
-        else:
-            return render(request, "404.html", status=404)
-
-    account_perf_context = account_context_data(account)
-
-    if account_perf_context is None:
-        return render(request, "404.html", status=404)
-
-    context = {
-        'account': account,
-        'id': account.id,
-        'broker_type': account.broker_type,
-        **account_perf_context
-    }
-
-    return render(request, "performance/account_perfromance.html", context=context)
 
 def webhook_404(request, exception):
     return HttpResponse("Page not found!", content_type="text/plain")
@@ -779,19 +751,39 @@ def get_broker_trades(request, broker_type, pk):
 
         only_closed_trades = str(request.GET.get('only_closed_trades', 'false')).lower() == 'true'
 
-        if broker_type == 'strategy':
+        filter = {
+            'status__in':['C'] if only_closed_trades else ['O', 'P', 'C'],
+        }
 
-            strategy_id = pk
-            all_trades = TradeDetails.objects.filter(
-                strategy_id=strategy_id,
-                status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-            ).order_by('-exit_time')
+        pr = str(broker_type).split('-')
+        broker_type = pr[0]
+
+        if broker_type == 'strategy':
+            if len(pr) == 3:            
+                if pr[1] == 'cryptobrokeraccount':
+                    account_model = CryptoBrokerAccount
+                elif pr[1] == 'forexbrokeraccount':
+                    account_model = ForexBrokerAccount
+                else:
+                    raise ValueError("Invalid Broker Type")
+
+                filter['content_type'] = ContentType.objects.get_for_model(account_model)
+                filter['object_id'] = pr[2]
+
+            filter['strategy_id'] = pk
+            all_trades = TradeDetails.objects.filter(**filter).order_by('-exit_time')
         elif broker_type == 'asset':
-            asset_id = pk
-            all_trades = TradeDetails.objects.filter(
-                symbol=asset_id,
-                status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-            ).order_by('-exit_time')
+            if len(pr) == 3:                            
+                if pr[1] == 'cryptobrokeraccount':
+                    account_model = CryptoBrokerAccount
+                elif pr[1] == 'forexbrokeraccount':
+                    account_model = ForexBrokerAccount
+                else:
+                    raise ValueError("Invalid Broker Type")
+
+                filter['content_type'] = ContentType.objects.get_for_model(account_model)
+                filter['object_id'] = pr[2]
+            filter['symbol'] = pk
         else:
 
             crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
@@ -804,14 +796,12 @@ def get_broker_trades(request, broker_type, pk):
             else:
                 raise ValueError("Invalid Broker Type")
             
+            filter['content_type'] = ContentType.objects.get_for_model(account_model)
+            filter['object_id'] = pk
 
-            content_type = ContentType.objects.get_for_model(account_model)
-            all_trades = TradeDetails.objects.filter(
-                content_type=content_type, 
-                object_id=pk, 
-                status__in=['C'] if only_closed_trades else ['O', 'P', 'C']
-            ).order_by('-exit_time')
+        # print(filter)
             
+        all_trades = TradeDetails.objects.filter(**filter).order_by('-exit_time')
         trade_list = all_trades[start:start+limit]
 
         # Determine next start offset for pagination

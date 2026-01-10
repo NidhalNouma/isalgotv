@@ -23,6 +23,6 @@
     {% endif %}
 
     {% comment %} <h2 class="text-lg font-bold text-title/80">{{ account.name }}</h2> {% endcomment %}
-    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data id=account.id broker_type=account.broker_type assets=assets sources=sources trades=trades only_closed_trades=only_closed_trades %}
+    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data currencies_performance=currencies_performance cid=cid id=account.id broker_type=account.broker_type assets=assets strategies=strategies perf_id=perf_id trades=trades only_closed_trades=only_closed_trades %}
   </section>
 {% endblock %}
