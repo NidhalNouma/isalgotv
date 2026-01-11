@@ -31,7 +31,7 @@
           <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search assets..." onkeyup="filterAssets()" />
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for asset in assets.items %}
           {% url 'asset_performance' asset=asset.0 perf_id=perf_id as asset_url %}
           {% if no_drawer %}
@@ -58,7 +58,7 @@
           <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search strategies..." onkeyup="filterStrategies()" />
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for strategy in strategies.items %}
           {% url 'strategy_performance' strategy_id=strategy.0.id perf_id=perf_id as strategy_perf_url %}
           {% url 'strategy' slug=strategy.0.slug as strategy_url %}

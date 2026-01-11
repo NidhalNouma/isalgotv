@@ -1,144 +1,99 @@
 {% load custom_tags %}
 
-<div class="bg-text/5 border border-text/10 rounded-xl p-4 flex flex-col w-full h-full">
+<div class="bg-text/5 rounded-xl p-3 sm:p-4 flex flex-col w-full h-full">
   {# Header with title and action #}
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-3">
     {% if url and not no_drawer %}
       {% if form %}
-        <form id="form-st-{{ form }}" hx-get="{{ url }}?inpage=true" hx-target="#as-{{ form }}" hx-swap="outerHTML" hx-trigger="submit once" class="flex-1">
+        <form id="form-st-{{ form }}" hx-get="{{ url }}?inpage=true" hx-target="#as-{{ form }}" hx-swap="outerHTML" hx-trigger="submit once" class="w-full">
           {% csrf_token %}
           <button type="submit" onclick="openDrawer('drawer-{{ form }}', 'bottom'); if(this.dataset.loaded) { event.preventDefault(); } else { this.dataset.loaded = 'true'; }" class="btn-a">
-            <span class="flex items-center gap-2">
+            <span class="flex items-center gap-2 truncate">
               {{ title }}
             </span>
-            <svg class="w-4 h-4 text-text/40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="w-4 h-4 text-text/40 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"></path>
             </svg>
           </button>
         </form>
       {% else %}
-        <a class="btn-a" href="{{ url }}">
-          <span class="flex items-center gap-2">
+        <a class="btn-a w-full" href="{{ url }}">
+          <span class="flex items-center gap-2 truncate">
             {{ title }}
           </span>
-          <svg class="w-4 h-4 text-text/40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="w-4 h-4 text-text/40 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m9 18 6-6-6-6"></path>
           </svg>
         </a>
       {% endif %}
     {% else %}
-      <h5 class="text-base text-title/90 font-semibold flex items-center gap-2">
+      <h5 class="text-base text-title/90 font-semibold truncate">
         {{ title }}
       </h5>
     {% endif %}
   </div>
-  <span class="text-xs bg-text/10 text-text/60 px-2 py-0.5 rounded-md my-2">{{ info.trades|default:'0' }} trades</span>
-
-  {# Overall Stats Row #}
-  <div class="grid grid-cols-3 gap-2 mb-3">
-    <div class="bg-text/5 rounded-lg p-2 text-center">
-      <span class="text-xs text-text/50 block">Win Rate</span>
-      <span class="text-lg font-bold text-profit">{{ info.win_rate|default:'0' }}%</span>
+  
+  {# Main Stats #}
+  <div class="flex items-baseline justify-between mb-2">
+    <div>
+      <span class="text-2xl font-bold text-profit">{{ info.win_rate|default:'0' }}%</span>
+      <span class="text-xs text-text/50 ml-1">win rate</span>
     </div>
-    <div class="bg-text/5 rounded-lg p-2 text-center">
-      <span class="text-xs text-text/50 block">Winners</span>
-      <span class="text-lg font-bold text-profit">{{ info.winning_trades|default:'0' }}</span>
-    </div>
-    <div class="bg-text/5 rounded-lg p-2 text-center">
-      <span class="text-xs text-text/50 block">Losers</span>
-      <span class="text-lg font-bold text-loss">{{ info.losing_trades|default:'0' }}</span>
-    </div>
+    <span class="text-sm text-text/60">{{ info.trades|format_number_abbrev }} trades</span>
   </div>
 
   {# Win Rate Bar #}
-  {% comment %} <div class="mb-4">
+  <div class="mb-3">
     <div class="flex h-2 rounded-full overflow-hidden bg-text/10">
       {% if info.trades > 0 %}
         <div class="bg-profit" style="width: {{ info.win_rate|default:'0' }}%"></div>
         <div class="bg-loss" style="width: {{ info.win_rate|default:'0'|differance:100 }}%"></div>
       {% endif %}
     </div>
-  </div> {% endcomment %}
+    <div class="flex justify-between mt-1 text-xs">
+      <span class="text-profit">{{ info.winning_trades|format_number_abbrev }} W</span>
+      <span class="text-loss">{{ info.losing_trades|format_number_abbrev }} L</span>
+    </div>
+  </div>
 
-  {# Buy/Sell Comparison #}
-  <div class="grid grid-cols-2 gap-3 mb-3">
-    {# Buy Stats #}
-    <div class="bg-primary/5 rounded-lg p-3">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-xs font-medium text-primary flex items-center gap-1">
-          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 19V5M5 12l7-7 7 7"/>
-          </svg>
-          Buy
+  {# Buy/Sell Stats #}
+  <div class="space-y-2 mb-3 text-xs">
+    {# Buy Row #}
+    <div class="flex items-center gap-2 bg-primary/5 rounded-md px-2 py-1.5">
+      <span class="text-primary font-semibold w-10">↑ Buy</span>
+      <div class="flex-1 flex items-center justify-between">
+        <span class="text-text/60">{{ info.buy_trades|format_number_abbrev }} <span class="text-text/40">trades</span></span>
+        <span class="text-profit font-semibold">{{ info.buy_win_rate|default:'0' }}%</span>
+        <span class="text-text/50">
+          <span class="text-profit font-medium">{{ info.buy_winning_trades|format_number_abbrev }}</span>
+          <span class="mx-0.5">/</span>
+          <span class="text-loss font-medium">{{ info.buy_losing_trades|format_number_abbrev }}</span>
         </span>
-        {% comment %} <span class="text-xs bg-profit/10 text-profit px-1.5 py-0.5 rounded">{{ info.buy_win_rate|default:'0' }}%</span> {% endcomment %}
-      </div>
-      <div class="space-y-1 text-xs">
-        <div class="flex justify-between">
-          <span class="text-text/50">Trades</span>
-          <span class="text-text/80 font-medium">{{ info.buy_trades|default:'0' }}</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-text/50">Win rate</span>
-          <span class="text-profit/80 font-medium">{{ info.buy_win_rate|default:'0' }}%</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-text/50">W / L</span>
-          <span>
-            <span class="text-profit font-medium">{{ info.buy_winning_trades|default:'0' }}</span>
-            <span class="text-text/40">/</span>
-            <span class="text-loss font-medium">{{ info.buy_losing_trades|default:'0' }}</span>
-          </span>
-        </div>
-      </div>
-      <div class="mt-2 h-1.5 rounded-full overflow-hidden bg-text/10">
-        <div class="h-full bg-profit" style="width: {{ info.buy_win_rate|default:'0' }}%"></div>
       </div>
     </div>
-
-    {# Sell Stats #}
-    <div class="bg-text/5 rounded-lg p-3">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-xs font-medium text-text flex items-center gap-1">
-          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 5v14M5 12l7 7 7-7"/>
-          </svg>
-          Sell
+    {# Sell Row #}
+    <div class="flex items-center gap-2 bg-text/5 rounded-md px-2 py-1.5">
+      <span class="text-text/60 font-semibold w-10">↓ Sell</span>
+      <div class="flex-1 flex items-center justify-between">
+        <span class="text-text/60">{{ info.sell_trades|format_number_abbrev }} <span class="text-text/40">trades</span></span>
+        <span class="text-profit font-semibold">{{ info.sell_win_rate|default:'0' }}%</span>
+        <span class="text-text/50">
+          <span class="text-profit font-medium">{{ info.sell_winning_trades|format_number_abbrev }}</span>
+          <span class="mx-0.5">/</span>
+          <span class="text-loss font-medium">{{ info.sell_losing_trades|format_number_abbrev }}</span>
         </span>
-        {% comment %} <span class="text-xs bg-profit/10 text-profit px-1.5 py-0.5 rounded">{{ info.sell_win_rate|default:'0' }}%</span> {% endcomment %}
-      </div>
-      <div class="space-y-1 text-xs">
-        <div class="flex justify-between">
-          <span class="text-text/50">Trades</span>
-          <span class="text-text/80 font-medium">{{ info.sell_trades|default:'0' }}</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-text/50">Win rate</span>
-          <span class="text-profit/80 font-medium">{{ info.sell_win_rate|default:'0' }}%</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-text/50">W / L</span>
-          <span>
-            <span class="text-profit font-medium">{{ info.sell_winning_trades|default:'0' }}</span>
-            <span class="text-text/40">/</span>
-            <span class="text-loss font-medium">{{ info.sell_losing_trades|default:'0' }}</span>
-          </span>
-        </div>
-      </div>
-      <div class="mt-2 h-1.5 rounded-full overflow-hidden bg-text/10">
-        <div class="h-full bg-loss" style="width: {{ info.sell_win_rate|default:'0' }}%"></div>
       </div>
     </div>
   </div>
 
   {# Profit by Currency #}
-  <div class="bg-text/5 rounded-lg p-3 flex-1">
+  <div class="mt-2 flex-1">
     <h6 class="text-xs text-text/50 uppercase font-medium tracking-wide mb-2">Profit by Currency</h6>
-    <div class="space-y-1.5 max-h-32 overflow-y-auto no-scrollbar">
+    <div class="space-y-2 max-h-20 overflow-y-auto no-scrollbar">
       {% for currency, data in info.profit.items %}
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-text/70 font-medium">{{ currency }}</span>
-          <span class="text-sm font-semibold {% if data.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+        <div class="flex justify-between items-center text-xs bg-text/5 rounded-md px-2 py-1.5">
+          <span class="text-text/60">{{ currency }}</span>
+          <span class="font-medium {% if data.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
             {% if data.net_profit >= 0 %}+{% endif %}{{ data.net_profit|floatformat:4|trim_zeros }}
           </span>
         </div>

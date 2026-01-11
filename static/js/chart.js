@@ -373,10 +373,10 @@ function loadAccountProfitCharts(id, data) {
         },
         label: (tooltipItem) => {
           const profit = `Cumulative net PnL: ${tooltipItem.formattedValue}`;
-          const dailyProfit = `Daily net PnL: ${
+          const dailyProfit = `Net PnL: ${
             series.daily_net_profit[tooltipItem.dataIndex]
           }`;
-          const dailyTrades = `Daily Trades: ${
+          const dailyTrades = `Trades: ${
             series.daily_trades[tooltipItem.dataIndex]
           }`;
           return [profit, dailyProfit, dailyTrades];

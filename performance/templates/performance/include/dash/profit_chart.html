@@ -1,4 +1,5 @@
 {% load custom_tags %}
+{% load custom_filters %}
 <div id="profit-chart-container-{{cid}}" class="w-full ">
     {# Currency Tabs - Scrollable #}
     <div class="relative mb-4">
@@ -13,7 +14,7 @@
                 class="currency-btn-{{cid}} flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-text/5 text-text/60 "
             >
                 {{ currency }}
-                <span class="ml-1 {% if info.cumulative.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                <span class="ml-1 {{info.cumulative.net_profit|profit_color}}">
                     {% if info.cumulative.net_profit >= 0 %}+{% endif %}{{ info.cumulative.net_profit|floatformat:2|trim_zeros }}
                 </span>
             </button> 
@@ -33,7 +34,7 @@
                     </div>
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
                         <span class="text-xs text-text/50">Net Profit</span>
-                        <p class="text-lg font-bold {% if curr_perf.net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                        <p class="text-lg font-bold {{curr_perf.net_profit|profit_color}}">
                             {% if curr_perf.net_profit >= 0 %}+{% endif %}{{ curr_perf.net_profit|floatformat:4|trim_zeros }}
                         </p>
                     </div>
@@ -69,7 +70,7 @@
             <div id="avg-stats-{{currency}}-{{cid}}" class="avg-stats-{{cid}} hidden mt-4 flex flex-wrap gap-4 text-xs">
                 <div class="flex items-center gap-2">
                     <span class="text-text/50">Avg Daily Profit:</span>
-                    <span class="font-medium {% if info.avg_daily_net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                    <span class="font-medium {{info.avg_daily_net_profit|profit_color}}">
                         {{ info.avg_daily_net_profit|floatformat:4|trim_zeros|default:'0' }}
                     </span>
                 </div>
@@ -79,17 +80,9 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="text-text/50">Today's P/L:</span>
-                    <span class="font-medium {% if info.today_net_profit >= 0 %}text-profit{% else %}text-loss{% endif %}">
+                    <span class="font-medium {{info.today_net_profit|profit_color}}">
                         {{ info.today_net_profit|floatformat:4|trim_zeros|default:'0' }}
                     </span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-text/50">Best Trade:</span>
-                    <span class="font-medium text-profit">+{{ curr_perf.largest_profit|floatformat:4|trim_zeros|default:'0' }}</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-text/50">Worst Trade:</span>
-                    <span class="font-medium text-loss">{{ curr_perf.largest_loss|floatformat:4|trim_zeros|default:'0' }}</span>
                 </div>
             </div>
         {% endwith %}

@@ -42,6 +42,51 @@ def differance(value1, value2):
         return abs(Decimal(value1) - Decimal(value2))
     except (InvalidOperation, TypeError):
         return Decimal('0.0')
+
+
+@register.filter
+def format_number_abbrev(value):
+    """
+    Format large numbers with suffixes (k, M, B, T).
+    Examples: 1000 -> 1k, 1500 -> 1.5k, 1000000 -> 1M, 1123 -> 1.1k
+    """
+    try:
+        num = float(value)
+    except (ValueError, TypeError):
+        return value
+    
+    if num == 0:
+        return '0'
+    
+    is_negative = num < 0
+    num = abs(num)
+    
+    suffixes = [
+        (1_000_000_000_000, 'T'),
+        (1_000_000_000, 'B'),
+        (1_000_000, 'M'),
+        (1_000, 'k'),
+    ]
+    
+    for threshold, suffix in suffixes:
+        if num >= threshold:
+            formatted = num / threshold
+            # Show 1 decimal place if not a whole number
+            if formatted == int(formatted):
+                result = f"{int(formatted)}{suffix}"
+            else:
+                result = f"{formatted:.1f}{suffix}"
+            return f"-{result}" if is_negative else result
+    
+    # For numbers less than 1000, return as-is (rounded if decimal)
+    if num == int(num):
+        result = str(int(num))
+    else:
+        result = f"{num:.1f}"
+    
+    return f"-{result}" if is_negative else result
+
+
     
 
 
