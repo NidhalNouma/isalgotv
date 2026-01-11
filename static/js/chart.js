@@ -388,3 +388,170 @@ function loadAccountProfitCharts(id, data) {
     plugins: getPlugins(),
   });
 }
+
+/**
+ * Creates a radar chart for comparing two datasets (e.g., Buy vs Sell)
+ * @param {string} canvasId - The ID of the canvas element
+ * @param {Object} options - Configuration object
+ * @param {string[]} options.labels - Array of labels for each axis
+ * @param {Object} options.dataset1 - First dataset config { label, data, color }
+ * @param {Object} options.dataset2 - Second dataset config { label, data, color }
+ * @returns {Chart|null} - The Chart instance or null if canvas not found
+ */
+function loadRadarChart(canvasId, options) {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return null;
+
+  const existingChart = Chart.getChart(canvasId);
+  if (existingChart) existingChart.destroy();
+
+  const textColor = getCssVariableColor("--color-text");
+
+  // Default colors if not provided
+  const color1 =
+    options.dataset1.color || getCssVariableColor("--color-primary");
+  const color2 =
+    options.dataset2.color || getCssVariableColor("--color-accent");
+
+  return new Chart(ctx, {
+    type: "radar",
+    data: {
+      labels: options.labels,
+      datasets: [
+        {
+          label: options.dataset1.label || "Dataset 1",
+          data: options.dataset1.data,
+          backgroundColor: color1 + "33",
+          borderColor: color1,
+          borderWidth: 2,
+          pointBackgroundColor: color1,
+          pointBorderColor: color1,
+          pointRadius: 4,
+        },
+        {
+          label: options.dataset2.label || "Dataset 2",
+          data: options.dataset2.data,
+          backgroundColor: color2 + "33",
+          borderColor: color2,
+          borderWidth: 2,
+          pointBackgroundColor: color2,
+          pointBorderColor: color2,
+          pointRadius: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: getCssVariableColor("--color-background"),
+          titleColor: getCssVariableColor("--color-title"),
+          bodyColor: getCssVariableColor("--color-text"),
+          padding: 12,
+          cornerRadius: 8,
+          displayColors: true,
+        },
+      },
+      scales: {
+        r: {
+          beginAtZero: true,
+          grid: { color: textColor + "15" },
+          angleLines: { color: textColor + "15" },
+          pointLabels: {
+            color: textColor + "80",
+            font: { size: 10 },
+          },
+          ticks: { display: false },
+        },
+      },
+    },
+  });
+}
+
+/**
+ * Creates a Buy vs Sell radar chart with predefined styling
+ * @param {string} canvasId - The ID of the canvas element
+ * @param {Object} buyData - Buy trades data { winRate, winners, losers, total }
+ * @param {Object} sellData - Sell trades data { winRate, winners, losers, total }
+ * @returns {Chart|null} - The Chart instance or null if canvas not found
+ */
+function loadBuySellRadarChart(canvasId, buyData, sellData) {
+  const primaryColor = getCssVariableColor("--color-primary");
+  const sellColor = getCssVariableColor("--color-loss");
+
+  return loadRadarChart(canvasId, {
+    labels: ["Win Rate", "Winners", "Losers", "Total"],
+    dataset1: {
+      label: "Buy",
+      data: [buyData.winRate, buyData.winners, buyData.losers, buyData.total],
+      color: primaryColor,
+    },
+    dataset2: {
+      label: "Sell",
+      data: [
+        sellData.winRate,
+        sellData.winners,
+        sellData.losers,
+        sellData.total,
+      ],
+      color: sellColor,
+    },
+  });
+}
+
+/**
+ * Creates a polar area chart for trade breakdown
+ * @param {string} canvasId - The ID of the canvas element
+ * @param {Object} data - Object containing trade counts { buyWins, buyLosses, sellWins, sellLosses }
+ * @returns {Chart|null} - The Chart instance or null if canvas not found
+ */
+function loadPolarAreaChart(canvasId, data) {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return null;
+
+  const existingChart = Chart.getChart(canvasId);
+  if (existingChart) existingChart.destroy();
+
+  const profitColor = getCssVariableColor("--color-profit");
+  const lossColor = getCssVariableColor("--color-loss");
+  const primaryColor = getCssVariableColor("--color-primary");
+
+  return new Chart(ctx, {
+    type: "polarArea",
+    data: {
+      labels: ["Buy Wins", "Buy Losses", "Sell Wins", "Sell Losses"],
+      datasets: [
+        {
+          data: [data.buyWins, data.buyLosses, data.sellWins, data.sellLosses],
+          backgroundColor: [
+            primaryColor + "99",
+            lossColor + "99",
+            profitColor + "77",
+            lossColor + "55",
+          ],
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: getCssVariableColor("--color-background"),
+          titleColor: getCssVariableColor("--color-title"),
+          bodyColor: getCssVariableColor("--color-text"),
+          padding: 12,
+          cornerRadius: 8,
+          displayColors: true,
+        },
+      },
+      scales: {
+        r: { display: false },
+      },
+    },
+  });
+}

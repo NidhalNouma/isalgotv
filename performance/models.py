@@ -565,6 +565,54 @@ class AssetStrategyCurrencyPerformance(CurrencyBasePerformance):
     def __str__(self):
         return f"{self.currency} ({self.asset_strategy_performance_id})"
 
+
+class DayAssetStrategyPerformance(BasePerformance):
+    """Day-level performance of a strategy on a specific asset"""
+    day_performance = models.ForeignKey(
+        DayPerformance,
+        on_delete=models.CASCADE,
+        related_name="day_asset_strategies"
+    )
+
+    asset_strategy_performance = models.ForeignKey(
+        AssetStrategyPerformance,
+        on_delete=models.CASCADE,
+        related_name="day_performances"
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["day_performance", "asset_strategy_performance"],
+                name="unique_asset_strategy_per_day"
+            )
+        ]
+        indexes = [
+            models.Index(fields=["day_performance"]),
+            models.Index(fields=["asset_strategy_performance"]),
+        ]
+
+
+class DayAssetStrategyCurrencyPerformance(CurrencyBasePerformance):
+    """Currency breakdown for day-level asset-strategy performance"""
+    day_asset_strategy_performance = models.ForeignKey(
+        DayAssetStrategyPerformance,
+        on_delete=models.CASCADE,
+        related_name="currencies"
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["day_asset_strategy_performance", "currency"],
+                name="unique_day_asset_strategy_currency"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.currency} ({self.day_asset_strategy_performance_id})"
+
+
 class AssetCurrencyPerformance(CurrencyBasePerformance):
     asset_performance = models.ForeignKey(
         AssetPerformance,

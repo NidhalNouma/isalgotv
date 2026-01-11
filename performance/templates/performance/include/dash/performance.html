@@ -10,7 +10,7 @@
     {% comment %} {% include 'include/dash/trades_comparision_card.html' with buy_win_rate=overview_data.buy_win_rate sell_win_rate=overview_data.sell_win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %} {% endcomment %}
   </section>
 
-  {% if chart_data %}
+  {% if chart_data or currencies_performance %}
     <section class="mt-6 w-full border border-text/10 p-4 rounded-lg">
       <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Performance</h4>
       {% include 'performance/include/dash/profit_chart.html' with id=id cid=cid data=chart_data %}
@@ -33,7 +33,11 @@
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for asset in assets.items %}
-          {% url 'asset_performance' asset=asset.0 perf_id=perf_id as asset_url %}
+          {% if strategy_perf_id %}
+            {% url 'strategy_asset_performance' asset_perf_id=asset.1.id strategy_perf_id=strategy_perf_id as asset_url %}
+          {% else %}
+            {% url 'asset_performance' asset=asset.0 perf_id=perf_id as asset_url %}
+          {% endif %}
           {% if no_drawer %}
             {% include 'include/dash/asset_card.html' with url=asset_url title=asset.0 info=asset.1 %}
           {% else %}
@@ -60,7 +64,11 @@
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for strategy in strategies.items %}
-          {% url 'strategy_performance' strategy_id=strategy.0.id perf_id=perf_id as strategy_perf_url %}
+          {% if asset_perf_id %}
+            {% url 'strategy_asset_performance' asset_perf_id=asset_perf_id strategy_perf_id=strategy.1.id as strategy_perf_url %}
+          {% else %}
+            {% url 'strategy_performance' strategy_id=strategy.0.id perf_id=perf_id as strategy_perf_url %}
+          {% endif %}
           {% url 'strategy' slug=strategy.0.slug as strategy_url %}
           {% if no_drawer %}
             {% include 'include/dash/asset_card.html' with url=strategy_perf_url title=strategy.0 info=strategy.1 %}

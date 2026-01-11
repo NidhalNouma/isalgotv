@@ -53,14 +53,14 @@ class DayPerformanceAdmin(ModelAdmin):
     search_fields = ['account_performance__content_type__model', 'account_performance__object_id']
 
 
-@admin.register(TradeAppliedPerformance)
-class TradeAppliedPerformanceAdmin(ModelAdmin):
-    verbose_name = "Trade Applied Performance"
-    verbose_name_plural = "Trade Applied Performances"
+# @admin.register(TradeAppliedPerformance)
+# class TradeAppliedPerformanceAdmin(ModelAdmin):
+#     verbose_name = "Trade Applied Performance"
+#     verbose_name_plural = "Trade Applied Performances"
     
-    list_display = ('id', 'trade', 'performance_type', 'performance_id', 'applied_at')
-    search_fields = ['trade__symbol', 'performance_type']
-    list_filter = ['performance_type']
+#     list_display = ('id', 'trade', 'performance_type', 'performance_id', 'applied_at')
+#     search_fields = ['trade__symbol', 'performance_type']
+#     list_filter = ['performance_type']
 
 
 @admin.register(DayAssetPerformance)

@@ -223,6 +223,29 @@ def apply_trade_to_performance(trade):
 
         apply_once("asset_strategy_currency", asset_strategy_curr.id, update_asset_strategy_currency)
 
+        # --------------------------------------------------
+        # 8 DayAssetStrategyPerformance (day-level asset-strategy performance)
+        # --------------------------------------------------
+        day_asset_strategy_perf, _ = DayAssetStrategyPerformance.objects.get_or_create(
+            day_performance=day_perf,
+            asset_strategy_performance=asset_strategy_perf,
+        )
+
+        def update_day_asset_strategy():
+            DayAssetStrategyPerformance.apply_trade_stats(perf_id=day_asset_strategy_perf.id, trade=trade)
+
+        apply_once("day_asset_strategy", day_asset_strategy_perf.id, update_day_asset_strategy)
+
+        day_asset_strategy_curr, _ = DayAssetStrategyCurrencyPerformance.objects.get_or_create(
+            day_asset_strategy_performance=day_asset_strategy_perf,
+            currency=currency,
+        )
+
+        def update_day_asset_strategy_currency():
+            DayAssetStrategyCurrencyPerformance.apply_trade_and_profit_stats(perf_id=day_asset_strategy_curr.id, trade=trade)
+
+        apply_once("day_asset_strategy_currency", day_asset_strategy_curr.id, update_day_asset_strategy_currency)
+
 
 def backfill_account_performance(content_type, object_id, create=True):
     """
@@ -567,6 +590,7 @@ def get_days_performance(performance):
     return chart_data
     
 class ASPerformanceData(TypedDict):
+    id: NotRequired[int]
     trades: int = 0
     winning_trades: int = 0
     losing_trades: int = 0
@@ -616,6 +640,7 @@ def get_asset_performance_data(performance) -> ASPerformanceData:
         } for c in asset_perf.currencies.all()}
 
         data[asset_perf.asset] = ASPerformanceData(
+            id=asset_perf.id,
             trades=asset_perf.total_trades,
             winning_trades=asset_perf.winning_trades,  
             losing_trades=asset_perf.losing_trades,
@@ -655,6 +680,7 @@ def get_strategy_performance_data(performance) -> ASPerformanceData:
         } for c in strategy_perf.currencies.all()}
 
         data[strategy_perf.strategy] = ASPerformanceData(
+            id=strategy_perf.id,
             trades=strategy_perf.total_trades,
             winning_trades=strategy_perf.winning_trades,  
             losing_trades=strategy_perf.losing_trades,
@@ -748,6 +774,57 @@ def get_strategy_day_performance(strategy_performance):
             end_day = trade_date
 
         for curr in day_strategy_perf.currencies.all():
+            day_perf_per_currency[curr.currency] = day_perf_per_currency.get(curr.currency, {})
+            prev_data = day_perf_per_currency[curr.currency].get(trade_date, empty_performance_data())
+            day_perf_per_currency[curr.currency][trade_date] = PerformanceData(
+                profit=d(curr.total_profit) + prev_data['profit'],
+                fees=d(curr.total_fees) + prev_data['fees'],
+                buy_fees=d(curr.buy_fees) + prev_data['buy_fees'],
+                sell_fees=d(curr.sell_fees) + prev_data['sell_fees'],
+                buy_profit=d(curr.buy_profit) + prev_data['buy_profit'],
+                sell_profit=d(curr.sell_profit) + prev_data['sell_profit'],
+                net_profit=d(curr.net_profit) + prev_data['net_profit'],
+                buy_net_profit=d(curr.buy_net_profit) + prev_data['buy_net_profit'],
+                sell_net_profit=d(curr.sell_net_profit) + prev_data['sell_net_profit'],
+                trades=curr.total_trades + prev_data['trades'],
+                winning_trades=curr.winning_trades + prev_data['winning_trades'],
+                losing_trades=curr.losing_trades + prev_data['losing_trades'],
+                buy_trades=curr.buy_total_trades + prev_data['buy_trades'],
+                buy_winning_trades=curr.buy_winning_trades + prev_data['buy_winning_trades'],
+                buy_losing_trades=curr.buy_losing_trades + prev_data['buy_losing_trades'],
+                sell_trades=curr.sell_total_trades + prev_data['sell_trades'],
+                sell_winning_trades=curr.sell_winning_trades + prev_data['sell_winning_trades'],
+                sell_losing_trades=curr.sell_losing_trades + prev_data['sell_losing_trades'],
+            )
+
+    return _build_chart_data(day_perf_per_currency, start_day, end_day)
+
+
+def get_asset_strategy_day_performance(asset_strategy_performance):
+    """
+    Get day-by-day performance for a specific asset-strategy combination.
+    Uses DayAssetStrategyPerformance and DayAssetStrategyCurrencyPerformance.
+    """
+    if not asset_strategy_performance:
+        return {}
+
+    start_day = datetime.date.today()
+    end_day = datetime.date(1970, 1, 1)
+
+    day_asset_strategy_perfs = DayAssetStrategyPerformance.objects.filter(
+        asset_strategy_performance=asset_strategy_performance
+    ).select_related('day_performance').prefetch_related('currencies')
+
+    day_perf_per_currency = {}
+
+    for day_asset_strategy_perf in day_asset_strategy_perfs:
+        trade_date = day_asset_strategy_perf.day_performance.date
+        if trade_date < start_day:
+            start_day = trade_date
+        if trade_date > end_day:
+            end_day = trade_date
+
+        for curr in day_asset_strategy_perf.currencies.all():
             day_perf_per_currency[curr.currency] = day_perf_per_currency.get(curr.currency, {})
             prev_data = day_perf_per_currency[curr.currency].get(trade_date, empty_performance_data())
             day_perf_per_currency[curr.currency][trade_date] = PerformanceData(
@@ -868,6 +945,7 @@ def get_asset_strategy_data(asset_performance) -> ASPerformanceData:
         } for c in asset_strategy_perf.currencies.all()}
 
         data[strategy] = ASPerformanceData(
+            id=asset_strategy_perf.strategy_performance.id,
             trades=asset_strategy_perf.total_trades,
             winning_trades=asset_strategy_perf.winning_trades,  
             losing_trades=asset_strategy_perf.losing_trades,
@@ -914,6 +992,7 @@ def get_strategy_asset_data(strategy_performance) -> ASPerformanceData:
         } for c in asset_strategy_perf.currencies.all()}
 
         data[asset] = ASPerformanceData(
+            id=asset_strategy_perf.asset_performance.id,
             trades=asset_strategy_perf.total_trades,
             winning_trades=asset_strategy_perf.winning_trades,  
             losing_trades=asset_strategy_perf.losing_trades,

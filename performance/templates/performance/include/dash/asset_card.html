@@ -106,5 +106,5 @@
 
 {% if url and form %}
   {% render_template 'include/dash/st_performance.html' loading=True id='as-'|add:form as st_performance %}
-  {% include 'include/drawer_modal.html' with drawer_id='drawer-'|add:form body=st_performance side='bottom' class='h-[80vh] ' body_class='!h-[calc(100%-90px)] max-w-7xl mx-auto' href_title=href_title %}
+  {% include 'include/drawer_modal.html' with drawer_id='drawer-'|add:form body=st_performance side='bottom' class='h-[80vh] ' body_class='!h-[calc(100%-90px)] max-w-7xl mx-auto' href_title=href_title full_href=url %}
 {% endif %}

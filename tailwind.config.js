@@ -11,6 +11,7 @@ module.exports = {
     "./automate/templates/**/*.html",
     "./docs/templates/**/*.html",
     "./tero/templates/**/*.html",
+    "./performance/templates/**/*.html",
     "./static/js/**/*.js",
     "./tero_app/src/**/*.tsx",
     "./tero_app/src/components/**/*.tsx",

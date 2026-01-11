@@ -1,11 +1,11 @@
 {% extends 'page.html' %} {% load static %}
 
 {% block head_title %}
-  <title>{{ overview_data.win_rate|default:'0' }}% win rate | {{ account.name }}</title>
+  <title>{{ asset }} Trading Performance - {{ overview_data.win_rate|default:'0' }}% Win Rate | {{ overview_data.trades }} Trades Analysis</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="{{ account.broker_type }} account overview for {{ account.name }} with a {{ overview_data.win_rate|default:'0' }}% win rate" />
+  <meta name="description" content="Complete trading performance report for {{ asset }} on {{ account.name }}. {{ overview_data.win_rate|default:'0' }}% win rate with {{ overview_data.winning_trades }} winning and {{ overview_data.losing_trades }} losing trades. View equity curve, strategy breakdown, and detailed trade history." />
 {% endblock %}
 
 {% block head %}

@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from performance.models import (
     StrategyPerformance, AccountPerformance, AssetPerformance,
+    AssetStrategyPerformance
 )
 from performance.functions.performance import *
 
@@ -31,7 +32,9 @@ def get_strategy_performance_context(strategy, perf_id):
     return {
         'cid': f'strategy-{account.id}-{strategy_performances.id}',
         'perf_id': strategy_performances.account_performance.id,
+        'strategy_perf_id': strategy_performances.id,
         'account': account,
+        'strategy': strategy_performances.strategy,
         'overview_data': overview_performance,
         'chart_data': chart_performance,
         'currencies_performance': currencies_performance,
@@ -67,6 +70,8 @@ def get_asset_performance_context(asset, perf_id):
     return {
         'cid': f'asset-{account.id}-{asset_performances.id}',
         'perf_id': asset_performances.account_performance.id,
+        'asset_perf_id': asset_performances.id,
+        'asset': asset,
         'account': account,
         'overview_data': overview_performance,
         'chart_data': chart_performance,
@@ -78,6 +83,51 @@ def get_asset_performance_context(asset, perf_id):
         'next_start': trades.count(),
         'only_closed_trades': True,
     }
+
+def get_strategy_asset_performance_context(strategy_perf_id, asset_perf_id):
+    """Get strategy performance for a specific asset within a specific account"""
+    asset_strategy_performances = AssetStrategyPerformance.objects.filter(
+        strategy_performance__id=strategy_perf_id,
+        asset_performance__id=asset_perf_id
+    ).first()
+
+    if not asset_strategy_performances:
+        return None
+
+    account = asset_strategy_performances.strategy_performance.account_performance.account
+    
+    # Extract actual strategy and asset from the performance objects
+    strategy = asset_strategy_performances.strategy_performance.strategy
+    asset = asset_strategy_performances.asset_performance.asset
+
+    overview_performance = get_overview_performance_data(asset_strategy_performances)
+    chart_performance = get_asset_strategy_day_performance(asset_strategy_performances)
+    currencies_performance = get_performance_currencies(asset_strategy_performances)
+
+    trades = TradeDetails.objects.filter(
+        symbol=asset,
+        strategy=strategy,
+        content_type=asset_strategy_performances.strategy_performance.account_performance.content_type,
+        object_id=asset_strategy_performances.strategy_performance.account_performance.object_id,
+        status__in=['C']
+    ).order_by('-exit_time')[:20]
+
+    return {
+        'cid': f'asset-strategy-{account.id}-{asset_strategy_performances.id}',
+        'perf_id': asset_strategy_performances.strategy_performance.account_performance.id,
+        'account': account,
+        'asset': asset,
+        'strategy': strategy,
+        'overview_data': overview_performance,
+        'chart_data': chart_performance,
+        'currencies_performance': currencies_performance,
+        'trades': trades,
+        'trades_broker_type': f"assetNstrategy-{asset}-{asset_strategy_performances.strategy_performance.account_performance.content_type.model}-{asset_strategy_performances.strategy_performance.account_performance.object_id}",
+        'trades_id': f"{strategy.id}",
+        'next_start': trades.count(),
+        'only_closed_trades': True,
+    }
+
 
 def account_context_data(account):
     ct = ContentType.objects.get_for_model(type(account))

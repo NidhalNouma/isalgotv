@@ -8,14 +8,24 @@
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
         </svg>
         {% if href_title %}
-          <a href="{{ href_title }}" class="text-lg font-bold text-title hover:underline">
-            {{ title }} <svg class="fill-current stroke-current h-4 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path fill="none" d="M0 0h24v24H0V0z"></path>
-              <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-            </svg>
-          </a>
+          <a href="{{ href_title }}" class="inline-flex font-bold text-title hover:underline">{{ title }}</a>
         {% else %}
           {{ title }}
+        {% endif %}
+
+        {% if full_href %}
+          <a class="hover:opacity-80 transition-colors h-fit inline-flex" href="{{ full_href }}" target="_blank" rel="noopener noreferrer">
+            <svg class="h-4 aspect-auto ml-1.5 inline fill-current stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 15 6 6" />
+              <path d="m15 9 6-6" />
+              <path d="M21 16v5h-5" />
+              <path d="M21 8V3h-5" />
+              <path d="M3 16v5h5" />
+              <path d="m3 21 6-6" />
+              <path d="M3 8V3h5" />
+              <path d="M9 9 3 3" />
+            </svg>
+          </a>
         {% endif %}
         {% comment %} {% if refresh_id %}
           <button id="btn-{{ refresh_id }}" onclick="document.getElementById('form-logs-{{ refresh_id }}').requestSubmit()" class="btn-text gap-1.5 border-0 ml-1.5">

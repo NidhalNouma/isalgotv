@@ -87,8 +87,33 @@ def format_number_abbrev(value):
     return f"-{result}" if is_negative else result
 
 
-    
+@register.filter
+def multiply(value, factor):
+    """
+    Multiply a numeric value by a given factor.
+    E.g., multiply(5, 2) returns 10
+    """
+    try:
+        val = Decimal(value)
+        fac = Decimal(factor)
+        return val * fac
+    except (InvalidOperation, TypeError):
+        return Decimal('0.0') 
 
+@register.filter
+def divide(value, divisor):
+    """
+    Divide a numeric value by a given divisor.
+    E.g., divide(10, 2) returns 5
+    """
+    try:
+        val = Decimal(value)
+        div = Decimal(divisor)
+        if div == 0:
+            return Decimal('0.0')
+        return val / div
+    except (InvalidOperation, TypeError):
+        return Decimal('0.0')
 
 @register.filter
 def sum_percentage(value1, value2):
