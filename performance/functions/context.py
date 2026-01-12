@@ -172,6 +172,8 @@ def account_context_data(account):
         'strategies': strategies,
         'trades': trades,  
         'next_start': trades.count(),
+        'trades_broker_type': f"{account.broker_type}",
+        'trades_id': account.id,
         'only_closed_trades': only_closed_trades,
     }
 

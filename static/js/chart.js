@@ -309,9 +309,7 @@ function loadChart(id) {
 }
 
 function loadAccountProfitCharts(id, data) {
-  const ctx = document
-    .getElementById("accountProfitChart-" + id)
-    .getContext("2d");
+  const ctx = document.getElementById(id).getContext("2d");
 
   // console.log("Loading chart with data:", data);
 

@@ -76,4 +76,8 @@ def get_account_performance(request, public_id):
         **account_perf_context
     }
 
+    inpage = request.GET.get('inpage', False)   
+    if inpage:
+        return render(request, "include/dash/st_performance.html", context=context)
+
     return render(request, "performance/account_perfromance.html", context=context)

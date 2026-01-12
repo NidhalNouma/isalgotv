@@ -1,3 +1,5 @@
+{% url 'get_account_data' account.public_id as perf_url %}
+
 {% with webhook_url='https://webhook.'|add:request.get_host|cut:'www.'|add:'/f/'|add:account.custom_id %}
   <div class="w-full h-fit max-w-2xl bg-text/5 backdrop-blur-3xl rounded-md overflow-hidden">
     <div class="p-2 sm:p-3">
@@ -6,13 +8,26 @@
           <div class="mb-2">
             {% include 'svg/automate_svg_by_name.html' with broker_type=account.broker_type class='h-3 aspect-auto fill-text/80 mb-2' %}
             {% if account.public_id %}
-              <a href="{% url 'get_account_data' account.public_id %}" class="text-sm sm:text-base font-bold text-title/80 hover:text-title/60 transition-opacity flex items-center gap-1">
+            {% if perf_inpage %}
+              <form id="form-fperf-{{ form }}" hx-get="{{ perf_url }}?inpage=true" hx-target="#as-{{ account.public_id }}" hx-swap="outerHTML" hx-trigger="submit once" class="w-full">
+                {% csrf_token %}
+                <button type="submit" onclick="openDrawer('dr_{{ account.public_id }}', 'bottom'); if(this.dataset.loaded) { event.preventDefault(); } else { this.dataset.loaded = 'true'; }" class="text-sm sm:text-base font-bold text-title/80 hover:text-title/60 transition-opacity flex items-center gap-1">
+                  {{account.name}}
+                  <span class="p-0.5 bg-text/20 rounded-full">
+                    <svg class="w-3 aspect-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </span>
+                </button>
+              </form>
+              {% else %}
+
+              <a href="{{ perf_url }}" class="text-sm sm:text-base font-bold text-title/80 hover:text-title/60 transition-opacity flex items-center gap-1">
                 {{account.name}}
                 <span class="p-0.5 bg-text/20 rounded-full">
                   <svg class="w-3 aspect-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                 </span>
               </a>
-              {% else %}
+              {% endif %}
+            {% else %}
               <h2 class="text-sm sm:text-base font-bold text-title/80">
                 {{account.name}}
               </h2>
@@ -235,5 +250,10 @@
     {% url 'export_logs' account.broker_type account.id as export_logs_url %}
     {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-logs-'|add:account_id_str title='Logs ('|add:account.name|add:')' body=logs_content side='bottom' class='h-[75vh]' export_url=export_logs_url %}
     {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-trades-'|add:account_id_str title='Trades ('|add:account.name|add:')' body=trades_content side='bottom' class='h-[80vh] max-w-[100vw]' body_class="!h-[calc(100%-90px)]" %}
+
+    {% if account.public_id %}
+      {% render_template 'include/dash/st_performance.html' loading=True id='as-'|add:account.public_id as st_performance %}
+      {% include 'include/drawer_modal.html' with drawer_id='dr_'|add:account.public_id  body=st_performance side='bottom' class='h-[80vh] ' body_class='!h-[calc(100%-90px)] max-w-7xl mx-auto' title=account.name full_href=perf_url %}
+    {% endif %}
   {% endwith %}
 {% endwith %}

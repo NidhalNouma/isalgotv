@@ -3,9 +3,9 @@
     <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full items-start">
       {% for account in accounts %}
         {% if account.broker == 'crypto' %}
-          {% include 'include/crypto_broker_card.html' with account=account %}
+          {% include 'include/crypto_broker_card.html' with account=account perf_inpage=False %}
         {% elif account.broker == 'forex' %}
-          {% include 'include/forex_broker_card.html' with account=account %}
+          {% include 'include/forex_broker_card.html' with account=account perf_inpage=False %}
         {% endif %}
       {% endfor %}
     </div>
