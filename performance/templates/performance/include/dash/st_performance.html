@@ -7,6 +7,6 @@
       </svg>
     </p>
   {% else %}
-    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data currencies_performance=currencies_performance cid=cid id=trades_id broker_type=trades_broker_type assets=assets strategies=strategies perf_id=perf_id trades=trades only_closed_trades=only_closed_trades no_drawer=True mt='mt-0' %}
+    {% include 'performance/include/dash/performance.html' with chart_data=chart_data overview_data=overview_data currencies_performance=currencies_performance cid=cid id=trades_id broker_type=trades_broker_type assets=assets strategies=strategies perf_id=perf_id trades=trades only_closed_trades=only_closed_trades no_drawer=False mt='mt-0' strategy_perf_id=strategy_perf_id asset_perf_id=asset_perf_id %}
   {% endif %}
 </section>

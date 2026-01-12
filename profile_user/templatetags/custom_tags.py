@@ -3,6 +3,8 @@ from django.template.loader import render_to_string
 import json
 from decimal import Decimal, InvalidOperation
 from django.utils.dateparse import parse_datetime
+from datetime import datetime
+import uuid
 
 register = template.Library()
 
@@ -35,6 +37,34 @@ def to_json(data):
     except (TypeError, ValueError):
         return '[]'
 
+@register.filter
+def unique_id(value):
+    """Generate a unique ID by replacing special characters."""
+    try:
+        unique = str(value).replace(' ', '_').replace('.', '_').replace('-', '_').replace('/', '_').replace('\\', '_')
+        unique = unique.replace(':', '_').replace('@', '_').replace('#', '_').replace('$', '_').replace('%', '_')
+        timestamp = str(int(datetime.now().timestamp() * 1000))
+        random_unique_number = timestamp + '_' + uuid.uuid4().hex[:8]
+        unique += '_' + str(random_unique_number)
+        return unique
+    except Exception:
+        return str(value)
+
+@register.filter
+def replace_chars(value, args):
+    """
+    Replace characters in a string.
+    Usage: {{ value|replace_chars:"old1-new1,old2-new2" }}
+    Example: {{ "hello/world"|replace_chars:"/||_" }} -> "hello_world"
+    """
+    try:
+        replacements = args.split(',')
+        for pair in replacements:
+            old, new = pair.split('||')
+            value = value.replace(old, new)
+        return value
+    except Exception:
+        return value
 
 @register.filter
 def differance(value1, value2):

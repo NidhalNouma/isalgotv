@@ -1,20 +1,21 @@
 {% load custom_tags %}
 
+{% with a_id=url|unique_id %}
 <div class="bg-text/5 rounded-xl p-3 sm:p-4 flex flex-col w-full h-full">
   {# Header with title and action #}
   <div class="flex items-center justify-between mb-3">
     {% if url and not no_drawer %}
       {% if form %}
-        <form id="form-st-{{ form }}" hx-get="{{ url }}?inpage=true" hx-target="#as-{{ form }}" hx-swap="outerHTML" hx-trigger="submit once" class="w-full">
+        <form id="form-st-{{ form }}" hx-get="{{ url }}?inpage=true" hx-target="#as-{{ a_id }}" hx-swap="outerHTML" hx-trigger="submit once" class="w-full">
           {% csrf_token %}
-          <button type="submit" onclick="openDrawer('drawer-{{ form }}', 'bottom'); if(this.dataset.loaded) { event.preventDefault(); } else { this.dataset.loaded = 'true'; }" class="btn-a">
+            <button type="submit" onclick="openDrawer('dr_{{ a_id }}', 'bottom'); if(this.dataset.loaded) { event.preventDefault(); } else { this.dataset.loaded = 'true'; }" class="btn-a">
             <span class="flex items-center gap-2 truncate">
               {{ title }}
             </span>
             <svg class="w-4 h-4 text-text/40 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"></path>
             </svg>
-          </button>
+            </button>
         </form>
       {% else %}
         <a class="btn-a w-full" href="{{ url }}">
@@ -105,6 +106,8 @@
 </div>
 
 {% if url and form %}
-  {% render_template 'include/dash/st_performance.html' loading=True id='as-'|add:form as st_performance %}
-  {% include 'include/drawer_modal.html' with drawer_id='drawer-'|add:form body=st_performance side='bottom' class='h-[80vh] ' body_class='!h-[calc(100%-90px)] max-w-7xl mx-auto' href_title=href_title full_href=url %}
+  {% render_template 'include/dash/st_performance.html' loading=True id='as-'|add:a_id as st_performance %}
+
+    {% include 'include/drawer_modal.html' with drawer_id='dr_'|add:a_id body=st_performance side='bottom' class='h-[80vh] ' body_class='!h-[calc(100%-90px)] max-w-7xl mx-auto' href_title=href_title full_href=url %}
 {% endif %}
+{% endwith %}

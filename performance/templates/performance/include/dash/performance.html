@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 {% if perf_emsg %}
   <section class="w-full {{ mt|default:'mt-4' }}">
     {% include 'include/infos.html' with info=perf_emsg %}
@@ -13,7 +15,7 @@
   {% if chart_data or currencies_performance %}
     <section class="mt-6 w-full border border-text/10 p-4 rounded-lg">
       <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Performance</h4>
-      {% include 'performance/include/dash/profit_chart.html' with id=id cid=cid data=chart_data %}
+      {% include 'performance/include/dash/profit_chart.html' with id=id cid=cid|unique_id data=chart_data %}
     </section>
   {% endif %}
 
