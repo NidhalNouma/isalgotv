@@ -292,7 +292,7 @@ def get_trade_for_update(custom_id, symbol, side, account, strategy_id):
             custom_id=custom_id,
             symbol=symbol,
             side=t_side,
-            status__in=["O", "P"],
+            # status__in=["O", "P"],
             content_type=content_type,
             object_id=account.id
         ).filter(
@@ -409,7 +409,13 @@ def process_alerts_trades(alerts_data, account, start):
                     trade_to_close = get_trade_for_update(custom_id, symbol, side, account, strategy_id)
                     if not trade_to_close:
                         exce = {
-                            'info': f'No trade found to close with ID: {custom_id} or it may have been closed already.'
+                            'error': f'No trade found to close with ID: {custom_id}.'
+                        }
+                        raise Exception(exce)
+                    
+                    if trade_to_close.status not in ["O", "P"]:
+                        exce = {
+                            'info': f'Trade with ID: {custom_id} is already closed.'
                         }
                         raise Exception(exce)
 

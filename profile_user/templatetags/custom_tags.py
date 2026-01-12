@@ -3,7 +3,6 @@ from django.template.loader import render_to_string
 import json
 from decimal import Decimal, InvalidOperation
 from django.utils.dateparse import parse_datetime
-from datetime import datetime
 import uuid
 
 register = template.Library()
@@ -43,9 +42,7 @@ def unique_id(value):
     try:
         unique = str(value).replace(' ', '_').replace('.', '_').replace('-', '_').replace('/', '_').replace('\\', '_')
         unique = unique.replace(':', '_').replace('@', '_').replace('#', '_').replace('$', '_').replace('%', '_')
-        timestamp = str(int(datetime.now().timestamp() * 1000))
-        random_unique_number = timestamp + '_' + uuid.uuid4().hex[:8]
-        unique += '_' + str(random_unique_number)
+        unique += '_' + str(uuid.uuid4().hex[:12])
         return unique
     except Exception:
         return str(value)

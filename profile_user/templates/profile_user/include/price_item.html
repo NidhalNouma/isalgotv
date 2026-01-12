@@ -1,31 +1,7 @@
 {% load custom_tags %}
 
 {% with price_key=title %}
-  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %}
-      
-      
-      
-       bg-gradient-to-t from-primary/30 to-text/5
-
-
-
-    {% elif title == 'LIFETIME' %}
-      
-      
-      
-        bg-gradient-to-t from-primary/30 to-success/30
-
-
-
-    {% else %}
-      
-      
-      
-       bg-text/5
-
-
-
-    {% endif %} backdrop-blur-3xl border-0 border-text relative">
+  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %} bg-gradient-to-t from-primary/30 to-text/5 {% elif title == 'LIFETIME' %} bg-gradient-to-t from-primary/30 to-success/30 {% else %} bg-text/5{% endif %} backdrop-blur-3xl border-0 border-text relative">
     <h3 class="text-text text-2xl font-extrabold pt-4 rounded-xl">{{ title }}</h3>
     {% if save %}
       {% comment %} <div class="relative my-2">

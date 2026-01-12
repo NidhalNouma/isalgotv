@@ -31,7 +31,7 @@
             <h3>Alert Messages:</h3>
 
             <p class="mb-3">
-                The alert messages are the message that will be sent on evry action taken by the strategy/indicator, whether closiing or opening a trade.
+                The alert messages are the message that will be sent on every action taken by the strategy/indicator, whether closing or opening a trade.
                 <br/>
                 <br/>
                 By default the alerts will have the asset name of the tradingview chart and the volume that you set in the strategy/indicator, but you can override them.
@@ -48,19 +48,65 @@
                 <span class="text-xs !text-text/40">leave empty to use strategy-defined volume</span>
             </p>
 
-            <p>
+            <ul class="space-y-1">
+                <li >
                 Long Entry:
-                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{ticker}" }}} V={{ "{{qty}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-                <br/>
+                <code id="long-entry-{{id}}" onclick="copyPlainText('long-entry-{{id}}')">D=Buy A={{ "{{ticker}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg class="h-4 aspect-auto inline-flex" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                </li>
+                <li>
                 Short Entry:
-                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{ticker}" }}} V={{ "{{qty}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-                <br/>
+                <code id="short-entry-{{id}}" onclick="copyPlainText('short-entry-{{id}}')">D=Sell A={{ "{{ticker}" }}} V={{ "{{qty}" }}} ID={{ "{{ID}" }}} <svg class="h-4 aspect-auto inline-flex" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                </li>
+                <li>
                 Long Exit:
-                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
-                <br/>
+                <code id="long-exit-{{id}}" onclick="copyPlainText('long-exit-{{id}}')">X=Buy A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg class="h-4 aspect-auto inline-flex" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                </li>
+                <li>
                 Short Exit:
-                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                <code id="short-exit-{{id}}" onclick="copyPlainText('short-exit-{{id}}')">X=Sell A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} <svg class="h-4 aspect-auto inline-flex" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></code>
+                </li>
+            </ul>
+
+            <h3 class="mt-6">Alert Parameters:</h3>
+            
+            <p class="mb-3">
+                <strong>Using Placeholders:</strong> You can use TradingView placeholders (e.g., <code class="inline">{{ "{{ticker}" }}}</code>, <code class="inline">{{ "{{qty}" }}}</code>) to dynamically pull values from your strategy/indicator, or use static values (e.g., <code class="inline">A=BTCUSD</code>, <code class="inline">V=10</code>) to override them.
             </p>
+
+            <p class="mb-2">
+                <strong>Required Parameters:</strong>
+            </p>
+            <ul class="mb-3 space-y-1">
+                <li><code class="inline">D</code> or <code class="inline">X</code> - Action: <code class="inline">D=Buy/Sell</code> for Entry, <code class="inline">X=Buy/Sell</code> for Exit</li>
+                <li><code class="inline">A</code> - Asset: Use <code class="inline">A={{ "{{ticker}" }}}</code> for strategy asset or <code class="inline">A=BTCUSD</code> for custom</li>
+                <li><code class="inline">ID</code> - Unique identifier: Use <code class="inline">ID={{ "{{ID}" }}}</code></li>
+                <li><code class="inline">V</code> or <code class="inline">Q</code> - Volume: Use <code class="inline">V={{ "{{qty}" }}}</code> for strategy volume or <code class="inline">V=10</code> for custom</li>
+            </ul>
+
+            <p class="mb-2">
+                <strong>Optional Parameters:</strong>
+            </p>
+            <ul class="mb-3 space-y-1">
+                <li><code class="inline">P</code> - Partial close: Use <code class="inline">P={{ "{{partial_close}" }}}</code> or <code class="inline">P=50</code> (can include % like <code class="inline">P=50%</code>)</li>
+                <li>
+                    <code class="inline">R</code> - Reverse signal: Closes any open trade before opening a new one in the opposite direction. This parameter must be added to <strong>both entry and exit alerts</strong> to work correctly.
+                    <br/>
+                    <span class="text-xs !text-text/60">Example: <code class="inline">D=Buy A={{ "{{ticker}" }}} V=10 ID={{ "{{ID}" }}} R=1</code> and <code class="inline">X=Buy A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} R=1</code></span>
+                    <br/>
+                    Change R value if you're using multiple strategies on the same asset to a unique number for each strategy (e.g., R=1, R=2, R=3).
+                </li>
+            </ul>
+
+            <p class="mb-2">
+                <strong>Volume Options:</strong>
+            </p>
+            <ul class="mb-3">
+                <li>Strategy volume: <code class="inline">V={{ "{{qty}" }}}</code></li>
+                <li>Static value: <code class="inline">V=10</code></li>
+                <li>Math expressions: <code class="inline">V={{ "{{qty}" }}}*2</code> or <code class="inline">V={{ "{{qty}" }}}/10</code></li>
+                <li>Rounding: <code class="inline">V={{ "{{qty}" }}}%2</code> (rounds to 2 decimal places)</li>
+            </ul>
+
 
             <p class="pt-4">
                 Copy and paste these alerts into the <span>strategy/indicator's Alerts section</span> in the settings and <span>click OK</span>.
