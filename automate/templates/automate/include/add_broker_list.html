@@ -1,6 +1,10 @@
-{% with btn_class='relative bg-text/5 border border-text/10 hover:bg-text/20 w-full text-text ihover:text-text/80 py-2.5 rounded flex items-center justify-center transition-all' %}
-  <div class="px-2 sm:px-6 grid grid-cols-2 gap-3">
-    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Futures, Forex, Stocks and more</h6>
+{% with btn_class='relative bg-text/5 border border-text/10 hover:bg-text/10 w-full text-text ihover:text-text/80 py-3 rounded flex items-center justify-center transition-all' %}
+  <div class="px-2 sm:px-6 grid grid-cols-2 gap-4">
+    <div class="col-span-full flex items-center gap-2 mt-3 mb-1">
+      {% comment %} <div class="h-px flex-1 bg-gradient-to-r from-transparent via-text/20 to-text/20"></div> {% endcomment %}
+      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">Futures, Forex, Stocks, and more</h6>
+      <div class="h-px flex-1 bg-gradient-to-l from-transparent via-text/20 to-text/20"></div>
+    </div>
 
     <button onclick="hideModel('add-broker-modal'); openModel('add-alpaca-modal', false); mountStripeElement('alpaca');" class="{{ btn_class }}">{% include 'svg/alpaca.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-tastytrade-modal', false); mountStripeElement('tastytrade');" class="{{ btn_class }}">{% include 'svg/tastytrade.html' with class='h-4.5 aspect-auto fill-current text-current' %}</button>
@@ -33,7 +37,11 @@
       </div>
     </button> {% endcomment %}
 
-    <h6 class="col-span-full text-text/80 font-semibold text-sm mt-2">Decentralized Exchanges</h6>
+    <div class="col-span-full flex items-center gap-2 mt-3 mb-1">
+      {% comment %} <div class="h-px flex-1 bg-gradient-to-r from-transparent via-text/20 to-text/20"></div> {% endcomment %}
+      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">Decentralized Exchanges</h6>
+      <div class="h-px flex-1 bg-gradient-to-l from-transparent via-text/20 to-text/20"></div>
+    </div>
 
     <button onclick="hideModel('add-broker-modal'); openModel('add-apex-modal', false); mountStripeElement('apex');" class="{{ btn_class }}">{% include 'svg/apex.html' with class='h-4 aspect-auto fill-current text-current' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-hyperliquid-modal', false); mountStripeElement('hyperliquid');" class="{{ btn_class }}">{% include 'svg/hyperliquid.html' with class='h-3.5 aspect-auto fill-current text-current' %}</button>
@@ -50,7 +58,12 @@
       </div>
     </button> {% endcomment %}
 
-    <h6 class="col-span-full text-text/80 font-semibold text-sm">Centralized Exchanges</h6>
+    <div class="col-span-full flex items-center gap-2 mt-3 mb-1">
+      {% comment %} <div class="h-px flex-1 bg-gradient-to-r from-transparent via-text/20 to-text/20"></div> {% endcomment %}
+      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">Centralized Exchanges</h6>
+      <div class="h-px flex-1 bg-gradient-to-l from-transparent via-text/20 to-text/20"></div>
+    </div>
+
     <button onclick="hideModel('add-broker-modal'); openModel('add-binance-modal', false); mountStripeElement('binance');" class="{{ btn_class }}">{% include 'svg/binance.html' with class='aspect-auto h-4 fill-current max-w-[80%]' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-bitget-modal', false); mountStripeElement('bitget');" class="{{ btn_class }}">{% include 'svg/bitget.html' with class='text-current h-4' %}</button>
     <button onclick="hideModel('add-broker-modal'); openModel('add-bybit-modal', false); mountStripeElement('bybit');" class="{{ btn_class }}">{% include 'svg/bybit.html' with class='h-4 aspect-auto fill-current' %}</button>
