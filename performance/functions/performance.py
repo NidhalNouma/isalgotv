@@ -273,7 +273,10 @@ def backfill_account_performance(content_type, object_id, create=True):
     )
 
     for t in closed_trades:
-        apply_trade_to_performance(t)
+        try:
+            apply_trade_to_performance(t)
+        except Exception as e:
+            print(f"Error applying trade {t.id} to performance: {e}")
 
     account_perf = AccountPerformance.objects.filter(
         content_type=content_type,

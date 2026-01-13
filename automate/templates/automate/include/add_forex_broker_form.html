@@ -25,7 +25,13 @@
     </div>
     <div class="w-full">
       {% if broker_type == 'alpaca' or broker_type == 'tastytrade' %}
-        <label for="{{ broker_type }}_password" class="input-label">{% if broker_type == 'alpaca' %}Secret Key{% elif broker_type == 'tastytrade' %}Client Secret{% endif %}</label>
+        <label for="{{ broker_type }}_password" class="input-label">
+          {% if broker_type == 'alpaca' %}
+            Secret Key
+          {% elif broker_type == 'tastytrade' %}
+            Client Secret
+          {% endif %}
+        </label>
         <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="Your API secret key" />
       {% else %}
         <label for="{{ broker_type }}_password" class="input-label">Password</label>
@@ -61,7 +67,11 @@
         id="{{ broker_type }}_server"
         name="{{ broker_type }}_server"
         class="input-text w-full"
-        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}Get your authorization token and past it here{% else %}Your account server {% endif %}" />
+        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}
+          Get your authorization token and past it here
+        {% else %}
+          Your account server
+        {% endif %}" />
     </div>
   {% endif %}
 

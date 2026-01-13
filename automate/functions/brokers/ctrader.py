@@ -1,5 +1,5 @@
 # Size will be in lot size and it will be converted to unit size based on the contract size of the symbol.
-# Supports both demo and live clients with connection pooling for better performance.
+# Currently only supports demo accounts.
 
 import requests
 import uuid
@@ -32,9 +32,11 @@ CLIENT_SECRET = env('CTRADER_SECRET_KEY')
 
 class CtraderConnectionManager:
     """
-    Manages persistent connections to cTrader demo and live servers.
+    Manages persistent connection to cTrader demo server.
     Uses connection pooling to avoid re-establishing connections for each request.
     Singleton pattern ensures only one instance manages all connections.
+    
+    NOTE: Currently only demo accounts are supported.
     """
     _instance = None
     _lock = threading.Lock()
@@ -52,13 +54,11 @@ class CtraderConnectionManager:
             return
         self._initialized = True
 
-        self._demo_client = None
-        self._live_client = None
-        self._demo_connected = threading.Event()
-        self._live_connected = threading.Event()
-        self._demo_authenticated = False
-        self._live_authenticated = False
+        self._client = None
+        self._connected = threading.Event()
+        self._authenticated = False
         self._reactor_started = threading.Event()
+        self._lock = threading.Lock()
 
         # Account authorization cache: {account_id: timestamp}
         self._authorized_accounts = {}
@@ -70,57 +70,75 @@ class CtraderConnectionManager:
         self._symbol_info_cache = {}
 
         self._start_reactor()
+        
+        # Eagerly start the connection so it's ready when first request comes
+        self._start_connection_async()
 
     def _start_reactor(self):
         """Start the Twisted reactor in a background thread."""
+        # If reactor is already running, just mark as started
+        if reactor.running:
+            self._reactor_started.set()
+            print(" Twisted reactor already running")
+            return
+            
         def run_reactor():
-            if not reactor.running:
-                self._reactor_started.set()
-                reactor.run(installSignalHandlers=False)
+            # Schedule a callback to set the event once reactor is actually running
+            reactor.callWhenRunning(lambda: (self._reactor_started.set(), print(" Twisted reactor started")))
+            reactor.run(installSignalHandlers=False)
 
         thread = threading.Thread(target=run_reactor, daemon=True)
         thread.start()
-        time.sleep(0.1)
-        self._reactor_started.wait(timeout=5)
+        
+        # Wait for reactor to be fully running before continuing
+        if not self._reactor_started.wait(timeout=10):
+            print("Warning: Twisted reactor may not have started properly")
+        else:
+            print(" Twisted reactor ready")
 
-    def _create_client(self, host, is_demo=True):
-        """Create and configure a new cTrader client."""
-        client = Client(host, EndPoints.PROTOBUF_PORT, TcpProtocol)
-        connected_event = self._demo_connected if is_demo else self._live_connected
+    def _start_connection_async(self):
+        """Start the cTrader connection asynchronously (don't wait for it)."""
+        def start():
+            if self._client is None:
+                self._connected.clear()
+                self._authenticated = False
+                self._client = self._create_client()
+                self._client.startService()
+                print(" cTrader connection started (async)")
+        
+        # Schedule connection start on reactor thread
+        reactor.callFromThread(start)
+
+    def _create_client(self):
+        """Create and configure a new cTrader demo client."""
+        client = Client(EndPoints.PROTOBUF_DEMO_HOST, EndPoints.PROTOBUF_PORT, TcpProtocol)
 
         def on_connected(c):
-            client_type = "Demo" if is_demo else "Live"
-            print(f"\n cTrader {client_type} Connected")
+            print(f"\n cTrader Demo Connected to {EndPoints.PROTOBUF_DEMO_HOST}")
             request = ProtoOAApplicationAuthReq()
             request.clientId = CLIENT_ID
             request.clientSecret = CLIENT_SECRET
-            deferred = c.send(request)
+            
+            deferred = c.send(request, responseTimeoutInSeconds=30)
 
             def on_auth_success(result):
-                if is_demo:
-                    self._demo_authenticated = True
-                else:
-                    self._live_authenticated = True
-                connected_event.set()
-                print(f" cTrader {client_type} Application Authenticated")
+                self._authenticated = True
+                self._connected.set()
+                print(f" cTrader Demo Application Authenticated Successfully")
 
             def on_auth_error(failure):
-                print(f" cTrader {client_type} Auth Error: {failure}")
-                connected_event.set()
+                error_details = str(failure)
+                print(f" cTrader Demo Auth Error: {error_details}")
+                self._connected.set()
 
             deferred.addCallback(on_auth_success)
             deferred.addErrback(on_auth_error)
 
         def on_disconnected(c, reason):
-            client_type = "Demo" if is_demo else "Live"
-            print(f"\n cTrader {client_type} Disconnected: {reason}")
-            connected_event.clear()
-            if is_demo:
-                self._demo_authenticated = False
-                self._demo_client = None
-            else:
-                self._live_authenticated = False
-                self._live_client = None
+            print(f"\n cTrader Demo Disconnected: {reason}")
+            self._connected.clear()
+            self._authenticated = False
+            self._client = None
 
         def on_message(c, message):
             pass
@@ -131,34 +149,45 @@ class CtraderConnectionManager:
 
         return client
 
-    def get_client(self, is_demo=True, timeout=10):
-        """Get a connected and authenticated client."""
-        if is_demo:
-            if self._demo_client is None or not self._demo_authenticated:
-                with self._lock:
-                    if self._demo_client is None:
-                        self._demo_connected.clear()
-                        self._demo_client = self._create_client(
-                            EndPoints.PROTOBUF_DEMO_HOST, is_demo=True
-                        )
-                        reactor.callFromThread(self._demo_client.startService)
-
-            if not self._demo_connected.wait(timeout=timeout):
-                raise Exception("Timeout connecting to cTrader Demo server")
-            return self._demo_client
-        else:
-            if self._live_client is None or not self._live_authenticated:
-                with self._lock:
-                    if self._live_client is None:
-                        self._live_connected.clear()
-                        self._live_client = self._create_client(
-                            EndPoints.PROTOBUF_LIVE_HOST, is_demo=False
-                        )
-                        reactor.callFromThread(self._live_client.startService)
-
-            if not self._live_connected.wait(timeout=timeout):
-                raise Exception("Timeout connecting to cTrader Live server")
-            return self._live_client
+    def get_client(self, timeout=60):
+        """Get a connected and authenticated demo client."""
+        # Return existing client if already connected and authenticated
+        if self._client is not None and self._authenticated:
+            return self._client
+        
+        # Ensure reactor is running
+        if not self._reactor_started.is_set():
+            if not self._reactor_started.wait(timeout=10):
+                raise Exception("Twisted reactor failed to start. Please restart the application.")
+        
+        # If client doesn't exist yet, start it (in case _start_connection_async hasn't run yet)
+        with self._lock:
+            if self._client is None:
+                self._connected.clear()
+                self._authenticated = False
+                self._client = self._create_client()
+                print(" Starting cTrader client service...")
+                reactor.callFromThread(self._client.startService)
+        
+        # Wait for connection - the connection may have started at init time
+        # so just wait for it to complete
+        print(f" Waiting for cTrader connection (timeout={timeout}s)...")
+        
+        if self._connected.wait(timeout=timeout):
+            if self._authenticated:
+                print(" cTrader client ready")
+                return self._client
+            else:
+                # Connected but auth failed
+                self._client = None
+                raise Exception("cTrader Demo authentication failed. Please try again.")
+        
+        # Timeout
+        print(" cTrader connection timeout")
+        self._client = None
+        raise Exception("Timeout connecting to cTrader Demo server. Please try again.")
+        
+        return self._client
 
     def is_account_authorized(self, account_id):
         if account_id in self._authorized_accounts:
@@ -226,7 +255,7 @@ def parse_payload(payload):
 
 class CtraderClient(BrokerClient):
 
-    def __init__(self, account=None, authorization_code=None, type: str = 'demo', current_trade=None):
+    def __init__(self, account=None, authorization_code=None, type: str = 'demo', current_trade=None, skip_auth=False):
         self.type = type.lower()
         self.is_demo = self.type in ('demo', 'd')
 
@@ -261,12 +290,17 @@ class CtraderClient(BrokerClient):
             self.is_demo = not acc.get('is_live', False)
             self.type = 'D' if self.is_demo else 'L'
 
-        self.authorize_account()
-        print(f'Account ID set to {self.account_id} ({self.type})')
+        # Check if this is a live account - not supported yet
+        if not self.is_demo:
+            raise Exception("cTrader live accounts are not supported yet. Please use a demo account.")
+
+        if not skip_auth:
+            self.authorize_account()
+            print(f'Account ID set to {self.account_id} ({self.type})')
 
     @property
     def client(self):
-        return self._conn_manager.get_client(is_demo=self.is_demo)
+        return self._conn_manager.get_client()
 
     def save_token(self):
         if self._id:
@@ -279,17 +313,24 @@ class CtraderClient(BrokerClient):
     @staticmethod
     def check_credentials(authorization_code: str, type: str):
         try:
-            client = CtraderClient(authorization_code=authorization_code, type=type)
-            if client:
-                return {
-                    "error": None,
-                    "valid": True,
-                    "ctrader_access_token": client.tokens,
-                    "account_id": client.account_id,
-                    "account_type": client.type,
-                }
-            else:
-                raise Exception('Access denied. Credentials are not valid.')
+            # Create a temporary client to get account info and validate
+            temp_client = CtraderClient(authorization_code=authorization_code, type=type, skip_auth=True)
+            
+            # Check if this is a live account - not supported yet
+            if not temp_client.is_demo:
+                raise Exception("cTrader live accounts are not supported yet. Please use a demo account.")
+            
+            # Authorize the account
+            temp_client.authorize_account()
+            print(f'Account ID set to {temp_client.account_id} ({temp_client.type})')
+            
+            return {
+                "error": None,
+                "valid": True,
+                "ctrader_access_token": temp_client.tokens,
+                "account_id": temp_client.account_id,
+                "account_type": temp_client.type,
+            }
         except Exception as e:
             return {"error": str(e), "valid": False}
 
@@ -354,7 +395,7 @@ class CtraderClient(BrokerClient):
         except Exception as e:
             raise Exception(str(e))
 
-    def _send_request(self, request, callback, timeout=8):
+    def _send_request(self, request, callback, timeout=30):
         def run():
             d = defer.Deferred()
 
@@ -368,9 +409,11 @@ class CtraderClient(BrokerClient):
 
             def on_timeout():
                 if not d.called:
-                    d.errback(Exception("Request timeout"))
+                    request_type = type(request).__name__
+                    d.errback(Exception(f"Request timeout for {request_type}. Connection may still be establishing."))
 
-            self.client.send(request).addCallback(on_response).addErrback(d.errback)
+            # Use 30 second timeout for API requests
+            self.client.send(request, responseTimeoutInSeconds=30).addCallback(on_response).addErrback(d.errback)
             reactor.callLater(timeout, on_timeout)
             return d
 
@@ -399,7 +442,7 @@ class CtraderClient(BrokerClient):
         account_list_req.accessToken = self.access_token
         return self._send_request(account_list_req, callback)
 
-    def authorize_account(self):
+    def authorize_account(self, max_retries=3):
         if self._conn_manager.is_account_authorized(self.account_id):
             print("Account already authorized (cached).")
             return True
@@ -413,10 +456,24 @@ class CtraderClient(BrokerClient):
         auth_req.ctidTraderAccountId = self.account_id
         auth_req.accessToken = self.access_token
 
-        try:
-            return self._send_request(auth_req, callback)
-        except Exception as e:
-            raise Exception(f"Account authorization failed: {e}")
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                result = self._send_request(auth_req, callback)
+                return result
+            except Exception as e:
+                last_error = e
+                error_msg = str(e)
+                if attempt < max_retries - 1:
+                    if "timeout" in error_msg.lower() or "Timeout" in error_msg:
+                        print(f"Authorization attempt {attempt + 1} timed out, retrying...")
+                        time.sleep(2)  # Longer delay before retry
+                        continue
+                # If not a timeout or last attempt, re-raise
+                if "timeout" not in error_msg.lower():
+                    break
+        
+        raise Exception(f"Account authorization failed after {max_retries} attempts: {last_error}")
 
     def get_account_info(self):
         def callback(result):

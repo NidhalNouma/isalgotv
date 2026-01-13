@@ -141,6 +141,12 @@ def account_context_data(account):
         return None
     
     overview_data = get_overview_performance_data(account_perf)
+
+    if overview_data.get('trades', 0) == 0:
+        return {
+            'perf_emsg': 'No data available at this time.',
+        }
+
     chart_performance = get_days_performance(account_perf)
 
     currencies_performance = get_performance_currencies(account_perf)
