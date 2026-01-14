@@ -309,7 +309,6 @@ class TradeDetails(models.Model):
             close_price = trade_data.get('close_price', 0)
             profit = trade_data.get('profit', 0)
             fees = trade_data.get('fees', 0)
-            trade_data['net_profit'] = Decimal(str(profit)) - abs(Decimal(str(fees)))
 
             try:
                 self.exit_price = Decimal(str(close_price))

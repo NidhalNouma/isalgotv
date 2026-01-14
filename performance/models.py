@@ -23,25 +23,29 @@ class TradeAppliedPerformance(models.Model):
         related_name="applied_performances"
     )
 
-    performance_type = models.CharField(max_length=32)
-    performance_id = models.PositiveBigIntegerField()
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE
+    )
+    object_id = models.PositiveIntegerField()
+    performance = GenericForeignKey("content_type", "object_id")
 
     applied_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["trade", "performance_type", "performance_id"],
+                fields=["trade", "content_type", "object_id"],
                 name="unique_trade_performance_application_v2"
             )
         ]
         indexes = [
             models.Index(fields=["trade"]),
-            models.Index(fields=["performance_type", "performance_id"]),
+            models.Index(fields=["content_type", "object_id"]),
         ]
 
     def __str__(self):
-        return f"{self.trade_id} → {self.performance_type}:{self.performance_id}"
+        return f"{self.trade_id} → {self.content_type}:{self.object_id}"
 
 
 # --------------------------------------------------

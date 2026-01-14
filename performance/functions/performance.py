@@ -1,6 +1,7 @@
 
 from django.db import transaction
 from django.db.utils import IntegrityError
+from django.contrib.contenttypes.models import ContentType
 from typing import TypedDict, Any, NotRequired
 
 from performance.models import *
@@ -47,12 +48,13 @@ def apply_trade_to_performance(trade):
     # --------------------------------------------------
     # Helper: apply stats ONCE
     # --------------------------------------------------
-    def apply_once(perf_type, perf_id, update_fn):
+    def apply_once(perf_obj, update_fn):
+        """Apply trade to performance object only once (idempotent)."""
         try:
             TradeAppliedPerformance.objects.create(
                 trade=trade,
-                performance_type=perf_type,
-                performance_id=perf_id,
+                content_type=ContentType.objects.get_for_model(type(perf_obj)),
+                object_id=perf_obj.id,
             )
         except IntegrityError:
             return  # already applied
@@ -64,7 +66,7 @@ def apply_trade_to_performance(trade):
     def update_account():
         AccountPerformance.apply_trade_stats(perf_id=account_perf.id, trade=trade)
 
-    apply_once("account", account_perf.id, update_account)
+    apply_once(account_perf, update_account)
 
     # --------------------------------------------------
     # Account Currency
@@ -80,7 +82,7 @@ def apply_trade_to_performance(trade):
             trade=trade,
         )
 
-    apply_once("account_currency", acc_curr.id, update_account_currency)
+    apply_once(acc_curr, update_account_currency)
 
     # --------------------------------------------------
     # 2 AssetPerformance
@@ -93,7 +95,7 @@ def apply_trade_to_performance(trade):
     def update_asset():
         AssetPerformance.apply_trade_stats(perf_id=asset_perf.id, trade=trade)
 
-    apply_once("asset", asset_perf.id, update_asset)
+    apply_once(asset_perf, update_asset)
 
     # Asset currency
     asset_curr, _ = AssetCurrencyPerformance.objects.get_or_create(
@@ -104,7 +106,7 @@ def apply_trade_to_performance(trade):
     def update_asset_currency():
         AssetCurrencyPerformance.apply_trade_and_profit_stats(perf_id=asset_curr.id, trade=trade)
 
-    apply_once("asset_currency", asset_curr.id, update_asset_currency)
+    apply_once(asset_curr, update_asset_currency)
 
     # --------------------------------------------------
     # 3 StrategyPerformance (optional)
@@ -117,7 +119,7 @@ def apply_trade_to_performance(trade):
 
         def update_strategy():
             StrategyPerformance.apply_trade_stats(perf_id=strategy_perf.id, trade=trade)
-        apply_once("strategy", strategy_perf.id, update_strategy)
+        apply_once(strategy_perf, update_strategy)
 
         strategy_curr, _ = StrategyCurrencyPerformance.objects.get_or_create(
             strategy_performance=strategy_perf,
@@ -127,7 +129,7 @@ def apply_trade_to_performance(trade):
         def update_strategy_currency():
             StrategyCurrencyPerformance.apply_trade_and_profit_stats(perf_id=strategy_curr.id, trade=trade)
 
-        apply_once("strategy_currency", strategy_curr.id, update_strategy_currency)
+        apply_once(strategy_curr, update_strategy_currency)
 
     # --------------------------------------------------
     # 4 DayPerformance
@@ -140,7 +142,7 @@ def apply_trade_to_performance(trade):
     def update_day():
         DayPerformance.apply_trade_stats(perf_id=day_perf.id, trade=trade)
 
-    apply_once("day", day_perf.id, update_day)
+    apply_once(day_perf, update_day)
 
     # Day Currency
     day_curr, _ = DayCurrencyPerformance.objects.get_or_create(
@@ -151,7 +153,7 @@ def apply_trade_to_performance(trade):
     def update_day_currency():
         DayCurrencyPerformance.apply_trade_and_profit_stats(perf_id=day_curr.id, trade=trade)
 
-    apply_once("day_currency", day_curr.id, update_day_currency)
+    apply_once(day_curr, update_day_currency)
 
     # --------------------------------------------------
     # 5 DayAssetPerformance (with currency breakdown)
@@ -164,7 +166,7 @@ def apply_trade_to_performance(trade):
     def update_day_asset():
         DayAssetPerformance.apply_trade_stats(perf_id=day_asset_perf.id, trade=trade)
 
-    apply_once("day_asset", day_asset_perf.id, update_day_asset)
+    apply_once(day_asset_perf, update_day_asset)
 
     day_asset_curr, _ = DayAssetCurrencyPerformance.objects.get_or_create(
         day_asset_performance=day_asset_perf,
@@ -174,7 +176,7 @@ def apply_trade_to_performance(trade):
     def update_day_asset_currency():
         DayAssetCurrencyPerformance.apply_trade_and_profit_stats(perf_id=day_asset_curr.id, trade=trade)
 
-    apply_once("day_asset_currency", day_asset_curr.id, update_day_asset_currency)
+    apply_once(day_asset_curr, update_day_asset_currency)
 
     # --------------------------------------------------
     # 6 DayStrategyPerformance (with currency breakdown)
@@ -188,7 +190,7 @@ def apply_trade_to_performance(trade):
         def update_day_strategy():
             DayStrategyPerformance.apply_trade_stats(perf_id=day_strategy_perf.id, trade=trade)
 
-        apply_once("day_strategy", day_strategy_perf.id, update_day_strategy)
+        apply_once(day_strategy_perf, update_day_strategy)
 
         day_strategy_curr, _ = DayStrategyCurrencyPerformance.objects.get_or_create(
             day_strategy_performance=day_strategy_perf,
@@ -198,7 +200,7 @@ def apply_trade_to_performance(trade):
         def update_day_strategy_currency():
             DayStrategyCurrencyPerformance.apply_trade_and_profit_stats(perf_id=day_strategy_curr.id, trade=trade)
 
-        apply_once("day_strategy_currency", day_strategy_curr.id, update_day_strategy_currency)
+        apply_once(day_strategy_curr, update_day_strategy_currency)
 
         # --------------------------------------------------
         # 7 AssetStrategyPerformance (strategy performance per asset)
@@ -211,7 +213,7 @@ def apply_trade_to_performance(trade):
         def update_asset_strategy():
             AssetStrategyPerformance.apply_trade_stats(perf_id=asset_strategy_perf.id, trade=trade)
 
-        apply_once("asset_strategy", asset_strategy_perf.id, update_asset_strategy)
+        apply_once(asset_strategy_perf, update_asset_strategy)
 
         asset_strategy_curr, _ = AssetStrategyCurrencyPerformance.objects.get_or_create(
             asset_strategy_performance=asset_strategy_perf,
@@ -221,7 +223,7 @@ def apply_trade_to_performance(trade):
         def update_asset_strategy_currency():
             AssetStrategyCurrencyPerformance.apply_trade_and_profit_stats(perf_id=asset_strategy_curr.id, trade=trade)
 
-        apply_once("asset_strategy_currency", asset_strategy_curr.id, update_asset_strategy_currency)
+        apply_once(asset_strategy_curr, update_asset_strategy_currency)
 
         # --------------------------------------------------
         # 8 DayAssetStrategyPerformance (day-level asset-strategy performance)
@@ -234,7 +236,7 @@ def apply_trade_to_performance(trade):
         def update_day_asset_strategy():
             DayAssetStrategyPerformance.apply_trade_stats(perf_id=day_asset_strategy_perf.id, trade=trade)
 
-        apply_once("day_asset_strategy", day_asset_strategy_perf.id, update_day_asset_strategy)
+        apply_once(day_asset_strategy_perf, update_day_asset_strategy)
 
         day_asset_strategy_curr, _ = DayAssetStrategyCurrencyPerformance.objects.get_or_create(
             day_asset_strategy_performance=day_asset_strategy_perf,
@@ -244,7 +246,7 @@ def apply_trade_to_performance(trade):
         def update_day_asset_strategy_currency():
             DayAssetStrategyCurrencyPerformance.apply_trade_and_profit_stats(perf_id=day_asset_strategy_curr.id, trade=trade)
 
-        apply_once("day_asset_strategy_currency", day_asset_strategy_curr.id, update_day_asset_strategy_currency)
+        apply_once(day_asset_strategy_curr, update_day_asset_strategy_currency)
 
 
 def backfill_account_performance(content_type, object_id, create=True):
