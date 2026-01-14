@@ -1,0 +1,7 @@
+# Test dependencies for automate app
+# Install with: pip install -r automate/tests/requirements-test.txt
+
+pytest>=7.0.0
+pytest-django>=4.5.0
+pytest-cov>=4.0.0
+pytest-asyncio>=0.21.0

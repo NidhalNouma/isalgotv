@@ -64,6 +64,13 @@ class BasePerformance(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Auto-delete TradeAppliedPerformance when this performance is deleted
+    applied_trades = GenericRelation(
+        "TradeAppliedPerformance",
+        content_type_field="content_type",
+        object_id_field="object_id"
+    )
+
     class Meta:
         abstract = True
 

@@ -75,14 +75,16 @@ class CryptoBrokerAccount(models.Model):
 
     subscription_id = models.CharField(max_length=100, blank=False)
 
+    _performances = GenericRelation(
+        "performance.AccountPerformance",
+        content_type_field="content_type",
+        object_id_field="object_id"
+    )
+
     @property
     def performance(self):
-        if not hasattr(self, '_cached_performance'): 
-            self._cached_performance = AccountPerformance.objects.filter(
-                content_type=ContentType.objects.get_for_model(self),
-                object_id=self.id
-            ).first()
-        return self._cached_performance
+        """Get the single AccountPerformance for this account."""
+        return self._performances.first()
 
     def generate_public_id(self, replace=False, save=True):
         if self.public_id == "" or replace:
@@ -153,14 +155,16 @@ class ForexBrokerAccount(models.Model):
 
     subscription_id = models.CharField(max_length=100, blank=False)
     
+    _performances = GenericRelation(
+        "performance.AccountPerformance",
+        content_type_field="content_type",
+        object_id_field="object_id"
+    )
+
     @property
     def performance(self):
-        if not hasattr(self, '_cached_performance'):
-            self._cached_performance = AccountPerformance.objects.filter(
-                content_type=ContentType.objects.get_for_model(self),
-                object_id=self.id
-            ).first()
-        return self._cached_performance
+        """Get the single AccountPerformance for this account."""
+        return self._performances.first()
 
     def generate_public_id(self, replace=False, save=True):
         if self.public_id == "" or replace:
@@ -341,7 +345,7 @@ class TradeDetails(models.Model):
                 else:
                     from .functions.alerts_logs_trades import get_trade_data
                     trade_response = get_trade_data(self.account, self)
-                
+                    
                 # print(trade_response)
                 if trade_response:
                     if isinstance(trade_response, list):

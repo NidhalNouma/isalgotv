@@ -29,7 +29,7 @@ def apply_trade_to_performance(trade):
         raise ValueError("Trade has no currency")
     
     asset = trade.symbol
-    trade_date = trade.exit_time.date()
+    trade_date = trade.exit_time if isinstance(trade.exit_time, datetime.date) else datetime.datetime.fromisoformat(trade.exit_time).date()
     strategy = trade.strategy
 
     # --------------------------------------------------

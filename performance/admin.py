@@ -53,14 +53,14 @@ class DayPerformanceAdmin(ModelAdmin):
     search_fields = ['account_performance__content_type__model', 'account_performance__object_id']
 
 
-# @admin.register(TradeAppliedPerformance)
-# class TradeAppliedPerformanceAdmin(ModelAdmin):
-#     verbose_name = "Trade Applied Performance"
-#     verbose_name_plural = "Trade Applied Performances"
+@admin.register(TradeAppliedPerformance)
+class TradeAppliedPerformanceAdmin(ModelAdmin):
+    verbose_name = "Trade Applied Performance"
+    verbose_name_plural = "Trade Applied Performances"
     
-#     list_display = ('id', 'trade', 'performance_type', 'performance_id', 'applied_at')
-#     search_fields = ['trade__symbol', 'performance_type']
-#     list_filter = ['performance_type']
+    list_display = ('id', 'trade', 'performance', 'content_type', 'object_id', 'applied_at')
+    search_fields = ['trade__symbol', 'content_type__model', 'object_id']
+    list_filter = ['content_type__model']   
 
 
 @admin.register(DayAssetPerformance)
@@ -69,7 +69,8 @@ class DayAssetPerformanceAdmin(ModelAdmin):
     verbose_name_plural = "Performance - Day Assets"
     
     list_display = ('id', 'asset_performance', 'day_performance', 'buy_total_trades', 'sell_total_trades')
-
+    search_fields = ['asset_performance__asset', 'day_performance__date']
+    list_filter = ['day_performance__date']
 
 @admin.register(DayStrategyPerformance)
 class DayStrategyPerformanceAdmin(ModelAdmin):
@@ -77,7 +78,8 @@ class DayStrategyPerformanceAdmin(ModelAdmin):
     verbose_name_plural = "Performance - Day Strategies"
     
     list_display = ('id', 'strategy_performance', 'day_performance', 'buy_total_trades', 'sell_total_trades')
-
+    search_fields = ['strategy_performance__strategy__name', 'day_performance__date']
+    list_filter = ['day_performance__date']
 
 @admin.register(AssetStrategyPerformance)
 class AssetStrategyPerformanceAdmin(ModelAdmin):
@@ -85,7 +87,8 @@ class AssetStrategyPerformanceAdmin(ModelAdmin):
     verbose_name_plural = "Performance - Asset Strategies"
     
     list_display = ('id', 'asset_performance', 'strategy_performance', 'buy_total_trades', 'sell_total_trades')
-
+    search_fields = ['asset_performance__asset', 'strategy_performance__strategy__name']
+    list_filter = ['asset_performance__asset', 'strategy_performance__strategy__name']
 
 @admin.register(AssetCurrencyPerformance)
 class AssetCurrencyPerformanceAdmin(ModelAdmin):

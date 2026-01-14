@@ -5,7 +5,11 @@ from performance.functions.performance import apply_trade_to_performance
 
 @receiver(post_save, sender=TradeDetails)
 def update_account_statistics_on_trade_save(sender, instance, created, **kwargs):
-    if instance.status == "C":
-        apply_trade_to_performance(instance)
+    try:
+        if instance.status == "C":
+            apply_trade_to_performance(instance)
+    except Exception as e:
+        print(f" Error applying trade to performance: {e}")
+        
 
 
