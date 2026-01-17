@@ -323,7 +323,7 @@ function loadAccountProfitCharts(id, data) {
     daily_trades: data.map((item) => item.today_trades),
   };
 
-  const existingChart = Chart.getChart("accountProfitChart-" + id);
+  const existingChart = Chart.getChart(id);
   if (existingChart) {
     existingChart.destroy();
   }

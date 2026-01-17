@@ -583,7 +583,7 @@ def get_days_performance(performance):
 
         
         today_date = datetime.date.today()
-        chart_data[currency]['today_profit'] = perf_data.get(today_date, {}).get('net_profit', 0)
+        chart_data[currency]['today_net_profit'] = perf_data.get(today_date, {}).get('net_profit', 0)
         chart_data[currency]['data'] = day_data
         chart_data[currency]['cumulative'] = cumulative_data
 

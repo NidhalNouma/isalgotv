@@ -411,13 +411,13 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
 
       // print("Stripe client secret: " + clientSecret);
       const appearance = {
-        theme: "stripe",
+        theme: "flat",
         variables: {
           fontFamily: '"Gill Sans", sans-serif',
           fontLineHeight: "1.5",
           borderRadius: "10px",
 
-          colorBackground: getCssVariableColor("--color-background"),
+          colorBackground: "transparent",
 
           colorPrimary: getCssVariableColor("--color-primary"),
           colorText: getCssVariableColor("--color-text"),
@@ -433,12 +433,24 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
             borderColor: getCssVariableColor("--color-text", 0.1),
             borderWidth: "2px",
             boxShadow: "none",
+            backgroundColor: "transparent",
           },
           ".Block": {
-            backgroundColor: "var(--colorBackground)",
+            backgroundColor: "transparent",
             border: "none",
             boxShadow: "none",
             padding: "12px",
+          },
+          ".Tab": {
+            padding: "10px 12px 8px 12px",
+            border: "none",
+            backgroundColor: "transparent",
+          },
+          ".TabLabel": {
+            backgroundColor: "transparent",
+          },
+          ".TabIcon": {
+            backgroundColor: "transparent",
           },
           ".Input": {
             border: "2px solid " + getCssVariableColor("--color-text", 0),
@@ -452,10 +464,6 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
           },
           ".Input:disabled, .Input--invalid:disabled": {
             color: getCssVariableColor("--color-text", 0.4),
-          },
-          ".Tab": {
-            padding: "10px 12px 8px 12px",
-            border: "none",
           },
           ".Tab:hover": {
             border: "none",
@@ -808,112 +816,6 @@ function toggleForm(btnId, formId, textFocus = true) {
 function showSelectImgs(id) {
   const input = document.getElementById(id);
   input.click();
-}
-
-function showModalImages(clickedImg, id = "") {
-  // Derive the image list from the clicked image’s parent container
-  const parent = clickedImg.parentElement;
-  const imgElements = Array.from(parent.querySelectorAll("img"));
-  const images = imgElements.map((imgEl, idx) => ({
-    id: idx,
-    imageUrl: imgEl.src,
-  }));
-  // Find the index of the clicked image
-  const imgId = images.find((image) => image.imageUrl === clickedImg.src).id;
-
-  const modalId = "modal-images-" + id;
-  openModel(modalId);
-
-  // Close the image modal on scroll
-  // const scrollHandler = () => {
-  //   hideModel(modalId);
-  //   window.removeEventListener("wheel", scrollHandler, { passive: true });
-  //   window.removeEventListener("touchmove", scrollHandler, { passive: true });
-  // };
-  // window.addEventListener("wheel", scrollHandler, { passive: true });
-  // window.addEventListener("touchmove", scrollHandler, { passive: true });
-
-  let currentIndex = 0;
-
-  const showImage = (index) => {
-    const carouselItems = carouselContainer.querySelectorAll(
-      "[data-carousel-item]"
-    );
-    carouselItems.forEach((item, i) => {
-      item.style.display = i === index ? "block" : "none";
-    });
-
-    currentIndex = index;
-  };
-
-  document
-    .getElementById("prev-button-carousel-" + id)
-    .addEventListener("click", () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      showImage(currentIndex);
-    });
-
-  document
-    .getElementById("next-button-carousel-" + id)
-    .addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      showImage(currentIndex);
-    });
-
-  if (images.length <= 1) {
-    document
-      .getElementById("prev-button-carousel-" + id)
-      .classList.add("hidden");
-    document
-      .getElementById("next-button-carousel-" + id)
-      .classList.add("hidden");
-  } else {
-    document
-      .getElementById("prev-button-carousel-" + id)
-      .classList.remove("hidden");
-    document
-      .getElementById("next-button-carousel-" + id)
-      .classList.remove("hidden");
-  }
-
-  const carouselControl = document.getElementById("controls-carousel-" + id);
-  const carouselContainer = document.getElementById("images-carousel-" + id);
-  while (carouselContainer.firstChild) {
-    carouselContainer.removeChild(carouselContainer.firstChild);
-  }
-
-  images.forEach((img, index) => {
-    console.log(img);
-    const imgElement = document.createElement("img");
-    imgElement.src = img.imageUrl;
-    imgElement.onclick = function () {
-      hideModel(modalId);
-    };
-    imgElement.classList.add(
-      "object-scale-down",
-      "absolute",
-      "max-w-[90%]",
-      "max-h-[90%]",
-      "aspect-auto",
-      "block",
-      "-translate-x-1/2",
-      "-translate-y-1/2",
-      "top-1/2",
-      "left-1/2",
-      "hover:cursor-zoom-out"
-    );
-
-    const carouselItem = document.createElement("div");
-    carouselItem.classList.add("hidden", "duration-700", "ease-in-out");
-    carouselItem.setAttribute("data-carousel-item", "");
-    carouselItem.appendChild(imgElement);
-
-    carouselContainer.appendChild(carouselItem);
-
-    if (img.id == imgId) {
-      showImage(index);
-    }
-  });
 }
 
 function openAITokensModalSettings(fromIsalgoAI = false) {
