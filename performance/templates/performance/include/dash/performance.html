@@ -5,14 +5,16 @@
     {% include 'include/infos.html' with info=perf_emsg %}
   </section>
 {% else %}
-  <section class=" {{ mt|default:'mt-8' }} w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    {% include 'performance/include/dash/trades_doughnut_card.html' with title='Total trades' value=overview_data.trades win_rate=overview_data.win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %}
-    {% include 'performance/include/dash/trades_doughnut_card.html' with title='Buy trades' value=overview_data.buy_trades win_rate=overview_data.buy_win_rate loss=overview_data.buy_losing_trades win=overview_data.buy_winning_trades class='hidden sm:block' %}
-    {% include 'performance/include/dash/trades_doughnut_card.html' with title='Sell trades' value=overview_data.sell_trades win_rate=overview_data.sell_win_rate loss=overview_data.sell_losing_trades win=overview_data.sell_winning_trades class='hidden sm:block' %}
-    {% comment %} {% include 'include/dash/trades_card.html' with title='Total trades' value=overview_data.trades win_rate=overview_data.win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %}
-    {% include 'include/dash/trades_card.html' with title='Buy trades' value=overview_data.buy_trades win_rate=overview_data.buy_win_rate loss=overview_data.buy_losing_trades win=overview_data.buy_winning_trades %}
-    {% include 'include/dash/trades_card.html' with title='Sell trades' value=overview_data.sell_trades win_rate=overview_data.sell_win_rate loss=overview_data.sell_losing_trades win=overview_data.sell_winning_trades %} {% endcomment %}
-  </section>
+  {% if overview_data %}
+    <section class=" {{ mt|default:'mt-8' }} w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {% include 'performance/include/dash/trades_doughnut_card.html' with title='Total trades' value=overview_data.trades win_rate=overview_data.win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %}
+      {% include 'performance/include/dash/trades_doughnut_card.html' with title='Buy trades' value=overview_data.buy_trades win_rate=overview_data.buy_win_rate loss=overview_data.buy_losing_trades win=overview_data.buy_winning_trades class='hidden sm:block' %}
+      {% include 'performance/include/dash/trades_doughnut_card.html' with title='Sell trades' value=overview_data.sell_trades win_rate=overview_data.sell_win_rate loss=overview_data.sell_losing_trades win=overview_data.sell_winning_trades class='hidden sm:block' %}
+      {% comment %} {% include 'include/dash/trades_card.html' with title='Total trades' value=overview_data.trades win_rate=overview_data.win_rate loss=overview_data.losing_trades win=overview_data.winning_trades %}
+      {% include 'include/dash/trades_card.html' with title='Buy trades' value=overview_data.buy_trades win_rate=overview_data.buy_win_rate loss=overview_data.buy_losing_trades win=overview_data.buy_winning_trades %}
+      {% include 'include/dash/trades_card.html' with title='Sell trades' value=overview_data.sell_trades win_rate=overview_data.sell_win_rate loss=overview_data.sell_losing_trades win=overview_data.sell_winning_trades %} {% endcomment %}
+    </section>
+  {% endif %}
 
   {% if chart_data or currencies_performance %}
     <section class="mt-8 w-full rounded-lg">
@@ -85,7 +87,7 @@
   {% endif %}
 
   {% if trades|length > 0 %}
-    <section class="mt-8 w-full  rounded-lg">
+    <section class="mt-8 w-full rounded-lg">
       <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Trades</h4>
       <div class="h-96 w-full">
         {% include 'automate/include/account_trades.html' with broker_type=broker_type id=id only_closed_trades=only_closed_trades thead_class='' %}
