@@ -23,19 +23,36 @@
 
 {% block page %}
   {% if user.is_authenticated %}
-    <div class="flex items-baseline gap-2 sm:gap-3">
+    <div class="flex items-end gap-2 sm:gap-3 relative">
       <h1 class="main-title">Automate</h1>
-      <button onclick="openModel('add-broker-modal');" class="btn-title -translate-y-1 pr-3 pl-2 text-sm font-semibold inline-flex items-center justify-center">
-        <svg class="h-4 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+      <button onclick="openModel('add-broker-modal');" class="btn-title">
+        <svg class="h-4 mr-1 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 12h14" />
           <path d="M12 5v14" />
         </svg>Account
       </button>
+      <div class="ml-auto flex items-center">
+        <button onclick="openDrawer('drawer-alert-guide')" class="btn-text rounded-full border-0 ml-auto gap-1.5">
+          <svg class="w-4 h-4 relative z-10 drop-shadow-[0_1px_4px_rgba(0,0,0,0.18)]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 6H3" />
+            <path d="M10 12H3" />
+            <path d="M10 18H3" />
+            <circle cx="17" cy="15" r="3" />
+            <path d="m21 19-1.9-1.9" />
+          </svg>
+          <span class="relative z-10 hidden sm:inline-block">Playground</span>
+        </button>
+      </div>
     </div>
 
     <main id="at-accounts" class="mt-8 mb-16">
       {% include 'include/accounts_list.html' %}
     </main>
+
+    {% load custom_tags %}
+
+    {% render_template 'include/docs/alerts_playground.html' as setuo_alert_content %}
+    {% include 'include/drawer_modal.html' with drawer_id='drawer-alert-guide' title='Alert Creation Playground' body=setuo_alert_content %}
 
     {% include 'include/add_broker_modal.html' %}
     {% include 'include/add_broker.html' with broker_type='binance' %}

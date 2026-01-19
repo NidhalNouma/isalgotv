@@ -142,18 +142,6 @@
       </div>
 
       <div class="mt-6 flex items-center justify-around gap-3 text-text/20">
-        <button class="btn-a gap-1" onclick="openDrawer('drawer-forex-guide-{{ account.id }}')">
-          <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 6H3" />
-            <path d="M10 12H3" />
-            <path d="M10 18H3" />
-            <circle cx="17" cy="15" r="3" />
-            <path d="m21 19-1.9-1.9" />
-          </svg>
-          <span>Guide</span>
-        </button>
-        <span>|</span>
-
         <form id="logs-form-{{ account.id }}" hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{ account.broker_type }}-{{ account.id }}" hx-swap="outerHTML">
           {% csrf_token %}
           <button type="submit" onclick="openDrawer('drawer-forex-logs-{{ account.id }}', 'bottom')" class="btn-a gap-1">
@@ -195,6 +183,17 @@
         <span>Trades</span>
       </button>  
     </form>
+          {% comment %} {% if account.public_id %}
+        <span>|</span>
+                      <form id="form-fperf-{{ form }}" hx-get="{{ perf_url }}?inpage=true" hx-target="#as-{{ account.public_id }}" hx-swap="outerHTML">
+                {% csrf_token %}
+                <button type="submit" onclick="openDrawer('dr_{{ account.public_id }}', 'bottom');" class="btn-a gap-1">
+                  <svg class="w-3.5 h-3.5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path></svg>
+                  Performance
+                </button>
+              </form>
+
+              {% endif %} {% endcomment %}
       </div>
     </div>
   </div>
@@ -241,11 +240,9 @@
 
   {% with account_id_str=account.id|stringformat:'s' %}
     {% load custom_tags %}
-    {% render_template 'include/docs/alerts_playground.html' webhook_url=webhook_url webhook_name=account.name id=account_id_str as setuo_alert_content %}
     {% render_template 'include/account_logs.html' broker_type=account.broker_type id=account.id as logs_content %}
     {% render_template 'include/account_trades.html' broker_type=account.broker_type id=account.id as trades_content %}
 
-    {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-guide-'|add:account_id_str title='Alert Creation Playground' body=setuo_alert_content %}
 
     {% url 'export_logs' account.broker_type account.id as export_logs_url %}
     {% include 'include/drawer_modal.html' with drawer_id='drawer-forex-logs-'|add:account_id_str title='Logs ('|add:account.name|add:')' body=logs_content side='bottom' class='h-[75vh]' export_url=export_logs_url %}

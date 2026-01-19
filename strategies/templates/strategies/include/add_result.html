@@ -1,6 +1,6 @@
 <div class="mb-4">
   {% if results|length > 0 %}
-    {% if user.is_authenticated and has_subscription %}
+    {% if user.is_authenticated and has_subscription or strategy.premium == 'Free' %}
       <button class="btn-text text-sm font-semibold underlinei" id="add-result-btn" onclick="openModel('add-result-modal')">Share your report</button>
     {% elif user.is_authenticated and not has_subscription %}
       <button class="btn-text text-sm font-semibold underlinei" onclick="openModel('upgrade-modal')">Share your report</button>
@@ -8,6 +8,6 @@
   {% endif %}
 </div>
 
-{% if user.is_authenticated and has_subscription %}
+{% if user.is_authenticated and has_subscription or strategy.premium == 'Free' %}
   {% include 'include/add_result_form.html' %}
 {% endif %}

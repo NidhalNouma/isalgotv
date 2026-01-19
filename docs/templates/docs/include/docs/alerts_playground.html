@@ -88,13 +88,13 @@
             </p>
             <ul class="mb-3 space-y-1">
                 <li><code class="inline">P</code> - Partial close: Use <code class="inline">P={{ "{{partial_close}" }}}</code> or <code class="inline">P=50</code> (can include % like <code class="inline">P=50%</code>)</li>
-                <li>
+                {% comment %} <li>
                     <code class="inline">R</code> - Reverse signal: Closes any open trade before opening a new one in the opposite direction. This parameter must be added to <strong>both entry and exit alerts</strong> to work correctly.
                     <br/>
                     <span class="text-xs !text-text/60">Example: <code class="inline">D=Buy A={{ "{{ticker}" }}} V=10 ID={{ "{{ID}" }}} R=1</code> and <code class="inline">X=Buy A={{ "{{ticker}" }}} P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}} R=1</code></span>
                     <br/>
                     Change R value if you're using multiple strategies on the same asset to a unique number for each strategy (e.g., R=1, R=2, R=3).
-                </li>
+                </li> {% endcomment %}
             </ul>
 
             <p class="mb-2">

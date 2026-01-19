@@ -213,13 +213,6 @@
     </div>
 
     <div class="mt-6 flex items-center justify-around gap-3 text-text/20">
-
-      <button class="btn-a gap-1" onclick="openDrawer('drawer-crypto-guide-{{account.id}}')">
-        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H3"/><path d="M10 12H3"/><path d="M10 18H3"/><circle cx="17" cy="15" r="3"/><path d="m21 19-1.9-1.9"/></svg>
-        <span>Guide</span>
-    </button>
-    <span>|</span>
-      
     <form id="logs-form-{{ account.id }}" hx-get="{% url 'get_logs' account.broker_type account.id %}" hx-target="#logs-{{account.broker_type}}-{{account.id}}" hx-swap="outerHTML">
       {% csrf_token %}
       <button
@@ -337,13 +330,8 @@
 {% with account_id_str=account.id|stringformat:"s" %}
 
 {% load custom_tags %}
-{% render_template "include/docs/alerts_playground.html" webhook_url=webhook_url webhook_name=account.name id=account_id_str as setuo_alert_content %}
 {% render_template "include/account_logs.html" broker_type=account.broker_type id=account.id as logs_content %}
 {% render_template 'include/account_trades.html' broker_type=account.broker_type id=account.id as trades_content %}
-
-
-
-  {% include "include/drawer_modal.html" with drawer_id="drawer-crypto-guide-"|add:account_id_str title="Alert Creation Playground" body=setuo_alert_content %}
 
   {% url 'export_logs' account.broker_type account.id as export_logs_url %}
   {% include "include/drawer_modal.html" with drawer_id="crypto-broker-logs-"|add:account_id_str title="Logs ("|add:account.name|add:")" body=logs_content side="bottom" class="h-[75vh]" export_url=export_logs_url %}

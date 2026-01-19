@@ -110,11 +110,21 @@ class CtraderConnectionManager:
         reactor.callFromThread(start)
 
     def _create_client(self):
-        """Create and configure a new cTrader demo client."""
-        client = Client(EndPoints.PROTOBUF_DEMO_HOST, EndPoints.PROTOBUF_PORT, TcpProtocol)
+        """Create and configure a new cTrader client (demo in dev, live in prod)."""
+        # Use demo endpoints if in dev (DEBUG=True), live endpoints if in production (DEBUG=False)
+        if getattr(settings, 'DEBUG', False):
+            host = EndPoints.PROTOBUF_DEMO_HOST
+            port = EndPoints.PROTOBUF_PORT
+            mode = 'Demo'
+        else:
+            host = EndPoints.PROTOBUF_LIVE_HOST
+            port = EndPoints.PROTOBUF_PORT
+            mode = 'Live'
+        client = Client(host, port, TcpProtocol)
+
 
         def on_connected(c):
-            print(f"\n cTrader Demo Connected to {EndPoints.PROTOBUF_DEMO_HOST}")
+            print(f"\n cTrader {mode} Connected to {host}")
             request = ProtoOAApplicationAuthReq()
             request.clientId = CLIENT_ID
             request.clientSecret = CLIENT_SECRET
@@ -124,11 +134,11 @@ class CtraderConnectionManager:
             def on_auth_success(result):
                 self._authenticated = True
                 self._connected.set()
-                print(f" cTrader Demo Application Authenticated Successfully")
+                print(f" cTrader {mode} Application Authenticated Successfully")
 
             def on_auth_error(failure):
                 error_details = str(failure)
-                print(f" cTrader Demo Auth Error: {error_details}")
+                print(f" cTrader {mode} Auth Error: {error_details}")
                 self._connected.set()
 
             deferred.addCallback(on_auth_success)
@@ -180,7 +190,7 @@ class CtraderConnectionManager:
             else:
                 # Connected but auth failed
                 self._client = None
-                raise Exception("cTrader Demo authentication failed. Please try again.")
+                raise Exception("cTrader authentication failed. Please try again.")
         
         # Timeout
         print(" cTrader connection timeout")
@@ -289,10 +299,6 @@ class CtraderClient(BrokerClient):
             self.account_id = acc.get('account_id', None)
             self.is_demo = not acc.get('is_live', False)
             self.type = 'D' if self.is_demo else 'L'
-
-        # Check if this is a live account - not supported yet
-        if not self.is_demo:
-            raise Exception("cTrader live accounts are not supported yet. Please use a demo account.")
 
         if not skip_auth:
             self.authorize_account()
