@@ -6,18 +6,21 @@
         <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
         <div id="currencies-btns-{{cid}}" class="flex flex-nowrap items-center gap-2 overflow-x-auto no-scrollbar pr-8">
             {% for currency, info in data.items %}
-            <button 
-                data-currency="{{currency}}" 
-                data-cid="{{cid}}" 
-                data-chart-data='{{info.data|to_json}}' 
-                data-profit="{{info.cumulative.net_profit}}"
-                class="currency-btn-{{cid}} flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-text/5 text-text/60 "
-            >
-                {{ currency }}
-                <span class="ml-1 {{info.cumulative.net_profit|profit_color}}">
-                    {% if info.cumulative.net_profit >= 0 %}+{% endif %}{{ info.cumulative.net_profit|floatformat:2|trim_zeros }}
-                </span>
-            </button> 
+                {% with currency_info=currencies_performance|get_item:currency %}
+                    <button 
+                        data-currency="{{currency}}" 
+                        data-cid="{{cid}}" 
+                        data-chart-data='{{info.data|to_json}}' 
+                        data-chart-structure-data='{{currency_info|to_json}}'
+                        data-profit="{{info.cumulative.net_profit}}"
+                        class="currency-btn-{{cid}} flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-text/5 text-text/60 "
+                    >
+                        {{ currency }}
+                        <span class="ml-1 {{info.cumulative.net_profit|profit_color}}">
+                            {% if info.cumulative.net_profit >= 0 %}+{% endif %}{{ info.cumulative.net_profit|floatformat:2|trim_zeros }}
+                        </span>
+                    </button> 
+                {% endwith %}
             {% endfor %}
         </div>
     </div>
@@ -64,6 +67,7 @@
         <canvas id="accountProfitChart-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
     </div>
     
+    
     {# Average Stats per Currency #}
     {% for currency, curr_perf in currencies_performance.items %}
         {% with info=data|get_item:currency %}
@@ -88,6 +92,52 @@
         {% endwith %}
     {% endfor %}
 
+
+
+    <div class="relative mt-10 mb-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="relative">
+            <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Profit structure</h4>
+            <div class="relative h-72 md:h-80">
+                <canvas id="accountProfitStructureChart-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
+            </div>
+            <div class="mt-3 flex items-center justify-center gap-4 text-xs text-text/60">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 aspect-square rounded-full bg-profit"></span>
+                    <span>Profit</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 aspect-square rounded-full bg-loss"></span>
+                    <span>Loss</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 aspect-square rounded-full bg-text/60"></span>
+                    <span>Fees</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 aspect-square rounded-full bg-primary"></span>
+                    <span>Net</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative">
+            <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Buy vs Sell</h4>
+            <div class="relative h-72 md:h-80">
+                <canvas id="accountProfitRadar-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
+            </div>
+            <div class="mt-3 flex items-center justify-center gap-4 text-xs text-text/60">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 aspect-square rounded-full bg-profit"></span>
+                    <span>Profit</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 aspect-square rounded-full bg-text/60"></span>
+                    <span>Fees</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {# Details Table per Currency #}
     {% for currency, info in currencies_performance.items %}
         <div id="perf-table-{{currency}}-{{cid}}" class="perf-table-{{cid}} hidden mt-6 w-full overflow-auto no-scrollbar">
@@ -105,7 +155,7 @@
     const buttonsContainer = document.getElementById('currencies-btns-{{cid}}');
     const buttons = buttonsContainer ? buttonsContainer.querySelectorAll('.currency-btn-{{cid}}') : [];
     
-    function switchTab(btn, chartData) {
+    function switchTab(btn, chartData, chartStructureData) {
         const currency = btn.dataset.currency;
         const currencyId = currency + '-' + cid;
         const profit = parseFloat(btn.dataset.profit);
@@ -139,6 +189,14 @@
         // Update chart
         if (typeof loadAccountProfitCharts === 'function') {
             loadAccountProfitCharts("accountProfitChart-" + chartId, chartData);
+            if (typeof loadAccountProfitStructureCharts === 'function') {
+                loadAccountProfitStructureCharts("accountProfitStructureChart-" + chartId, chartStructureData);
+                if (typeof loadPerformanceRadarChart === 'function') {
+                    loadPerformanceRadarChart("accountProfitRadar-" + chartId, chartStructureData);
+                } else if (typeof loadBuySellRadarChart === 'function') {
+                    loadBuySellRadarChart("accountProfitRadar-" + chartId, chartStructureData, chartStructureData);
+                }
+            }
         }
     }
 
@@ -146,13 +204,15 @@
         event.preventDefault();
         const btn = event.currentTarget;
         let chartData;
+        let chartStructureData;
         try {
             chartData = JSON.parse(btn.dataset.chartData);
+            chartStructureData = JSON.parse(btn.dataset.chartStructureData);
         } catch(e) {
             console.error('Failed to parse chart data:', e);
             return;
         }
-        switchTab(btn, chartData);
+        switchTab(btn, chartData, chartStructureData);
     }
 
     // Attach click handlers to buttons

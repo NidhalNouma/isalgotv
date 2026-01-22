@@ -317,12 +317,20 @@ class CurrencyBasePerformance(BasePerformance):
         return self.sell_winning_net_profit + abs(self.sell_winning_fees)
 
     @property
+    def winning_profit(self):
+        return self.buy_winning_profit + self.sell_winning_profit
+
+    @property
     def buy_losing_profit(self):
         return self.buy_losing_net_profit + abs(self.buy_losing_fees)
 
     @property
     def sell_losing_profit(self):
         return self.sell_losing_net_profit + abs(self.sell_losing_fees)
+    
+    @property
+    def losing_profit(self):
+        return self.buy_losing_profit + self.sell_losing_profit
     
     @property
     def buy_profit(self):

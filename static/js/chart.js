@@ -388,6 +388,112 @@ function loadAccountProfitCharts(id, data) {
 }
 
 /**
+ * Renders a waterfall-style profit structure chart with 4 bars: Profit, Loss, Fees, Net Profit.
+ * Each bar is drawn as a floating bar [start, end] so steps appear sequentially.
+ * @param {string} id - canvas element id
+ * @param {Object|Array} structure - either the cumulative structure object or fallback to data array
+ * Expected structure keys (best effort): profit, loss, fees, net_profit OR total_profit, total_loss, total_fees, net_profit
+ */
+function loadAccountProfitStructureCharts(id, structure) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return null;
+
+  // Normalize input
+  let s = structure || {};
+  if (Array.isArray(structure) && structure.length > 0) {
+    // try to pick last entry if given whole timeseries
+    s = structure[structure.length - 1] || {};
+  }
+
+  const profit = parseFloat(s.gross_profit) || 0;
+  const loss = Math.abs(parseFloat(s.gross_loss)) || 0;
+  const fees = Math.abs(parseFloat(s.fees)) || 0;
+  const net = parseFloat(s.net_profit) || 0;
+
+  // Cumulative positions for floating bars
+  const start0 = 0;
+  const end0 = profit;
+  const start1 = end0;
+  const end1 = end0 - loss;
+  const start2 = end1;
+  const end2 = end1 - fees;
+  const start3 = 0; // draw net profit from zero to final net value
+  const end3 = net;
+
+  // Floating bar data format: y: [min, max]
+  const labels = ["Profit", "Loss", "Fees", "Net Profit"];
+  const values = [
+    [start0, end0],
+    [start1, end1],
+    [start2, end2],
+    [start3, end3],
+  ];
+
+  // Colors
+  const profitColor = getCssVariableColor("--color-profit");
+  const lossColor = getCssVariableColor("--color-loss");
+  const feeColor = getCssVariableColor("--color-text", 0.6);
+  const netColor = getCssVariableColor("--color-primary");
+  const bgColors = [profitColor, lossColor, feeColor, netColor];
+
+  // Destroy existing
+  const existing = Chart.getChart(id);
+  if (existing) existing.destroy();
+
+  // Build dataset as objects so each item can have its own color
+  const data = labels.map((lbl, i) => ({ x: lbl, y: values[i] }));
+
+  return new Chart(ctx.getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Structure",
+          data: data,
+          backgroundColor: bgColors,
+          borderColor: bgColors,
+          borderWidth: 1,
+          borderRadius: 4,
+          borderSkipped: false,
+          barPercentage: 0.6,
+          categoryPercentage: 0.6,
+        },
+      ],
+    },
+    options: getChartOptions(
+      {
+        title: (tooltipItems) => {
+          // Use the label (category) as title
+          return tooltipItems[0].label || "";
+        },
+        label: (tooltipItem) => {
+          // tooltipItem.raw.y is [start, end]
+          const pair = tooltipItem.raw?.y || [0, 0];
+          const start = Number(pair[0]);
+          const end = Number(pair[1]);
+          const change = end - start;
+          const sign = change >= 0 ? "+" : "";
+          // Show start, end and change on separate lines
+          return [`${sign}${formatNumber(change)}`];
+        },
+      },
+      false,
+      true
+    ),
+  });
+}
+
+// Helper to format numbers consistently (adds fixed 2 decimals and thousands separator)
+function formatNumber(n) {
+  if (n === null || n === undefined || isNaN(n)) return "0";
+  return Number(n).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+/**
  * Creates a radar chart for comparing two datasets (e.g., Buy vs Sell)
  * @param {string} canvasId - The ID of the canvas element
  * @param {Object} options - Configuration object
@@ -403,13 +509,20 @@ function loadRadarChart(canvasId, options) {
   const existingChart = Chart.getChart(canvasId);
   if (existingChart) existingChart.destroy();
 
+  const primaryColor =
+    options.primaryColor || getCssVariableColor("--color-primary");
+
   const textColor = getCssVariableColor("--color-text");
 
   // Default colors if not provided
   const color1 =
     options.dataset1.color || getCssVariableColor("--color-primary");
+  const bgcolor1 =
+    options.dataset1.bgColor || getCssVariableColor("--color-primary", 0.4);
   const color2 =
     options.dataset2.color || getCssVariableColor("--color-accent");
+  const bgcolor2 =
+    options.dataset2.bgColor || getCssVariableColor("--color-accent", 0.4);
 
   return new Chart(ctx, {
     type: "radar",
@@ -419,7 +532,7 @@ function loadRadarChart(canvasId, options) {
         {
           label: options.dataset1.label || "Dataset 1",
           data: options.dataset1.data,
-          backgroundColor: color1 + "33",
+          backgroundColor: bgcolor1,
           borderColor: color1,
           borderWidth: 2,
           pointBackgroundColor: color1,
@@ -429,7 +542,7 @@ function loadRadarChart(canvasId, options) {
         {
           label: options.dataset2.label || "Dataset 2",
           data: options.dataset2.data,
-          backgroundColor: color2 + "33",
+          backgroundColor: bgcolor2,
           borderColor: color2,
           borderWidth: 2,
           pointBackgroundColor: color2,
@@ -449,16 +562,16 @@ function loadRadarChart(canvasId, options) {
           bodyColor: getCssVariableColor("--color-text"),
           padding: 12,
           cornerRadius: 8,
-          displayColors: true,
+          displayColors: false,
         },
       },
       scales: {
         r: {
           beginAtZero: true,
-          grid: { color: textColor + "15" },
-          angleLines: { color: textColor + "15" },
+          grid: { color: primaryColor },
+          angleLines: { color: primaryColor },
           pointLabels: {
-            color: textColor + "80",
+            color: primaryColor,
             font: { size: 10 },
           },
           ticks: { display: false },
@@ -496,6 +609,89 @@ function loadBuySellRadarChart(canvasId, buyData, sellData) {
       ],
       color: sellColor,
     },
+  });
+}
+
+/**
+ * Build a radar chart from a performance data object.
+ * Expected shape (performance entry from `get_performance_currencies`):
+ * {
+ *   profit, buy_profit, sell_profit,
+ *   fees, buy_fees, sell_fees,
+ *   net_profit, buy_net_profit, sell_net_profit,
+ *   trades, winning_trades, losing_trades,
+ *   buy_trades, buy_winning_trades, buy_losing_trades,
+ *   sell_trades, sell_winning_trades, sell_losing_trades,
+ *   ...
+ * }
+ */
+function loadPerformanceRadarChart(canvasId, perf) {
+  if (!perf) return null;
+
+  const labels = ["Total", "Buy", "Sell"];
+
+  const profitVals = [
+    Number(perf.profit ?? perf.total_profit ?? 0),
+    Number(perf.buy_profit ?? 0),
+    Number(perf.sell_profit ?? 0),
+  ];
+
+  const feeVals = [
+    Number(perf.fees ?? perf.total_fees ?? 0),
+    Number(perf.buy_fees ?? 0),
+    Number(perf.sell_fees ?? 0),
+  ];
+
+  // Compute win rates as percentages if possible
+  const totalWinRate =
+    perf.winning_trades && perf.trades
+      ? (perf.winning_trades / perf.trades) * 100
+      : perf.win_rate ?? 0;
+  const buyWinRate =
+    perf.buy_winning_trades && perf.buy_trades
+      ? (perf.buy_winning_trades / perf.buy_trades) * 100
+      : perf.buy_win_rate ?? 0;
+  const sellWinRate =
+    perf.sell_winning_trades && perf.sell_trades
+      ? (perf.sell_winning_trades / perf.sell_trades) * 100
+      : perf.sell_win_rate ?? 0;
+  const winRateVals = [
+    Number(totalWinRate),
+    Number(buyWinRate),
+    Number(sellWinRate),
+  ];
+
+  // Use contrasting colors: profit (primary green), fees (muted), win rate (accent)
+  const profitColor = getCssVariableColor("--color-profit");
+  const bgProfitColor = getCssVariableColor("--color-profit", 0.4);
+  const feeColor = getCssVariableColor("--color-text");
+  const bgFeeColor = getCssVariableColor("--color-text", 0.4);
+  const winColor = getCssVariableColor("--color-primary");
+
+  // Build and render radar with three datasets: Profit, Fees, WinRate (scaled)
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return null;
+
+  const existing = Chart.getChart(canvasId);
+  if (existing) existing.destroy();
+
+  return loadRadarChart(canvasId, {
+    labels: labels,
+    primaryColor: profitColor,
+    dataset1: {
+      label: "Profit",
+      data: profitVals,
+      color: profitColor,
+      bgColor: bgProfitColor,
+    },
+    dataset2: {
+      label: "Fees",
+      data: feeVals,
+      color: feeColor,
+      bgColor: bgFeeColor,
+    },
+    // extra dataset for win rate rendered by calling loadRadarChart twice is not supported,
+    // so we'll overlay win rate by creating a third dataset directly here using Chart API.
   });
 }
 

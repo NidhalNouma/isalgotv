@@ -373,6 +373,13 @@ class PerformanceData(TypedDict):
     buy_profit_factor: NotRequired[float]
     sell_profit_factor: NotRequired[float]
 
+    gross_net_profit: NotRequired[float]
+    buy_gross_net_profit: NotRequired[float]
+    sell_gross_net_profit: NotRequired[float]
+    gross_net_loss: NotRequired[float]
+    buy_gross_net_loss: NotRequired[float]
+    sell_gross_net_loss: NotRequired[float]
+
     gross_profit: NotRequired[float]
     buy_gross_profit: NotRequired[float]
     sell_gross_profit: NotRequired[float]
@@ -386,6 +393,7 @@ class PerformanceData(TypedDict):
     buy_largest_loss: NotRequired[float]
     sell_largest_profit: NotRequired[float]
     sell_largest_loss: NotRequired[float]
+    
 
 def empty_performance_data() -> PerformanceData:
     return PerformanceData(
@@ -444,12 +452,19 @@ def get_performance_currencies(performance):
             buy_profit_factor=curr.buy_profit_factor,
             sell_profit_factor=curr.sell_profit_factor,
 
-            gross_profit=curr.winning_net_profit,
-            buy_gross_profit=curr.buy_winning_net_profit,
-            sell_gross_profit=curr.sell_winning_net_profit,
-            gross_loss=curr.losing_net_profit,
-            buy_gross_loss=curr.buy_losing_net_profit,
-            sell_gross_loss=curr.sell_losing_net_profit,
+            gross_net_profit=curr.winning_net_profit,
+            buy_gross_net_profit=curr.buy_winning_net_profit,
+            sell_gross_net_profit=curr.sell_winning_net_profit,
+            gross_net_loss=curr.losing_net_profit,
+            buy_gross_net_loss=curr.buy_losing_net_profit,
+            sell_gross_net_loss=curr.sell_losing_net_profit,
+
+            gross_profit=curr.winning_profit,
+            buy_gross_profit=curr.buy_winning_profit,
+            sell_gross_profit=curr.sell_winning_profit,
+            gross_loss=curr.losing_profit,
+            buy_gross_loss=curr.buy_losing_profit,
+            sell_gross_loss=curr.sell_losing_profit,
 
             largest_profit=curr.largest_net_profit,
             largest_loss=curr.largest_net_loss,
