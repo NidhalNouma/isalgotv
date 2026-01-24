@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    {% if has_subscription %}
+    {% if user.is_authenticated and has_subscription or user.is_authenticated and strategy.premium == 'Free' %}
       <h3 class="font-medium mb-4 mt-4">Quick Start Guide</h3>
       <div class="space-y-4">
         <div class="flex items-start gap-4">

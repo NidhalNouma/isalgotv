@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    {% if has_subscription %}
+    {% if has_subscription or user.is_authenticated and strategy.premium == 'Free' %}
     <h3 class="font-medium mb-4 mt-4">Your Feedback Matters</h3>
     <p class="text-sm">We value your feedback! Let us know your thoughts and suggestions to help improve this strategy.</p>
 

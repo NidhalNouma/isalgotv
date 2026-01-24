@@ -1,6 +1,6 @@
 <div class="mb-4">
   {% if comments|length > 0 %}
-    {% if user.is_authenticated and has_subscription %}
+    {% if user.is_authenticated and has_subscription or user.is_authenticated and strategy.premium == 'Free' %}
     <button
       class="btn-text text-sm font-semibold underlinei"
       id="add-comment-btn"

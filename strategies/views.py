@@ -17,13 +17,12 @@ from django.db.models.functions import Random
 from django.db.models import Q
 
 def get_strategies(request):
-    availble_types = ['Free', 'Premium', 'Beta']
+    availble_types = ['Free', 'Premium', 'Beta', 'VIP']
     types = availble_types.copy()
     type = request.GET.get('type', None)
 
     if type in types:
         types = [type]
-
 
     filter = Q(is_live=True, premium__in=types)
     
