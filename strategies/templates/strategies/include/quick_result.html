@@ -2,7 +2,7 @@
 
 <div class="w-full">
   <div class="flex items-center gap-2 mb-3">
-    <a class="text-text/80 bg-text/10 hover:bg-text/20 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'reports' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
+    <a class="text-text/80 bg-text/10 hover:bg-text/5 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'reports' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
     {% if not hide_title %}
       <a class="grow" href="{% url 'strategy' slug=result.strategy.slug %}?report={{ result.id }}">
         <h6 class="group text-sm text-text hover:text-text/80 transition-colors font-medium truncate line-clamp-1">
