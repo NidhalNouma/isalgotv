@@ -114,7 +114,7 @@
       </div>
 
       <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-        <ul class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-title/10 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
+        <ul class="flex flex-col p-0 lg:p-0 mt-2 lg:mt-0 font-medium rounded-lg lg:flex-row lg:space-x-8 ">
           <li>
             <a href="{% url 'strategies' %}"
             class="flex items-center text-sm py-2 pl-3 pr-4 {% if 'strateg' in request.resolver_match.view_name and 'performance' not in request.resolver_match.view_name %} text-title {% else %} text-text/80 {% endif %} hover:text-title hover:font-medium transition-all"

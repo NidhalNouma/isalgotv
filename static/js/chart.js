@@ -442,8 +442,30 @@ function loadAccountProfitStructureCharts(id, structure) {
 
   // Build dataset as objects so each item can have its own color
   const data = labels.map((lbl, i) => ({ x: lbl, y: values[i] }));
+  // Plugin: draw a dashed horizontal line at y=0 (zero baseline)
+  const zeroLinePlugin = {
+    id: "zeroLine",
+    afterDraw: (chart) => {
+      const yScale = chart.scales?.y;
+      if (!yScale) return;
+      const yPixel = yScale.getPixelForValue(0);
+      // Only draw if zero is within the chart area
+      if (yPixel < chart.chartArea.top || yPixel > chart.chartArea.bottom)
+        return;
+      const { ctx } = chart;
+      ctx.save();
+      ctx.beginPath();
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = getCssVariableColor("--color-text", 0.25);
+      ctx.lineWidth = 1;
+      ctx.moveTo(chart.chartArea.left, yPixel + 0.5);
+      ctx.lineTo(chart.chartArea.right, yPixel + 0.5);
+      ctx.stroke();
+      ctx.restore();
+    },
+  };
 
-  return new Chart(ctx.getContext("2d"), {
+  const chart = new Chart(ctx.getContext("2d"), {
     type: "bar",
     data: {
       labels: labels,
@@ -481,7 +503,10 @@ function loadAccountProfitStructureCharts(id, structure) {
       false,
       true
     ),
+    plugins: [zeroLinePlugin],
   });
+
+  return chart;
 }
 
 // Helper to format numbers consistently (adds fixed 2 decimals and thousands separator)
@@ -497,9 +522,10 @@ function formatNumber(n) {
  * Creates a radar chart for comparing two datasets (e.g., Buy vs Sell)
  * @param {string} canvasId - The ID of the canvas element
  * @param {Object} options - Configuration object
+ * @param {string} options.bgColor -
+ * @param {string} options.textColor -
  * @param {string[]} options.labels - Array of labels for each axis
- * @param {Object} options.dataset1 - First dataset config { label, data, color }
- * @param {Object} options.dataset2 - Second dataset config { label, data, color }
+ * @param {Object[]} options.datasets - First dataset config { label, data, color }
  * @returns {Chart|null} - The Chart instance or null if canvas not found
  */
 function loadRadarChart(canvasId, options) {
@@ -509,51 +535,30 @@ function loadRadarChart(canvasId, options) {
   const existingChart = Chart.getChart(canvasId);
   if (existingChart) existingChart.destroy();
 
-  const primaryColor =
-    options.primaryColor || getCssVariableColor("--color-primary");
-
-  const textColor = getCssVariableColor("--color-text");
-
-  // Default colors if not provided
-  const color1 =
-    options.dataset1.color || getCssVariableColor("--color-primary");
-  const bgcolor1 =
-    options.dataset1.bgColor || getCssVariableColor("--color-primary", 0.4);
-  const color2 =
-    options.dataset2.color || getCssVariableColor("--color-accent");
-  const bgcolor2 =
-    options.dataset2.bgColor || getCssVariableColor("--color-accent", 0.4);
-
   return new Chart(ctx, {
     type: "radar",
     data: {
       labels: options.labels,
-      datasets: [
-        {
-          label: options.dataset1.label || "Dataset 1",
-          data: options.dataset1.data,
-          backgroundColor: bgcolor1,
-          borderColor: color1,
+      datasets: options.datasets.map((data, i) => {
+        return {
+          label: data.label,
+          data: data.data,
+          backgroundColor: data.bgColor,
+          borderColor: data.color,
           borderWidth: 2,
-          pointBackgroundColor: color1,
-          pointBorderColor: color1,
+          pointBackgroundColor: data.color,
+          pointBorderColor: data.color,
           pointRadius: 4,
-        },
-        {
-          label: options.dataset2.label || "Dataset 2",
-          data: options.dataset2.data,
-          backgroundColor: bgcolor2,
-          borderColor: color2,
-          borderWidth: 2,
-          pointBackgroundColor: color2,
-          pointBorderColor: color2,
-          pointRadius: 4,
-        },
-      ],
+        };
+      }),
     },
     options: {
+      animation: false,
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: 0,
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -568,10 +573,10 @@ function loadRadarChart(canvasId, options) {
       scales: {
         r: {
           beginAtZero: true,
-          grid: { color: primaryColor },
-          angleLines: { color: primaryColor },
+          grid: { color: options.bgColor },
+          angleLines: { color: options.bgColor },
           pointLabels: {
-            color: primaryColor,
+            color: options.textColor,
             font: { size: 10 },
           },
           ticks: { display: false },
@@ -631,13 +636,19 @@ function loadPerformanceRadarChart(canvasId, perf) {
   const labels = ["Total", "Buy", "Sell"];
 
   const profitVals = [
-    Number(perf.profit ?? perf.total_profit ?? 0),
+    Number(perf.profit ?? 0),
     Number(perf.buy_profit ?? 0),
     Number(perf.sell_profit ?? 0),
   ];
 
+  const netVals = [
+    Number(perf.net_profit ?? 0),
+    Number(perf.buy_net_profit ?? 0),
+    Number(perf.sell_net_profit ?? 0),
+  ];
+
   const feeVals = [
-    Number(perf.fees ?? perf.total_fees ?? 0),
+    Number(perf.fees),
     Number(perf.buy_fees ?? 0),
     Number(perf.sell_fees ?? 0),
   ];
@@ -662,10 +673,20 @@ function loadPerformanceRadarChart(canvasId, perf) {
   ];
 
   // Use contrasting colors: profit (primary green), fees (muted), win rate (accent)
+  let bgColor = getCssVariableColor("--color-profit");
+  let textColor = getCssVariableColor("--color-profit");
+
+  if (perf.fees > perf.profit) {
+    bgColor = getCssVariableColor("--color-text", 0.8);
+    textColor = getCssVariableColor("--color-text");
+  }
+
   const profitColor = getCssVariableColor("--color-profit");
   const bgProfitColor = getCssVariableColor("--color-profit", 0.4);
   const feeColor = getCssVariableColor("--color-text");
   const bgFeeColor = getCssVariableColor("--color-text", 0.4);
+  const netColor = getCssVariableColor("--color-primary");
+  const bgNetColor = getCssVariableColor("--color-primary", 0.4);
   const winColor = getCssVariableColor("--color-primary");
 
   // Build and render radar with three datasets: Profit, Fees, WinRate (scaled)
@@ -677,19 +698,28 @@ function loadPerformanceRadarChart(canvasId, perf) {
 
   return loadRadarChart(canvasId, {
     labels: labels,
-    primaryColor: profitColor,
-    dataset1: {
-      label: "Profit",
-      data: profitVals,
-      color: profitColor,
-      bgColor: bgProfitColor,
-    },
-    dataset2: {
-      label: "Fees",
-      data: feeVals,
-      color: feeColor,
-      bgColor: bgFeeColor,
-    },
+    bgColor: bgColor,
+    textColor: textColor,
+    datasets: [
+      {
+        label: "Profit",
+        data: profitVals,
+        color: profitColor,
+        bgColor: bgProfitColor,
+      },
+      {
+        label: "Fees",
+        data: feeVals,
+        color: feeColor,
+        bgColor: bgFeeColor,
+      },
+      {
+        label: "Net profit",
+        data: netVals,
+        color: netColor,
+        bgColor: bgNetColor,
+      },
+    ],
     // extra dataset for win rate rendered by calling loadRadarChart twice is not supported,
     // so we'll overlay win rate by creating a third dataset directly here using Chart API.
   });
