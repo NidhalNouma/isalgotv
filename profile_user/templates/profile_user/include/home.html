@@ -151,8 +151,8 @@
 
     <div class="group cursor-pointer relative overflow-hidden mt-8 rounded-xl">
       <a href="{% url 'docs_alerts' %}" target="_blank">
-        <div class="absolute inset-0 bg-gradient-to-r from-title/10 via-title/5 to-transparent"></div>
-        <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div>
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-title/10 via-title/5 to-transparent"></div>
+        {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div> {% endcomment %}
 
         <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
           <div class="flex items-center gap-4">
@@ -222,8 +222,8 @@
 
     <div class="group cursor-pointer relative overflow-hidden mt-8 rounded-xl">
       <a href="{% url 'automate' %}">
-        <div class="absolute inset-0 bg-gradient-to-r from-accent/10 via-primary/5 to-transparent"></div>
-        <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div>
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-accent/10 via-primary/5 to-transparent"></div>
+        {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div> {% endcomment %}
 
         <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
           <div class="flex items-center gap-4">
@@ -307,8 +307,8 @@
 {% if not user_profile.discord_username %}
   <div class="group cursor-pointer relative overflow-hidden mb-16 rounded-xl">
     <a href="https://discord.gg/wVsXdGSMFg" target="_blank">
-      <div class="absolute inset-0 bg-gradient-to-r from-[#7289da]/20 via-[#7289da]/10 to-transparent"></div>
-      <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(114,137,218,0.08),transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#7289da]/20 via-[#7289da]/10 to-transparent"></div>
+      {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(114,137,218,0.08),transparent_50%)]"></div> {% endcomment %}
       <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
         <div class="flex items-center gap-4">
           <div class="relative flex-shrink-0">
@@ -327,7 +327,7 @@
         <div class="flex-shrink-0">
           <span class="inline-flex items-center text-[#7289da] bg-[#7289da]/10 group-hover:bg-[#7289da]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
             <span>Join us</span>
-            <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform stroke-[#7289da] " stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform stroke-[#7289da]" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
               <line x1="10" x2="21" y1="14" y2="3"></line>

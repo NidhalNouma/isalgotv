@@ -17,20 +17,20 @@
       <div class="relative w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0">
         <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
           {# Background circle #}
-          <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="4" class="text-text/10" />
-          {% if value > 0 %}
-            {# Win segment (green) #}
-            <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="{{ win_pct|multiply:0.88 }} 88" stroke-dashoffset="0" class="text-profit" stroke-linecap="round" />
+          <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="3" class="text-text/10" />
 
+          {% if value > 0 %}
             {# Loss segment (red) #}
             {% if loss_pct > 0 %}
-              <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="{{ loss_pct|multiply:0.88 }} 88" stroke-dashoffset="-{{ win_pct|multiply:0.88 }}" class="text-loss" stroke-linecap="round" />
+              <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="{{ loss_pct|multiply:0.88 }} 88" stroke-dashoffset="-{{ win_pct|multiply:0.88 }}" class="text-loss" stroke-linecap="round" />
             {% endif %}
+            {# Win segment (green) #}
+            <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="{{ win_pct|multiply:0.88 }} 88" stroke-dashoffset="0" class="text-profit" stroke-linecap="round" />
 
             {# Breakeven segment (gray) #}
             {% if be_pct > 0 %}
               {% with win_loss_pct=win_pct|add:loss_pct %}
-                <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="{{ be_pct|multiply:0.88 }} 88" stroke-dashoffset="-{{ win_loss_pct|multiply:0.88 }}" class="text-text/40" stroke-linecap="round" />
+                <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="{{ be_pct|multiply:0.88 }} 88" stroke-dashoffset="-{{ win_loss_pct|multiply:0.88 }}" class="text-text/40" stroke-linecap="round" />
               {% endwith %}
             {% endif %}
           {% endif %}
