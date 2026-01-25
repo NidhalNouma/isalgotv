@@ -47,8 +47,8 @@
   <div class="mb-3">
     <div class="flex h-1.5 rounded-full overflow-hidden bg-text/10">
       {% if info.trades > 0 %}
-        <div class="bg-gradient-to-b from-profit" style="width: {{ info.win_rate|default:'0' }}%"></div>
-        <div class="bg-gradient-to-b from-loss " style="width: {{ info.win_rate|default:'0'|differance:100 }}%"></div>
+        <div class="bg-gradient-to-b from-profit via-profit/30" style="width: {{ info.win_rate|default:'0' }}%"></div>
+        <div class="bg-gradient-to-b from-loss via-loss/30" style="width: {{ info.win_rate|default:'0'|differance:100 }}%"></div>
       {% endif %}
     </div>
     <div class="flex justify-between mt-1 text-xs">
