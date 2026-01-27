@@ -11,6 +11,8 @@ import jsonschema
 import json
 from django.core.exceptions import ValidationError
 
+from profile_user.utils.stripe import create_strategy_price
+
 
 class PrettyJSONEncoder(json.JSONEncoder):
     def __init__(self, *args, indent, sort_keys, **kwargs):
@@ -228,6 +230,8 @@ class Strategy(models.Model):
     is_live = models.BooleanField(default=False)
     premium = models.CharField(max_length=10, choices=PREMIUM_CHOICES, default='Premium')
     
+    additional_info = models.JSONField(blank=True, null=True, default={'price': None, 'price_obj': None, 'recurring_interval': 'month', 'recurring_interval_count': 1, 'available_intervals': ['day', 'week', 'month', 'year'], 'trial_period_days': 0})
+
     images = GenericRelation(StrategyImages) 
     
     def __str__(self):
@@ -240,6 +244,17 @@ class Strategy(models.Model):
         if self.settings:
             if self.is_live == False:
                 self.settings = update_names(self.settings)
+
+        if self.premium == 'VIP':
+            additional_info = self.additional_info or {}
+            price = additional_info.get('price')
+            price_obj = additional_info.get('price_obj', None)
+            recurring_interval = additional_info.get('recurring_interval', "month")
+            recurring_interval_count = additional_info.get('recurring_interval_count', 1)
+            if price and price not in [None, '', 'None'] and price_obj in [None, '', 'None']:
+                price_obj = create_strategy_price(self, price, recurring_interval, recurring_interval_count)
+                additional_info['price_obj'] = price_obj
+                self.additional_info = additional_info
             
         super(Strategy, self).save(*args, **kwargs)
     

@@ -59,6 +59,21 @@
         {% endif %}
       </div>
 
+      {% if strategy.premium == 'VIP' and strategy.additional_info.price_obj %}
+        <div class="flex items-center gap-3 mt-3">
+          <div class="inline-flex items-baseline gap-2 px-3 py-1 rounded-full" style="background: linear-gradient(90deg,hsl(var(--color-primary)) 0%, rgba(0,0,0,0.08) 100%);">
+            <span class="text-base font-semibold text-title">${{ strategy.additional_info.price }}</span>
+            <span class="text-xs text-title/80">
+              {% if strategy.additional_info.recurring_interval_count > 1 %}
+                /{{ strategy.additional_info.recurring_interval_count }} {{ strategy.additional_info.recurring_interval }}s
+              {% else %}
+                /{{ strategy.additional_info.recurring_interval }}
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      {% endif %}
+
       {% if user.is_authenticated %}
         <div class="my-2.5">
           {% if strategy.is_live %}
@@ -115,7 +130,8 @@
               <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
             </svg>Strategy
           </button>
-          <button id="performanceBtn" class="btn-primary text-background bg-text/20 text-text/80 sm:text-base text-sm font-semibold rounded-full {% if overview_data and chart_data %} inline-flex {% else %} hidden {% endif %}">
+          <button id="performanceBtn"
+            class="btn-primary text-background bg-text/20 text-text/80 sm:text-base text-sm font-semibold rounded-full {% if overview_data and chart_data %} inline-flex {% else %} hidden {% endif %}">
             <svg class="w-4.5 aspect-auto mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
             </svg>Performance
@@ -134,7 +150,8 @@
       </section>
 
       <section class="w-full">
-        {% if user.is_authenticated and not has_subscription and strategy.premium != 'Free' or not user.is_authenticated %}
+        {% if strategy.premium != 'VIP' %}
+        {% if not user.is_authenticated or user.is_authenticated and not has_subscription and strategy.premium != 'Free'  %}
           <section class="group w-full pb-3 pt-6 nav-bg rounded sticky top-10 z-20 mb-2">
             <div class="text-center py-2">
               <h1 class="text-title/60 font-semibold text-xl mb-2">Unlock access to this strategy and more</h1>
@@ -156,6 +173,7 @@
               </div>
             </div>
           </section>
+        {% endif %}
         {% endif %}
 
         <div id="strategyDiv" class="mx-auto max-w-5xl">

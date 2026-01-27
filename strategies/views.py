@@ -25,10 +25,6 @@ def get_strategies(request):
         types = [type]
 
     filter = Q(is_live=True, premium__in=types)
-    
-    if request.user.is_authenticated: 
-        if not type:
-            filter = Q(is_live=True, premium__in=types) | Q(is_live=True, premium='VIP', created_by=request.user)
 
     superuser = request.user.is_superuser if request.user.is_authenticated else False
     if superuser:

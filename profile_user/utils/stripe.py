@@ -286,3 +286,36 @@ def delete_customer(user_profile):
         except stripe.error.StripeError as e:
             # log or ignore Stripe deletion errors
             print(f"Error deleting Stripe customer {user_profile.customer_id}: {e}")
+
+
+
+def create_strategy_price(strategy, price_amount=99, recurring_interval="month", recurring_interval_count=1):
+    """
+    Create a Stripe Price for a given strategy.
+    """
+    try:
+        product = stripe.Product.create(
+            name=strategy.name,
+            description=strategy.description,
+            metadata={
+                "strategy_id": str(strategy.id),
+                "created_by": strategy.created_by.username,
+            }
+        )
+
+        price = stripe.Price.create(
+            unit_amount=int(price_amount * 100),  # amount in cents
+            currency="usd",
+            product=product.id,
+            recurring={"interval": recurring_interval, "interval_count": recurring_interval_count},
+            metadata={
+                "strategy_id": str(strategy.id),
+                "created_by": strategy.created_by.username,
+            }
+        )
+
+        return price
+
+    except Exception as e:
+        print("Error creating strategy price:", e)
+        raise
