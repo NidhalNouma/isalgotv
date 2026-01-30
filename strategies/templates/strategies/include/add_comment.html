@@ -1,6 +1,6 @@
 <div class="mb-4">
   {% if comments|length > 0 %}
-    {% if user.is_authenticated and has_subscription or user.is_authenticated and strategy.premium == 'Free' %}
+    {% if user.is_authenticated and strategy in user_profile.strategies.all %}
     <button
       class="btn-text text-sm font-semibold underlinei"
       id="add-comment-btn"
@@ -8,7 +8,7 @@
     >
       Share Your Thoughts
     </button>
-    {% elif user.is_authenticated and not has_subscription %}
+    {% elif user.is_authenticated and not has_subscription and strategy.premium != 'VIP' %}
     <button
       class="btn-text text-sm font-semibold underlinei"
       onclick="openModel('upgrade-modal', false);"

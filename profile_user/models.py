@@ -10,7 +10,8 @@ from django.utils.timezone import now
 
 import json
 
-from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email
+from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price
+from profile_user.utils.tradingview import give_access
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -46,6 +47,33 @@ class User_Profile(models.Model):
     ai_free_daily_tokens_available = models.IntegerField(default=0, blank=True)  
     last_token_reset = models.DateField(default=now, blank=True) 
 
+    seller_account_id = models.CharField(max_length=100, blank=True, null=True)
+    seller_account_verified = models.BooleanField(default=False)
+
+    amount_to_pay = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+    country = models.CharField(max_length=2, blank=True, null=True, help_text="ISO 3166-1 alpha-2 country code")
+
+    def get_seller_account(self):
+        if not self.seller_account_id:
+            account = create_seller_account(self.user, country=self.country or "US")
+            self.seller_account_id = account.id
+            self.seller_account_verified = account.details_submitted
+            self.save(update_fields=["seller_account_id", "seller_account_verified"])
+        return get_seller_account(self.seller_account_id)
+    
+    def get_seller_account_id(self):
+        if not self.seller_account_id:
+            account = create_seller_account(self.user, country=self.country or "US")
+            self.seller_account_id = account.id
+            self.seller_account_verified = account.details_submitted
+            self.save(update_fields=["seller_account_id", "seller_account_verified"])
+        return self.seller_account_id
+
+    def mark_amount_as_paid(self):
+        self.amount_to_pay = 0.00
+        self.save(update_fields=["amount_to_pay"])
+
     def save(self, *args, **kwargs):
         is_new = self.pk is None
 
@@ -80,6 +108,20 @@ class User_Profile(models.Model):
             self.save(update_fields=["customer_id"])
         return self.customer_id
 
+
+    def is_subscribed_to(self, price_id):
+        """
+        Check if the user is subscribed to a specific price.
+        returns (is_subscribed: bool, subscription: dict or None)
+        """
+        is_subscribed, subscription = is_customer_subscribed_to_price(
+            self.customer_id_value,
+            price_id
+        )
+
+        return is_subscribed, subscription
+
+
     def create_stripe_customer_if_needed(self):
         if not self.customer_id:
             customer, created = get_or_create_customer_by_email(self.user.email, name=self.user.username, metadata={"user_id": self.user.id})
@@ -107,6 +149,9 @@ class User_Profile(models.Model):
         if self.tradingview_username:
             return self.tradingview_username
         return self.user.username
+    
+    def give_tradingview_access(self, strategy_id, access=True):
+        return give_access(strategy_id, self.id, access, user_profile=self)
 
     def deactivate_all_accounts(self):
         from automate.models import CryptoBrokerAccount, ForexBrokerAccount

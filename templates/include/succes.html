@@ -1,6 +1,6 @@
 {% comment %}Add close text as an ID to add the close button{% endcomment %}
 {% if succes %}
-  <div id="alert-{{ close }}" class="relative mx-auto text-sm flex p-4 text-success bg-transparent border-2 border-success/40 rounded-md {{ class }}" role="alert">
+  <div id="alert-{{ close_id }}" class="relative mx-auto text-sm flex p-4 text-success bg-transparent border box-border border-success/40 rounded-md {{ class }}" role="alert">
     <div class="absolute inset-0 bg-success/5 rounded-md pointer-events-none"></div>
 
     <svg class="flex-shrink-0 inline w-4 h-4 me-2 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -9,11 +9,11 @@
     </svg>
     <span class="sr-only">succes!</span>
     <div>
-      <p>{{ succes|safe }}</p>
+      <p class="{{ p_class }} !m-0">{{ succes|safe }}</p>
     </div>
 
-    {% if close %}
-      <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert-{{ close }}" aria-label="Close">
+    {% if close_id %}
+      <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-success/80 hover:text-success/60 transition-colors rounded-lg inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert-{{ close_id }}" aria-label="Close">
         <span class="sr-only">Close</span>
         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />

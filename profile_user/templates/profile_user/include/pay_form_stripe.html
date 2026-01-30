@@ -1,7 +1,11 @@
 {% if not has_subscription %}
   <div class="mb-4">
     <h6 class="text-text/80 text-sm font-medium">
+      {% if strategy_price %}
+        You’re a few clicks away from gaining access to this exclusive trading strategy.
+      {% else %}
         You’re a few click away from gaining access to our expert trading strategies, premium access, and much more.
+      {% endif %}
     </h6>
     {% if free_trial_days and free_trial_days|add:'0' > 0 and title != "LIFETIME" and not user_profile.subscription_id %}
       <h6 class="mt-1.5 text-title bg-title/20 rounded-lg px-2 py-1 inline-block text-xs font-medium">First {{ free_trial_days }} days free</h6>
@@ -16,22 +20,21 @@
 </form>
 
 <form
-  {% if user_profile.subscription_id and subscription_status != 'canceled' %}
-    hx-post="{% url 'membership-update' %}?plan={{ title }}&get_started={{ get_started }}"
+  {% if strategy_price %}
+    hx-post="{% url 'strategy_subscribe' strategy_price.id %}?title={{ title }}"
   {% else %}
-    hx-post="{% url 'membership-create' %}?plan={{ title }}&get_started={{ get_started }}"
+    {% if user_profile.subscription_id and subscription_status != 'canceled' %}
+      hx-post="{% url 'membership-update' %}?plan={{ title }}&get_started={{ get_started }}"
+    {% else %}
+      hx-post="{% url 'membership-create' %}?plan={{ title }}&get_started={{ get_started }}"
+    {% endif %}
   {% endif %}
   class="relative"
   id="form-pay-{{ title }}"
 >
   {% csrf_token %}
 
-  {% comment %} <div class="mb-4">{% include 'include/infos.html' with info="Add or select your payment method. We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club, China UnionPay, and debit cards." %}</div> {% endcomment %}
-
-
   {% include "include/pay_form_stripe_element.html" %}
-
-
 
   <input type="text" name="pm_id" id="pm-{{title}}" class="hidden" value="{{stripe_customer.invoice_settings.default_payment_method}}" />
   <input type="text" name="coupon" id="stripe-pay-coupon-{{title}}" class="hidden" value="" />

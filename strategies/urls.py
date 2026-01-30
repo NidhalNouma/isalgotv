@@ -15,4 +15,6 @@ urlpatterns = [
     path('ideas/', get_ideas, name='ideas'),
     path('<slug:slug>/', get_strategy, name='strategy'),
     path('id/<int:id>/', get_strategy_id, name='strategy_id'),
+
+    path('price/<int:id>/subscribe/', strategy_subscribe, name='strategy_subscribe'),
 ]

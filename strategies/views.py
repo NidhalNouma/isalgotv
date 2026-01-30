@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch, OuterRef, Subquery
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
 from performance.functions.context import get_global_strategy_performance_context
+from profile_user.utils.stripe import subscribe_to_strategy
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
@@ -102,7 +103,6 @@ def get_strategy(request, slug):
         performance_context = {}#get_global_strategy_performance_context(strategy)
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
-
         context =  {
             'strategy': strategy, 
             'results': results, 
@@ -110,6 +110,16 @@ def get_strategy(request, slug):
             # 'random_results': results, 
             **performance_context,
         }
+
+        if strategy.premium == 'VIP':
+            if request.user.is_authenticated:
+                user_profile = request.user.user_profile
+                is_subscribed, subscription = user_profile.is_subscribed_to(strategy.price.stripe_price_id)
+                context['is_vip_subscribed'] = is_subscribed
+                context['vip_subscription'] = subscription
+                print("VIP Subscription status:", is_subscribed, subscription)
+
+
         return render(request, 'strategy.html', context)
     
     except Strategy.DoesNotExist:
@@ -406,3 +416,51 @@ def comment_like(request, comment_id, like_type):
 
     context = {'comment': comment}
     return render(request, 'include/comment_likes.html', context=context)
+
+@require_http_methods([ "POST"])
+def strategy_subscribe(request, id):
+    title = request.GET.get('title', None)
+    context = { 'title': title}
+
+    if not title:
+        return HttpResponseBadRequest("Title parameter is required.")
+
+    try:
+        strategy_price = get_object_or_404(StrategyPrice, pk=id)
+
+
+        if request.method == 'POST':
+            if not strategy_price.stripe_price_id:
+                context["error"] = 'No plan has been specified, please refresh the page and try again.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-"+context['title'])
+            
+
+            data = request.POST
+            
+            payment_method = data['pm_id']
+            coupon_id = data['coupon']
+
+            user_profile = request.user_profile
+
+            if not payment_method or payment_method == "None":
+                context["error"] = 'No payment method has been detected.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-"+context['title'])
+
+            subscription = subscribe_to_strategy(
+                user_profile,
+                strategy_price,
+                payment_method,
+                coupon_code=coupon_id if coupon_id and coupon_id != "None" else None,
+            )
+
+            print("Subscription created:", subscription.id)
+
+
+
+            return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
+    except Exception as e:
+        context["error"] = str(e)
+        response = render(request, 'include/errors.html', context)
+        return retarget(response, "#stripe-error-"+context['title'])

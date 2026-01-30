@@ -990,6 +990,57 @@ def cancel_subscription(request):
         return render(request, 'include/settings/membership.html', context)
 
 
+@login_required(login_url='login')
+def complete_seller_account_onboarding(request):
+    try:
+        profile_user = request.user_profile
+        referer_url = request.META.get('HTTP_REFERER')
+        
+        account_id = profile_user.get_seller_account_id()
+        if not account_id:
+            messages.error(request, "No seller account found. Please contact support.")
+            return redirect(referer_url if referer_url else 'home')
+
+        return_url = referer_url if referer_url else request.build_absolute_uri(reverse('home'))
+        refresh_url = referer_url if referer_url else request.build_absolute_uri(reverse('home'))
+        
+        redirect_obj = get_seller_account_link(account_id, refresh_url, return_url)
+
+        if not redirect_obj or not redirect_obj.url:
+            messages.error(request, "Failed to create onboarding link. Please contact support.")
+            return redirect(referer_url if referer_url else 'home')
+
+        print("Redirecting to:", redirect_obj.url)
+        return HttpResponseRedirect(redirect_obj.url)
+    except Exception as e:
+        print("Error completing seller onboarding:", e)
+        messages.error(request, "An error occurred while completing seller onboarding. Please try again later.")
+        return redirect(referer_url if referer_url else 'home')
+
+@login_required
+def stripe_seller_dashboard(request):
+    try:
+        profile_user = request.user_profile
+        referer_url = request.META.get('HTTP_REFERER')
+
+        account_id = profile_user.get_seller_account_id()
+        if not account_id:
+            messages.error(request, "No seller account found. Please contact support.")
+            return redirect(referer_url if referer_url else 'home')
+
+        dashboard_link = get_seller_login_link(account_id)
+
+        if not dashboard_link or not dashboard_link.url:
+            messages.error(request, "Failed to create dashboard link. Please contact support.")
+            return redirect(referer_url if referer_url else 'home')
+
+        print("Redirecting to:", dashboard_link.url)
+        return HttpResponseRedirect(dashboard_link.url)
+    except Exception as e:
+        print("Error accessing seller dashboard:", e)
+        messages.error(request, "An error occurred while accessing the seller dashboard. Please try again later.")
+        return redirect(referer_url if referer_url else 'home')
+        
 def preview_email(request):
     # Dummy data for template context
     context = {'user_name': 'Test User'}

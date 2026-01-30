@@ -10,12 +10,15 @@ env = environ.Env()
 TV_SESSION_ID = env('TV_SESSION_ID')
 
 
-def give_access(strategy_id, profile_id, access):
+def give_access(strategy_id, profile_id, access, user_profile=None):
     add_or_reemove = "add" if access == True else "remove"
     url = f"https://www.tradingview.com/pine_perm/{add_or_reemove}/"
     try:
         strategy = Strategy.objects.get(pk = strategy_id)
-        profile = User_Profile.objects.get(pk = profile_id)
+        if not user_profile:
+            profile = User_Profile.objects.get(pk = profile_id)
+        else:
+            profile = user_profile
         r = {"error": "", "access": None, 'strategy': strategy}
 
         if not profile.tradingview_username:

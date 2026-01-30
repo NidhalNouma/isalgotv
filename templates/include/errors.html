@@ -3,9 +3,9 @@
   {% if id %}
   id="{{id}}"
   {% else %}
-  id="alert-{{close}}"
+  id="alert-{{close_id}}"
   {% endif %}
-  class="relative mx-auto text-sm flex p-4 text-error bg-transparent border-2 border-error/40 rounded-md {{class}}"
+  class="relative mx-auto text-sm flex p-4 text-error bg-transparent border box-border border-error/40 rounded-md {{class}}"
   role="alert"
 >
   <div class="absolute inset-0 bg-error/5 rounded-md  pointer-events-none"></div>
@@ -13,16 +13,16 @@
 
   <span class="sr-only">Error!</span>
   <div>
-    <p>{{ error|safe }}</p>
+    <p class="{{ p_class }} !m-0">{{ error|safe }}</p>
   </div>
 
-  {% if close %}
+  {% if close_id %}
   <button
     type="button"
-    class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg inline-flex items-center justify-center h-8 w-8"
-    data-dismiss-target="#alert-{{ close }}"
+    class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-error/80 hover:text-error/60 transition-colors rounded-lg inline-flex items-center justify-center h-8 w-8"
+    data-dismiss-target="#alert-{{ close_id }}"
     aria-label="Close"
-    onclick="document.getElementById('alert-{{close}}').remove()"
+    onclick="document.getElementById('alert-{{close_id}}').remove()"
   >
     <span class="sr-only">Close</span>
     <svg

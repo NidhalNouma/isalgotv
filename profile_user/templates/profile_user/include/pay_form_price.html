@@ -1,6 +1,8 @@
+{% load custom_tags %}
+
 <div class="flex justify-between items-center mb-2">
   <span class="text-text/60">Subtotal</span>
-  <span>${{ base_price }}</span>
+  <span>${{ base_price|trim_zeros }}</span>
 </div>
 
 {% if coupon_off %}
@@ -12,5 +14,5 @@
 
 <div class="flex justify-between items-center pt-2 border-t border-title/20 mt-2">
   <span class="font-medium text-text/60">Total</span>
-  <span class="font-medium text-lg">${{ final_price }}</span>
+  <span class="font-medium text-lg">${{ final_price|trim_zeros }}</span>
 </div>

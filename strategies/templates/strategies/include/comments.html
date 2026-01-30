@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    {% if has_subscription or user.is_authenticated and strategy.premium == 'Free' %}
+    {% if has_subscription or user.is_authenticated and strategy in user_profile.strategies.all %}
     <h3 class="font-medium mb-4 mt-4">Your Feedback Matters</h3>
     <p class="text-sm">We value your feedback! Let us know your thoughts and suggestions to help improve this strategy.</p>
 
@@ -21,7 +21,7 @@
         Share Your Thoughts
     </button> 
 
-    {% else %}
+    {% elif strategy.premium != 'VIP' %}
     <p class="text-sm mt-4 ">
         Want to share your thoughts? Join us to unlock commenting and more features!
     </p>
@@ -46,6 +46,10 @@
           Already a member? <a href="{% url 'login' %}" class="text-primary font-semibold">Log in</a>
       </p>
       {% endif %}
+      {% else %}
+      <p class="text-sm mt-4 ">
+          Subscibe to unlock commenting and more features!
+      </p>
     {% endif %}
 
   </div>

@@ -287,35 +287,210 @@ def delete_customer(user_profile):
             # log or ignore Stripe deletion errors
             print(f"Error deleting Stripe customer {user_profile.customer_id}: {e}")
 
+def create_seller_account(user, country="US"):
+    """
+    Create a Stripe Seller Account.
+    """
+    try:
+        account = stripe.Account.create(
+            type="express",
+            email=user.email,
+            country=country,
+            capabilities={"transfers": {"requested": True}},
+            tos_acceptance={"service_agreement": "recipient"},
 
+            metadata={
+                "user_id": str(user.id),
+            }
+        )
+        return account
+    except Exception as e:
+        print("Error creating seller account:", e)
+        raise
 
-def create_strategy_price(strategy, price_amount=99, recurring_interval="month", recurring_interval_count=1):
+def get_seller_account_link(account_id, refresh_url, return_url):
+    """
+    Create a Stripe Account Link for onboarding or managing a Seller Account.
+    """
+    try:
+        account_link_obj = stripe.AccountLink.create(
+            account=account_id,
+            refresh_url=refresh_url,
+            return_url=return_url,
+            type='account_onboarding',
+        )
+        return account_link_obj
+    except Exception as e:
+        print("Error creating seller account link:", e)
+        raise
+
+def get_seller_login_link(account_id):
+    """
+    Create a Stripe Login Link for a Seller Account.
+    """
+    try:
+        login_link_obj = stripe.Account.create_login_link(account_id)
+        return login_link_obj
+    except Exception as e:
+        print("Error creating seller login link:", e)
+        raise
+
+def get_seller_account(account_id):
+    """
+    Retrieve a Stripe Seller Account by its ID.
+    Returns the full Account object.
+    """
+    try:
+        account = stripe.Account.retrieve(account_id)
+        print(f"Retrieved seller account: {account.id} - {account.email}")
+        return account
+    except Exception as e:
+        # Re-raise to be handled by the caller
+        raise
+
+def create_strategy_price(strategy, strategy_price):
     """
     Create a Stripe Price for a given strategy.
     """
     try:
-        product = stripe.Product.create(
-            name=strategy.name,
-            description=strategy.description,
-            metadata={
-                "strategy_id": str(strategy.id),
-                "created_by": strategy.created_by.username,
-            }
-        )
+        product_id = strategy_price.stripe_product_id
+        profile_user = strategy.created_by.user_profile
+
+        if not product_id:
+            product = stripe.Product.create(
+                name=strategy.name,
+                description=strategy.description,
+                metadata={
+                    "strategy_id": str(strategy.id),
+                    "created_by": strategy.created_by.username,
+                    "account_id": str(profile_user.get_seller_account_id()),
+                }
+            )
+            product_id = product.id
+        else:
+            product = stripe.Product.retrieve(product_id)
+        
+
 
         price = stripe.Price.create(
-            unit_amount=int(price_amount * 100),  # amount in cents
+            unit_amount=int(strategy_price.amount * 100),  # amount in cents
             currency="usd",
-            product=product.id,
-            recurring={"interval": recurring_interval, "interval_count": recurring_interval_count},
+            product=product_id,
+            recurring={"interval": strategy_price.interval, "interval_count": strategy_price.interval_count},
             metadata={
                 "strategy_id": str(strategy.id),
                 "created_by": strategy.created_by.username,
+                "account_id": str(profile_user.get_seller_account_id()),
             }
         )
 
-        return price
+        return product, price
 
     except Exception as e:
         print("Error creating strategy price:", e)
+        raise
+
+def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_code=None):
+    """
+    Subscribe a user to a strategy using Stripe.
+    """
+    try:
+        customer_id = user_profile.customer_id_value
+        price = stripe.Price.retrieve(strategy_price.stripe_price_id)
+        seller_account = price.metadata.get("account_id")
+
+        subscription_params = {
+            "customer": customer_id,
+            "items": [{"price": strategy_price.stripe_price_id}],
+            "application_fee_percent": 20.0,  # Platform takes 20% fee
+            "transfer_data": {
+                "destination": seller_account,
+            },
+            "expand": ["latest_invoice.payment_intent"],
+            "default_payment_method": payment_method,
+            "payment_behavior": "error_if_incomplete",
+            "trial_settings": {"end_behavior": {"missing_payment_method": "pause"}},
+            "metadata": {
+                "user_id": str(user_profile.user.id),
+                "profile_user_id": str(user_profile.id), 
+            },
+            "description": f"Subscription for {strategy_price.strategy.name}",
+        }
+
+        if coupon_code:
+            subscription_params["coupon"] = coupon_code
+
+        subscription = stripe.Subscription.create(**subscription_params)
+
+        if subscription.status in ['active', 'trialing']:
+            user_profile.give_tradingview_access(strategy_price.strategy.id, access=True)
+
+        return subscription
+
+    except Exception as e:
+        print("Error subscribing to strategy:", e)
+        raise
+
+def pay_user_profile_amount(user_profile, payment_method, description="Payout"):
+    """
+    Create a payout to the user's connected Stripe account.
+    """
+    try:
+        seller_account_id = user_profile.get_seller_account_id()
+        if not seller_account_id:
+            raise Exception("User does not have a connected seller account.")
+
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(user_profile.amount_to_pay * 100),
+            currency="usd",
+
+            payment_method=payment_method,
+            description=description,
+
+            customer=user_profile.customer_id_value,
+            automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
+            metadata={
+                "user_id": str(user_profile.user.id),
+                "profile_user_id": str(user_profile.id),
+            },
+        )
+
+        user_profile.mark_amount_as_paid()
+        return payment_intent
+
+    except Exception as e:
+        print("Error creating payout:", e)
+        raise
+
+def is_customer_subscribed_to_price(customer_id, price_id):
+    subscriptions = stripe.Subscription.list(
+        customer=customer_id,
+        price=price_id,
+        status="all",
+    )
+
+    for sub in subscriptions.data:
+        if sub.status not in ["active", "trialing", "past_due"]:
+            continue
+
+        for item in sub["items"]["data"]:
+            if item["price"]["id"] == price_id:
+                return True, sub
+
+    return False, None
+
+def send_money_to_seller_account(amount, destination_account_id, description="Payout to seller", currency="usd"):
+    """
+    Send money to a connected Stripe seller account.
+    """
+    try:
+        transfer = stripe.Transfer.create(
+            amount=int(amount * 100),  # amount in cents
+            currency=currency,
+            destination=destination_account_id,
+            description=description,
+        )
+        return transfer
+    except Exception as e:
+        print("Error sending money to seller account:", e)
         raise

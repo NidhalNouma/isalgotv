@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Strategy, StrategyImages, StrategyComments, StrategyResults, Replies
+from .models import Strategy, StrategyPrice, StrategyImages, StrategyComments, StrategyResults, Replies
 
 from unfold.admin import ModelAdmin
 
@@ -22,4 +22,10 @@ class StrategyCommentsAdmin(ModelAdmin):
 
 @admin.register(Strategy)
 class StrategyAdmin(ModelAdmin):
-    pass
+    list_display = ('name', 'premium', 'created_by', 'created_at')
+    search_fields = ['name', 'created_by__user__username']
+
+@admin.register(StrategyPrice)
+class StrategyPriceAdmin(ModelAdmin):
+    list_display = ('strategy', 'amount', 'currency', 'interval', 'interval_count')
+    search_fields = ['strategy__name', 'currency']

@@ -230,31 +230,20 @@ class Strategy(models.Model):
     is_live = models.BooleanField(default=False)
     premium = models.CharField(max_length=10, choices=PREMIUM_CHOICES, default='Premium')
     
-    additional_info = models.JSONField(blank=True, null=True, default={'price': None, 'price_obj': None, 'recurring_interval': 'month', 'recurring_interval_count': 1, 'available_intervals': ['day', 'week', 'month', 'year'], 'trial_period_days': 0})
-
     images = GenericRelation(StrategyImages) 
+
+    price = GenericRelation('StrategyPrice', blank=True)
     
     def __str__(self):
         return self.name
     
     def save(self, *args, **kwargs):
         if self.slug == '':
-            self.slug = slugify(self.name)  # Automatically generates a slug from the name.
+            self.slug = slugify(self.name) 
 
         if self.settings:
             if self.is_live == False:
                 self.settings = update_names(self.settings)
-
-        if self.premium == 'VIP':
-            additional_info = self.additional_info or {}
-            price = additional_info.get('price')
-            price_obj = additional_info.get('price_obj', None)
-            recurring_interval = additional_info.get('recurring_interval', "month")
-            recurring_interval_count = additional_info.get('recurring_interval_count', 1)
-            if price and price not in [None, '', 'None'] and price_obj in [None, '', 'None']:
-                price_obj = create_strategy_price(self, price, recurring_interval, recurring_interval_count)
-                additional_info['price_obj'] = price_obj
-                self.additional_info = additional_info
             
         super(Strategy, self).save(*args, **kwargs)
     
@@ -277,6 +266,32 @@ class Strategy(models.Model):
         
         return text_output
 
+class StrategyPrice(models.Model):
+    strategy = models.OneToOneField('Strategy', on_delete=models.CASCADE, related_name='price')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=8, default='USD')
+    interval = models.CharField(max_length=10, choices=[('day','day'),('week','week'),('month','month'),('year','year')], default='month')
+    interval_count = models.PositiveSmallIntegerField(default=1)
+
+    stripe_product_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_price_id = models.CharField(max_length=255, blank=True, null=True)
+
+    trial_period_days = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.strategy.premium != 'VIP':
+            raise ValidationError("StrategyPrice can only be set for VIP strategies.")
+        
+        if not self.stripe_price_id:
+            product, price = create_strategy_price(
+                strategy=self.strategy,
+                strategy_price=self
+            )
+            self.stripe_product_id = product.id
+            self.stripe_price_id = price.id
+
+        super(StrategyPrice, self).save(*args, **kwargs)
 
 class Replies(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

@@ -20,7 +20,7 @@
         <!-- Modal header -->
         {% if header %}
           <div class="flex items-start justify-between p-4 rounded-t sticky top-0 z-10 nav-bg rounded-md {{ header_class }}">
-            <div class="grow mr-4">{{ header }}</div>
+            <div class="grow mr-4">{{ header|safe }}</div>
             <button onclick="{% if stripe_element_id %}
                  unmountStripeElement('{{ stripe_element_id }}');
               {% endif %} hideModel('{{ modal_id }}')"

@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    {% if user.is_authenticated and has_subscription or user.is_authenticated and strategy.premium == 'Free' %}
+    {% if user.is_authenticated and strategy in user_profile.strategies.all %}
       <h3 class="font-medium mb-4 mt-4">Quick Start Guide</h3>
       <div class="space-y-4">
         <div class="flex items-start gap-4">
@@ -47,7 +47,7 @@
       </div>
 
       <button class="btn-secondary text-sm font-semibold mt-5 mx-auto" id="add-result-btn" onclick="openModel('add-result-modal')">Share your results</button>
-    {% else %}
+    {% elif strategy.premium != 'VIP' %}
       <div class="mt-4">
         <p class="text-sm mb-3">Become a member today and unlock full access to this strategy and many more. Gain insights, share your performance, and engage with a vibrant trading community to reach your full potential!</p>
 
@@ -68,6 +68,10 @@
           </p>
         {% endif %}
       </div>
+      {% else %}
+      <p class="text-sm mt-4 ">
+          Subscibe to unlock sharing your results and more features!
+      </p>
     {% endif %}
   </div>
 {% endfor %}
