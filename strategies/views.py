@@ -100,7 +100,9 @@ def get_strategy(request, slug):
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),
             )
         
-        performance_context = {}#get_global_strategy_performance_context(strategy)
+        performance_context = {
+            'show_performance': False,
+        }#get_global_strategy_performance_context(strategy)
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
         context =  {

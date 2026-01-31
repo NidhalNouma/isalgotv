@@ -442,7 +442,7 @@ def edit_tradingview_username(request):
 
         for strategy in strategies:
             if strategy.is_live:
-                access_response = give_access(strategy.id, profile_user.id, True)
+                access_response = profile_user.give_tradingview_access(strategy.id, access=True)
                 if access_response.get('error'):
 
                     error = access_response.get('error')
@@ -517,7 +517,7 @@ def get_access(request, strategy_id):
     if request.user:
         profile_user = request.user_profile
 
-        access_response = give_access(strategy_id, profile_user.id, True)
+        access_response = profile_user.give_tradingview_access(strategy_id, access=True)
 
         print("Access response:", access_response)
     
@@ -1205,7 +1205,7 @@ def remove_access(subscription_id, cancel_email = True):
 
         if profile_user.tradingview_username and profile_user.is_lifetime == False:
             for strategy in strategies:
-                access_response = give_access(strategy.id, profile_user.id, False)
+                access_response = profile_user.give_tradingview_access(strategy.id, access=False)
 
         if profile_user.discord_username:
             remove_role_from_user(profile_user.discord_username)

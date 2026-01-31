@@ -29,7 +29,7 @@ def give_access(strategy_id, profile_id, access, user_profile=None):
             return r
         
         if access:
-          if profile.has_subscription == False and profile.is_lifetime == False and strategy.premium in ['Premium', 'VIP', 'Beta']:
+          if profile.has_subscription == False and profile.is_lifetime == False and strategy.premium in ['Premium', 'Beta']:
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
               r['error'] = "This strategy is premium. Please upgrade your plan to access it."
@@ -43,9 +43,16 @@ def give_access(strategy_id, profile_id, access, user_profile=None):
               r['upgrade'] = True
               return r
           
-          if strategy.premium == 'VIP' and strategy.created_by != profile.user:
-              r['error'] = "This is a VIP strategy, only the creator can access it."
-              return r
+          if strategy.premium == 'VIP':
+            if strategy.created_by != profile.user:
+                is_subscribed, _ = profile.is_subscribed_to(strategy.price.stripe_price_id)
+                if not is_subscribed and not profile.is_lifetime:
+                    if profile.strategies.filter(pk=strategy_id).exists():
+                        profile.strategies.remove(strategy)
+                    r['error'] = "This is an Exclusive strategy. Please subscribe to access it."
+                    # r['upgrade'] = True
+                    return r
+
 
         data = {
           "username_recip": profile.tradingview_username,

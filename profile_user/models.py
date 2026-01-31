@@ -11,7 +11,6 @@ from django.utils.timezone import now
 import json
 
 from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price
-from profile_user.utils.tradingview import give_access
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -151,6 +150,7 @@ class User_Profile(models.Model):
         return self.user.username
     
     def give_tradingview_access(self, strategy_id, access=True):
+        from profile_user.utils.tradingview import give_access
         return give_access(strategy_id, self.id, access, user_profile=self)
 
     def deactivate_all_accounts(self):

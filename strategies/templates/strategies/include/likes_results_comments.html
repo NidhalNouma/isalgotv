@@ -54,7 +54,7 @@ onclick="showStrategy()"
   Strategy
   <div class="tooltip-arrow" data-popper-arrow></div>
 </div>
-{% comment %} <button
+{% if show_performance %} <button
 data-tooltip-target="tooltip-performances"
 data-tooltip-placement="top"
 class="flex items-center px-2"
@@ -70,7 +70,7 @@ onclick="showPerformances()"
 >
   Performances
   <div class="tooltip-arrow" data-popper-arrow></div>
-</div> {% endcomment %}
+</div> {% endif %}
 <button
   data-tooltip-target="tooltip-results"
   data-tooltip-placement="top"
