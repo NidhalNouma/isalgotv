@@ -526,17 +526,18 @@ def get_access(request, strategy_id):
 
             if pg == "st":
                 context = access_response
-                response = render(request, 'include/get_access_model.html', context)
+
+                response = render(request, 'include/user_connect.html', context)
                 return response
-                # response = render(request, 'include/errors.html', context = {"error": error})
-                # return retarget(response, "#get-access-errors")
+                # response = render(request, 'include/get_access_model.html', context)
+                # return retarget(response, "#access-mb-" + str(strategy_id))
             else:
                 strategies = Strategy.objects.filter(strategies_filter)
                 return render(request, 'include/access_list.html', context = {"strategies": strategies, "error_id": strategy_id, "error": error})
 
     if pg == "st":
         context = access_response
-        response = render(request, 'include/get_access_model.html', context)
+        response = render(request, 'include/user_connect.html', context)
         return response
     else:
         strategies = Strategy.objects.filter(strategies_filter)

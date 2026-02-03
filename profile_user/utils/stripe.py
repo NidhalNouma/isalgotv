@@ -390,6 +390,22 @@ def create_strategy_price(strategy, strategy_price):
         print("Error creating strategy price:", e)
         raise
 
+def subscription_object(subscription):
+    return {
+        "id": subscription.id,
+        "status": subscription.status,
+        "period_start": datetime.datetime.fromtimestamp(subscription.current_period_start),
+        "period_end": datetime.datetime.fromtimestamp(subscription.current_period_end),
+        "cancel_at_period_end": subscription.cancel_at_period_end,
+        "price_id": subscription.plan.id,
+        "product_id": subscription.plan.product,
+        "interval": subscription.plan.interval,
+        "interval_count": subscription.plan.interval_count,
+        "amount": subscription.plan.amount / 100,
+        "currency": subscription.plan.currency,
+        "payment_method": subscription.default_payment_method,
+    }
+
 def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_code=None):
     """
     Subscribe a user to a strategy using Stripe.
@@ -429,6 +445,42 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_c
 
     except Exception as e:
         print("Error subscribing to strategy:", e)
+        raise
+
+def cancel_subscription(user_profile, subscription_id):
+    """
+    Cancel a user's strategy subscription at period end.
+    """
+    try:
+        subscription = stripe.Subscription.retrieve(subscription_id)
+
+        canceled_subscription = stripe.Subscription.modify(
+            subscription_id,
+            cancel_at_period_end=True,
+        )
+
+        return subscription_object(canceled_subscription)
+
+    except Exception as e:
+        print("Error canceling strategy subscription:", e)
+        raise
+
+def change_subscription_payment_method(user_profile, subscription_id, payment_method):
+    """
+    Change the payment method for a user's strategy subscription.
+    """
+    try:
+        subscription = stripe.Subscription.retrieve(subscription_id)
+
+        updated_subscription = stripe.Subscription.modify(
+            subscription_id,
+            default_payment_method=payment_method,
+        )
+
+        return subscription_object(updated_subscription)
+
+    except Exception as e:
+        print("Error changing subscription payment method:", e)
         raise
 
 def pay_user_profile_amount(user_profile, payment_method, description="Payout"):
@@ -475,7 +527,23 @@ def is_customer_subscribed_to_price(customer_id, price_id):
 
         for item in sub["items"]["data"]:
             if item["price"]["id"] == price_id:
-                return True, sub
+                return True, subscription_object(sub)
+
+    return False, None
+
+def is_customer_subscribed_to_product(customer_id, product_id):
+    subscriptions = stripe.Subscription.list(
+        customer=customer_id,
+        status="all",
+    )
+
+    for sub in subscriptions.data:
+        if sub.status not in ["active", "trialing", "past_due"]:
+            continue
+
+        for item in sub["items"]["data"]:
+            if item["price"]["product"] == product_id:
+                return True, subscription_object(sub)
 
     return False, None
 

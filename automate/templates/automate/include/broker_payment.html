@@ -1,4 +1,4 @@
-{% with default_pm_id=stripe_customer.invoice_settings.default_payment_method %}
+{% with default_pm_id=default_pm_id|default:stripe_customer.invoice_settings.default_payment_method %}
   <section class="py-2 rounded">
     {% if not hide_header %}
       <p class="text-sm text-text/80">
@@ -7,9 +7,11 @@
     {% endif %}
 
     <div id="payment-card-list-{{ title }}" class="{% if payment_methods|length == 0 %} hidden {% endif %}">
-      <h3 class="text-text mt-2 font-semibold">Select a payment method</h3>
+      {% if subtitle %}
+        <h3 class="text-text mt-2 font-semibold">{{ subtitle|default:'Select a payment method' }}</h3>
+      {% endif %}
       <div class="scale-y-90">
-        {% include 'include/payment_methods.html' with to_select=True inputId='pm-'|add:title %}
+        {% include 'include/payment_methods.html' with to_select=True inputId='pm-'|add:title selected_pm_id=default_pm_id %}
       </div>
       <button type="button" class="font-semibold btn-icon" onclick="document.getElementById('span-' + document.getElementById('pm-{{ title }}').value + '-pm-{{ title }}')?.classList?.add('hidden'); document.getElementById('pm-{{ title }}').value=''; changeHidden('payment-card-new-{{ title }}', 'payment-card-list-{{ title }}');">Add new +</button>
     </div>

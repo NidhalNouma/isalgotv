@@ -1,25 +1,26 @@
 import requests
 from django.conf import settings
 
+
 from strategies.models import Strategy
 from profile_user.models import User_Profile
-
 import environ
 env = environ.Env()
 
 TV_SESSION_ID = env('TV_SESSION_ID')
 
 
-def give_access(strategy_id, profile_id, access, user_profile=None):
+def give_access(strategy_id, profile_id, access, user_profile=None, strategy=None):
     add_or_reemove = "add" if access == True else "remove"
     url = f"https://www.tradingview.com/pine_perm/{add_or_reemove}/"
     try:
-        strategy = Strategy.objects.get(pk = strategy_id)
+        if not strategy:
+            strategy = Strategy.objects.get(pk = strategy_id)
         if not user_profile:
             profile = User_Profile.objects.get(pk = profile_id)
         else:
             profile = user_profile
-        r = {"error": "", "access": None, 'strategy': strategy}
+        r = {"error": "", "access": None, 'strategy': strategy, 'user_profile': profile}
 
         if not profile.tradingview_username:
             r['error'] = "Please set your TradingView username in your profile settings."
@@ -45,7 +46,7 @@ def give_access(strategy_id, profile_id, access, user_profile=None):
           
           if strategy.premium == 'VIP':
             if strategy.created_by != profile.user:
-                is_subscribed, _ = profile.is_subscribed_to(strategy.price.stripe_price_id)
+                is_subscribed, _ = profile.is_subscribed_to(product_id=strategy.price.stripe_product_id)
                 if not is_subscribed and not profile.is_lifetime:
                     if profile.strategies.filter(pk=strategy_id).exists():
                         profile.strategies.remove(strategy)

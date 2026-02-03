@@ -38,7 +38,7 @@
     {% endif %}
 </script>
 
-  <main class="my-16 flex flex-col relative">
+  <main class="mb-16 mt-12 flex flex-col relative">
     {% if congrate %}
       <div class="mb-4 max-w-xl mx-auto">
         {% include 'include/succes.html' with succes='You have successfully subscribed to our membership.' %}
@@ -52,22 +52,14 @@
     <div class="mx-auto">
       <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0">
         <li class="flex items-center {% if step == 1 %}
-            
              text-secondary
-
           {% else %}
-            
              text-text/60
-
           {% endif %} space-x-2.5">
           <span class="flex items-center justify-center w-8 h-8 border {% if step == 1 %}
-              
                border-secondary
-
             {% else %}
-              
                border-text/60
-
             {% endif %} rounded-full shrink-0">
             1
           </span>
@@ -79,22 +71,14 @@
           </span>
         </li>
         <li class="flex items-center {% if step == 2 %}
-            
              text-secondary
-
           {% else %}
-            
              text-text/60
-
           {% endif %} space-x-2.5">
           <span class="flex items-center justify-center w-8 h-8 border {% if step == 2 %}
-              
                border-secondary
-
             {% else %}
-              
                border-text/60
-
             {% endif %} rounded-full shrink-0">
             2
           </span>
@@ -104,22 +88,14 @@
           </span>
         </li>
         <li class="flex items-center {% if step == 3 %}
-            
              text-secondary
-
           {% else %}
-            
              text-text/60
-
           {% endif %} space-x-2.5">
           <span class="flex items-center justify-center w-8 h-8 border {% if step == 3 %}
-              
                border-secondary
-
             {% else %}
-              
                border-text/60
-
             {% endif %} rounded-full shrink-0">
             3
           </span>

@@ -135,7 +135,7 @@
           </button>
 
           <!-- Dropdown menu -->
-          <div id="dropdownDots-{{ pm.id }}" class="absolute right-3 z-10 hidden divide-y divide-gray-100 rounded-md shadow w-44 bg-text/10 backdrop-blur-3xl">
+          <div id="dropdownDots-{{ pm.id }}" class="absolute right-3 z-10 hidden divide-y divide-text/10 w-44 nav-bg-backdrop">
             <ul class="py-2 text-sm" aria-labelledby="dropdownMenuIconButton-{{ pm.id }}">
               <li>
                 <form hx-post="{% url 'payment_method-set-default' %}">

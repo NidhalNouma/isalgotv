@@ -180,7 +180,7 @@ function handleThreeSection(clickedButton, id1, id2, id3, btnClass) {
   // Reset all buttons and sections
   [btn1, btn2, btn3].forEach((btn) => btn.classList.remove(btnClass));
   [section1, section2, section3].forEach((section) =>
-    section.classList.add("hidden")
+    section.classList.add("hidden"),
   );
 
   // Apply class to clicked button and related section
@@ -966,7 +966,7 @@ htmx.on("htmx:afterRequest", (evt) => {
   if (evt?.detail?.target.id === "setting-payment_methods") {
     let title = "payment_methods";
     const closeForm = document.getElementById(
-      "add-payment_methods-close-form-btn"
+      "add-payment_methods-close-form-btn",
     );
     closeForm.click();
 
@@ -1002,9 +1002,11 @@ htmx.on("htmx:afterRequest", (evt) => {
     closeLoader(title, "-add-reply-", "inline-flex");
   }
 
-  if (evt?.detail?.target.id.includes("access-mb")) {
-    openModel("get-access-modal");
-  }
+  // if (evt?.detail?.target.id.includes("access-mb-")) {
+  //   openModel("get-access-modal");
+  //   const strategyId = evt?.detail?.target.id.replace("access-mb-", "");
+  //   closeLoader("", "-acc-" + strategyId, "inline-flex");
+  // }
 
   if (evt?.detail?.target.id.includes("-form-errors")) {
     const name = "-" + evt?.detail?.target.id.replace("-form-errors", "");
@@ -1050,7 +1052,7 @@ function sendAiMessage(message) {
   window.dispatchEvent(
     new CustomEvent("teroMessage", {
       detail: { message: message },
-    })
+    }),
   );
 }
 
@@ -1147,7 +1149,7 @@ function openCtraderAuthWindow(clientIdInput, path) {
     window.open(
       url,
       "ctraderAuthWindow",
-      "width=600,height=700,left=100,top=100"
+      "width=600,height=700,left=100,top=100",
     );
   }
 }
@@ -1185,7 +1187,7 @@ document.addEventListener("DOMContentLoaded", function () {
         pauseAllVideos();
         video.play();
       },
-      { passive: true }
+      { passive: true },
     );
     container.addEventListener("touchend", () => {
       video.pause();

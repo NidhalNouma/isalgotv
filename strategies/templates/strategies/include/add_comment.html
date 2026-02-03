@@ -9,12 +9,12 @@
       Share Your Thoughts
     </button>
     {% elif user.is_authenticated and not has_subscription and strategy.premium != 'VIP' %}
-    <button
+    {% comment %} <button
       class="btn-text text-sm font-semibold underlinei"
       onclick="openModel('upgrade-modal', false);"
     >
       Share Your Thoughts
-    </button>
+    </button> {% endcomment %}
     {% endif %}
   {% endif %}
   <form

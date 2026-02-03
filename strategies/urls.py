@@ -17,4 +17,6 @@ urlpatterns = [
     path('id/<int:id>/', get_strategy_id, name='strategy_id'),
 
     path('price/<int:id>/subscribe/', strategy_subscribe, name='strategy_subscribe'),
+    path('price/<int:id>/change_payment/<str:subscription_id>/', strategy_change_payment, name='strategy_change_payment'),
+    path('price/<int:id>/cancel_subscription/<str:subscription_id>/', strategy_unsubscribe, name='strategy_cancel_subscription'),
 ]

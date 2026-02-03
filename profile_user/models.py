@@ -10,7 +10,7 @@ from django.utils.timezone import now
 
 import json
 
-from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price
+from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price, is_customer_subscribed_to_product
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -108,16 +108,24 @@ class User_Profile(models.Model):
         return self.customer_id
 
 
-    def is_subscribed_to(self, price_id):
+    def is_subscribed_to(self, price_id=None, product_id=None):
         """
         Check if the user is subscribed to a specific price.
         returns (is_subscribed: bool, subscription: dict or None)
         """
-        is_subscribed, subscription = is_customer_subscribed_to_price(
-            self.customer_id_value,
-            price_id
-        )
-
+        if not price_id and not product_id:
+            return False, None
+        
+        if price_id:
+            is_subscribed, subscription = is_customer_subscribed_to_price(
+                self.customer_id_value,
+                price_id
+            )
+        else:
+            is_subscribed, subscription = is_customer_subscribed_to_product(
+                self.customer_id_value,
+                product_id
+            )
         return is_subscribed, subscription
 
 

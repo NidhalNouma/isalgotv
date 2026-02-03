@@ -6,7 +6,7 @@ from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
 from performance.functions.context import get_global_strategy_performance_context
-from profile_user.utils.stripe import subscribe_to_strategy
+from profile_user.utils.stripe import cancel_subscription, change_subscription_payment_method, subscribe_to_strategy
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
@@ -116,7 +116,7 @@ def get_strategy(request, slug):
         if strategy.premium == 'VIP':
             if request.user.is_authenticated:
                 user_profile = request.user.user_profile
-                is_subscribed, subscription = user_profile.is_subscribed_to(strategy.price.stripe_price_id)
+                is_subscribed, subscription = user_profile.is_subscribed_to(product_id=strategy.price.stripe_product_id)
                 context['is_vip_subscribed'] = is_subscribed
                 context['vip_subscription'] = subscription
                 print("VIP Subscription status:", is_subscribed, subscription)
@@ -466,3 +466,73 @@ def strategy_subscribe(request, id):
         context["error"] = str(e)
         response = render(request, 'include/errors.html', context)
         return retarget(response, "#stripe-error-"+context['title'])
+
+@require_http_methods([ "POST"])
+def strategy_unsubscribe(request, id, subscription_id):
+    title = request.GET.get('title', None)
+    context = { 'title': title}
+
+    if not title:
+        return HttpResponseBadRequest("Title parameter is required.")
+
+    try:
+        strategy_price = get_object_or_404(StrategyPrice, pk=id)
+
+
+        if request.method == 'POST':
+            user_profile = request.user_profile
+
+            is_subscribed, subscription = user_profile.is_subscribed_to(product_id=strategy_price.stripe_product_id)
+
+            if not is_subscribed or not subscription:
+                context["error"] = 'No active subscription found.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#"+context['title']+"-form-errors")
+
+            subscription = cancel_subscription(user_profile, subscription_id)
+
+            return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
+    except Exception as e:
+        context["error"] = str(e)
+        response = render(request, 'include/errors.html', context)
+        return retarget(response, "#stripe-error-"+context['title'])
+        
+@require_http_methods([ "POST"])
+def strategy_change_payment(request, id, subscription_id):
+    context = { 'title': 'change-pm'}
+
+    try:
+        strategy_price = get_object_or_404(StrategyPrice, pk=id)
+
+
+        if request.method == 'POST':
+            if not strategy_price.stripe_price_id:
+                context["error"] = 'No plan has been specified, please refresh the page and try again.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#"+context['title']+"-form-errors")
+            
+
+            data = request.POST
+            
+            payment_method = data['pm_id']
+
+            user_profile = request.user_profile
+
+            if not payment_method or payment_method == "None":
+                context["error"] = 'No payment method has been detected.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#"+context['title']+"-form-errors")
+
+            subscription = change_subscription_payment_method(
+                user_profile,
+                subscription_id,
+                payment_method
+            )
+
+            print("Payment method updated")
+
+            return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
+    except Exception as e:
+        context["error"] = str(e)
+        response = render(request, 'include/errors.html', context)
+        return retarget(response, "#"+context['title']+"-form-errors")
