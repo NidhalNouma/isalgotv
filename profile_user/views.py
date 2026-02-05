@@ -238,7 +238,7 @@ def random_strategies_results_context():
 @login_required(login_url='login')
 def home(request):
     show_get_started = False
-    if (request.has_subscription is None or request.has_subscription is False) and not request.subscription_status:
+    if (request.has_subscription is None or request.has_subscription is False) and not request.subscription:
         show_get_started = True
 
     context = {'show_get_started': show_get_started, 'show_banner': True}
@@ -585,31 +585,15 @@ def create_payment_method(request):
             return retarget(response, "#stripe-error-payment_methods")
 
         user_profile = request.user_profile
-        customer_id = user_profile.customer_id_value
 
         try:
-            print("Adding payment method ...", payment_method, customer_id)
-            stripe.PaymentMethod.attach(
-                payment_method,
-                customer=customer_id,
-            )
-
-            print("Payment method has been attached to customer ...", len(request.payment_methods) , request.payment_methods)
-
-            if len(request.payment_methods) <= 1:
-                # Set the new payment method as default if there are existing payment methods
-                stripe.Customer.modify(
-                    customer_id,
-                    invoice_settings={
-                        'default_payment_method': payment_method
-                    }
-                )
-
-            user_profile = user_profile.get_with_update_stripe_data(force = True)
+            print("Adding payment method ...", payment_method)
+            set_to_default = len(request.payment_methods) <= 1
+            
+            payment_methods, user_profile = add_user_payment_method(user_profile, payment_method, set_to_default)
 
             context["user_profile"] = user_profile
-            
-            context["payment_methods"] = user_profile.stripe_obj.get('payment_methods', None)
+            context["payment_methods"] = payment_methods
 
             response = render(request, 'include/payment_methods.html', context)
             return retarget(response, "#setting-payment_methods")
@@ -632,23 +616,12 @@ def delete_payment_method(request):
             context["error"] = 'No payment method has been detected.'
 
         user_profile = request.user_profile
-        customer_id = user_profile.customer_id_value
 
         try:
-            subscriptions = stripe.Subscription.list(customer=customer_id, status="active")
+            payment_methods, user_profile = delete_user_payment_method(user_profile, payment_method)
 
-            # Check if the payment method is used in any active subscription
-            for subscription in subscriptions.auto_paging_iter():
-                if subscription.default_payment_method == payment_method:
-                    context["error"] = "This payment method is currently associated with an active subscription and cannot be deleted."
-                    response = render(request, 'include/errors.html', context)
-                    return retarget(response, "#stripe-error-delete-payment_methods")
-            
-            stripe.PaymentMethod.detach(payment_method)
-
-            user_profile = user_profile.get_with_update_stripe_data(force = True)
-
-            context["payment_methods"] = stripe.Customer.list_payment_methods(customer_id)
+            context["user_profile"] = user_profile
+            context["payment_methods"] = payment_methods
 
             response = render(request, 'include/payment_methods.html', context)
             return retarget(response, "#setting-payment_methods")
@@ -656,6 +629,7 @@ def delete_payment_method(request):
         except Exception as e:
             context["error"] = str(e)
 
+            response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-delete-payment_methods")
 
 @require_http_methods([ "POST"])
@@ -670,23 +644,21 @@ def setdefault_payment_method(request):
             context["error"] = 'No payment method has been detected.'
 
         user_profile = request.user_profile
-        customer_id = user_profile.customer_id_value
 
         try:
-            customer = stripe.Customer.modify(
-                    customer_id,
-                    invoice_settings={
-                        'default_payment_method': payment_method
-                    }
-                )            
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method)      
+
             context["stripe_customer"] = customer
-            user_profile = user_profile.get_with_update_stripe_data(force = True)
+            context["user_profile"] = user_profile
 
             response = render(request, 'include/payment_methods.html', context)
             return retarget(response, "#setting-payment_methods")
         
         except Exception as e:
             context["error"] = 'Attached payment to customer '+str(e)
+
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-delete-payment_methods")
 
 @require_http_methods([ "POST"])
 def check_coupon(request):
@@ -801,8 +773,8 @@ def subscription_stripeform(request):
             trial_days = 0
 
         trial_ends = 'now'
-        subscription_period_end = request.subscription_period_end
-        subscription_status = request.subscription_status
+        subscription_period_end = request.subscription.get('period_end') if request.subscription else None
+        subscription_status = request.subscription.get('status') if request.subscription else None
 
         if subscription_period_end:
             trial_ends = subscription_period_end
@@ -920,7 +892,7 @@ def subscription_stripeform(request):
             print("New subscription has been created ...", subscription.id)
 
             if len(old_subscription_id) > 0:
-                if request.subscription_status != 'canceled':
+                if request.subscription:
                     try: 
                         cancel_subscription = stripe.Subscription.delete(old_subscription_id)
                         print("Old subscription has been canceled ... ")
@@ -956,37 +928,22 @@ def subscription_stripeform(request):
 def cancel_subscription(request):
     if request.method == 'POST':
         subscription = request.subscription
+        user_profile = request.user_profile
         subscription_id = subscription.get('id', None)
 
-        subscription_period_end = request.subscription_period_end
-        subscription_plan = request.subscription_plan
-        subscription_status = request.subscription_status
-        context = { 'subscription_status': subscription_status, 
-                'subscription_period_end': subscription_period_end, 
-                'subscription_plan':subscription_plan, 
-                'subscription': subscription, 
-                'error': "" } 
+        context = {'subscription': subscription_object(subscription), 'error': "" } 
 
         if subscription_id:
             try:
-                cancel_subscription = stripe.Subscription.modify(subscription_id, cancel_at_period_end=True)
-                context['subscription'] = cancel_subscription
-                context['subscription_status'] = cancel_subscription.status
-                context['subscription_canceled'] = True
+                subscription = cancel_reactivate_subscription(user_profile, subscription_id)
+                context['subscription'] = subscription
 
-                end_timestamp = cancel_subscription.current_period_end * 1000
-                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
-                context['subscription_period_end'] = end_time
-
-                request.user_profile.get_with_update_stripe_data(force = True)
-
-                send_cancel_membership_email_task(request.user.email)
+                if subscription and subscription.get('cancel_at_period_end', False):
+                    send_cancel_membership_email_task(request.user.email)
 
                 return render(request, 'include/settings/membership.html', context)
             except Exception as e:
-                pass
-
-        context['error'] = 'An error occurred while attempting to cancel your subscription. Please contact us for assistance.'
+                context['error'] = 'An error occurred while attempting to cancel your subscription. Please contact us for assistance. \n' + str(e)
 
         return render(request, 'include/settings/membership.html', context)
 

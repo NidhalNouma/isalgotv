@@ -686,7 +686,7 @@ async function onPayFormStripeSubmit(title) {
   return true;
 }
 
-async function onAutomateAccountAdd(title, errorDivName, event) {
+async function submitStripeElementForm(title, errorDivName, event) {
   event.preventDefault();
 
   openLoader("", "-add-" + title, "flex");

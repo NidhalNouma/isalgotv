@@ -56,16 +56,15 @@
       <h1 class="main-title">Membership</h1>
       <div class="mt-4">
         <p class="text-left text-title text-lg font-semibold">
-          You're subscribing to our <span class="text-title font-extrabold">{{ subscription_plan }}</span> plan.
+          You're subscribing to our <span class="text-title font-extrabold">{{ subscription.plan }}</span> plan.
         </p>
-        {% if subscription_canceled %}
+        {% if subscription.status == "canceled" %}
           <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">
-            Your subscription was canceled, end on <span class="text-warning font-semibold inline-block">{{ subscription_period_end|date:'M d Y' }}</span>
+            Your subscription was canceled, end on <span class="text-warning font-semibold inline-block">{{ subscription.period_end|date:'M d Y' }}</span>
           </p>
-        {% elif subscription_status == 'incomplete' or subscription_status == 'incomplete_expired' %}
+        {% elif subscription.status == 'incomplete' or subscription.status == 'incomplete_expired' %}
           <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">Your subscription is incomplete.</p>
         {% else %}
-          <!-- <p class="mt-2 text-left text-title text-base">Your next payment is scheduled for <span class="text-title">{{ subscription_period_end|date:'M d Y' }}</span></p> -->
         {% endif %}
       </div>
     {% else %}

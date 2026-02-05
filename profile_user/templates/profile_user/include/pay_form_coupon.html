@@ -2,12 +2,12 @@
 
 <div id="coupon-pay-{{ title }}">
   <div class="bg-text/5 backdrop-blur-3xl rounded-md p-4 mb-2 text-text">
-    {% if has_subscription and title != 'LIFETIME' %}
+    {% if current_subscription and title != 'LIFETIME' %}
       {% include 'include/pay_form_price.html' with base_price=base_price coupon_off='-100%' final_price=0 %}
       <p class="mt-2.5 text-[0.85rem] text-text/80">
-        &#9737; Next charge is scheduled for <span class="text-text">${{ final_price|trim_zeros }}</span> on <span class="text-text/90">{{ subscription_period_end|date:'M d, Y' }}</span>
+        &#9737; Next charge is scheduled for <span class="text-text">${{ final_price|trim_zeros }}</span> on <span class="text-text/90">{{ current_subscription.period_end|date:'M d, Y' }}</span>
       </p>
-    {% elif not has_subscription and not user_profile.subscription_id and title != 'LIFETIME' and free_trial_days|add:'0' > 0 %}
+    {% elif not current_subscription and free_trial_days|add:'0' > 0 and title != 'LIFETIME' %}
       {% include 'include/pay_form_price.html' with base_price=base_price coupon_off='-100%' final_price=0 %}
       <p class="mt-2.5 text-[0.85rem] text-text/80">
         &#9737; Next charge is scheduled for <span class="text-text">${{ final_price|trim_zeros }}</span> after the <span class="text-text/90">{{ free_trial_days }} day trial</span>

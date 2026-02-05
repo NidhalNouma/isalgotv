@@ -114,18 +114,6 @@ def get_profile_data(user_profile, PRICE_LIST):
     data = {
         "customer": None,
         "subscription": None,
-        "payment_methods": None,
-        "payment_intent": None,
-        "subscription_canceled": False,
-        "subscription_next_payment_amount": None,
-        "subscription_period_end": None,
-        "subscription_active": False,
-        "subscription_status": None,
-        "subscription_price_id": None,
-        "subscription_product_id": None,
-        "subscription_interval": None,
-        "subscription_interval_count": None,
-        "subscription_plan": None,
         "has_subscription": False,
     }
 
@@ -148,66 +136,16 @@ def get_profile_data(user_profile, PRICE_LIST):
             try:
                 subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
                 data["subscription"] = subscription
-
-
-                end_timestamp = subscription.current_period_end * 1000
-                end_time = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
-
-
-                subscription_status = subscription.status
-
-                subscription_interval = subscription.plan.interval
-                subscription_interval_count = subscription.plan.interval_count
-
-
-                data["subscription_period_end"] = end_time.isoformat()
-                data["subscription_active"] = subscription.plan.active
-                data["subscription_status"] = subscription.status
-                data["subscription_price_id"] = subscription.plan.id
-                data["subscription_product_id"] = subscription.plan.product
-                data["subscription_interval"] = subscription.plan.interval
-                data["subscription_interval_count"] = subscription.plan.interval_count
-
-
-                if subscription_interval == "year":
-                    subscription_plan = list(PRICE_LIST.keys())[2]
-
-                elif subscription_interval == "month":
-                    if subscription_interval_count == 1:
-                        subscription_plan = list(PRICE_LIST.keys())[0]
-                    elif subscription_interval_count == 3:
-                        subscription_plan = list(PRICE_LIST.keys())[1]
-                    elif subscription_interval_count == 12:
-                        subscription_plan = list(PRICE_LIST.keys())[2]
                 
-                data["subscription_plan"] = subscription_plan
-                
-
-
-                if subscription_status == 'active' and subscription.current_period_end > time.time():
+                if subscription.status == 'active' and subscription.current_period_end > time.time():
                     data["has_subscription"] = True
-                elif subscription_status == 'trialing' and subscription.current_period_end > time.time():
+                elif subscription.status == 'trialing' and subscription.current_period_end > time.time():
                     data["has_subscription"] = True
-                elif subscription_status == 'past_due' and subscription.current_period_end > time.time():
+                elif subscription.status == 'past_due' and subscription.current_period_end > time.time():
                     data["has_subscription"] = True
-                # elif subscription.status == "canceled" and subscription.current_period_end > time.time():
-                #     has_subscription = True
-                elif subscription_status == "incomplete":
+                elif subscription.status == "incomplete":
                     data["has_subscription"] = False
 
-                
-                if subscription.cancel_at_period_end or subscription.status == "canceled" or subscription.status == "incomplete":
-                    data["subscription_canceled"] = True
-
-                
-                if not data["subscription_canceled"] and data["has_subscription"]:
-                    # Get the upcoming invoice for the subscription
-                    upcoming_invoice = stripe.Invoice.upcoming(subscription=subscription)
-                    data["payment_intent"] = upcoming_invoice
-
-                    if upcoming_invoice:
-                        total_amount_due = upcoming_invoice["amount_due"]/100
-                        data["subscription_next_payment_amount"] = total_amount_due
             except Exception as e:
                 print("Error with getting stripe subscription...", e)
 
@@ -390,21 +328,34 @@ def create_strategy_price(strategy, strategy_price):
         print("Error creating strategy price:", e)
         raise
 
-def subscription_object(subscription):
-    return {
-        "id": subscription.id,
-        "status": subscription.status,
-        "period_start": datetime.datetime.fromtimestamp(subscription.current_period_start),
-        "period_end": datetime.datetime.fromtimestamp(subscription.current_period_end),
-        "cancel_at_period_end": subscription.cancel_at_period_end,
-        "price_id": subscription.plan.id,
-        "product_id": subscription.plan.product,
-        "interval": subscription.plan.interval,
-        "interval_count": subscription.plan.interval_count,
-        "amount": subscription.plan.amount / 100,
-        "currency": subscription.plan.currency,
-        "payment_method": subscription.default_payment_method,
+def subscription_object(subscription, subscription_id=None):
+    if not subscription and not subscription_id:
+        return None
+    if not subscription and subscription_id:
+        subscription = stripe.Subscription.retrieve(id=subscription_id)
+
+    # print(subscription)
+    if subscription.get('status') not in ["active", "trialing", "past_due"]:
+        return None
+    sub = {
+        "id": subscription.get('id'),
+        "status": subscription.get('status'),
+        "period_start": datetime.datetime.fromtimestamp(subscription.get("current_period_start", 0)),
+        "period_end": datetime.datetime.fromtimestamp(subscription.get("current_period_end", 0)),
+        "cancel_at_period_end": subscription.get("cancel_at_period_end"),
+        "price_id": subscription.get("plan", {}).get("id"),
+        "product_id": subscription.get("plan", {}).get("product"),
+        "interval": subscription.get("plan", {}).get("interval"),
+        "interval_count": subscription.get("plan", {}).get("interval_count"),
+        "amount": subscription.get("plan", {}).get("amount", 0) / 100,
+        "currency": subscription.get("plan", {}).get("currency"),
+        "payment_method": subscription.get("default_payment_method"),
     }
+    
+    plan = str(sub.get('interval')).upper() + "LY"
+    sub['plan'] = plan
+
+    return sub
 
 def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_code=None):
     """
@@ -441,33 +392,42 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_c
         if subscription.status in ['active', 'trialing']:
             user_profile.give_tradingview_access(strategy_price.strategy.id, access=True)
 
-        return subscription
+        user_profile = user_profile.get_with_update_stripe_data(True)
+        return subscription, user_profile
 
     except Exception as e:
         print("Error subscribing to strategy:", e)
         raise
 
-def cancel_subscription(user_profile, subscription_id):
+def cancel_reactivate_subscription(user_profile, subscription_id):
     """
     Cancel a user's strategy subscription at period end.
     """
     try:
         subscription = stripe.Subscription.retrieve(subscription_id)
 
+        cancel_active = subscription.cancel_at_period_end
+        
+        if subscription.status not in ["active", "trialing"]:
+            raise Exception("Canceled subscriptions cannot be reactivated. Create a new subscription.")
+
+
         canceled_subscription = stripe.Subscription.modify(
             subscription_id,
-            cancel_at_period_end=True,
+            cancel_at_period_end=not cancel_active,
         )
+
+        user_profile = user_profile.get_with_update_stripe_data(True)
 
         return subscription_object(canceled_subscription)
 
     except Exception as e:
-        print("Error canceling strategy subscription:", e)
+        print("Error canceling subscription:", e)
         raise
 
 def change_subscription_payment_method(user_profile, subscription_id, payment_method):
     """
-    Change the payment method for a user's strategy subscription.
+    Change the payment method for a user's subscription.
     """
     try:
         subscription = stripe.Subscription.retrieve(subscription_id)
@@ -476,11 +436,78 @@ def change_subscription_payment_method(user_profile, subscription_id, payment_me
             subscription_id,
             default_payment_method=payment_method,
         )
+        
+        user_profile = user_profile.get_with_update_stripe_data(True)
 
-        return subscription_object(updated_subscription)
+        return subscription_object(updated_subscription), user_profile
 
     except Exception as e:
         print("Error changing subscription payment method:", e)
+        raise
+
+def add_user_payment_method(user_profile, payment_method, set_to_default=False):
+    try:
+        customer_id = user_profile.customer_id_value
+        stripe.PaymentMethod.attach(
+                payment_method,
+                customer=customer_id,
+            )
+        if set_to_default:
+            stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        'default_payment_method': payment_method
+                    }
+                )
+        
+        user_profile = user_profile.get_with_update_stripe_data(True)
+        payment_methods = user_profile.stripe_obj.get('payment_methods', None)
+
+        return payment_methods, user_profile
+        
+    
+    except Exception as e:
+        print("Error adding payment method:", e)
+        raise
+
+def delete_user_payment_method(user_profile, payment_method):
+    try:
+        customer_id = user_profile.customer_id_value
+        subscriptions = stripe.Subscription.list(customer=customer_id, status="active")
+
+        # Check if the payment method is used in any active subscription
+        for subscription in subscriptions.auto_paging_iter():
+            if subscription.default_payment_method == payment_method:
+                raise Exception("This payment method is currently associated with an active subscription and cannot be deleted.")
+
+        
+        stripe.PaymentMethod.detach(payment_method)
+        user_profile = user_profile.get_with_update_stripe_data(force = True)
+        payment_methods = user_profile.stripe_obj.get('payment_methods', None)
+        # payment_methods = stripe.Customer.list_payment_methods(customer_id)
+
+        return payment_methods, user_profile
+
+    except Exception as e:
+        print("Error deleting payment method:", e)
+        raise
+        
+def set_user_default_payment_method(user_profile, payment_method):
+    try:
+        customer_id = user_profile.customer_id_value
+        
+        customer = stripe.Customer.modify(
+                customer_id,
+                invoice_settings={
+                    'default_payment_method': payment_method
+                }
+            )    
+        user_profile = user_profile.get_with_update_stripe_data(force = True)
+
+        return customer, user_profile
+
+    except Exception as e:
+        print("Error setting default payment method:", e)
         raise
 
 def pay_user_profile_amount(user_profile, payment_method, description="Payout"):

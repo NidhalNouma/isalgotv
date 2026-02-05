@@ -47,7 +47,7 @@
       </div>
 
       <button class="btn-secondary text-sm font-semibold mt-5 mx-auto" id="add-result-btn" onclick="openModel('add-result-modal')">Share your results</button>
-    {% elif strategy.premium != 'VIP' %}
+    {% elif strategy.premium != 'VIP' and strategy.premium != 'Free' %}
       <div class="mt-4">
         <p class="text-sm mb-3">Become a member today and unlock full access to this strategy and many more. Gain insights, share your performance, and engage with a vibrant trading community to reach your full potential!</p>
 
@@ -70,7 +70,7 @@
       </div>
       {% else %}
       <p class="text-sm mt-4 ">
-          Subscibe to unlock sharing your results and more features!
+          Get access to unlock sharing your results and more features!
       </p>
     {% endif %}
   </div>

@@ -36,7 +36,7 @@
             </svg>
           </button>
 
-          {% render_template 'include/pay_form_stripe.html' base_price=strategy.price.amount final_price=strategy.price.amount get_started=get_started title=strategy.name|lower|replace_chars:' ||_' strategy_price=strategy.price as pay_form_stripe %}
+          {% render_template 'include/pay_form_stripe.html' current_subscription=vip_subscription base_price=strategy.price.amount final_price=strategy.price.amount get_started=get_started title=strategy.name|lower|replace_chars:' ||_' strategy_price=strategy.price as pay_form_stripe %}
           {% with formatted_title=strategy.name|lower|capfirst %}
             {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>Unlock "|add:strategy.name|add:' </h3>' %}
               {% include 'include/modal.html' with modal_id='staticmodal-'|add:strategy.name|lower|replace_chars:' ||_' header=header_html body=pay_form_stripe stripe_element_id=strategy.name|lower|replace_chars:' ||_' body_class='px-2 mt-3' %}

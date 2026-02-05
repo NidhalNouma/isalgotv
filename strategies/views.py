@@ -6,7 +6,7 @@ from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
 from performance.functions.context import get_global_strategy_performance_context
-from profile_user.utils.stripe import cancel_subscription, change_subscription_payment_method, subscribe_to_strategy
+from profile_user.utils.stripe import cancel_reactivate_subscription, change_subscription_payment_method, subscribe_to_strategy
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
@@ -450,7 +450,7 @@ def strategy_subscribe(request, id):
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
 
-            subscription = subscribe_to_strategy(
+            subscription, user_profile = subscribe_to_strategy(
                 user_profile,
                 strategy_price,
                 payment_method,
@@ -469,11 +469,7 @@ def strategy_subscribe(request, id):
 
 @require_http_methods([ "POST"])
 def strategy_unsubscribe(request, id, subscription_id):
-    title = request.GET.get('title', None)
-    context = { 'title': title}
-
-    if not title:
-        return HttpResponseBadRequest("Title parameter is required.")
+    context = { 'title': f'dropdownMenuIconButton-{subscription_id}'}
 
     try:
         strategy_price = get_object_or_404(StrategyPrice, pk=id)
@@ -486,20 +482,31 @@ def strategy_unsubscribe(request, id, subscription_id):
 
             if not is_subscribed or not subscription:
                 context["error"] = 'No active subscription found.'
+                context["class"] = 'mt-2'
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#"+context['title']+"-form-errors")
 
-            subscription = cancel_subscription(user_profile, subscription_id)
+            subscription = cancel_reactivate_subscription(user_profile, subscription_id)
 
-            return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
+            context = {
+                "user_profile": user_profile,
+                "strategy": strategy_price.strategy,
+                "vip_subscription": subscription,
+                "is_vip_subscription": True
+            }
+            response = render(request, 'strategies/include/strategy_vip_membership.html', context=context)
+            return response
+
+            # return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
     except Exception as e:
         context["error"] = str(e)
+        context["class"] = 'mt-2'
         response = render(request, 'include/errors.html', context)
-        return retarget(response, "#stripe-error-"+context['title'])
+        return retarget(response, "#"+context['title']+"-form-errors")
         
 @require_http_methods([ "POST"])
 def strategy_change_payment(request, id, subscription_id):
-    context = { 'title': 'change-pm'}
+    context = { 'title': 'add-change-pm'}
 
     try:
         strategy_price = get_object_or_404(StrategyPrice, pk=id)
@@ -523,7 +530,7 @@ def strategy_change_payment(request, id, subscription_id):
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#"+context['title']+"-form-errors")
 
-            subscription = change_subscription_payment_method(
+            subscription, user_profile = change_subscription_payment_method(
                 user_profile,
                 subscription_id,
                 payment_method
@@ -531,7 +538,16 @@ def strategy_change_payment(request, id, subscription_id):
 
             print("Payment method updated")
 
+            context = {
+                "user_profile": user_profile,
+                "strategy": strategy_price.strategy,
+                "vip_subscription": subscription,
+                "is_vip_subscription": True
+            }
+            # response = render(request, 'strategies/include/strategy_vip_membership.html', context=context)
+            # return response
             return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
+
     except Exception as e:
         context["error"] = str(e)
         response = render(request, 'include/errors.html', context)

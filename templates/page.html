@@ -116,12 +116,12 @@
           {% include 'include/warnings.html' with class='my-2 w-full' close_id='complete-seller-account' warning='Your seller account is not yet fully verified. To start selling your strategies, please complete the onboarding process <a href="'|add:complete_seller_account_onboarding_url|add:'" class="underline font-semibold">here</a>.' %}
         {% endif %}
 
-        {% if subscription_status == 'past_due' and request.resolver_match.view_name != 'membership' %}
+        {% if subscription and subscription.status == 'past_due' and request.resolver_match.view_name != 'membership' %}
           {% url 'membership' as membership_url %}
           {% include 'include/warnings.html' with class='my-2 w-full' close_id='past-due-subscription' warning='We couldn`t complete your last payment, and as a result, your access to our trading strategies may be at risk. Please update your payment method to <a href="'|add:membership_url|add:'" class="underline font-semibold">reactivate your membership here</a>.' %}
         {% endif %}
 
-        {% if user.is_authenticated and not has_subscription and show_banner and subscription_status != 'past_due' %}
+        {% if user.is_authenticated and not has_subscription and show_banner and subscription and subscription.status != 'past_due' %}
           {% include 'include/subscribe_banner.html' %}
         {% endif %}
 

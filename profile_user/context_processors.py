@@ -21,18 +21,10 @@ def profile_context(request):
         'stripe_customer': getattr(request, 'stripe_customer', None),
         'user_profile': user_profile,
         'subscription': getattr(request, 'subscription', None),
+        'has_subscription': getattr(request, 'has_subscription', False),
 
-        'subscription_period_end': getattr(request, 'subscription_period_end', None),
-        'subscription_active': getattr(request, 'subscription_active', None),
-        'subscription_status': getattr(request, 'subscription_status', None),
-        'subscription_next_payment_amount': getattr(request, 'subscription_next_payment_amount', None),
-
-        'subscription_price_id': getattr(request, 'subscription_price_id', None),
-        'subscription_plan': getattr(request, 'subscription_plan', None),
         'payment_methods': getattr(request, 'payment_methods', None),
 
-        'has_subscription': getattr(request, 'has_subscription', False),
-        'subscription_canceled': getattr(request, 'subscription_canceled', False),
 
         'prices': getattr(request, 'prices', None),
         'free_trial_days': getattr(request, 'free_trial_days', None),

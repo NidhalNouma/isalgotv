@@ -1,4 +1,5 @@
-from .models import User_Profile, Notification
+from profile_user.models import User_Profile, Notification
+from profile_user.utils.stripe import subscription_object
 
 import datetime
 import requests
@@ -35,17 +36,10 @@ def check_user_and_stripe_middleware(get_response):
 
         user_profile = None
         subscription = None
-        subscription_period_end = None
-        subscription_active = None
-        subscription_status = None
-        subscription_price_id = None
-        subscription_plan = None
         payment_methods = None
         stripe_customer = None
         has_subscription = False
-        subscription_canceled = False
-
-        total_amount_due = 0.0
+        
         # notifications = None
 
         if current_user.is_authenticated:
@@ -76,56 +70,24 @@ def check_user_and_stripe_middleware(get_response):
             has_subscription = user_profile.has_subscription
 
             stripe_customer = user_profile.stripe_obj.get('customer', None)
-            subscription = user_profile.stripe_obj.get('subscription', None)
+            subscription = subscription_object(user_profile.stripe_obj.get('subscription', None))
             payment_methods = user_profile.stripe_obj.get('payment_methods', None)
-            subscription_canceled = user_profile.stripe_obj.get('subscription_canceled', False)
-            total_amount_due = user_profile.stripe_obj.get('subscription_next_payment_amount', 0.0)
-            
 
             if user_profile.is_lifetime:
                 has_subscription = True
 
             elif user_profile.subscription_id and user_profile.is_lifetime == False:
 
-                subscription = user_profile.stripe_obj.get('subscription', None)
-
-                if subscription:
-
-                # Parse stored ISO string back to datetime if needed
-                    sub_end = user_profile.stripe_obj.get('subscription_period_end', None)
-                    if isinstance(sub_end, str):
-                        try:
-                            subscription_period_end = datetime.datetime.fromisoformat(sub_end)
-                        except ValueError:
-                            subscription_period_end = None
-                    else:
-                        subscription_period_end = sub_end
-                    
-                    subscription_active = user_profile.stripe_obj.get('subscription_active', None)
-                    subscription_status =   user_profile.stripe_obj.get('subscription_status', None)
-                    subscription_price_id = user_profile.stripe_obj.get('subscription_price_id', None)
-
-                    subscription_plan = user_profile.stripe_obj.get('subscription_plan', None)
-
-            # notifications = Notification.objects.filter(user=user_profile).order_by('-created_at')
+                subscription = subscription_object(user_profile.stripe_obj.get('subscription', None))
         
         request.stripe_customer = stripe_customer
         request.user_profile = user_profile
         request.subscription = subscription
-        request.payment_methods = payment_methods
-        request.subscription_next_payment_amount = total_amount_due
+        request.has_subscription = has_subscription
 
-        request.subscription_period_end = subscription_period_end
-        request.subscription_active = subscription_active
-        request.subscription_status = subscription_status
-        request.subscription_price_id = subscription_price_id
-        request.subscription_plan = subscription_plan
+        request.payment_methods = payment_methods
         # request.notifications = notifications
 
-        # print("sub", subscription)
-
-        request.has_subscription = has_subscription
-        request.subscription_canceled = subscription_canceled
 
         request.server_ip = get_stored_server_ip(),
 

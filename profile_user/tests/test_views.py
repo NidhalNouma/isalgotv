@@ -36,7 +36,6 @@
 # #         # Assertions
 # #         self.assertTrue(request.has_subscription)
 # #         self.assertEqual(request.subscription_status, 'active')
-# #         self.assertEqual(request.subscription_next_payment_amount, 20.00)  # $20.00 expected
 
 # #         # Check response (if necessary)
 # #         self.get_response.assert_called_once_with(request)
