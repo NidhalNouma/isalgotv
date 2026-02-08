@@ -11,7 +11,7 @@
     {% endif %}
   </p>
 
-  {% if not subscription_paused and subscription_status != 'canceled' %}
+  {% if not subscription_paused and subscription_status != 'canceled' and subscription_status != 'past_due' %}
     <div class="bg-text/5 backdrop-blur-3xl rounded-md p-4 my-3 text-text">
       <div class="flex justify-between items-center mb-2">
         <span class="text-text">Next Payment</span>
@@ -31,24 +31,34 @@
     </div>
   {% endif %}
 
-  <div class="bg-text/5i backdrop-blur-3xl rounded-md p-4 my-3 text-text">
+  {% if subscription.status == 'past_due' %}
+    <div class="bg-error/5 backdrop-blur-3xl rounded-md p-4 my-3 text-error">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-error">Payment Issue</span>
+      </div>
+
+      <p class="text-sm text-error/80">There was an issue with your last payment. Please update your payment method to reactivate your subscription.</p>
+    </div>
+  {% endif %}
+
+  <div class="bg-text/5i backdrop-blur-3xl rounded-md p-1 my-3 text-text">
     <div class="flex justify-between items-center mb-2">
       <span class="text-text">
-        {% if subscription_status == 'canceled' %}
-          Reactivate subscription
+        {% if subscription_status == 'canceled' or subscription_status == 'past_due' %}
+          {% comment %} Reactivate subscription {% endcomment %}
         {% else %}
           Payment Method
         {% endif %}
       </span>
     </div>
 
-    {% if pm and subscription_status != 'canceled' %}
+    {% if pm and subscription_status != 'canceled' and subscription_status != 'past_due' %}
       {% include 'include/payment_methods.html' with payment_methods=pm hide_default=True %}
     {% endif %}
 
     {% with title=broker_type|add:'-account_subscription_pm'|add:id %}
       <button id="change-pm-{{ title }}-btn" class="mt-3 btn-text" onclick="mountStripeElement('{{ title }}'); changeHidden('add-{{ title }}-form', 'change-pm-{{ title }}-btn');">
-        {% if subscription_status == 'canceled' %}
+        {% if subscription_status == 'canceled' or subscription_status == 'past_due' %}
           Reactivate the subscription
         {% elif pm %}
           Change Payment Method
@@ -57,8 +67,8 @@
         {% endif %}
       </button>
 
-      <form id="add-{{ title }}-form" class="hidden mt-2" hx-post="{% url 'change_account_subscription_payment' broker_type id account_subscription.id %}" hx-target="#edit-{{ id }}_{{ broker_type }}-sub" hx-wait="swap">
-        {% include 'include/broker_payment.html' with title=title hide_header=True subtitle='Select a payment method' selected_pm_id=default_pm_id %}
+      <form id="add-{{ title }}-form" class="hidden mt-2" hx-post="{% url 'change_account_subscription_payment' broker_type id subscription_id %}" hx-target="#edit-{{ id }}_{{ broker_type }}-sub" hx-wait="swap">
+        {% include 'include/broker_payment.html' with title=title hide_header=True subtitle='Select a payment method' default_pm_id=default_pm_id %}
 
         <div id="add-{{ title }}-form-errors" class="my-2"></div>
         {% csrf_token %}

@@ -1,18 +1,16 @@
 {% load custom_tags %}
 
 <div id="vip-membership" class="w-full {{ class|default:'' }}">
-  <div class="p-4 rounded-lg bg-gradient-to-r {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %}
-       from-profit/10 via-profit/5
-    {% elif vip_subscription.cancel_at_period_end %}
-       from-warning/10 via-warning/5
-    {% endif %}">
+  <div class="p-4 rounded-lg bg-gradient-to-r {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %} from-profit/10 via-profit/5 {% elif vip_subscription.cancel_at_period_end %} from-warning/10 via-warning/5 {% elif vip_subscription.status == 'past_due' %} from-error/10 via-error/5 {% endif %}">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <!-- Left Section: Icon + Title -->
       <div class="flex items-center gap-3">
         <div>
           <div class="text-base font-semibold text-title flex items-center gap-2">
             Subscription
-            <span class="px-2 py-0.5 text-xs font-medium rounded-full {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %} bg-profit/10 text-profit {% elif vip_subscription.cancel_at_period_end %} bg-warning/10 text-warning {% endif %}">{{ vip_subscription.status|capfirst }}</span>
+            <span class="px-2 py-0.5 text-xs font-medium rounded-full {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %} bg-profit/10 text-profit {% elif vip_subscription.cancel_at_period_end %} bg-warning/10 text-warning {% elif vip_subscription.status == 'past_due' %} bg-error/10 text-error {% endif %}">
+              {{ vip_subscription.status|capfirst }}
+            </span>
           </div>
           <div class="text-xs text-text/70 mt-0.5">Full access to {{ strategy.name }}</div>
         </div>
@@ -34,17 +32,29 @@
     <!-- Optional: Manage button -->
     <div class="mt-4 pt-4 border-t border-profit/10 flex items-center justify-between">
       <div class="text-xs text-text/60 inline-flex items-center gap-1">
-        <svg class="w-3.5 aspect-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-        </svg>
-        <span>
-          {% if vip_subscription.cancel_at_period_end %}
-            End on
-          {% else %}
-            Next payment on
-          {% endif %}
-          {{ vip_subscription.period_end|date:'M d, Y' }}
-        </span>
+        {% if vip_subscription.status == 'past_due' %}
+          <svg class="w-3.5 aspect-auto text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.929 4.929 19.07 19.071" />
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+          <p class="text-error font-medium">
+            Payment overdue - please update your payment method.
+
+            <button class="btn-a ml-2" onclick="openModel('staticModal-change-payment-{{ vip_subscription.id }}'); mountStripeElement('change-pm');"><span class="text-xs">Update Payment</span></button>
+          </p>
+        {% else %}
+          <svg class="w-3.5 aspect-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+          </svg>
+          <span>
+            {% if vip_subscription.cancel_at_period_end %}
+              End on
+            {% else %}
+              Next payment on
+            {% endif %}
+            {{ vip_subscription.period_end|date:'M d, Y' }}
+          </span>
+        {% endif %}
       </div>
       {% if vip_subscription.cancel_at_period_end %}
         <div class="ml-auto relative">
@@ -113,7 +123,7 @@
                 </button>
               </div>
               <!-- Modal body -->
-              <form id="add-change-pm-form" hx-post="{% url 'strategy_change_payment' strategy.price.id vip_subscription.id %}" hx-target="#vip-membership" class="max-w-md px-4 pb-6 mx-auto ">
+              <form id="add-change-pm-form" hx-post="{% url 'strategy_change_payment' strategy.price.id vip_subscription.id %}" hx-target="#vip-membership" class="max-w-md px-4 pb-6 mx-auto">
                 {% csrf_token %}
 
                 <div class="rounded-md mb-4">

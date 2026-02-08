@@ -118,7 +118,7 @@
       {% if user.is_authenticated %}
         {% if has_subscription %}
           {% if subscription.plan == title %}
-            {% if subscription.status == "canceled" or subscription.status == 'past_due' %}
+            {% if subscription.cancel_at_period_end or subscription.status == 'past_due' %}
               <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3 outline-2 outline-offset-4 outline outline-secondary">Reactivate &#8634;</button>
             {% elif subscription.status == 'incomplete' or subscription.status == 'incomplete_expired' %}
               <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3">Complete &#8634;</button>

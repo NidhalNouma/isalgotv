@@ -1,6 +1,6 @@
 <form hx-post="{% url 'strategy_like' strategy.id %}" hx-target="#btns-list">
   {% csrf_token %}
-  {% if user.is_authenticated and has_subscription %}
+  {% if user.is_authenticated %}
   <button
     data-tooltip-target="tooltip-like"
     data-tooltip-placement="top"
@@ -21,7 +21,7 @@
       ></path>
     </svg>
     {{ strategy.likes.count }}
-    {% if user.is_authenticated and has_subscription %}
+    {% if user.is_authenticated %}
     </button>
     {% else %}
       </a>

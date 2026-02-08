@@ -58,10 +58,12 @@
         <p class="text-left text-title text-lg font-semibold">
           You're subscribing to our <span class="text-title font-extrabold">{{ subscription.plan }}</span> plan.
         </p>
-        {% if subscription.status == "canceled" %}
+        {% if subscription.cancel_at_period_end %}
           <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">
             Your subscription was canceled, end on <span class="text-warning font-semibold inline-block">{{ subscription.period_end|date:'M d Y' }}</span>
           </p>
+        {% elif subscription.status == 'past_due' %}
+            {% include 'include/errors.html' with class="mt-2 mb-2 " error="There is an issue with your payment method. Please update it or change your default payment method to avoid interruption of your subscription." %}
         {% elif subscription.status == 'incomplete' or subscription.status == 'incomplete_expired' %}
           <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">Your subscription is incomplete.</p>
         {% else %}

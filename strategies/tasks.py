@@ -1,9 +1,10 @@
 from django.template.loader import render_to_string
 from celery import shared_task
 from django.core.mail import EmailMessage, get_connection
-from .models import User
 
 from django.conf import settings
+
+from profile_user.utils.send_mails import strategy_access_overdue, strategy_access_removed, strategy_access_gained
 
 @shared_task
 def send_strategy_email_to_all_users(emails, strategy, header, subject, html_content):
@@ -48,3 +49,18 @@ def send_strategy_email_to_all_users(emails, strategy, header, subject, html_con
 
     # Send them all in one go (over the same connection)
     connection.send_messages(messages)
+
+
+
+
+@shared_task
+def send_strategy_gained_email_task(user_email, strategy):
+    strategy_access_gained(user_email, strategy)
+
+@shared_task
+def send_strategy_lost_email_task(user_email, strategy):
+    strategy_access_removed(user_email, strategy)
+
+@shared_task
+def send_strategy_access_expiring_email_task(user_email, strategy):
+    strategy_access_overdue(user_email, strategy)

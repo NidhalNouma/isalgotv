@@ -67,15 +67,7 @@
         id="{{ broker_type }}_server"
         name="{{ broker_type }}_server"
         class="input-text w-full"
-        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}
-          
-          Get your authorization token and past it here
-
-        {% else %}
-          
-          Your account server
-
-        {% endif %}" />
+        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}Get your authorization token and past it here{% else %}Your account server{% endif %}" />
     </div>
   {% endif %}
 

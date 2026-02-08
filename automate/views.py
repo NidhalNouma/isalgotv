@@ -19,6 +19,7 @@ from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
 from automate.functions.brokers.deriv import APP_ID as DERIV_APP_ID
 
 from profile_user.templatetags.custom_tags import automate_access
+from profile_user.utils.stripe import get_payment_method_details, subscribe_to_account, cancel_reactivate_subscription, subscription_object, pause_unpause_subscription, change_subscription_payment_method
 
 from collections import defaultdict
 from django.utils.timezone import localtime
@@ -30,10 +31,6 @@ env = environ.Env()
 
 import requests
 import datetime
-import stripe
-
-stripe.api_key = env('STRIPE_API_KEY')
-stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -205,32 +202,14 @@ def add_broker(request, broker_type):
                     customer_id = profile_user.customer_id_value
 
                     if doesnt_require_payment == False:
-                        stripe.PaymentMethod.attach(
-                            payment_method,
-                            customer=customer_id,
-                        )
 
                         price_id = PRICE_LIST.get('CRYPTO', '')
                         if broker_type in forex_broker_types:
                             price_id = PRICE_LIST.get('FOREX', '')
                         if broker_type == 'metatrader4' or broker_type == 'metatrader5':
                             price_id = PRICE_LIST.get('METATRADER', '')
-
-                        metadata = {
-                            "profile_user_id": str(profile_user.id), 
-                            "broker_type": broker_type,
-                        }
                         
-                        subscription = stripe.Subscription.create(
-                            customer=customer_id,
-                            items=[{
-                                'price': price_id,
-                            }],
-                            default_payment_method=payment_method,
-                            payment_behavior="error_if_incomplete",
-                            trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
-                            metadata=metadata
-                        )
+                        subscription, profile_user = subscribe_to_account(profile_user, broker_account=account, price_id=price_id, payment_method=payment_method)
 
                         account.subscription_id = subscription.id
                     else:
@@ -337,7 +316,7 @@ def edit_broker(request, broker_type, pk):
                         if not account.subscription_id:
                             raise Exception("No subscription found.")
                         
-                        subscription = stripe.Subscription.retrieve(account.subscription_id)
+                        subscription = subscription_object(subscription_id=account.subscription_id)
 
                         if not subscription or subscription.status != "active":
                             raise Exception("Subscription is not active. Please activate your subscription.")
@@ -397,6 +376,8 @@ def toggle_broker(request, broker_type, pk):
             model_instance = ForexBrokerAccount.objects.get(pk=pk)
         else:
             raise Exception("Invalid Broker Type")
+        
+        user_profile = request.user_profile
 
         model_instance.active = not model_instance.active
 
@@ -405,16 +386,11 @@ def toggle_broker(request, broker_type, pk):
             if model_instance.subscription_id:
                 if not model_instance.active:
                     # Pause the subscription by setting the status to "paused"
-                    stripe.Subscription.modify(
-                        model_instance.subscription_id,
-                        pause_collection={"behavior": "keep_as_draft"}
-                    )
+                    subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
                 else:
                     # Resume by setting it back to "active"
-                    stripe.Subscription.modify(
-                        model_instance.subscription_id,
-                        pause_collection=''
-                    )
+                    subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
+                   
 
         # if broker_type == "metatrader4" or broker_type == "metatrader5":
         #     # Undeploy/Deploy the account
@@ -438,10 +414,12 @@ def delete_broker(request, broker_type, pk):
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
+        user_profile = request.user_profile
+
         if broker_type in crypto_broker_types:
             obj = CryptoBrokerAccount.objects.get(pk=pk)
             if obj.subscription_id and obj.subscription_id != 'free_access':
-                stripe.Subscription.cancel(obj.subscription_id)
+                subscription, user_profile = cancel_reactivate_subscription(user_profile, obj.subscription_id)
             obj.delete()  
         elif broker_type in forex_broker_types:
             obj = ForexBrokerAccount.objects.get(pk=pk)
@@ -452,7 +430,7 @@ def delete_broker(request, broker_type, pk):
                     raise Exception(f"Failed to delete metatrader account: {delete_response['error']}")
 
             if obj.subscription_id and obj.subscription_id != 'free_access':
-                stripe.Subscription.cancel(obj.subscription_id)
+                subscription, user_profile = cancel_reactivate_subscription(user_profile, obj.subscription_id)
 
             obj.delete()
         else:
@@ -468,31 +446,41 @@ def delete_broker(request, broker_type, pk):
 
 
 def account_subscription_context(broker_type, pk, subscription_id):
-    subscription = stripe.Subscription.retrieve(subscription_id)
+    subscription = subscription_object(subscription_id=subscription_id)
 
     payment_method = None
-    if subscription.default_payment_method:
-        payment_method = stripe.PaymentMethod.retrieve(subscription.default_payment_method)
+
+    if not subscription:
+        return {
+            'id': str(pk),
+            'broker_type': broker_type,
+            'subscription_id': subscription_id,
+            'account_subscription': 'No subscription found.',
+            'subscription_status': 'canceled',
+            'subscription_active': False,
+        }
+
+    if subscription.get('payment_method'):
+        payment_method = get_payment_method_details(subscription.get('payment_method'))
         payment_method = [payment_method]
     
-    end_timestamp = subscription.current_period_end * 1000
-    next_payment_date = datetime.datetime.fromtimestamp(end_timestamp / 1e3)
-    subscription_active = subscription.plan.active
-    subscription_status = subscription.status
+    next_payment_date =  subscription.get('period_end')
+    subscription_active = subscription.get('status') == "active" or subscription.get('status') == "trialing"
+    subscription_status = subscription.get('status')
 
-    subscription_paused = False  
-    if subscription.pause_collection:
-        subscription_paused = True if subscription.pause_collection.behavior == 'keep_as_draft' else False
+    subscription_paused = True if subscription.get('is_paused') else False
 
     context = {
         'account_subscription': subscription,
         'pm': payment_method,
+        'default_pm_id': subscription.get('payment_method'),
         'subscription_paused': subscription_paused,
         'subscription_active': subscription_active,
         'subscription_status': subscription_status,
         'next_payment_date': next_payment_date,
-        'subscription_next_payment_amount': subscription.plan.amount / 100,
+        'subscription_next_payment_amount': subscription.get('amount'),
         'broker_type': broker_type,
+        'subscription_id': subscription_id,
         'id': str(pk),
     }
 
@@ -520,60 +508,36 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
         if not new_payment_method:
             raise Exception("No payment method provided.")
 
-        subscription = stripe.Subscription.retrieve(account_subscription_id)
+        user_profile = request.user_profile
+        subscription = subscription_object(subscription_id=account_subscription_id)
         
         # stripe.PaymentMethod.attach(
         #     new_payment_method,
         #     customer=subscription.customer,
         # )
 
-        if subscription.status == "canceled":
-            # stripe.Subscription.create
-
-            profile_user = request.user_profile
-            customer_id = profile_user.customer_id_value
-
-            stripe.PaymentMethod.attach(
-                new_payment_method,
-                customer=customer_id,
-            )
+        if not subscription or subscription.get('status') == "canceled":
 
             crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
+            broker = ForexBrokerAccount.objects.get(pk=pk) if broker_type in forex_broker_types else CryptoBrokerAccount.objects.get(pk=pk)
+            
             price_id = PRICE_LIST.get('CRYPTO', '')
             if broker_type in forex_broker_types:
-                broker = ForexBrokerAccount.objects.get(subscription_id=account_subscription_id)
                 price_id = PRICE_LIST.get('FOREX', '')
-            else:
-                broker = CryptoBrokerAccount.objects.get(subscription_id=account_subscription_id)
-                price_id = PRICE_LIST.get('CRYPTO', '')
+            if broker_type == 'metatrader4' or broker_type == 'metatrader5':
+                price_id = PRICE_LIST.get('METATRADER', '')
 
-            metadata = {
-                "profile_user_id": str(profile_user.id), 
-                "broker_type": broker_type,
-            }
             
-            subscription = stripe.Subscription.create(
-                customer=customer_id,
-                items=[{
-                    'price': price_id,
-                }],
-                default_payment_method=new_payment_method,
-                payment_behavior="error_if_incomplete",
-                trial_settings={"end_behavior": {"missing_payment_method": "pause"}},
-                metadata=metadata
-            )
+            subscription, user_profile = subscribe_to_account(user_profile, broker_account=broker, price_id=price_id, payment_method=new_payment_method)
             account_subscription_id = subscription.id
             broker.subscription_id = account_subscription_id
             broker.save()
 
         else:
             # Update the default payment method for the subscription
-            stripe.Subscription.modify(
-                account_subscription_id,
-                default_payment_method=new_payment_method,
-            )
+            subscription, user_profile = change_subscription_payment_method(user_profile, subscription.get('id'), new_payment_method)
 
         context = account_subscription_context(broker_type, pk, account_subscription_id)
 
@@ -584,44 +548,6 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
         
         return retarget(response, f'#add-{broker_type}-account_subscription_pm{pk}-form-errors') 
     
-# TODO: Send Email when account is turned off
-def account_subscription_failed(email ,broker_type, subscription_id, send_mail=True):
-    try:
-        crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
-        forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
-
-        if broker_type in crypto_broker_types:
-            obj = CryptoBrokerAccount.objects.filter(subscription_id=subscription_id).first()
-            if obj:
-                obj.active = False
-                obj.save()
-                if send_mail and email:
-                    send_broker_account_access_removed_task(email, obj.name)
-            else:
-                print(f"No CryptoBrokerAccount found for subscription_id {subscription_id}")
-                if send_mail and email:
-                    send_broker_account_deleted_task(email)
-        elif broker_type in forex_broker_types:
-            obj = ForexBrokerAccount.objects.filter(subscription_id=subscription_id).first()
-            if obj:
-                if broker_type == "metatrader4" or broker_type == "metatrader5":
-                    # Undeploy the account
-                    MetatraderClient(account=obj).deploy_undeploy_account(deploy=False)
-
-                obj.active = False
-                obj.save()
-                if send_mail and email:
-                    send_broker_account_access_removed_task(email, obj.name)
-            else:
-                print(f"No ForexBrokerAccount found for subscription_id {subscription_id}")
-                if send_mail and email:
-                    send_broker_account_deleted_task(email)
-        else:
-            raise Exception("Invalid Broker Type")
-
-    except Exception as e:
-        print(e)
-
 @require_http_methods([ "GET"])
 def get_broker_logs(request, broker_type, pk):
     try:

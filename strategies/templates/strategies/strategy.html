@@ -56,9 +56,6 @@
           </div>
         {% endif %}
       </div>
-      {% if strategy.premium == 'VIP' and strategy.created_by.user_profile.tradingview_username %}
-        {% comment %} <span class="text-text/50 text-xs">By <a class="font-bold hover:text-text/40 transition-colors" target="_blank" href="https://www.tradingview.com/u/{{ strategy.created_by.user_profile.tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ strategy.created_by.user_profile.tradingview_username }}</a></span> {% endcomment %}
-      {% endif %}
 
       {% if strategy.premium == 'VIP' and strategy.price %}
         {% include 'strategies/include/strategy_vip_card.html' with class='mt-3' %}
@@ -84,7 +81,15 @@
             </svg>Strategy
           </button>
           <button id="performanceBtn"
-            class="btn-primary text-background bg-text/10 text-text/80 sm:text-base text-sm font-semibold rounded-full {% if show_performance %} inline-flex  {% else %}   hidden {% endif %}">
+            class="btn-primary text-background bg-text/10 text-text/80 sm:text-base text-sm font-semibold rounded-full {% if show_performance %}
+              
+               inline-flex
+
+            {% else %}
+              
+                 hidden
+
+            {% endif %}">
             <svg class="w-4.5 aspect-auto mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path>
             </svg>Performance
@@ -135,8 +140,9 @@
           {% endif %}
 
           <div class="text-text CKEDITOR">{{ strategy.content|safe }}</div>
-
-          {% if strategy in user_profile.strategies.all %}
+          {% if strategy.premium == 'VIP' and strategy.created_by.user_profile.tradingview_username %}
+            <span class="text-text/50 text-xs">By <a class="font-bold hover:text-text/40 transition-colors" target="_blank" href="https://www.tradingview.com/u/{{ strategy.created_by.user_profile.tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ strategy.created_by.user_profile.tradingview_username }}</a></span>
+          {% elif strategy in user_profile.strategies.all %}
             <div class="my-3">
               <a href="mailto:issues@isalgo.com?subject=Report A BUG: {{ strategy.name }}&body=" class="inline-flex items-center text-sm text-text px-2.5 py-1 rounded-full border border-text">
                 <svg class="w-4 h-4 mr-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

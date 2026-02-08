@@ -94,8 +94,21 @@ def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, 
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
+def broker_account_added(user_email, account):
+    account_name = account.account_name if account else "your broker account"
+    subject = 'Broker Account Added!'
+    html_content = render_to_string('emails/broker_added.html', {'account_name': account_name})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
 
-def broker_account_access_removed(user_email, account_name):
+def broker_account_access_removed(user_email, account):
+    account_name = account.account_name if account else "your broker account"
     subject = 'Broker Account Subscription Issue!'
     html_content = render_to_string('emails/broker_access_removed.html', {'account_name': account_name})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
@@ -107,9 +120,62 @@ def broker_account_access_removed(user_email, account_name):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def broker_account_deleted(user_email):
+def broker_account_deleted(user_email, account=None):
+    account_name = account.account_name if account else "your broker account"
     subject = 'Broker Account Deleted!'
     html_content = render_to_string('emails/broker_deleted.html', {})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def broker_account_overdue(user_email, account):
+    account_name = account.account_name if account else "your broker account"
+    subject = 'Broker Account Subscription Overdue!'
+    html_content = render_to_string('emails/broker_overdue.html', {'account_name': account_name})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def strategy_access_gained(user_email, strategy):
+    subject = 'You have a new subscriber!'
+    url = 'https://www.isalgo.com/strategies/' + strategy.slug
+    html_content = render_to_string('emails/strategy_access_gained.html', {'strategy_name': strategy.name, 'strategy_url': url})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def strategy_access_removed(user_email, strategy):
+    subject = 'You lost a subscriber!'
+    url = 'https://www.isalgo.com/strategies/' + strategy.slug
+    html_content = render_to_string('emails/strategy_access_removed.html', {'strategy_name': strategy.name, 'strategy_url': url})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def strategy_access_overdue(user_email, strategy):
+    subject = 'Strategy Subscription Overdue!'
+    url = 'https://www.isalgo.com/strategies/' + strategy.slug
+    html_content = render_to_string('emails/strategy_access_past_due.html', {'strategy_name': strategy.name, 'strategy_url': url})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     

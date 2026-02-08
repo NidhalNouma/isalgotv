@@ -118,7 +118,7 @@
 
         {% if subscription and subscription.status == 'past_due' and request.resolver_match.view_name != 'membership' %}
           {% url 'membership' as membership_url %}
-          {% include 'include/warnings.html' with class='my-2 w-full' close_id='past-due-subscription' warning='We couldn`t complete your last payment, and as a result, your access to our trading strategies may be at risk. Please update your payment method to <a href="'|add:membership_url|add:'" class="underline font-semibold">reactivate your membership here</a>.' %}
+          {% include 'include/errors.html' with class='my-2 w-full' close_id='past-due-subscription' error='We couldn`t complete your last payment, and as a result, your access to our trading strategies may be at risk. Please update your payment method to <a href="'|add:membership_url|add:'" class="underline font-semibold">reactivate your membership here</a>.' %}
         {% endif %}
 
         {% if user.is_authenticated and not has_subscription and show_banner and subscription and subscription.status != 'past_due' %}

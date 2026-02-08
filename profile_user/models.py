@@ -69,6 +69,10 @@ class User_Profile(models.Model):
             self.save(update_fields=["seller_account_id", "seller_account_verified"])
         return self.seller_account_id
 
+    def verify_seller_account(self, charges_enabled=False, payouts_enabled=False):
+        self.seller_account_verified = charges_enabled
+        self.save(update_fields=["seller_account_verified"])
+
     def mark_amount_as_paid(self):
         self.amount_to_pay = 0.00
         self.save(update_fields=["amount_to_pay"])
@@ -98,11 +102,7 @@ class User_Profile(models.Model):
         """
         if not self.customer_id:
             print(f"Auto-creating Stripe customer for {self.user.email}")
-            customer, created = get_or_create_customer_by_email(
-                self.user.email,
-                name=self.user.username,
-                metadata={"user_id": self.user.id},
-            )
+            customer, created = get_or_create_customer_by_email(self.user)
             self.customer_id = customer.id
             self.save(update_fields=["customer_id"])
         return self.customer_id
@@ -131,7 +131,7 @@ class User_Profile(models.Model):
 
     def create_stripe_customer_if_needed(self):
         if not self.customer_id:
-            customer, created = get_or_create_customer_by_email(self.user.email, name=self.user.username, metadata={"user_id": self.user.id})
+            customer, created = get_or_create_customer_by_email(self.user)
 
             self.customer_id = customer.id
             self.save(update_fields=["customer_id"])
@@ -157,9 +157,20 @@ class User_Profile(models.Model):
             return self.tradingview_username
         return self.user.username
     
-    def give_tradingview_access(self, strategy_id, access=True):
+    def give_tradingview_access(self, strategy_id, access=True, strategy=None):
         from profile_user.utils.tradingview import give_access
-        return give_access(strategy_id, self.id, access, user_profile=self)
+        return give_access(strategy_id, self.id, access, user_profile=self, strategy=strategy)
+
+    def remove_access(self):
+        if self.tradingview_username:
+            strategies = self.strategies.all()
+            for strategy in strategies:
+                if strategy.premium == 'Premium':
+                    self.give_tradingview_access(strategy.id, access=False, strategy=strategy)
+        if self.discord_username:
+            from profile_user.utils.discord import remove_role_from_user
+            remove_role_from_user(self.discord_username)
+
 
     def deactivate_all_accounts(self):
         from automate.models import CryptoBrokerAccount, ForexBrokerAccount
@@ -173,7 +184,6 @@ class User_Profile(models.Model):
         then caches them in stripe_obj with a timestamp.
         """
         try:
-
             if not force and self.stripe_obj:
                 customer = self.stripe_obj.get("customer", None)
                 subscription = self.stripe_obj.get("subscription", None)

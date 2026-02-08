@@ -454,7 +454,7 @@ def strategy_subscribe(request, id):
                 user_profile,
                 strategy_price,
                 payment_method,
-                coupon_code=coupon_id if coupon_id and coupon_id != "None" else None,
+                promotion_code=coupon_id if coupon_id and coupon_id != "None" else None,
             )
 
             print("Subscription created:", subscription.id)
@@ -486,7 +486,7 @@ def strategy_unsubscribe(request, id, subscription_id):
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#"+context['title']+"-form-errors")
 
-            subscription = cancel_reactivate_subscription(user_profile, subscription_id)
+            subscription, user_profile = cancel_reactivate_subscription(user_profile, subscription_id)
 
             context = {
                 "user_profile": user_profile,

@@ -2,11 +2,11 @@ from django.db import IntegrityError, models
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django_cryptography.fields import encrypt
-from django.contrib.postgres.fields import JSONField 
 from django.core.exceptions import ValidationError
 
 from decimal import Decimal, InvalidOperation
 
+from automate.functions.brokers.metatrader import MetatraderClient
 from profile_user.models import User_Profile
 from strategies.models import Strategy
 from performance.models import AccountPerformance
@@ -85,6 +85,11 @@ class CryptoBrokerAccount(models.Model):
     def performance(self):
         """Get the single AccountPerformance for this account."""
         return self._performances.first()
+
+    def deactivate(self):
+        """Deactivate the account and perform any necessary cleanup."""
+        self.active = False
+        self.save()
 
     def generate_public_id(self, replace=False, save=True):
         if self.public_id == "" or replace:
@@ -165,6 +170,16 @@ class ForexBrokerAccount(models.Model):
     def performance(self):
         """Get the single AccountPerformance for this account."""
         return self._performances.first()
+
+    def deactivate(self):
+        """Deactivate the account and perform any necessary cleanup."""
+        if self.broker_type in ["metatrader4", "metatrader5"]:
+            try:
+                MetatraderClient(account=self).deploy_undeploy_account(deploy=False)
+            except Exception as e:
+                print(f"Error undeploying Metatrader account: {e}")
+        self.active = False
+        self.save()
 
     def generate_public_id(self, replace=False, save=True):
         if self.public_id == "" or replace:

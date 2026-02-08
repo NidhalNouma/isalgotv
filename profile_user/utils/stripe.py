@@ -3,13 +3,19 @@ import time
 import environ
 env = environ.Env()
 
+from automate.utils.accounts import desactivate_account_by_subscription_id
+
+from profile_user.tasks import *
+from automate.tasks import *
+from strategies.tasks import *
+
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
 stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
 
-def check_coupon_fn(coupon_id, plan_id, price, customer_id):
-    # print(coupon_id, plan_id, price)
+def check_coupon_fn(user_profile, coupon_id, price):
     try:
+        customer_id = user_profile.customer_id_value
         orig_price = price
 
         promotion_codes = stripe.PromotionCode.list(code=coupon_id, active=True)
@@ -110,18 +116,19 @@ def get_price_by_id(price_id):
 
 
 def get_profile_data(user_profile, PRICE_LIST):
-
     data = {
         "customer": None,
         "subscription": None,
         "has_subscription": False,
     }
 
-
     try:
-        if user_profile.customer_id:
+        if user_profile.customer_id_value:
             try:
                 stripe_customer = stripe.Customer.retrieve(user_profile.customer_id)
+                if getattr(stripe_customer, "deleted", False):
+                    print(f"Stripe customer {user_profile.customer_id} is marked as deleted.")
+                    stripe_customer = None
                 data["customer"] = stripe_customer
                 # print("stripe customer, " , stripe_customer)
             except Exception as e:
@@ -164,7 +171,7 @@ def get_profile_data(user_profile, PRICE_LIST):
     return data
 
 
-def get_or_create_customer_by_email(email: str, name: str | None = None, metadata: dict | None = None):
+def get_or_create_customer_by_email(user):
     """
     Retrieve an existing Stripe Customer by email; if none exists, create one.
 
@@ -183,7 +190,7 @@ def get_or_create_customer_by_email(email: str, name: str | None = None, metadat
         # 1) Prefer the Search API (fast/flexible). Don’t use for read-after-write,
         # but we’re only reading here so it’s fine.
         try:
-            results = stripe.Customer.search(query=f"email:'{email}'", limit=1)
+            results = stripe.Customer.search(query=f"email:'{user.email}'", limit=1)
             if results.data:
                 cust = results.data[0]
                 if not getattr(cust, "deleted", False):
@@ -193,18 +200,17 @@ def get_or_create_customer_by_email(email: str, name: str | None = None, metadat
             pass
 
         # 2) Fallback to list filter (case-sensitive per Stripe docs).
-        candidates = stripe.Customer.list(email=email, limit=1)
+        candidates = stripe.Customer.list(email=user.email, limit=1)
         if candidates.data:
             cust = candidates.data[0]
             if not getattr(cust, "deleted", False):
                 return cust, False
 
         # 3) Create if nothing matched.
-        create_params = {"email": email}
-        if name:
-            create_params["name"] = name
-        if metadata:
-            create_params["metadata"] = metadata
+        create_params = {"email": user.email}
+        if user.username:
+            create_params["name"] = user.username
+        create_params["metadata"] = {"user_id": str(user.id)}
 
         customer = stripe.Customer.create(**create_params)
         return customer, True
@@ -224,6 +230,60 @@ def delete_customer(user_profile):
         except stripe.error.StripeError as e:
             # log or ignore Stripe deletion errors
             print(f"Error deleting Stripe customer {user_profile.customer_id}: {e}")
+
+def create_user_setup_intent(user_profile, to_add = False):
+    """
+    Create a Stripe Setup Intent for saving payment methods.
+    """
+    try:
+        customer_id = user_profile.customer_id_value
+
+        payment_methods_types = ["card"]
+        # if to_add:
+        #     payment_methods_types.append("cashapp")
+
+        setup_intent = stripe.SetupIntent.create(
+            customer=customer_id,
+            payment_method_types=payment_methods_types,
+            usage="off_session",
+            metadata={
+                "user_id": str(user_profile.user.id),
+                "profile_user_id": str(user_profile.id),
+            }
+        )
+        return setup_intent
+    except Exception as e:
+        print("Error creating setup intent:", e)
+        raise
+
+def create_payment_intent(user_profile, payment_method, amount=0.0, currency="usd", description="Payment"):
+    """
+    Create a Stripe Payment Intent for one-time payments.
+    """
+    try:
+        customer_id = user_profile.customer_id_value
+        if not customer_id:
+            raise Exception("User does not have a Stripe customer ID.")
+        if amount <= 0:
+            raise Exception("Amount must be greater than zero.")
+
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(amount * 100),  # amount in cents
+            currency=currency,
+            customer=customer_id,
+            payment_method=payment_method,
+            confirm=True,
+            automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
+            description=description,
+            metadata={
+                "user_id": str(user_profile.user.id),
+                "profile_user_id": str(user_profile.id),
+            },
+        )
+        return payment_intent
+    except Exception as e:
+        print("Error creating payment intent:", e)
+        raise
 
 def create_seller_account(user, country="US"):
     """
@@ -286,7 +346,7 @@ def get_seller_account(account_id):
         # Re-raise to be handled by the caller
         raise
 
-def create_strategy_price(strategy, strategy_price):
+def create_strategy_price(strategy, strategy_price) -> (tuple):
     """
     Create a Stripe Price for a given strategy.
     """
@@ -328,36 +388,45 @@ def create_strategy_price(strategy, strategy_price):
         print("Error creating strategy price:", e)
         raise
 
-def subscription_object(subscription, subscription_id=None):
-    if not subscription and not subscription_id:
-        return None
-    if not subscription and subscription_id:
-        subscription = stripe.Subscription.retrieve(id=subscription_id)
+def subscription_object(subscription=None, subscription_id=None):
+    try:
+        if not subscription and not subscription_id:
+            return None
 
-    # print(subscription)
-    if subscription.get('status') not in ["active", "trialing", "past_due"]:
-        return None
-    sub = {
-        "id": subscription.get('id'),
-        "status": subscription.get('status'),
-        "period_start": datetime.datetime.fromtimestamp(subscription.get("current_period_start", 0)),
-        "period_end": datetime.datetime.fromtimestamp(subscription.get("current_period_end", 0)),
-        "cancel_at_period_end": subscription.get("cancel_at_period_end"),
-        "price_id": subscription.get("plan", {}).get("id"),
-        "product_id": subscription.get("plan", {}).get("product"),
-        "interval": subscription.get("plan", {}).get("interval"),
-        "interval_count": subscription.get("plan", {}).get("interval_count"),
-        "amount": subscription.get("plan", {}).get("amount", 0) / 100,
-        "currency": subscription.get("plan", {}).get("currency"),
-        "payment_method": subscription.get("default_payment_method"),
-    }
-    
-    plan = str(sub.get('interval')).upper() + "LY"
-    sub['plan'] = plan
+        if not subscription and subscription_id:
+            subscription = stripe.Subscription.retrieve(id=subscription_id)
 
-    return sub
+        if subscription.get('status') not in ["active", "trialing", "past_due"]:
+            return None
 
-def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_code=None):
+        if subscription.get('__active__', False):
+            return subscription
+        sub = {
+            "__active__": subscription.get('status') in ["active", "trialing"],
+            "id": subscription.get('id'),
+            "status": subscription.get('status'),
+            "period_start": datetime.datetime.fromtimestamp(subscription.get("current_period_start", 0)),
+            "period_end": datetime.datetime.fromtimestamp(subscription.get("current_period_end", 0)),
+            "cancel_at_period_end": subscription.get("cancel_at_period_end"),
+            "price_id": subscription.get("plan", {}).get("id"),
+            "product_id": subscription.get("plan", {}).get("product"),
+            "interval": subscription.get("plan", {}).get("interval"),
+            "interval_count": subscription.get("plan", {}).get("interval_count"),
+            "amount": subscription.get("plan", {}).get("amount", 0) / 100,
+            "currency": subscription.get("plan", {}).get("currency"),
+            "payment_method": subscription.get("default_payment_method"),
+            "is_paused": subscription.get("pause_collection") is not None,
+        }
+        
+        plan = str(sub.get('interval')).upper() + "LY"
+        sub['plan'] = plan
+
+        return sub
+    except Exception as e:
+        print("Error processing subscription object:", e)
+        raise
+
+def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotion_code=None) -> (tuple):
     """
     Subscribe a user to a strategy using Stripe.
     """
@@ -380,12 +449,14 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_c
             "metadata": {
                 "user_id": str(user_profile.user.id),
                 "profile_user_id": str(user_profile.id), 
+                "strategy_id": str(strategy_price.strategy.id),
+                "type": "strategy_subscription",
             },
             "description": f"Subscription for {strategy_price.strategy.name}",
         }
 
-        if coupon_code:
-            subscription_params["coupon"] = coupon_code
+        if promotion_code:
+            subscription_params["promotion_code"] = promotion_code
 
         subscription = stripe.Subscription.create(**subscription_params)
 
@@ -399,7 +470,134 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, coupon_c
         print("Error subscribing to strategy:", e)
         raise
 
-def cancel_reactivate_subscription(user_profile, subscription_id):
+def subscribe_to_account(user_profile, broker_account, price_id, payment_method, promotion_code=None) -> (tuple):
+    """
+    Subscribe a user to a broker account using Stripe.
+    """
+    try:
+        customer_id = user_profile.customer_id_value
+
+        subscription_params = {
+            "customer": customer_id,
+            "items": [{"price": price_id}],
+            "expand": ["latest_invoice.payment_intent"],
+            "default_payment_method": payment_method,
+            "payment_behavior": "error_if_incomplete",
+            "trial_settings": {"end_behavior": {"missing_payment_method": "pause"}},
+            "metadata": {
+                "user_id": str(user_profile.user.id),
+                "profile_user_id": str(user_profile.id), 
+                "broker_type": broker_account.broker_type,
+                "type": 'account_subscription',
+            },
+            "description": f"Subscription for {broker_account.name}",
+        }
+
+        if promotion_code:
+            subscription_params["promotion_code"] = promotion_code
+
+        subscription = stripe.Subscription.create(**subscription_params)
+
+        user_profile = user_profile.get_with_update_stripe_data(True)
+        return subscription, user_profile
+
+    except Exception as e:
+        print("Error subscribing to broker account:", e)
+        raise
+
+def subscribe_to_main_membership(user_profile, price_id, payment_method, free_trial_days=0, promo_id=None, is_lifetime={}) -> (tuple):
+    """
+    Subscribe a user to the main membership using Stripe.
+    """
+    try:
+        customer_id = user_profile.customer_id_value
+        old_subscription_id = user_profile.subscription_id
+
+        old_subscription = subscription_object(None, old_subscription_id)
+        old_subscription_deleted = False
+
+        try:
+            stripe.Customer.modify(
+                customer_id,
+                invoice_settings={
+                    'default_payment_method': payment_method
+                }
+            )    
+        except Exception as e:
+            print("Error setting default payment method:", e)
+            raise
+
+        if is_lifetime and is_lifetime.get('is_lifetime', False):
+            lifetime_intent = create_payment_intent(
+                user_profile=user_profile,
+                payment_method=payment_method,
+                amount=is_lifetime.get('price', 0),
+                currency=is_lifetime.get('currency', 'usd'),
+                description=is_lifetime.get('description', 'Lifetime subscription.')
+            )
+            user_profile.lifetime_intent = lifetime_intent.id
+            user_profile.is_lifetime = True
+            user_profile.save()
+
+            if old_subscription:
+                try:
+                    stripe.Subscription.delete(old_subscription_id)
+                    old_subscription_deleted = True
+                except Exception as e:
+                    print("Error deleting old subscription:", e)
+
+            user_profile = user_profile.get_with_update_stripe_data(True)
+
+            return lifetime_intent, old_subscription_deleted, user_profile
+
+        trial_end = 'now'
+        if int(free_trial_days) > 0 and not old_subscription:
+            trial_end = int((datetime.datetime.now() + datetime.timedelta(days=free_trial_days)).timestamp())
+        elif old_subscription and old_subscription.get('period_end'):
+            # If user has an old subscription with remaining trial, preserve it
+            now = datetime.datetime.now()
+            if old_subscription['period_end'] > now:
+                trial_end = int(old_subscription['period_end'].timestamp())
+
+        subscription_params = {
+            "customer": customer_id,
+            "items": [{"price": price_id}],
+            "expand": ["latest_invoice.payment_intent"],
+            "default_payment_method": payment_method,
+            "payment_behavior": "error_if_incomplete",
+            "metadata": {
+                "user_id": str(user_profile.user.id),
+                "profile_user_id": str(user_profile.id), 
+                "type": "main_membership",
+            },
+            "description": f"Subscription for main membership",
+            "trial_end": trial_end,
+            "trial_settings": {"end_behavior": {"missing_payment_method": "pause"}},
+        }
+
+        if promo_id:
+            subscription_params["promotion_code"] = promo_id
+
+        subscription = stripe.Subscription.create(**subscription_params)
+
+        user_profile.subscription_id = subscription.id
+        user_profile.save()
+
+        if old_subscription:
+            try:
+                stripe.Subscription.delete(old_subscription_id)
+                old_subscription_deleted = True
+            except Exception as e:
+                print("Error deleting old subscription:", e)
+
+        user_profile = user_profile.get_with_update_stripe_data(True)
+        return subscription, old_subscription_deleted, user_profile
+
+    except Exception as e:
+        print("Error subscribing to main membership:", e)
+        raise
+
+def cancel_reactivate_subscription(user_profile, subscription_id) -> (tuple):
     """
     Cancel a user's strategy subscription at period end.
     """
@@ -419,13 +617,38 @@ def cancel_reactivate_subscription(user_profile, subscription_id):
 
         user_profile = user_profile.get_with_update_stripe_data(True)
 
-        return subscription_object(canceled_subscription)
+        return subscription_object(canceled_subscription), user_profile
 
     except Exception as e:
         print("Error canceling subscription:", e)
         raise
 
-def change_subscription_payment_method(user_profile, subscription_id, payment_method):
+def pause_unpause_subscription(user_profile, subscription_id) -> (tuple):
+    """
+    Pause or unpause a user's strategy subscription.
+    """
+    try:
+        subscription = stripe.Subscription.retrieve(subscription_id)
+
+        if subscription.status == "incomplete":
+            raise Exception("Incomplete subscriptions cannot be paused. Please complete the subscription first.")
+        
+        pause_active = subscription.pause_collection is None
+
+        updated_subscription = stripe.Subscription.modify(
+            subscription_id,
+            pause_collection={"behavior": "mark_uncollectible"} if pause_active else "",
+        )
+
+        # user_profile = user_profile.get_with_update_stripe_data(True)
+
+        return subscription_object(updated_subscription), user_profile
+
+    except Exception as e:
+        print("Error pausing/unpausing subscription:", e)
+        raise
+
+def change_subscription_payment_method(user_profile, subscription_id, payment_method) -> (tuple):
     """
     Change the payment method for a user's subscription.
     """
@@ -445,7 +668,18 @@ def change_subscription_payment_method(user_profile, subscription_id, payment_me
         print("Error changing subscription payment method:", e)
         raise
 
-def add_user_payment_method(user_profile, payment_method, set_to_default=False):
+def get_payment_method_details(payment_method_id):
+    """
+    Retrieve details of a payment method by its ID.
+    """
+    try:
+        payment_method = stripe.PaymentMethod.retrieve(payment_method_id)
+        return payment_method
+    except Exception as e:
+        print("Error retrieving payment method details:", e)
+        raise
+
+def add_user_payment_method(user_profile, payment_method, set_to_default=False) -> (tuple):
     try:
         customer_id = user_profile.customer_id_value
         stripe.PaymentMethod.attach(
@@ -470,13 +704,15 @@ def add_user_payment_method(user_profile, payment_method, set_to_default=False):
         print("Error adding payment method:", e)
         raise
 
-def delete_user_payment_method(user_profile, payment_method):
+def delete_user_payment_method(user_profile, payment_method) -> (tuple):
     try:
         customer_id = user_profile.customer_id_value
-        subscriptions = stripe.Subscription.list(customer=customer_id, status="active")
+        subscriptions = stripe.Subscription.list(customer=customer_id, status="all")
+
+        filterd_subs = [sub for sub in subscriptions.auto_paging_iter() if sub.status in ['active', 'trialing', 'past_due']]
 
         # Check if the payment method is used in any active subscription
-        for subscription in subscriptions.auto_paging_iter():
+        for subscription in filterd_subs:
             if subscription.default_payment_method == payment_method:
                 raise Exception("This payment method is currently associated with an active subscription and cannot be deleted.")
 
@@ -492,7 +728,7 @@ def delete_user_payment_method(user_profile, payment_method):
         print("Error deleting payment method:", e)
         raise
         
-def set_user_default_payment_method(user_profile, payment_method):
+def set_user_default_payment_method(user_profile, payment_method) -> (tuple):
     try:
         customer_id = user_profile.customer_id_value
         
@@ -510,7 +746,7 @@ def set_user_default_payment_method(user_profile, payment_method):
         print("Error setting default payment method:", e)
         raise
 
-def pay_user_profile_amount(user_profile, payment_method, description="Payout"):
+def pay_user_profile_amount(user_profile, payment_method, description="Payout") -> (tuple):
     """
     Create a payout to the user's connected Stripe account.
     """
@@ -519,29 +755,22 @@ def pay_user_profile_amount(user_profile, payment_method, description="Payout"):
         if not seller_account_id:
             raise Exception("User does not have a connected seller account.")
 
-        payment_intent = stripe.PaymentIntent.create(
-            amount=int(user_profile.amount_to_pay * 100),
-            currency="usd",
-
+        payment_intent = create_payment_intent(
+            user_profile,
             payment_method=payment_method,
-            description=description,
-
-            customer=user_profile.customer_id_value,
-            automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
-            metadata={
-                "user_id": str(user_profile.user.id),
-                "profile_user_id": str(user_profile.id),
-            },
+            amount=user_profile.amount_to_pay,
+            currency="usd",
+            description=description
         )
 
         user_profile.mark_amount_as_paid()
-        return payment_intent
+        return payment_intent, user_profile
 
     except Exception as e:
         print("Error creating payout:", e)
         raise
 
-def is_customer_subscribed_to_price(customer_id, price_id):
+def is_customer_subscribed_to_price(customer_id, price_id) -> (tuple):
     subscriptions = stripe.Subscription.list(
         customer=customer_id,
         price=price_id,
@@ -558,7 +787,7 @@ def is_customer_subscribed_to_price(customer_id, price_id):
 
     return False, None
 
-def is_customer_subscribed_to_product(customer_id, product_id):
+def is_customer_subscribed_to_product(customer_id, product_id) -> (tuple):
     subscriptions = stripe.Subscription.list(
         customer=customer_id,
         status="all",
@@ -589,3 +818,389 @@ def send_money_to_seller_account(amount, destination_account_id, description="Pa
     except Exception as e:
         print("Error sending money to seller account:", e)
         raise
+
+def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, stripe_wh_secret
+        )
+
+        if event['type'] == 'customer.deleted':
+            customer = event['data']['object']
+            customer_id = customer.get("id")
+            user_profile = User_Profile.objects.filter(customer_id=customer_id).first()
+            if user_profile:
+                user_profile.customer_id = None
+                user_profile.subscription_id = None
+                user_profile.get_with_update_stripe_data(force=True)
+                user_profile.save()
+                print("Stripe-Webhook: Customer deleted, user profile updated ... ", "customer_id:", customer_id, "user_profile_id:", user_profile.id)
+                return {
+                    "status": "success",
+                    "message": "Customer deleted, user profile updated.",
+                    "user_profile_id": user_profile.id,
+                }
+            else:
+                print("Stripe-Webhook: User profile not found for customer deletion ... ", "customer_id:", customer_id)
+                return {
+                    "status": "ignored",
+                    "reason": "User profile not found for customer deletion",
+                }
+
+        elif event['type'] == 'account.updated':
+            account = event['data']['object']
+            if account:
+                account_id = account.get("id")
+                account_metadata = account.get("metadata", {})
+                charges_enabled = account.get("charges_enabled", False)
+                payout_enabled = account.get("payouts_enabled", False)
+
+                user_profile = User_Profile.objects.filter(seller_account_id=account_id).first()
+                if user_profile:
+                    user_profile.verify_seller_account(charges_enabled=charges_enabled, payouts_enabled=payout_enabled)
+                    if not charges_enabled or not payout_enabled:
+                        print("Stripe-Webhook: Seller account disabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
+                    elif charges_enabled and payout_enabled:
+                        print("Stripe-Webhook: Seller account enabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
+
+                    return {
+                        "status": "success",
+                        "message": "Account updated, user profile verified.",
+                        "charges_enabled": charges_enabled,
+                        "payouts_enabled": payout_enabled,
+                        "user_profile_id": user_profile.id,
+                    }
+
+                else:
+                    print("Stripe-Webhook: User profile not found for account update ... ", "account_id:", account_id)
+                    return {
+                        "status": "ignored",
+                        "reason": "User profile not found for account update",
+                    }
+
+            print("Stripe-Webhook: Account updated event received without account object ...")
+            return {
+                "status": "ignored",
+                "reason": "No account object in event data",
+            }
+        
+                
+        elif event['type'] == 'invoice.payment_failed':
+            print("Stripe-Webhook: Payment failed, subscription marked as past due ...")
+            invoice = event['data']['object']
+
+            subscription_id = invoice.get("subscription")
+            if subscription_id:
+                sub_metadata = invoice.get("subscription_details", {}).get("metadata", {})
+                
+                user_profile_id = sub_metadata.get('profile_user_id', 0)
+                type = sub_metadata.get('type', '')
+
+                if not user_profile_id or not type:
+                    print("Stripe-Webhook: Missing metadata, ignoring event ...")
+                    return {
+                        "status": "ignored",
+                        "reason": "Missing metadata",
+                    }
+                
+                if type not in ["account_subscription", "strategy_subscription", "main_membership"]:
+                    print("Stripe-Webhook: Unrecognized subscription type, ignoring event ...")
+                    return {
+                        "status": "ignored",
+                        "reason": "Unrecognized subscription type",
+                    }
+                
+                user_profile = None
+                try:
+                    user_profile = User_Profile.objects.get(id=int(user_profile_id))
+                except Exception as e:
+                    pass
+
+                if not user_profile:
+                    print("Stripe-Webhook: User profile not found, ignoring event ...")
+                    return {
+                        "status": "ignored",
+                        "reason": "User profile not found",
+                    }
+                
+                if type == "main_membership":
+                    print("Stripe-Webhook: Main membership subscription payment failed ...")
+
+                    if user_profile.subscription_id == subscription_id:
+                        user_profile.remove_access()
+                        # send an email to user to notify them about the failed payment and access removal
+                        overdue_access_removed_email_task(user_profile.user.email)
+                    return {
+                        "status": "success",
+                        "message": "Main membership subscription payment failed, access removed if subscription ID matched.",
+                        "user_profile_id": user_profile.id,
+                    }
+                elif type == "account_subscription":
+                    broker_type = sub_metadata.get('broker_type', None)
+
+                    if not broker_type:
+                        print("Stripe-Webhook: Missing broker type in metadata, ignoring event ...")
+                        return {
+                            "status": "ignored",
+                            "reason": "Missing broker type in metadata",
+                            "user_profile_id": user_profile.id,
+                        }
+
+                    accounts = desactivate_account_by_subscription_id(broker_type, subscription_id)
+                    # send an email to user to notify them about the failed payment and access removal
+                    for account in accounts:
+                        send_broker_account_access_expiring_task(user_profile.user.email, account)
+
+                    return {
+                        "status": "success",
+                        "message": "Account subscription payment failed, user notified if subscription ID matched.",
+                        "user_profile_id": user_profile.id,
+                    }
+                elif type == "strategy_subscription":
+                    strategy_id = sub_metadata.get('strategy_id', 0)
+                    strategy = Strategy.objects.get(id=strategy_id)
+                    if not strategy:
+                        print("Stripe-Webhook: Strategy not found for strategy subscription payment failure, ignoring event ...")
+                        return {
+                            "status": "ignored",
+                            "reason": "Strategy not found for strategy subscription payment failure",
+                            "user_profile_id": user_profile.id,
+                        }
+                    user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
+                    # send an email to user to notify them about the failed payment and access removal
+                    send_strategy_access_expiring_email_task(user_profile.user.email, strategy)
+
+                    return {
+                        "status": "success",
+                        "message": "Strategy subscription payment failed, access removed if subscription ID matched.",
+                        "user_profile_id": user_profile.id,
+                    }
+                
+               
+                print("Stripe-Webhook: Unrecognized subscription type, ignoring event ...")
+                return {
+                    "status": "ignored",
+                    "reason": "Unrecognized subscription type in payment failed event",
+                    "user_profile_id": user_profile.id,
+                }
+
+
+        elif event['type'] == 'customer.subscription.deleted' or event['type'] == 'customer.subscription.updated':
+
+            subscription = event['data']['object']
+            metadata = event['data']['object']['metadata']
+
+            if not metadata:
+                print("Stripe-Webhook: No metadata found, ignoring event ...")
+                return {
+                    "status": "ignored",
+                    "reason": "No metadata found",
+                }
+
+            profile_user_id = metadata.get('profile_user_id', 0)
+            type = metadata.get('type', '')
+
+            if not profile_user_id or not type:
+                print("Stripe-Webhook: Missing metadata, ignoring event ...")
+                return {
+                    "status": "ignored",
+                    "reason": "Missing metadata",
+                }
+            
+            if type not in ["account_subscription", "strategy_subscription", "main_membership"]:
+                print("Stripe-Webhook: Unrecognized subscription type, ignoring event ...")
+                return {
+                    "status": "ignored",
+                    "reason": "Unrecognized subscription type",
+                }
+            
+            user_profile = None
+            try:
+                user_profile = User_Profile.objects.get(id=int(profile_user_id))
+            except Exception as e:
+                pass
+            
+            if not user_profile:
+                print("Stripe-Webhook: User profile not found, ignoring event ...")
+                return {
+                    "status": "ignored",
+                    "reason": "User profile not found",
+                }
+
+            if type == "main_membership":
+                if event['type'] == 'customer.subscription.deleted':
+                    print("Stripe-Webhook: Main membership subscription deleted ...")
+
+                    user_profile.remove_access()
+
+                    access_removed_email_task(user_profile.user.email)
+
+                    return {
+                        "status": "success",
+                        "message": "Main membership subscription deleted, access removed.",
+                        "user_profile_id": user_profile.id,
+                    }
+                
+                elif event['type'] == 'customer.subscription.updated':
+                    print("Stripe-Webhook: Main membership subscription updated ...")
+
+                    if subscription.status == "canceled":
+                        user_profile.remove_access()
+                        access_removed_email_task(user_profile.user.email)
+                        return {
+                            "status": "success",
+                            "message": "Main membership subscription updated, access removed if subscription status is canceled.",
+                            "user_profile_id": user_profile.id,
+                        }
+                    elif subscription.status == "past_due":
+                        user_profile.remove_access()
+                        # send an email to user to notify them about the failed payment and access removal
+                        overdue_access_removed_email_task(user_profile.user.email)
+                        return {
+                            "status": "success",
+                            "message": "Main membership subscription updated, access removed if subscription status is canceled or past due.",
+                            "user_profile_id": user_profile.id,
+                        }
+                print("Stripe-Webhook: Unrecognized subscription update type, ignoring event ...")
+                return {
+                    "status": "passed",
+                    "reason": "Unrecognized subscription update type for main membership",
+                    "user_profile_id": user_profile.id,
+                }
+                        
+
+            elif type == "account_subscription":
+                broker_account_type = metadata.get('broker_type', '')
+                if not broker_account_type:
+                    print("Stripe-Webhook: Missing broker account type in metadata, ignoring event ...")
+                    return {
+                        "status": "ignored",
+                        "reason": "Missing broker account type in metadata",
+                        "user_profile_id": user_profile.id,
+                    }
+
+                if event['type'] == 'customer.subscription.deleted':
+                    print("Stripe-Webhook: Account subscription deleted ...")
+
+                    accounts = desactivate_account_by_subscription_id(broker_account_type, subscription.id)
+                    # send an email to user to notify them about the subscription cancellation and access removal
+
+                    for account in accounts:
+                        send_broker_account_deleted_task(user_profile.user.email, account=account)
+                    
+                    return {
+                        "status": "success",
+                        "message": "Account subscription deleted, user notified.",
+                        "user_profile_id": user_profile.id,
+                    }
+                
+                elif event['type'] == 'customer.subscription.updated':
+                    print("Stripe-Webhook: Account subscription updated ...")
+
+                    if subscription.status == "canceled":
+                        accounts = desactivate_account_by_subscription_id(broker_account_type, subscription.id)
+                        for account in accounts:
+                            send_broker_account_access_removed_task(user_profile.user.email, account)
+                        return {
+                            "status": "success",
+                            "message": "Account subscription updated, user notified if subscription status is canceled.",
+                            "user_profile_id": user_profile.id,
+                        }
+                    
+                    elif subscription.status == "past_due":
+                        accounts = desactivate_account_by_subscription_id(broker_account_type, subscription.id)
+                        for account in accounts:
+                            send_broker_account_access_expiring_task(user_profile.user.email, account)
+
+                        return {
+                            "status": "success",
+                            "message": "Account subscription updated, user notified if subscription status is canceled or past due.",
+                            "user_profile_id": user_profile.id,
+                        }
+                    
+                print("Stripe-Webhook: Unrecognized subscription update type, ignoring event ...")
+                return {
+                    "status": "passed",
+                    "reason": "Unrecognized subscription update type for account subscription",
+                    "user_profile_id": user_profile.id,
+                }
+
+            elif type == "strategy_subscription":
+                print("Stripe-Webhook: Strategy subscription updated ...")
+                
+                strategy_id = metadata.get('strategy_id', 0)
+                if not strategy_id:
+                    print("Stripe-Webhook: Missing strategy ID in metadata, ignoring event ...")
+                    return {
+                        "status": "ignored",
+                        "reason": "Missing strategy ID in metadata",
+                    }
+                strategy = Strategy.objects.get(id=strategy_id)
+                if not strategy:
+                    print("Stripe-Webhook: Strategy not found, ignoring event ...")
+                    return {
+                        "status": "ignored",
+                        "reason": "Strategy not found for strategy subscription event",
+                    }
+
+                if event['type'] == 'customer.subscription.deleted':
+                    user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
+                    # send an email to user to notify them about the subscription cancellation and access removal
+                    send_strategy_lost_email_task(user_profile.user.email, strategy)
+
+
+                    return {
+                        "status": "success",
+                        "message": "Strategy subscription deleted, access removed.",
+                        "user_profile_id": user_profile.id,
+                    }
+                elif event['type'] == 'customer.subscription.updated':
+
+                    if subscription.status == "canceled":
+                        user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
+                        # send an email to user to notify them about the subscription cancellation and access removal
+                        send_strategy_lost_email_task(user_profile.user.email, strategy)
+                        return {
+                            "status": "success",
+                            "message": "Strategy subscription updated, access removed if subscription status is canceled.",
+                            "user_profile_id": user_profile.id,
+                        }
+                    
+                    
+                    elif subscription.status == "past_due":
+                        user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
+                        # send an email to user to notify them about the failed payment and access removal
+                        send_strategy_access_expiring_email_task(user_profile.user.email, strategy)
+
+                        return {
+                            "status": "success",
+                            "message": "Strategy subscription updated, access removed if subscription status is past due.",
+                            "user_profile_id": user_profile.id,
+                        }
+                    
+                    
+                print("Stripe-Webhook: Unrecognized subscription update type, ignoring event ...")
+                return {
+                    "status": "passed",
+                    "reason": "Unrecognized subscription update type for strategy subscription",
+                    "user_profile_id": user_profile.id,
+                }
+                    
+
+        print('Unhandled event type {}'.format(event['type']))
+        return {
+            "status": "passed",
+            "reason": f"Unhandled event type {event['type']}",
+        }
+    except ValueError as e:
+        # Invalid payload
+        print("Invalid payload")
+        raise e
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print("Invalid signature")
+        raise e
+    except Exception as e:
+        print("Error handling webhook:", e)
+        raise e
+
