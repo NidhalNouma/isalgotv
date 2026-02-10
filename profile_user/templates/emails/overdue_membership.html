@@ -1,420 +1,73 @@
-<!DOCTYPE html>
-<html
-  xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
-  lang="en"
->
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--[if mso
-      ]><xml
-        ><o:OfficeDocumentSettings
-          ><o:PixelsPerInch>96</o:PixelsPerInch
-          ><o:AllowPNG /></o:OfficeDocumentSettings></xml
-    ><![endif]-->
-    <!--[if !mso]><!-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cabin:wght@100;200;300;400;500;600;700;800;900"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <!--<![endif]-->
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+{% extends 'emails/base_email.html' %}
 
-      body {
-        margin: 0;
-        padding: 0;
-      }
+{% block title %}
+  Payment Issue - IsAlgo
+{% endblock %}
 
-      a[x-apple-data-detectors] {
-        color: inherit !important;
-        text-decoration: inherit !important;
-      }
+{% block preheader %}
+  Action required: Update your payment method to restore your membership access.
+{% endblock %}
 
-      #MessageViewBody a {
-        color: inherit;
-        text-decoration: none;
-      }
+{% block content %}
+  <!-- Icon -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 24px;">
+        <div class="icon-wrapper icon-warning" style="display: inline-block; text-align: center; line-height: 48px; width: 48px; height: 48px; border-radius: 8px; background-color: rgba(217, 119, 6, 0.1);">
+          <img src="{{ icons_url }}notification.png" alt="" class="icons" style="width: 24px; height: 24px; vertical-align: middle;" />
+        </div>
+      </td>
+    </tr>
+  </table>
 
-      p {
-        line-height: inherit;
-      }
+  <!-- Heading -->
+  <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">Payment Issue</h2>
+  <p style="margin: 0 0 32px; text-align: center;">
+    <span class="badge badge-warning" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(217, 119, 6, 0.1); color: #d97706; border: 1px solid rgba(217, 119, 6, 0.2);">Action Required</span>
+  </p>
 
-      .desktop_hide,
-      .desktop_hide table {
-        mso-hide: all;
-        display: none;
-        max-height: 0px;
-        overflow: hidden;
-      }
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    We encountered an issue processing your recent payment for your membership subscription. As a result, your access has been <strong>temporarily suspended</strong>.
+  </p>
 
-      .image_block img + div {
-        display: none;
-      }
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">To restore access and continue using our trading strategies and automations, please update your payment method as soon as possible.</p>
 
-      @media (max-width: 580px) {
-        .desktop_hide table.icons-outer {
-          display: inline-table !important;
-        }
-
-        .desktop_hide table.icons-inner {
-          display: inline-block !important;
-        }
-
-        .icons-inner {
-          text-align: center;
-        }
-
-        .icons-inner td {
-          margin: 0 auto;
-        }
-
-        .mobile_hide {
-          display: none;
-        }
-
-        .row-content {
-          width: 100% !important;
-        }
-
-        .stack .column {
-          width: 100%;
-          display: block;
-        }
-
-        .mobile_hide {
-          min-height: 0;
-          max-height: 0;
-          max-width: 0;
-          overflow: hidden;
-          font-size: 0px;
-        }
-
-        .desktop_hide,
-        .desktop_hide table {
-          display: table !important;
-          max-height: none !important;
-        }
-      }
-    </style>
-  </head>
-
-  <body
-    style="
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      -webkit-text-size-adjust: none;
-      text-size-adjust: none;
-    "
-  >
-    <table
-      class="nl-container"
-      width="100%"
-      border="0"
-      cellpadding="0"
-      cellspacing="0"
-      role="presentation"
-      style="
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-        background-color: #ffffff;
-      "
-    >
-      <tbody>
-        <tr>
-          <td>
-            <table
-              class="row row-1"
-              align="center"
-              width="100%"
-              border="0"
-              cellpadding="0"
-              cellspacing="0"
-              role="presentation"
-              style="
-                mso-table-lspace: 0pt;
-                mso-table-rspace: 0pt;
-                background-size: auto;
-              "
-            >
-              <tbody>
-                <tr>
-                  <td>
-                    <table
-                      class="row-content stack"
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="
-                        mso-table-lspace: 0pt;
-                        mso-table-rspace: 0pt;
-                        background-size: auto;
-                        color: #000000;
-                        width: 560px;
-                        margin: 0 auto;
-                      "
-                      width="560"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            class="column column-1"
-                            width="100%"
-                            style="
-                              mso-table-lspace: 0pt;
-                              mso-table-rspace: 0pt;
-                              font-weight: 400;
-                              text-align: left;
-                              padding-bottom: 5px;
-                              padding-top: 5px;
-                              vertical-align: top;
-                              border-top: 0px;
-                              border-right: 0px;
-                              border-bottom: 0px;
-                              border-left: 0px;
-                            "
-                          >
-                            <div
-                              class="spacer_block block-1"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="heading_block block-3"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <h1
-                                    style="
-                                      margin: 0;
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: 'Cabin', Arial,
-                                        'Helvetica Neue', Helvetica, sans-serif;
-                                      font-size: 42px;
-                                      font-weight: 700;
-                                      letter-spacing: normal;
-                                      line-height: 150%;
-                                      text-align: center;
-                                      margin-top: 0;
-                                      margin-bottom: 0;
-                                      mso-line-height-alt: 63px;
-                                    "
-                                  >
-                                    <span class="tinyMce-placeholder"
-                                      >Action Required: Update Your Payment
-                                      Method to Restore Access.
-                                    </span>
-                                  </h1>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-4"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="paragraph_block block-5"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                                word-break: break-word;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div
-                                    style="
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: 'Cabin', Arial,
-                                        'Helvetica Neue', Helvetica, sans-serif;
-                                      font-size: 17px;
-                                      font-weight: 400;
-                                      letter-spacing: 0px;
-                                      line-height: 150%;
-                                      text-align: left;
-                                      mso-line-height-alt: 25.5px;
-                                    "
-                                  >
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      We regret to inform you that we
-                                      encountered an issue processing your
-                                      recent payment for our trading strategies
-                                      subscription. As a result, we have
-                                      temporarily suspended your access to our
-                                      platform.<br /><br />
-                                    </p>
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      To restore access and continue benefiting
-                                      from our trading strategies, we kindly ask
-                                      you to update your payment method as soon
-                                      as possible. Simply log in to your account
-                                      and follow the prompts to update your
-                                      payment information securely.<br /><br />
-                                    </p>
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      If you encounter any difficulties or have
-                                      any questions, please don't hesitate to
-                                      reach out to our customer support team
-                                      <a
-                                        href="mailto:support@isalgo.com?subject=Access%20removed%21&body="
-                                      >
-                                        here</a
-                                      >. We're here to assist you every step of
-                                      the way.<br /><br />
-                                    </p>
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      Thank you for your understanding and
-                                      prompt attention to this matter. We look
-                                      forward to welcoming you back to our
-                                      community soon.<br /><br />
-                                    </p>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-6"
-                              style="
-                                height: 25px;
-                                line-height: 25px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <div
-                              class="spacer_block block-7"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="button_block block-8"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div class="alignment" align="center">
-                                    <!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="mailto:support@isalgo.com?subject=Help%20Us%20Improve%21&body=" style="height:36px;width:178px;v-text-anchor:middle;" arcsize="12%" stroke="false" fillcolor="#54b6b2">
-<w:anchorlock/>
-<v:textbox inset="0px,0px,0px,0px">
-<center style="color:#131e20; font-family:Arial, sans-serif; font-size:13px">
-<!
-                                    [endif]--><a
-                                      href="https://www.isalgo.com/"
-                                      target="_blank"
-                                      style="
-                                        text-decoration: none;
-                                        display: inline-block;
-                                        color: #ffff;
-                                        background-color: #3861f6;
-                                        border-radius: 4px;
-                                        width: auto;
-                                        border-top: 0px solid #3861f6;
-                                        font-weight: 700;
-                                        border-right: 0px solid #3861f6;
-                                        border-bottom: 0px solid #3861f6;
-                                        border-left: 0px solid #3861f6;
-                                        padding-top: 5px;
-                                        padding-bottom: 5px;
-                                        font-family: Arial, 'Helvetica Neue',
-                                          Helvetica, sans-serif;
-                                        font-size: 13px;
-                                        text-align: center;
-                                        mso-border-alt: none;
-                                        word-break: keep-all;
-                                      "
-                                      ><span
-                                        style="
-                                          padding-left: 40px;
-                                          padding-right: 40px;
-                                          font-size: 13px;
-                                          display: inline-block;
-                                          letter-spacing: normal;
-                                        "
-                                        ><span
-                                          style="
-                                            word-break: break-word;
-                                            line-height: 26px;
-                                          "
-                                          >Log in</span
-                                        ></span
-                                      ></a
-                                    >
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-9"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
+  <!-- Steps card -->
+  <div class="card" style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">How to restore access:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> Log in to your IsAlgo account
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> Go to your payment settings
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> Update your payment method and confirm
+        </td>
+      </tr>
     </table>
-    <!-- End -->
-  </body>
-</html>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">If you need help or believe this is an error, please contact our support team — we're here to help.</p>
+
+  <!-- CTA Buttons -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 12px;">
+        <a href="{{ pricing_url }}" class="btn" style="display: inline-block; padding: 6px 16px; background-color: #3861f6; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px; border: 2px solid transparent;">Update Payment</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="mailto:{{ support_email }}?subject=Payment%20Issue" class="btn-secondary" style="display: inline-block; padding: 6px 16px; background-color: transparent; border: 2px solid #e5e7eb; color: #333333; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">Contact Support</a>
+      </td>
+    </tr>
+  </table>
+{% endblock %}

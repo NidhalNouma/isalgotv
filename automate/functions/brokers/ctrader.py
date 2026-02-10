@@ -323,8 +323,11 @@ class CtraderClient(BrokerClient):
             temp_client = CtraderClient(authorization_code=authorization_code, type=type, skip_auth=True)
             
             # Check if this is a live account - not supported yet
-            if not temp_client.is_demo:
-                raise Exception("cTrader live accounts are not supported yet. Please use a demo account.")
+            # if not temp_client.is_demo:
+            #     raise Exception("cTrader live accounts are not supported yet. Please use a demo account.")
+
+            if temp_client.is_demo:
+                raise Exception("cTrader demo accounts are not supported in this environment. Please use a live account or contact support.")
             
             # Authorize the account
             temp_client.authorize_account()

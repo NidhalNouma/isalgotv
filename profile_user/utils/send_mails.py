@@ -10,7 +10,7 @@ def email_context():
     pricing_url = f'{url}my/membership/'
     docs_url = f'{url}docs/Introduction/'
     static_url = settings.STATIC_URL
-    logo_url = f'{static_url}images/logo-naked.png'
+    # logo_url = f'{static_url}images/logo-naked.png'
     icons_url = f'{static_url}images/emails/icons/'
 
     social_urls = {
@@ -30,7 +30,6 @@ def email_context():
         'docs_url': docs_url,
         'static_url': static_url,
         'icons_url': icons_url,
-        'logo_url': logo_url,
         'support_email': settings.EMAIL_HOST_USER,
         'social_urls': social_urls,
     }

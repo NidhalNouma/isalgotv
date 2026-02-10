@@ -11,14 +11,14 @@
         IsAlgo
       {% endblock %}
     </title>
-    <!--                                                          [if mso]>
+    <!--                                                           [if mso]>
   <xml>
     <o:OfficeDocumentSettings>
       <o:PixelsPerInch>96</o:PixelsPerInch>
       <o:AllowPNG/>
     </o:OfficeDocumentSettings>
   </xml>
-  <![endif]                                                          -->
+  <![endif]                                                           -->
     <style>
       /* Reset Styles */
       * {
@@ -245,7 +245,7 @@
       }
       
       .icons {
-        filter: brightness(1) invert(1) grayscale(100%);
+        filter: brightness(0);
       }
       
       /* Responsive */
@@ -423,12 +423,12 @@
       <tr>
         <td align="center" style="padding: 40px 20px;">
           <!-- Main Content Table -->
-          <table class="container email-container" role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+          <table class="container email-container" role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; ">
             <!-- Header -->
             <tr>
               <td class="border-bottom" style="padding: 20px 40px 12px; text-align: center; border-bottom: 1px solid #e5e7eb; border-radius: 12px 12px 0px 0px;">
                 {% block header %}
-                  <a href="{{ site_url }}" style="display: inline-block;"><img src="{{ logo_url }}" alt="IsAlgo" class="icons" style="height: 56px; width: auto; display: block; border: 0; outline: none;" /></a>
+                  <a href="{{ site_url }}" style="display: inline-block;"><img src="{{ icons_url }}logo-naked.png" alt="IsAlgo" class="logo-img icons" style="height: 56px; width: auto; display: block; border: 0; outline: none; filter: brightness(0);" /></a>
                 {% endblock %}
               </td>
             </tr>
@@ -462,17 +462,17 @@
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
                           <tr>
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.tv }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                              <a href="{{ social_urls.tv }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
                             </td>
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.youtube }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                              <a href="{{ social_urls.youtube }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
                             </td>
 
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.instagram }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                              <a href="{{ social_urls.instagram }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
                             </td>
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.discord }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                              <a href="{{ social_urls.discord }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
                             </td>
                           </tr>
                         </table>
