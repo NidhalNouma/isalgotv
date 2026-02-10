@@ -8,8 +8,9 @@ from django_htmx.http import retarget, trigger_client_event, HttpResponseClientR
 from performance.functions.context import get_global_strategy_performance_context
 from profile_user.utils.stripe import cancel_reactivate_subscription, change_subscription_payment_method, subscribe_to_strategy, product_overview
 
-from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
-from .models import *
+from strategies.forms import StrategyCommentForm, RepliesForm, StrategyResultForm
+from strategies.models import *
+from strategies.tasks import send_strategy_gained_email_task
 
 
 from profile_user.utils.notifcations import send_notification
@@ -464,7 +465,8 @@ def strategy_subscribe(request, id):
 
             print("Subscription created:", subscription.id)
 
-
+            if subscription.get('status') == 'active':
+                send_strategy_gained_email_task(user_profile.user.email, strategy_price.strategy)
 
             return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
     except Exception as e:

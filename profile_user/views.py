@@ -23,7 +23,7 @@ from django.core.mail import EmailMessage
 from profile_user.utils.stripe import *
 from profile_user.utils.tradingview import *
 from profile_user.utils.discord import get_discord_user_id, add_role_to_user, remove_role_from_user
-from profile_user.tasks import *
+from profile_user.tasks import send_new_member_email_task, send_new_lifetime_email_task, send_cancel_membership_email_task
 
 import random
 import datetime
@@ -876,7 +876,8 @@ def stripe_seller_dashboard(request):
         
 def preview_email(request):
     # Dummy data for template context
-    context = {'user_name': 'Test User'}
+    from profile_user.utils.send_mails import email_context
+    context = {'username': 'Test User' , **email_context()}
     return render(request, 'emails/welcome_email.html', context)
 
 def send_email(request):

@@ -12,3 +12,7 @@ def send_broker_account_deleted_task(user_email, account=None):
 @shared_task
 def send_broker_account_access_expiring_task(user_email, account):
     broker_account_overdue(user_email, account)
+
+@shared_task
+def send_broker_account_added_task(user_email, account):
+    broker_account_added(user_email, account)

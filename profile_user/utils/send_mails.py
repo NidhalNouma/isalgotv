@@ -2,11 +2,45 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
 
-def send_welcome_email(user_email, user_name):
-    if user_name.find('@'):
-        user_name = user_email.split("@")[0]
-    subject = 'Welcome to IsAlgo comunity!'
-    html_content = render_to_string('emails/welcome_email.html', {'user_name': user_name})
+def email_context():
+    url = 'https://www.isalgo.com/'
+    strategies_url = f'{url}strategies/'
+    reports_url = f'{url}reports/'
+    automate_url = f'{url}automate/'
+    pricing_url = f'{url}my/membership/'
+    docs_url = f'{url}docs/Introduction/'
+    static_url = settings.STATIC_URL
+    logo_url = f'{static_url}images/logo-naked.png'
+    icons_url = f'{static_url}images/emails/icons/'
+
+    social_urls = {
+        'tv': 'https://www.tradingview.com/u/IsAlgo/',
+        'discord': 'https://discord.gg/4Zz5X9jG',
+        'youtube': 'https://www.youtube.com/@IsAlgo',
+        'instagram': 'https://www.instagram.com/IsAlgo/',
+    }
+
+    return {
+        'site_name': 'IsAlgo',
+        'site_url': url,
+        'strategies_url': strategies_url,
+        'reports_url': reports_url,
+        'automate_url': automate_url,
+        'pricing_url': pricing_url,
+        'docs_url': docs_url,
+        'static_url': static_url,
+        'icons_url': icons_url,
+        'logo_url': logo_url,
+        'support_email': settings.EMAIL_HOST_USER,
+        'social_urls': social_urls,
+    }
+
+
+def send_welcome_email(user_email, username):
+    if username.find('@'):
+        username = user_email.split("@")[0]
+    subject = 'Welcome to IsAlgo community!'
+    html_content = render_to_string('emails/welcome_email.html', context={'username': username, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -19,7 +53,7 @@ def send_welcome_email(user_email, user_name):
 
 def new_member_email(user_email):
     subject = 'Welcome to Our Community!'
-    html_content = render_to_string('emails/new_member.html')
+    html_content = render_to_string('emails/new_member.html', context={**email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -32,7 +66,7 @@ def new_member_email(user_email):
 
 def new_lifetime_email(user_email):
     subject = 'Welcome to Lifetime Membership!'
-    html_content = render_to_string('emails/new_lifetime.html')
+    html_content = render_to_string('emails/new_lifetime.html', context={**email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -45,7 +79,7 @@ def new_lifetime_email(user_email):
 
 def cancel_membership_email(user_email):
     subject = "We're Sorry to See You Go"
-    html_content = render_to_string('emails/cancel_membership.html')
+    html_content = render_to_string('emails/cancel_membership.html', context={**email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -58,7 +92,7 @@ def cancel_membership_email(user_email):
 
 def access_removed_email(user_email):
     subject = "Unfortunately, your access has been removed."
-    html_content = render_to_string('emails/access_removed.html')
+    html_content = render_to_string('emails/access_removed.html', context={**email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -71,7 +105,7 @@ def access_removed_email(user_email):
 
 def overdue_access_removed_email(user_email):
     subject = "Action Required: Update Your Payment Method to Restore Access."
-    html_content = render_to_string('emails/overdue_access_removed.html')
+    html_content = render_to_string('emails/overdue_access_removed.html', context={**email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -84,7 +118,7 @@ def overdue_access_removed_email(user_email):
 
 def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, strategy_img):
     subject = 'Check this one out!'
-    html_content = render_to_string('emails/new_strategy.html', {'strategy_name': strategy_name, 'strategy_url': strategy_url, 'strategy_img': strategy_img, 'strategy_tv_url': strategy_tv_url})
+    html_content = render_to_string('emails/new_strategy.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'strategy_img': strategy_img, 'strategy_tv_url': strategy_tv_url, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -97,7 +131,7 @@ def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, 
 def broker_account_added(user_email, account):
     account_name = account.name if account else "your broker account"
     subject = 'Broker Account Added!'
-    html_content = render_to_string('emails/broker_added.html', {'account_name': account_name})
+    html_content = render_to_string('emails/broker_added.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -110,7 +144,7 @@ def broker_account_added(user_email, account):
 def broker_account_access_removed(user_email, account):
     account_name = account.name if account else "your broker account"
     subject = 'Broker Account Subscription Issue!'
-    html_content = render_to_string('emails/broker_access_removed.html', {'account_name': account_name})
+    html_content = render_to_string('emails/broker_access_removed.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -123,7 +157,7 @@ def broker_account_access_removed(user_email, account):
 def broker_account_deleted(user_email, account=None):
     account_name = account.name if account else "your broker account"
     subject = 'Broker Account Deleted!'
-    html_content = render_to_string('emails/broker_deleted.html', {})
+    html_content = render_to_string('emails/broker_deleted.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -136,7 +170,7 @@ def broker_account_deleted(user_email, account=None):
 def broker_account_overdue(user_email, account):
     account_name = account.name if account else "your broker account"
     subject = 'Broker Account Subscription Overdue!'
-    html_content = render_to_string('emails/broker_overdue.html', {'account_name': account_name})
+    html_content = render_to_string('emails/broker_overdue.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -148,7 +182,7 @@ def broker_account_overdue(user_email, account):
 
 def strategy_access_gained(user_email, strategy, strategy_url):
     subject = 'You have a new subscriber!'
-    html_content = render_to_string('emails/strategy_access_gained.html', {'strategy_name': strategy.name, 'strategy_url': strategy_url})
+    html_content = render_to_string('emails/strategy_access_gained.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -160,7 +194,7 @@ def strategy_access_gained(user_email, strategy, strategy_url):
 
 def strategy_access_removed(user_email, strategy, strategy_url):
     subject = 'You lost a subscriber!'
-    html_content = render_to_string('emails/strategy_access_removed.html', {'strategy_name': strategy.name, 'strategy_url': strategy_url})
+    html_content = render_to_string('emails/strategy_access_removed.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -172,7 +206,7 @@ def strategy_access_removed(user_email, strategy, strategy_url):
 
 def strategy_access_overdue(user_email, strategy, strategy_url):
     subject = 'Strategy Subscription Overdue!'
-    html_content = render_to_string('emails/strategy_access_past_due.html', {'strategy_name': strategy.name, 'strategy_url': strategy_url})
+    html_content = render_to_string('emails/strategy_access_past_due.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     

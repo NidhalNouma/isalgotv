@@ -436,7 +436,7 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotio
         seller_account = price.metadata.get("account_id")
 
         try:
-            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=False) 
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=True) 
         except Exception as e:
             print("Error setting default payment method:", e)
             raise
@@ -484,7 +484,7 @@ def subscribe_to_account(user_profile, broker_account, price_id, payment_method,
         customer_id = user_profile.customer_id_value
 
         try:
-            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=False) 
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=True) 
         except Exception as e:
             print("Error setting default payment method:", e)
             raise
@@ -529,7 +529,7 @@ def subscribe_to_main_membership(user_profile, price_id, payment_method, free_tr
         old_subscription_deleted = False
 
         try:
-            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=False) 
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=True) 
         except Exception as e:
             print("Error setting default payment method:", e)
             raise
@@ -756,9 +756,9 @@ def set_user_default_payment_method(user_profile, payment_method, force=False) -
                 )    
 
         if force:
-            user_profile = user_profile.get_with_update_stripe_data(force = True)
             return customer, user_profile
         else:
+            user_profile = user_profile.get_with_update_stripe_data(force = True)
             return customer, user_profile
 
     except Exception as e:

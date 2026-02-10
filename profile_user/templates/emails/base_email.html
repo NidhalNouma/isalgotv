@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <title>
+      {% block title %}
+        IsAlgo
+      {% endblock %}
+    </title>
+    <!--                                                        [if mso]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+      <o:AllowPNG/>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <![endif]                                                        -->
+    <style>
+      /* Reset Styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      table {
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      td,
+      th {
+        padding: 0;
+      }
+      
+      /* Tell email clients we handle dark mode - prevents iOS auto-adjustments */
+      :root {
+        color-scheme: light dark;
+        supported-color-schemes: light dark;
+      }
+      
+      /* Color Variables - Matching Website from input.css */
+      :root {
+        --color-primary: #3861f6; /* 227 91% 59% */
+        --color-secondary: #3861f6;
+        --color-accent: #000000; /* 0 0% 0% */
+        --color-background: #e7edee; /* 188 16% 92% */
+        --color-profit: #007a67; /* 170 90% 32% */
+        --color-loss: #f44462; /* 355 91% 65% */
+        --color-text: #333333; /* 0 0% 20% */
+        --color-text-light: #e5e5e5; /* 0 0% 90% */
+        --color-title: #000000; /* 0 0% 0% */
+        --color-title-light: #ffffff; /* 0 0% 100% */
+        --color-border: #e5e7eb;
+      }
+      
+      /* Typography - Matching Website */
+      body,
+      p,
+      a,
+      span,
+      td {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--color-text);
+      }
+      
+      h1,
+      h2,
+      h3 {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--color-title);
+        margin: 0;
+        line-height: 1.2;
+      }
+      
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      
+      /* Link Styles */
+      a {
+        color: var(--color-primary);
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+      a:hover {
+        opacity: 0.8;
+      }
+      
+      /* Button Styles - Matching Website */
+      .btn {
+        display: inline-block;
+        padding: 6px 16px;
+        background-color: var(--color-primary);
+        color: #ffffff !important;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        text-align: center;
+        transition: all 0.2s ease-in-out;
+        border: 2px solid transparent;
+        border-bottom-width: 2px;
+      }
+      
+      .btn:hover {
+        filter: brightness(0.9);
+      }
+      
+      .btn-secondary {
+        background-color: transparent;
+        border: 2px solid var(--color-border);
+        color: var(--color-text) !important;
+        padding: 6px 16px;
+      }
+      
+      .btn-secondary:hover {
+        filter: brightness(0.9);
+      }
+      
+      /* Card Styles - Modern Design */
+      .card {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+        border: 1px solid var(--color-border);
+      }
+      
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      
+      .badge-success {
+        background-color: rgba(0, 122, 103, 0.1);
+        color: var(--color-profit);
+        border: 1px solid rgba(0, 122, 103, 0.2);
+      }
+      
+      .badge-error {
+        background-color: rgba(244, 68, 98, 0.1);
+        color: var(--color-loss);
+        border: 1px solid rgba(244, 68, 98, 0.2);
+      }
+      
+      .badge-warning {
+        background-color: rgba(217, 119, 6, 0.1);
+        color: var(--color-warning);
+        border: 1px solid rgba(217, 119, 6, 0.2);
+      }
+      
+      /* Divider */
+      .divider {
+        height: 1px;
+        background-color: var(--color-border);
+        margin: 24px 0;
+      }
+      
+      /* List Styles */
+      .list-item {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--color-border);
+      }
+      
+      .list-item:last-child {
+        border-bottom: none;
+      }
+      
+      /* Icon Wrapper */
+      .icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+      }
+      
+      .icon-primary {
+        background-color: rgba(56, 97, 246, 0.1);
+      }
+      .icon-success {
+        background-color: rgba(0, 122, 103, 0.1);
+      }
+      .icon-error {
+        background-color: rgba(244, 68, 98, 0.1);
+      }
+      .icon-warning {
+        background-color: rgba(217, 119, 6, 0.1);
+      }
+      
+      .icons {
+        filter: brightness(1) invert(1) grayscale(100%);
+      }
+      
+      /* Responsive */
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 100% !important;
+        }
+        .mobile-padding {
+          padding: 16px !important;
+        }
+        h1 {
+          font-size: 24px !important;
+        }
+        h2 {
+          font-size: 20px !important;
+        }
+        .btn {
+          padding: 10px 24px !important;
+          font-size: 13px !important;
+        }
+      }
+      
+      /* Dark Mode Support - Matching input.css :root[class~="dark"] theme */
+      @media (prefers-color-scheme: dark) {
+        /* Body & Background - matching dark --color-background: 0 0% 0% (#000000) */
+        body,
+        body.email-body {
+          background-color: #000000 !important;
+        }
+      
+        .email-bg,
+        .email-bg > tr > td {
+          background-color: #000000 !important;
+        }
+      
+        .email-container {
+          background-color: #0a0a0a !important;
+          border-color: #1a1a1a !important;
+        }
+      
+        /* Text colors - matching dark --color-text: 0 0% 80% (#cccccc) */
+        body,
+        table,
+        td,
+        p,
+        span {
+          color: #cccccc !important;
+        }
+      
+        /* Titles - matching dark --color-title: 0 0% 100% (#ffffff) */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        strong,
+        b {
+          color: #ffffff !important;
+        }
+      
+        /* Links - keep primary #3861f6 (same in light and dark per input.css) */
+        a:not(.btn):not(.btn-secondary) {
+          color: #3861f6 !important;
+        }
+      
+        /* Primary button - stays the same primary color */
+        .btn,
+        a.btn {
+          background-color: #3861f6 !important;
+          color: #ffffff !important;
+          border-color: transparent !important;
+        }
+      
+        /* Secondary button */
+        .btn-secondary,
+        a.btn-secondary {
+          background-color: rgba(204, 204, 204, 0.1) !important;
+          border-color: rgba(204, 204, 204, 0.2) !important;
+          color: #cccccc !important;
+        }
+      
+        /* Cards */
+        .card {
+          background-color: #0d0d0d !important;
+          border-color: #1a1a1a !important;
+        }
+      
+        /* Borders and dividers */
+        .border-bottom,
+        .border-top,
+        .divider,
+        .list-item {
+          border-color: #1a1a1a !important;
+        }
+      
+        /* Badges - profit/loss same in both themes per input.css */
+        .badge-success {
+          background-color: rgba(0, 122, 103, 0.2) !important;
+          border-color: rgba(0, 122, 103, 0.3) !important;
+        }
+      
+        .badge-error {
+          background-color: rgba(244, 68, 98, 0.2) !important;
+          border-color: rgba(244, 68, 98, 0.3) !important;
+        }
+      
+        .badge-warning {
+          background-color: rgba(217, 119, 6, 0.2) !important;
+          border-color: rgba(217, 119, 6, 0.3) !important;
+        }
+      
+        /* Icon wrappers */
+        .icon-primary {
+          background-color: rgba(56, 97, 246, 0.2) !important;
+        }
+        .icon-success {
+          background-color: rgba(0, 122, 103, 0.2) !important;
+        }
+        .icon-error {
+          background-color: rgba(244, 68, 98, 0.2) !important;
+        }
+        .icon-warning {
+          background-color: rgba(217, 119, 6, 0.2) !important;
+        }
+      
+        /* Footer */
+        .email-footer {
+          background-color: #0a0a0a !important;
+          border-color: #1a1a1a !important;
+        }
+      
+        /* Follow Us text */
+        .follow-text {
+          color: #cccccc !important;
+        }
+      
+        .icons {
+          filter: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="email-body" style="background-color: #e7edee; margin: 0; padding: 0;">
+    <!-- Preheader -->
+    <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">
+      {% block preheader %}
+
+      {% endblock %}
+    </div>
+
+    <!-- Email Container -->
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="email-bg" style="background-color: #e7edee;">
+      <tr>
+        <td align="center" style="padding: 40px 20px;">
+          <!-- Main Content Table -->
+          <table class="container email-container" role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+            <!-- Header -->
+            <tr>
+              <td class="border-bottom" style="padding: 20px 40px 12px; text-align: center; border-bottom: 1px solid #e5e7eb; border-radius: 12px 12px 0px 0px;">
+                {% block header %}
+                  <a href="{{ site_url }}" style="display: inline-block;"><img src="{{ logo_url }}" alt="IsAlgo" class="icons" style="height: 56px; width: auto; display: block; border: 0; outline: none;" /></a>
+                {% endblock %}
+              </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+              <td class="mobile-padding" style="padding: 40px;">
+                {% block content %}
+
+                {% endblock %}
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td class="email-footer border-top" style="padding: 32px 40px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                {% block footer %}
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 16px;">
+                        <p style="margin: 0; font-size: 10px; color: #6b7280;">
+                          <a href="{{ site_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Visit our website</a> •
+                          <a href="{{ pricing_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Pricing</a> •
+                          <a href="{{ docs_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Documentation</a>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding: 20px 0 16px;">
+                        <p class="follow-text" style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #333333;">Follow Us</p>
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+                          <tr>
+                            <td style="padding: 0 8px;">
+                              <a href="{{ social_urls.tv }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                            </td>
+                            <td style="padding: 0 8px;">
+                              <a href="{{ social_urls.youtube }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                            </td>
+
+                            <td style="padding: 0 8px;">
+                              <a href="{{ social_urls.instagram }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                            </td>
+                            <td style="padding: 0 8px;">
+                              <a href="{{ social_urls.discord }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0;" class="icons" /></a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        {% load custom_tags %}
+                        <p style="margin: 0; font-size: 13px; color: #9ca3af;">
+                          ©{% now 'Y' %}IsAlgo. All rights reserved.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                {% endblock %}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

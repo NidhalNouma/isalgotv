@@ -8,7 +8,6 @@ from .utils.send_mails import *
 def send_welcome_email_task(user_email, user_name):
     send_welcome_email(user_email, user_name)
 
-
 @shared_task
 def send_new_member_email_task(user_email):
     new_member_email(user_email)

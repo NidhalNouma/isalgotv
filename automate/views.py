@@ -12,7 +12,7 @@ from automate.functions.alerts_message import manage_alert
 
 from automate.models import *
 from automate.forms import *
-from automate.tasks import *
+from automate.tasks import send_broker_account_added_task
 
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
@@ -230,6 +230,7 @@ def add_broker(request, broker_type):
                         account.additional_info = valid.get('additional_info', {})
 
                     account.save()
+                    send_broker_account_added_task(request.user.email, account)
 
                     context = context_accounts_by_user(request)
 
