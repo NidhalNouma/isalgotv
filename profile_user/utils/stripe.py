@@ -424,7 +424,7 @@ def subscription_object(subscription=None, subscription_id=None):
         return sub
     except Exception as e:
         print("Error processing subscription object:", e)
-        raise
+        return None
 
 def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotion_code=None) -> (tuple):
     """
@@ -434,6 +434,12 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotio
         customer_id = user_profile.customer_id_value
         price = stripe.Price.retrieve(strategy_price.stripe_price_id)
         seller_account = price.metadata.get("account_id")
+
+        try:
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=False) 
+        except Exception as e:
+            print("Error setting default payment method:", e)
+            raise
 
         subscription_params = {
             "customer": customer_id,
@@ -477,6 +483,12 @@ def subscribe_to_account(user_profile, broker_account, price_id, payment_method,
     try:
         customer_id = user_profile.customer_id_value
 
+        try:
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=False) 
+        except Exception as e:
+            print("Error setting default payment method:", e)
+            raise
+
         subscription_params = {
             "customer": customer_id,
             "items": [{"price": price_id}],
@@ -517,12 +529,7 @@ def subscribe_to_main_membership(user_profile, price_id, payment_method, free_tr
         old_subscription_deleted = False
 
         try:
-            stripe.Customer.modify(
-                customer_id,
-                invoice_settings={
-                    'default_payment_method': payment_method
-                }
-            )    
+            customer, user_profile = set_user_default_payment_method(user_profile, payment_method, force=False) 
         except Exception as e:
             print("Error setting default payment method:", e)
             raise
@@ -728,19 +735,31 @@ def delete_user_payment_method(user_profile, payment_method) -> (tuple):
         print("Error deleting payment method:", e)
         raise
         
-def set_user_default_payment_method(user_profile, payment_method) -> (tuple):
+def set_user_default_payment_method(user_profile, payment_method, force=False) -> (tuple):
     try:
         customer_id = user_profile.customer_id_value
-        
-        customer = stripe.Customer.modify(
-                customer_id,
-                invoice_settings={
-                    'default_payment_method': payment_method
-                }
-            )    
-        user_profile = user_profile.get_with_update_stripe_data(force = True)
 
-        return customer, user_profile
+        customer = stripe.Customer.retrieve(customer_id)
+        if force and not customer.invoice_settings.default_payment_method:
+             customer = stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        'default_payment_method': payment_method
+                    }
+                )
+        elif customer.invoice_settings.default_payment_method != payment_method or not customer.invoice_settings.default_payment_method:
+            customer = stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        'default_payment_method': payment_method
+                    }
+                )    
+
+        if force:
+            user_profile = user_profile.get_with_update_stripe_data(force = True)
+            return customer, user_profile
+        else:
+            return customer, user_profile
 
     except Exception as e:
         print("Error setting default payment method:", e)
@@ -819,6 +838,60 @@ def send_money_to_seller_account(amount, destination_account_id, description="Pa
         print("Error sending money to seller account:", e)
         raise
 
+def product_overview(product_id, price_id):
+    try:
+        product = stripe.Product.retrieve(product_id)
+        price = stripe.Price.retrieve(price_id)
+        # Retrieve all subscriptions for this product
+        subscriptions = stripe.Subscription.list(status="active", limit=100, price=price_id)
+        total_subscribers = 0
+        today_subscribers = 0
+        week_subscribers = 0
+        month_subscribers = 0
+
+        now = datetime.datetime.now()
+        start_of_today = datetime.datetime(now.year, now.month, now.day)
+        start_of_week = start_of_today - datetime.timedelta(days=now.weekday())
+        start_of_month = datetime.datetime(now.year, now.month, 1)
+
+        for sub in subscriptions.auto_paging_iter():
+            if sub.status not in ["active", "trialing", "past_due"]:
+                continue
+
+            for item in sub["items"]["data"]:
+                if item["price"]["id"] == price_id:
+                    total_subscribers += 1
+                    created_time = datetime.datetime.fromtimestamp(sub.created)
+                    if created_time >= start_of_today:
+                        today_subscribers += 1
+                    if created_time >= start_of_week:
+                        week_subscribers += 1
+                    if created_time >= start_of_month:
+                        month_subscribers += 1
+
+        product.subscriber_stats = {
+            "total": total_subscribers,
+            "today": today_subscribers,
+            "week": week_subscribers,
+            "month": month_subscribers,
+        }
+        amount = price.unit_amount / 100
+        interval = price.recurring["interval"]
+        interval_count = price.recurring["interval_count"]
+        currency = price.currency
+
+        product.price_overview = {
+            "amount": amount,   
+            "interval": interval,
+            "interval_count": interval_count,
+            "currency": currency,
+        }
+
+        return product
+    except Exception as e:
+        print("Error retrieving subscription overview:", e)
+        raise
+
 def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
     try:
         event = stripe.Webhook.construct_event(
@@ -830,8 +903,8 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
             customer_id = customer.get("id")
             user_profile = User_Profile.objects.filter(customer_id=customer_id).first()
             if user_profile:
-                user_profile.customer_id = None
-                user_profile.subscription_id = None
+                user_profile.customer_id = ""
+                user_profile.subscription_id = ""
                 user_profile.get_with_update_stripe_data(force=True)
                 user_profile.save()
                 print("Stripe-Webhook: Customer deleted, user profile updated ... ", "customer_id:", customer_id, "user_profile_id:", user_profile.id)
@@ -1030,14 +1103,18 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
             if type == "main_membership":
                 if event['type'] == 'customer.subscription.deleted':
                     print("Stripe-Webhook: Main membership subscription deleted ...")
+                    if user_profile.subscription_id == subscription.id and not user_profile.is_lifetime:
+                        user_profile.remove_access()
+                        access_removed_email_task(user_profile.user.email)
 
-                    user_profile.remove_access()
-
-                    access_removed_email_task(user_profile.user.email)
-
+                        return {
+                            "status": "success",
+                            "message": "Main membership subscription deleted, access removed.",
+                            "user_profile_id": user_profile.id,
+                        }
                     return {
                         "status": "success",
-                        "message": "Main membership subscription deleted, access removed.",
+                        "message": "Main membership subscription deleted, but subscription ID did not match user profile, no access removed.",
                         "user_profile_id": user_profile.id,
                     }
                 
@@ -1045,20 +1122,32 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                     print("Stripe-Webhook: Main membership subscription updated ...")
 
                     if subscription.status == "canceled":
-                        user_profile.remove_access()
-                        access_removed_email_task(user_profile.user.email)
+                        if user_profile.subscription_id == subscription.id and not user_profile.is_lifetime:
+                            user_profile.remove_access()
+                            access_removed_email_task(user_profile.user.email)
+                            return {
+                                "status": "success",
+                                "message": "Main membership subscription updated, access removed if subscription status is canceled.",
+                                "user_profile_id": user_profile.id,
+                            }
                         return {
                             "status": "success",
-                            "message": "Main membership subscription updated, access removed if subscription status is canceled.",
+                            "message": "Main membership subscription updated, but subscription ID did not match user profile, no access removed.",
                             "user_profile_id": user_profile.id,
                         }
                     elif subscription.status == "past_due":
-                        user_profile.remove_access()
-                        # send an email to user to notify them about the failed payment and access removal
-                        overdue_access_removed_email_task(user_profile.user.email)
+                        if user_profile.subscription_id == subscription.id and not user_profile.is_lifetime:
+                            user_profile.remove_access()
+                            # send an email to user to notify them about the failed payment and access removal
+                            overdue_access_removed_email_task(user_profile.user.email)
+                            return {
+                                "status": "success",
+                                "message": "Main membership subscription updated, access removed if subscription status is canceled or past due.",
+                                "user_profile_id": user_profile.id,
+                            }
                         return {
                             "status": "success",
-                            "message": "Main membership subscription updated, access removed if subscription status is canceled or past due.",
+                            "message": "Main membership subscription updated, but subscription ID did not match user profile, no access removed.",
                             "user_profile_id": user_profile.id,
                         }
                 print("Stripe-Webhook: Unrecognized subscription update type, ignoring event ...")
@@ -1086,7 +1175,7 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                     # send an email to user to notify them about the subscription cancellation and access removal
 
                     for account in accounts:
-                        send_broker_account_deleted_task(user_profile.user.email, account=account)
+                        send_broker_account_access_removed_task(user_profile.user.email, account=account)
                     
                     return {
                         "status": "success",
@@ -1100,7 +1189,7 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                     if subscription.status == "canceled":
                         accounts = desactivate_account_by_subscription_id(broker_account_type, subscription.id)
                         for account in accounts:
-                            send_broker_account_access_removed_task(user_profile.user.email, account)
+                            send_broker_account_access_removed_task(user_profile.user.email, account=account)
                         return {
                             "status": "success",
                             "message": "Account subscription updated, user notified if subscription status is canceled.",

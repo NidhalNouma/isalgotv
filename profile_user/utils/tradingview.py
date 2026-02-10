@@ -73,8 +73,12 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
         
 
         response = requests.post(url, data=data, headers=headers)
+        # print('data:', response.text, data)
+        if response.status_code >= 400:
+            error = response.json().get('detail')
+            if error:
+                raise Exception(error)
         response.raise_for_status() 
-        # print('data:', data)
 
         if access:
           profile.strategies.add(strategy)

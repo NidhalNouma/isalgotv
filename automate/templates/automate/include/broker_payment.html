@@ -1,3 +1,4 @@
+{% if stripe_customer %}
 {% with default_pm_id=default_pm_id|default:stripe_customer.invoice_settings.default_payment_method %}
   <section class="py-2 rounded">
     {% if not hide_header %}
@@ -8,7 +9,7 @@
 
     <div id="payment-card-list-{{ title }}" class="{% if payment_methods|length == 0 %} hidden {% endif %}">
       {% if subtitle %}
-        <h3 class="text-text mt-2 font-semibold">{{ subtitle|default:'Select a payment method' }}</h3>
+        <h3 class="text-text my-2 font-semibold">{{ subtitle|default:'Select a payment method' }}</h3>
       {% endif %}
       <div class="scale-y-90">
         {% include 'include/payment_methods.html' with to_select=True inputId='pm-'|add:title selected_pm_id=default_pm_id %}
@@ -27,3 +28,4 @@
     <input id="pm-{{ title }}" type="hidden" name="pm_id" value="{{ default_pm_id }}" />
   </section>
 {% endwith %}
+{% endif %}

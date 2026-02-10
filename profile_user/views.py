@@ -229,16 +229,11 @@ def random_strategies_results_context():
 
 @login_required(login_url='login')
 def home(request):
-    show_get_started = False
-    if (request.has_subscription is None or request.has_subscription is False) and not request.subscription:
-        show_get_started = True
-
-    context = {'show_get_started': show_get_started, 'show_banner': True}
-
+    context = {}
 
     # Select a random helper question for the template
-    random_question = random.choice(QUESTIONS)
-    context['random_ai_question'] = random_question
+    # random_question = random.choice(QUESTIONS)
+    # context['random_ai_question'] = random_question
 
     context = {**context, **random_strategies_results_context()}
 
@@ -272,17 +267,16 @@ def settings_page(request):
 def access_page(request):
     strategy_filter = {
         'is_live': True,
-        'premium__in': ['Free', 'Beta', 'Premium'],
+        # 'premium__in': ['Free', 'Beta', 'Premium'],
     }
-
-    superuser = request.user.is_superuser
-    if superuser:
-        strategy_filter = {}
 
     strategies = Strategy.objects.filter(**strategy_filter)
     context = {
         "strategies": strategies,
-        # 'show_banner': True
+        "free_strategies": strategies.filter(premium='Free'),
+        "premium_strategies": strategies.filter(premium='Premium'),
+        "beta_strategies": strategies.filter(premium='Beta'),
+        "vip_strategies": strategies.filter(premium='VIP'),
     }
     return render(request, 'access.html', context)
 
@@ -379,11 +373,6 @@ def edit_tradingview_username(request):
 
 
     if tv_username and request.user.is_authenticated:
-
-        # if  not request.has_subscription:
-        #     error = "You need to have an active subscription to update your TradingView username."
-        #     response = render(request, 'include/errors.html', context = {"error": error})
-        #     return retarget(response, "#tradingview_username_submit_error")
         
         response_data = username_search(tv_username)
         if response_data == None:
@@ -410,6 +399,7 @@ def edit_tradingview_username(request):
             return retarget(response, "#tradingview_username_submit_error")
 
         profile_user = request.user_profile
+        profile_user.remove_access(include_free_strategies=True, remove_discord_role=False)
         profile_user.tradingview_username = tv_username
         profile_user.save()
 
@@ -417,20 +407,17 @@ def edit_tradingview_username(request):
             'is_live': True,
             'premium__in': ['Free'],
         }
-
-        strategies = Strategy.objects.filter(**access_filter)
         if request.has_subscription:
             access_filter = {
                 'is_live': True,
                 'premium__in': ['Free', 'Premium'],
             }
-            strategies = Strategy.objects.filter(**access_filter)
         if profile_user.is_lifetime:
             access_filter = {
                 'is_live': True,
                 'premium__in': ['Free', 'Beta', 'Premium'],
             }
-            strategies = Strategy.objects.filter(**access_filter)
+        strategies = Strategy.objects.filter(**access_filter)
 
         for strategy in strategies:
             if strategy.is_live:
@@ -452,7 +439,6 @@ def edit_tradingview_username(request):
             strategies = Strategy.objects.filter(is_live=True)
             context = {
                 "strategies": strategies,
-                # 'show_banner': True
             }
 
             response = render(request, 'include/access_list.html', context)
@@ -503,7 +489,6 @@ def get_access(request, strategy_id):
     try:
         pg = request.GET.get('pg')
         premium = request.GET.get('premium')
-        print("Strategy ID:", strategy_id, "Page:", pg, "Premium:", premium)
 
         strategies_filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium']) | Q(is_live=True, premium='VIP', created_by=request.user)
         if request.user.is_superuser:
@@ -527,7 +512,7 @@ def get_access(request, strategy_id):
                     # response = render(request, 'include/get_access_model.html', context)
                     # return retarget(response, "#access-mb-" + str(strategy_id))
                 else:
-                    strategies = Strategy.objects.filter(premium=premium)
+                    strategies = Strategy.objects.filter(premium=premium, is_live=True)
                     return render(request, 'include/access_list_strategies.html', context = {"strategies": strategies, "error_id": strategy_id, "error": error, "premium": premium})
 
         if pg == "st":
@@ -535,13 +520,13 @@ def get_access(request, strategy_id):
             response = render(request, 'include/user_connect.html', context)
             return response
         else:
-            strategies = Strategy.objects.filter(premium=premium)
+            strategies = Strategy.objects.filter(premium=premium, is_live=True)
             return render(request, 'include/access_list_strategies.html', context = {"strategies": strategies, "premium": premium})
 
     except Exception as e:
         print("Error in get_access:", e)
         error = "An unexpected error occurred while granting access. Please try again later."
-        strategies = Strategy.objects.filter(premium=premium)
+        strategies = Strategy.objects.filter(premium=premium, is_live=True)
         return render(request, 'include/access_list_strategies.html', context = {"strategies": strategies, "premium": premium, "error": error, "error_id": strategy_id})
     
 

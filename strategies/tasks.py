@@ -55,12 +55,15 @@ def send_strategy_email_to_all_users(emails, strategy, header, subject, html_con
 
 @shared_task
 def send_strategy_gained_email_task(user_email, strategy):
-    strategy_access_gained(user_email, strategy)
+    url = 'https://www.isalgo.com/strategies/' + strategy.slug
+    strategy_access_gained(user_email, strategy, url)
 
 @shared_task
 def send_strategy_lost_email_task(user_email, strategy):
-    strategy_access_removed(user_email, strategy)
+    url = 'https://www.isalgo.com/strategies/' + strategy.slug
+    strategy_access_removed(user_email, strategy, url)
 
 @shared_task
 def send_strategy_access_expiring_email_task(user_email, strategy):
-    strategy_access_overdue(user_email, strategy)
+    url = 'https://www.isalgo.com/strategies/' + strategy.slug
+    strategy_access_overdue(user_email, strategy, url)

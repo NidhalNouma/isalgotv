@@ -161,13 +161,16 @@ class User_Profile(models.Model):
         from profile_user.utils.tradingview import give_access
         return give_access(strategy_id, self.id, access, user_profile=self, strategy=strategy)
 
-    def remove_access(self):
+    def remove_access(self, include_free_strategies=False, remove_discord_role=True):
         if self.tradingview_username:
             strategies = self.strategies.all()
             for strategy in strategies:
-                if strategy.premium == 'Premium':
-                    self.give_tradingview_access(strategy.id, access=False, strategy=strategy)
-        if self.discord_username:
+                if strategy.premium == 'Premium' or (include_free_strategies and strategy.premium == 'Free'):
+                    try:
+                        self.give_tradingview_access(strategy.id, access=False, strategy=strategy)
+                    except Exception as e:
+                        print(f"Error removing TradingView access for strategy {strategy.id}: {e}")
+        if self.discord_username and remove_discord_role:
             from profile_user.utils.discord import remove_role_from_user
             remove_role_from_user(self.discord_username)
 
@@ -188,7 +191,7 @@ class User_Profile(models.Model):
                 customer = self.stripe_obj.get("customer", None)
                 subscription = self.stripe_obj.get("subscription", None)
 
-                if (customer and customer.get("id", None) != self.customer_id) or (not customer and self.customer_id): 
+                if (customer and customer.get("id", None) != self.customer_id) or (not customer and self.customer_id) or (not self.customer_id): 
                     force = True
 
                 if not self.is_lifetime:
@@ -199,7 +202,6 @@ class User_Profile(models.Model):
                 # Check if the cached data is still valid (e.g., within 1 hour)
                 if (now() - self.stripe_last_checked).total_seconds() < (3600 * 24):
                     return self
-
 
             print("Fetching Stripe data for user:", self.user.email)
 

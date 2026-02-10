@@ -7,7 +7,7 @@
     {% if user_profile.tradingview_username %}
       <h6 class="text-text text-sm">
         TradingView Username:
-        <span class="font-semibold">{{ user_profile.tradingview_username }}</span>
+        <a href="{% url 'settings' %}" class="btn-a font-semibold">{{ user_profile.tradingview_username }}</a>
       </h6>
     {% endif %}
 
@@ -27,23 +27,23 @@
     <!-- Tab Content -->
     <div class="tab-contents">
       <!-- Free Tab -->
-      <div class="tab-content space-y-4 active" data-tab-content="free" id="access-list-Free">
-        {% include 'profile_user/include/access_list_strategies.html' with premium='Free' %}
+      <div class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4" data-tab-content="free" id="access-list-Free">
+        {% include 'profile_user/include/access_list_strategies.html' with premium='Free' strategies=free_strategies %}
       </div>
 
       <!-- Premium Tab -->
-      <div class="tab-content space-y-4" data-tab-content="premium" id="access-list-Premium">
-        {% include 'profile_user/include/access_list_strategies.html' with premium='Premium' %}
+      <div class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4" data-tab-content="premium" id="access-list-Premium">
+        {% include 'profile_user/include/access_list_strategies.html' with premium='Premium' strategies=premium_strategies %}
       </div>
 
       <!-- Beta Tab -->
-      <div class="tab-content space-y-4" data-tab-content="beta" id="access-list-Beta">
-        {% include 'profile_user/include/access_list_strategies.html' with premium='Beta' %}
+      <div class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4" data-tab-content="beta" id="access-list-Beta">
+        {% include 'profile_user/include/access_list_strategies.html' with premium='Beta' strategies=beta_strategies %}
       </div>
 
       <!-- VIP Tab -->
-      <div class="tab-content space-y-4" data-tab-content="vip" id="access-list-VIP">
-        {% include 'profile_user/include/access_list_strategies.html' with premium='VIP' %}
+      <div class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4" data-tab-content="vip" id="access-list-VIP">
+        {% include 'profile_user/include/access_list_strategies.html' with premium='VIP' strategies=vip_strategies %}
       </div>
     </div>
 
@@ -58,6 +58,7 @@
       
         document.querySelectorAll('.tab-content').forEach((content) => {
           content.classList.remove('active')
+          content.classList.add('hidden')
           content.style.display = 'none'
         })
       
@@ -68,8 +69,9 @@
       
         // Show corresponding content
         const activeContent = document.querySelector(`[data-tab-content="${tabName}"]`)
+        activeContent.classList.remove('hidden')
         activeContent.classList.add('active')
-        activeContent.style.display = 'block'
+        activeContent.style.display = 'grid'
       }
       
       // Initialize on page load

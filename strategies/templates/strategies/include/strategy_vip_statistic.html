@@ -1,0 +1,62 @@
+{% if product_overview %}
+  <div class="w-full {{ class|default:'' }}">
+    <!-- Statistics Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Total Subscribers -->
+      <div class="group bg-text/5 rounded-lg p-4">
+        <div class="space-y-1">
+          <div class="text-2xl font-bold text-title">{{ product_overview.subscriber_stats.total }}</div>
+          <div class="text-xs text-text/60 font-medium">Total Subscribers</div>
+        </div>
+      </div>
+
+      <!-- This Month -->
+      <div class="group bg-text/5 rounded-lg p-4">
+        <div class="space-y-1">
+          <div class="text-2xl font-bold text-title">{{ product_overview.subscriber_stats.month }}</div>
+          <div class="text-xs text-text/60 font-medium">This Month</div>
+        </div>
+      </div>
+
+      <!-- This Week -->
+      <div class="group bg-text/5 rounded-lg p-4">
+        <div class="space-y-1">
+          <div class="text-2xl font-bold text-title">{{ product_overview.subscriber_stats.week }}</div>
+          <div class="text-xs text-text/60 font-medium">This Week</div>
+        </div>
+      </div>
+
+      <!-- Today -->
+      <div class="group bg-text/5 rounded-lg p-4">
+        <div class="space-y-1">
+          <div class="text-2xl font-bold text-title">{{ product_overview.subscriber_stats.today }}</div>
+          <div class="text-xs text-text/60 font-medium">Today</div>
+        </div>
+      </div>
+    </div>
+
+    {% if product_overview.price_overview %}
+      <!-- Pricing Info -->
+      <div class="mt-4 p-4 rounded-lg bg-gradient-to-r from-yellow-400/10 sm:to-yellow-100/10">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <div>
+              <div class="text-sm font-semibold text-title">Subscription Price</div>
+              <div class="text-xs text-text/60">Current pricing plan</div>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="text-2xl font-bold text-title">${{ product_overview.price_overview.amount }}</span>
+            <span class="text-sm text-text/60">
+              {% if product_overview.price_overview.interval_count > 1 %}
+                /{{ product_overview.price_overview.interval_count }} {{ product_overview.price_overview.interval }}s
+              {% else %}
+                /{{ product_overview.price_overview.interval }}
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

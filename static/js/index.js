@@ -431,7 +431,7 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
         rules: {
           ".AccordionItem": {
             borderColor: getCssVariableColor("--color-text", 0.1),
-            borderWidth: "2px",
+            borderWidth: "1px",
             boxShadow: "none",
             backgroundColor: "transparent",
           },

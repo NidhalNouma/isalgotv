@@ -6,7 +6,7 @@ from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
 
 from performance.functions.context import get_global_strategy_performance_context
-from profile_user.utils.stripe import cancel_reactivate_subscription, change_subscription_payment_method, subscribe_to_strategy
+from profile_user.utils.stripe import cancel_reactivate_subscription, change_subscription_payment_method, subscribe_to_strategy, product_overview
 
 from .forms import StrategyCommentForm, RepliesForm, StrategyResultForm
 from .models import *
@@ -38,14 +38,14 @@ def get_strategies(request):
     
     # print(strategies)
 
-    context =  {'strategies': strategies, 'show_banner': True, 'available_types': availble_types, 'selected_type': type}
+    context =  {'strategies': strategies, 'available_types': availble_types, 'selected_type': type}
     return render(request, 'strategies.html', context)
 
 def get_reports(request):
 
     filter = {
         "strategy__is_live": True,
-        "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
+        # "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
     }
 
     superuser = request.user.is_superuser if request.user.is_authenticated else False
@@ -65,14 +65,14 @@ def get_reports(request):
     
     # print(strategies)
 
-    context =  {'show_banner': True, 'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name}
+    context =  {'results': results, 'pairs': unique_pairs_list, 'selected_pair': pair_name}
     return render(request, 'results.html', context)
 
 def get_ideas(request):
 
     filter = {
         "strategy__is_live": True,
-        "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
+        # "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
     }
 
     superuser = request.user.is_superuser if request.user.is_authenticated else False
@@ -116,10 +116,15 @@ def get_strategy(request, slug):
         if strategy.premium == 'VIP':
             if request.user.is_authenticated:
                 user_profile = request.user.user_profile
-                is_subscribed, subscription = user_profile.is_subscribed_to(product_id=strategy.price.stripe_product_id)
-                context['is_vip_subscribed'] = is_subscribed
-                context['vip_subscription'] = subscription
-                print("VIP Subscription status:", is_subscribed, subscription)
+                if strategy.created_by == user_profile.user:
+                    context['is_vip_subscribed'] = True
+                    context['owner'] = True
+                    context['product_overview'] = product_overview(strategy.price.stripe_product_id, strategy.price.stripe_price_id)
+                else:
+                    is_subscribed, subscription = user_profile.is_subscribed_to(product_id=strategy.price.stripe_product_id)
+                    context['is_vip_subscribed'] = is_subscribed
+                    context['vip_subscription'] = subscription
+                    # print("VIP Subscription status:", is_subscribed, subscription)
 
 
         return render(request, 'strategy.html', context)

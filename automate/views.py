@@ -318,10 +318,10 @@ def edit_broker(request, broker_type, pk):
                         
                         subscription = subscription_object(subscription_id=account.subscription_id)
 
-                        if not subscription or subscription.status != "active":
+                        if not subscription:
                             raise Exception("Subscription is not active. Please activate your subscription.")
 
-                        account.subscription_id = subscription.id
+                        account.subscription_id = subscription.get('id')
 
 
                     if valid.get('account_api_id'):
@@ -382,14 +382,19 @@ def toggle_broker(request, broker_type, pk):
         model_instance.active = not model_instance.active
 
         if model_instance.subscription_id != 'free_access':
-             # Pause/Resume subscription
-            if model_instance.subscription_id:
-                if not model_instance.active:
-                    # Pause the subscription by setting the status to "paused"
-                    subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
-                else:
-                    # Resume by setting it back to "active"
-                    subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
+            try:
+                # Pause/Resume subscription
+                if model_instance.subscription_id:
+                    if not model_instance.active:
+                        # Pause the subscription by setting the status to "paused"
+                        subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
+                    else:
+                        # Resume by setting it back to "active"
+                        subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
+            except Exception as e:
+                model_instance.active = False
+                model_instance.save(update_fields=['active'])
+                raise Exception(f"Failed to {'activate' if model_instance.active else 'deactivate'} account subscription: {str(e)}. The account has been deactivated to prevent access issues, please check your subscription status and try again.")
                    
 
         # if broker_type == "metatrader4" or broker_type == "metatrader5":
@@ -446,7 +451,18 @@ def delete_broker(request, broker_type, pk):
 
 
 def account_subscription_context(broker_type, pk, subscription_id):
-    subscription = subscription_object(subscription_id=subscription_id)
+    account = None
+    crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
+    forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
+
+    if broker_type in crypto_broker_types:
+        account = CryptoBrokerAccount.objects.get(pk=pk)
+    elif broker_type in forex_broker_types:
+        account = ForexBrokerAccount.objects.get(pk=pk)
+    else:
+        raise Exception("Invalid Broker Type")
+
+    subscription = subscription_object(subscription_id=account.subscription_id)
 
     payment_method = None
 
