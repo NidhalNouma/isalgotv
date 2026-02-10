@@ -33,6 +33,6 @@ urlpatterns = [
     path('complete-seller-account-onboarding/', complete_seller_account_onboarding, name='complete_seller_account_onboarding'),
     path('stripe-seller-dashboard/', stripe_seller_dashboard, name='stripe_seller_dashboard'),
 
-    path('preview-email/', preview_email, name='preview_email'),
+    # path('preview-email/', preview_email, name='preview_email'),
     path('send-email/', send_email, name='send_email'),
 ]

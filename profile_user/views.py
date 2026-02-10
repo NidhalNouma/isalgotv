@@ -877,8 +877,8 @@ def stripe_seller_dashboard(request):
 def preview_email(request):
     # Dummy data for template context
     from profile_user.utils.send_mails import email_context
-    context = {'username': 'Test User' , **email_context()}
-    return render(request, 'emails/welcome_email.html', context)
+    context = {'strategy_name': 'Test User' , **email_context()}
+    return render(request, 'emails/strategy_access_removed.html', context)
 
 def send_email(request):
     if request.method == 'POST':

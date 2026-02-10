@@ -1,420 +1,71 @@
-<!DOCTYPE html>
-<html
-  xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
-  lang="en"
->
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--[if mso
-      ]><xml
-        ><o:OfficeDocumentSettings
-          ><o:PixelsPerInch>96</o:PixelsPerInch
-          ><o:AllowPNG /></o:OfficeDocumentSettings></xml
-    ><![endif]-->
-    <!--[if !mso]><!-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cabin:wght@100;200;300;400;500;600;700;800;900"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <!--<![endif]-->
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+{% extends 'emails/base_email.html' %}
 
-      body {
-        margin: 0;
-        padding: 0;
-      }
+{% block title %}
+  Access Removed - IsAlgo
+{% endblock %}
 
-      a[x-apple-data-detectors] {
-        color: inherit !important;
-        text-decoration: inherit !important;
-      }
+{% block preheader %}
+  Your access to IsAlgo strategies has been removed.
+{% endblock %}
 
-      #MessageViewBody a {
-        color: inherit;
-        text-decoration: none;
-      }
+{% block content %}
+  <!-- Icon -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 24px;">
+        <div class="icon-wrapper icon-error" style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 8px; background-color: rgba(244, 68, 98, 0.1);">
+          <img src="{{ icons_url }}access.png" alt="" class="icons" style="width: 24px; height: 24px;" />
+        </div>
+      </td>
+    </tr>
+  </table>
 
-      p {
-        line-height: inherit;
-      }
+  <!-- Heading -->
+  <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">Access Removed</h2>
+  <p style="margin: 0 0 32px; text-align: center; font-size: 14px; color: #6b7280;">
+    <span class="badge badge-error" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(244, 68, 98, 0.1); color: #f44462; border: 1px solid rgba(244, 68, 98, 0.2);">Membership Canceled</span>
+  </p>
 
-      .desktop_hide,
-      .desktop_hide table {
-        mso-hide: all;
-        display: none;
-        max-height: 0px;
-        overflow: hidden;
-      }
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">We regret to inform you that your access to our trading strategies has been revoked. This action was taken either due to the cancellation of your membership or because the payment card associated with your account has insufficient funds or has been declined.</p>
 
-      .image_block img + div {
-        display: none;
-      }
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">If you believe this was made in error or if you have any questions, please don't hesitate to reach out — we're here to help.</p>
 
-      @media (max-width: 580px) {
-        .desktop_hide table.icons-outer {
-          display: inline-table !important;
-        }
-
-        .desktop_hide table.icons-inner {
-          display: inline-block !important;
-        }
-
-        .icons-inner {
-          text-align: center;
-        }
-
-        .icons-inner td {
-          margin: 0 auto;
-        }
-
-        .mobile_hide {
-          display: none;
-        }
-
-        .row-content {
-          width: 100% !important;
-        }
-
-        .stack .column {
-          width: 100%;
-          display: block;
-        }
-
-        .mobile_hide {
-          min-height: 0;
-          max-height: 0;
-          max-width: 0;
-          overflow: hidden;
-          font-size: 0px;
-        }
-
-        .desktop_hide,
-        .desktop_hide table {
-          display: table !important;
-          max-height: none !important;
-        }
-      }
-    </style>
-  </head>
-
-  <body
-    style="
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      -webkit-text-size-adjust: none;
-      text-size-adjust: none;
-    "
-  >
-    <table
-      class="nl-container"
-      width="100%"
-      border="0"
-      cellpadding="0"
-      cellspacing="0"
-      role="presentation"
-      style="
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-        background-color: #ffffff;
-      "
-    >
-      <tbody>
-        <tr>
-          <td>
-            <table
-              class="row row-1"
-              align="center"
-              width="100%"
-              border="0"
-              cellpadding="0"
-              cellspacing="0"
-              role="presentation"
-              style="
-                mso-table-lspace: 0pt;
-                mso-table-rspace: 0pt;
-                background-size: auto;
-              "
-            >
-              <tbody>
-                <tr>
-                  <td>
-                    <table
-                      class="row-content stack"
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="
-                        mso-table-lspace: 0pt;
-                        mso-table-rspace: 0pt;
-                        background-size: auto;
-                        color: #000000;
-                        width: 560px;
-                        margin: 0 auto;
-                      "
-                      width="560"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            class="column column-1"
-                            width="100%"
-                            style="
-                              mso-table-lspace: 0pt;
-                              mso-table-rspace: 0pt;
-                              font-weight: 400;
-                              text-align: left;
-                              padding-bottom: 5px;
-                              padding-top: 5px;
-                              vertical-align: top;
-                              border-top: 0px;
-                              border-right: 0px;
-                              border-bottom: 0px;
-                              border-left: 0px;
-                            "
-                          >
-                            <div
-                              class="spacer_block block-1"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="heading_block block-3"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <h1
-                                    style="
-                                      margin: 0;
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: 'Cabin', Arial,
-                                        'Helvetica Neue', Helvetica, sans-serif;
-                                      font-size: 42px;
-                                      font-weight: 700;
-                                      letter-spacing: normal;
-                                      line-height: 150%;
-                                      text-align: center;
-                                      margin-top: 0;
-                                      margin-bottom: 0;
-                                      mso-line-height-alt: 63px;
-                                    "
-                                  >
-                                    <span class="tinyMce-placeholder"
-                                      >Unfortunately, your access has been
-                                      removed.
-                                    </span>
-                                  </h1>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-4"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="paragraph_block block-5"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                                word-break: break-word;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div
-                                    style="
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: 'Cabin', Arial,
-                                        'Helvetica Neue', Helvetica, sans-serif;
-                                      font-size: 17px;
-                                      font-weight: 400;
-                                      letter-spacing: 0px;
-                                      line-height: 150%;
-                                      text-align: left;
-                                      mso-line-height-alt: 25.5px;
-                                    "
-                                  >
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      We regret to inform you that your access
-                                      to our trading strategies has been
-                                      revoked. This action was taken either due
-                                      to the cancellation of your membership or
-                                      because the payment card associated with
-                                      your account has insufficient funds or has
-                                      been declined.<br /><br />
-                                    </p>
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      If you believe that this decision was made
-                                      in error or if you have any questions,
-                                      please don't hesitate to contact us
-                                      <a
-                                        href="mailto:support@isalgo.com?subject=Access%20removed%21&body="
-                                        >here</a
-                                      >. We are here to assist you and address
-                                      any concerns you may have.<br /><br />
-                                    </p>
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      We value your membership and would like to
-                                      welcome you back to our community. We hope
-                                      that you found value in using our
-                                      strategies and that you experienced
-                                      positive results during your time with
-                                      us.<br /><br />
-                                    </p>
-                                    <p style="margin: 0">
-                                      Thank you for being a part of our
-                                      community, and we hope to have the
-                                      opportunity to serve you again in the
-                                      future.
-                                    </p>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-6"
-                              style="
-                                height: 25px;
-                                line-height: 25px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <div
-                              class="spacer_block block-7"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="button_block block-8"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div class="alignment" align="center">
-                                    <!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="mailto:support@isalgo.com?subject=Help%20Us%20Improve%21&body=" style="height:36px;width:178px;v-text-anchor:middle;" arcsize="12%" stroke="false" fillcolor="#54b6b2">
-<w:anchorlock/>
-<v:textbox inset="0px,0px,0px,0px">
-<center style="color:#131e20; font-family:Arial, sans-serif; font-size:13px">
-<!
-                                    [endif]--><a
-                                      href="mailto:support@isalgo.com?subject=Access%20removed%21&body="
-                                      target="_blank"
-                                      style="
-                                        text-decoration: none;
-                                        display: inline-block;
-                                        color: #ffff;
-                                        background-color: #3861f6;
-                                        border-radius: 4px;
-                                        width: auto;
-                                        border-top: 0px solid #3861f6;
-                                        font-weight: 700;
-                                        border-right: 0px solid #3861f6;
-                                        border-bottom: 0px solid #3861f6;
-                                        border-left: 0px solid #3861f6;
-                                        padding-top: 5px;
-                                        padding-bottom: 5px;
-                                        font-family: Arial, 'Helvetica Neue',
-                                          Helvetica, sans-serif;
-                                        font-size: 13px;
-                                        text-align: center;
-                                        mso-border-alt: none;
-                                        word-break: keep-all;
-                                      "
-                                      ><span
-                                        style="
-                                          padding-left: 40px;
-                                          padding-right: 40px;
-                                          font-size: 13px;
-                                          display: inline-block;
-                                          letter-spacing: normal;
-                                        "
-                                        ><span
-                                          style="
-                                            word-break: break-word;
-                                            line-height: 26px;
-                                          "
-                                          >Contact us here</span
-                                        ></span
-                                      ></a
-                                    >
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-9"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
+  <!-- What you can do card -->
+  <div class="card" style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">What you can do:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">1.</span> Update your payment method if it was declined
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">2.</span> Resubscribe to regain access to your strategies
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">3.</span> Contact us if you believe this was an error
+        </td>
+      </tr>
     </table>
-    <!-- End -->
-  </body>
-</html>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">We value your membership and would love to welcome you back. We hope you found value in our strategies during your time with us.</p>
+
+  <!-- CTA Buttons -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 12px;">
+        <a href="{{ pricing_url }}" class="btn" style="display: inline-block; padding: 6px 16px; background-color: #3861f6; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px; border: 2px solid transparent;">Resubscribe Now</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="mailto:{{ support_email }}?subject=Access%20Removed%20-%20Help" class="btn-secondary" style="display: inline-block; padding: 6px 16px; background-color: transparent; border: 2px solid #e5e7eb; color: #333333; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">Contact Support</a>
+      </td>
+    </tr>
+  </table>
+{% endblock %}

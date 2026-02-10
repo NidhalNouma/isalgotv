@@ -1,487 +1,87 @@
-<!DOCTYPE html>
-<html
-  xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
-  lang="en"
->
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--[if mso
-      ]><xml
-        ><o:OfficeDocumentSettings
-          ><o:PixelsPerInch>96</o:PixelsPerInch
-          ><o:AllowPNG /></o:OfficeDocumentSettings></xml
-    ><![endif]-->
-    <!--[if !mso]><!-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cabin:wght@100;200;300;400;500;600;700;800;900"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <!--<![endif]-->
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+{% extends 'emails/base_email.html' %}
 
-      body {
-        margin: 0;
-        padding: 0;
-      }
+{% block title %}
+  New Strategy: {{ strategy_name }} - IsAlgo
+{% endblock %}
 
-      a[x-apple-data-detectors] {
-        color: inherit !important;
-        text-decoration: inherit !important;
-      }
+{% block preheader %}
+  Introducing {{ strategy_name }} — our newest trading strategy is now available!
+{% endblock %}
 
-      #MessageViewBody a {
-        color: inherit;
-        text-decoration: none;
-      }
+{% block content %}
+  <!-- Icon -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 24px;">
+        <div class="icon-wrapper icon-primary" style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 8px; background-color: rgba(56, 97, 246, 0.1);">
+          <img src="{{ icons_url }}strategy.png" alt="" class="icons" style="width: 24px; height: 24px;" />
+        </div>
+      </td>
+    </tr>
+  </table>
 
-      p {
-        line-height: inherit;
-      }
+  <!-- Heading -->
+  <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">New Strategy Available</h2>
+  <p style="margin: 0 0 32px; text-align: center;">
+    {% if strategy_type == 'Free' %}
+      <span class="badge badge-free" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(8, 162, 132, 0.1); color: #08a284; border: 1px solid rgba(8, 162, 132, 0.2);">Free</span>
+    {% elif strategy_type == 'VIP' %}
+      <span class="badge badge-vip" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(250, 204, 21, 0.1); color: #d4a017; border: 1px solid rgba(250, 204, 21, 0.2);">Exclusive</span>
+    {% elif strategy_type == 'Beta' %}
+      <span class="badge badge-beta" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(51, 51, 51, 0.1); color: #333333; border: 1px solid rgba(51, 51, 51, 0.2);">Beta</span>
+    {% else %}
+      <span class="badge badge-premium" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; border: 1px solid rgba(56, 97, 246, 0.2);">Premium</span>
+    {% endif %}
+  </p>
 
-      .desktop_hide,
-      .desktop_hide table {
-        mso-hide: all;
-        display: none;
-        max-height: 0px;
-        overflow: hidden;
-      }
-
-      .image_block img + div {
-        display: none;
-      }
-
-      @media (max-width: 580px) {
-        .desktop_hide table.icons-outer {
-          display: inline-table !important;
-        }
-
-        .desktop_hide table.icons-inner {
-          display: inline-block !important;
-        }
-
-        .icons-inner {
-          text-align: center;
-        }
-
-        .icons-inner td {
-          margin: 0 auto;
-        }
-
-        .mobile_hide {
-          display: none;
-        }
-
-        .row-content {
-          width: 100% !important;
-        }
-
-        .stack .column {
-          width: 100%;
-          display: block;
-        }
-
-        .mobile_hide {
-          min-height: 0;
-          max-height: 0;
-          max-width: 0;
-          overflow: hidden;
-          font-size: 0px;
-        }
-
-        .desktop_hide,
-        .desktop_hide table {
-          display: table !important;
-          max-height: none !important;
-        }
-      }
-    </style>
-  </head>
-
-  <body
-    style="
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      -webkit-text-size-adjust: none;
-      text-size-adjust: none;
-    "
-  >
-    <table
-      class="nl-container"
-      width="100%"
-      border="0"
-      cellpadding="0"
-      cellspacing="0"
-      role="presentation"
-      style="
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-        background-color: #ffffff;
-      "
-    >
-      <tbody>
-        <tr>
-          <td>
-            <table
-              class="row row-1"
-              align="center"
-              width="100%"
-              border="0"
-              cellpadding="0"
-              cellspacing="0"
-              role="presentation"
-              style="
-                mso-table-lspace: 0pt;
-                mso-table-rspace: 0pt;
-                background-size: auto;
-              "
-            >
-              <tbody>
-                <tr>
-                  <td>
-                    <table
-                      class="row-content stack"
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="
-                        mso-table-lspace: 0pt;
-                        mso-table-rspace: 0pt;
-                        background-size: auto;
-                        color: #000000;
-                        width: 560px;
-                        margin: 0 auto;
-                      "
-                      width="560"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            class="column column-1"
-                            width="100%"
-                            style="
-                              mso-table-lspace: 0pt;
-                              mso-table-rspace: 0pt;
-                              font-weight: 400;
-                              text-align: left;
-                              padding-bottom: 5px;
-                              padding-top: 5px;
-                              vertical-align: top;
-                              border-top: 0px;
-                              border-right: 0px;
-                              border-bottom: 0px;
-                              border-left: 0px;
-                            "
-                          >
-                            <div
-                              class="spacer_block block-1"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="heading_block block-3"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <h1
-                                    style="
-                                      margin: 0;
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: 'Cabin', Arial,
-                                        'Helvetica Neue', Helvetica, sans-serif;
-                                      font-size: 42px;
-                                      font-weight: 700;
-                                      letter-spacing: normal;
-                                      line-height: 150%;
-                                      text-align: center;
-                                      margin-top: 0;
-                                      margin-bottom: 0;
-                                      mso-line-height-alt: 63px;
-                                    "
-                                  >
-                                    <span class="tinyMce-placeholder"
-                                      >Introducing
-                                      <span
-                                        style="
-                                          background-color: #000000;
-                                          color: #ffffff;
-                                        "
-                                        >{{strategy_name}}</span
-                                      ></span
-                                    >
-                                  </h1>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-4"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="paragraph_block block-5"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                                word-break: break-word;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div
-                                    style="
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: 'Cabin', Arial,
-                                        'Helvetica Neue', Helvetica, sans-serif;
-                                      font-size: 17px;
-                                      font-weight: 400;
-                                      letter-spacing: 0px;
-                                      line-height: 150%;
-                                      text-align: left;
-                                      mso-line-height-alt: 25.5px;
-                                    "
-                                  >
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      We're thrilled to share some exciting news
-                                      with you – we've just released our newest
-                                      trading strategy, {{strategy_name}}, and
-                                      we're eager for our community to dive in
-                                      and provide feedback.
-                                    </p>
-                                    <p style="margin: 0">
-                                      This innovative strategy is now available
-                                      on both
-                                      <span style="color: #ffffff"
-                                        ><span style="color: #000000"
-                                          ><a
-                                            href="{{strategy_tv_url}}"
-                                            target="_blank"
-                                            style="
-                                              text-decoration: underline;
-                                              color: #131e20;
-                                            "
-                                            rel="noopener"
-                                            ><strong>TradingView</strong></a
-                                          ></span
-                                        > </span
-                                      >and
-                                      <span style="color: #000000"
-                                        ><strong
-                                          ><a
-                                            href="{{strategy_url}}"
-                                            target="_blank"
-                                            style="
-                                              text-decoration: underline;
-                                              color: #131e20;
-                                            "
-                                            rel="noopener"
-                                            >our website</a
-                                          ></strong
-                                        ></span
-                                      ><span style="color: #000000"
-                                        ><strong>,</strong></span
-                                      >
-                                      where you'll find comprehensive details on
-                                      how to leverage its features effectively.
-                                      Whether you're a seasoned trader or just
-                                      starting out, {{strategy_name}} offers a
-                                      wealth of insights to enhance your trading
-                                      experience.
-                                    </p>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-6"
-                              style="
-                                height: 25px;
-                                line-height: 25px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="paragraph_block block-7"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                                word-break: break-word;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div
-                                    style="
-                                      color: #131e20;
-                                      direction: ltr;
-                                      font-family: Arial, 'Helvetica Neue',
-                                        Helvetica, sans-serif;
-                                      font-size: 16px;
-                                      font-weight: 400;
-                                      letter-spacing: 0px;
-                                      line-height: 120%;
-                                      text-align: left;
-                                      mso-line-height-alt: 19.2px;
-                                    "
-                                  >
-                                    <p style="margin: 0; margin-bottom: 16px">
-                                      But that's not all – we have even more
-                                      strategies in the pipeline, each designed
-                                      to empower you with the tools and
-                                      knowledge needed to navigate the markets
-                                      with confidence. Be sure to keep an eye on
-                                      our updates as we continue to roll out new
-                                      offerings.
-                                    </p>
-                                    <p style="margin: 0">
-                                      Thank you for being a valued member of our
-                                      community. We can't wait to hear your
-                                      thoughts on {{strategy_name}}!
-                                    </p>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-8"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                            <table
-                              class="button_block block-9"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0pt;
-                                mso-table-rspace: 0pt;
-                              "
-                            >
-                              <tr>
-                                <td class="pad">
-                                  <div class="alignment" align="center">
-                                    <!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="isalgo.com" style="height:36px;width:134px;v-text-anchor:middle;" arcsize="12%" stroke="false" fillcolor="#54b6b2">
-<w:anchorlock/>
-<v:textbox inset="0px,0px,0px,0px">
-<center style="color:#131e20; font-family:Arial, sans-serif; font-size:13px">
-<!
-                                    [endif]--><a
-                                      href="{{strategy_url}}"
-                                      target="_blank"
-                                      style="
-                                        text-decoration: none;
-                                        display: inline-block;
-                                        color: #ffff;
-                                        background-color: #3861f6;
-                                        border-radius: 4px;
-                                        width: auto;
-                                        border-top: 0px solid #3861f6;
-                                        font-weight: 700;
-                                        border-right: 0px solid #3861f6;
-                                        border-bottom: 0px solid #3861f6;
-                                        border-left: 0px solid #3861f6;
-                                        padding-top: 5px;
-                                        padding-bottom: 5px;
-                                        font-family: Arial, 'Helvetica Neue',
-                                          Helvetica, sans-serif;
-                                        font-size: 13px;
-                                        text-align: center;
-                                        mso-border-alt: none;
-                                        word-break: keep-all;
-                                      "
-                                      ><span
-                                        style="
-                                          padding-left: 40px;
-                                          padding-right: 40px;
-                                          font-size: 13px;
-                                          display: inline-block;
-                                          letter-spacing: normal;
-                                        "
-                                        ><span
-                                          style="
-                                            word-break: break-word;
-                                            line-height: 26px;
-                                          "
-                                          >Try it out</span
-                                        ></span
-                                      ></a
-                                    >
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                            <div
-                              class="spacer_block block-10"
-                              style="
-                                height: 60px;
-                                line-height: 60px;
-                                font-size: 1px;
-                              "
-                            >
-                              &#8202;
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
+  <!-- Strategy Image -->
+  {% if strategy_img %}
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td align="center" style="padding-bottom: 24px;">
+          <img src="{{ strategy_img }}" alt="{{ strategy_name }}" style="width: 100%; max-width: 520px; border-radius: 8px; border: 1px solid #e5e7eb;" />
+        </td>
+      </tr>
     </table>
-    <!-- End -->
-  </body>
-</html>
+  {% endif %}
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    We're thrilled to share some exciting news — we've just released our newest trading strategy, <strong>{{ strategy_name }}</strong>, and we're eager for our community to dive in and explore it.
+  </p>
+
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Whether you're a seasoned trader or just starting out, this strategy offers powerful insights to enhance your trading experience.</p>
+
+  <!-- Features card -->
+  <div class="card" style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Available on:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">✦</span> <a href="{{ strategy_url }}" style="color: #3861f6; text-decoration: underline; font-weight: 600;">IsAlgo</a> — Full details, performance & automation
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">✦</span> <a href="{{ strategy_tv_url }}" style="color: #3861f6; text-decoration: underline; font-weight: 600;">TradingView</a> — Chart integration & backtesting
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">We have even more strategies in the pipeline. Stay tuned for updates, and thank you for being a valued member of our community!</p>
+
+  <!-- CTA Buttons -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 12px;">
+        <a href="{{ strategy_url }}" class="btn" style="display: inline-block; padding: 6px 16px; background-color: #3861f6; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px; border: 2px solid transparent;">Try It Out</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="{{ strategies_url }}" class="btn-secondary" style="display: inline-block; padding: 6px 16px; background-color: transparent; border: 2px solid #e5e7eb; color: #333333; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">Browse All Strategies</a>
+      </td>
+    </tr>
+  </table>
+{% endblock %}

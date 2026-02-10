@@ -12,7 +12,7 @@ from automate.functions.alerts_message import manage_alert
 
 from automate.models import *
 from automate.forms import *
-from automate.tasks import send_broker_account_added_task
+from automate.tasks import send_broker_account_added_task, send_broker_account_deleted_task
 
 from automate.functions.brokers.metatrader import MetatraderClient
 from automate.functions.brokers.ctrader import CLIENT_ID as CTRADER_CLIENT_ID
@@ -441,6 +441,8 @@ def delete_broker(request, broker_type, pk):
             obj.delete()
         else:
             raise Exception("Invalid Broker Type")
+        
+        send_broker_account_deleted_task(request.user.email, obj)
 
         context = context_accounts_by_user(request)
         return render(request, 'include/accounts_list.html', context=context)
