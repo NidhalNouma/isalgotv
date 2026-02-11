@@ -290,17 +290,24 @@ def create_seller_account(user, country="US"):
     Create a Stripe Seller Account.
     """
     try:
-        account = stripe.Account.create(
-            type="express",
-            email=user.email,
-            country=country,
-            capabilities={"transfers": {"requested": True}},
-            tos_acceptance={"service_agreement": "recipient"},
+        platform_country = "US"
 
-            metadata={
+        account_params = {
+            "type": "express",
+            "email": user.email,
+            "country": country,
+            "capabilities": {"transfers": {"requested": True}},
+            "metadata": {
                 "user_id": str(user.id),
-            }
-        )
+                'profile_user_id': str(user.user_profile.id) if hasattr(user, 'user_profile') else None,
+            },
+        }
+
+        # "recipient" ToS is only for cross-border (platform and account in different countries)
+        if country.upper() != platform_country:
+            account_params["tos_acceptance"] = {"service_agreement": "recipient"}
+
+        account = stripe.Account.create(**account_params)
         return account
     except Exception as e:
         print("Error creating seller account:", e)
@@ -931,10 +938,13 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                 user_profile = User_Profile.objects.filter(seller_account_id=account_id).first()
                 if user_profile:
                     user_profile.verify_seller_account(charges_enabled=charges_enabled, payouts_enabled=payout_enabled)
+                    if charges_enabled:
+                        send_seller_account_verified_email_task(user_profile.user.email)
                     if not charges_enabled or not payout_enabled:
                         print("Stripe-Webhook: Seller account disabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
                     elif charges_enabled and payout_enabled:
                         print("Stripe-Webhook: Seller account enabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
+                        
 
                     return {
                         "status": "success",
@@ -1031,31 +1041,26 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                     }
                 elif type == "strategy_subscription":
                     strategy_id = sub_metadata.get('strategy_id', 0)
-                    strategy = Strategy.objects.get(id=strategy_id)
-                    if not strategy:
+                    try:
+                        strategy = Strategy.objects.get(id=strategy_id)
+                        if not strategy:
+                            raise Exception("Strategy not found for strategy subscription payment failure.")
+                        user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
+                        # send an email to user to notify them about the failed payment and access removal
+                        send_strategy_access_expiring_email_task(user_profile.user.email, strategy)
+                    except Exception as e:
                         print("Stripe-Webhook: Strategy not found for strategy subscription payment failure, ignoring event ...")
                         return {
                             "status": "ignored",
-                            "reason": "Strategy not found for strategy subscription payment failure",
+                            "reason": str(e),
                             "user_profile_id": user_profile.id,
                         }
-                    user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
-                    # send an email to user to notify them about the failed payment and access removal
-                    send_strategy_access_expiring_email_task(user_profile.user.email, strategy)
 
                     return {
                         "status": "success",
                         "message": "Strategy subscription payment failed, access removed if subscription ID matched.",
                         "user_profile_id": user_profile.id,
                     }
-                
-               
-                print("Stripe-Webhook: Unrecognized subscription type, ignoring event ...")
-                return {
-                    "status": "ignored",
-                    "reason": "Unrecognized subscription type in payment failed event",
-                    "user_profile_id": user_profile.id,
-                }
 
 
         elif event['type'] == 'customer.subscription.deleted' or event['type'] == 'customer.subscription.updated':
@@ -1224,8 +1229,9 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                         "status": "ignored",
                         "reason": "Missing strategy ID in metadata",
                     }
-                strategy = Strategy.objects.get(id=strategy_id)
-                if not strategy:
+                try:
+                    strategy = Strategy.objects.get(id=strategy_id)
+                except Strategy.DoesNotExist:
                     print("Stripe-Webhook: Strategy not found, ignoring event ...")
                     return {
                         "status": "ignored",

@@ -79,6 +79,14 @@ TEMPLATES = {
         'subject': 'Strategy Access Canceled - IsAlgo',
         'params': ['strategy_name', 'strategy_url'],
     },
+    'complete_seller_account': {
+        'subject': 'Complete Your Seller Account - IsAlgo',
+        'params': [],
+    },
+    'seller_account_verified': {
+        'subject': 'Seller Account Verified - IsAlgo',
+        'params': [],
+    },
 }
 
 

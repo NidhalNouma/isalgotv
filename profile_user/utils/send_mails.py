@@ -13,12 +13,13 @@ def email_context():
     # logo_url = f'{static_url}images/logo-naked.png'
     icons_url = f'{static_url}images/emails/icons/'
     dark_icons_url = f'{static_url}images/emails/icons-dark/'
+    light_icons_url = f'{static_url}images/emails/icons-light/'
 
     social_urls = {
-        'tv': 'https://www.tradingview.com/u/IsAlgo/',
-        'discord': 'https://discord.gg/4Zz5X9jG',
-        'youtube': 'https://www.youtube.com/@IsAlgo',
-        'instagram': 'https://www.instagram.com/IsAlgo/',
+        'tv': 'https://www.tradingview.com/u/IsAlgo//?aff_id=134591&aff_sub=134591&source=134591',
+        'discord': 'https://discord.gg/wVsXdGSMFg',
+        'youtube': 'https://www.youtube.com/channel/UCE-MRbybrU5KobUTH1NRxRA',
+        'instagram': 'https://www.instagram.com/isalgotrade/',
     }
 
     return {
@@ -32,6 +33,7 @@ def email_context():
         'static_url': static_url,
         'icons_url': icons_url,
         'dark_icons_url': dark_icons_url,
+        'light_icons_url': light_icons_url,
         'support_email': settings.EMAIL_HOST_USER,
         'social_urls': social_urls,
     }
@@ -239,3 +241,28 @@ def strategy_access_canceled(user_email, strategy):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
+def complete_seller_account(user_email):
+    subject = 'Complete Your Seller Account Setup'
+    html_content = render_to_string('emails/complete_seller_account.html', context={**email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending complete seller account email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def seller_account_verified(user_email):
+    subject = 'Your Seller Account is Verified!'
+    html_content = render_to_string('emails/seller_account_verified.html', context={**email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending seller account verified email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")

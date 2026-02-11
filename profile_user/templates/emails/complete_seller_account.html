@@ -1,0 +1,73 @@
+{% extends 'emails/base_email.html' %}
+
+{% block title %}
+  Complete Your Seller Profile - IsAlgo
+{% endblock %}
+
+{% block preheader %}
+  Your seller account is almost ready — complete your profile to start earning.
+{% endblock %}
+
+{% block content %}
+  <!-- Icon -->
+  <p style="margin: 0 0 24px; text-align: center;">
+    <img src="{{ dark_icons_url }}access.png" alt="" width="24" height="24" style="width: 24px; height: 24px; padding: 12px; border-radius: 8px; background-color: rgba(56, 97, 246, 0.1);" />
+  </p>
+
+  <!-- Heading -->
+  <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">Complete Your Seller Profile</h2>
+  <p style="margin: 0 0 32px; text-align: center; font-size: 14px; color: #6b7280;">
+    <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; border: 1px solid rgba(56, 97, 246, 0.2);">Action Required</span>
+  </p>
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">You're almost there! Your seller account has been created, but there are a few remaining steps to complete before we can publish your strategy on IsAlgo.</p>
+
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Please log in to your account and finish setting up your seller profile. Once completed, we'll take care of publishing your strategy and you'll start earning from subscribers. This typically takes just a few minutes.</p>
+
+  <!-- Steps card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">What you need to do:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">1.</span> Log in to your IsAlgo account and follow the prompts to complete your seller profile setup
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">2.</span> Complete the required identity verification
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">3.</span> Add your payout details to receive earnings
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Once your profile is complete, we'll publish your strategy and you'll start earning from every new subscriber. If you need any help along the way, don't hesitate to reach out.</p>
+
+  <!-- CTA Buttons -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center" style="padding-bottom: 12px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+          {% with btn_url=site_url btn_text='Complete Seller Profile' %}
+            {% include 'emails/components/button_primary.html' %}
+          {% endwith %}
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+          {% with btn_url='mailto:'|add:support_email|add:'?subject=Seller%20Account%20Help' btn_text='Contact Support' %}
+            {% include 'emails/components/button_secondary.html' %}
+          {% endwith %}
+        </table>
+      </td>
+    </tr>
+  </table>
+{% endblock %}

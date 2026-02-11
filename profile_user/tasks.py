@@ -27,3 +27,11 @@ def access_removed_email_task(user_email):
 @shared_task
 def overdue_access_removed_email_task(user_email):
     overdue_access_removed_email(user_email)
+
+@shared_task
+def send_complete_seller_account_email_task(user_email):
+    complete_seller_account(user_email)
+
+@shared_task
+def send_seller_account_verified_email_task(user_email):
+    seller_account_verified(user_email)

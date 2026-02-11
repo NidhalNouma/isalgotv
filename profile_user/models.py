@@ -11,6 +11,7 @@ from django.utils.timezone import now
 import json
 
 from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price, is_customer_subscribed_to_product
+from profile_user.tasks import send_complete_seller_account_email_task
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -52,14 +53,6 @@ class User_Profile(models.Model):
     amount_to_pay = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     country = models.CharField(max_length=2, blank=True, null=True, help_text="ISO 3166-1 alpha-2 country code")
-
-    def get_seller_account(self):
-        if not self.seller_account_id:
-            account = create_seller_account(self.user, country=self.country or "US")
-            self.seller_account_id = account.id
-            self.seller_account_verified = account.details_submitted
-            self.save(update_fields=["seller_account_id", "seller_account_verified"])
-        return get_seller_account(self.seller_account_id)
     
     def get_seller_account_id(self):
         if not self.seller_account_id:
@@ -67,6 +60,7 @@ class User_Profile(models.Model):
             self.seller_account_id = account.id
             self.seller_account_verified = account.details_submitted
             self.save(update_fields=["seller_account_id", "seller_account_verified"])
+            send_complete_seller_account_email_task(self.user.email)
         return self.seller_account_id
 
     def verify_seller_account(self, charges_enabled=False, payouts_enabled=False):
