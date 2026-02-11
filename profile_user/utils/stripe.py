@@ -749,20 +749,18 @@ def set_user_default_payment_method(user_profile, payment_method, force=False) -
         customer_id = user_profile.customer_id_value
 
         customer = stripe.Customer.retrieve(customer_id)
-        if force and not customer.invoice_settings.default_payment_method:
-             customer = stripe.Customer.modify(
-                    customer_id,
-                    invoice_settings={
-                        'default_payment_method': payment_method
-                    }
-                )
-        elif customer.invoice_settings.default_payment_method != payment_method or not customer.invoice_settings.default_payment_method:
+        should_update = (
+            (force and not customer.invoice_settings.default_payment_method)
+            or (not force and customer.invoice_settings.default_payment_method != payment_method)
+        )
+
+        if should_update:
             customer = stripe.Customer.modify(
-                    customer_id,
-                    invoice_settings={
-                        'default_payment_method': payment_method
-                    }
-                )    
+                customer_id,
+                invoice_settings={
+                    'default_payment_method': payment_method
+                }
+            )    
 
         if force:
             return customer, user_profile
@@ -772,30 +770,6 @@ def set_user_default_payment_method(user_profile, payment_method, force=False) -
 
     except Exception as e:
         print("Error setting default payment method:", e)
-        raise
-
-def pay_user_profile_amount(user_profile, payment_method, description="Payout") -> (tuple):
-    """
-    Create a payout to the user's connected Stripe account.
-    """
-    try:
-        seller_account_id = user_profile.get_seller_account_id()
-        if not seller_account_id:
-            raise Exception("User does not have a connected seller account.")
-
-        payment_intent = create_payment_intent(
-            user_profile,
-            payment_method=payment_method,
-            amount=user_profile.amount_to_pay,
-            currency="usd",
-            description=description
-        )
-
-        user_profile.mark_amount_as_paid()
-        return payment_intent, user_profile
-
-    except Exception as e:
-        print("Error creating payout:", e)
         raise
 
 def is_customer_subscribed_to_price(customer_id, price_id) -> (tuple):

@@ -10,8 +10,8 @@ from django.utils.timezone import now
 
 import json
 
-from profile_user.utils.stripe import get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price, is_customer_subscribed_to_product
-from profile_user.tasks import send_complete_seller_account_email_task
+from profile_user.utils.stripe import create_payment_intent, get_profile_data, delete_customer, get_or_create_customer_by_email, create_seller_account, get_seller_account, is_customer_subscribed_to_price, is_customer_subscribed_to_product
+from profile_user.tasks import send_complete_seller_account_email_task, send_amount_paid_email_task
 
 from django.conf import settings
 PRICE_LIST = settings.PRICE_LIST
@@ -67,9 +67,29 @@ class User_Profile(models.Model):
         self.seller_account_verified = charges_enabled
         self.save(update_fields=["seller_account_verified"])
 
-    def mark_amount_as_paid(self):
-        self.amount_to_pay = 0.00
-        self.save(update_fields=["amount_to_pay"])
+    def pay_remaining_amount(self, payment_method) -> (tuple):
+        """
+        Create a payout to the user's connected Stripe account.
+        """
+
+        if self.amount_to_pay <= 0:
+            raise ValueError("No amount to pay.")       
+
+        payment_intent = create_payment_intent(
+            self,
+            payment_method=payment_method,
+            amount=self.amount_to_pay,
+            currency="usd",
+            description=f"Payment for remaining amount of ${self.amount_to_pay} for user {self.user.email}"
+        )
+
+        if payment_intent.status == 'succeeded':
+            send_amount_paid_email_task(self.user.email, self.amount_to_pay)
+            # Reset amount to pay
+            self.amount_to_pay = 0.00
+            self.save(update_fields=["amount_to_pay"])
+
+        return self
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None

@@ -311,3 +311,21 @@ def automate_access(access_list, broker_name):
         return broker_name in access_items
     except Exception:
         return False
+
+@register.filter(name='tradingview_img_url')
+def tradingview_img_url(url):
+    """
+    Convert a TradingView chart URL to its corresponding image URL.
+    E.g., https://www.tradingview.com/x/0ILOuXol/ -> https://s3.tradingview.com/snapshots/z/zRRdykZ8.png
+    """
+    try:
+        if not url:
+            return ''
+        parts = url.rstrip('/').split('/')
+        if len(parts) < 2:
+            return url
+        chart_id = parts[-1]
+        return f"https://s3.tradingview.com/snapshots/{chart_id[0]}/{chart_id}.png"
+    except Exception:
+        return url
+

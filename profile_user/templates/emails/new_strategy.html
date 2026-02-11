@@ -1,4 +1,5 @@
 {% extends 'emails/base_email.html' %}
+{% load custom_tags %}
 
 {% block title %}
   New Strategy: {{ strategy_name }} - IsAlgo
@@ -33,7 +34,7 @@
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td align="center" style="padding-bottom: 24px;">
-          <img src="{{ strategy_img }}" alt="{{ strategy_name }}" style="width: 100%; max-width: 520px; border-radius: 8px; border: 1px solid #e5e7eb;" />
+          <img src="{{ strategy_img|tradingview_img_url }}" alt="{{ strategy_name }}" style="width: 100%; max-width: 520px; border-radius: 8px; border: 1px solid #e5e7eb;" />
         </td>
       </tr>
     </table>

@@ -111,14 +111,18 @@
       {% endblock %}
 
       <div class="min-h-[90vh] flex flex-col relative px-2" id="page-main-div">
-        {% if user_profile and user_profile.seller_account_id and not user_profile.seller_account_verified %}
-          {% url 'complete_seller_account_onboarding' as complete_seller_account_onboarding_url %}
-          {% include 'include/warnings.html' with class='my-2 w-full' close_id='complete-seller-account' warning='Your seller account is not yet fully verified. To start selling your strategies, please complete the onboarding process <a href="'|add:complete_seller_account_onboarding_url|add:'" class="underline font-semibold">here</a>.' %}
+        {% if user_profile.amount_to_pay > 0 %}
+          {% include 'profile_user/include/pay_remaining_amount.html' %}
         {% endif %}
 
         {% if subscription and subscription.status == 'past_due' and request.resolver_match.view_name != 'membership' %}
           {% url 'membership' as membership_url %}
           {% include 'include/errors.html' with class='my-2 w-full' close_id='past-due-subscription' error='We couldn`t complete your last payment, and as a result, your access to our trading strategies may be at risk. Please update your payment method to <a href="'|add:membership_url|add:'" class="underline font-semibold">reactivate your membership here</a>.' %}
+        {% endif %}
+
+        {% if user_profile and user_profile.seller_account_id and not user_profile.seller_account_verified %}
+          {% url 'complete_seller_account_onboarding' as complete_seller_account_onboarding_url %}
+          {% include 'include/warnings.html' with class='my-2 w-full' close_id='complete-seller-account' warning='Your seller account is not yet fully verified. To start selling your strategies, please complete the onboarding process <a href="'|add:complete_seller_account_onboarding_url|add:'" class="underline font-semibold">here</a>.' %}
         {% endif %}
 
         {% block page %}

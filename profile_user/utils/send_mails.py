@@ -133,7 +133,7 @@ def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, 
 
 def broker_account_added(user_email, account):
     account_name = account.name if account else "your broker account"
-    subject = 'Broker Account Added!'
+    subject = f'Account connected: {account_name}!'
     html_content = render_to_string('emails/broker_added.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
@@ -146,7 +146,7 @@ def broker_account_added(user_email, account):
 
 def broker_account_access_removed(user_email, account):
     account_name = account.name if account else "your broker account"
-    subject = 'Broker Account Subscription Issue!'
+    subject = f'Access Removed: {account_name}!'
     html_content = render_to_string('emails/broker_access_removed.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
@@ -159,7 +159,7 @@ def broker_account_access_removed(user_email, account):
 
 def broker_account_deleted(user_email, account=None):
     account_name = account.name if account else "your broker account"
-    subject = 'Broker Account Deleted!'
+    subject = f'Broker Account Deleted: {account_name}!'
     html_content = render_to_string('emails/broker_deleted.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
@@ -172,7 +172,7 @@ def broker_account_deleted(user_email, account=None):
 
 def broker_account_overdue(user_email, account):
     account_name = account.name if account else "your broker account"
-    subject = 'Broker Account Subscription Overdue!'
+    subject = f'Broker Account Subscription Overdue: {account_name}!'
     html_content = render_to_string('emails/broker_overdue.html', context={'account_name': account_name, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
@@ -184,7 +184,7 @@ def broker_account_overdue(user_email, account):
         print(f"Error sending email: {e}")
 
 def strategy_access_gained(user_email, strategy):
-    subject = 'You have a new subscriber!'
+    subject = f'Access Granted: You now have access to {strategy.name}!'
     e_context = email_context()
     strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
     html_content = render_to_string('emails/strategy_access_gained.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **e_context})
@@ -198,7 +198,7 @@ def strategy_access_gained(user_email, strategy):
         print(f"Error sending email: {e}")
 
 def strategy_access_removed(user_email, strategy):
-    subject = 'You lost a subscriber!'
+    subject = f'You lost your {strategy.name} access!'
     e_context = email_context()
     strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
     html_content = render_to_string('emails/strategy_access_removed.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **e_context})
@@ -212,7 +212,7 @@ def strategy_access_removed(user_email, strategy):
         print(f"Error sending email: {e}")
 
 def strategy_access_overdue(user_email, strategy):
-    subject = 'Strategy Subscription Overdue!'
+    subject = f'Strategy Subscription Overdue: {strategy.name}'
     e_context = email_context()
     strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
 
@@ -227,7 +227,7 @@ def strategy_access_overdue(user_email, strategy):
         print(f"Error sending email: {e}")
 
 def strategy_access_canceled(user_email, strategy):
-    subject = 'Strategy Subscription Canceled'
+    subject = f'Your access to {strategy.name} has been canceled'
     e_context = email_context()
     strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
 
@@ -262,6 +262,32 @@ def seller_account_verified(user_email):
     
     try:
         print('Sending seller account verified email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def amount_to_pay_email(user_email, amount):
+    subject = 'Outstanding Balance on Your IsAlgo Account'
+    html_content = render_to_string('emails/amount_to_pay.html', context={'amount': amount, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending amount to pay email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def amount_paid_email(user_email, amount):
+    subject = 'Payment Received - Thank You!'
+    html_content = render_to_string('emails/amount_paid.html', context={'amount': amount, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending amount paid email', user_email)
         email.send()
     except Exception as e:
         # Handle the exception as needed

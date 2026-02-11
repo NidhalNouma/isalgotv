@@ -1,0 +1,14 @@
+{% load custom_tags %}
+
+{% with amount=user_profile.amount_to_pay|floatformat:1 stripe_element_id='pay_remaining_amount' modal_id='staticmodal-pay_remaining_amount' %}
+  {% with warning_text='You have an $'|add:amount|add:' remaining balance. <button onclick="openModel(&quot;'|add:modal_id|add:'&quot;); mountStripeElement(&quot;'|add:stripe_element_id|add:'&quot;)" class=" font-semibold">Click here to pay</button>.' %}
+    {% include 'include/warnings.html' with class='my-2 w-full' warning=warning_text %}
+  {% endwith %}
+
+  {% render_template 'include/pay_form_stripe.html' current_subscription=vip_subscription base_price=amount final_price=amount get_started=get_started title=stripe_element_id remaining_balance=amount as pay_form_stripe %}
+  {% with formatted_title=strategy.name|lower|capfirst %}
+    {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>Pay remaining amount</h3>" %}
+      {% include 'include/modal.html' with modal_id=modal_id header=header_html body=pay_form_stripe stripe_element_id=stripe_element_id body_class='px-2 mt-3' %}
+    {% endwith %}
+  {% endwith %}
+{% endwith %}

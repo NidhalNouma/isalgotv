@@ -87,6 +87,14 @@ TEMPLATES = {
         'subject': 'Seller Account Verified - IsAlgo',
         'params': [],
     },
+    'amount_to_pay': {
+        'subject': 'Outstanding Balance - IsAlgo',
+        'params': ['amount'],
+    },
+    'amount_paid': {
+        'subject': 'Payment Received - IsAlgo',
+        'params': ['amount'],
+    },
 }
 
 

@@ -1,0 +1,22 @@
+{% extends 'emails/base_email.html' %}
+
+{% block title %}
+  Payment Received - IsAlgo
+{% endblock %}
+
+{% block preheader %}
+  Your payment of ${{ amount }} has been received. Thank you!
+{% endblock %}
+
+{% block content %}
+  {% with icon_name='notification.png' header_title='Payment Received' header_subtitle='Thank You' header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
+    {% include 'emails/components/email_header.html' %}
+  {% endwith %}
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    Your payment of <strong>${{ amount }}</strong> has been successfully processed. Your account balance is now clear.
+  </p>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Thank you for settling your balance.</p>
+{% endblock %}

@@ -35,3 +35,11 @@ def send_complete_seller_account_email_task(user_email):
 @shared_task
 def send_seller_account_verified_email_task(user_email):
     seller_account_verified(user_email)
+
+@shared_task
+def send_amount_to_pay_email_task(user_email, amount):
+    amount_to_pay_email(user_email, amount)
+
+@shared_task
+def send_amount_paid_email_task(user_email, amount):
+    amount_paid_email(user_email, amount)

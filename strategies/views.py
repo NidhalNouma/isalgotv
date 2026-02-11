@@ -436,13 +436,11 @@ def strategy_subscribe(request, id):
     try:
         strategy_price = get_object_or_404(StrategyPrice, pk=id)
 
-
         if request.method == 'POST':
             if not strategy_price.stripe_price_id:
                 context["error"] = 'No plan has been specified, please refresh the page and try again.'
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
-            
 
             data = request.POST
             
@@ -517,7 +515,6 @@ def strategy_change_payment(request, id, subscription_id):
 
     try:
         strategy_price = get_object_or_404(StrategyPrice, pk=id)
-
 
         if request.method == 'POST':
             if not strategy_price.stripe_price_id:

@@ -32,9 +32,9 @@ DUMMY_PARAMS = {
     'new_strategy': {
         'strategy_name': 'RSI Momentum Pro',
         'strategy_url': 'https://www.isalgo.com/strategies/',
-        'strategy_img': 'https://www.isalgo.com/static/images/logo-naked.png',
+        'strategy_img': 'https://www.tradingview.com/x/0ILOuXol/',
         'strategy_tv_url': 'https://www.tradingview.com/',
-        'strategy_type': 'Premium',
+        'strategy_type': 'VIP',
     },
     'broker_added': {
         'account_name': 'My Binance Futures',
@@ -66,6 +66,12 @@ DUMMY_PARAMS = {
     },
     'complete_seller_account': {},
     'seller_account_verified': {},
+    'amount_to_pay': {
+        'amount': '24.99',
+    },
+    'amount_paid': {
+        'amount': '24.99',
+    },
 }
 
 

@@ -612,15 +612,15 @@ def setdefault_payment_method(request):
     if request.method == 'POST':
         data = request.POST
         
-        context = {"error": '', 'payment_methods' : request.payment_methods }
-        payment_method = data['pm_id']
-
-        if not payment_method:
-            context["error"] = 'No payment method has been detected.'
-
-        user_profile = request.user_profile
-
         try:
+            context = {"error": '', 'payment_methods' : request.payment_methods }
+            payment_method = data['pm_id']
+
+            if not payment_method:
+                context["error"] = 'No payment method has been detected.'
+
+            user_profile = request.user_profile
+
             customer, user_profile = set_user_default_payment_method(user_profile, payment_method)      
 
             context["stripe_customer"] = customer
@@ -636,12 +636,38 @@ def setdefault_payment_method(request):
             return retarget(response, "#stripe-error-delete-payment_methods")
 
 @require_http_methods([ "POST"])
+def pay_remaining_amount(request):
+    if request.method == 'POST':
+        data = request.POST
+        
+        try:
+            context = {"error": '', 'payment_methods' : None}
+            payment_method = data['pm_id']
+
+            if not payment_method:
+                context["error"] = 'No payment method has been detected.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-pay_remaining_amount")
+
+            user_profile = request.user_profile
+
+            user_profile = user_profile.pay_remaining_amount(payment_method=payment_method)
+
+            response = HttpResponse()
+            response['HX-Refresh'] = 'true'
+            return response
+        except Exception as e:
+            context["error"] = str(e)
+            response = render(request, 'include/errors.html', context)
+            return retarget(response, "#stripe-error-pay_remaining_amount")
+
+@require_http_methods([ "POST"])
 def check_coupon(request):
     if request.method == 'POST':
         data = request.POST
 
         plan_id = request.GET.get('plan','')
-        price_id = PRICE_LIST.get(plan_id, '')
+        price_id = PRICE_LIST.get(plan_id, plan_id)
 
         context = {"error": '', 'title': plan_id}
         context["coupon_val"] = ""

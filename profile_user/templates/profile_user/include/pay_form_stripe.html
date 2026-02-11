@@ -1,7 +1,9 @@
 {% if not has_subscription %}
   <div class="mb-4">
     <h6 class="text-text/80 text-sm font-medium">
-      {% if strategy_price %}
+      {% if remaining_balance %}
+        You have a remaining balance of ${{ remaining_balance }}. Please complete your payment below.
+      {% elif strategy_price %}
         You’re a few clicks away from gaining access to this exclusive trading strategy.
       {% else %}
         You’re a few click away from gaining access to our expert trading strategies, premium access, and much more.
@@ -20,7 +22,9 @@
 </form>
 
 <form
-  {% if strategy_price %}
+  {% if remaining_balance %}
+    hx-post="{% url 'pay_remaining_amount' %}"
+  {% elif strategy_price %}
     hx-post="{% url 'strategy_subscribe' strategy_price.id %}?title={{ title }}"
   {% else %}
     {% if user_profile.subscription_id and subscription.status != 'canceled' %}
@@ -56,7 +60,11 @@
       class="group btn-accent block w-full max-w-full mx-auto font-semibold text-center"
     >
       <div id="submit-btn-sub-{{title}}" class="flex items-center justify-center w-full">
+        {% if remaining_balance %}
+        Pay
+        {% else %}
         Subscribe
+        {% endif %}
         <svg
           class="h-4 w-4 ml-1 group-hover:scale-110 transition-transform"
           stroke="currentColor"
@@ -83,7 +91,11 @@
       type="button"
       class="hidden btn-accent w-full mx-auto"
     >
+    {% if remaining_balance %}
+      Paying 
+    {% else %}
       Subscribing 
+    {% endif %}
       {% include 'svg/spinner.html' with class='ml-1 h-4' %}
     </button>
   </div>
