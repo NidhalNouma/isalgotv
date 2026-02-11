@@ -17,6 +17,7 @@ from profile_user.utils.notifcations import send_notification
 
 from django.db.models.functions import Random
 from django.db.models import Q
+import urllib
 
 def get_strategies(request):
     availble_types = ['Free', 'Premium', 'Beta', 'VIP']
@@ -127,6 +128,11 @@ def get_strategy(request, slug):
                     context['vip_subscription'] = subscription
                     # print("VIP Subscription status:", is_subscribed, subscription)
 
+        congrate = False
+        if 'sub' in request.GET:
+            if request.GET.get('sub') == 'True':
+                congrate = True
+                context['congrate'] = congrate
 
         return render(request, 'strategy.html', context)
     
@@ -463,10 +469,12 @@ def strategy_subscribe(request, id):
 
             print("Subscription created:", subscription.id)
 
+            params = ''
             if subscription.get('status') == 'active':
                 send_strategy_gained_email_task(user_profile.user.email, strategy_price.strategy)
+                params = '?sub=True'
 
-            return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]))
+            return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]) + params)
     except Exception as e:
         context["error"] = str(e)
         response = render(request, 'include/errors.html', context)

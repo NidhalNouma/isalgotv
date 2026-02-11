@@ -2,7 +2,7 @@
 
 {% if owner %}
   {% include 'strategies/include/user_connect.html' %}
-  {% include 'strategies/include/strategy_vip_statistic.html' with class="mt-4" %}
+  {% include 'strategies/include/strategy_vip_statistic.html' with class='mt-4' %}
 {% elif not user.is_authenticated or user.is_authenticated and not is_vip_subscribed %}
   <div class="w-full {{ class }}">
     <div class="flex sm:flex-row flex-col sm:items-center items-start justify-between gap-4 p-4 rounded-xl bg-gradient-to-r from-yellow-400/10 sm:to-yellow-100/10">

@@ -1,16 +1,17 @@
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
 
-{% with lottie_url='https://lottie.host/bdcfefe3-e506-4374-a71d-a92efeb0d9ad/EK1lzlDGHg.lottie' %}
-  <div class="absolute top-0 left-0 right-0 hideMe h-full w-full pointer-events-none">
-    <dotlottie-wc class="h-full w-auto absolute -left-1/2 top-24" src="{{ lottie_url }}" speed="1" autoplay loop></dotlottie-wc>
-    <dotlottie-wc class="h-full w-auto absolute -right-1/2 top-24" src="{{ lottie_url }}" background="transparent" speed="1" autoplay loop></dotlottie-wc>
+{% with lottie_url='https://lottie.host/3a0773f0-0083-4f4e-ad77-15d66aad504b/o9qb3TeLJ0.lottie' %}
+  <div class="fixed top-0 left-0 right-0 h-full w-full pointer-events-none z-50">
+    <dotlottie-wc class="h-full aspect-auto absolute -left-1/2 bottom-0 hideMe pointer-events-none" src="{{ lottie_url }}" speed="1" autoplay loop></dotlottie-wc>
+    <dotlottie-wc class="h-full aspect-auto absolute -right-1/2 bottom-0 hideMe pointer-events-none" src="{{ lottie_url }}" background="transparent" speed="1" autoplay loop></dotlottie-wc>
   </div>
 {% endwith %}
 
 <script type="text/javascript">
   function hideQueryParameters() {
-    var newUrl = window.location.pathname // Get the current URL without the query parameters
-    history.replaceState({}, document.title, newUrl) // Replace the URL without query parameters
+    var newUrl = window.location.pathname
+    newUrl = newUrl.replace(/\/sub(\/|$)/, '$1') // Remove /sub from the path if it exists
+    history.replaceState({}, document.title, newUrl)
   }
   
   document.addEventListener('DOMContentLoaded', function () {
