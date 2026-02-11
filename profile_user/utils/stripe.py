@@ -285,11 +285,13 @@ def create_payment_intent(user_profile, payment_method, amount=0.0, currency="us
         print("Error creating payment intent:", e)
         raise
 
-def create_seller_account(user, country="US"):
+def create_seller_account(user, country):
     """
     Create a Stripe Seller Account.
     """
     try:
+        if not country:
+            raise Exception("Country is required to create a seller account. Complete your profile with your country information.")
         platform_country = "US"
 
         account_params = {

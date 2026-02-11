@@ -1,0 +1,10 @@
+<!-- Email Header Component: Icon + Title + Subtitle Badge -->
+<!-- Params: icon_name, header_title, header_subtitle, header_bg, header_color, header_border -->
+<!-- Optional: icon_bg (defaults to header_bg if not set) -->
+<p style="margin: 0 0 24px; text-align: center;">
+  <img src="{{ dark_icons_url }}{{ icon_name }}" alt="" width="24" height="24" style="width: 24px; height: 24px; padding: 12px; border-radius: 8px; background-color: {{ icon_bg|default:header_bg }};" />
+</p>
+<h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">{{ header_title }}</h2>
+<p style="margin: 0 0 32px; text-align: center;">
+  <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: {{ header_bg }}; color: {{ header_color }}; border: 1px solid {{ header_border }};">{{ header_subtitle }}</span>
+</p>

@@ -56,7 +56,7 @@ class User_Profile(models.Model):
     
     def get_seller_account_id(self):
         if not self.seller_account_id:
-            account = create_seller_account(self.user, country=self.country or "US")
+            account = create_seller_account(self.user, country=self.country)
             self.seller_account_id = account.id
             self.seller_account_verified = account.details_submitted
             self.save(update_fields=["seller_account_id", "seller_account_verified"])

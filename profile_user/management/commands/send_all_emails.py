@@ -64,6 +64,8 @@ DUMMY_PARAMS = {
         'strategy_name': 'Volume Profile Elite',
         'strategy_url': 'https://www.isalgo.com/strategies/',
     },
+    'complete_seller_account': {},
+    'seller_account_verified': {},
 }
 
 

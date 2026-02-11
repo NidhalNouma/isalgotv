@@ -9,16 +9,9 @@
 {% endblock %}
 
 {% block content %}
-  <!-- Icon -->
-  <p style="margin: 0 0 24px; text-align: center;">
-    <img src="{{ dark_icons_url }}automate.png" alt="" width="24" height="24" style="width: 24px; height: 24px; padding: 12px; border-radius: 8px; background-color: rgba(217, 119, 6, 0.1);" />
-  </p>
-
-  <!-- Heading -->
-  <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">Subscription Overdue</h2>
-  <p style="margin: 0 0 32px; text-align: center;">
-    <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(217, 119, 6, 0.1); color: #d97706; border: 1px solid rgba(217, 119, 6, 0.2);">Action Required</span>
-  </p>
+  {% with icon_name='automate.png' header_title='Subscription Overdue' header_subtitle='Action Required' header_bg='rgba(217, 119, 6, 0.1)' header_color='#d97706' header_border='rgba(217, 119, 6, 0.2)' %}
+    {% include 'emails/components/email_header.html' %}
+  {% endwith %}
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
@@ -52,24 +45,7 @@
   <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Renew now to keep your automations running smoothly. If you're experiencing any issues with payment, our support team is here to help.</p>
 
   <!-- CTA Buttons -->
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-    <tr>
-      <td align="center" style="padding-bottom: 12px;">
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
-          {% with btn_url=automate_url btn_text='Renew Now' %}
-            {% include 'emails/components/button_primary.html' %}
-          {% endwith %}
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
-          {% with btn_url='mailto:'|add:support_email|add:'?subject=Broker%20Subscription%20Overdue' btn_text='Contact Support' %}
-            {% include 'emails/components/button_secondary.html' %}
-          {% endwith %}
-        </table>
-      </td>
-    </tr>
-  </table>
+  {% with primary_url=automate_url primary_text='Renew Now' secondary_url='mailto:'|add:support_email|add:'?subject=Broker%20Subscription%20Overdue' secondary_text='Contact Support' %}
+    {% include 'emails/components/cta_buttons.html' %}
+  {% endwith %}
 {% endblock %}
