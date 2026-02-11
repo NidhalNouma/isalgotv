@@ -1,3 +1,77 @@
+{% comment %}
+  ============================================================
+  IsAlgo Email Color Reference
+  ============================================================
+
+  PRIMARY / BRAND
+    #3861f6                              — Primary blue (buttons, links, accents)
+    rgba(56, 97, 246, 0.1)              — Primary tint (icon bg, step circles, card border)
+    rgba(56, 97, 246, 0.2)              — Primary border (card border, badge border)
+
+  SUCCESS / GREEN
+    #16a34a                              — Success green (broker added, strategy gained)
+    rgba(22, 163, 74, 0.1)              — Success tint (icon bg, badge bg, step circles)
+    rgba(22, 163, 74, 0.2)              — Success border (badge border)
+    #007a67                              — Success alt / teal (new member, lifetime badge)
+    rgba(0, 122, 103, 0.1)              — Success alt tint (icon bg, badge bg)
+    rgba(0, 122, 103, 0.2)              — Success alt border (badge border)
+
+  WARNING / AMBER
+    #d97706                              — Warning amber (overdue, canceled, deleted)
+    rgba(217, 119, 6, 0.1)              — Warning tint (icon bg, badge bg, step circles)
+    rgba(217, 119, 6, 0.2)              — Warning border (badge border)
+
+  ERROR / RED
+    #dc2626                              — Error red (access removed, broker suspended)
+    rgba(220, 38, 38, 0.1)              — Error tint (icon bg, badge bg, step circles)
+    rgba(220, 38, 38, 0.2)              — Error border (badge border)
+    #f44462                              — Error alt / pink (membership canceled)
+    rgba(244, 68, 98, 0.1)              — Error alt tint (icon bg, badge bg)
+    rgba(244, 68, 98, 0.2)              — Error alt border (badge border)
+
+  BADGE — FREE
+    #08a284                              — Free green (text)
+    rgba(8, 162, 132, 0.1)              — Free tint (badge bg)
+    rgba(8, 162, 132, 0.2)              — Free border (badge border)
+
+  BADGE — VIP / EXCLUSIVE
+    #d4a017                              — VIP gold (text)
+    rgba(250, 204, 21, 0.1)             — VIP tint (badge bg)
+    rgba(250, 204, 21, 0.2)             — VIP border (badge border)
+
+  BADGE — BETA
+    #333333                              — Beta dark (text)
+    rgba(51, 51, 51, 0.1)               — Beta tint (badge bg)
+    rgba(51, 51, 51, 0.2)               — Beta border (badge border)
+
+  BADGE — PREMIUM
+    #3861f6                              — Premium blue (same as primary)
+    rgba(56, 97, 246, 0.1)              — Premium tint (badge bg)
+    rgba(56, 97, 246, 0.2)              — Premium border (badge border)
+
+  TEXT
+    #000000                              — Headings, card titles
+    #111827                              — Strong / bold text, link titles
+    #333333                              — Body text, secondary button text
+    #374151                              — Paragraph text (welcome email)
+    #6b7280                              — Muted text, descriptions, footer links
+    #9ca3af                              — Copyright text
+
+  BACKGROUNDS
+    #e7edee                              — Page / body background
+    #ffffff                              — Content card background
+    #f9fafb                              — Card background, footer background
+
+  BORDERS
+    #e5e7eb                              — Card border, divider, header border, secondary button border, list-item border
+
+  BUTTON
+    #3861f6 bg + #ffffff text            — Primary button (on <td>)
+    #e5e7eb 2px border + #333333 text    — Secondary button (on <td>)
+  ============================================================
+{% endcomment %} 
+
+
 <!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
   <head>
@@ -11,406 +85,16 @@
         IsAlgo
       {% endblock %}
     </title>
-    <!--                                                           [if mso]>
+    <!--                                                              [if mso]>
   <xml>
     <o:OfficeDocumentSettings>
       <o:PixelsPerInch>96</o:PixelsPerInch>
       <o:AllowPNG/>
     </o:OfficeDocumentSettings>
   </xml>
-  <![endif]                                                           -->
-    <style>
-      /* Reset Styles */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-      }
-      img {
-        border: 0;
-        height: auto;
-        line-height: 100%;
-        outline: none;
-        text-decoration: none;
-        -ms-interpolation-mode: bicubic;
-      }
-      table {
-        border-collapse: collapse;
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-      }
-      td,
-      th {
-        padding: 0;
-      }
-      
-      /* Tell email clients we handle dark mode - prevents iOS auto-adjustments */
-      :root {
-        color-scheme: light dark;
-        supported-color-schemes: light dark;
-      }
-      
-      /* Color Variables - Matching Website from input.css */
-      :root {
-        --color-primary: #3861f6; /* 227 91% 59% */
-        --color-secondary: #3861f6;
-        --color-accent: #000000; /* 0 0% 0% */
-        --color-background: #e7edee; /* 188 16% 92% */
-        --color-profit: #007a67; /* 170 90% 32% */
-        --color-loss: #f44462; /* 355 91% 65% */
-        --color-text: #333333; /* 0 0% 20% */
-        --color-text-light: #e5e5e5; /* 0 0% 90% */
-        --color-title: #000000; /* 0 0% 0% */
-        --color-title-light: #ffffff; /* 0 0% 100% */
-        --color-border: #e5e7eb;
-      }
-      
-      /* Typography - Matching Website */
-      body,
-      p,
-      a,
-      span,
-      td {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 16px;
-        line-height: 1.6;
-        color: var(--color-text);
-      }
-      
-      h1,
-      h2,
-      h3 {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        color: var(--color-title);
-        margin: 0;
-        line-height: 1.2;
-      }
-      
-      h1 {
-        font-size: 32px;
-        font-weight: 700;
-      }
-      h2 {
-        font-size: 24px;
-        font-weight: 600;
-      }
-      h3 {
-        font-size: 20px;
-        font-weight: 600;
-      }
-      
-      /* Link Styles */
-      a {
-        color: var(--color-primary);
-        text-decoration: none;
-        transition: opacity 0.2s;
-      }
-      a:hover {
-        opacity: 0.8;
-      }
-      
-      /* Button Styles - Matching Website */
-      .btn {
-        display: inline-block;
-        padding: 6px 16px;
-        background-color: var(--color-primary);
-        color: #ffffff !important;
-        text-decoration: none;
-        border-radius: 6px;
-        font-weight: 500;
-        font-size: 14px;
-        text-align: center;
-        transition: all 0.2s ease-in-out;
-        border: 2px solid transparent;
-        border-bottom-width: 2px;
-      }
-      
-      .btn:hover {
-        filter: brightness(0.9);
-      }
-      
-      .btn-secondary {
-        background-color: transparent;
-        border: 2px solid var(--color-border);
-        color: var(--color-text) !important;
-        padding: 6px 16px;
-      }
-      
-      .btn-secondary:hover {
-        filter: brightness(0.9);
-      }
-      
-      /* Card Styles - Modern Design */
-      .card {
-        background-color: #f9fafb;
-        border-radius: 8px;
-        padding: 20px;
-        border: 1px solid var(--color-border);
-      }
-      
-      .badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 500;
-      }
-      
-      .badge-success {
-        background-color: rgba(0, 122, 103, 0.1);
-        color: var(--color-profit);
-        border: 1px solid rgba(0, 122, 103, 0.2);
-      }
-      
-      .badge-error {
-        background-color: rgba(244, 68, 98, 0.1);
-        color: var(--color-loss);
-        border: 1px solid rgba(244, 68, 98, 0.2);
-      }
-      
-      .badge-warning {
-        background-color: rgba(217, 119, 6, 0.1);
-        color: var(--color-warning);
-        border: 1px solid rgba(217, 119, 6, 0.2);
-      }
-      
-      .badge-free {
-        background-color: rgba(8, 162, 132, 0.1);
-        color: #08a284;
-        border: 1px solid rgba(8, 162, 132, 0.2);
-      }
-      
-      .badge-premium {
-        background-color: rgba(56, 97, 246, 0.1);
-        color: #3861f6;
-        border: 1px solid rgba(56, 97, 246, 0.2);
-      }
-      
-      .badge-beta {
-        background-color: rgba(51, 51, 51, 0.1);
-        color: #333333;
-        border: 1px solid rgba(51, 51, 51, 0.2);
-      }
-      
-      .badge-vip {
-        background-color: rgba(250, 204, 21, 0.1);
-        color: #d4a017;
-        border: 1px solid rgba(250, 204, 21, 0.2);
-      }
-      
-      /* Divider */
-      .divider {
-        height: 1px;
-        background-color: var(--color-border);
-        margin: 24px 0;
-      }
-      
-      /* List Styles */
-      .list-item {
-        padding: 12px 0;
-        border-bottom: 1px solid var(--color-border);
-      }
-      
-      .list-item:last-child {
-        border-bottom: none;
-      }
-      
-      /* Icon Wrapper */
-      .icon-wrapper {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-      }
-      
-      .icon-primary {
-        background-color: rgba(56, 97, 246, 0.1);
-      }
-      .icon-success {
-        background-color: rgba(0, 122, 103, 0.1);
-      }
-      .icon-error {
-        background-color: rgba(244, 68, 98, 0.1);
-      }
-      .icon-warning {
-        background-color: rgba(217, 119, 6, 0.1);
-      }
-      
-      .icons {
-        filter: brightness(0);
-      }
-      
-      /* Responsive */
-      @media only screen and (max-width: 600px) {
-        .container {
-          width: 100% !important;
-        }
-        .mobile-padding {
-          padding: 16px !important;
-        }
-        h1 {
-          font-size: 24px !important;
-        }
-        h2 {
-          font-size: 20px !important;
-        }
-        .btn {
-          padding: 10px 24px !important;
-          font-size: 13px !important;
-        }
-      }
-      
-      /* Dark Mode Support - Matching input.css :root[class~="dark"] theme */
-      @media (prefers-color-scheme: dark) {
-        /* Body & Background - matching dark --color-background: 0 0% 0% (#000000) */
-        body,
-        body.email-body {
-          background-color: #000000 !important;
-        }
-      
-        .email-bg,
-        .email-bg > tr > td {
-          background-color: #000000 !important;
-        }
-      
-        .email-container {
-          background-color: #0a0a0a !important;
-          border-color: #1a1a1a !important;
-        }
-      
-        /* Text colors - matching dark --color-text: 0 0% 80% (#cccccc) */
-        body,
-        table,
-        td,
-        p,
-        span {
-          color: #cccccc !important;
-        }
-      
-        /* Titles - matching dark --color-title: 0 0% 100% (#ffffff) */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        strong,
-        b {
-          color: #ffffff !important;
-        }
-      
-        /* Links - keep primary #3861f6 (same in light and dark per input.css) */
-        a:not(.btn):not(.btn-secondary) {
-          color: #3861f6 !important;
-        }
-      
-        /* Primary button - stays the same primary color */
-        .btn,
-        a.btn {
-          background-color: #3861f6 !important;
-          color: #ffffff !important;
-          border-color: transparent !important;
-        }
-      
-        /* Secondary button */
-        .btn-secondary,
-        a.btn-secondary {
-          background-color: rgba(204, 204, 204, 0.1) !important;
-          border-color: rgba(204, 204, 204, 0.2) !important;
-          color: #cccccc !important;
-        }
-      
-        /* Cards */
-        .card {
-          background-color: #0d0d0d !important;
-          border-color: #1a1a1a !important;
-        }
-      
-        /* Borders and dividers */
-        .border-bottom,
-        .border-top,
-        .divider,
-        .list-item {
-          border-color: #1a1a1a !important;
-        }
-      
-        /* Badges - profit/loss same in both themes per input.css */
-        .badge-success {
-          background-color: rgba(0, 122, 103, 0.2) !important;
-          border-color: rgba(0, 122, 103, 0.3) !important;
-        }
-      
-        .badge-error {
-          background-color: rgba(244, 68, 98, 0.2) !important;
-          border-color: rgba(244, 68, 98, 0.3) !important;
-        }
-      
-        .badge-warning {
-          background-color: rgba(217, 119, 6, 0.2) !important;
-          border-color: rgba(217, 119, 6, 0.3) !important;
-        }
-      
-        .badge-free {
-          background-color: rgba(8, 162, 132, 0.2) !important;
-          border-color: rgba(8, 162, 132, 0.3) !important;
-        }
-      
-        .badge-premium {
-          background-color: rgba(56, 97, 246, 0.2) !important;
-          border-color: rgba(56, 97, 246, 0.3) !important;
-        }
-      
-        .badge-beta {
-          background-color: rgba(204, 204, 204, 0.15) !important;
-          color: #cccccc !important;
-          border-color: rgba(204, 204, 204, 0.25) !important;
-        }
-      
-        .badge-vip {
-          background-color: rgba(250, 204, 21, 0.2) !important;
-          border-color: rgba(250, 204, 21, 0.3) !important;
-        }
-      
-        /* Icon wrappers */
-        .icon-primary {
-          background-color: rgba(56, 97, 246, 0.2) !important;
-        }
-        .icon-success {
-          background-color: rgba(0, 122, 103, 0.2) !important;
-        }
-        .icon-error {
-          background-color: rgba(244, 68, 98, 0.2) !important;
-        }
-        .icon-warning {
-          background-color: rgba(217, 119, 6, 0.2) !important;
-        }
-      
-        /* Footer */
-        .email-footer {
-          background-color: #0a0a0a !important;
-          border-color: #1a1a1a !important;
-        }
-      
-        /* Follow Us text */
-        .follow-text {
-          color: #cccccc !important;
-        }
-      
-        .icons {
-          filter: none !important;
-        }
-      }
-    </style>
+  <![endif]                                                              -->
   </head>
-  <body class="email-body" style="background-color: #e7edee; margin: 0; padding: 0;">
+  <body style="background-color: #e7edee; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
     <!-- Preheader -->
     <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">
       {% block preheader %}
@@ -419,23 +103,23 @@
     </div>
 
     <!-- Email Container -->
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="email-bg" style="background-color: #e7edee;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #e7edee; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
       <tr>
         <td align="center" style="padding: 40px 20px;">
           <!-- Main Content Table -->
-          <table class="container email-container" role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; ">
+          <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
             <!-- Header -->
             <tr>
-              <td class="border-bottom" style="padding: 20px 40px 12px; text-align: center; border-bottom: 1px solid #e5e7eb; border-radius: 12px 12px 0px 0px;">
+              <td style="padding: 20px 40px 12px; text-align: center; border-bottom: 1px solid #e5e7eb; border-radius: 12px 12px 0px 0px;">
                 {% block header %}
-                  <a href="{{ site_url }}" style="display: inline-block;"><img src="{{ icons_url }}logo-naked.png" alt="IsAlgo" class="logo-img icons" style="height: 56px; width: auto; display: block; border: 0; outline: none; filter: brightness(0);" /></a>
+                  <a href="{{ site_url }}" style="display: inline-block; text-decoration: none;"><img src="{{ icons_url }}logo.png" alt="IsAlgo" style="height: 56px; width: auto; display: block; border: 0; outline: none;" /></a>
                 {% endblock %}
               </td>
             </tr>
 
             <!-- Content -->
             <tr>
-              <td class="mobile-padding" style="padding: 40px;">
+              <td style="padding: 40px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
                 {% block content %}
 
                 {% endblock %}
@@ -444,12 +128,12 @@
 
             <!-- Footer -->
             <tr>
-              <td class="email-footer border-top" style="padding: 32px 40px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+              <td style="padding: 32px 40px; background-color: #ffffff; border-top: 1px solid #e5e7eb; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
                 {% block footer %}
                   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                       <td align="center" style="padding-bottom: 16px;">
-                        <p style="margin: 0; font-size: 10px; color: #6b7280;">
+                        <p style="margin: 0; font-size: 10px; color: #6b7280; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
                           <a href="{{ site_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Visit our website</a> •
                           <a href="{{ pricing_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Pricing</a> •
                           <a href="{{ docs_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Documentation</a>
@@ -458,21 +142,21 @@
                     </tr>
                     <tr>
                       <td align="center" style="padding: 20px 0 16px;">
-                        <p class="follow-text" style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #333333;">Follow Us</p>
+                        <p style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #333333; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Follow Us</p>
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
                           <tr>
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.tv }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
+                              <a href="{{ social_urls.tv }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0;" /></a>
                             </td>
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.youtube }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
+                              <a href="{{ social_urls.youtube }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0;" /></a>
                             </td>
 
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.instagram }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
+                              <a href="{{ social_urls.instagram }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0;" /></a>
                             </td>
                             <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.discord }}" style="display: inline-block;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0; filter: brightness(0);" class="icons" /></a>
+                              <a href="{{ social_urls.discord }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0;" /></a>
                             </td>
                           </tr>
                         </table>
@@ -481,7 +165,7 @@
                     <tr>
                       <td align="center">
                         {% load custom_tags %}
-                        <p style="margin: 0; font-size: 13px; color: #9ca3af;">
+                        <p style="margin: 0; font-size: 13px; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
                           © {% now 'Y' %} IsAlgo. All rights reserved.
                         </p>
                       </td>

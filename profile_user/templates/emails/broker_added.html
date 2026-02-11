@@ -13,9 +13,13 @@
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
       <td align="center" style="padding-bottom: 24px;">
-        <div class="icon-wrapper icon-success" style="display: inline-block; text-align: center; line-height: 48px; width: 48px; height: 48px; border-radius: 8px; background-color: rgba(22, 163, 74, 0.1);">
-          <img src="{{ icons_url }}automate.png" alt="" class="icons" style="width: 24px; height: 24px; vertical-align: middle;" />
-        </div>
+        <table align="center" role="presentation" width="48" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+          <tr>
+            <td style="text-align: center; line-height: 48px; width: 48px; height: 48px; border-radius: 8px; background-color: rgba(22, 163, 74, 0.1);">
+              <img src="{{ dark_icons_url }}automate.png" alt="" style="width: 24px; height: 24px; vertical-align: middle;" />
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
   </table>
@@ -23,7 +27,7 @@
   <!-- Heading -->
   <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">Account connected</h2>
   <p style="margin: 0 0 32px; text-align: center;">
-    <span class="badge badge-success" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; border: 1px solid rgba(22, 163, 74, 0.2);">Successfully Connected</span>
+    <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; border: 1px solid rgba(22, 163, 74, 0.2);">Successfully Connected</span>
   </p>
 
   <!-- Message -->
@@ -34,7 +38,7 @@
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">You can now start automating your trading strategies with this account. Here's how to get started:</p>
 
   <!-- Getting started card -->
-  <div class="card" style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
     <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Next steps:</p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
@@ -66,12 +70,20 @@
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
       <td align="center" style="padding-bottom: 12px;">
-        <a href="{{ automate_url }}" class="btn" style="display: inline-block; padding: 6px 16px; background-color: #3861f6; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px; border: 2px solid transparent;">Set Up Automation</a>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+          {% with btn_url=automate_url btn_text='Set Up Automation' %}
+            {% include 'emails/components/button_primary.html' %}
+          {% endwith %}
+        </table>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <a href="{{ docs_url }}" class="btn-secondary" style="display: inline-block; padding: 6px 16px; background-color: transparent; border: 2px solid #e5e7eb; color: #333333; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">Read Documentation</a>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+          {% with btn_url=docs_url btn_text='Read Documentation' %}
+            {% include 'emails/components/button_secondary.html' %}
+          {% endwith %}
+        </table>
       </td>
     </tr>
   </table>

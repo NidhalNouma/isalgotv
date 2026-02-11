@@ -21,16 +21,16 @@
   </p>
 
   <!-- What You Can Do Card -->
-  <div class="card" style="margin: 32px 0;">
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 32px 0;">
     <h3 style="margin: 0 0 20px; color: #000000; font-size: 18px;">What you can do now</h3>
 
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
-        <td class="list-item" style="padding: 12px 0;">
+        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="width: 20px; vertical-align: top; padding-right: 12px;">
-                <img src="{{ icons_url }}strategy.png" alt="Explore Strategies" class="icons" style="height: 18px; width: auto; display: block; border: 0; outline: none;" />
+                <img src="{{ icons_url }}strategy.png" alt="Explore Strategies" style="height: 18px; width: auto; display: block; border: 0; outline: none; filter: brightness(0);" />
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
@@ -44,11 +44,11 @@
       </tr>
 
       <tr>
-        <td class="list-item" style="padding: 12px 0;">
+        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="width: 20px; vertical-align: top; padding-right: 12px;">
-                <img src="{{ icons_url }}report.png" alt="Explore reports" class="icons" style="height: 18px; width: auto; display: block; border: 0; outline: none;" />
+                <img src="{{ icons_url }}report.png" alt="Explore reports" style="height: 18px; width: auto; display: block; border: 0; outline: none; filter: brightness(0);" />
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
@@ -62,11 +62,11 @@
       </tr>
 
       <tr>
-        <td class="list-item" style="padding: 12px 0;">
+        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="width: 20px; vertical-align: top; padding-right: 12px;">
-                <img src="{{ icons_url }}automate.png" alt="Connect Your Broker" class="icons" style="height: 18px; width: auto; display: block; border: 0; outline: none;" />
+                <img src="{{ icons_url }}automate.png" alt="Connect Your Broker" style="height: 18px; width: auto; display: block; border: 0; outline: none; filter: brightness(0);" />
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
@@ -80,11 +80,11 @@
       </tr>
 
       <tr>
-        <td class="list-item" style="padding: 12px 0; border-bottom: none;">
+        <td style="padding: 12px 0;">
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="width: 20px; vertical-align: top; padding-right: 12px;">
-                <img src="{{ icons_url }}docs.png" alt="Explore Your Dashboard" class="icons" style="height: 18px; width: auto; display: block; border: 0; outline: none;" />
+                <img src="{{ icons_url }}docs.png" alt="Explore Your Dashboard" style="height: 18px; width: auto; display: block; border: 0; outline: none; filter: brightness(0);" />
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
@@ -100,7 +100,7 @@
   </div>
 
   <!-- Quick Start Guide -->
-  <div class="card" style="margin: 32px 0; border-color: rgba(56, 97, 246, 0.2);">
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid rgba(56, 97, 246, 0.2); margin: 32px 0;">
     <h3 style="margin: 0 0 12px; color: #000000; font-size: 18px;">Quick Start Guide</h3>
     <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #374151;">New to automated trading? Check out our beginner's guide to get started with confidence:</p>
     <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; color: #6b7280;">
@@ -115,15 +115,11 @@
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
       <td align="center" style="padding: 8px 0 32px;">
-        <!--           [if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ strategies_url }}" style="height:44px;v-text-anchor:middle;width:220px;" arcsize="14%" strokecolor="#3861f6" fillcolor="#3861f6">
-        <w:anchorlock/>
-        <center style="color:#ffffff;font-family:sans-serif;font-size:14px;font-weight:600;">Explore Strategies</center>
-      </v:roundrect>
-      <![endif]          -->
-        <!-- [if !mso]><! -->
-        <a href="{{ strategies_url }}" class="btn" style="background-color: #3861f6; color: #ffffff; text-decoration: none; padding: 12px 40px; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 14px;">Explore Strategies →</a>
-        <!-- <![endif] -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+          {% with btn_url=strategies_url btn_text='Explore Strategies →' %}
+            {% include 'emails/components/button_primary.html' %}
+          {% endwith %}
+        </table>
       </td>
     </tr>
   </table>

@@ -12,6 +12,7 @@ def email_context():
     static_url = settings.STATIC_URL
     # logo_url = f'{static_url}images/logo-naked.png'
     icons_url = f'{static_url}images/emails/icons/'
+    dark_icons_url = f'{static_url}images/emails/icons-dark/'
 
     social_urls = {
         'tv': 'https://www.tradingview.com/u/IsAlgo/',
@@ -30,6 +31,7 @@ def email_context():
         'docs_url': docs_url,
         'static_url': static_url,
         'icons_url': icons_url,
+        'dark_icons_url': dark_icons_url,
         'support_email': settings.EMAIL_HOST_USER,
         'social_urls': social_urls,
     }
