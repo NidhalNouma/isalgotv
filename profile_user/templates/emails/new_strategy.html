@@ -1,4 +1,4 @@
-{% extends 'emails/base_email.html' %}
+{% extends 'emails/components/base_email.html' %}
 {% load custom_tags %}
 
 {% block title %}
@@ -11,23 +11,23 @@
 
 {% block content %}
   <!-- Icon -->
-  <p style="margin: 0 0 24px; text-align: center;">
-    <img src="{{ dark_icons_url }}strategy.png" alt="" width="24" height="24" style="width: 24px; height: 24px; padding: 12px; border-radius: 8px; background-color: rgba(56, 97, 246, 0.1);" />
-  </p>
-
-  <!-- Heading -->
-  <h2 style="margin: 0 0 8px; text-align: center; font-size: 24px; font-weight: 700; color: #000000;">New Strategy Available</h2>
-  <p style="margin: 0 0 32px; text-align: center;">
-    {% if strategy_type == 'Free' %}
-      <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(8, 162, 132, 0.1); color: #08a284; border: 1px solid rgba(8, 162, 132, 0.2);">Free</span>
-    {% elif strategy_type == 'VIP' %}
-      <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(250, 204, 21, 0.1); color: #d4a017; border: 1px solid rgba(250, 204, 21, 0.2);">Exclusive</span>
-    {% elif strategy_type == 'Beta' %}
-      <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(51, 51, 51, 0.1); color: #333333; border: 1px solid rgba(51, 51, 51, 0.2);">Beta</span>
-    {% else %}
-      <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; border: 1px solid rgba(56, 97, 246, 0.2);">Premium</span>
-    {% endif %}
-  </p>
+  {% if strategy_type == 'Free' %}
+    {% with icon_name='free.png' header_title='New Free Strategy Available' header_subtitle='Free' header_bg='rgba(8, 162, 132, 0.1)' header_color='#08a284' header_border='rgba(8, 162, 132, 0.2)' %}
+      {% include 'emails/components/email_header.html' %}
+    {% endwith %}
+  {% elif strategy_type == 'VIP' %}
+    {% with icon_name='vip.png' header_title='New Exclusive Strategy Available' header_subtitle='Exclusive' header_bg='rgba(250, 204, 21, 0.1)' header_color='#d4a017' header_border='rgba(250, 204, 21, 0.2)' %}
+      {% include 'emails/components/email_header.html' %}
+    {% endwith %}
+  {% elif strategy_type == 'Beta' %}
+    {% with icon_name='beta.png' header_title='New Beta Strategy Available' header_subtitle='Beta' header_bg='rgba(51, 51, 51, 0.1)' header_color='#333333' header_border='rgba(51, 51, 51, 0.2)' %}
+      {% include 'emails/components/email_header.html' %}
+    {% endwith %}
+  {% else %}
+    {% with icon_name='premium.png' header_title='New Premium Strategy Available' header_subtitle='Premium' header_bg='rgba(56, 97, 246, 0.1)' header_color='#3861f6' header_border='rgba(56, 97, 246, 0.2)' %}
+      {% include 'emails/components/email_header.html' %}
+    {% endwith %}
+  {% endif %}
 
   <!-- Strategy Image -->
   {% if strategy_img %}

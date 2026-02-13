@@ -634,7 +634,7 @@
 }
 
 .hideMe {
-  animation: cssAnimation 8s forwards;
+  animation: cssAnimation 10s forwards;
 }
 
 @keyframes cssAnimation {
