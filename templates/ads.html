@@ -1,119 +1,269 @@
 {% comment %}TODO: Adding remaining broker ads{% endcomment %}
 
-{% with css_classes=class|default:''|add:' flex flex-col h-fit w-full items-center p-6 rounded-md backdrop-blur-3xl' %}
+{% with css_classes=class|default:''|add:' group cursor-pointer relative overflow-hidden rounded-xl' %}
   {% if ads == 1 %}
-    <aside class="{{ css_classes }} bg-[#e8bb41]/5">
-      <div class="flex items-center text-[#e8bb41] gap-2">
-        {% include 'svg/binance.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Crypto Exchange for <br />Bitcoin, Ethereum & Altcoins
-      </p>
-
-      <a class="btn-accent text-text dark:text-background bg-[#e8bb41] w-fit px-6 rounded-md font-bold" href="https://www.binance.com/activity/referral-entry/CPA?ref=CPA_004BY6J0IA" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://www.binance.com/activity/referral-entry/CPA?ref=CPA_004BY6J0IA" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#e8bb41]/10 via-[#e8bb41]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#e8bb41]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/binance.html' with class='w-6 h-6 scale-[200%] fill-[#e8bb41]' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">Binance</h3>
+              <p class="text-xs sm:text-sm text-text/70">Crypto Exchange for Bitcoin, Ethereum & Altcoins</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-[#e8bb41] bg-[#e8bb41]/10 group-hover:bg-[#e8bb41]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 2 %}
-    <aside class="{{ css_classes }} bg-[#e8bb41]/5">
-      <div class="flex items-center text-[#e8bb41] gap-2">
-        {% include 'svg/binance_us.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Crypto Exchange for <br />Bitcoin, Ethereum & Altcoins
-      </p>
-
-      <a class="btn-accent text-text dark:text-background bg-[#e8bb41] w-fit px-6 rounded-md font-bold" href="https://www.binance.com/activity/referral-entry/CPA?ref=CPA_004BY6J0IA" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://www.binance.com/activity/referral-entry/CPA?ref=CPA_004BY6J0IA" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#e8bb41]/10 via-[#e8bb41]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#e8bb41]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/binance_us.html' with class='w-6 h-6 scale-[200%] fill-[#e8bb41]' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">Binance US</h3>
+              <p class="text-xs sm:text-sm text-text/70">Crypto Exchange for Bitcoin, Ethereum & Altcoins</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-[#e8bb41] bg-[#e8bb41]/10 group-hover:bg-[#e8bb41]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 3 %}
-    <aside class="{{ css_classes }} bg-[#8bfafb]/5">
-      <div class="flex items-center text-title gap-2">
-        {% include 'svg/bitget.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Buy and Sell <br />Bitcoin, Ethereum & more
-      </p>
-
-      <a class="btn-accent text-text dark:text-background bg-[#8bfafb] w-fit px-6 rounded-md font-bold" href="https://partner.bitget.com/bg/VT1JM4" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://partner.bitget.com/bg/VT1JM4" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#8bfafb]/10 via-[#8bfafb]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#8bfafb]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/bitget.html' with class='w-6 h-6 scale-[200%] fill-current text-title' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">Bitget</h3>
+              <p class="text-xs sm:text-sm text-text/70">Buy and Sell Bitcoin, Ethereum & more</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-title bg-[#8bfafb]/10 group-hover:bg-[#8bfafb]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 4 %}
-    <aside class="{{ css_classes }} bg-[#0d1425]/10">
-      <div class="flex items-center text-title gap-2">
-        {% include 'svg/crypto.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Take your trades <br />to the next level
-      </p>
-
-      <a class="btn-accent w-fit px-6 rounded-md font-bold" href="https://crypto.com/exch/v5br6728vk" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://crypto.com/exch/v5br6728vk" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-accent/10 via-primary/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-accent/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/crypto.html' with class='w-6 h-6 scale-[200%] fill-current text-title' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">Crypto.com</h3>
+              <p class="text-xs sm:text-sm text-text/70">Take your trades to the next level</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-accent bg-primary/10 group-hover:bg-primary/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 5 %}
-    <aside class="{{ css_classes }} bg-[#1942f5]/10">
-      <div class="flex items-center text-title gap-2">
-        {% include 'svg/mexc.html' with class='h-5 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Buy and Sell <br />Bitcoin, Ethereum & more
-      </p>
-
-      <a class="btn-accent bg-[#1942f5] w-fit px-6 rounded-md font-bold" href="https://promote.mexc.com/r/YeqTEM3g" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://promote.mexc.com/r/YeqTEM3g" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#1942f5]/10 via-[#1942f5]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#1942f5]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/mexc.html' with class='w-6 h-6 scale-[200%] fill-current text-title' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">MEXC</h3>
+              <p class="text-xs sm:text-sm text-text/70">Buy and Sell Bitcoin, Ethereum & more</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-[#1942f5] bg-[#1942f5]/10 group-hover:bg-[#1942f5]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 6 %}
-    <aside class="{{ css_classes }} bg-[#2b5ef6]/10">
-      <div class="flex items-center text-title gap-2">
-        {% include 'svg/bingx.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Buy and Sell <br />Bitcoin, Ethereum & more
-      </p>
-
-      <a class="btn-accent bg-[#2b5ef6] w-fit px-6 rounded-md font-bold" href="https://bingx.com/invite/TXV3PB/" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://bingx.com/invite/TXV3PB/" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#2b5ef6]/10 via-[#2b5ef6]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#2b5ef6]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/bingx.html' with class='w-6 h-6 scale-[200%] fill-current text-title' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">BingX</h3>
+              <p class="text-xs sm:text-sm text-text/70">Buy and Sell Bitcoin, Ethereum & more</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-[#2b5ef6] bg-[#2b5ef6]/10 group-hover:bg-[#2b5ef6]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 7 %}
-    <aside class="{{ css_classes }} bg-[#56bdca]/10">
-      <div class="flex items-center text-title gap-2">
-        {% include 'svg/bitmart.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Buy and Sell <br />Bitcoin, Ethereum & more
-      </p>
-
-      <a class="btn-accent bg-[#56bdca] w-fit px-6 rounded-md font-bold" href="https://www.bitmart.com/invite/c5dw5R/en" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://www.bitmart.com/invite/c5dw5R/en" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#56bdca]/10 via-[#56bdca]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#56bdca]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/bitmart.html' with class='w-6 h-6 scale-[200%] fill-current text-title' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">BitMart</h3>
+              <p class="text-xs sm:text-sm text-text/70">Buy and Sell Bitcoin, Ethereum & more</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-[#56bdca] bg-[#56bdca]/10 group-hover:bg-[#56bdca]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% elif ads == 8 %}
-    <aside class="{{ css_classes }} bg-[#54b990]/10">
-      <div class="flex items-center text-title gap-2">
-        {% include 'svg/kucoin.html' with class='h-6 aspect-auto fill-current' %}
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        Buy and Sell <br />Bitcoin, Ethereum & more
-      </p>
-
-      <a class="btn-accent bg-[#54b990] w-fit px-6 rounded-md font-bold" href="https://www.kucoin.com/r/rf/CX8H7VKP" target="_blank">Trade Now</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://www.kucoin.com/r/rf/CX8H7VKP" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#54b990]/10 via-[#54b990]/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-[#54b990]/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full backdrop-blur">
+                {% include 'svg/kucoin.html' with class='w-6 h-6 scale-[200%] fill-current text-title' %}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">KuCoin</h3>
+              <p class="text-xs sm:text-sm text-text/70">Buy and Sell Bitcoin, Ethereum & more</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-[#54b990] bg-[#54b990]/10 group-hover:bg-[#54b990]/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Trade Now</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% else %}
-    <aside class="{{ css_classes }} bg-title/5">
-      <div class="flex items-center text-title gap-2">
-        <svg class="h-6 aspect-auto" viewBox="0 0 36 28" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 22H7V11H0V4h14v18zM28 22h-8l7.5-18h8L28 22z" fill="currentColor"></path>
-          <circle cx="20" cy="8" r="4" fill="currentColor"></circle>
-        </svg>
-        <svg class="h-6 aspect-auto" viewBox="0 0 147 28" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4.793 22.024h3.702V7.519h4.843V4.02H0v3.5h4.793v14.504zM13.343 22.024h3.474v-6.06c0-2.105 1.09-3.373 2.74-3.373.582 0 1.039.101 1.571.279V9.345a3.886 3.886 0 00-1.166-.152c-1.42 0-2.713.938-3.145 2.18V9.346h-3.474v12.679zM27.796 22.303c1.75 0 3.068-.888 3.652-1.7v1.42h3.474V9.346h-3.474v1.42c-.584-.811-1.902-1.699-3.652-1.699-3.372 0-5.959 3.043-5.959 6.618 0 3.576 2.587 6.619 5.96 6.619zm.736-3.17c-1.928 0-3.196-1.445-3.196-3.448 0-2.004 1.268-3.45 3.196-3.45 1.927 0 3.195 1.446 3.195 3.45 0 2.003-1.268 3.448-3.195 3.448zM43.193 22.303c1.75 0 3.068-.888 3.651-1.7v1.42h3.474V3.007h-3.474v7.76c-.583-.812-1.901-1.7-3.651-1.7-3.373 0-5.96 3.043-5.96 6.618 0 3.576 2.587 6.619 5.96 6.619zm.735-3.17c-1.927 0-3.195-1.445-3.195-3.448 0-2.004 1.268-3.45 3.195-3.45 1.927 0 3.195 1.446 3.195 3.45 0 2.003-1.268 3.448-3.195 3.448zM55.166 7.412a2.213 2.213 0 002.232-2.206A2.213 2.213 0 0055.166 3a2.224 2.224 0 00-2.206 2.206 2.224 2.224 0 002.206 2.206zm-1.724 14.612h3.474V9.49h-3.474v12.533zM59.998 22.024h3.474v-6.187c0-2.435 1.192-3.601 2.815-3.601 1.445 0 2.232 1.116 2.232 2.941v6.847h3.474v-7.43c0-3.296-1.826-5.528-4.894-5.528-1.649 0-2.942.71-3.627 1.724V9.345h-3.474v12.679zM80.833 18.65c-1.75 0-3.22-1.319-3.22-3.246 0-1.952 1.47-3.246 3.22-3.246 1.75 0 3.22 1.294 3.22 3.246 0 1.927-1.47 3.246-3.22 3.246zm-.406 8.85c3.88 0 6.822-1.978 6.822-6.543V9.268h-3.474v1.42C83.09 9.7 81.72 8.99 80.098 8.99c-3.322 0-5.985 2.84-5.985 6.415 0 3.55 2.663 6.39 5.985 6.39 1.623 0 2.992-.735 3.677-1.673v.862c0 2.029-1.344 3.474-3.398 3.474-1.42 0-2.84-.482-3.956-1.572l-1.902 2.586c1.445 1.395 3.702 2.029 5.908 2.029zM94.594 22.024h3.27L105.32 4.02h-4.057l-5.021 12.501L91.145 4.02h-3.981l7.43 18.004zM108.508 7.266a2.213 2.213 0 002.231-2.206 2.213 2.213 0 00-2.231-2.206c-1.192 0-2.207.988-2.207 2.206 0 1.217 1.015 2.206 2.207 2.206zm-1.725 14.758h3.474V9.345h-3.474v12.679zM119.248 22.303c2.662 0 4.691-1.116 5.883-2.84l-2.587-1.927c-.583.887-1.673 1.597-3.271 1.597-1.673 0-3.169-.938-3.372-2.637h9.483c.076-.533.051-.888.051-1.192 0-4.133-2.916-6.238-6.238-6.238-3.854 0-6.669 2.865-6.669 6.618 0 4.007 2.942 6.619 6.72 6.619zm-3.221-8.165c.33-1.547 1.775-2.207 3.069-2.207 1.293 0 2.561.685 2.865 2.207h-5.934zM138.45 22.024h3.449l4.184-12.679h-3.728l-2.383 8.114-2.587-8.114h-2.662l-2.561 8.114-2.409-8.114h-3.703l4.21 12.679h3.448l2.359-7.202 2.383 7.202z" fill="currentColor"></path>
-        </svg>
-      </div>
-
-      <p class="text-title text-base text-center mt-3 mb-4">
-        The fastest way to <br />follow markets
-      </p>
-
-      <a class="btn-accent w-fit px-6 rounded-md font-bold" href="https://www.tradingview.com/chart/?aff_id=134591&utm_source=creative&utm_lang=EN" target="_blank">Launch Chart</a>
+    <aside class="{{ css_classes }}">
+      <a href="https://www.tradingview.com/chart/?aff_id=134591&utm_source=creative&utm_lang=EN" target="_blank">
+        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-title/10 via-title/5 to-transparent"></div>
+        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 bg-title/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative p-3 rounded-full bg-title/10 backdrop-blur">
+                <svg class="w-6 h-6 text-title" viewBox="0 0 36 28" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 22H7V11H0V4h14v18zM28 22h-8l7.5-18h8L28 22z" fill="currentColor"></path>
+                  <circle cx="20" cy="8" r="4" fill="currentColor"></circle>
+                </svg>
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-title mb-0.5">TradingView</h3>
+              <p class="text-xs sm:text-sm text-text/70">The fastest way to follow markets</p>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center text-title bg-title/10 group-hover:bg-title/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+              <span>Launch Chart</span>
+              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </aside>
   {% endif %}
 {% endwith %}

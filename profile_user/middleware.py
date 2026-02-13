@@ -15,7 +15,7 @@ def get_stored_server_ip():
     if server_ip:
         return server_ip
 
-    server_ip_req = requests.get('https://ifconfig.me', timeout=1.5)
+    server_ip_req = requests.get('https://ifconfig.me', timeout=5)
     server_ip = server_ip_req.text
     return server_ip
 

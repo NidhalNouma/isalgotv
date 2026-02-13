@@ -209,7 +209,7 @@ def random_strategies_results_context():
 
     comments = cache.get('comments')
     if comments is None:
-        comments = list(StrategyComments.objects.filter(**result_strategy_filter).order_by('-created_at')[:4])
+        comments = list(StrategyComments.objects.filter(**result_strategy_filter).order_by('-created_at')[:6])
         cache.set('comments', comments, timeout=cash_timeout)
 
     random.shuffle(comments)
