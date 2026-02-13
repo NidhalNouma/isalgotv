@@ -19,8 +19,8 @@
     {% with icon_name='vip.png' header_title='New Exclusive Strategy Available' header_subtitle='Exclusive' header_bg='rgba(250, 204, 21, 0.1)' header_color='#d4a017' header_border='rgba(250, 204, 21, 0.2)' %}
       {% include 'emails/components/email_header.html' %}
     {% endwith %}
-  {% elif strategy_type == 'Beta' %}
-    {% with icon_name='beta.png' header_title='New Beta Strategy Available' header_subtitle='Beta' header_bg='rgba(51, 51, 51, 0.1)' header_color='#333333' header_border='rgba(51, 51, 51, 0.2)' %}
+  {% elif strategy_type == 'Elite' %}
+    {% with icon_name='elite.png' header_title='New Elite Strategy Available' header_subtitle='Elite' header_bg='rgba(164, 143, 214, 0.1)' header_color='#A48FD6' header_border='rgba(164, 143, 214, 0.2)' %}
       {% include 'emails/components/email_header.html' %}
     {% endwith %}
   {% else %}

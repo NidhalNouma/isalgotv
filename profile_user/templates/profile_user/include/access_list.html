@@ -18,7 +18,7 @@
 
         <button class="tab-button transition-all hover:opacity-80" data-tab="premium" role="tab" onclick="switchTab('premium')">{% include 'strategies/include/strategy_badge.html' with type='Premium' %}</button>
 
-        <button class="tab-button transition-all hover:opacity-80" data-tab="beta" role="tab" onclick="switchTab('beta')">{% include 'strategies/include/strategy_badge.html' with type='Beta' %}</button>
+        <button class="tab-button transition-all hover:opacity-80" data-tab="elite" role="tab" onclick="switchTab('elite')">{% include 'strategies/include/strategy_badge.html' with type='Elite' %}</button>
 
         <button class="tab-button transition-all hover:opacity-80" data-tab="vip" role="tab" onclick="switchTab('vip')">{% include 'strategies/include/strategy_badge.html' with type='VIP' %}</button>
       </nav>
@@ -36,9 +36,9 @@
         {% include 'profile_user/include/access_list_strategies.html' with premium='Premium' strategies=premium_strategies %}
       </div>
 
-      <!-- Beta Tab -->
-      <div class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4" data-tab-content="beta" id="access-list-Beta">
-        {% include 'profile_user/include/access_list_strategies.html' with premium='Beta' strategies=beta_strategies %}
+      <!-- Elite Tab -->
+      <div class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4" data-tab-content="elite" id="access-list-Elite">
+        {% include 'profile_user/include/access_list_strategies.html' with premium='Elite' strategies=elite_strategies %}
       </div>
 
       <!-- VIP Tab -->

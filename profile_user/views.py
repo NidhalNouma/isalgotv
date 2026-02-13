@@ -160,12 +160,12 @@ def random_strategies_results_context():
 
     strategy_filter = {
         'is_live': True,
-        'premium__in': ['Free', 'Beta', 'Premium'],
+        'premium__in': ['Free', 'Elite', 'Premium'],
     }
 
     result_strategy_filter = {
         'strategy__is_live': True,
-        'strategy__premium__in': ['Free', 'Beta', 'Premium'],
+        'strategy__premium__in': ['Free', 'Elite', 'Premium'],
     }
 
     # Cache key names for each query
@@ -267,7 +267,7 @@ def settings_page(request):
 def access_page(request):
     strategy_filter = {
         'is_live': True,
-        # 'premium__in': ['Free', 'Beta', 'Premium'],
+        # 'premium__in': ['Free', 'Elite', 'Premium'],
     }
 
     strategies = Strategy.objects.filter(**strategy_filter)
@@ -275,7 +275,7 @@ def access_page(request):
         "strategies": strategies,
         "free_strategies": strategies.filter(premium='Free'),
         "premium_strategies": strategies.filter(premium='Premium'),
-        "beta_strategies": strategies.filter(premium='Beta'),
+        "elite_strategies": strategies.filter(premium='Elite'),
         "vip_strategies": strategies.filter(premium='VIP'),
     }
     return render(request, 'access.html', context)
@@ -415,7 +415,7 @@ def edit_tradingview_username(request):
         if profile_user.is_lifetime:
             access_filter = {
                 'is_live': True,
-                'premium__in': ['Free', 'Beta', 'Premium'],
+                'premium__in': ['Free', 'Elite', 'Premium'],
             }
         strategies = Strategy.objects.filter(**access_filter)
 
@@ -490,7 +490,7 @@ def get_access(request, strategy_id):
         pg = request.GET.get('pg')
         premium = request.GET.get('premium')
 
-        strategies_filter = Q(is_live=True, premium__in=['Free', 'Beta', 'Premium']) | Q(is_live=True, premium='VIP', created_by=request.user)
+        strategies_filter = Q(is_live=True, premium__in=['Free', 'Elite', 'Premium']) | Q(is_live=True, premium='VIP', created_by=request.user)
         if request.user.is_superuser:
             strategies_filter = Q()
 
@@ -903,7 +903,7 @@ def stripe_seller_dashboard(request):
 def preview_email(request):
     # Dummy data for template context
     from profile_user.utils.send_mails import email_context
-    context = {'strategy_name': 'Test User', 'strategy_type': 'Beta', **email_context()}
+    context = {'strategy_name': 'Test User', 'strategy_type': 'Elite', **email_context()}
     return render(request, 'emails/new_strategy.html', context)
 
 def send_email(request):

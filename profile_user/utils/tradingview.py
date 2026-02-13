@@ -30,17 +30,17 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
             return r
         
         if access:
-          if profile.has_subscription == False and profile.is_lifetime == False and strategy.premium in ['Premium', 'Beta']:
+          if profile.has_subscription == False and profile.is_lifetime == False and strategy.premium in ['Premium', 'Elite']:
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
               r['error'] = "This strategy is premium. Please upgrade your plan to access it."
               r['upgrade'] = True
               return r
           
-          if not profile.is_lifetime and strategy.premium == 'Beta':
+          if not profile.is_lifetime and strategy.premium == 'Elite':
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
-              r['error'] = "This is a beta strategy. only availble for lifetime users."
+              r['error'] = "This is an Elite strategy. only availble for lifetime users."
               r['upgrade'] = True
               return r
           

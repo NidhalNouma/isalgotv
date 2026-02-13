@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='strategy',
             name='premium',
-            field=models.CharField(choices=[('Free', 'Free'), ('Premium', 'Premium'), ('Beta', 'Beta'), ('VIP', 'VIP')], default='Premium', max_length=10),
+            field=models.CharField(choices=[('Free', 'Free'), ('Premium', 'Premium'), ('Elite', 'Elite'), ('VIP', 'VIP')], default='Premium', max_length=10),
         ),
     ]

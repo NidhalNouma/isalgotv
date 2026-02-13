@@ -20,7 +20,7 @@ from django.db.models import Q
 import urllib
 
 def get_strategies(request):
-    availble_types = ['Free', 'Premium', 'Beta', 'VIP']
+    availble_types = ['Free', 'Premium', 'Elite', 'VIP']
     types = availble_types.copy()
     type = request.GET.get('type', None)
 
@@ -47,7 +47,7 @@ def get_reports(request):
 
     filter = {
         "strategy__is_live": True,
-        # "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
+        # "strategy__premium__in": ['Free', 'Elite', 'Premium'] 
     }
 
     superuser = request.user.is_superuser if request.user.is_authenticated else False
@@ -74,7 +74,7 @@ def get_ideas(request):
 
     filter = {
         "strategy__is_live": True,
-        # "strategy__premium__in": ['Free', 'Beta', 'Premium'] 
+        # "strategy__premium__in": ['Free', 'Elite', 'Premium'] 
     }
 
     superuser = request.user.is_superuser if request.user.is_authenticated else False

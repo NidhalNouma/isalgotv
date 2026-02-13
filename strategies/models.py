@@ -202,7 +202,7 @@ class Strategy(models.Model):
     PREMIUM_CHOICES = [
         ('Free', 'Free'),
         ('Premium', 'Premium'),
-        ('Beta', 'Beta'),
+        ('Elite', 'Elite'),
         ('VIP', 'VIP'),
     ]
      
