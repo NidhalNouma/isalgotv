@@ -95,6 +95,10 @@
   <!-- end Google tag -->
 
   <body class="bg-background flex flex-col min-h-screen relative max-w-full mx-auto overflow-x-clip">
+    <script>
+      // Clear auth_origin from sessionStorage after using it to prevent unwanted redirects in the future. This ensures that if the user navigates back to the login page, they won't be automatically redirected again based on a stale auth_origin value.
+      sessionStorage.removeItem('auth_origin')
+    </script>
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZRB9CDM" height="0" width="0" style="display: none; visibility: hidden"></iframe>

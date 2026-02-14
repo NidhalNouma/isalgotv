@@ -1,8 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -15,7 +12,7 @@ from django.core.cache import cache
 from profile_user.models import User_Profile, Notification
 from strategies.models import Strategy
 
-from profile_user.forms import User_ProfileForm, PaymentCardForm, UserCreationEmailForm
+from profile_user.forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from strategies.models import *
 
@@ -280,67 +277,6 @@ def access_page(request):
     }
     return render(request, 'access.html', context)
 
-def register(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    
-    form = UserCreationForm()
-
-    if request.method == 'POST':
-        form = UserCreationEmailForm(request.POST) 
-        # print(form)
-        try:
-            if form.is_valid():
-                user = form.save(commit=False)
-                user.email = user.username
-                user.save()
-                User_Profile.objects.create(user = user)
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                return redirect('home')
-            else:
-                messages.error(request, "An error occurred while registering")
-
-        except Exception as e:
-            print("An error occurred while registering", e)
-            messages.error(request, "An error occurred while registering")
-
-    return render(request,'auth/register.html', {'form': form})
-
-def logout_user(request):
-    logout(request)
-
-    # Clear any stored messages
-    storage = messages.get_messages(request)
-    for _ in storage:
-        pass 
-
-    referer_url = request.META.get('HTTP_REFERER')
-    return redirect(referer_url if referer_url else 'index')
-
-def login_user(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    
-    if request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        try:
-            user = User.objects.get(username = email)
-        except Exception as e:
-            messages.error(request, "User does not exist!")
-            return render(request, 'auth/login.html')
-
-        user = authenticate(request, username = email, password = password)
-        if user is not None:
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-
-            return redirect('home')
-        else:
-            messages.error(request, "Email or Password incorrect!")
-
-    return render(request, 'auth/login.html')
-
 def get_profile(request):
     if request.user.is_authenticated:
         profile = User_Profile.objects.get(user=request.user)
@@ -348,22 +284,6 @@ def get_profile(request):
     else:
         return render(request, 'profile.html')
     
-
-@require_http_methods([ "POST"])
-def update_user_password(request):
-    if request.user.is_authenticated:
-        form = PasswordChangeForm(request.user, request.POST)
-
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            return render(request, 'include/settings/password.html', {'msg': 'Password updated succesfully!'})
-
-        # password = request.POST.get('password', '')
-        # new_password = request.POST.get('new_password', '')
-        # confirm_new_password = request.POST.get('confirm_new_password', '') 
-
-        return render(request, 'include/settings/password.html', {'form': form})
 
 @require_http_methods([ "POST"])
 def edit_tradingview_username(request):

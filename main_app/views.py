@@ -26,7 +26,8 @@ def index(request):
     
     context = {'prices': settings.PRICES, **random_strategies_results_context() }
     
-    template = random.choice(["main_app/index.html", "profile_user/home.html"])
+    # template = random.choice(["main_app/index.html", "profile_user/home.html"])
+    template = "profile_user/home.html"
     return render(request, template, context)
 
 

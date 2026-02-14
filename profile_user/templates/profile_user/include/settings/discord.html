@@ -51,7 +51,7 @@
     {% include 'include/infos.html' with info="Choose one of our plans to get started and gain access." %}
     {% endif %} 
   </div>
-{% if has_subscription and subscription and subscription.status != 'past_due' %}
+{% if has_subscription %}
 <button
 type="submit"
 id="btn-discord"

@@ -44,6 +44,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'auth.apps.AuthAppConfig',
     'profile_user.apps.ProfileUserConfig',
     'strategies',
     'performance',

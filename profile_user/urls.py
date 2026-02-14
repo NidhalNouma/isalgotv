@@ -1,6 +1,5 @@
 from django.urls import path
 from profile_user.views import *
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('home/', home, name="home"),
@@ -22,14 +21,6 @@ urlpatterns = [
     path('settings/', settings_page, name='settings'),
     path('access/', access_page, name='access'),
     path('give_access/<int:strategy_id>/', get_access, name='give_access'),
-    path('register/', register, name='register'),
-    path('login/', login_user, name='login'),
-    path('logout/', logout_user, name='logout'),
-    path('change-password/', update_user_password, name='change-password'),
-    path('reset-password', auth_views.PasswordResetView.as_view(template_name="profile_user/auth/reset_password.html"), name='reset_password'),
-    path('reset-password-sent', auth_views.PasswordResetDoneView.as_view(template_name="profile_user/auth/reset_password_sent.html"), name='password_reset_done'),
-    path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name="profile_user/auth/reset_password_confirm.html"), name='password_reset_confirm'),
-    path('reset-password-done', auth_views.PasswordResetCompleteView.as_view(template_name="profile_user/auth/reset_password_done.html"), name='password_reset_complete'),
 
     path('complete-seller-account-onboarding/', complete_seller_account_onboarding, name='complete_seller_account_onboarding'),
     path('stripe-seller-dashboard/', stripe_seller_dashboard, name='stripe_seller_dashboard'),

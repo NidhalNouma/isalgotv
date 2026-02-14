@@ -30,6 +30,7 @@ urlpatterns = [
     path('', index, name='index'),
     
     path('admin/', admin.site.urls),
+    path('auth/', include('auth.urls')),
     path('my/', include('profile_user.urls')),
     path('strategies/', include('strategies.urls')) ,
     path('automate/', include('automate.urls')) ,

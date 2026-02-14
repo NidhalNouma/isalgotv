@@ -125,18 +125,56 @@
             </a>
           </div>
 
-          <a class="btn-icon" href="/">
+          <a class="btn-icon" href="/" id="auth-exit-btn">
             <svg class="w-6 aspect-auto" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
             </svg>
           </a>
         </div>
       </nav>
+
       <div class="min-h-[80vh] flex flex-col relative px-2" id="page-main-div">
         {% block page %}
 
         {% endblock %}
       </div>
+
+      <script>
+        ;(function () {
+          const key = 'auth_origin'
+        
+          // On first auth page load, store the referrer if it's from our site and not an auth page
+          if (!sessionStorage.getItem(key)) {
+            let referrer = document.referrer
+            if (referrer) {
+              try {
+                let url = new URL(referrer)
+                if (url.origin === window.location.origin) {
+                  sessionStorage.setItem(key, url.pathname + url.search)
+                }
+              } catch (e) {}
+            }
+          }
+        
+          let origin = sessionStorage.getItem(key) || '/'
+          document.getElementById('auth-exit-btn').href = origin
+        
+          // Populate hidden next input in login/register forms
+          let nextInput = document.getElementById('auth-next-input')
+          if (nextInput && origin !== '/') {
+            nextInput.value = origin
+          }
+        
+          // Append next param to Google OAuth link
+          if (origin !== '/') {
+            document.querySelectorAll('.auth-google-btn').forEach(function (btn) {
+              let href = btn.getAttribute('href')
+              let sep = href.includes('?') ? '&' : '?'
+              btn.setAttribute('href', href + sep + 'next=' + encodeURIComponent(origin))
+            })
+          }
+        })()
+      </script>
     </main>
   </body>
 </html>
