@@ -189,7 +189,7 @@
   }
 
   .docs-main {
-    @apply relative flex justify-between mb-6 mt-2;
+    @apply relative flex justify-between mb-12 mt-2;
   }
 
   .docs-container {

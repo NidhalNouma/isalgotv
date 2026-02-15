@@ -30,7 +30,7 @@
                     <stop offset="100%" stop-color="hsl(var(--color-loss))" stop-opacity="1" />
                   </radialGradient>
                 </defs>
-                <circle cx="18" cy="18" r="14" fill="none" stroke="url(#lossGradient)" stroke-width="4" stroke-dasharray="{{ loss_pct|multiply:0.88 }} 88" stroke-dashoffset="-{{ win_pct|multiply:0.88 }}" class="text-loss" />
+                <circle cx="18" cy="18" r="14" fill="none" stroke="url(#lossGradient)" stroke-width="4" stroke-dasharray="{{ loss_pct|multiply:0.8796 }} 87.96" stroke-dashoffset="-{{ win_pct|multiply:0.8796 }}" class="text-loss" />
               {% endif %}
               {# Win segment (green) #}
 
@@ -41,11 +41,11 @@
                   <stop offset="100%" stop-color="hsl(var(--color-profit))" stop-opacity="1" />
                 </radialGradient>
               </defs>
-              <circle cx="18" cy="18" r="14" fill="none" stroke="url(#profitGradient)" stroke-width="4" stroke-dasharray="{{ win_pct|multiply:0.88 }} 88" stroke-dashoffset="0" class="text-profit" />
+              <circle cx="18" cy="18" r="14" fill="none" stroke="url(#profitGradient)" stroke-width="4" stroke-dasharray="{{ win_pct|multiply:0.8796 }} 87.96" stroke-dashoffset="0" class="text-profit" />
 
               {# Breakeven segment (gray) #}
               {% if be_pct > 0 %}
-                {% with win_loss_pct=win_pct|add:loss_pct %}
+                {% with win_loss=win|add:loss win_loss_pct=win|add:loss|divide:value|multiply:100 %}
                   <defs>
                     <radialGradient id="beGradient" cx="18" cy="18" r="15" gradientUnits="userSpaceOnUse">
                       <!-- transparent at the inner edge of the stroke, full color at the outer edge -->
@@ -53,7 +53,7 @@
                       <stop offset="100%" stop-color="hsl(var(--color-text))" stop-opacity="1" />
                     </radialGradient>
                   </defs>
-                  <circle cx="18" cy="18" r="14" fill="none" stroke="url(#beGradient)" stroke-width="4" stroke-dasharray="{{ be_pct|multiply:0.88 }} 88" stroke-dashoffset="-{{ win_loss_pct|multiply:0.88 }}" class="text-text/40" />
+                  <circle cx="18" cy="18" r="14" fill="none" stroke="url(#beGradient)" stroke-width="4" stroke-dasharray="{{ be_pct|multiply:0.8796 }} 87.96" stroke-dashoffset="-{{ win_loss_pct|multiply:0.8796 }}" class="text-text/40" />
                 {% endwith %}
               {% endif %}
             {% endif %}

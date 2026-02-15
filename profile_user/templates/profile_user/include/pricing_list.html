@@ -1,0 +1,47 @@
+{% load custom_tags %}
+
+<main class="{{ class|default:'mt-8 mb-8' }} text-start">
+  <div class="mt-0 w-full mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-center gap-8">
+    {% include 'include/price_item.html' with title='MONTHLY' get_started=get_started %}
+    {% include 'include/price_item.html' with title='YEARLY' save='Save $197' get_started=get_started %}
+    {% if prices|get_item:'LIFETIME' %}
+      {% include 'include/price_item.html' with title='LIFETIME' save='Pay once' get_started=get_started %}
+    {% endif %}
+  </div>
+
+  <section class="mx-auto w-full mt-32 relative bg-background/20 backdrop-blur-sm">
+    <svg class="parallaxi -rotate-12 h-24 fill-text opacity-10 absolute top-0 left-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <svg class="parallaxi rotate-12 h-24 fill-text opacity-10 absolute top-[10%] right-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <svg class="parallaxi rotate-12 h-24 fill-text opacity-10 absolute top-[90%] left-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+    <svg class="parallaxi -rotate-12 h-24 fill-text opacity-10 absolute top-full right-0" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816 49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"></path>
+    </svg>
+
+    <h2 class="text-title text-5xl font-bold text-center">Frequent questions</h2>
+
+    <div class="mt-16 w-full md:w-[60%] mx-auto">
+      <div class="rounded-lg px-0 sm:px-3 py-3 space-y-6" id="accordion-open" data-accordion="open">
+        {% include 'include/qanda_box.html' with id=1 title='What is IsAlgo?' description='IsAlgo is a platform that provides advanced trading strategies built for TradingView. Our strategies are designed to be backtestable, automatable, and work across any market — crypto, forex, stocks — and any timeframe.' %}
+        {% include 'include/qanda_box.html' with id=2 title='What are the different strategy types?' description='<strong>Free</strong> — available to all registered users, no subscription needed.<br/><strong>Premium</strong> — requires an active Monthly or Yearly subscription.<br/><strong>Elite</strong> — exclusive to Lifetime members only.<br/><strong>Exclusive</strong> — custom strategies created by individual authors, purchasable separately.' %}
+        {% include 'include/qanda_box.html' with id=3 title="What's included in every paid plan?" description='All paid plans include access to Premium strategies, performance reports, automation capabilities, VIP Discord access, and customer support. Lifetime members additionally get access to Elite strategies.' %}
+        {% include 'include/qanda_box.html' with id=8 title='Are Exclusive strategies included in my membership?' description='No. Exclusive strategies are created by independent traders and we publish them on our platform. They are not part of any membership plan and must be purchased separately. Your subscription gives you access to Free, Premium, and Elite strategies only.' %}
+        {% include 'include/qanda_box.html' with id=4 title='Do I need a paid TradingView account?' description='No, a free TradingView account is enough to get started. However, a free account has limitations such as only one active alert and one chart with one strategy. A paid TradingView plan is recommended for full functionality.' %}
+        {% include 'include/qanda_box.html' with id=5 title='How does the automation work?' description='You can connect any TradingView strategy or indicator to multiple brokers using our webhook integration. Choose a strategy, configure your alert messages with our Playground tool, connect your broker, and create a TradingView alert. Trades execute automatically.<br/>An additional fee of $3 to $20/month applies per connected trading account depending on the broker type.' %}
+        {% include 'include/qanda_box.html' with id=6 title='Can I upgrade, downgrade, or cancel my plan?' description='Yes, you can change or cancel your plan at any time.<br/><br/>When you <strong>upgrade</strong>, any remaining time on your current plan converts into additional days on the new plan. <strong>Downgrades</strong> take effect after your current billing period ends. When you <strong>cancel</strong>, you keep access until the end of your current period.' %}
+        {% include 'include/qanda_box.html' with id=7 title='What makes the Lifetime plan special?' description="The Lifetime plan is a one-time payment that gives you permanent access to all Premium and Elite strategies, along with a numbered digital membership card. It's the best value for committed traders who want unlimited, long-term access." %}
+      </div>
+    </div>
+  </section>
+  <div class="mt-16">
+    <p class="text-xs text-text/80">
+      &#8704; An additional fee applies when connecting trading accounts for automation, ranging from $3 to $20 per month depending on the account type.<br />
+      {% comment %}&#8709; Users without a membership receive 5,000 AI tokens daily. With a membership, this increases to 50,000 tokens per day. You can also purchase extra tokens at a rate of $10 per 1 million tokens.{% endcomment %}
+    </p>
+  </div>
+</main>
