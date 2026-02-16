@@ -2,3 +2,6 @@
 	path = tero
 	url = git@github.com:NidhalNouma/isalgo-tero.git
 	branch = main
+[submodule "__strategies__"]
+	path = __strategies__
+	url = https://github.com/NidhalNouma/isalgo_strategies.git
