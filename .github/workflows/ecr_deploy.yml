@@ -26,7 +26,13 @@ jobs:
           ssh-key: ${{ secrets.TERO_DEPLOY_KEY }}
 
       - name: Checkout submodules (skip __strategies__)
+        env:
+          TERO_DEPLOY_KEY: ${{ secrets.TERO_DEPLOY_KEY }}
         run: |
+          eval "$(ssh-agent -s)"
+          echo "$TERO_DEPLOY_KEY" | ssh-add -
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
           git -c submodule.__strategies__.update=none submodule update --init --recursive
 
       - name: Install AWS CLI
