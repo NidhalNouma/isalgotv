@@ -22,8 +22,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         with:
-          submodules: recursive
+          submodules: false
           ssh-key: ${{ secrets.TERO_DEPLOY_KEY }}
+
+      - name: Initialize submodules 
+        run: |
+          git submodule init tero
+          git submodule update --recursive tero
 
       - name: Install AWS CLI
         run: |
