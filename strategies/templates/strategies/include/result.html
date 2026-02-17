@@ -137,7 +137,7 @@
 
           {% with result_id_str=result.id|stringformat:'s' %}
             {% render_template 'include/result_trades_list.html' as list_of_trades %}
-            {% with header_html="<h3 class='text-xl font-bold text-title capitalize'> </h3>" %}
+            {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>List of Trades</h3>" %}
               {% include 'include/modal.html' with header=header_html modal_id='result-trades-list-'|add:result_id_str body=list_of_trades class='!max-w-6xl' body_class='!max-w-full !mt-0' %}
             {% endwith %}
           {% endwith %}

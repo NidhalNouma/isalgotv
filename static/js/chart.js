@@ -21,11 +21,15 @@ function transformToTimeProfitForChart(data) {
 
   const theader = data[0];
 
-  const tIndex = theader.indexOf("Date/Time");
+  let tIndex = theader.indexOf("Date/Time");
+  if (tIndex === -1) {
+    console.warn("Could not find 'Date/Time' column, trying 'Date and time'");
+    tIndex = theader.indexOf("Date and time");
+  }
   const pIndexName = theader.find(
     (text) =>
       ["Net P&L", "Profit"].some((keyword) => text.includes(keyword)) &&
-      !text.includes("%")
+      !text.includes("%"),
   );
   const pIndex = theader.indexOf(pIndexName);
 
@@ -39,7 +43,7 @@ function transformToTimeProfitForChart(data) {
 
   const exitRows = rows.filter(
     (row) =>
-      typeof row[1] === "string" && row[1].toLowerCase().startsWith("exit")
+      typeof row[1] === "string" && row[1].toLowerCase().startsWith("exit"),
   );
 
   // console.log("Exit rows:", exitRows);
@@ -143,7 +147,7 @@ function getChartOptions(tooltipCallbacks, xAxis = false, yAxis = false) {
 
             if (index > 0) {
               const prevDate = new Date(
-                this.getLabelForValue(ticks[index - 1].value)
+                this.getLabelForValue(ticks[index - 1].value),
               );
               const prevMonth = prevDate.getUTCMonth();
               if (month === prevMonth) {
@@ -381,7 +385,7 @@ function loadAccountProfitCharts(id, data) {
         },
       },
       true,
-      true
+      true,
     ),
     plugins: getPlugins(),
   });
@@ -501,7 +505,7 @@ function loadAccountProfitStructureCharts(id, structure) {
         },
       },
       false,
-      true
+      true,
     ),
     plugins: [zeroLinePlugin],
   });
@@ -657,15 +661,15 @@ function loadPerformanceRadarChart(canvasId, perf) {
   const totalWinRate =
     perf.winning_trades && perf.trades
       ? (perf.winning_trades / perf.trades) * 100
-      : perf.win_rate ?? 0;
+      : (perf.win_rate ?? 0);
   const buyWinRate =
     perf.buy_winning_trades && perf.buy_trades
       ? (perf.buy_winning_trades / perf.buy_trades) * 100
-      : perf.buy_win_rate ?? 0;
+      : (perf.buy_win_rate ?? 0);
   const sellWinRate =
     perf.sell_winning_trades && perf.sell_trades
       ? (perf.sell_winning_trades / perf.sell_trades) * 100
-      : perf.sell_win_rate ?? 0;
+      : (perf.sell_win_rate ?? 0);
   const winRateVals = [
     Number(totalWinRate),
     Number(buyWinRate),

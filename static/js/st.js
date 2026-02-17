@@ -51,7 +51,7 @@ function handleXlsxFileSelect(event) {
     if (workbook.Sheets["Properties"]) {
       const propertiesSheet = XLSX.utils.sheet_to_json(
         workbook.Sheets["Properties"],
-        { header: 1 }
+        { header: 1 },
       );
       fillSettingsFromSheet(propertiesSheet);
     }
@@ -60,7 +60,7 @@ function handleXlsxFileSelect(event) {
     if (workbook.Sheets["Performance"]) {
       const performanceSheet = XLSX.utils.sheet_to_json(
         workbook.Sheets["Performance"],
-        { header: 1 }
+        { header: 1 },
       );
       fillResultsFromSheet(performanceSheet);
     }
@@ -69,7 +69,7 @@ function handleXlsxFileSelect(event) {
     if (workbook.Sheets["Trades analysis"]) {
       const performanceSheet = XLSX.utils.sheet_to_json(
         workbook.Sheets["Trades analysis"],
-        { header: 1 }
+        { header: 1 },
       );
       fillResultsFromSheet(performanceSheet);
     }
@@ -78,7 +78,16 @@ function handleXlsxFileSelect(event) {
     if (workbook.Sheets["Risk performance ratios"]) {
       const performanceSheet = XLSX.utils.sheet_to_json(
         workbook.Sheets["Risk performance ratios"],
-        { header: 1 }
+        { header: 1 },
+      );
+      fillResultsFromSheet(performanceSheet);
+    }
+
+    // Process results (Performance tab)
+    if (workbook.Sheets["Risk-adjusted performance"]) {
+      const performanceSheet = XLSX.utils.sheet_to_json(
+        workbook.Sheets["Risk-adjusted performance"],
+        { header: 1 },
       );
       fillResultsFromSheet(performanceSheet);
     }
@@ -87,7 +96,7 @@ function handleXlsxFileSelect(event) {
     if (workbook.Sheets["List of trades"]) {
       const listOfTrades = XLSX.utils.sheet_to_json(
         workbook.Sheets["List of trades"],
-        { header: 1 }
+        { header: 1 },
       );
       // console.log("List of trades:", listOfTrades);
 
@@ -202,7 +211,7 @@ function fillResultsFromSheet(sheetData) {
           shortUSD,
           allPerc,
           longPerc,
-          shortPerc
+          shortPerc,
         );
         break;
       case "gross profit":
@@ -213,7 +222,7 @@ function fillResultsFromSheet(sheetData) {
           shortUSD,
           allPerc,
           longPerc,
-          shortPerc
+          shortPerc,
         );
         break;
       case "gross loss":
@@ -224,7 +233,7 @@ function fillResultsFromSheet(sheetData) {
           shortUSD,
           allPerc,
           longPerc,
-          shortPerc
+          shortPerc,
         );
         break;
       case "profit factor":
@@ -235,10 +244,11 @@ function fillResultsFromSheet(sheetData) {
           "profitable_percentage",
           trimPercentage(allPerc),
           trimPercentage(longPerc),
-          trimPercentage(shortPerc)
+          trimPercentage(shortPerc),
         );
         break;
       case "max equity drawdown":
+      case "max equity drawdown (close-to-close)":
         document.getElementById("max_dd").value = allUSD;
         document.getElementById("max_dd_percentage").value =
           trimPercentage(allPerc);
@@ -260,7 +270,7 @@ function fillResultsFromSheet(sheetData) {
           shortUSD,
           allPerc,
           longPerc,
-          shortPerc
+          shortPerc,
         );
         break;
       case "avg winning trade":
@@ -271,7 +281,7 @@ function fillResultsFromSheet(sheetData) {
           shortUSD,
           allPerc,
           longPerc,
-          shortPerc
+          shortPerc,
         );
         break;
       case "avg losing trade":
@@ -282,7 +292,7 @@ function fillResultsFromSheet(sheetData) {
           shortUSD,
           allPerc,
           longPerc,
-          shortPerc
+          shortPerc,
         );
         break;
       case "ratio avg win / avg loss":
@@ -300,7 +310,7 @@ function setResultValues(
   shortUSD,
   allPerc = "",
   longPerc = "",
-  shortPerc = ""
+  shortPerc = "",
 ) {
   if (document.getElementById(baseKey))
     document.getElementById(baseKey).value = allUSD;
@@ -320,7 +330,7 @@ function setResultValues(
 }
 
 function trimPercentage(num) {
-  num = parseFloat(num) * 100;
+  num = parseFloat(num);
 
   return num.toFixed(2);
 }
@@ -350,7 +360,14 @@ function loadTradesData(result_id) {
   const skipIndex = header.indexOf("Signal");
   const tradeIndex = header.indexOf("Trade #");
   const typeIndex = header.indexOf("Type");
-  const dateIndex = header.indexOf("Date/Time");
+  let dateIndex = header.indexOf("Date/time");
+  if (dateIndex === -1) {
+    console.warn("Could not find 'Date/time' column, trying 'Date and time'");
+    dateIndex = header.indexOf("Date and time");
+  }
+  // console.log("Header:", header);
+  // console.log("Type Index:", typeIndex);
+  // console.log("Date Index:", dateIndex);
   // Dynamically find the price column (e.g., "Price USD", "Price EUR", etc.)
   const priceIndex = header.findIndex((text) => text.startsWith("Price "));
 
