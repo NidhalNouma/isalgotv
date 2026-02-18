@@ -11,7 +11,7 @@ import jsonschema
 import json
 from django.core.exceptions import ValidationError
 
-from profile_user.utils.stripe import create_strategy_price
+from profile_user.utils.stripe import create_strategy_price, is_customer_subscribed_to_price
 
 
 class PrettyJSONEncoder(json.JSONEncoder):
@@ -292,6 +292,22 @@ class StrategyPrice(models.Model):
             self.stripe_price_id = price.id
 
         super(StrategyPrice, self).save(*args, **kwargs)
+
+class StrategySubscriber(models.Model):
+    strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE, related_name='subscribers')
+    user_profile = models.ForeignKey(User_Profile, on_delete=models.CASCADE, related_name='subscriptions')
+
+    subscription_id = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        unique_together = ('strategy', 'user_profile')
+
+    def is_active(self):
+        if self.strategy.premium != 'VIP':
+            return False, None
+        is_sub_active, sub = is_customer_subscribed_to_price(self.user_profile.customer_id, self.strategy.price.stripe_price_id)
+        return is_sub_active, sub
 
 class Replies(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

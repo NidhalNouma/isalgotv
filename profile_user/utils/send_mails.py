@@ -267,6 +267,58 @@ def seller_account_verified(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
+def seller_first_subscriber_to_strategy(user_email, strategy):
+    strategy_name = strategy.name
+    strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
+    price = strategy.price.amount
+    interval = strategy.price.interval
+    interval_count = strategy.price.interval_count
+    subject = f'Congratulations on Your First Subscriber for {strategy_name}!'
+    html_content = render_to_string('emails/first_subscriber.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'  # This is required because default is plain text
+    
+    try:
+        print('Sending first subscriber email', user_email)
+        email.send()
+    except Exception as e:
+        # Handle the exception as needed
+        print(f"Error sending email: {e}")
+
+def seller_ten_subscribers_to_strategy(user_email, strategy):
+    strategy_name = strategy.name
+    strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
+    price = strategy.price.amount
+    interval = strategy.price.interval
+    interval_count = strategy.price.interval_count
+    subject = f'{strategy_name} Just Hit 10 Subscribers!'
+    html_content = render_to_string('emails/ten_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending 10 subscribers email', user_email)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+def seller_hundred_subscribers_to_strategy(user_email, strategy):
+    strategy_name = strategy.name
+    strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
+    price = strategy.price.amount
+    interval = strategy.price.interval
+    interval_count = strategy.price.interval_count
+    subject = f'Incredible — {strategy_name} Just Hit 100 Subscribers!'
+    html_content = render_to_string('emails/hundred_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending 100 subscribers email', user_email)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
 def amount_to_pay_email(user_email, amount):
     subject = 'Outstanding Balance on Your IsAlgo Account'
     html_content = render_to_string('emails/amount_to_pay.html', context={'amount': amount, **email_context()})

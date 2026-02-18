@@ -1,10 +1,9 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Strategy
+from .models import Strategy, StrategySubscriber
 from django.contrib.auth.models import User
 
-from profile_user.utils.send_mails import *
-from .tasks import send_strategy_email_to_all_users
+from .tasks import send_strategy_email_to_all_users, send_strategy_first_subscriber_email_task, send_strategy_ten_subscribers_email_task, send_strategy_hundred_subscribers_email_task
 
 # @receiver(pre_save, sender=Strategy)
 # def capture_pre_save_state(sender, instance, **kwargs):
@@ -19,6 +18,26 @@ from .tasks import send_strategy_email_to_all_users
 # def check_is_live_change(sender, instance, created, **kwargs):
 #     old_is_live = getattr(instance, '_pre_save_instance', None)
 #     new_is_live = instance.is_live
+
+
+@receiver(post_save, sender=StrategySubscriber)
+def notify_subscriber_milestone(sender, instance, created, **kwargs):
+    if created:
+        strategy = instance.strategy
+        seller_email = strategy.created_by.email
+
+        # Count active subscribers for the strategy
+        active_subscribers_count = StrategySubscriber.objects.filter(strategy=strategy, subscription_id__isnull=False).count()
+
+        if active_subscribers_count == 1:
+            print(f"First subscriber for strategy '{strategy.name}' detected. Sending email to seller {seller_email} ...")
+            send_strategy_first_subscriber_email_task(seller_email, strategy.id)
+        elif active_subscribers_count == 10:
+            print(f"10 subscribers for strategy '{strategy.name}' reached. Sending email to seller {seller_email} ...")
+            send_strategy_ten_subscribers_email_task(seller_email, strategy.id)
+        elif active_subscribers_count == 100:
+            print(f"100 subscribers for strategy '{strategy.name}' reached. Sending email to seller {seller_email} ...")
+            send_strategy_hundred_subscribers_email_task(seller_email, strategy.id)
     
 
 

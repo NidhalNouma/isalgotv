@@ -123,10 +123,12 @@ def get_strategy(request, slug):
                     context['owner'] = True
                     context['product_overview'] = product_overview(strategy.price.stripe_product_id, strategy.price.stripe_price_id)
                 else:
-                    is_subscribed, subscription = user_profile.is_subscribed_to(product_id=strategy.price.stripe_product_id)
-                    context['is_vip_subscribed'] = is_subscribed
-                    context['vip_subscription'] = subscription
-                    # print("VIP Subscription status:", is_subscribed, subscription)
+                    subscriber = StrategySubscriber.objects.filter(strategy=strategy, user_profile=user_profile).first()
+                    if subscriber: 
+                        is_subscribed, subscription = subscriber.is_active()
+                        context['is_vip_subscribed'] = is_subscribed
+                        context['vip_subscription'] = subscription
+                        # print("VIP Subscription status:", is_subscribed, subscription)
 
         congrate = False
         if 'sub' in request.GET:
@@ -459,6 +461,13 @@ def strategy_subscribe(request, id):
                 context["error"] = 'No payment method has been detected.'
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
+            
+            subscriber = StrategySubscriber.objects.filter(strategy=strategy_price.strategy, user_profile=user_profile).first()
+            is_subscribed = subscriber.is_active()[0] if subscriber else False
+            if is_subscribed:
+                context["error"] = 'You are already subscribed to this strategy.'
+                response = render(request, 'include/errors.html', context)
+                return retarget(response, "#stripe-error-"+context['title'])
 
             subscription, user_profile = subscribe_to_strategy(
                 user_profile,
@@ -466,6 +475,16 @@ def strategy_subscribe(request, id):
                 payment_method,
                 promotion_code=coupon_id if coupon_id and coupon_id != "None" else None,
             )
+
+            if subscriber:
+                subscriber.subscription_id = subscription.id
+                subscriber.save()
+            else:
+                StrategySubscriber.objects.create(
+                    strategy=strategy_price.strategy,
+                    user_profile=user_profile,
+                    subscription_id=subscription.id,
+                )
 
             print("Subscription created:", subscription.id)
 
@@ -491,7 +510,13 @@ def strategy_unsubscribe(request, id, subscription_id):
         if request.method == 'POST':
             user_profile = request.user_profile
 
-            is_subscribed, subscription = user_profile.is_subscribed_to(product_id=strategy_price.stripe_product_id)
+            subscriber = StrategySubscriber.objects.filter(strategy=strategy_price.strategy, user_profile=user_profile).first()
+            if not subscriber or subscriber.subscription_id != subscription_id:
+                context["error"] = 'Subscription not found.'
+                response = render(request, 'include/errors.html', context=context)
+                return retarget(response, "#"+context['title']+"-form-errors")
+
+            is_subscribed, subscription = subscriber.is_active()
 
             if not is_subscribed or not subscription:
                 context["error"] = 'No active subscription found.'

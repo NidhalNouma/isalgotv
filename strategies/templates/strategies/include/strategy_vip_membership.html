@@ -1,4 +1,5 @@
 {% load custom_tags %}
+{% load custom_filters %}
 
 <div id="vip-membership" class="w-full {{ class|default:'' }}">
   <div class="p-4 rounded-lg bg-gradient-to-r {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %} from-profit/10 via-profit/5 {% elif vip_subscription.cancel_at_period_end %} from-warning/10 via-warning/5 {% elif vip_subscription.status == 'past_due' %} from-error/10 via-error/5 {% endif %}">
@@ -20,11 +21,7 @@
       <div class="flex sm:flex-col flex-row sm:items-end items-baseline gap-1 sm:gap-0">
         <div class="text-2xl font-bold text-title">${{ vip_subscription.amount|trim_zeros }}</div>
         <div class="text-xs text-text/60">
-          {% if vip_subscription.interval_count > 1 %}
-            /{{ vip_subscription.interval_count }} {{ vip_subscription.interval }}s
-          {% else %}
-            /{{ vip_subscription.interval }}
-          {% endif %}
+          {{ vip_subscription.interval_count|price_interval:vip_subscription.interval }} 
         </div>
       </div>
     </div>

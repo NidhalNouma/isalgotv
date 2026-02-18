@@ -2,7 +2,7 @@ import requests
 from django.conf import settings
 
 
-from strategies.models import Strategy
+from strategies.models import Strategy, StrategySubscriber
 from profile_user.models import User_Profile
 import environ
 env = environ.Env()
@@ -46,8 +46,9 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
           
           if strategy.premium == 'VIP':
             if strategy.created_by != profile.user:
-                is_subscribed, _ = profile.is_subscribed_to(product_id=strategy.price.stripe_product_id)
-                if not is_subscribed and not profile.is_lifetime:
+                subscriber = StrategySubscriber.objects.filter(strategy=strategy, user_profile=profile).first()
+                is_subscribed, _ = subscriber.is_active() if subscriber else (False, None)
+                if not is_subscribed:
                     if profile.strategies.filter(pk=strategy_id).exists():
                         profile.strategies.remove(strategy)
                     r['error'] = "This is an Exclusive strategy. Please subscribe to access it."

@@ -1,0 +1,66 @@
+{% extends 'emails/components/base_email.html' %}
+
+{% block title %}
+  First Subscriber - IsAlgo
+{% endblock %}
+
+{% block preheader %}
+  Congratulations! Your strategy {{ strategy_name }} just got its first subscriber.
+{% endblock %}
+
+{% block content %}
+  {% with icon_name='earnings.png' header_title='Your First Subscriber!' header_subtitle=strategy_name header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
+    {% include 'emails/components/email_header.html' %}
+  {% endwith %}
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    Congratulations — someone just subscribed to your strategy <strong>{{ strategy_name }}</strong>! This is a big milestone and a great sign that your work is valued by the trading community.
+  </p>
+
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">You're now earning from your strategy on IsAlgo. As more traders discover your work, your subscriber count and revenue will continue to grow.</p>
+
+  <!-- Details card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Subscription details:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5; width: 140px;">Strategy</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5; font-weight: 600;">{{ strategy_name }}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5;">Price</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5; font-weight: 600;">${{ price }}/ {{ interval_count }} {{ interval }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Tips card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Tips to keep growing:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #16a34a; font-weight: 600; margin-right: 8px;">1.</span> Keep your strategy reports up to date
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #16a34a; font-weight: 600; margin-right: 8px;">2.</span> Engage with users who leave comments or questions
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #16a34a; font-weight: 600; margin-right: 8px;">3.</span> Share your strategy on social media to reach more traders
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">You can track your earnings and subscribers at any time from your profile. Thank you for being part of IsAlgo — we're excited to see your strategy grow!</p>
+
+  <!-- CTA Buttons -->
+  {% with primary_url=site_url primary_text='View My Earnings' secondary_url='mailto:'|add:support_email|add:'?subject=Seller%20Earnings%20Question' secondary_text='Contact Support' %}
+    {% include 'emails/components/cta_buttons.html' %}
+  {% endwith %}
+{% endblock %}

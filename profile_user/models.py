@@ -121,7 +121,6 @@ class User_Profile(models.Model):
             self.save(update_fields=["customer_id"])
         return self.customer_id
 
-
     def is_subscribed_to(self, price_id=None, product_id=None):
         """
         Check if the user is subscribed to a specific price.

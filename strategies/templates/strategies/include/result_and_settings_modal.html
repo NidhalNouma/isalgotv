@@ -492,7 +492,11 @@
                             <label for="id_settings_{{ set.name }}" class="block text-sm font-medium text-title whitespace-nowrap">{{ set.display_name }}</label>
                           
                           {% if set.type != 'boolean'  %}
-                            <span class="ml-2 bg-background border border-title/30 text-sm font-semibold text-text px-2.5 py-1 rounded">{{ set.default_value|escape }}</span>
+                            {% if set.display_name|lower == 'timeframe' %}
+                              <span class="ml-2 bg-background border border-title/30 text-sm font-semibold text-text px-2.5 py-1 rounded">{{ set.default_value|tv_timeframe_to_human_readable }}</span>
+                            {% else %}
+                              <span class="ml-2 bg-background border border-title/30 text-sm font-semibold text-text px-2.5 py-1 rounded">{{ set.default_value|escape }}</span>
+                            {% endif %}
                           {% endif %}
                           <span class="text-text">
                           </span>

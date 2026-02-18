@@ -1,0 +1,68 @@
+{% extends 'emails/components/base_email.html' %}
+
+{% block title %}
+  10 Subscribers Milestone - IsAlgo
+{% endblock %}
+
+{% block preheader %}
+  Your strategy {{ strategy_name }} just hit 10 subscribers!
+{% endblock %}
+
+{% block content %}
+  {% with icon_name='earnings.png' header_title='10 Subscribers!' header_subtitle=strategy_name header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
+    {% include 'emails/components/email_header.html' %}
+  {% endwith %}
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Great news — your strategy <strong>{{ strategy_name }}</strong> just reached <strong>10 subscribers</strong>! Your strategy is gaining real traction and traders are finding value in your work.</p>
+
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">This is a strong signal that you're on the right track. Keep up the great work and your subscriber count will continue to climb.</p>
+
+  <!-- Stats card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Milestone summary:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5; width: 140px;">Strategy</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5; font-weight: 600;">{{ strategy_name }}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5;">Subscribers</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #16a34a; line-height: 1.5; font-weight: 600;">10</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5;">Price</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5; font-weight: 600;">${{ price }}/ {{ interval_count }} {{ interval }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Tips card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Keep the momentum going:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #16a34a; font-weight: 600; margin-right: 8px;">1.</span> Publish fresh backtesting results to show consistent performance
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #16a34a; font-weight: 600; margin-right: 8px;">2.</span> Respond to subscriber questions to build trust
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
+          <span style="color: #16a34a; font-weight: 600; margin-right: 8px;">3.</span> Consider creating additional strategies to expand your offering
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">You can track all your subscribers and earnings from your profile. Next milestone: <strong>100 subscribers</strong> — we know you can get there!</p>
+
+  <!-- CTA Buttons -->
+  {% with primary_url=site_url primary_text='View My Earnings' secondary_url='mailto:'|add:support_email|add:'?subject=Seller%20Earnings%20Question' secondary_text='Contact Support' %}
+    {% include 'emails/components/cta_buttons.html' %}
+  {% endwith %}
+{% endblock %}

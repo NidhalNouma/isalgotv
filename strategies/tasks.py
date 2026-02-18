@@ -4,7 +4,7 @@ from django.core.mail import EmailMessage, get_connection
 
 from django.conf import settings
 
-from profile_user.utils.send_mails import strategy_access_canceled, strategy_access_overdue, strategy_access_removed, strategy_access_gained
+from profile_user.utils.send_mails import strategy_access_canceled, strategy_access_overdue, strategy_access_removed, strategy_access_gained, seller_first_subscriber_to_strategy, seller_ten_subscribers_to_strategy, seller_hundred_subscribers_to_strategy
 
 @shared_task
 def send_strategy_email_to_all_users(emails, strategy, header, subject, html_content):
@@ -69,3 +69,21 @@ def send_strategy_lost_email_task(user_email, strategy):
 @shared_task
 def send_strategy_access_expiring_email_task(user_email, strategy):
     strategy_access_overdue(user_email, strategy)
+
+@shared_task
+def send_strategy_first_subscriber_email_task(seller_email, strategy_id):
+    from .models import Strategy
+    strategy = Strategy.objects.get(id=strategy_id)
+    seller_first_subscriber_to_strategy(seller_email, strategy)
+
+@shared_task
+def send_strategy_ten_subscribers_email_task(seller_email, strategy_id):
+    from .models import Strategy
+    strategy = Strategy.objects.get(id=strategy_id)
+    seller_ten_subscribers_to_strategy(seller_email, strategy)
+
+@shared_task
+def send_strategy_hundred_subscribers_email_task(seller_email, strategy_id):
+    from .models import Strategy
+    strategy = Strategy.objects.get(id=strategy_id)
+    seller_hundred_subscribers_to_strategy(seller_email, strategy)

@@ -28,27 +28,34 @@ def get_price(prices, title):
 @register.filter
 def price_interval(interval_count, interval):
     if interval_count > 1:
-        if interval_count == 7 and interval == 'day':
+        if interval_count == 7 and (interval == 'day' or interval == 'days'):
             return "/ week"
-        elif interval_count == 14 and interval == 'day':
+        elif interval_count == 14 and (interval == 'day' or interval == 'days'):
             return "/ 2 weeks"
-        elif interval_count == 30 and interval == 'day':
+        elif interval_count == 30 and (interval == 'day' or interval == 'days'):
             return "/ month"
-        elif interval_count == 90 and interval == 'day':
+        elif interval_count == 90 and (interval == 'day' or interval == 'days'):
             return "/ Quarter"
-        elif interval_count == 180 and interval == 'day':
+        elif interval_count == 180 and (interval == 'day' or interval == 'days'):
             return "/ Half Year"
-        elif interval_count == 365 and interval == 'day':
+        elif interval_count == 365 and (interval == 'day' or interval == 'days'):
             return "/ Year"
-        elif interval_count == 3 and interval == 'month':
+        elif interval_count == 3 and (interval == 'month' or interval == 'months'):
             return "/ Quarter"
-        elif interval_count == 6 and interval == 'month':
+        elif interval_count == 6 and (interval == 'month' or interval == 'months'):
             return "/ Half Year"
-        elif interval_count == 12 and interval == 'month':
+        elif interval_count == 12 and (interval == 'month' or interval == 'months'):
                 return "/ Year"
         return f"/ {interval_count} {interval}s"
     else:
         return f"/ {interval}"
+
+@register.filter
+def tv_timeframe_to_human_readable(value):
+    if value == '':
+        return 'Chart'
+    
+    return value
 
 @register.filter
 def period_in_months_years(start_date, end_date):
