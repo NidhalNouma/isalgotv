@@ -25,6 +25,30 @@ def count_lines(value):
 def get_price(prices, title):
     return prices.get(title, '')
 
+@register.filter
+def price_interval(interval_count, interval):
+    if interval_count > 1:
+        if interval_count == 7 and interval == 'day':
+            return "/ week"
+        elif interval_count == 14 and interval == 'day':
+            return "/ 2 weeks"
+        elif interval_count == 30 and interval == 'day':
+            return "/ month"
+        elif interval_count == 90 and interval == 'day':
+            return "/ Quarter"
+        elif interval_count == 180 and interval == 'day':
+            return "/ Half Year"
+        elif interval_count == 365 and interval == 'day':
+            return "/ Year"
+        elif interval_count == 3 and interval == 'month':
+            return "/ Quarter"
+        elif interval_count == 6 and interval == 'month':
+            return "/ Half Year"
+        elif interval_count == 12 and interval == 'month':
+                return "/ Year"
+        return f"/ {interval_count} {interval}s"
+    else:
+        return f"/ {interval}"
 
 @register.filter
 def period_in_months_years(start_date, end_date):

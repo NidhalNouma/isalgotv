@@ -4,4 +4,4 @@
 	branch = main
 [submodule "__strategies__"]
 	path = __strategies__
-	url = git@github.com:NidhalNouma/isalgo_strategies.git
+	url = https://github.com/NidhalNouma/isalgo_strategies.git

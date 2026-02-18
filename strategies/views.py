@@ -91,8 +91,8 @@ def get_strategy(request, slug):
                 'images',
             ).get(slug=slug)
         
-        if not strategy.is_live and (not request.user.is_authenticated or not request.user.is_superuser):
-            raise Http404("The object does not exist.")
+        # if not strategy.is_live and (not request.user.is_authenticated or not request.user.is_superuser):
+        #     raise Http404("The object does not exist.")
 
         comments = strategy.strategycomments_set.select_related('created_by').prefetch_related(
                 'images', Prefetch('replies', queryset=Replies.objects.select_related('created_by').prefetch_related('images')),

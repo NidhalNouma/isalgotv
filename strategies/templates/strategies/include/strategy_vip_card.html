@@ -1,4 +1,5 @@
 {% load custom_tags %}
+{% load custom_filters %}
 
 {% if owner %}
   {% include 'strategies/include/user_connect.html' %}
@@ -22,11 +23,7 @@
       <div class="flex flex-row sm:flex-col sm:items-center items-baseline gap-1 sm:gap-0">
         <div class="text-2xl font-bold text-title">${{ strategy.price.amount|trim_zeros }}</div>
         <div class="text-xs text-text/70">
-          {% if strategy.price.interval_count > 1 %}
-            /{{ strategy.price.interval_count }} {{ strategy.price.interval }}s
-          {% else %}
-            /{{ strategy.price.interval }}
-          {% endif %}
+          {{ strategy.price.interval_count|price_interval:strategy.price.interval }}
         </div>
       </div>
 
