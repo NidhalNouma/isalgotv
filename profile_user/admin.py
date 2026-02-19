@@ -44,8 +44,9 @@ User_Profile._meta.verbose_name_plural = "Trader Profiles"
 @admin.register(User_Profile)
 class UserProfileAdmin(ModelAdmin):
 
-    list_display =  ('user_email', 'has_subscription', 'is_lifetime', 'user_created_at')
+    list_display =  ('user_email', 'has_subscription', 'is_lifetime', 'seller_status', 'user_created_at')
     search_fields = ['user__email', 'has_subscription', 'customer_id', 'is_lifetime'] 
+    actions = ['create_seller_account']
 
     # Custom method to display `user.email`
     def user_email(self, obj):
@@ -56,6 +57,36 @@ class UserProfileAdmin(ModelAdmin):
     def user_created_at(self, obj):
         return obj.user.date_joined
     user_created_at.short_description = 'Created At'
+
+    def seller_status(self, obj):
+        if obj.seller_account_verified:
+            return 'Verified'
+        elif obj.seller_account_id:
+            return 'Pending'
+        return '—'
+    seller_status.short_description = 'Seller'
+
+    @admin.action(description='Create seller account')
+    def create_seller_account(self, request, queryset):
+        created = 0
+        skipped = 0
+        errors = []
+        for profile in queryset:
+            if profile.seller_account_id:
+                skipped += 1
+                continue
+            try:
+                profile.get_seller_account_id()
+                created += 1
+            except Exception as e:
+                errors.append(f'{profile.user.email}: {e}')
+
+        if created:
+            messages.success(request, f'Created seller account for {created} user(s).')
+        if skipped:
+            messages.info(request, f'Skipped {skipped} user(s) — already have a seller account.')
+        for err in errors:
+            messages.error(request, f'Error: {err}')
 
 @admin.register(Notification)
 class NotificationAdmin(ModelAdmin):

@@ -7,7 +7,7 @@ from django.conf import settings
 from profile_user.utils.send_mails import strategy_access_canceled, strategy_access_overdue, strategy_access_removed, strategy_access_gained, seller_first_subscriber_to_strategy, seller_ten_subscribers_to_strategy, seller_hundred_subscribers_to_strategy, seller_hundred_thousand_subscribers_to_strategy, seller_million_subscribers_to_strategy
 
 @shared_task
-def send_strategy_email_to_all_users(emails, strategy, header, subject, html_content):
+def send_strategy_email_to_all_users(emails, strategy, header=None, subject=None, html_content=None):
 
     strategy_name = strategy.name
     strategy_url = 'https://www.isalgo.com/strategies/' + strategy.slug

@@ -308,6 +308,9 @@ class StrategySubscriber(models.Model):
         if self.strategy.premium != 'VIP':
             return False, None
         is_sub_active, sub = is_customer_subscribed_to_price(self.user_profile.customer_id, self.strategy.price.stripe_price_id)
+        if not is_sub_active and self.active:
+            self.active = False
+            self.save()
         return is_sub_active, sub
 
 class Replies(models.Model):

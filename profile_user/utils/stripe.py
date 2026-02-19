@@ -302,6 +302,7 @@ def create_seller_account(user, country):
             "metadata": {
                 "user_id": str(user.id),
                 'profile_user_id': str(user.user_profile.id) if hasattr(user, 'user_profile') else None,
+                'customer': str(user.user_profile.customer_id) if hasattr(user, 'user_profile') else None,
             },
         }
 
@@ -913,13 +914,14 @@ def handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, s
 
                 user_profile = User_Profile.objects.filter(seller_account_id=account_id).first()
                 if user_profile:
-                    user_profile.verify_seller_account(charges_enabled=charges_enabled, payouts_enabled=payout_enabled)
                     if charges_enabled:
-                        send_seller_account_verified_email_task(user_profile.user.email)
+                        if not user_profile.seller_account_verified:
+                            send_seller_account_verified_email_task(user_profile.user.email)
                     if not charges_enabled or not payout_enabled:
                         print("Stripe-Webhook: Seller account disabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
                     elif charges_enabled and payout_enabled:
                         print("Stripe-Webhook: Seller account enabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
+                    user_profile.verify_seller_account(charges_enabled=charges_enabled, payouts_enabled=payout_enabled)
                         
 
                     return {
