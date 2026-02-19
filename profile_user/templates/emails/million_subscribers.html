@@ -1,0 +1,46 @@
+{% extends 'emails/components/base_email.html' %}
+
+{% block title %}
+  1 Million Subscribers Milestone - IsAlgo
+{% endblock %}
+
+{% block preheader %}
+  Legendary — your strategy {{ strategy_name }} just hit 1,000,000 subscribers!
+{% endblock %}
+
+{% block content %}
+  {% with icon_name='earnings.png' header_title='1,000,000 Subscribers!' header_subtitle=strategy_name header_bg='rgba(56, 97, 246, 0.1)' header_color='#3861f6' header_border='rgba(56, 97, 246, 0.2)' %}
+    {% include 'emails/components/email_header.html' %}
+  {% endwith %}
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">This is historic — your strategy <strong>{{ strategy_name }}</strong> just reached <strong>1,000,000 subscribers</strong>! One million traders around the world are using your strategy. You've made history on IsAlgo.</p>
+
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">What you've accomplished is nothing short of legendary. Your strategy has become a benchmark in the trading world and your impact on the community is immeasurable.</p>
+
+  <!-- Stats card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Milestone summary:</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5; width: 140px;">Strategy</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5; font-weight: 600;">{{ strategy_name }}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5;">Subscribers</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #3861f6; line-height: 1.5; font-weight: 600;">1,000,000</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-size: 14px; color: #555555; line-height: 1.5;">Price</td>
+        <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5; font-weight: 600;">${{ price }}/ {{ interval_count }} {{ interval }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">From everyone at IsAlgo — thank you. You are a true pioneer and we're incredibly proud to support your journey. We'd love to connect personally and discuss how we can continue to support your growth. Please reach out anytime.</p>
+
+  <!-- CTA Buttons -->
+  {% with primary_url=site_url primary_text='View My Earnings' secondary_url='mailto:'|add:support_email|add:'?subject=Million%20Subscribers%20Creator' secondary_text='Contact Us' %}
+    {% include 'emails/components/cta_buttons.html' %}
+  {% endwith %}
+{% endblock %}

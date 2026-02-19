@@ -478,12 +478,14 @@ def strategy_subscribe(request, id):
 
             if subscriber:
                 subscriber.subscription_id = subscription.id
+                subscriber.active = True
                 subscriber.save()
             else:
                 StrategySubscriber.objects.create(
                     strategy=strategy_price.strategy,
                     user_profile=user_profile,
                     subscription_id=subscription.id,
+                    active=True,
                 )
 
             print("Subscription created:", subscription.id)

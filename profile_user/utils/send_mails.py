@@ -319,6 +319,40 @@ def seller_hundred_subscribers_to_strategy(user_email, strategy):
     except Exception as e:
         print(f"Error sending email: {e}")
 
+def seller_hundred_thousand_subscribers_to_strategy(user_email, strategy):
+    strategy_name = strategy.name
+    strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
+    price = strategy.price.amount
+    interval = strategy.price.interval
+    interval_count = strategy.price.interval_count
+    subject = f'{strategy_name} Just Hit 100,000 Subscribers!'
+    html_content = render_to_string('emails/hundred_thousand_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending 100K subscribers email', user_email)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+def seller_million_subscribers_to_strategy(user_email, strategy):
+    strategy_name = strategy.name
+    strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
+    price = strategy.price.amount
+    interval = strategy.price.interval
+    interval_count = strategy.price.interval_count
+    subject = f'Legendary — {strategy_name} Just Hit 1,000,000 Subscribers!'
+    html_content = render_to_string('emails/million_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending 1M subscribers email', user_email)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
 def amount_to_pay_email(user_email, amount):
     subject = 'Outstanding Balance on Your IsAlgo Account'
     html_content = render_to_string('emails/amount_to_pay.html', context={'amount': amount, **email_context()})

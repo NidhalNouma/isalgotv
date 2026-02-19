@@ -10,7 +10,7 @@ from django.db.models import Count, Q
 from django.core.cache import cache
 
 from profile_user.models import User_Profile, Notification
-from strategies.models import Strategy
+from strategies.models import Strategy, StrategySubscriber
 
 from profile_user.forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
@@ -893,7 +893,7 @@ def stripe_webhook(request):
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
     try:
-        wbh = handle_stripe_webhook(User_Profile, Strategy, payload, sig_header)
+        wbh = handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, sig_header)
         status = 200
         if wbh.get('status') == 'error' or wbh.get('status') == 'failed' or wbh.get('status') == 'ignored':
             status = 400

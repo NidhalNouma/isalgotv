@@ -298,6 +298,7 @@ class StrategySubscriber(models.Model):
     user_profile = models.ForeignKey(User_Profile, on_delete=models.CASCADE, related_name='subscriptions')
 
     subscription_id = models.CharField(max_length=100)
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:

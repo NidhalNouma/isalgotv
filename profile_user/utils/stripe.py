@@ -875,7 +875,7 @@ def product_overview(product_id, price_id):
         print("Error retrieving subscription overview:", e)
         raise
 
-def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
+def handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, sig_header):
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, stripe_wh_secret
@@ -1218,8 +1218,7 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                     user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
                     # send an email to user to notify them about the subscription cancellation and access removal
                     send_strategy_lost_email_task(user_profile.user.email, strategy)
-
-
+                    StrategySubscriber.objects.filter(user_profile=user_profile, strategy=strategy).update(active=False)
                     return {
                         "status": "success",
                         "message": "Strategy subscription deleted, access removed.",
@@ -1231,6 +1230,7 @@ def handle_stripe_webhook(User_Profile, Strategy, payload, sig_header):
                         user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
                         # send an email to user to notify them about the subscription cancellation and access removal
                         send_strategy_lost_email_task(user_profile.user.email, strategy)
+                        StrategySubscriber.objects.filter(user_profile=user_profile, strategy=strategy).update(active=False)
                         return {
                             "status": "success",
                             "message": "Strategy subscription updated, access removed if subscription status is canceled.",
