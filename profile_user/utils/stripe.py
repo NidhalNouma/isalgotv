@@ -12,6 +12,7 @@ from strategies.tasks import *
 import stripe
 stripe.api_key = env('STRIPE_API_KEY')
 stripe_wh_secret = env('STRIPE_API_WEBHOOK_SECRET')
+stripe_wh_secret_connect = env('STRIPE_API_WEBHOOK_SECRET_CONNECT')
 
 def check_coupon_fn(user_profile, coupon_id, price):
     try:
@@ -876,12 +877,9 @@ def product_overview(product_id, price_id):
         print("Error retrieving subscription overview:", e)
         raise
 
-def handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, sig_header):
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, stripe_wh_secret
-        )
 
+def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
+    try:
         if event['type'] == 'customer.deleted':
             customer = event['data']['object']
             customer_id = customer.get("id")
@@ -1265,6 +1263,20 @@ def handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, s
             "status": "passed",
             "reason": f"Unhandled event type {event['type']}",
         }
+
+    except Exception as e:
+        print("Error handling webhook event:", e)
+        raise
+
+def handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, sig_header):
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, stripe_wh_secret
+        )
+
+        return handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event)
+
+  
     except ValueError as e:
         # Invalid payload
         print("Invalid payload")
@@ -1277,3 +1289,23 @@ def handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, s
         print("Error handling webhook:", e)
         raise e
 
+
+def handle_stripe_webhook_connect(User_Profile, Strategy, StrategySubscriber, payload, sig_header):
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, stripe_wh_secret_connect
+        )
+
+        return handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event)
+
+    except ValueError as e:
+        # Invalid payload
+        print("Invalid payload")
+        raise e
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print("Invalid signature")
+        raise e
+    except Exception as e:
+        print("Error handling webhook:", e)
+        raise e

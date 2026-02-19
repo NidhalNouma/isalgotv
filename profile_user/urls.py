@@ -14,6 +14,7 @@ urlpatterns = [
     path('membership/payment-intent/', create_setup_intent, name="membership-payment-intent"),
     path('pay/remaining-amount-payment-intent/', pay_remaining_amount, name="pay_remaining_amount"),
     path('stripe/webhook/', stripe_webhook, name="stripe-webhook"),
+    path('stripe/webhook/connect/', stripe_webhook_connect, name="stripe-webhook-connect"),
     path('profile/', get_profile, name='profile'),
     path('profile/update/tradingview_username', edit_tradingview_username, name='update-tradingview-username'),
     path('profile/update/discord_username', edit_discord_username, name='update-discord-username'),

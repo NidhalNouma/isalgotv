@@ -76,6 +76,7 @@ jobs:
           --build-arg STRIPE_API_KEY="${{ secrets.STRIPE_API_KEY }}" \
           --build-arg STRIPE_API_PUBLIC_KEY="${{ secrets.STRIPE_API_PUBLIC_KEY }}" \
           --build-arg STRIPE_API_WEBHOOK_SECRET="${{ secrets.STRIPE_API_WEBHOOK_SECRET }}" \
+          --build-arg STRIPE_API_WEBHOOK_SECRET_CONNECT="${{ secrets.STRIPE_API_WEBHOOK_SECRET_CONNECT }}" \
           --build-arg STRIPE_PRICE_MN_ID="${{ secrets.STRIPE_PRICE_MN_ID }}" \
           --build-arg STRIPE_PRICE_Y_ID="${{ secrets.STRIPE_PRICE_Y_ID }}" \
           --build-arg STRIPE_PRICE_LT_ID="${{ secrets.STRIPE_PRICE_LT_ID }}" \

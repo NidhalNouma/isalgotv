@@ -903,3 +903,20 @@ def stripe_webhook(request):
         return JsonResponse({"error": str(e)}, status=400)
     except stripe.error.SignatureVerificationError as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+@csrf_exempt
+def stripe_webhook_connect(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+
+    try:
+        wbh = handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, sig_header)
+        status = 200
+        if wbh.get('status') == 'error' or wbh.get('status') == 'failed' or wbh.get('status') == 'ignored':
+            status = 400
+        return JsonResponse(wbh, status=status)
+
+    except ValueError as e:
+        return JsonResponse({"error": str(e)}, status=400)
+    except stripe.error.SignatureVerificationError as e:
+        return JsonResponse({"error": str(e)}, status=400)
