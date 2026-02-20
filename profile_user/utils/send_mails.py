@@ -183,6 +183,22 @@ def broker_account_overdue(user_email, account):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
+def automate_log_error(user_email, account_name, alert_message, error_message):
+    subject = f'Automation Error: {account_name}'
+    html_content = render_to_string('emails/automate_log_error.html', context={
+        'account_name': account_name,
+        'alert_message': alert_message,
+        'error_message': error_message,
+        **email_context()
+    })
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'
+
+    try:
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
 def strategy_access_gained(user_email, strategy):
     subject = f'Access Granted: You now have access to {strategy.name}!'
     e_context = email_context()

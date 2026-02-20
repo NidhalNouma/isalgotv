@@ -16,3 +16,7 @@ def send_broker_account_access_expiring_task(user_email, account):
 @shared_task
 def send_broker_account_added_task(user_email, account):
     broker_account_added(user_email, account)
+
+@shared_task
+def send_automate_log_error_task(user_email, account_name, alert_message, error_message):
+    automate_log_error(user_email, account_name, alert_message, error_message)

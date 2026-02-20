@@ -910,7 +910,7 @@ def stripe_webhook_connect(request):
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
     try:
-        wbh = handle_stripe_webhook(User_Profile, Strategy, StrategySubscriber, payload, sig_header)
+        wbh = handle_stripe_webhook_connect(User_Profile, Strategy, StrategySubscriber, payload, sig_header)
         status = 200
         if wbh.get('status') == 'error' or wbh.get('status') == 'failed' or wbh.get('status') == 'ignored':
             status = 400
