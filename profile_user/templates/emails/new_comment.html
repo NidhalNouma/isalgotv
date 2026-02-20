@@ -1,0 +1,33 @@
+{% extends 'emails/components/base_email.html' %}
+
+{% block title %}
+  New Comment - IsAlgo
+{% endblock %}
+
+{% block preheader %}
+  A new comment has been added to your strategy {{ strategy_name }}.
+{% endblock %}
+
+{% block content %}
+  {% with icon_name='notification.png' header_title='New Comment' header_subtitle=strategy_name header_bg='rgba(56, 97, 246, 0.1)' header_color='#3861f6' header_border='rgba(56, 97, 246, 0.2)' %}
+    {% include 'emails/components/email_header.html' %}
+  {% endwith %}
+
+  <!-- Message -->
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    <strong>{{ author_name }}</strong> left a new comment on your strategy <strong>{{ strategy_name }}</strong>.
+  </p>
+
+  <!-- Comment Preview Card -->
+  <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="margin: 0 0 4px; font-size: 13px; color: #555555;">{{ author_name }} wrote:</p>
+    <p style="margin: 0; font-size: 14px; color: #333333; line-height: 1.6; font-style: italic;">"{{ comment_preview }}"</p>
+  </div>
+
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Head over to your strategy page to read the full comment and respond.</p>
+
+  <!-- CTA Buttons -->
+  {% with primary_url=strategy_url primary_text='View Comment' %}
+    {% include 'emails/components/cta_buttons.html' %}
+  {% endwith %}
+{% endblock %}

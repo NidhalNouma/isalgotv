@@ -22,4 +22,20 @@
       </tbody>
     </table>
   </div>
+
+  <div class="bg-base-50 mb-6 rounded p-3 dark:bg-base-800 mt-8">
+    <table class="border border-base-400/10 border-spacing-none border-separate rounded overflow-hidden shadow-sm w-full dark:border-base-800">
+      <caption class="font-semibold mb-3 text-base-900 text-left dark:text-base-100">
+        <span>Account Tools</span>
+      </caption>
+
+      <tbody>
+        <tr class="bg-white dark:bg-base-900 model-replies">
+          <th scope="row" class="font-normal p-3 text-left border-b border-base-100 dark:border-base-800">
+            <a href="{% url 'admin:admin_delete_seller_account' %}">Delete Seller Account</a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

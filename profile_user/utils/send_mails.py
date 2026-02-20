@@ -394,3 +394,78 @@ def amount_paid_email(user_email, amount):
     except Exception as e:
         # Handle the exception as needed
         print(f"Error sending email: {e}")
+
+def new_report_added(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker):
+    subject = f'New Report on {strategy_name}'
+    html_content = render_to_string('emails/new_report.html', context={
+        'strategy_name': strategy_name,
+        'strategy_url': strategy_url,
+        'author_name': author_name,
+        'pair': pair,
+        'time_frame_int': time_frame_int,
+        'time_frame': time_frame,
+        'broker': broker,
+        **email_context()
+    })
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[owner_email])
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending new report email', owner_email)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+def new_comment_added(owner_email, strategy_name, strategy_url, author_name, comment_preview):
+    subject = f'New Comment on {strategy_name}'
+    html_content = render_to_string('emails/new_comment.html', context={
+        'strategy_name': strategy_name,
+        'strategy_url': strategy_url,
+        'author_name': author_name,
+        'comment_preview': comment_preview,
+        **email_context()
+    })
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[owner_email])
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending new comment email', owner_email)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+def new_reply_on_report(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
+    subject = f'New Reply on Report — {strategy_name}'
+    html_content = render_to_string('emails/new_reply_on_report.html', context={
+        'strategy_name': strategy_name,
+        'strategy_url': strategy_url,
+        'author_name': author_name,
+        'reply_preview': reply_preview,
+        **email_context()
+    })
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=recipient_emails)
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending new reply on report email', recipient_emails)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+def new_reply_on_comment(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
+    subject = f'New Reply on Comment — {strategy_name}'
+    html_content = render_to_string('emails/new_reply_on_comment.html', context={
+        'strategy_name': strategy_name,
+        'strategy_url': strategy_url,
+        'author_name': author_name,
+        'reply_preview': reply_preview,
+        **email_context()
+    })
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=recipient_emails)
+    email.content_subtype = 'html'
+
+    try:
+        print('Sending new reply on comment email', recipient_emails)
+        email.send()
+    except Exception as e:
+        print(f"Error sending email: {e}")

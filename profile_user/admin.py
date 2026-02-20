@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from .models import User_Profile, Notification
 from strategies.models import Strategy
 from strategies.tasks import send_strategy_email_to_all_users
+from profile_user.utils.stripe import delete_seller_account as stripe_delete_seller_account
 
 from django.urls import path
 from django.template.response import TemplateResponse
@@ -198,6 +199,42 @@ def send_strategy_html_email(request):
 
 
 
+def delete_seller_account_view(request):
+    if request.method == 'POST':
+        account_id = request.POST.get('seller_account_id', '').strip()
+
+        if not account_id:
+            messages.error(request, "Seller account ID is required.")
+            return HttpResponseRedirect(request.path)
+
+        # Find the matching user profile
+        try:
+            profile = User_Profile.objects.get(seller_account_id=account_id)
+        except User_Profile.DoesNotExist:
+            profile = None
+
+        # Delete from Stripe
+        try:
+            stripe_delete_seller_account(account_id)
+        except Exception as e:
+            messages.error(request, f"Stripe error: {e}")
+            return HttpResponseRedirect(request.path)
+
+        # Clear the profile fields
+        if profile:
+            profile.seller_account_id = ''
+            profile.seller_account_verified = False
+            profile.save(update_fields=["seller_account_id", "seller_account_verified"])
+            messages.success(request, f"Seller account {account_id} deleted and profile for {profile.user.email} cleared.")
+        else:
+            messages.warning(request, f"Seller account {account_id} deleted from Stripe, but no matching user profile was found.")
+
+        return HttpResponseRedirect(request.path)
+
+    context = dict(admin.site.each_context(request))
+    return TemplateResponse(request, "admin/delete_seller_account.html", context)
+
+
 # # Insert custom admin URL for sending emails
 original_admin_get_urls = admin.site.get_urls
 
@@ -205,6 +242,7 @@ def get_urls():
     custom_urls = [
         path('admin-send-email/', admin.site.admin_view(send_html_email), name='admin_send_email'),
         path('admin-send-strategy-email/', admin.site.admin_view(send_strategy_html_email), name='admin_send_strategy_email'),
+        path('admin-delete-seller-account/', admin.site.admin_view(delete_seller_account_view), name='admin_delete_seller_account'),
     ]
     return custom_urls + original_admin_get_urls()
 

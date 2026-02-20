@@ -317,6 +317,17 @@ def create_seller_account(user, country):
         print("Error creating seller account:", e)
         raise
 
+def delete_seller_account(account_id):
+    """
+    Deletes a Stripe Seller Account by its ID.
+    """
+    try:
+        print(f"Deleting Stripe seller account {account_id}")
+        stripe.Account.delete(account_id)
+    except stripe.error.StripeError as e:
+        # log or ignore Stripe deletion errors
+        print(f"Error deleting Stripe seller account {account_id}: {e}")
+
 def get_seller_account_link(account_id, refresh_url, return_url):
     """
     Create a Stripe Account Link for onboarding or managing a Seller Account.

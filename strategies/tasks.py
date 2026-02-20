@@ -4,7 +4,7 @@ from django.core.mail import EmailMessage, get_connection
 
 from django.conf import settings
 
-from profile_user.utils.send_mails import strategy_access_canceled, strategy_access_overdue, strategy_access_removed, strategy_access_gained, seller_first_subscriber_to_strategy, seller_ten_subscribers_to_strategy, seller_hundred_subscribers_to_strategy, seller_hundred_thousand_subscribers_to_strategy, seller_million_subscribers_to_strategy
+from profile_user.utils.send_mails import strategy_access_canceled, strategy_access_overdue, strategy_access_removed, strategy_access_gained, seller_first_subscriber_to_strategy, seller_ten_subscribers_to_strategy, seller_hundred_subscribers_to_strategy, seller_hundred_thousand_subscribers_to_strategy, seller_million_subscribers_to_strategy, new_report_added, new_comment_added, new_reply_on_report, new_reply_on_comment
 
 @shared_task
 def send_strategy_email_to_all_users(emails, strategy, header=None, subject=None, html_content=None):
@@ -99,3 +99,19 @@ def send_strategy_million_subscribers_email_task(seller_email, strategy_id):
     from .models import Strategy
     strategy = Strategy.objects.get(id=strategy_id)
     seller_million_subscribers_to_strategy(seller_email, strategy)
+
+@shared_task
+def send_new_report_email_task(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker):
+    new_report_added(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker)
+
+@shared_task
+def send_new_comment_email_task(owner_email, strategy_name, strategy_url, author_name, comment_preview):
+    new_comment_added(owner_email, strategy_name, strategy_url, author_name, comment_preview)
+
+@shared_task
+def send_new_reply_on_report_email_task(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
+    new_reply_on_report(recipient_emails, strategy_name, strategy_url, author_name, reply_preview)
+
+@shared_task
+def send_new_reply_on_comment_email_task(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
+    new_reply_on_comment(recipient_emails, strategy_name, strategy_url, author_name, reply_preview)
