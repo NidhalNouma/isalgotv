@@ -1,0 +1,71 @@
+<form hx-post="{% url 'update-discord-username' %}" hx-target="#setting-emails-notifications" class="mx-auto w-full rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden py-4 px-6 max-w-lg mb-8 space-y-4">
+  <h5 class="text-title font-semibold mb-6">Emails & Notifications</h5>
+  {% csrf_token %}
+
+  <label for="new-free-strategy-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New free strategy</span>
+    <div class="relative">
+      <input type="checkbox" id="new-free-strategy-email" name="new_free_strategy_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <label for="new-premium-strategy-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New premium strategy</span>
+    <div class="relative">
+      <input type="checkbox" id="new-premium-strategy-email" name="new_premium_strategy_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <label for="new-elite-strategy-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New elite strategy</span>
+    <div class="relative">
+      <input type="checkbox" id="new-elite-strategy-email" name="new_elite_strategy_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <label for="new-vip-strategy-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New exclusive strategy</span>
+    <div class="relative">
+      <input type="checkbox" id="new-vip-strategy-email" name="new_vip_strategy_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <label for="new-report-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New report</span>
+    <div class="relative">
+      <input type="checkbox" id="new-report-email" name="new_report_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <label for="new-comment-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New comment</span>
+    <div class="relative">
+      <input type="checkbox" id="new-comment-email" name="new_comment_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <label for="new-reply-email" class="flex items-center justify-between cursor-pointer group">
+    <span class="input-label transition-colors group-hover:text-text/90">New reply</span>
+    <div class="relative">
+      <input type="checkbox" id="new-reply-email" name="new_reply_email" class="sr-only peer" />
+      <div class="w-11 h-6 bg-text/20 rounded-full peer-checked:bg-primary transition-colors duration-200"></div>
+      <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-text rounded-full shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <div id="emails-notifications-form-errors"></div>
+  <button type="submit" id="btn-emails-notifications" onclick="openLoader('', '-emails-notifications', 'flex');" class="btn-primary mt-4 mb-2 w-full">Save</button>
+  <button id="spinner-emails-notifications" disabled type="button" class="mt-4 mb-2 w-full btn-primary items-center hidden">Saving{% include 'svg/spinner.html' with class='h-4 ml-1.5' %}</button>
+</form>

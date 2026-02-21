@@ -38,11 +38,10 @@ class User_Profile(models.Model):
     stripe_obj = models.JSONField(blank=True, null=True, encoder=PrettyJSONEncoder)
     stripe_last_checked = models.DateTimeField(blank=True, null=True)
 
-
     is_lifetime = models.BooleanField(default=False)
-    lifetime_num = models.IntegerField(default=0)
+    lifetime_num = models.IntegerField(default=0) 
     lifetime_intent = models.CharField(default="", max_length=100, blank=True)
-    
+
     ai_tokens_available = models.IntegerField(default=0, blank=True)  
     ai_free_daily_tokens_available = models.IntegerField(default=0, blank=True)  
     last_token_reset = models.DateField(default=now, blank=True) 

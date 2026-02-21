@@ -443,6 +443,11 @@ def subscription_object(subscription=None, subscription_id=None):
         plan = str(sub.get('interval')).upper() + "LY"
         sub['plan'] = plan
 
+        # if subscription.get('status') in ["active", "trialing"]:
+        #     next_invoice = stripe.Invoice.upcoming(customer=subscription.get("customer"), subscription=subscription.get("id"))
+        #     if next_invoice:
+        #         sub['next_payment_amount'] = next_invoice.get("amount_due", 0) / 100
+
         return sub
     except Exception as e:
         print("Error processing subscription object:", e)

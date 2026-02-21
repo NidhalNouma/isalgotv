@@ -74,7 +74,7 @@ def notify_new_report(sender, instance, created, **kwargs):
             return
 
         strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/?report={instance.id}"
-        author_name = instance.created_by.tradingview_username or 'Anonymous'
+        author_name = instance.created_by.tradingview_username or 'Someone'
 
         send_new_report_email_task(
             owner_email,
@@ -105,7 +105,7 @@ def notify_new_comment(sender, instance, created, **kwargs):
             return
 
         strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/?comment={instance.id}"
-        author_name = instance.created_by.tradingview_username or 'Anonymous'
+        author_name = instance.created_by.tradingview_username or 'Someone'
         comment_preview = instance.description[:200]
 
         send_new_comment_email_task(
@@ -155,7 +155,7 @@ def notify_new_reply(sender, instance, created, **kwargs):
             return
 
         author_email = instance.created_by.user.email
-        author_name = instance.created_by.tradingview_username or 'Anonymous'
+        author_name = instance.created_by.tradingview_username or 'Someone'
         reply_preview = instance.description[:200]
 
         if isinstance(root, StrategyResults):
