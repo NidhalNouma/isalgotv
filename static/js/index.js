@@ -1156,13 +1156,6 @@ function openCtraderAuthWindow(clientIdInput, path) {
 
 document.addEventListener("DOMContentLoaded", function () {
   // Auto-play/pause videos on hover or touch within elements with class 'group'
-  // Pause and reset all videos
-  function pauseAllVideos() {
-    document.querySelectorAll(".group video").forEach((v) => {
-      v.pause();
-      v.currentTime = 0;
-    });
-  }
 
   // Attach handlers to each group container
   document.querySelectorAll(".group").forEach((container) => {
@@ -1171,7 +1164,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Play on hover
     container.addEventListener("mouseenter", () => {
-      pauseAllVideos();
       video.play();
     });
     container.addEventListener("mouseleave", () => {
@@ -1184,7 +1176,6 @@ document.addEventListener("DOMContentLoaded", function () {
     container.addEventListener(
       "touchstart",
       () => {
-        pauseAllVideos();
         video.play();
       },
       { passive: true },

@@ -1,4 +1,7 @@
+from urllib.parse import urlparse
+
 from django.shortcuts import render, redirect
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
@@ -7,6 +10,20 @@ from django.views.decorators.http import require_http_methods
 
 from profile_user.models import User_Profile
 from auth.forms import UserCreationEmailForm
+
+
+def _is_safe_redirect(url):
+    """Allow relative paths and full URLs on trusted subdomains."""
+    if url and url.startswith('/'):
+        return True
+    try:
+        parsed = urlparse(url)
+        parent = getattr(settings, 'PARENT_HOST', '')
+        if parent and parsed.hostname and parsed.hostname.endswith('.' + parent):
+            return True
+    except Exception:
+        pass
+    return False
 
 
 def register(request):
@@ -26,7 +43,7 @@ def register(request):
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
                 next_url = request.POST.get('next', '')
-                if next_url and next_url.startswith('/'):
+                if next_url and _is_safe_redirect(next_url):
                     return redirect(next_url)
                 return redirect('home')
             else:
@@ -68,7 +85,7 @@ def login_user(request):
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
             next_url = request.POST.get('next', '')
-            if next_url and next_url.startswith('/'):
+            if next_url and _is_safe_redirect(next_url):
                 return redirect(next_url)
             return redirect('home')
         else:

@@ -142,25 +142,37 @@
       <script>
         ;(function () {
           const key = 'auth_origin'
+          // Extract the parent domain (e.g. "isalgo.com" from "www.isalgo.com")
+          function getParentDomain(hostname) {
+            var parts = hostname.split('.')
+            return parts.length >= 2 ? parts.slice(-2).join('.') : hostname
+          }
+          var currentParent = getParentDomain(window.location.hostname)
         
-          // On first auth page load, store the referrer if it's from our site and not an auth page
+          // On first auth page load, store the referrer if it's from our site
           if (!sessionStorage.getItem(key)) {
-            let referrer = document.referrer
+            var referrer = document.referrer
             if (referrer) {
               try {
-                let url = new URL(referrer)
-                if (url.origin === window.location.origin) {
-                  sessionStorage.setItem(key, url.pathname + url.search)
+                var url = new URL(referrer)
+                var refParent = getParentDomain(url.hostname)
+                if (refParent === currentParent) {
+                  // Same subdomain: store relative path; different subdomain: store full URL
+                  if (url.origin === window.location.origin) {
+                    sessionStorage.setItem(key, url.pathname + url.search)
+                  } else {
+                    sessionStorage.setItem(key, url.href)
+                  }
                 }
               } catch (e) {}
             }
           }
         
-          let origin = sessionStorage.getItem(key) || '/'
+          var origin = sessionStorage.getItem(key) || '/'
           document.getElementById('auth-exit-btn').href = origin
         
           // Populate hidden next input in login/register forms
-          let nextInput = document.getElementById('auth-next-input')
+          var nextInput = document.getElementById('auth-next-input')
           if (nextInput && origin !== '/') {
             nextInput.value = origin
           }
@@ -168,8 +180,8 @@
           // Append next param to Google OAuth link
           if (origin !== '/') {
             document.querySelectorAll('.auth-google-btn').forEach(function (btn) {
-              let href = btn.getAttribute('href')
-              let sep = href.includes('?') ? '&' : '?'
+              var href = btn.getAttribute('href')
+              var sep = href.includes('?') ? '&' : '?'
               btn.setAttribute('href', href + sep + 'next=' + encodeURIComponent(origin))
             })
           }

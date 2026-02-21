@@ -40,14 +40,14 @@ export function AuthPopup({ onClose }: AuthPopupProps) {
 
           <div className="space-y-4">
             <a
-              href={HOST + "/my/register"}
+              href={HOST + "/auth/register"}
               className="w-full btn-accent transition-colors"
             >
               Sign up
             </a>
 
             <a
-              href={HOST + "/my/login"}
+              href={HOST + "/auth/login"}
               className="w-full btn-text from-transparent to-transparent py-2 text-text border border-text/60 transition-colors"
             >
               Sign in

@@ -224,7 +224,7 @@ def random_strategies_results_context():
     return context
 
 
-@login_required(login_url='login')
+@login_required(login_url='index')
 def home(request):
     context = {}
 
