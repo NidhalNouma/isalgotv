@@ -389,6 +389,11 @@ def create_strategy_price(strategy, strategy_price) -> (tuple):
             product_id = product.id
         else:
             product = stripe.Product.retrieve(product_id)
+
+            availble_prices = stripe.Price.list(product=product_id)
+            price_exists =  next(p for p in availble_prices.auto_paging_iter() if p.recurring and p.recurring.interval == strategy_price.interval and p.recurring.interval_count == strategy_price.interval_count and p.unit_amount == int(strategy_price.amount * 100))
+            if price_exists:
+                return product, price_exists
         
 
 

@@ -32,24 +32,29 @@ def send_strategy_email_to_all_users(emails, strategy, header=None, subject=None
             'strategy_type': strategy.premium, 
         })
     
-    # Open one connection
-    connection = get_connection()
+    try:
+        # Open one connection
+        connection = get_connection()
 
-    # Build all messages
-    messages = []
-    for recipient in emails:
-        msg = EmailMessage(
-            subject=subject,
-            body=html_content,
-            from_email=from_email,
-            to=[recipient],
-            connection=connection
-        )
-        msg.content_subtype = "html"
-        messages.append(msg)
+        # Build all messages
+        messages = []
+        for recipient in emails:
+            msg = EmailMessage(
+                subject=subject,
+                body=html_content,
+                from_email=from_email,
+                to=[recipient],
+                connection=connection
+            )
+            msg.content_subtype = "html"
+            messages.append(msg)
 
-    # Send them all in one go (over the same connection)
-    connection.send_messages(messages)
+        # Send them all in one go (over the same connection)
+        connection.send_messages(messages)
+        print(f"Strategy email sent to {len(emails)} users successfully!")
+    except Exception as e:
+        print("An error occurred while sending strategy email to all users", e)
+        raise e
 
 
 

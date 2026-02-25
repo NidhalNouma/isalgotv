@@ -101,6 +101,7 @@ jobs:
           --build-arg FREE_TRIAL_DAYS="${{ secrets.FREE_TRIAL_DAYS }}" \
           --build-arg WEBHOOK_SERVER_IP="${{ secrets.WEBHOOK_SERVER_IP }}" \
           --build-arg NEWS_API_KEY="${{ secrets.NEWS_API_KEY }}" \
+          --build-arg MARKETING_EMAIL_API_KEY="${{ secrets.MARKETING_EMAIL_API_KEY }}" \
           --build-arg COUPON_CODE="${{ secrets.COUPON_CODE }}" \
           --build-arg COUPON_OFF="${{ secrets.COUPON_OFF }}" \
             -t $ECR_URI:$IMAGE_TAG .

@@ -1,5 +1,5 @@
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, get_connection
 from django.conf import settings
 
 def email_context():
@@ -37,6 +37,57 @@ def email_context():
         'support_email': settings.EMAIL_HOST_USER,
         'social_urls': social_urls,
     }
+
+
+def send_marketing_email(recipients, subject, sections, preheader=''):
+    """
+    Send a marketing email built from an array of section objects.
+
+    Args:
+        recipients: email address (str) or list of email addresses
+        subject: email subject line
+        sections: list of dicts, each representing a section:
+            {
+                'title':          str  (optional),
+                'description':    str  (optional, supports HTML),
+                'align':          str  (optional, 'left'|'center', default 'left'),
+                'image_position': str  (optional, 'before'|'after', default 'after'),
+                'images_per_row': str  (optional, '1'|'2'|'3', default '1'),
+                'images':         list (optional, list of {'src': str, 'alt': str, 'link': str}),
+                'image_rows':     list (auto-generated, chunked images per row),
+                'image_col_width':str  (auto-generated, % width per image column),
+                'cta_text':       str  (optional, button label),
+                'cta_url':        str  (optional, button URL),
+                'cta_bg':         str  (optional, button background color, default '#3861f6'),
+                'cta_color':      str  (optional, button text color, default '#ffffff'),
+                'divider':        bool (optional, show divider after section, default True),
+            }
+        preheader: preview text shown in inbox (optional)
+    """
+    if isinstance(recipients, str):
+        recipients = [recipients]
+
+    context = {
+        'sections': sections,
+        'email_subject': subject,
+        'preheader': preheader,
+        **email_context(),
+    }
+    html_content = render_to_string('emails/marketing_email.html', context=context)
+    from_email = f"IsAlgo <{settings.EMAIL_HOST_USER}>"
+
+    messages = []
+    for recipient in recipients:
+        msg = EmailMessage(subject, html_content, from_email=from_email, to=[recipient])
+        msg.content_subtype = 'html'
+        messages.append(msg)
+
+    try:
+        connection = get_connection()
+        sent = connection.send_messages(messages)
+        print(f'Marketing email sent to {sent}/{len(recipients)} recipient(s)')
+    except Exception as e:
+        print(f"Error sending marketing emails: {e}")
 
 
 def send_welcome_email(user_email, username):

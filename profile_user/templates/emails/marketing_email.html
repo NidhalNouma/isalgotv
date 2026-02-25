@@ -1,0 +1,66 @@
+{% extends 'emails/components/base_email.html' %}
+
+{% block title %}
+  {{ email_subject|default:"IsAlgo" }}
+{% endblock %}
+
+{% block preheader %}
+  {{ preheader|default:"" }}
+{% endblock %}
+
+{% block content %}
+  {% for section in sections %}
+    <!-- Section {{ forloop.counter }} -->
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: {% if forloop.last %}0{% else %}32{% endif %}px;">
+      <tr>
+        <td>
+          {% if section.title %}
+            <h2 style="margin: 0 0 8px; font-size: 22px; font-weight: 700; color: #000000; text-align: {% if section.align %}{{ section.align }}{% else %}left{% endif %}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+              {{ section.title }}
+            </h2>
+          {% endif %}
+
+          {# Images BEFORE description when image_position == "before" #}
+          {% if section.image_position == "before" %}
+            {% include 'emails/components/marketing_images.html' with section=section %}
+          {% endif %}
+
+          {% if section.description %}
+            <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #374151; text-align: {% if section.align %}{{ section.align }}{% else %}left{% endif %}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+              {{ section.description|safe }}
+            </p>
+          {% endif %}
+
+          {# Images AFTER description (default) #}
+          {% if section.image_position != "before" %}
+            {% include 'emails/components/marketing_images.html' with section=section %}
+          {% endif %}
+
+          {# Call-to-action button #}
+          {% if section.cta_text and section.cta_url %}
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" {% if section.align == "center" %}style="margin: 0 auto;"{% endif %}>
+              <tr>
+                <td align="center" style="background-color: {{ section.cta_bg|default:'#3861f6' }}; border-radius: 6px; padding: 10px 24px;">
+                  <a href="{{ section.cta_url }}" style="display: inline-block; color: {{ section.cta_color|default:'#ffffff' }}; text-decoration: none; font-weight: 600; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+                    {{ section.cta_text }}
+                  </a>
+                </td>
+              </tr>
+            </table>
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+
+    {# Divider between sections (skip after last) #}
+    {% if not forloop.last %}
+      {% if section.divider != False %}
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 32px;">
+          <tr>
+            <td style="border-top: 1px solid #e5e7eb; font-size: 0; line-height: 0;">&nbsp;</td>
+          </tr>
+        </table>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endblock %}

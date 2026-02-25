@@ -1,305 +1,384 @@
 {% load static %}
 {% load hosts %}
 
-<main class="mt-4 md:flex block justify-between mb-8">
+<main class="mt-4 block justify-between mb-8">
+  {% if False and not user.is_authenticated %}
+    <section class="max-w-full relative pt-8 flex flex-col min-h-[90vh] items-center">
+      <div class="relative flex flex-col items-center w-full text-center z-30 mb-10">
+        <span class="animate-fade-down text-title text-5xl sm:text-6xl font-bold uppercase">Strategy In.</span>
+        <span class="animate-fade-up animation-delay-150 text-5xl sm:text-6xl text-primary font-bold uppercase">Uncertainty Out.</span>
+
+        <h6 class="animate-fade-up animation-delay-300 text-text text-lg sm:text-xl tracking-wide font-medium mt-4 bg-transparent max-w-md">Algorithmic precision. — leave emotions behind.</h6>
+        <div class="animate-fade-up animation-delay-450 flex flex-row items-center rounded justify-center gap-4 w-full max-w-fit mt-6 md:mt-8">
+          <a href="{% url 'register' %}" class="btn-primary-landing sm:text-xl my-0 mx-0 py-3">
+            Get started for free!<svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+              <path d="M84,16V12a12,12,0,0,1,24,0v4a12,12,0,0,1-24,0ZM16,108a12,12,0,0,0,0-24H12a12,12,0,0,0,0,24ZM128.2,39.38a12,12,0,0,0,15.18-7.59l4-12a12,12,0,0,0-22.76-7.58l-4,12A12,12,0,0,0,128.2,39.38Zm-104,81.24-12,4a12,12,0,1,0,7.58,22.76l12-4a12,12,0,1,0-7.58-22.76Zm197.93,60.55a20,20,0,0,1,0,28.29l-12.68,12.68a20,20,0,0,1-28.29,0l-45.51-45.51L118.54,216h0a19.81,19.81,0,0,1-18.27,12l-1,0a19.81,19.81,0,0,1-18-13.74L29,54.16A20,20,0,0,1,54.16,29L214.24,81.27A20,20,0,0,1,216,118.54l-39.37,17.12Zm-19.8,14.14L155.5,148.47A20,20,0,0,1,161.67,116l35-15.21L54.29,54.29l46.49,142.37,15.21-35A20,20,0,0,1,130.6,150a19.74,19.74,0,0,1,3.74-.36,20,20,0,0,1,14.13,5.86l46.84,46.84Z"></path>
+            </svg>
+          </a>
+        </div>
+
+        {% if free_trial_days and free_trial_days|add:'0' > 0 %}
+          <h6 class="animate-fade-up animation-delay-600 sm:hidden text-title/80 text-sm font-medium text-center mt-6 tracking-wider">
+            <div class="relative font-semibold inline-block text-title tracking-wider pl-0.5 capitalize">
+              {{ free_trial_days }} day free trial<div class="absolute top-[90%] w-full">
+                <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round" />
+                </svg>
+              </div>
+            </div>
+            <a class="inline-flex ml-0.5 cursor-pointer align-text-bottom" href="{% url 'register' %}">
+              <svg class="w-4 fill-text bg-text/30 p-0 rounded-full aspect-square" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path>
+              </svg>
+            </a>
+          </h6>
+        {% endif %}
+      </div>
+
+      <div class="animate-fade-up animation-delay-700 w-full relative max-w-full mt-auto h-fit grow overflow-hidden rounded-t-lg">
+        <div class="absolute sm:top-0 top-1/4 w-full rounded-lg">
+          <img class="rounded-lg border-0 border-primary/10 w-full aspect-video block z-[9] scale-100 lg:scale-110 bg-background" src="https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png" loading="lazy" />
+
+          <div onclick="openModel('video-modal-l')" class="absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-16 aspect-square w-16 rounded-full bg-background dark:bg-title flex items-center justify-center">
+              <svg class="h-5 w-5 text-primary" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+                <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute h-8 w-full -bottom-4 bg-gradient-to-t from-background pointer-events-none z-10"></div>
+      </div>
+
+      {% include 'include/video_modal.html' with id='l' video_url='https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4' video_poster='https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png' %}
+    </section>
+
+    <section class="mx-auto w-full mt-28 mb-16 relative flex flex-col">
+      <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">For Traders</span></h2>
+      <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
+
+      <div class="grid md:grid-cols-3 gap-5 mt-12 mb-16">
+        <div class="border-r-0 md:border-r-2 border-secondary">
+          <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
+            <h5 class="text-primary text-xl font-bold mb-4 uppercase">Easy to use</h5>
+            <p class="text-text font-semibold">Our tools boast simplicity and extensive customization options, seamlessly integrating into your workflow.</p>
+          </div>
+        </div>
+
+        <div class="border-r-0 md:border-r-2 border-accent">
+          <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
+            <h5 class="text-primary text-xl font-bold mb-4 uppercase">BEYOND CHARTS</h5>
+            <p class="text-text font-semibold">Our aim is to foster a thriving community where we can grow together.</p>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
+            <h5 class="text-primary text-xl font-bold mb-4 uppercase">Stay ahead</h5>
+            <p class="text-text font-semibold">Access all the essentials for navigating the market like a pro, all in one place, across all assets.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+  {% comment %} {% if not has_subscription %}
+    <section class="grid xl:grid-cols-3 md:grid-cols-1 gap-6 mb-4">
+      <div class="group relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] transition-opacity duration-500"></div>
+
+        <div class="relative p-4 h-full flex flex-col">
+          <div class="flex items-center gap-4 mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-title mb-1">Discover Strategies</h3>
+              <div class="flex items-center gap-1 text-success">
+                <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                  <path d="M5 3v4"></path>
+                  <path d="M19 17v4"></path>
+                  <path d="M3 5h4"></path>
+                  <path d="M17 19h4"></path>
+                </svg>
+                <span class="text-xs">8+ strategies available</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-text text-sm leading-relaxed mb-4">Find and backtest proven trading strategies. Use historical data to optimize your approach and maximize potential returns.</p>
+
+          <a href="{% url 'strategies' %}" class="mt-auto btn-accent w-fit">
+            <span class="font-medium">Start exploring</span>
+            <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] transition-opacity duration-500"></div>
+
+        <div class="relative p-4 h-full flex flex-col">
+          <div class="flex items-center gap-4 mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-title mb-1">Automate Everything</h3>
+              <div class="flex items-center gap-1 text-success">
+                <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                  <path d="M5 3v4"></path>
+                  <path d="M19 17v4"></path>
+                  <path d="M3 5h4"></path>
+                  <path d="M17 19h4"></path>
+                </svg>
+                <span class="text-xs">24/7 automated trading</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-text text-sm leading-relaxed mb-4">Set up custom alerts and automated trading rules. Your strategies work non-stop while you focus on strategy development.</p>
+
+          <a href="{% url 'automate' %}" class="mt-auto btn-accent w-fit">
+            <span class="font-medium">Get started</span>
+            <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] transition-opacity duration-500"></div>
+
+        <div class="relative p-4 h-full flex flex-col">
+          <div class="flex items-center gap-4 mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-title mb-1">AI Trading Assistant</h3>
+              <div class="flex items-center gap-1 text-success">
+                <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                  <path d="M5 3v4"></path>
+                  <path d="M19 17v4"></path>
+                  <path d="M3 5h4"></path>
+                  <path d="M17 19h4"></path>
+                </svg>
+                <span class="text-xs">Powered by Tero</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-text text-sm leading-relaxed mb-4">Let Tero help you develop and optimize your trading strategies. Get personalized recommendations based on your goals.</p>
+
+          <a href="{% host_url 'tero_index' host 'tero' %}" target="_blank" class="mt-auto btn-accent w-fit">
+            <span class="font-medium">Ask Tero</span>
+            <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  {% endif %} {% endcomment %}
+
   <section class="">
-    {% comment %} {% if not has_subscription %}
-      <section class="grid xl:grid-cols-3 md:grid-cols-1 gap-6 mb-4">
-        <div class="group relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] transition-opacity duration-500"></div>
+    <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+      Trending Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" d="M0 0h24v24H0V0z"></path>
+        <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+      </svg>
+    </a>
 
-          <div class="relative p-4 h-full flex flex-col">
-            <div class="flex items-center gap-4 mb-4">
-              <div>
-                <h3 class="text-lg font-bold text-title mb-1">Discover Strategies</h3>
-                <div class="flex items-center gap-1 text-success">
-                  <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4">
-                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
-                    <path d="M5 3v4"></path>
-                    <path d="M19 17v4"></path>
-                    <path d="M3 5h4"></path>
-                    <path d="M17 19h4"></path>
-                  </svg>
-                  <span class="text-xs">8+ strategies available</span>
-                </div>
-              </div>
-            </div>
-
-            <p class="text-text text-sm leading-relaxed mb-4">Find and backtest proven trading strategies. Use historical data to optimize your approach and maximize potential returns.</p>
-
-            <a href="{% url 'strategies' %}" class="mt-auto btn-accent w-fit">
-              <span class="font-medium">Start exploring</span>
-              <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="group relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] transition-opacity duration-500"></div>
-
-          <div class="relative p-4 h-full flex flex-col">
-            <div class="flex items-center gap-4 mb-4">
-              <div>
-                <h3 class="text-lg font-bold text-title mb-1">Automate Everything</h3>
-                <div class="flex items-center gap-1 text-success">
-                  <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4">
-                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
-                    <path d="M5 3v4"></path>
-                    <path d="M19 17v4"></path>
-                    <path d="M3 5h4"></path>
-                    <path d="M17 19h4"></path>
-                  </svg>
-                  <span class="text-xs">24/7 automated trading</span>
-                </div>
-              </div>
-            </div>
-
-            <p class="text-text text-sm leading-relaxed mb-4">Set up custom alerts and automated trading rules. Your strategies work non-stop while you focus on strategy development.</p>
-
-            <a href="{% url 'automate' %}" class="mt-auto btn-accent w-fit">
-              <span class="font-medium">Get started</span>
-              <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="group relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] transition-opacity duration-500"></div>
-
-          <div class="relative p-4 h-full flex flex-col">
-            <div class="flex items-center gap-4 mb-4">
-              <div>
-                <h3 class="text-lg font-bold text-title mb-1">AI Trading Assistant</h3>
-                <div class="flex items-center gap-1 text-success">
-                  <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4">
-                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
-                    <path d="M5 3v4"></path>
-                    <path d="M19 17v4"></path>
-                    <path d="M3 5h4"></path>
-                    <path d="M17 19h4"></path>
-                  </svg>
-                  <span class="text-xs">Powered by Tero</span>
-                </div>
-              </div>
-            </div>
-
-            <p class="text-text text-sm leading-relaxed mb-4">Let Tero help you develop and optimize your trading strategies. Get personalized recommendations based on your goals.</p>
-
-            <a href="{% host_url 'tero_index' host 'tero' %}" target="_blank" class="mt-auto btn-accent w-fit">
-              <span class="font-medium">Ask Tero</span>
-              <svg class="h-4 w-4 ml-2 stroke-text bg-background rounded-full p-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 group-hover/btn:translate-x-1 transition-transform">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
-    {% endif %} {% endcomment %}
-
-    <section class="">
-      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
-        Discover Top Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path fill="none" d="M0 0h24v24H0V0z"></path>
-          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-        </svg>
-      </a>
-
-      <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-        {% for strategy in most_viewed_strategies %}
-          {% include 'include/quick_strategy_2.html' with strategy=strategy %}
-        {% endfor %}
-      </div>
-    </section>
-
-    {% if user.is_authenticated and not has_subscription and not subscription %}
-      {% include 'include/subscribe_banner.html' with class='mt-8' %}
-    {% else %}
-      {% comment %} {% include 'ads.html' with class='mt-8' %} {% endcomment %}
-    {% endif %}
-
-    {% if best_results|length >= 3 %}
-      <section class="mt-8">
-        <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
-          Explore Top Performances<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill="none" d="M0 0h24v24H0V0z"></path>
-            <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-          </svg>
-        </a>
-
-        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-          {% for result in best_results %}
-            {% include 'include/quick_result.html' with result=result id=result.id %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
-
-    <div class="group cursor-pointer relative overflow-hidden mt-8 rounded-xl">
-      <a href="{% url 'docs_alerts' %}" target="_blank">
-        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-title/10 via-title/5 to-transparent"></div>
-        {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div> {% endcomment %}
-
-        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
-          <div class="flex items-center gap-4">
-            {# Icon #}
-            <div class="relative flex-shrink-0">
-              <div class="absolute -inset-1 bg-title/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
-              <div class="relative p-3 rounded-full backdrop-blur">
-                <svg class="w-6 h-6 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                </svg>
-              </div>
-              <span class="absolute -top-0.5 -right-0.5 h-2.5 w-2.5">
-                {% comment %} <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-title/80 opacity-75"></span> {% endcomment %}
-                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-title/60"></span>
-              </span>
-            </div>
-
-            {# Content #}
-            <div class="flex-1">
-              <h3 class="text-sm font-semibold text-title mb-0.5">Get notified on every action</h3>
-              <p class="text-xs sm:text-sm text-text/70">Set up TradingView alerts for your trading strategies</p>
-            </div>
-          </div>
-
-          {# CTA Button #}
-          <div class="flex-shrink-0">
-            <span class="inline-flex items-center text-title bg-title/10 group-hover:bg-title/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
-              <span>See how</span>
-              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 7h10v10"></path>
-                <path d="M7 17 17 7"></path>
-              </svg>
-            </span>
-          </div>
-        </div>
-      </a>
+    <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+      {% for strategy in most_viewed_strategies %}
+        {% include 'include/quick_strategy_2.html' with strategy=strategy %}
+      {% endfor %}
     </div>
-
-    {% if quick_chart_symbols|length > 0 %}
-      <section class="mt-8">
-        <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Quick Charts</h6>
-        <script src="https://s3.tradingview.com/tv.js"></script>
-
-        <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-          {% for symbol in quick_chart_symbols %}
-            {% include 'include/tv_mini_symbol_overview.html' with symbol=symbol %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
-
-    {% with numbers='1,2,3,4,5,6,7,8'|cut:',' %}
-      {% with random_number=numbers|random|add:0 %}
-        {% include 'ads.html' with class='mt-8' ads=random_number %}
-      {% endwith %}
-    {% endwith %}
-
-    <section class="mt-8">
-      <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
-        Explore Latest Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path fill="none" d="M0 0h24v24H0V0z"></path>
-          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-        </svg>
-      </a>
-
-      <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-        {% for strategy in new_strategies %}
-          {% include 'include/quick_strategy_2.html' with strategy=strategy %}
-        {% endfor %}
-      </div>
-    </section>
-
-    {% if comments|length >= 2 %}
-      <section class="mt-8">
-        <h4 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Join the Conversation</h4>
-
-        <div class="mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-          {% for comment in comments %}
-            {% include 'include/comment_comment_page.html' with comment=comment %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
-
-    <div class="group cursor-pointer relative overflow-hidden mt-8 rounded-xl">
-      <a href="{% url 'automate' %}">
-        <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-accent/10 via-primary/5 to-transparent"></div>
-        {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div> {% endcomment %}
-
-        <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
-          <div class="flex items-center gap-4">
-            {# Icon #}
-            <div class="relative flex-shrink-0">
-              <div class="absolute -inset-1 bg-primary/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
-              <div class="relative p-3 rounded-full backdrop-blur">
-                <svg class="w-6 h-6 text-accent" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
-                </svg>
-              </div>
-            </div>
-
-            {# Content #}
-            <div class="flex-1">
-              <h3 class="text-sm font-semibold text-title mb-0.5">Automate alerts once ready</h3>
-              <p class="text-xs sm:text-sm text-text/70">Set up your alerts and let automation handle the rest</p>
-            </div>
-          </div>
-
-          {# CTA Button #}
-          <div class="flex-shrink-0">
-            <span class="inline-flex items-center text-accent bg-primary/10 group-hover:bg-primary/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
-              <span>Start now</span>
-              <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 7h10v10"></path>
-                <path d="M7 17 17 7"></path>
-              </svg>
-            </span>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    {% if new_results|length >= 2 %}
-      <section class="mt-8">
-        <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
-          Explore Recent Results<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill="none" d="M0 0h24v24H0V0z"></path>
-            <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-          </svg>
-        </a>
-
-        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-          {% for result in new_results %}
-            {% include 'include/quick_result.html' with result=result %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
-
-    {% if recent_news|length >= 2 %}
-      <section class="mt-8">
-        <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Market Stories</h6>
-
-        <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-          {% for article in recent_news|slice:':6' %}
-            {% include 'include/news_card.html' with article=article %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
   </section>
+
+  {% if user.is_authenticated and not has_subscription and not subscription %}
+    {% include 'include/subscribe_banner.html' with class='mt-8' %}
+  {% else %}
+    {% comment %} {% include 'ads.html' with class='mt-8' %} {% endcomment %}
+  {% endif %}
+
+  {% if best_results|length >= 3 %}
+    <section class="mt-8">
+      <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+        Best Performing Reports<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M0 0h24v24H0V0z"></path>
+          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+        </svg>
+      </a>
+
+      <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+        {% for result in best_results %}
+          {% include 'include/quick_result.html' with result=result id=result.id %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <div class="group cursor-pointer relative overflow-hidden mt-8 rounded-xl">
+    <a href="{% url 'docs_alerts' %}" target="_blank">
+      <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-title/10 via-title/5 to-transparent"></div>
+      {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div> {% endcomment %}
+
+      <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+        <div class="flex items-center gap-4">
+          {# Icon #}
+          <div class="relative flex-shrink-0">
+            <div class="absolute -inset-1 bg-title/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+            <div class="relative p-3 rounded-full backdrop-blur">
+              <svg class="w-6 h-6 text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+              </svg>
+            </div>
+            <span class="absolute -top-0.5 -right-0.5 h-2.5 w-2.5">
+              {% comment %} <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-title/80 opacity-75"></span> {% endcomment %}
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-title/60"></span>
+            </span>
+          </div>
+
+          {# Content #}
+          <div class="flex-1">
+            <h3 class="text-sm font-semibold text-title mb-0.5">Never Miss a Signal</h3>
+            <p class="text-xs sm:text-sm text-text/70">Set up TradingView alerts for your trading strategies</p>
+          </div>
+        </div>
+
+        {# CTA Button #}
+        <div class="flex-shrink-0">
+          <span class="inline-flex items-center text-title bg-title/10 group-hover:bg-title/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+            <span>See how</span>
+            <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  {% if quick_chart_symbols|length > 0 %}
+    <section class="mt-8">
+      <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Market at a Glance</h6>
+      <script src="https://s3.tradingview.com/tv.js"></script>
+
+      <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+        {% for symbol in quick_chart_symbols %}
+          {% include 'include/tv_mini_symbol_overview.html' with symbol=symbol %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% with numbers='1,2,3,4,5,6,7,8'|cut:',' %}
+    {% with random_number=numbers|random|add:0 %}
+      {% include 'ads.html' with class='mt-8' ads=random_number %}
+    {% endwith %}
+  {% endwith %}
+
+  <section class="mt-8">
+    <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+      Recently Added Strategies<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" d="M0 0h24v24H0V0z"></path>
+        <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+      </svg>
+    </a>
+
+    <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+      {% for strategy in new_strategies %}
+        {% include 'include/quick_strategy_2.html' with strategy=strategy %}
+      {% endfor %}
+    </div>
+  </section>
+
+  {% if comments|length >= 2 %}
+    <section class="mt-8">
+      <h4 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Join the Conversation</h4>
+
+      <div class="mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+        {% for comment in comments %}
+          {% include 'include/comment_comment_page.html' with comment=comment %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <div class="group cursor-pointer relative overflow-hidden mt-8 rounded-xl">
+    <a href="{% url 'automate' %}">
+      <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-accent/10 via-primary/5 to-transparent"></div>
+      {% comment %} <div class="absolute inset-0 opacity-100 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.03),transparent_50%)]"></div> {% endcomment %}
+
+      <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-end justify-start gap-4">
+        <div class="flex items-center gap-4">
+          {# Icon #}
+          <div class="relative flex-shrink-0">
+            <div class="absolute -inset-1 bg-primary/20 rounded-full blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
+            <div class="relative p-3 rounded-full backdrop-blur">
+              <svg class="w-6 h-6 text-accent" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
+              </svg>
+            </div>
+          </div>
+
+          {# Content #}
+          <div class="flex-1">
+            <h3 class="text-sm font-semibold text-title mb-0.5">Automate alerts once ready</h3>
+            <p class="text-xs sm:text-sm text-text/70">Set up your alerts and let automation handle the rest</p>
+          </div>
+        </div>
+
+        {# CTA Button #}
+        <div class="flex-shrink-0">
+          <span class="inline-flex items-center text-accent bg-primary/10 group-hover:bg-primary/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
+            <span>Start now</span>
+            <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  {% if new_results|length >= 2 %}
+    <section class="mt-8">
+      <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+        Latest Reports<svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M0 0h24v24H0V0z"></path>
+          <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+        </svg>
+      </a>
+
+      <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+        {% for result in new_results %}
+          {% include 'include/quick_result.html' with result=result %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if recent_news|length >= 2 %}
+    <section class="mt-8">
+      <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Market Stories</h6>
+
+      <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+        {% for article in recent_news|slice:':6' %}
+          {% include 'include/news_card.html' with article=article %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 </main>
 
 {% if not user_profile.discord_username %}

@@ -28,4 +28,6 @@ urlpatterns = [
 
     # path('preview-email/', preview_email, name='preview_email'),
     path('send-email/', send_email, name='send_email'),
+
+    path('api/send-marketing-email/', api_send_marketing_email, name='api_send_marketing_email'),
 ]

@@ -12,6 +12,8 @@ from django.core.cache import cache
 from profile_user.models import User_Profile, Notification
 from strategies.models import Strategy, StrategySubscriber
 
+from django.contrib.auth.models import User
+
 from profile_user.forms import User_ProfileForm, PaymentCardForm
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from strategies.models import *
@@ -920,3 +922,110 @@ def stripe_webhook_connect(request):
         return JsonResponse({"error": str(e)}, status=400)
     except stripe.error.SignatureVerificationError as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+
+# ── Marketing Email API ──────────────────────────────────────────────
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_send_marketing_email(request):
+    """
+    API endpoint to send marketing emails.
+
+    Auth: Bearer token via `Authorization: Bearer <MARKETING_EMAIL_API_KEY>` header.
+
+    JSON body:
+    {
+        "subject": "Email subject line",
+        "preheader": "Preview text (optional)",
+        "recipient_type": "all" | "lifetime" | "non_lifetime" | "subscribers" | "non_subscribers",
+        "recipients": ["email@example.com", ...],   // optional — overrides recipient_type
+        "sections": [
+            {
+                "title": "Section heading",
+                "description": "<p>HTML content</p>",
+                "align": "left" | "center",
+                "image_position": "after" | "before",
+                "images_per_row": "1" | "2" | "3",
+                "images": [
+                    {"src": "https://...", "link": "https://...", "alt": "..."},
+                    ...
+                ],
+                "cta_text": "Learn More →",
+                "cta_url": "https://..."
+            }
+        ]
+    }
+    """
+    
+    # ── Auth check ──
+    api_key = getattr(settings, 'MARKETING_EMAIL_API_KEY', '')
+    if not api_key:
+        return JsonResponse({"error": "API key not configured on server."}, status=500)
+
+    auth_header = request.META.get('HTTP_AUTHORIZATION', '')
+    if not auth_header.startswith('Bearer ') or auth_header[7:] != api_key:
+        return JsonResponse({"error": "Unauthorized. Provide a valid Bearer token."}, status=401)
+
+    # ── Parse body ──
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({"error": "Invalid JSON body."}, status=400)
+
+    subject = (data.get('subject') or '').strip()
+    preheader = (data.get('preheader') or '').strip()
+    sections = data.get('sections', [])
+    recipient_type = data.get('recipient_type', 'all')
+    explicit_recipients = data.get('recipients')
+
+    if not subject:
+        return JsonResponse({"error": "\"subject\" is required."}, status=400)
+
+    if not sections or not isinstance(sections, list):
+        return JsonResponse({"error": "\"sections\" must be a non-empty array."}, status=400)
+
+    # ── Process images in each section ──
+    for section in sections:
+        images = section.get('images', [])
+        if images:
+            per_row = int(section.get('images_per_row', 1))
+            section['image_col_width'] = str(int(100 / per_row))
+            section['image_rows'] = [
+                images[i:i + per_row] for i in range(0, len(images), per_row)
+            ]
+
+    # ── Resolve recipients ──
+    if explicit_recipients and isinstance(explicit_recipients, list):
+        emails = [e.strip() for e in explicit_recipients if isinstance(e, str) and e.strip()]
+    elif recipient_type == 'lifetime':
+        emails = list(User_Profile.objects.filter(is_lifetime=True).values_list('user__email', flat=True))
+    elif recipient_type == 'non_lifetime':
+        emails = list(User_Profile.objects.filter(is_lifetime=False).values_list('user__email', flat=True))
+    elif recipient_type == 'subscribers':
+        emails = list(User_Profile.objects.filter(has_subscription=True).values_list('user__email', flat=True))
+    elif recipient_type == 'non_subscribers':
+        emails = list(User_Profile.objects.filter(has_subscription=False).values_list('user__email', flat=True))
+    else:
+        emails = list(User.objects.values_list('email', flat=True))
+
+    if not emails:
+        return JsonResponse({"error": "No recipients found."}, status=404)
+
+    # ── Send ──
+    from profile_user.utils.send_mails import send_marketing_email
+    try:
+        send_marketing_email(
+            recipients=emails,
+            subject=subject,
+            sections=sections,
+            preheader=preheader,
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Failed to send: {str(e)}"}, status=500)
+
+    return JsonResponse({
+        "success": True,
+        "message": f"Marketing email sent to {len(emails)} recipient(s).",
+        "recipient_count": len(emails),
+    })

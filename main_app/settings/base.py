@@ -301,3 +301,6 @@ CKEDITOR_CONFIGS = {
 
 CELERY_BROKER_URL = 'redis://' + env('REDIS_ENDPOINT') + ':6379/0'  # Configure as per your broker
 CELERY_RESULT_BACKEND = 'redis://' + env('REDIS_ENDPOINT') + ':6379/0'
+
+# Marketing email API
+MARKETING_EMAIL_API_KEY = env('MARKETING_EMAIL_API_KEY', default='')

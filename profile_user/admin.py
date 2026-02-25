@@ -16,6 +16,9 @@ from django.conf import settings
 
 from django.http import HttpResponseRedirect
 
+import re
+import json
+
 from unfold.admin import ModelAdmin
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
@@ -235,6 +238,112 @@ def delete_seller_account_view(request):
     return TemplateResponse(request, "admin/delete_seller_account.html", context)
 
 
+def send_marketing_email_view(request):
+    if request.method == 'POST':
+        is_preview = request.POST.get('preview') == '1'
+        subject = request.POST.get('subject', '').strip()
+        preheader = request.POST.get('preheader', '').strip()
+        recipient_type = request.POST.get('recipient_type', 'all')
+
+        # Parse sections from form fields like sections[0][title], sections[0][images][0][src], etc.
+        sections = {}
+        flat_pattern = re.compile(r'^sections\[(\d+)\]\[(?!images\])(.+)\]$')
+        img_pattern = re.compile(r'^sections\[(\d+)\]\[images\]\[(\d+)\]\[(.+)\]$')
+        for key, value in request.POST.items():
+            m = flat_pattern.match(key)
+            if m:
+                idx = int(m.group(1))
+                field = m.group(2)
+                if idx not in sections:
+                    sections[idx] = {}
+                if value.strip():
+                    sections[idx][field] = value.strip()
+                continue
+            m = img_pattern.match(key)
+            if m:
+                idx = int(m.group(1))
+                img_idx = int(m.group(2))
+                field = m.group(3)
+                if idx not in sections:
+                    sections[idx] = {}
+                if 'images' not in sections[idx]:
+                    sections[idx]['images'] = {}
+                if img_idx not in sections[idx]['images']:
+                    sections[idx]['images'][img_idx] = {}
+                if value.strip():
+                    sections[idx]['images'][img_idx][field] = value.strip()
+
+        # Convert images dicts to ordered lists and build image_rows
+        for idx in sections:
+            if 'images' in sections[idx]:
+                img_dict = sections[idx]['images']
+                images_list = [img_dict[k] for k in sorted(img_dict.keys()) if img_dict[k].get('src')]
+                if images_list:
+                    per_row = int(sections[idx].get('images_per_row', 1))
+                    sections[idx]['images'] = images_list
+                    sections[idx]['image_col_width'] = str(int(100 / per_row))
+                    # Chunk images into rows of `per_row`
+                    sections[idx]['image_rows'] = [
+                        images_list[i:i + per_row] for i in range(0, len(images_list), per_row)
+                    ]
+                else:
+                    del sections[idx]['images']
+
+        # Convert to ordered list
+        sections_list = [sections[k] for k in sorted(sections.keys()) if sections[k]]
+
+        if not subject:
+            messages.error(request, 'Subject is required.')
+            return HttpResponseRedirect(request.path)
+
+        if not sections_list:
+            messages.error(request, 'At least one section with content is required.')
+            return HttpResponseRedirect(request.path)
+
+        if is_preview:
+            from profile_user.utils.send_mails import email_context
+            from django.template.loader import render_to_string
+            context = {
+                'sections': sections_list,
+                'email_subject': subject,
+                'preheader': preheader,
+                **email_context(),
+            }
+            html = render_to_string('emails/marketing_email.html', context=context)
+            from django.http import HttpResponse
+            return HttpResponse(html)
+
+        # Resolve recipients
+        if recipient_type == 'lifetime':
+            emails = list(User_Profile.objects.filter(is_lifetime=True).values_list('user__email', flat=True))
+        elif recipient_type == 'non_lifetime':
+            emails = list(User_Profile.objects.filter(is_lifetime=False).values_list('user__email', flat=True))
+        elif recipient_type == 'subscribers':
+            emails = list(User_Profile.objects.filter(has_subscription=True).values_list('user__email', flat=True))
+        elif recipient_type == 'non_subscribers':
+            emails = list(User_Profile.objects.filter(has_subscription=False).values_list('user__email', flat=True))
+        else:
+            emails = list(User.objects.values_list('email', flat=True))
+
+        if not emails:
+            messages.warning(request, 'No recipients found for the selected group.')
+            return HttpResponseRedirect(request.path)
+
+        from profile_user.utils.send_mails import send_marketing_email
+        send_marketing_email(
+            recipients=emails,
+            subject=subject,
+            sections=sections_list,
+            preheader=preheader,
+        )
+
+        messages.success(request, f'Marketing email sent to {len(emails)} recipient(s).')
+        return HttpResponseRedirect(request.path)
+
+    context = dict(admin.site.each_context(request))
+    return TemplateResponse(request, 'admin/send_marketing_email.html', context)
+
+
 # # Insert custom admin URL for sending emails
 original_admin_get_urls = admin.site.get_urls
 
@@ -242,6 +351,7 @@ def get_urls():
     custom_urls = [
         path('admin-send-email/', admin.site.admin_view(send_html_email), name='admin_send_email'),
         path('admin-send-strategy-email/', admin.site.admin_view(send_strategy_html_email), name='admin_send_strategy_email'),
+        path('admin-send-marketing-email/', admin.site.admin_view(send_marketing_email_view), name='admin_send_marketing_email'),
         path('admin-delete-seller-account/', admin.site.admin_view(delete_seller_account_view), name='admin_delete_seller_account'),
     ]
     return custom_urls + original_admin_get_urls()

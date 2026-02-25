@@ -28,6 +28,7 @@ def index(request):
     
     # template = random.choice(["main_app/index.html", "profile_user/home.html"])
     template = "profile_user/home.html"
+    # template = "main_app/index.html"
     return render(request, template, context)
 
 
