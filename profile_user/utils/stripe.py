@@ -848,39 +848,7 @@ def product_overview(product_id, price_id):
     try:
         product = stripe.Product.retrieve(product_id)
         price = stripe.Price.retrieve(price_id)
-        # Retrieve all subscriptions for this product
-        subscriptions = stripe.Subscription.list(status="active", limit=100, price=price_id)
-        total_subscribers = 0
-        today_subscribers = 0
-        week_subscribers = 0
-        month_subscribers = 0
-
-        now = datetime.datetime.now()
-        start_of_today = datetime.datetime(now.year, now.month, now.day)
-        start_of_week = start_of_today - datetime.timedelta(days=now.weekday())
-        start_of_month = datetime.datetime(now.year, now.month, 1)
-
-        for sub in subscriptions.auto_paging_iter():
-            if sub.status not in ["active", "trialing", "past_due"]:
-                continue
-
-            for item in sub["items"]["data"]:
-                if item["price"]["id"] == price_id:
-                    total_subscribers += 1
-                    created_time = datetime.datetime.fromtimestamp(sub.created)
-                    if created_time >= start_of_today:
-                        today_subscribers += 1
-                    if created_time >= start_of_week:
-                        week_subscribers += 1
-                    if created_time >= start_of_month:
-                        month_subscribers += 1
-
-        product.subscriber_stats = {
-            "total": total_subscribers,
-            "today": today_subscribers,
-            "week": week_subscribers,
-            "month": month_subscribers,
-        }
+        
         amount = price.unit_amount / 100
         interval = price.recurring["interval"]
         interval_count = price.recurring["interval_count"]

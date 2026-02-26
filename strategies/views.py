@@ -1,3 +1,6 @@
+
+from django.utils import timezone
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch, OuterRef, Subquery
 from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
@@ -87,6 +90,7 @@ def get_ideas(request):
 
 def get_strategy(request, slug):
     try:
+        user = request.user
         strategy = Strategy.objects.select_related('created_by').prefetch_related(
                 'images',
             ).get(slug=slug)
@@ -104,7 +108,12 @@ def get_strategy(request, slug):
         
         performance_context = {
             'show_performance': False,
-        }#get_global_strategy_performance_context(strategy)
+        }
+        if strategy.created_by == user:
+            _performance_context = get_global_strategy_performance_context(strategy)
+            if _performance_context.get('chart_data') and _performance_context.get('overview_data'):
+                performance_context.update(_performance_context)
+                performance_context['show_performance'] = True
 
         # random_results = StrategyResults.objects.annotate(random_number=Random()).order_by('-profit_factor', 'random_number')[:10]
         context =  {
@@ -115,15 +124,26 @@ def get_strategy(request, slug):
             **performance_context,
         }
 
+
         if strategy.premium == 'VIP':
             if request.user.is_authenticated:
-                user_profile = request.user.user_profile
-                if strategy.created_by == user_profile.user:
+                if strategy.created_by == user:
                     context['is_vip_subscribed'] = True
                     context['owner'] = True
-                    context['product_overview'] = product_overview(strategy.price.stripe_product_id, strategy.price.stripe_price_id)
+                     
+                    total_subscribers = StrategySubscriber.objects.filter(strategy=strategy, active=True).count()
+                    today_subscribers = StrategySubscriber.objects.filter(strategy=strategy, active=True, created_at__date=timezone.now().date()).count()
+                    week_subscribers = StrategySubscriber.objects.filter(strategy=strategy, active=True, created_at__gte=timezone.now()-timezone.timedelta(days=7)).count()
+                    month_subscribers = StrategySubscriber.objects.filter(strategy=strategy, active=True, created_at__gte=timezone.now()-timezone.timedelta(days=30)).count()
+                    context['product_overview'] = product_overview(product_id=strategy.price.stripe_product_id, price_id=strategy.price.stripe_price_id)
+                    context['subscriber_stats'] = {
+                            'total': total_subscribers,
+                            'today': today_subscribers,
+                            'week': week_subscribers,
+                            'month': month_subscribers,
+                        }     
                 else:
-                    subscriber = StrategySubscriber.objects.filter(strategy=strategy, user_profile=user_profile).first()
+                    subscriber = StrategySubscriber.objects.filter(strategy=strategy, user_profile=user.user_profile).first()
                     if subscriber: 
                         is_subscribed, subscription = subscriber.is_active()
                         context['is_vip_subscribed'] = is_subscribed

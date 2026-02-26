@@ -32,6 +32,10 @@ def price_interval(interval_count, interval):
             return "/ week"
         elif interval_count == 14 and (interval == 'day' or interval == 'days'):
             return "/ 2 weeks"
+        elif interval_count == 15 and (interval == 'day' or interval == 'days'):
+            return "/ 2 weeks"
+        elif interval_count == 21 and (interval == 'day' or interval == 'days'):
+            return "/ 3 weeks"
         elif interval_count == 30 and (interval == 'day' or interval == 'days'):
             return "/ month"
         elif interval_count == 90 and (interval == 'day' or interval == 'days'):
