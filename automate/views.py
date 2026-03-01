@@ -839,7 +839,7 @@ async def handle_webhook_crypto(request, custom_id):
         account = await sync_to_async(CryptoBrokerAccount.objects.get)(custom_id=custom_id)
 
         if not account.active:
-            return JsonResponse({'error': 'Account is not active', "IP": request.META.get('REMOTE_ADDR')}, status=400)
+            raise Exception('Account is not active')
         
         # Serialize the account object
         account_data = {
@@ -866,6 +866,8 @@ async def handle_webhook_crypto(request, custom_id):
     
     except CryptoBrokerAccount.DoesNotExist:
         return JsonResponse({'error': 'Account not found', "IP": request.META.get('REMOTE_ADDR')}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e), "IP": request.META.get('REMOTE_ADDR')}, status=400)
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -876,7 +878,7 @@ async def handle_webhook_forex(request, custom_id):
         account = await sync_to_async(ForexBrokerAccount.objects.get)(custom_id=custom_id)
 
         if not account.active:
-            return JsonResponse({'error': 'Account is not active', "IP": request.META.get('REMOTE_ADDR')}, status=400)
+            raise Exception('Account is not active')
 
         # Serialize the account object
         account_data = {
@@ -903,6 +905,8 @@ async def handle_webhook_forex(request, custom_id):
 
     except ForexBrokerAccount.DoesNotExist:
         return JsonResponse({'error': 'Account not found', "IP": request.META.get('REMOTE_ADDR')}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e), "IP": request.META.get('REMOTE_ADDR')}, status=400)
 
 
 

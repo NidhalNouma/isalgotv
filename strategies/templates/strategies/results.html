@@ -39,7 +39,7 @@
             {% endif %}
             {% for pair in pairs %}
               {% if pair != selected_pair %}
-                <a class="mr-2" href="{% url 'reports' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:bg-text/5 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
+                <a class="mr-2" href="{% url 'reports' %}?pair={{ pair }}"><span class="text-text/60 bg-text/10 hover:brightness-90 px-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">{{ pair }}</span></a>
               {% endif %}
             {% endfor %}
           </section>

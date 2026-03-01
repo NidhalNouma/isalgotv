@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     # path('home/', home, name='home'),
     path('', get_strategies, name='strategies'),
+    path('create/', create, name='create_strategy'),
     path('<int:id>/add_comment', add_comment, name='submit_comment'),
     path('<int:id>/add_report', add_report, name='submit_report'),
     path('<int:id>/add_comment_reply', add_comment_reply, name='submit_comment_reply'),

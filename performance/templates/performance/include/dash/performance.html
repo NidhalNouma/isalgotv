@@ -27,7 +27,7 @@
     <section class="w-full rounded-lg mt-8">
       <div class="w-full flex items-center justify-between mb-4">
         <h4 class="text-sm sm:text-base font-semibold text-title/80">Assets</h4>
-        <div class="relative">
+        {% comment %} <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
             <svg class="w-4 aspect-auto text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m21 21-4.34-4.34" />
@@ -35,7 +35,7 @@
             </svg>
           </div>
           <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search assets..." onkeyup="filterAssets()" />
-        </div>
+        </div> {% endcomment %}
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for asset in assets.items %}
@@ -58,7 +58,7 @@
     <section class="w-full rounded-lg mt-8">
       <div class="w-full flex items-center justify-between mb-4">
         <h4 class="text-sm sm:text-base font-semibold text-title/80">Strategies</h4>
-        <div class="relative">
+        {% comment %} <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
             <svg class="w-4 aspect-auto text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m21 21-4.34-4.34" />
@@ -66,7 +66,7 @@
             </svg>
           </div>
           <input type="text" class="input-text text-xs pl-8 w-full" placeholder="Search strategies..." onkeyup="filterStrategies()" />
-        </div>
+        </div> {% endcomment %}
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for strategy in strategies.items %}

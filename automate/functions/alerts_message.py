@@ -130,7 +130,18 @@ def extract_alert_data(alert_message):
 
             data['Volume'] = value
         elif key == 'P':
-            data['Partial'] = value
+            if str(value).strip().endswith('%'):
+                try:
+                    value = float(str(value).strip()[:-1])
+                except Exception as e:
+                    raise ValueError(f"Error parsing partial percentage '{value}': {e}")
+
+            try:
+                data['Partial'] = round(float(str(value).strip()), 2)
+            except Exception as e:
+                print(f"Error parsing partial value '{value}': {e}")
+                raise ValueError(f"Error parsing partial value '{value}'")
+                
         elif key == 'ID' or key == 'SID':
             # print('Parsing ID value:', value)
             data['ID'] = value

@@ -163,13 +163,22 @@ def get_strategy(request, slug):
     
 
 def get_strategy_id(request, id):
-    
     try:
         strategy = Strategy.objects.get(id=id)
         return HttpResponseRedirect(reverse('strategy', args=[strategy.slug]))
         
     except Strategy.DoesNotExist:
         raise Http404("The object does not exist.")
+
+def create(request):
+    try:
+        if request.method == 'GET':
+            return render(request, 'create.html')
+        
+
+    except Exception as e:
+        print("An error occurred while rendering the create strategy page:", e)
+        raise Http404(str(e))
 
 
 def strategy_like(request, id):
