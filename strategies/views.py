@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
+from django.core.mail import EmailMessage
 
 from performance.functions.context import get_global_strategy_performance_context
 from profile_user.utils.stripe import cancel_reactivate_subscription, change_subscription_payment_method, subscribe_to_strategy, product_overview
@@ -175,11 +176,53 @@ def create(request):
         if request.method == 'GET':
             return render(request, 'create.html')
         
+        elif request.method == 'POST':
+            email = request.POST.get('email')
+            content = request.POST.get('content')
+            subject = 'Custom Strategy Development'
+
+            try:
+                if not email:
+                    error = "Email address not provided!"
+                    raise ValueError(error)
+
+                if not content:
+                    error = "Message not provided!"
+                    raise ValueError(error)
+
+                if len(content) < 200:
+                    error = "Minimum message length is 200 characters!"
+                    raise ValueError(error)
+
+                email_message = EmailMessage(
+                    subject,
+                    content,
+                    "noreply@isalgo.com",
+                    ['support@isalgo.com'],
+                    headers={'Reply-To': email}
+                )
+
+                files = request.FILES.getlist('documents')
+                for file in files:
+                    email_message.attach(file.name, file.read(), file.content_type)
+
+                email_message.send()
+
+                response = render(request, 'strategies/include/strategy_request_form.html', context={
+                    "succes": "Your strategy request has been sent! We'll get back to you shortly with a quote and timeline."
+                })
+                return retarget(response, "#strategy_request_form_wrapper")
+
+            except Exception as e:
+                print("Error sending strategy request email:", e)
+                error = str(e) if str(e) else "An error occurred while sending your request. Please try again later."
+                response = render(request, 'include/errors.html', context={"error": error})
+                return retarget(response, "#strategy-request-form-errors")
+        
 
     except Exception as e:
         print("An error occurred while rendering the create strategy page:", e)
         raise Http404(str(e))
-
 
 def strategy_like(request, id):
     strategy = Strategy.objects.get(pk=id)

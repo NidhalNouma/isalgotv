@@ -18,7 +18,7 @@
 
   <main class="mt-8 mb-16 max-w-4xl mx-auto">
     <!-- Intro -->
-    <p class="text-text text-sm sm:text-lg leading-relaxed">
+    <p class="text-text text-base sm:text-lg leading-relaxed">
       <strong>Have a trading strategy idea?</strong> We'll build it for you. Share your concept with our team and we'll turn it into a fully functional strategy you can use on IsAlgo complete with <strong>automation</strong> and <strong>performance tracking</strong>.
     </p>
 
@@ -172,17 +172,11 @@
       </video>
     </div> {% endcomment %}
 
-    <!-- CTA -->
-    <div class="mt-14 text-center rounded-lg p-8">
-      <h2 class="text-2xl font-bold text-title mb-3">Ready to Get Started?</h2>
-      <p class="text-text/60 mb-6 max-w-lg mx-auto">Send us your strategy details and we'll get back to you with a quote and timeline.</p>
-      <a href="mailto:support@isalgo.com?subject=Custom%20Strategy%20Development" class="btn-accent inline-flex items-center gap-2 px-6 py-3 text-base font-semibold">
-        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-          <polyline points="22,6 12,13 2,6"></polyline>
-        </svg>Contact Us
-      </a>
-      {% comment %} <p class="text-sm text-text/40 mt-4">support@isalgo.com</p> {% endcomment %}
+    <!-- Send Request Form -->
+    <h2 class="text-2xl font-bold text-title mt-14 mb-2">Send Your Strategy Request</h2>
+    <p class="text-sm text-text/60 mb-6">Describe your strategy idea and we'll get back to you with a quote and timeline.</p>
+    <div id="strategy_request_form_wrapper">
+      {% include 'strategies/include/strategy_request_form.html' %}
     </div>
   </main>
 {% endblock %}
