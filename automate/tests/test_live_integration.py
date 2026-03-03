@@ -1,7 +1,7 @@
 """
 Live integration tests for broker connections.
 
-⚠️ WARNING: These tests connect to REAL broker APIs!
+WARNING: These tests connect to REAL broker APIs!
 - Only run with test/sandbox accounts
 - Uses minimal volumes to minimize financial risk
 - Requires actual API credentials in environment variables
@@ -13,6 +13,9 @@ Set environment variables for each broker you want to test:
     - BINANCE_TEST_API_KEY / BINANCE_TEST_API_SECRET
     - BYBIT_TEST_API_KEY / BYBIT_TEST_API_SECRET
     - etc.
+
+You can also test the webhook pipeline end-to-end via the management command:
+    python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT
 """
 import pytest
 import os
@@ -283,6 +286,82 @@ class TestLiveMarketData:
         assert 'base_decimals' in info
         assert 'quote_decimals' in info
         print(f"\n{symbol} exchange info: {info}")
+
+
+# =============================================================================
+# Live Webhook Workflow Tests (via automate command)
+# =============================================================================
+
+@pytest.mark.live
+@pytest.mark.slow
+class TestLiveWebhookWorkflow:
+    """
+    Test the full webhook pipeline end-to-end using the automate command.
+
+    WARNING: This sends real HTTP requests to the configured webhook URL
+    and will trigger real trade execution on the connected accounts.
+    """
+
+    def test_crypto_webhook_workflow(self, skip_without_live, binance_credentials,
+                                      crypto_account_factory, db):
+        """Run the default 6-step automate workflow against a live crypto account."""
+        from io import StringIO
+        from django.core.management import call_command
+
+        account = crypto_account_factory(
+            'binance',
+            api_key=binance_credentials['api_key'],
+            api_secret=binance_credentials['api_secret'],
+            account_type='S',
+        )
+
+        out = StringIO()
+        symbol = CRYPTO_TEST_SYMBOLS['binance']
+        volume = CRYPTO_TEST_VOLUMES['binance']
+
+        call_command(
+            'automate', account.custom_id,
+            '--volume', volume,
+            '--symbol', symbol,
+            '--delay', '3',
+            '--broker-type', 'crypto',
+            stdout=out,
+        )
+
+        output = out.getvalue()
+        assert '6/6 passed' in output
+        print(output)
+
+    def test_custom_actions_webhook(self, skip_without_live, binance_credentials,
+                                     crypto_account_factory, db):
+        """Run only buy + full close via the automate command."""
+        from io import StringIO
+        from django.core.management import call_command
+
+        account = crypto_account_factory(
+            'binance',
+            api_key=binance_credentials['api_key'],
+            api_secret=binance_credentials['api_secret'],
+            account_type='S',
+        )
+
+        out = StringIO()
+        symbol = CRYPTO_TEST_SYMBOLS['binance']
+        volume = CRYPTO_TEST_VOLUMES['binance']
+
+        call_command(
+            'automate', account.custom_id,
+            '--volume', volume,
+            '--symbol', symbol,
+            '--delay', '3',
+            '--broker-type', 'crypto',
+            '--actions', 'buy,xbuy:100',
+            stdout=out,
+        )
+
+        output = out.getvalue()
+        assert '2/2 passed' in output
+        print(output)
 
 
 # =============================================================================

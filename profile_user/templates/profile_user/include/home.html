@@ -2,9 +2,10 @@
 {% load hosts %}
 
 <main class="mt-4 block justify-between mb-8">
-  {% if False and not user.is_authenticated %}
-    <section class="max-w-full relative pt-8 flex flex-col min-h-[90vh] items-center">
-      <div class="relative flex flex-col items-center w-full text-center z-30 mb-10">
+  {% if not user.is_authenticated %}
+    <section class="max-w-full relative pt-8 mb-16 flex flex-col min-h-[90vh] items-center">
+      <div class="absolute top-0 bottom-0 bg-gradient-to-b from-background to-accent/10 w-screen rounded-b-[3rem]"></div>
+      <div class="relative flex flex-col items-center w-full text-center z-30 mb-16">
         <span class="animate-fade-down text-title text-5xl sm:text-6xl font-bold uppercase">Strategy In.</span>
         <span class="animate-fade-up animation-delay-150 text-5xl sm:text-6xl text-primary font-bold uppercase">Uncertainty Out.</span>
 
@@ -36,54 +37,44 @@
         {% endif %}
       </div>
 
-      <div class="animate-fade-up animation-delay-700 w-full relative max-w-full mt-auto h-fit grow overflow-hidden rounded-t-lg">
-        <div class="absolute sm:top-0 top-1/4 w-full rounded-lg">
-          <img class="rounded-lg border-0 border-primary/10 w-full aspect-video block z-[9] scale-100 lg:scale-110 bg-background" src="https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png" loading="lazy" />
+      <div class="animate-fade-up animation-delay-700 mx-auto w-full sm:w-3/4 aspect-video relative max-w-full my-auto">
+        <div class="absolute inset-0 border-4 border-profit rounded-lg rotate-2 aspect-video -z-10"></div>
+        <div class="absolute inset-0 border-4 border-accent rounded-lg rotate-1 aspect-video -z-10"></div>
+        <video autoplay muted loop playsinline class="mx-auto -rotate-1 aspect-video rounded-lg object-cover border-4 border-primary">
+          <source src="https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4" type="video/mp4" />Your browser does not support the video tag.
+        </video>
+      </div>
 
-          <div onclick="openModel('video-modal-l')" class="absolute inset-0 scale-100 lg:scale-110 bg-title/30 hover:bg-title/50 dark:bg-background/30 dark:hover:bg-background/50 transition-all z-10 rounded-lg cursor-pointer">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-16 aspect-square w-16 rounded-full bg-background dark:bg-title flex items-center justify-center">
-              <svg class="h-5 w-5 text-primary" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-                <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
-              </svg>
+      <section class="mx-auto w-full mt-20 mb-28 relative flex flex-col">
+        <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">For Traders</span></h2>
+        <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
+
+        <div class="grid md:grid-cols-3 gap-5 mt-12">
+          <div class="border-r-0 md:border-r-2 border-secondary">
+            <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
+              <h5 class="text-primary text-xl font-bold mb-4 uppercase">Access</h5>
+              <p class="text-text font-semibold">Browse our library of proven trading strategies, pick the one that fits your style, and get started in minutes.</p>
+            </div>
+          </div>
+
+          <div class="border-r-0 md:border-r-2 border-accent">
+            <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
+              <h5 class="text-primary text-xl font-bold mb-4 uppercase">Test</h5>
+              <p class="text-text font-semibold">Backtest your strategies on historical data, fine-tune the settings, and validate performance before going live.</p>
+            </div>
+          </div>
+
+          <div class="">
+            <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
+              <h5 class="text-primary text-xl font-bold mb-4 uppercase">Automate</h5>
+              <p class="text-text font-semibold">Connect your broker, set your rules, and let automation execute your trades around the clock. No emotions, no missed entries.</p>
             </div>
           </div>
         </div>
-
-        <div class="absolute h-8 w-full -bottom-4 bg-gradient-to-t from-background pointer-events-none z-10"></div>
-      </div>
-
-      {% include 'include/video_modal.html' with id='l' video_url='https://isalgotest.s3.amazonaws.com/videos/landing_page_video.mp4' video_poster='https://isalgotest.s3.amazonaws.com/videos/landing_page_video_thumpnail.png' %}
-    </section>
-
-    <section class="mx-auto w-full mt-28 mb-16 relative flex flex-col">
-      <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">Built by traders <span class="bg-secondary dark:text-background text-title truncate">For Traders</span></h2>
-      <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">Master the market with our all‑in‑one solution</h2>
-
-      <div class="grid md:grid-cols-3 gap-5 mt-12 mb-16">
-        <div class="border-r-0 md:border-r-2 border-secondary">
-          <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
-            <h5 class="text-primary text-xl font-bold mb-4 uppercase">Easy to use</h5>
-            <p class="text-text font-semibold">Our tools boast simplicity and extensive customization options, seamlessly integrating into your workflow.</p>
-          </div>
-        </div>
-
-        <div class="border-r-0 md:border-r-2 border-accent">
-          <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
-            <h5 class="text-primary text-xl font-bold mb-4 uppercase">BEYOND CHARTS</h5>
-            <p class="text-text font-semibold">Our aim is to foster a thriving community where we can grow together.</p>
-          </div>
-        </div>
-
-        <div class="">
-          <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
-            <h5 class="text-primary text-xl font-bold mb-4 uppercase">Stay ahead</h5>
-            <p class="text-text font-semibold">Access all the essentials for navigating the market like a pro, all in one place, across all assets.</p>
-          </div>
-        </div>
-      </div>
+      </section>
     </section>
   {% endif %}
-  {% comment %} {% if not has_subscription %}
+  {% if False and not has_subscription %}
     <section class="grid xl:grid-cols-3 md:grid-cols-1 gap-6 mb-4">
       <div class="group relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent/5 rounded-md transition-all duration-500 group-hover:scale-[1.02]"></div>
@@ -184,7 +175,7 @@
         </div>
       </div>
     </section>
-  {% endif %} {% endcomment %}
+  {% endif %}
 
   <section class="">
     <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">

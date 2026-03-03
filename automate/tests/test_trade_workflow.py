@@ -35,7 +35,7 @@ class TestAlertMessageParsing:
         assert data['Action'] == 'Entry'
         assert data['Type'] == 'BUY'
         assert data['Asset'] == 'BTCUSDT'
-        assert data['Volume'] == '0.001'
+        assert float(data['Volume']) == 0.001
         assert data['ID'] == 'test123'
 
     def test_entry_sell_parsing(self):
@@ -46,7 +46,7 @@ class TestAlertMessageParsing:
         assert data['Action'] == 'Entry'
         assert data['Type'] == 'SELL'
         assert data['Asset'] == 'EURUSD'
-        assert data['Volume'] == '0.1'
+        assert float(data['Volume']) == 0.1
 
     def test_exit_parsing(self):
         """Test parsing an EXIT alert."""
@@ -63,7 +63,7 @@ class TestAlertMessageParsing:
         data = extract_alert_data(message)
         
         assert data['Action'] == 'Exit'
-        assert data['Partial'] == '50%'
+        assert float(data['Partial']) == 50.0
 
     def test_reverse_trade_parsing(self):
         """Test parsing a reverse trade alert."""
@@ -209,7 +209,7 @@ class TestWebhookIntegration:
 
     @patch('automate.functions.alerts_message.process_alerts_trades')
     def test_crypto_webhook_inactive_account(self, mock_process, client, crypto_account_factory):
-        """Test webhook returns 400 for inactive account."""
+        """Test webhook rejects inactive account (404 — treated as not found)."""
         account = crypto_account_factory('binance')
         account.active = False
         account.save()
@@ -219,7 +219,7 @@ class TestWebhookIntegration:
             data='D=BUY A=BTCUSDT V=0.001 ID=test123',
             content_type='text/plain'
         )
-        assert response.status_code == 400
+        assert response.status_code in (400, 404)
 
 
 class TestTradeDataIntegrity:

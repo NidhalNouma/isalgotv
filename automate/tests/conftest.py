@@ -3,8 +3,10 @@ Pytest configuration and fixtures for automate tests.
 """
 import pytest
 from decimal import Decimal
+from io import StringIO
 from unittest.mock import MagicMock, patch
 from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
 
 from automate.models import CryptoBrokerAccount, ForexBrokerAccount, TradeDetails
 from profile_user.models import User_Profile
@@ -104,8 +106,11 @@ def mock_strategy(db, mock_user_profile):
     strategy, _ = Strategy.objects.get_or_create(
         name='Test Strategy',
         defaults={
-            'user_profile': mock_user_profile,
-            'description': 'Test strategy for automated tests'
+            'created_by': mock_user_profile.user,
+            'description': 'Test strategy for automated tests',
+            'content': 'Test content',
+            'tradingview_ID': 'test_tv_id',
+            'settings': [],
         }
     )
     return strategy
@@ -116,7 +121,7 @@ def crypto_account_factory(db, mock_user_profile):
     """Factory to create crypto broker accounts for testing."""
     def _create(broker_type, api_key='test_key', api_secret='test_secret', 
                 account_type='S', passphrase=None):
-        return CryptoBrokerAccount.objects.create(
+        account = CryptoBrokerAccount(
             broker_type=broker_type,
             type=account_type,
             name=f'Test {broker_type} Account',
@@ -127,6 +132,8 @@ def crypto_account_factory(db, mock_user_profile):
             subscription_id='test_sub_123',
             created_by=mock_user_profile,
         )
+        account.save()
+        return account
     return _create
 
 
@@ -135,7 +142,7 @@ def forex_account_factory(db, mock_user_profile):
     """Factory to create forex broker accounts for testing."""
     def _create(broker_type, username='testuser', password='testpass',
                 server='demo.server.com', account_type='D', account_api_id='12345'):
-        return ForexBrokerAccount.objects.create(
+        account = ForexBrokerAccount(
             broker_type=broker_type,
             type=account_type,
             name=f'Test {broker_type} Account',
@@ -147,6 +154,8 @@ def forex_account_factory(db, mock_user_profile):
             subscription_id='test_sub_123',
             created_by=mock_user_profile,
         )
+        account.save()
+        return account
     return _create
 
 
@@ -186,3 +195,65 @@ def mock_broker_response():
         'fees': '0.05',
         'currency': 'USDT',
     }
+
+
+# =============================================================================
+# Automate Management Command Fixtures
+# =============================================================================
+
+# Default actions used by the automate command
+DEFAULT_AUTOMATE_ACTIONS = 'buy,xbuy:60,xbuy:100,sell,xsell:60,xsell:100'
+
+# Default custom IDs the command generates when none is provided
+DEFAULT_BUY_CUSTOM_ID = 'b15.Is1.1764170120313.1'
+DEFAULT_SELL_CUSTOM_ID = 's15.Is1.1764170120313.1'
+
+
+@pytest.fixture
+def automate_command_args():
+    """Factory for building automate management command argument dicts."""
+    def _build(webhook_id='test_webhook_123', volume='0.001', symbol='BTCUSDT',
+               delay=0, broker_type='crypto', base_url='http://localhost:8000',
+               custom_id=None, actions=None, extra_commands=''):
+        args = [webhook_id, '--volume', volume, '--symbol', symbol,
+                '--delay', str(delay), '--broker-type', broker_type,
+                '--base-url', base_url]
+        if custom_id:
+            args.extend(['--custom-id', custom_id])
+        if actions:
+            args.extend(['--actions', actions])
+        if extra_commands:
+            args.extend(['--extra-commands', extra_commands])
+        return args
+    return _build
+
+
+@pytest.fixture
+def run_automate_command():
+    """Helper to call the automate management command and capture output."""
+    def _run(*args, **kwargs):
+        out = StringIO()
+        err = StringIO()
+        call_command('automate', *args, stdout=out, stderr=err, **kwargs)
+        return out.getvalue(), err.getvalue()
+    return _run
+
+
+@pytest.fixture
+def mock_webhook_success():
+    """Mock requests.post to always return 200 with a JSON body."""
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {'status': 'ok', 'message': 'Alert processed'}
+    mock_response.text = '{"status": "ok", "message": "Alert processed"}'
+    return mock_response
+
+
+@pytest.fixture
+def mock_webhook_failure():
+    """Mock requests.post to return a 400 error."""
+    mock_response = MagicMock()
+    mock_response.status_code = 400
+    mock_response.json.return_value = {'error': 'Bad request'}
+    mock_response.text = '{"error": "Bad request"}'
+    return mock_response

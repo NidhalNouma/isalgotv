@@ -10,13 +10,15 @@ This testing framework provides multiple levels of testing for the trade automat
 automate/
 ├── tests/
 │   ├── __init__.py
-│   ├── conftest.py              # Pytest fixtures and configuration
-│   ├── test_broker_clients.py   # Unit tests for broker clients
-│   ├── test_trade_workflow.py   # Integration tests for trade lifecycle
-│   └── test_live_integration.py # Live API tests (use with caution!)
+│   ├── conftest.py                # Pytest fixtures and configuration
+│   ├── test_broker_clients.py     # Unit tests for broker clients
+│   ├── test_trade_workflow.py     # Integration tests for trade lifecycle
+│   ├── test_automate_command.py   # Tests for the `automate` management command
+│   └── test_live_integration.py   # Live API tests (use with caution!)
 ├── management/
 │   └── commands/
-│       └── test_broker.py       # Django management command for interactive testing
+│       ├── automate.py            # Webhook workflow testing command
+│       └── test_broker.py         # Interactive broker credential/trade testing
 ```
 
 ## Quick Start
@@ -34,7 +36,37 @@ pytest automate/tests/test_trade_workflow.py -v
 pytest automate/tests/ -v --cov=automate --cov-report=html
 ```
 
-### 2. Interactive Testing via Management Command
+### 2. Webhook Workflow Testing via `automate` Command
+
+```bash
+# Basic test — sends 6 sequential alerts (buy → partial close → full close → sell → partial close → full close)
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT
+
+# Crypto account with custom delay between alerts
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT --delay 3
+
+# Forex account
+python manage.py automate <webhook_id> --volume 0.01 --symbol EURUSD
+
+# Override broker type (auto-detected by default)
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT --broker-type crypto
+
+# Override base webhook URL (e.g., local dev server)
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT --base-url http://webhook.myproject.local:8000
+
+# Custom alert IDs (prefixed with 'b'/'s' automatically)
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT --custom-id mytest.123
+
+# Run only specific actions
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT --actions buy,xbuy:100
+
+# Include extra alert parameters (e.g., take-profit, stop-loss)
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT --extra-commands "T=1 SL=49000 TP=55000"
+```
+
+**Available actions:** `buy`, `sell`, `xbuy:<pct>`, `xsell:<pct>` (e.g. `xbuy:60`, `xsell:100`)
+
+### 3. Interactive Broker Testing via `test_broker` Command
 
 ```bash
 # Test credentials for a specific broker
@@ -51,6 +83,20 @@ python manage.py test_broker bybit --action open_close --dry-run
 
 # Full workflow test (EXECUTES REAL TRADES)
 python manage.py test_broker binance --action full_workflow --account-id 123
+```
+
+### 4. Run `automate` Command Unit Tests
+
+```bash
+# Run all automate command tests
+pytest automate/tests/test_automate_command.py -v
+
+# Run a specific test class
+pytest automate/tests/test_automate_command.py::TestActionParsing -v
+pytest automate/tests/test_automate_command.py::TestAlertMessageContent -v
+pytest automate/tests/test_automate_command.py::TestCustomIdHandling -v
+pytest automate/tests/test_automate_command.py::TestBrokerTypeAutoDetection -v
+pytest automate/tests/test_automate_command.py::TestErrorHandling -v
 ```
 
 ### 3. Live Integration Tests (⚠️ USE WITH CAUTION)
@@ -75,20 +121,30 @@ pytest automate/tests/test_live_integration.py -v --live
 - Tests data structure validation
 - Safe to run anytime
 
-### Level 2: Integration Tests (Mocked)
+### Level 2: Automate Command Tests (Mocked)
+- **No API calls** - `requests.post` is mocked
+- Tests action parsing (default & custom `--actions`)
+- Tests alert message format (D=, X=, A=, V=, P=, ID=)
+- Tests custom ID handling (`--custom-id` prefix logic)
+- Tests webhook URL construction (`/c/` vs `/f/`)
+- Tests broker type auto-detection from DB
+- Tests error handling and summary output
+- Safe to run anytime
+
+### Level 3: Integration Tests (Mocked)
 - **No API calls** - Broker responses are mocked
 - Tests complete trade lifecycle
 - Tests webhook parsing
 - Tests database operations
 - Tests error handling
 
-### Level 3: Live Credential Tests
+### Level 4: Live Credential Tests
 - **API calls to check credentials only**
 - No trades executed
 - Verifies API keys work
 - Tests account balance fetching
 
-### Level 4: Live Trade Tests
+### Level 5: Live Trade Tests
 - **⚠️ EXECUTES REAL TRADES**
 - Use only with testnet/sandbox accounts
 - Use minimal volumes
@@ -155,6 +211,21 @@ MT5_TEST_SERVER=xxx
 ```
 
 ## Testing Workflow Scenarios
+
+### Scenario 0: Automate Command Default Flow (6-step)
+
+```
+python manage.py automate <webhook_id> --volume 0.001 --symbol BTCUSDT
+```
+This sends, in sequence:
+```
+1. D=BUY  A=BTCUSDT V=0.001 ID=b15.Is1.1764170120313.1   (Buy Entry)
+2. X=BUY  A=BTCUSDT P=60   ID=b15.Is1.1764170120313.1   (Partial Close 60%)
+3. X=BUY  A=BTCUSDT P=100  ID=b15.Is1.1764170120313.1   (Full Close)
+4. D=SELL A=BTCUSDT V=0.001 ID=s15.Is1.1764170120313.1   (Sell Entry)
+5. X=SELL A=BTCUSDT P=60   ID=s15.Is1.1764170120313.1   (Partial Close 60%)
+6. X=SELL A=BTCUSDT P=100  ID=s15.Is1.1764170120313.1   (Full Close)
+```
 
 ### Scenario 1: Basic Entry/Exit
 
