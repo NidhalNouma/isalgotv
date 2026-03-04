@@ -1,0 +1,251 @@
+# IsAlgo — Japanese translations
+# Copyright (C) 2026 IsAlgo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IsAlgo 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-04 08:29-0600\n"
+"PO-Revision-Date: 2026-03-04 10:00-0600\n"
+"Last-Translator: IsAlgo Team\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "English"
+msgstr "英語"
+
+msgid "French"
+msgstr "フランス語"
+
+msgid "Spanish"
+msgstr "スペイン語"
+
+msgid "German"
+msgstr "ドイツ語"
+
+msgid "Chinese (Simplified)"
+msgstr "中国語（簡体）"
+
+msgid "Japanese"
+msgstr "日本語"
+
+msgid "Arabic"
+msgstr "アラビア語"
+
+msgid "Russian"
+msgstr "ロシア語"
+
+msgid "Home"
+msgstr "ホーム"
+
+msgid "Delete Seller Account"
+msgstr "販売者アカウントを削除"
+
+msgid "Send email"
+msgstr "メールを送信"
+
+msgid "Marketing Email"
+msgstr "マーケティングメール"
+
+msgid "Strategy In."
+msgstr "戦略導入。"
+
+msgid "Uncertainty Out."
+msgstr "不確実性を排除。"
+
+msgid "Algorithmic precision. Leave emotions behind."
+msgstr "アルゴリズムの精度。感情を排除。"
+
+msgid "Get started for free!"
+msgstr "無料で始めましょう！"
+
+msgid "day free trial"
+msgstr "日間無料トライアル"
+
+msgid "Built by traders"
+msgstr "トレーダーが構築"
+
+msgid "For Traders"
+msgstr "トレーダーのために"
+
+msgid "Master the market with our all‑in‑one solution"
+msgstr "オールインワンソリューションで市場をマスター"
+
+msgid "Access"
+msgstr "アクセス"
+
+msgid ""
+"Browse our library of proven trading strategies, pick the one that"
+"fits your style, and get started in minutes."
+msgstr "実績のあるトレード戦略ライブラリを閲覧し、自分のスタイルに合ったものを選んで、数分で始められます。"
+
+msgid "Test"
+msgstr "テスト"
+
+msgid ""
+"Backtest your strategies on historical data, fine-tune the settings,"
+"and validate performance before going live."
+msgstr "過去のデータで戦略をバックテストし、設定を調整して、本番前にパフォーマンスを検証します。"
+
+msgid "Automate"
+msgstr "自動化"
+
+msgid ""
+"Connect your broker, set your rules, and let automation execute your"
+"trades around the clock. No emotions, no missed entries."
+msgstr "ブローカーと接続し、ルールを設定して、自動化に24時間取引を任せましょう。感情なし、エントリーの見逃しなし。"
+
+msgid "Discover Strategies"
+msgstr "戦略を発見"
+
+msgid "8+ strategies available"
+msgstr "8つ以上の戦略が利用可能"
+
+msgid ""
+"Find and backtest proven trading strategies. Use historical data to"
+"optimize your approach and maximize potential returns."
+msgstr "実績のあるトレード戦略を見つけてバックテスト。過去のデータを使ってアプローチを最適化し、リターンを最大化。"
+
+msgid "Start exploring"
+msgstr "探索を始める"
+
+msgid "Automate Everything"
+msgstr "すべてを自動化"
+
+msgid "24/7 automated trading"
+msgstr "24時間365日自動取引"
+
+msgid ""
+"Set up custom alerts and automated trading rules. Your strategies"
+"work non-stop while you focus on strategy development."
+msgstr "カスタムアラートと自動取引ルールを設定。戦略開発に集中しながら、戦略は休みなく稼働します。"
+
+msgid "Get started"
+msgstr "始める"
+
+msgid "AI Trading Assistant"
+msgstr "AIトレーディングアシスタント"
+
+msgid "Powered by Tero"
+msgstr "Tero搭載"
+
+msgid ""
+"Let Tero help you develop and optimize your trading strategies. Get"
+"personalized recommendations based on your goals."
+msgstr "Teroがトレード戦略の開発と最適化をサポート。目標に基づいたパーソナライズされた提案を受け取れます。"
+
+msgid "Ask Tero"
+msgstr "Teroに聞く"
+
+msgid "Trending Strategies"
+msgstr "トレンド戦略"
+
+msgid "Best Performing Reports"
+msgstr "最優秀パフォーマンスレポート"
+
+msgid "Never Miss a Signal"
+msgstr "シグナルを見逃さない"
+
+msgid "Set up TradingView alerts for your trading strategies"
+msgstr "トレード戦略にTradingViewアラートを設定"
+
+msgid "See how"
+msgstr "方法を見る"
+
+msgid "Recently Added Strategies"
+msgstr "最近追加された戦略"
+
+msgid "Join the Conversation"
+msgstr "会話に参加"
+
+msgid "Automate alerts once ready"
+msgstr "準備ができたらアラートを自動化"
+
+msgid "Set up your alerts and let automation handle the rest"
+msgstr "アラートを設定して、残りは自動化に任せましょう"
+
+msgid "Start now"
+msgstr "今すぐ始める"
+
+msgid "Latest Reports"
+msgstr "最新レポート"
+
+msgid "Market Stories"
+msgstr "マーケットストーリー"
+
+msgid "Join our Discord Community!"
+msgstr "Discordコミュニティに参加！"
+
+msgid "Connect with traders, share strategies, and get support"
+msgstr "トレーダーとつながり、戦略を共有し、サポートを受ける"
+
+msgid "Join us"
+msgstr "参加する"
+
+msgid "You have successfully subscribed to our membership."
+msgstr "メンバーシップの登録が完了しました。"
+
+msgid "Skip for now"
+msgstr "今はスキップ"
+
+msgid "Choose a plan"
+msgstr "プランを選択"
+
+msgid "Choose your desired plan to get started"
+msgstr "お好みのプランを選択して始めましょう"
+
+msgid "Set your username"
+msgstr "ユーザー名を設定"
+
+msgid "Set your trading view username"
+msgstr "TradingViewユーザー名を設定"
+
+msgid "You're ready"
+msgstr "準備完了"
+
+msgid "All done, you're ready to"
+msgstr "すべて完了、あとは"
+
+msgid "start trading"
+msgstr "取引を開始"
+
+msgid "Start today with"
+msgstr "今日から始めよう"
+
+msgid "day trial"
+msgstr "日間トライアル"
+
+msgid "Select one of our plans to get premium access."
+msgstr "プレミアムアクセスにはプランを選択してください。"
+
+msgid "You're ready to go."
+msgstr "準備完了です。"
+
+msgid "Go to your"
+msgstr "あなたの"
+
+msgid "TradingView"
+msgstr "TradingView"
+
+msgid "chart and you will find all of our systems"
+msgstr "チャートに移動すると、すべてのシステムが見つかります"
+
+msgid "under the invite only scripts."
+msgstr "招待制スクリプトの下にあります。"
+
+msgid "If you encounter any issues, please refer to our"
+msgstr "問題が発生した場合は、"
+
+msgid "documentation"
+msgstr "ドキュメント"
+
+msgid "for a step-by-step guide."
+msgstr "のステップバイステップガイドをご覧ください。"
+
+msgid "All done"
+msgstr "完了"
+

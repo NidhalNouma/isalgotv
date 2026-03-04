@@ -163,3 +163,6 @@ pyvenv.cfg
 
 gh-deploy-key
 gh-deploy-key.pub
+
+# Compiled translation files
+*.mo

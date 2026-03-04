@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <footer class="mt-auto w-full mb-4">
   <div class="h-[0.08rem] relative">
     <div class="absolute top-0 left-0 bottom-0 w-1/4 bg-gradient-to-r from-background pointer-events-none z-10"></div>
@@ -16,12 +18,12 @@
           <ellipse cx="107.059" cy="36.1608" rx="15.2944" ry="17.3112" />
         </svg>
         <p class="sm:max-w-sm max-w-xs text-title sm:text-xl text-lg font-semibold text-start align-top">
-          <span class="font-bold">W</span>e develop cutting-edge trading tools to provide more intelligent, quicker, and easier insights into the market.
+          <span class="font-bold">{% trans "W" %}</span>{% trans "e develop cutting-edge trading tools to provide more intelligent, quicker, and easier insights into the market." %}
         </p>
       </div>
 
       <div class="flex items-center mt-4">
-        <span class="text-text text-sm font-semibold mr-2">Follow us on</span>
+        <span class="text-text text-sm font-semibold mr-2">{% trans "Follow us on" %}</span>
         <a class="" href="https://www.tradingview.com/u/isalgo/?aff_id=134591&aff_sub=134591&source=134591" target="_blank">
           <svg class="h-5 aspect-square fill-text hover:fill-title mr-1" viewBox="0 0 246 128" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.0421406 2.08597L99.3354 2.102L99.8644 127.19L49.6599 126.839L49.6452 51.7831L-0.00524902 51.705L0.0421406 2.08597Z" />
@@ -148,13 +150,13 @@
 
   <!-- Disclaimer -->
   <div class="text-text/60 text-xs mb-6">
-    <p class="mb-2">Please note that the information provided on our website is intended for educational purposes only and should not be construed as financial or investment advice.</p>
-    <p class="mb-2">Risk Disclaimer: Trading carries inherent risks, and the majority of day traders experience losses. The potential for loss in trading can be significant. Decisions to buy, sell, hold, or trade securities, commodities, and other investments involve risk and should be made based on advice from qualified financial professionals. Past performance is not indicative of future results. All content is hypothetical and selected after the fact to illustrate our product and should not be considered financial advice. It is important to carefully consider whether trading is suitable for you given your financial circumstances.</p>
+    <p class="mb-2">{% trans "Please note that the information provided on our website is intended for educational purposes only and should not be construed as financial or investment advice." %}</p>
+    <p class="mb-2">{% trans "Risk Disclaimer: Trading carries inherent risks, and the majority of day traders experience losses. The potential for loss in trading can be significant. Decisions to buy, sell, hold, or trade securities, commodities, and other investments involve risk and should be made based on advice from qualified financial professionals. Past performance is not indicative of future results. All content is hypothetical and selected after the fact to illustrate our product and should not be considered financial advice. It is important to carefully consider whether trading is suitable for you given your financial circumstances." %}</p>
     <p class="mb-1">
-      Read the full disclaimer <a href="{% url 'docs_disclaimer' %}" class="underline">here.</a>
+      {% trans "Read the full disclaimer" %} <a href="{% url 'docs_disclaimer' %}" class="underline">{% trans "here." %}</a>
     </p>
     <p class="mb-4">
-      <a href="{% url 'docs_terms_of_use' %}" class="underline">Terms of use</a> - <a href="{% url 'docs_privacy_policy' %}" class="underline">Privacy policy</a>
+      <a href="{% url 'docs_terms_of_use' %}" class="underline">{% trans "Terms of use" %}</a> - <a href="{% url 'docs_privacy_policy' %}" class="underline">{% trans "Privacy policy" %}</a>
     </p>
 
     <span class="text-text/80">Copyright &copy; IsAlgo{% now 'Y' %}</span>

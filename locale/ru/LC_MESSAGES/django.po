@@ -1,0 +1,265 @@
+# IsAlgo — Russian translations
+# Copyright (C) 2026 IsAlgo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IsAlgo 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-04 08:29-0600\n"
+"PO-Revision-Date: 2026-03-04 10:00-0600\n"
+"Last-Translator: IsAlgo Team\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14) ? 2 : 3);\n"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "French"
+msgstr "Французский"
+
+msgid "Spanish"
+msgstr "Испанский"
+
+msgid "German"
+msgstr "Немецкий"
+
+msgid "Chinese (Simplified)"
+msgstr "Китайский (упрощённый)"
+
+msgid "Japanese"
+msgstr "Японский"
+
+msgid "Arabic"
+msgstr "Арабский"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Home"
+msgstr "Главная"
+
+msgid "Delete Seller Account"
+msgstr "Удалить аккаунт продавца"
+
+msgid "Send email"
+msgstr "Отправить письмо"
+
+msgid "Marketing Email"
+msgstr "Маркетинговое письмо"
+
+msgid "Strategy In."
+msgstr "Стратегия на месте."
+
+msgid "Uncertainty Out."
+msgstr "Неопределённость устранена."
+
+msgid "Algorithmic precision. Leave emotions behind."
+msgstr "Алгоритмическая точность. Оставьте эмоции позади."
+
+msgid "Get started for free!"
+msgstr "Начните бесплатно!"
+
+msgid "day free trial"
+msgstr "дней бесплатного пробного периода"
+
+msgid "Built by traders"
+msgstr "Создано трейдерами"
+
+msgid "For Traders"
+msgstr "Для трейдеров"
+
+msgid "Master the market with our all‑in‑one solution"
+msgstr "Овладейте рынком с нашим комплексным решением"
+
+msgid "Access"
+msgstr "Доступ"
+
+msgid ""
+"Browse our library of proven trading strategies, pick the one that"
+"fits your style, and get started in minutes."
+msgstr ""
+"Просмотрите нашу библиотеку проверенных торговых стратегий, выберите"
+"подходящую и начните за несколько минут."
+
+msgid "Test"
+msgstr "Тест"
+
+msgid ""
+"Backtest your strategies on historical data, fine-tune the settings,"
+"and validate performance before going live."
+msgstr ""
+"Тестируйте стратегии на исторических данных, настраивайте параметры и"
+"проверяйте эффективность перед запуском."
+
+msgid "Automate"
+msgstr "Автоматизация"
+
+msgid ""
+"Connect your broker, set your rules, and let automation execute your"
+"trades around the clock. No emotions, no missed entries."
+msgstr ""
+"Подключите брокера, установите правила и позвольте автоматизации"
+"выполнять сделки круглосуточно. Без эмоций, без пропущенных входов."
+
+msgid "Discover Strategies"
+msgstr "Открыть стратегии"
+
+msgid "8+ strategies available"
+msgstr "8+ доступных стратегий"
+
+msgid ""
+"Find and backtest proven trading strategies. Use historical data to"
+"optimize your approach and maximize potential returns."
+msgstr ""
+"Находите и тестируйте проверенные торговые стратегии. Используйте"
+"исторические данные для оптимизации подхода и максимизации"
+"доходности."
+
+msgid "Start exploring"
+msgstr "Начать изучение"
+
+msgid "Automate Everything"
+msgstr "Автоматизировать всё"
+
+msgid "24/7 automated trading"
+msgstr "Автоматическая торговля 24/7"
+
+msgid ""
+"Set up custom alerts and automated trading rules. Your strategies"
+"work non-stop while you focus on strategy development."
+msgstr ""
+"Настройте пользовательские оповещения и автоматические торговые"
+"правила. Ваши стратегии работают без остановки, пока вы сосредоточены"
+"на разработке."
+
+msgid "Get started"
+msgstr "Начать"
+
+msgid "AI Trading Assistant"
+msgstr "ИИ-помощник для торговли"
+
+msgid "Powered by Tero"
+msgstr "На базе Tero"
+
+msgid ""
+"Let Tero help you develop and optimize your trading strategies. Get"
+"personalized recommendations based on your goals."
+msgstr ""
+"Позвольте Tero помочь вам разработать и оптимизировать торговые"
+"стратегии. Получайте персональные рекомендации на основе ваших целей."
+
+msgid "Ask Tero"
+msgstr "Спросить Tero"
+
+msgid "Trending Strategies"
+msgstr "Популярные стратегии"
+
+msgid "Best Performing Reports"
+msgstr "Лучшие отчёты по эффективности"
+
+msgid "Never Miss a Signal"
+msgstr "Никогда не пропустите сигнал"
+
+msgid "Set up TradingView alerts for your trading strategies"
+msgstr "Настройте оповещения TradingView для ваших торговых стратегий"
+
+msgid "See how"
+msgstr "Узнать как"
+
+msgid "Recently Added Strategies"
+msgstr "Недавно добавленные стратегии"
+
+msgid "Join the Conversation"
+msgstr "Присоединяйтесь к обсуждению"
+
+msgid "Automate alerts once ready"
+msgstr "Автоматизируйте оповещения, когда будете готовы"
+
+msgid "Set up your alerts and let automation handle the rest"
+msgstr "Настройте оповещения и позвольте автоматизации сделать остальное"
+
+msgid "Start now"
+msgstr "Начать сейчас"
+
+msgid "Latest Reports"
+msgstr "Последние отчёты"
+
+msgid "Market Stories"
+msgstr "Истории рынка"
+
+msgid "Join our Discord Community!"
+msgstr "Присоединяйтесь к нашему Discord-сообществу!"
+
+msgid "Connect with traders, share strategies, and get support"
+msgstr "Общайтесь с трейдерами, делитесь стратегиями и получайте поддержку"
+
+msgid "Join us"
+msgstr "Присоединиться"
+
+msgid "You have successfully subscribed to our membership."
+msgstr "Вы успешно оформили подписку."
+
+msgid "Skip for now"
+msgstr "Пропустить"
+
+msgid "Choose a plan"
+msgstr "Выбрать план"
+
+msgid "Choose your desired plan to get started"
+msgstr "Выберите нужный план, чтобы начать"
+
+msgid "Set your username"
+msgstr "Задать имя пользователя"
+
+msgid "Set your trading view username"
+msgstr "Задать имя пользователя TradingView"
+
+msgid "You're ready"
+msgstr "Вы готовы"
+
+msgid "All done, you're ready to"
+msgstr "Всё готово, можете"
+
+msgid "start trading"
+msgstr "начать торговлю"
+
+msgid "Start today with"
+msgstr "Начните сегодня с"
+
+msgid "day trial"
+msgstr "дней пробного периода"
+
+msgid "Select one of our plans to get premium access."
+msgstr "Выберите один из наших планов для премиум-доступа."
+
+msgid "You're ready to go."
+msgstr "Вы готовы к работе."
+
+msgid "Go to your"
+msgstr "Перейдите к вашему"
+
+msgid "TradingView"
+msgstr "TradingView"
+
+msgid "chart and you will find all of our systems"
+msgstr "графику и вы найдёте все наши системы"
+
+msgid "under the invite only scripts."
+msgstr "в разделе скриптов по приглашению."
+
+msgid "If you encounter any issues, please refer to our"
+msgstr "Если возникнут проблемы, обратитесь к нашей"
+
+msgid "documentation"
+msgstr "документации"
+
+msgid "for a step-by-step guide."
+msgstr "для пошагового руководства."
+
+msgid "All done"
+msgstr "Готово"
+

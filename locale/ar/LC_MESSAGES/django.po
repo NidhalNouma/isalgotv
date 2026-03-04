@@ -1,0 +1,263 @@
+# IsAlgo — Arabic translations
+# Copyright (C) 2026 IsAlgo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IsAlgo 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-04 08:29-0600\n"
+"PO-Revision-Date: 2026-03-04 10:00-0600\n"
+"Last-Translator: IsAlgo Team\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "French"
+msgstr "الفرنسية"
+
+msgid "Spanish"
+msgstr "الإسبانية"
+
+msgid "German"
+msgstr "الألمانية"
+
+msgid "Chinese (Simplified)"
+msgstr "الصينية (المبسطة)"
+
+msgid "Japanese"
+msgstr "اليابانية"
+
+msgid "Arabic"
+msgstr "العربية"
+
+msgid "Russian"
+msgstr "الروسية"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "Delete Seller Account"
+msgstr "حذف حساب البائع"
+
+msgid "Send email"
+msgstr "إرسال بريد إلكتروني"
+
+msgid "Marketing Email"
+msgstr "بريد تسويقي"
+
+msgid "Strategy In."
+msgstr "الاستراتيجية جاهزة."
+
+msgid "Uncertainty Out."
+msgstr "عدم اليقين مُزال."
+
+msgid "Algorithmic precision. Leave emotions behind."
+msgstr "دقة خوارزمية. اترك المشاعر خلفك."
+
+msgid "Get started for free!"
+msgstr "ابدأ مجاناً!"
+
+msgid "day free trial"
+msgstr "يوم تجربة مجانية"
+
+msgid "Built by traders"
+msgstr "صُمم بواسطة المتداولين"
+
+msgid "For Traders"
+msgstr "للمتداولين"
+
+msgid "Master the market with our all‑in‑one solution"
+msgstr "أتقن السوق مع حلنا الشامل"
+
+msgid "Access"
+msgstr "الوصول"
+
+msgid ""
+"Browse our library of proven trading strategies, pick the one that"
+"fits your style, and get started in minutes."
+msgstr ""
+"تصفح مكتبتنا من استراتيجيات التداول المُثبتة، اختر ما يناسب أسلوبك،"
+"وابدأ في دقائق."
+
+msgid "Test"
+msgstr "اختبار"
+
+msgid ""
+"Backtest your strategies on historical data, fine-tune the settings,"
+"and validate performance before going live."
+msgstr ""
+"اختبر استراتيجياتك على البيانات التاريخية، وضبط الإعدادات، وتحقق من"
+"الأداء قبل التداول الفعلي."
+
+msgid "Automate"
+msgstr "أتمتة"
+
+msgid ""
+"Connect your broker, set your rules, and let automation execute your"
+"trades around the clock. No emotions, no missed entries."
+msgstr ""
+"اربط وسيطك، حدد قواعدك، ودع الأتمتة تنفذ صفقاتك على مدار الساعة. بلا"
+"مشاعر، بلا فرص ضائعة."
+
+msgid "Discover Strategies"
+msgstr "اكتشف الاستراتيجيات"
+
+msgid "8+ strategies available"
+msgstr "أكثر من 8 استراتيجيات متاحة"
+
+msgid ""
+"Find and backtest proven trading strategies. Use historical data to"
+"optimize your approach and maximize potential returns."
+msgstr ""
+"اعثر على استراتيجيات تداول مُثبتة واختبرها. استخدم البيانات التاريخية"
+"لتحسين نهجك وزيادة العوائد."
+
+msgid "Start exploring"
+msgstr "ابدأ الاستكشاف"
+
+msgid "Automate Everything"
+msgstr "أتمتة كل شيء"
+
+msgid "24/7 automated trading"
+msgstr "تداول آلي على مدار الساعة"
+
+msgid ""
+"Set up custom alerts and automated trading rules. Your strategies"
+"work non-stop while you focus on strategy development."
+msgstr ""
+"أنشئ تنبيهات مخصصة وقواعد تداول آلية. تعمل استراتيجياتك بلا توقف"
+"بينما تركز على تطوير الاستراتيجيات."
+
+msgid "Get started"
+msgstr "ابدأ الآن"
+
+msgid "AI Trading Assistant"
+msgstr "مساعد التداول بالذكاء الاصطناعي"
+
+msgid "Powered by Tero"
+msgstr "مدعوم من Tero"
+
+msgid ""
+"Let Tero help you develop and optimize your trading strategies. Get"
+"personalized recommendations based on your goals."
+msgstr ""
+"دع Tero يساعدك في تطوير وتحسين استراتيجيات التداول. احصل على توصيات"
+"مخصصة بناءً على أهدافك."
+
+msgid "Ask Tero"
+msgstr "اسأل Tero"
+
+msgid "Trending Strategies"
+msgstr "الاستراتيجيات الرائجة"
+
+msgid "Best Performing Reports"
+msgstr "أفضل تقارير الأداء"
+
+msgid "Never Miss a Signal"
+msgstr "لا تفوّت أي إشارة"
+
+msgid "Set up TradingView alerts for your trading strategies"
+msgstr "أنشئ تنبيهات TradingView لاستراتيجيات التداول"
+
+msgid "See how"
+msgstr "اعرف كيف"
+
+msgid "Recently Added Strategies"
+msgstr "استراتيجيات مضافة حديثاً"
+
+msgid "Join the Conversation"
+msgstr "انضم إلى المحادثة"
+
+msgid "Automate alerts once ready"
+msgstr "أتمتة التنبيهات عند الجهوزية"
+
+msgid "Set up your alerts and let automation handle the rest"
+msgstr "أنشئ تنبيهاتك ودع الأتمتة تتولى الباقي"
+
+msgid "Start now"
+msgstr "ابدأ الآن"
+
+msgid "Latest Reports"
+msgstr "أحدث التقارير"
+
+msgid "Market Stories"
+msgstr "قصص السوق"
+
+msgid "Join our Discord Community!"
+msgstr "انضم إلى مجتمعنا على Discord!"
+
+msgid "Connect with traders, share strategies, and get support"
+msgstr "تواصل مع المتداولين، شارك الاستراتيجيات، واحصل على الدعم"
+
+msgid "Join us"
+msgstr "انضم إلينا"
+
+msgid "You have successfully subscribed to our membership."
+msgstr "لقد اشتركت بنجاح في عضويتنا."
+
+msgid "Skip for now"
+msgstr "تخطي الآن"
+
+msgid "Choose a plan"
+msgstr "اختر خطة"
+
+msgid "Choose your desired plan to get started"
+msgstr "اختر الخطة المناسبة للبدء"
+
+msgid "Set your username"
+msgstr "حدد اسم المستخدم"
+
+msgid "Set your trading view username"
+msgstr "حدد اسم مستخدم TradingView"
+
+msgid "You're ready"
+msgstr "أنت جاهز"
+
+msgid "All done, you're ready to"
+msgstr "تم كل شيء، أنت جاهز لـ"
+
+msgid "start trading"
+msgstr "بدء التداول"
+
+msgid "Start today with"
+msgstr "ابدأ اليوم مع"
+
+msgid "day trial"
+msgstr "يوم تجربة"
+
+msgid "Select one of our plans to get premium access."
+msgstr "اختر إحدى خططنا للحصول على وصول مميز."
+
+msgid "You're ready to go."
+msgstr "أنت جاهز للانطلاق."
+
+msgid "Go to your"
+msgstr "اذهب إلى"
+
+msgid "TradingView"
+msgstr "TradingView"
+
+msgid "chart and you will find all of our systems"
+msgstr "الرسم البياني وستجد جميع أنظمتنا"
+
+msgid "under the invite only scripts."
+msgstr "ضمن النصوص البرمجية بالدعوة فقط."
+
+msgid "If you encounter any issues, please refer to our"
+msgstr "إذا واجهت أي مشاكل، يرجى الرجوع إلى"
+
+msgid "documentation"
+msgstr "الوثائق"
+
+msgid "for a step-by-step guide."
+msgstr "للحصول على دليل خطوة بخطوة."
+
+msgid "All done"
+msgstr "تم"
+

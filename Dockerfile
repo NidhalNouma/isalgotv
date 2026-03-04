@@ -123,6 +123,9 @@ RUN python manage.py compress
 # Run migrate
 RUN python manage.py migrate --noinput
 
+# Compile messages for translations
+RUN python manage.py compilemessages
+
 # Expose port 8000
 EXPOSE 8000
 

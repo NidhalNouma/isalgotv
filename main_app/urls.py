@@ -14,16 +14,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path, include
 
 from .views import *
 
-
 urlpatterns = [
+    path('accounts/', include('allauth.urls')),
+]
+
+urlpatterns += i18n_patterns(    
     path('accounts/profile/', redirect_to_home),
     # path('accounts/google/login/callback/', redirect_to_home),
-    path('accounts/', include('allauth.urls')),
     # path('accounts/social/signup/', CustomSocialSignupView.as_view(), name="redirect_social"),
     path('admin/login/', redirect_admin_login, name="redirect_admin_login"),
     path('admin/logout/', redirect_admin_logout, name="redirect_admin_logout"),
@@ -37,4 +40,5 @@ urlpatterns = [
     path('performance/', include('performance.urls')),
     path('tero/', include('tero.urls')),
     path('docs/', include('docs.urls')),
-]
+    prefix_default_language=False,
+)

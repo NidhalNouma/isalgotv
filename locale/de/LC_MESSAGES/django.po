@@ -1,0 +1,267 @@
+# IsAlgo — German translations
+# Copyright (C) 2026 IsAlgo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IsAlgo 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-04 08:29-0600\n"
+"PO-Revision-Date: 2026-03-04 10:00-0600\n"
+"Last-Translator: IsAlgo Team\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "English"
+msgstr "Englisch"
+
+msgid "French"
+msgstr "Französisch"
+
+msgid "Spanish"
+msgstr "Spanisch"
+
+msgid "German"
+msgstr "Deutsch"
+
+msgid "Chinese (Simplified)"
+msgstr "Chinesisch (vereinfacht)"
+
+msgid "Japanese"
+msgstr "Japanisch"
+
+msgid "Arabic"
+msgstr "Arabisch"
+
+msgid "Russian"
+msgstr "Russisch"
+
+msgid "Home"
+msgstr "Startseite"
+
+msgid "Delete Seller Account"
+msgstr "Verkäuferkonto löschen"
+
+msgid "Send email"
+msgstr "E-Mail senden"
+
+msgid "Marketing Email"
+msgstr "Marketing-E-Mail"
+
+msgid "Strategy In."
+msgstr "Strategie drin."
+
+msgid "Uncertainty Out."
+msgstr "Unsicherheit raus."
+
+msgid "Algorithmic precision. Leave emotions behind."
+msgstr "Algorithmische Präzision. Emotionen hinter sich lassen."
+
+msgid "Get started for free!"
+msgstr "Kostenlos starten!"
+
+msgid "day free trial"
+msgstr "Tage kostenlose Testversion"
+
+msgid "Built by traders"
+msgstr "Von Tradern entwickelt"
+
+msgid "For Traders"
+msgstr "Für Trader"
+
+msgid "Master the market with our all‑in‑one solution"
+msgstr "Meistern Sie den Markt mit unserer All-in-One-Lösung"
+
+msgid "Access"
+msgstr "Zugriff"
+
+msgid ""
+"Browse our library of proven trading strategies, pick the one that"
+"fits your style, and get started in minutes."
+msgstr ""
+"Durchsuchen Sie unsere Bibliothek bewährter Trading-Strategien,"
+"wählen Sie die passende und starten Sie in Minuten."
+
+msgid "Test"
+msgstr "Testen"
+
+msgid ""
+"Backtest your strategies on historical data, fine-tune the settings,"
+"and validate performance before going live."
+msgstr ""
+"Testen Sie Ihre Strategien mit historischen Daten, optimieren Sie die"
+"Einstellungen und validieren Sie die Performance vor dem Livegang."
+
+msgid "Automate"
+msgstr "Automatisieren"
+
+msgid ""
+"Connect your broker, set your rules, and let automation execute your"
+"trades around the clock. No emotions, no missed entries."
+msgstr ""
+"Verbinden Sie Ihren Broker, legen Sie Regeln fest und lassen Sie die"
+"Automatisierung Ihre Trades rund um die Uhr ausführen. Ohne"
+"Emotionen, ohne verpasste Einstiege."
+
+msgid "Discover Strategies"
+msgstr "Strategien entdecken"
+
+msgid "8+ strategies available"
+msgstr "8+ Strategien verfügbar"
+
+msgid ""
+"Find and backtest proven trading strategies. Use historical data to"
+"optimize your approach and maximize potential returns."
+msgstr ""
+"Finden und testen Sie bewährte Trading-Strategien. Nutzen Sie"
+"historische Daten, um Ihren Ansatz zu optimieren und Renditen zu"
+"maximieren."
+
+msgid "Start exploring"
+msgstr "Jetzt entdecken"
+
+msgid "Automate Everything"
+msgstr "Alles automatisieren"
+
+msgid "24/7 automated trading"
+msgstr "24/7 automatisierter Handel"
+
+msgid ""
+"Set up custom alerts and automated trading rules. Your strategies"
+"work non-stop while you focus on strategy development."
+msgstr ""
+"Richten Sie benutzerdefinierte Alarme und automatisierte"
+"Handelsregeln ein. Ihre Strategien arbeiten ununterbrochen, während"
+"Sie sich auf die Strategieentwicklung konzentrieren."
+
+msgid "Get started"
+msgstr "Loslegen"
+
+msgid "AI Trading Assistant"
+msgstr "KI-Trading-Assistent"
+
+msgid "Powered by Tero"
+msgstr "Unterstützt von Tero"
+
+msgid ""
+"Let Tero help you develop and optimize your trading strategies. Get"
+"personalized recommendations based on your goals."
+msgstr ""
+"Lassen Sie Tero Ihnen helfen, Ihre Trading-Strategien zu entwickeln"
+"und zu optimieren. Erhalten Sie personalisierte Empfehlungen"
+"basierend auf Ihren Zielen."
+
+msgid "Ask Tero"
+msgstr "Tero fragen"
+
+msgid "Trending Strategies"
+msgstr "Trend-Strategien"
+
+msgid "Best Performing Reports"
+msgstr "Beste Performance-Berichte"
+
+msgid "Never Miss a Signal"
+msgstr "Nie ein Signal verpassen"
+
+msgid "Set up TradingView alerts for your trading strategies"
+msgstr "Richten Sie TradingView-Alarme für Ihre Trading-Strategien ein"
+
+msgid "See how"
+msgstr "So geht's"
+
+msgid "Recently Added Strategies"
+msgstr "Kürzlich hinzugefügte Strategien"
+
+msgid "Join the Conversation"
+msgstr "Treten Sie der Diskussion bei"
+
+msgid "Automate alerts once ready"
+msgstr "Alarme automatisieren, wenn bereit"
+
+msgid "Set up your alerts and let automation handle the rest"
+msgstr "Richten Sie Ihre Alarme ein und lassen Sie die Automatisierung den Rest erledigen"
+
+msgid "Start now"
+msgstr "Jetzt starten"
+
+msgid "Latest Reports"
+msgstr "Neueste Berichte"
+
+msgid "Market Stories"
+msgstr "Marktgeschichten"
+
+msgid "Join our Discord Community!"
+msgstr "Treten Sie unserer Discord-Community bei!"
+
+msgid "Connect with traders, share strategies, and get support"
+msgstr "Vernetzen Sie sich mit Tradern, teilen Sie Strategien und erhalten Sie Support"
+
+msgid "Join us"
+msgstr "Beitreten"
+
+msgid "You have successfully subscribed to our membership."
+msgstr "Sie haben unser Abonnement erfolgreich abgeschlossen."
+
+msgid "Skip for now"
+msgstr "Vorerst überspringen"
+
+msgid "Choose a plan"
+msgstr "Plan wählen"
+
+msgid "Choose your desired plan to get started"
+msgstr "Wählen Sie Ihren gewünschten Plan, um loszulegen"
+
+msgid "Set your username"
+msgstr "Benutzername festlegen"
+
+msgid "Set your trading view username"
+msgstr "TradingView-Benutzername festlegen"
+
+msgid "You're ready"
+msgstr "Sie sind bereit"
+
+msgid "All done, you're ready to"
+msgstr "Alles erledigt, Sie können jetzt"
+
+msgid "start trading"
+msgstr "mit dem Trading beginnen"
+
+msgid "Start today with"
+msgstr "Starten Sie heute mit"
+
+msgid "day trial"
+msgstr "Tagen Testversion"
+
+msgid "Select one of our plans to get premium access."
+msgstr "Wählen Sie einen unserer Pläne für Premium-Zugang."
+
+msgid "You're ready to go."
+msgstr "Sie sind startklar."
+
+msgid "Go to your"
+msgstr "Gehen Sie zu Ihrem"
+
+msgid "TradingView"
+msgstr "TradingView"
+
+msgid "chart and you will find all of our systems"
+msgstr "Chart und Sie finden alle unsere Systeme"
+
+msgid "under the invite only scripts."
+msgstr "unter den Invite-Only-Skripts."
+
+msgid "If you encounter any issues, please refer to our"
+msgstr "Bei Problemen lesen Sie bitte unsere"
+
+msgid "documentation"
+msgstr "Dokumentation"
+
+msgid "for a step-by-step guide."
+msgstr "für eine Schritt-für-Schritt-Anleitung."
+
+msgid "All done"
+msgstr "Fertig"
+

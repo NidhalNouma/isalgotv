@@ -1,0 +1,251 @@
+# IsAlgo — Chinese (Simplified) translations
+# Copyright (C) 2026 IsAlgo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IsAlgo 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-04 08:29-0600\n"
+"PO-Revision-Date: 2026-03-04 10:00-0600\n"
+"Last-Translator: IsAlgo Team\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "English"
+msgstr "英语"
+
+msgid "French"
+msgstr "法语"
+
+msgid "Spanish"
+msgstr "西班牙语"
+
+msgid "German"
+msgstr "德语"
+
+msgid "Chinese (Simplified)"
+msgstr "中文（简体）"
+
+msgid "Japanese"
+msgstr "日语"
+
+msgid "Arabic"
+msgstr "阿拉伯语"
+
+msgid "Russian"
+msgstr "俄语"
+
+msgid "Home"
+msgstr "首页"
+
+msgid "Delete Seller Account"
+msgstr "删除卖家账户"
+
+msgid "Send email"
+msgstr "发送邮件"
+
+msgid "Marketing Email"
+msgstr "营销邮件"
+
+msgid "Strategy In."
+msgstr "策略就位。"
+
+msgid "Uncertainty Out."
+msgstr "不确定性消除。"
+
+msgid "Algorithmic precision. Leave emotions behind."
+msgstr "算法精准。告别情绪化交易。"
+
+msgid "Get started for free!"
+msgstr "免费开始！"
+
+msgid "day free trial"
+msgstr "天免费试用"
+
+msgid "Built by traders"
+msgstr "由交易者打造"
+
+msgid "For Traders"
+msgstr "为交易者而生"
+
+msgid "Master the market with our all‑in‑one solution"
+msgstr "通过我们的一站式解决方案掌控市场"
+
+msgid "Access"
+msgstr "访问"
+
+msgid ""
+"Browse our library of proven trading strategies, pick the one that"
+"fits your style, and get started in minutes."
+msgstr "浏览我们经过验证的交易策略库，选择适合您风格的策略，几分钟即可开始。"
+
+msgid "Test"
+msgstr "测试"
+
+msgid ""
+"Backtest your strategies on historical data, fine-tune the settings,"
+"and validate performance before going live."
+msgstr "使用历史数据回测您的策略，微调设置，在实盘前验证表现。"
+
+msgid "Automate"
+msgstr "自动化"
+
+msgid ""
+"Connect your broker, set your rules, and let automation execute your"
+"trades around the clock. No emotions, no missed entries."
+msgstr "连接您的经纪商，设定规则，让自动化全天候执行交易。没有情绪，不错过任何入场机会。"
+
+msgid "Discover Strategies"
+msgstr "发现策略"
+
+msgid "8+ strategies available"
+msgstr "8+策略可用"
+
+msgid ""
+"Find and backtest proven trading strategies. Use historical data to"
+"optimize your approach and maximize potential returns."
+msgstr "发现并回测经过验证的交易策略。利用历史数据优化方法，最大化潜在收益。"
+
+msgid "Start exploring"
+msgstr "开始探索"
+
+msgid "Automate Everything"
+msgstr "全面自动化"
+
+msgid "24/7 automated trading"
+msgstr "24/7自动交易"
+
+msgid ""
+"Set up custom alerts and automated trading rules. Your strategies"
+"work non-stop while you focus on strategy development."
+msgstr "设置自定义警报和自动交易规则。策略不间断运行，您专注于策略开发。"
+
+msgid "Get started"
+msgstr "开始"
+
+msgid "AI Trading Assistant"
+msgstr "AI交易助手"
+
+msgid "Powered by Tero"
+msgstr "由Tero驱动"
+
+msgid ""
+"Let Tero help you develop and optimize your trading strategies. Get"
+"personalized recommendations based on your goals."
+msgstr "让Tero帮助您开发和优化交易策略。根据您的目标获取个性化建议。"
+
+msgid "Ask Tero"
+msgstr "询问Tero"
+
+msgid "Trending Strategies"
+msgstr "热门策略"
+
+msgid "Best Performing Reports"
+msgstr "最佳表现报告"
+
+msgid "Never Miss a Signal"
+msgstr "绝不错过信号"
+
+msgid "Set up TradingView alerts for your trading strategies"
+msgstr "为您的交易策略设置TradingView警报"
+
+msgid "See how"
+msgstr "了解详情"
+
+msgid "Recently Added Strategies"
+msgstr "最新添加的策略"
+
+msgid "Join the Conversation"
+msgstr "加入讨论"
+
+msgid "Automate alerts once ready"
+msgstr "准备就绪后自动化警报"
+
+msgid "Set up your alerts and let automation handle the rest"
+msgstr "设置警报，让自动化处理其余工作"
+
+msgid "Start now"
+msgstr "立即开始"
+
+msgid "Latest Reports"
+msgstr "最新报告"
+
+msgid "Market Stories"
+msgstr "市场故事"
+
+msgid "Join our Discord Community!"
+msgstr "加入我们的Discord社区！"
+
+msgid "Connect with traders, share strategies, and get support"
+msgstr "与交易者交流，分享策略，获取支持"
+
+msgid "Join us"
+msgstr "加入我们"
+
+msgid "You have successfully subscribed to our membership."
+msgstr "您已成功订阅我们的会员。"
+
+msgid "Skip for now"
+msgstr "暂时跳过"
+
+msgid "Choose a plan"
+msgstr "选择计划"
+
+msgid "Choose your desired plan to get started"
+msgstr "选择您想要的计划开始使用"
+
+msgid "Set your username"
+msgstr "设置用户名"
+
+msgid "Set your trading view username"
+msgstr "设置您的TradingView用户名"
+
+msgid "You're ready"
+msgstr "准备就绪"
+
+msgid "All done, you're ready to"
+msgstr "全部完成，您可以开始"
+
+msgid "start trading"
+msgstr "开始交易"
+
+msgid "Start today with"
+msgstr "今天开始"
+
+msgid "day trial"
+msgstr "天试用"
+
+msgid "Select one of our plans to get premium access."
+msgstr "选择我们的计划获取高级访问权限。"
+
+msgid "You're ready to go."
+msgstr "您已准备就绪。"
+
+msgid "Go to your"
+msgstr "前往您的"
+
+msgid "TradingView"
+msgstr "TradingView"
+
+msgid "chart and you will find all of our systems"
+msgstr "图表，您将找到我们所有的系统"
+
+msgid "under the invite only scripts."
+msgstr "在仅限邀请的脚本中。"
+
+msgid "If you encounter any issues, please refer to our"
+msgstr "如遇到任何问题，请参阅我们的"
+
+msgid "documentation"
+msgstr "文档"
+
+msgid "for a step-by-step guide."
+msgstr "获取分步指南。"
+
+msgid "All done"
+msgstr "完成"
+

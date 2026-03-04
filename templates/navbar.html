@@ -1,6 +1,7 @@
+
 {% load static %}
 {% load hosts %}
-
+{% load i18n %}
 
   <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
     <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
@@ -47,7 +48,7 @@
                           <path d="M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z"></path>
                           <path d="M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
                         </g>
-                      </svg>Admin
+                      </svg>{% trans "Admin" %}
                     </a>
                   </li>
                 {% endif %}
@@ -55,7 +56,7 @@
                   <li>
                     <a href="{% url 'stripe_seller_dashboard' %}" target="_blank" class="flex items-center px-4 py-2 text-sm text-text/90 hover:text-title transition-all">
                       <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
-                      Earnings
+                      {% trans "Earnings" %}
                     </a>
                   </li>
                 {% endif %}
@@ -64,7 +65,7 @@
                     <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path fill="none" d="M0 0h24v24H0V0z"></path>
                       <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zM7.58 4.08 6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2a8.445 8.445 0 0 1 3.55-6.42zm12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43a8.495 8.495 0 0 1 3.54 6.42z"></path>
-                    </svg>Notifications
+                    </svg>{% trans "Notifications" %}
                   </a>
                 </li>
                 <li>
@@ -77,14 +78,14 @@
                       <path d="M16 20h2a2 2 0 0 0 2 -2v-2"></path>
                       <path d="M8 11m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v3a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"></path>
                       <path d="M10 11v-2a2 2 0 1 1 4 0v2"></path>
-                    </svg>Access
+                    </svg>{% trans "Access" %}
                   </a>
                 </li>
                 <li>
                   <a href="{% url 'settings' %}" class="px-4 py-2 text-sm text-text/90 hover:text-title flex items-center transition-all">
                     <svg class="h-4 w-4 mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                       <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4zM416.39 256a154.34 154.34 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.48 164.48 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155.3 155.3 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.48 164.48 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155.3 155.3 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47z"></path>
-                    </svg>Settings
+                    </svg>{% trans "Settings" %}
                   </a>
                 </li>
                 <li>
@@ -94,7 +95,7 @@
                       <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"></path>
                       <path d="M15 12h-12l3 -3"></path>
                       <path d="M6 15l-3 -3"></path>
-                    </svg>Log out
+                    </svg>{% trans "Log out" %}
                   </a>
                 </li>
               </ul>
@@ -102,14 +103,14 @@
           </div>
         {% else %}
           <a type="button" href="{% url 'login' %}" class="btn-accent">
-            Log in<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            {% trans "Log in" %}<svg stroke="currentColor" fill="currentColor" class="h-4 w-4 ml-1" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M0 0h24v24H0z"></path>
               <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"></path>
             </svg>
           </a>
         {% endif %}
         <button id="menu-toggle-mobile" data-collapse-toggle="mobile-menu-2" type="button" class="btn-icon lg:hidden" aria-controls="mobile-menu-2" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
+          <span class="sr-only">{% trans "Open main menu" %}</span>
           <svg id="menu-icon" class="w-6 h-6 transition-transform duration-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
           </svg>
@@ -129,7 +130,7 @@
             aria-current="page">
             <svg class="h-4 aspect-square mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
               <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
-            </svg>Strategies
+            </svg>{% trans "Strategies" %}
           </a>
         </li>
         <li>
@@ -142,7 +143,7 @@
           aria-current="page">
           <svg class="h-4 aspect-square mr-1 fill-current" viewBox="0 0 61 79" xmlns="http://www.w3.org/2000/svg">
             <path d="M55.2164 68.871H46.5656V78.7097H39.1507V68.871H30.5L42.8582 54.1129L55.2164 68.871ZM61 34.0911L47.6532 45.8976C43.5997 49.5379 37.5194 49.6855 33.3177 46.2911L23.0851 38.125C22.3979 37.5802 21.5386 37.296 20.6604 37.323C19.7822 37.35 18.9422 37.6865 18.2901 38.2726L4.94327 50.079L0 44.6185L13.3468 32.7629C15.3149 31.0189 17.8413 30.027 20.4758 29.964C23.1103 29.9009 25.6817 30.7708 27.7318 32.4185L37.9149 40.5847C39.3485 41.7161 41.3752 41.6177 42.7099 40.4371L56.0567 28.6306L61 34.0911ZM21.8493 9.83871H30.5L18.1418 24.5968L5.78363 9.83871H14.4344V0H21.8493V9.83871Z" />
-          </svg>Reports
+          </svg>{% trans "Reports" %}
         </a>
       {% comment %} </li>
         <li>
@@ -168,7 +169,7 @@
           aria-current="page">
           <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="w-4 aspect-auto mr-1">
             <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
-          </svg>Automate
+          </svg>{% trans "Automate" %}
         </a>
       </li>
       {% comment %} <li>
@@ -190,9 +191,9 @@
                 <circle cx="12" cy="8" r="6" />
               </svg>
               {% if has_subscription %}
-                Membership
+                {% trans "Membership" %}
               {% else %}
-                Pricing
+                {% trans "Pricing" %}
               {% endif %}
             </a>
           </li>
@@ -206,7 +207,7 @@
               aria-current="page">
               <svg class="h-4 aspect-square mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book">
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
-              </svg>Docs
+              </svg>{% trans "Docs" %}
             </a>
           </li>
         </ul>
