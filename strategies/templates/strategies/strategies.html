@@ -1,17 +1,18 @@
 {% extends 'page.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>IsAlgo | TradingView Strategies | Premium Backtestable Systems</title>
+  <title>{% trans "IsAlgo | TradingView Strategies | Premium Backtestable Systems" %}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="Access a growing library of expert TradingView strategies. Explore premium, backtestable, and automatable trading systems designed for all markets and skill levels. Start mastering your trades today with IsAlgo." />
-  {% comment %} <meta name="description" content="Explore our exclusive collection of TradingView strategies designed for maximum profitability. Access fully backtestable and automated strategies suitable for all markets, timeframes, and skill levels. Boost your trading edge today with IsAlgo." /> {% endcomment %}
+  <meta name="description" content="{% trans "Access a growing library of expert TradingView strategies. Explore premium, backtestable, and automatable trading systems designed for all markets and skill levels. Start mastering your trades today with IsAlgo." %}" />
+  {% comment %} <meta name="description" content="{% trans "Explore our exclusive collection of TradingView strategies designed for maximum profitability. Access fully backtestable and automated strategies suitable for all markets, timeframes, and skill levels. Boost your trading edge today with IsAlgo." %}" /> {% endcomment %}
 {% endblock %}
 
 {% block page %}
-  <h1 class="main-title">Strategies</h1>
+  <h1 class="main-title">{% trans "Strategies" %}</h1>
 
   <main class="mt-1 mb-16">
     <div class="sticky z-10 top-10 sm:top-12 mb-3">
@@ -45,7 +46,7 @@
       {% for strategy in strategies %}
         {% include 'include/quick_strategy.html' with strategy=strategy %}
       {% empty %}
-        <p class="text-text text-sm">No strategy availble yet.</p>
+        <p class="text-text text-sm">{% trans "No strategy available yet." %}</p>
       {% endfor %}
 
       {% if not selected_type %}
@@ -76,13 +77,13 @@
                   </div>
                 </div>
                 <div class="flex-1">
-                  <h3 class="text-sm font-semibold text-accent mb-0.5">Have a Strategy Idea?</h3>
-                  <p class="text-xs sm:text-sm text-text/70 mt-1">We're here to help you turn it into a fully functional strategy.</p>
+                  <h3 class="text-sm font-semibold text-accent mb-0.5">{% trans "Have a Strategy Idea?" %}</h3>
+                  <p class="text-xs sm:text-sm text-text/70 mt-1">{% trans "We're here to help you turn it into a fully functional strategy." %}</p>
                 </div>
               </div>
               <div class="flex-shrink-0">
                 <span class="inline-flex items-center text-accent bg-accent/10 group-hover:bg-accent/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
-                  <span>See How</span>
+                  <span>{% trans "See How" %}</span>
                   <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform stroke-accent" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                     <polyline points="15 3 21 3 21 9"></polyline>

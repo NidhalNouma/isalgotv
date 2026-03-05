@@ -1,7 +1,8 @@
 {% extends 'page.html' %} {% load static %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>Ctrader Authentication code</title>
+  <title>{% trans "Ctrader Authentication code" %}</title>
 {% endblock %}
 
 {% block head_description %}
@@ -40,9 +41,9 @@
 
   <main class="my-auto mx-auto">
     {% if auth_code %}
-      <label class="input-label" for="auth-code">Your Authentication code</label>
+      <label class="input-label" for="auth-code">{% trans "Your Authentication code" %}</label>
       <p id="auth-code" class="text-text/80 break-all p-2 bg-text/10 text-sm rounded-md overflow-hidden">{{ auth_code }}</p>
-      <button class="btn-text mt-4" onclick="copyCode()">Copy authentication code</button>
+      <button class="btn-text mt-4" onclick="copyCode()">{% trans "Copy authentication code" %}</button>
     {% else %}
       {% include 'include/errors.html' with error=error %}
     {% endif %}

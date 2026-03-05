@@ -1,9 +1,11 @@
+{% load i18n %}
+
 <form hx-post="{% url 'update-tradingview-username' %}?pg=settings" hx-target="#tv-setting" class="mx-auto rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden w-full py-4 px-6 max-w-lg mb-8">
-  <h5 class="text-title font-semibold mb-6">Tradingview</h5>
+  <h5 class="text-title font-semibold mb-6">{% trans 'Tradingview' %}</h5>
   {% csrf_token %}
 
   <label for="email" class="flex items-center justify-between input-label">
-    <span>Tradingview username</span>
+    <span>{% trans 'Tradingview username' %}</span>
     <button onclick="openDrawer('drawer-tv-help')" type="button">
       <svg class="text-text hover:text-text/80 h-4 aspect-square transition-all" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">
         <circle cx="12" cy="12" r="10" />
@@ -25,19 +27,19 @@
     {% if succes %}
       {% include 'include/succes.html' %}
     {% elif has_subscription %}
-      {% include 'include/infos.html' with info='By changing your tradingview username, the previous username will no longer have access to our strategies.' %}
+      {% trans 'By changing your tradingview username, the previous username will no longer have access to our strategies.' as tv_change_warning %}
+      {% include 'include/infos.html' with info=tv_change_warning %}
     {% else %}
       {% comment %} {% include 'include/infos.html' with info='Choose one of our plans to get started and gain access.' %} {% endcomment %}
     {% endif %}
   </div>
-  <button type="submit" id="btn-tv" onclick="openLoader('', '-tv', 'flex');" class="btn-primary mt-4 mb-2 w-full">Save</button>
+  <button type="submit" id="btn-tv" onclick="openLoader('', '-tv', 'flex');" class="btn-primary mt-4 mb-2 w-full">{% trans 'Save' %}</button>
 
-  <button id="spinner-tv" disabled type="button" class="mt-4 mb-2 w-full btn-primary items-center hidden">
-    Saving {% include 'svg/spinner.html' with class="ml-1 h-3.5" %}
-  </button>
+  <button id="spinner-tv" disabled type="button" class="mt-4 mb-2 w-full btn-primary items-center hidden">{% trans 'Saving' %} {% include 'svg/spinner.html' with class='ml-1 h-3.5' %}</button>
 </form>
 
 {% load custom_tags %}
 {% render_template 'include/docs/find_username.html' as info_content %}
 
-{% include 'include/drawer_modal.html' with drawer_id='drawer-tv-help' title='Tradingview username' body=info_content %}
+{% trans 'Tradingview username' as tv_drawer_title %}
+{% include 'include/drawer_modal.html' with drawer_id='drawer-tv-help' title=tv_drawer_title body=info_content %}

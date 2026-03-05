@@ -1,21 +1,22 @@
 {% extends 'page.html' %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>IsAlgo | Notifications | Stay Updated on Your Activity</title>
+  <title>{% trans "IsAlgo | Notifications | Stay Updated on Your Activity" %}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="View your latest notifications about strategy updates, trading alerts, membership status, and important system messages. Stay informed and manage your trading activities easily with IsAlgo." />
+  <meta name="description" content="{% trans "View your latest notifications about strategy updates, trading alerts, membership status, and important system messages. Stay informed and manage your trading activities easily with IsAlgo." %}" />
 {% endblock %}
 
 {% block page %}
-  <h1 class="main-title">Notifications</h1>
+  <h1 class="main-title">{% trans "Notifications" %}</h1>
 
   <main class="mt-8 mb-16 w-full">
     {% if notifications|length > 0 %}
       {% include 'include/settings/notifications_list.html' %}
     {% else %}
-      <p class="text-text text-sm">No notification availble yet.</p>
+      <p class="text-text text-sm">{% trans "No notification available yet." %}</p>
     {% endif %}
   </main>
 {% endblock %}

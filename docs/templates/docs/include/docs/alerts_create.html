@@ -1,11 +1,12 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
   <section id="create-alert">
     <aside>
-      <h3>Create TradingView alert</h3>
+      <h3>{% trans 'Create TradingView alert' %}</h3>
 
       <p>
-        <span>After setting up the alert message on the strategy you're using,</span> to start receiving alert messages on TradingView, you'll need to add one. With our strategies, you'll only need to create one, and it will send alerts on any entry as well as on any exit, one alert per strategy. <br />The video below will show you how to add one.
+        <span>{% trans "After setting up the alert message on the strategy you're using," %}</span> {% trans "to start receiving alert messages on TradingView, you'll need to add one. With our strategies, you'll only need to create one, and it will send alerts on any entry as well as on any exit, one alert per strategy." %} <br />{% trans 'The video below will show you how to add one.' %}
       </p>
       <video muted="" controls="controls">
         <source src="https://isalgotest.s3.amazonaws.com/docs/add_alert_tv.mp4" type="video/mp4" />
@@ -19,38 +20,39 @@
 
   <section id="create-steps">
     <aside>
-      <h3>Steps</h3>
+      <h3>{% trans 'Steps' %}</h3>
       <ol class="space-y-2">
         <li>
-          Make sure your strategy/indicator are in the <span>TradingView</span> chart.
+          {% trans 'Make sure your strategy/indicator are in the TradingView chart.' %}
         </li>
         <li>
-          Click on the Alert icon (bell symbol) in the top right corner of the chart.
+          {% trans 'Click on the Alert icon (bell symbol) in the top right corner of the chart.' %}
           <img onclick="showModalImages(this)" src="{% static 'images/docs/automate/tv-chart.png' %}" loading="lazy" alt="Alert icon" />
-          Or from the strategy/indicator by clicking the three dots next to its name and selecting "Add Alert."
+          {% trans 'Or from the strategy/indicator by clicking the three dots next to its name and selecting "Add Alert."' %}
           <img onclick="showModalImages(this)" src="{% static 'images/docs/automate/script-add-alert.png' %}" loading="lazy" alt="Alert icon" />
-          Or by clicking on the strategy/indicator name and pressing the "Alt + A" keys on your keyboard.
+          {% trans 'Or by clicking on the strategy/indicator name and pressing the "Alt + A" keys on your keyboard.' %}
         </li>
         <li>
-          In the Condition dropdown, make sure to select your strategy/indicator.
+          {% trans 'In the Condition dropdown, make sure to select your strategy/indicator.' %}
           <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/alert-condition.png' %}" alt="create alert" />
         </li>
         <li>
-          Then select <span>alert() function calls only</span>.
+          {% trans 'Then select alert() function calls only.' %}
           <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/alert-function.png' %}" alt="create alert" />
         </li>
         <li>
-          Ensure that the Expiration time is set to <span>Open-ended alert</span>.
+          {% trans 'Ensure that the Expiration time is set to Open-ended alert.' %}
           <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/alert-expire.png' %}" alt="create alert" />
         </li>
         <li>
-          Provide a name for the alert.
+          {% trans 'Provide a name for the alert.' %}
           <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/alert-name.png' %}" alt="create alert" />
         </li>
         <li>
-          Go to the Notifications tab, enable the Webhook URL option, and paste your Webhook URL.{% if webhook_url %}
+          {% trans 'Go to the Notifications tab, enable the Webhook URL option, and paste your Webhook URL.' %}
+          {% if webhook_url %}
             <p class="!text-xs !text-text/40">
-              This is your webhook URL releated to <span class="!text-text/80">{{ webhook_name }}</span>
+              {% trans 'This is your webhook URL related to' %} <span class="!text-text/80">{{ webhook_name }}</span>
             </p>
             <p class="pb-2">
               <code id="url-{{ id }}" onclick="copyPlainText('url-{{ id }}')">
@@ -63,7 +65,9 @@
           {% endif %}
           <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tv-webhook-alert.png' %}" alt="finalize alert" />
         </li>
-        <li>Click Create to finalize the alert.</li>
+        <li>
+          {% trans 'Click Create to finalize the alert.' %}
+        </li>
       </ol>
     </aside>
   </section>
@@ -71,21 +75,23 @@
   <section id="important-notes">
     <aside>
       <p class="font-semibold">
-        IMPORTANT: The alert will be created based on the current settings of the strategy/indicator. To make it work on the new settings, you need to create a new alert and delete the old one if it's no longer needed. <br />Changing the strategy/indicator settings after the alert is created will not update the existing alert; it will continue to function based on the settings that were active when it was created.
+        {% trans "IMPORTANT: The alert will be created based on the current settings of the strategy/indicator. To make it work on the new settings, you need to create a new alert and delete the old one if it's no longer needed." %}<br />
+        {% trans 'Changing the strategy/indicator settings after the alert is created will not update the existing alert; it will continue to function based on the settings that were active when it was created.' %}
       </p>
     </aside>
   </section>
 
   <div>
-    {% include 'include/warnings.html' with warning='Keep your webhook URL private to ensure the security of your alerts and avoid any disruptions. Sharing it could lead to missed or unauthorized alerts.' %}
+    {% trans 'Keep your webhook URL private to ensure the security of your alerts and avoid any disruptions. Sharing it could lead to missed or unauthorized alerts.' as webhook_warning %}
+    {% include 'include/warnings.html' with warning=webhook_warning %}
   </div>
 
   <section class="mt-4">
     <aside>
-      <h3>Need help?</h3>
+      <h3>{% trans 'Need help?' %}</h3>
 
       <p>
-        If you encounter any issues during the integration process, our support team is here to help. Contact us <a href="{% url 'docs_contactus' %}" target="_blank">here</a>.
+        {% trans 'If you encounter any issues during the integration process, our support team is here to help. Contact us' %} <a href="{% url 'docs_contactus' %}" target="_blank">{% trans 'here' %}</a>.
       </p>
     </aside>
   </section>

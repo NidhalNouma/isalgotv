@@ -1,7 +1,8 @@
-{% extends 'page.html' %} {% load static %}
+{% extends 'page.html' %} {% load i18n %}
+{% load static %}
 
 {% block head_title %}
-  <title>IsAlgo | Frequently Asked Questions About IsAlgo</title>
+  <title>{% trans 'IsAlgo | Frequently Asked Questions About IsAlgo' %}</title>
 {% endblock %}
 
 {% block head_description %}
@@ -15,21 +16,49 @@
       {% include 'include/docs/side_nav_mobile.html' with title='F&Q' %}
 
       <section class="">
-        <h1 class="text-2xl font-bold tracking-tight">FAQ</h1>
+        <h1 class="text-2xl font-bold tracking-tight">{% trans 'FAQ' %}</h1>
 
-        <p class="mt-2 text-base">These are some of the frequently asked questions:</p>
+        <p class="mt-2 text-base">
+          {% trans 'These are some of the frequently asked questions:' %}
+        </p>
 
         <div class="mt-8 w-full">
           <div class="space-y-4">
-            {% include 'include/qanda_item.html' with id=1 title='What is IsAlgo?' description="IsAlgo is a platform that provides advanced trading strategies built for TradingView. Our strategies are backtestable, automatable, and work across any market — crypto, forex, stocks — and any timeframe. Whether you're a beginner or a pro, our tools are designed to help you trade smarter." %}
-            {% include 'include/qanda_item.html' with id=2 title='What do I need to get started?' description='All you need is a <a class="underline" href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank">TradingView account</a> and basic trading knowledge. Once you sign up on IsAlgo and choose a plan, you will enter your TradingView username and gain instant access to all the strategies included in your plan.' %}
-            {% include 'include/qanda_item.html' with id=3 title='How do I access the strategies?' description="After subscribing, go to your settings and enter your TradingView username. We'll guide you on where to find it. Once submitted, all strategies included in your plan are automatically added to your TradingView account and ready to use." %}
-            {% include 'include/qanda_item.html' with id=4 title='What are the different strategy types?' description='<strong>Free</strong> — available to all registered users, no subscription needed.<br/><strong>Premium</strong> — requires an active Monthly or Yearly subscription.<br/><strong>Elite</strong> — exclusive to Lifetime members only.<br/><strong>Exclusive</strong> — created by independent traders and published on our platform. These are not included in any membership and must be purchased separately from their authors.' %}
-            {% include 'include/qanda_item.html' with id=6 title='Do I need a paid TradingView account?' description='No, a free TradingView account is enough to get started. However, the free version has some limitations — for example, you can only have one active alert and one chart with one strategy. A paid TradingView plan is recommended for full functionality, especially if you plan to use automation.' %}
-            {% include 'include/qanda_item.html' with id=7 title='What plans are available?' description='We offer three plans:<br/><strong>Monthly</strong> — perfect for trying out the service, cancel anytime.<br/><strong>Yearly</strong> — best value for long-term use, save significantly vs monthly.<br/><strong>Lifetime</strong> — a one-time payment for permanent access to all Premium and Elite strategies, plus a numbered digital membership card.' %}
-            {% include 'include/qanda_item.html' with id=8 title='Can I automate my trades?' description='Yes. You can connect any TradingView strategy or indicator to multiple crypto and forex brokers using our webhook integration. Use our Playground tool to configure alert messages, connect your broker, and trades execute automatically.<br/><br/>An additional fee of $3 to $20/month applies per connected trading account depending on the broker type.' %}
-            {% include 'include/qanda_item.html' with id=9 title='Can I trust the performance reports?' description='Yes. Our reports reflect the actual backtested performance of each strategy over a specific time period. The longer the period covered, the more reliable the results. Keep in mind that past performance does not guarantee future results, but it gives you a solid basis for evaluating a strategy.' %}
-            {% include 'include/qanda_item.html' with id=10 title='Can I change or cancel my plan?' description='Yes, you can upgrade, downgrade, or cancel at any time. When you upgrade, remaining time converts into extra days on your new plan. Downgrades take effect after the current billing period ends. When you cancel, you keep access until the end of your current period.' %}
+            {% trans 'What is IsAlgo?' as q1_title %}
+            {% blocktrans asvar q1_desc %}IsAlgo is a platform that provides advanced trading strategies built for TradingView. Our strategies are backtestable, automatable, and work across any market — crypto, forex, stocks — and any timeframe. Whether you're a beginner or a pro, our tools are designed to help you trade smarter.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=1 title=q1_title description=q1_desc %}
+
+            {% trans 'What do I need to get started?' as q2_title %}
+            {% blocktrans asvar q2_desc %}All you need is a <a class="underline" href="https://tradingview.com?aff_id=134591&aff_sub=134591&source=134591" target="_blank">TradingView account</a> and basic trading knowledge. Once you sign up on IsAlgo and choose a plan, you will enter your TradingView username and gain instant access to all the strategies included in your plan.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=2 title=q2_title description=q2_desc %}
+
+            {% trans 'How do I access the strategies?' as q3_title %}
+            {% blocktrans asvar q3_desc %}After subscribing, go to your settings and enter your TradingView username. We'll guide you on where to find it. Once submitted, all strategies included in your plan are automatically added to your TradingView account and ready to use.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=3 title=q3_title description=q3_desc %}
+
+            {% trans 'What are the different strategy types?' as q4_title %}
+            {% blocktrans asvar q4_desc %}<strong>Free</strong> — available to all registered users, no subscription needed.<br /><strong>Premium</strong> — requires an active Monthly or Yearly subscription.<br /><strong>Elite</strong> — exclusive to Lifetime members only.<br /><strong>Exclusive</strong> — created by independent traders and published on our platform. These are not included in any membership and must be purchased separately from their authors.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=4 title=q4_title description=q4_desc %}
+
+            {% trans 'Do I need a paid TradingView account?' as q6_title %}
+            {% blocktrans asvar q6_desc %}No, a free TradingView account is enough to get started. However, the free version has some limitations — for example, you can only have one active alert and one chart with one strategy. A paid TradingView plan is recommended for full functionality, especially if you plan to use automation.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=6 title=q6_title description=q6_desc %}
+
+            {% trans 'What plans are available?' as q7_title %}
+            {% blocktrans asvar q7_desc %}We offer three plans:<br /><strong>Monthly</strong> — perfect for trying out the service, cancel anytime.<br /><strong>Yearly</strong> — best value for long-term use, save significantly vs monthly.<br /><strong>Lifetime</strong> — a one-time payment for permanent access to all Premium and Elite strategies, plus a numbered digital membership card.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=7 title=q7_title description=q7_desc %}
+
+            {% trans 'Can I automate my trades?' as q8_title %}
+            {% blocktrans asvar q8_desc %}Yes. You can connect any TradingView strategy or indicator to multiple crypto and forex brokers using our webhook integration. Use our Playground tool to configure alert messages, connect your broker, and trades execute automatically.<br /><br />An additional fee of $3 to $20/month applies per connected trading account depending on the broker type.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=8 title=q8_title description=q8_desc %}
+
+            {% trans 'Can I trust the performance reports?' as q9_title %}
+            {% blocktrans asvar q9_desc %}Yes. Our reports reflect the actual backtested performance of each strategy over a specific time period. The longer the period covered, the more reliable the results. Keep in mind that past performance does not guarantee future results, but it gives you a solid basis for evaluating a strategy.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=9 title=q9_title description=q9_desc %}
+
+            {% trans 'Can I change or cancel my plan?' as q10_title %}
+            {% blocktrans asvar q10_desc %}Yes, you can upgrade, downgrade, or cancel at any time. When you upgrade, remaining time converts into extra days on your new plan. Downgrades take effect after the current billing period ends. When you cancel, you keep access until the end of your current period.{% endblocktrans %}
+            {% include 'include/qanda_item.html' with id=10 title=q10_title description=q10_desc %}
           </div>
         </div>
       </section>

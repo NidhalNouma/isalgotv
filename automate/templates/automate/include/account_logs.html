@@ -1,3 +1,4 @@
+{% load i18n %}
 <!-- Logs account -->
 
 <section id="logs-{{ broker_type }}-{{ id }}" class="">
@@ -8,12 +9,12 @@
       </ul>
     {% else %}
       <!-- Case where 'logs' is an empty list or similar iterable -->
-      <p class="text-text/80 text-sm mb-6">No logs available for this account at this moment.</p>
+      <p class="text-text/80 text-sm mb-6">{% trans "No logs available for this account at this moment." %}</p>
     {% endif %}
   {% else %}
     <!-- Case where 'logs' is None or not passed in the context -->
     <p class="text-text/80 text-sm mb-6 flex items-center">
-      Loading{% include 'svg/spinner.html' with class='ml-1.5 h-4 text-text' %}
+      {% trans "Loading" %}{% include 'svg/spinner.html' with class='ml-1.5 h-4 text-text' %}
     </p>
   {% endif %}
 </section>

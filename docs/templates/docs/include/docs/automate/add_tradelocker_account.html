@@ -1,63 +1,86 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
   <section id="what-is-tradelocker">
     <aside>
-      <h3>What's TradeLocker?</h3>
-      <p>TradeLocker is a trading platform that connects traders with brokers and proprietary trading firms. It offers:</p>
+      <h3>{% trans "What's TradeLocker?" %}</h3>
+      <p>
+        {% trans 'TradeLocker is a trading platform that connects traders with brokers and proprietary trading firms. It offers:' %}
+      </p>
       <ul>
-        <li>Access to multiple brokers and prop firms</li>
-        <li>Secure trading environment</li>
-        <li>Performance tracking</li>
-        <li>Integration capabilities with trading platforms</li>
+        <li>
+          {% trans 'Access to multiple brokers and prop firms' %}
+        </li>
+        <li>
+          {% trans 'Secure trading environment' %}
+        </li>
+        <li>
+          {% trans 'Performance tracking' %}
+        </li>
+        <li>
+          {% trans 'Integration capabilities with trading platforms' %}
+        </li>
       </ul>
     </aside>
   </section>
 
   <section id="">
     <aside>
-      <h3>What can you trade with TradeLocker?</h3>
-      <p>With TradeLocker, you can trade a variety of financial instruments depending on your broker and account type, including:</p>
+      <h3>{% trans 'What can you trade with TradeLocker?' %}</h3>
+      <p>
+        {% trans 'With TradeLocker, you can trade a variety of financial instruments depending on your broker and account type, including:' %}
+      </p>
       <ul>
         <li>
-          <strong>Forex</strong>: Major, minor, and exotic currency pairs.
+          <strong>{% trans 'Forex' %}</strong>:{% trans 'Major, minor, and exotic currency pairs.' %}
         </li>
         <li>
-          <strong>Commodities</strong>: Gold, silver, oil, and other commodities.
+          <strong>{% trans 'Commodities' %}</strong>:{% trans 'Gold, silver, oil, and other commodities.' %}
         </li>
         <li>
-          <strong>Indices</strong>: Popular stock market indices such as S&amp;P 500, NASDAQ, DAX, and more.
+          <strong>{% trans 'Indices' %}</strong>:{% trans 'Popular stock market indices such as S&amp;P 500, NASDAQ, DAX, and more.' %}
         </li>
         <li>
-          <strong>Cryptocurrencies</strong>: Bitcoin, Ethereum, and other cryptocurrencies (availability depends on broker).
+          <strong>{% trans 'Cryptocurrencies' %}</strong>:{% trans 'Bitcoin, Ethereum, and other cryptocurrencies (availability depends on broker).' %}
         </li>
         <li>
-          <strong>CFDs</strong>: Contracts for Difference for various markets offered by your broker.
+          <strong>{% trans 'CFDs' %}</strong>:{% trans 'Contracts for Difference for various markets offered by your broker.' %}
         </li>
       </ul>
-      <p>Note: The availability of instruments may vary depending on your chosen broker and account type (demo or live).</p>
       <p>
-        For the list of brokers and prop firms supported by TradeLocker, <a href="https://tradelocker.com/hub/prop-firm-challenges" target="_blank">Click here</a>.
+        {% trans 'Note: The availability of instruments may vary depending on your chosen broker and account type (demo or live).' %}
+      </p>
+      <p>
+        {% trans 'For the list of brokers and prop firms supported by TradeLocker,' %}
+        <a href="https://tradelocker.com/hub/prop-firm-challenges" target="_blank">{% trans 'Click here' %}</a>
+        {% trans '.' %}
       </p>
     </aside>
   </section>
 
   <section id="api-tradelocker">
     <aside>
-      <h3>TradeLocker login details</h3>
-      <p>follow the steps below to ge your TradeLocker login details.</p>
+      <h3>{% trans 'TradeLocker login details' %}</h3>
+      <p>
+        {% trans 'follow the steps below to ge your TradeLocker login details.' %}
+      </p>
     </aside>
   </section>
 
   <section>
     <aside>
-      <h3><span>1</span> Create a TradeLocker Account</h3>
+      <h3><span>1</span> {% trans 'Create a TradeLocker Account' %}</h3>
       <div>
         <ol>
           <li>
-            If you don’t already have a TradeLocker account, Visit <a href="https://tradelocker.com/start-trading/" target="_blank">TradeLocker</a>.
+            {% trans "If you don't already have a TradeLocker account, visit" %} <a href="https://tradelocker.com/start-trading/" target="_blank">TradeLocker</a>.
           </li>
-          <li>Choose a broker/prop to trade with from the list of brokers supported by TradeLocker and sign up to it.</li>
-          <li>Create an account or log in if you already have one.</li>
+          <li>
+            {% trans 'Choose a broker/prop to trade with from the list of brokers supported by TradeLocker and sign up to it.' %}
+          </li>
+          <li>
+            {% trans 'Create an account or log in if you already have one.' %}
+          </li>
         </ol>
       </div>
     </aside>
@@ -65,12 +88,18 @@
 
   <section>
     <aside>
-      <h3><span>2</span> Access Your TradeLocker Credentials</h3>
+      <h3><span>2</span> {% trans 'Access Your TradeLocker Credentials' %}</h3>
       <div>
-        <p>After signing up with your chosen broker/prop firm:</p>
+        <p>
+          {% trans 'After signing up with your chosen broker/prop firm:' %}
+        </p>
         <ol>
-          <li>Check your email for TradeLocker login credentials.</li>
-          <li>Save these credentials securely - you'll need them for platform integration.</li>
+          <li>
+            {% trans 'Check your email for TradeLocker login credentials.' %}
+          </li>
+          <li>
+            {% trans "Save these credentials securely - you'll need them for platform integration." %}
+          </li>
         </ol>
       </div>
     </aside>
@@ -82,25 +111,32 @@
 
   <section>
     <aside>
-      <h3><span>3</span> Get your account ID</h3>
+      <h3><span>3</span> {% trans 'Get your account ID' %}</h3>
       <div>
-        <p>You can find your account ID in the TradeLocker trading platform.</p>
+        <p>
+          {% trans 'You can find your account ID in the TradeLocker trading platform.' %}
+        </p>
         <ol>
-          <li>Log in to the TradeLocker trading platform.</li>
           <li>
-            Click on your profile icon in the bottom left corner to find your account ID.
-            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tradelocker/step-1.png' %}" alt="TradeLocker - API key and secret" />
+            {% trans 'Log in to the TradeLocker trading platform.' %}
+          </li>
+          <li>
+            {% trans 'Click on your profile icon in the bottom left corner to find your account ID.' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/tradelocker/step-1.png' %}" alt="TradeLocker - API key and secret" />
           </li>
         </ol>
       </div>
-      <p>By default we will use the first account if you have multiple accounts and you didn't specify a specific account ID.</p>
+      <p>
+        {% trans "By default we will use the first account if you have multiple accounts and you didn't specify a specific account ID." %}
+      </p>
     </aside>
   </section>
 
   <section id="complete-tradelocker">
     <aside>
-      <h3>Complete Integration</h3>
-      <p>Once you have your TradeLocker login credentials, return to our platform's Automate section to link your TradeLocker account. This will enable automated trading through our system based on your TradingView alerts.</p>
+      <h3>{% trans 'Complete Integration' %}</h3>
+      <p>
+        {% trans "Once you have your TradeLocker login credentials, return to our platform's Automate section to link your TradeLocker account. This will enable automated trading through our system based on your TradingView alerts." %}
+      </p>
     </aside>
   </section>
 </article>

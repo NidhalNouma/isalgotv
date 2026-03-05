@@ -1,8 +1,10 @@
+{% load i18n %}
+
 {% with btn_class='relative bg-text/5 border border-text/10 hover:bg-text/10 w-full text-text ihover:text-text/80 py-3 rounded flex items-center justify-center transition-all' %}
   <div class="px-2 sm:px-6 grid grid-cols-2 gap-4">
     <div class="col-span-full flex items-center gap-2 mt-3 mb-1">
       {% comment %} <div class="h-px flex-1 bg-gradient-to-r from-transparent via-text/20 to-text/20"></div> {% endcomment %}
-      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">Futures, Forex, Stocks, and more</h6>
+      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">{% trans "Futures, Forex, Stocks, and more" %}</h6>
       <div class="h-px flex-1 bg-gradient-to-l from-transparent via-text/20 to-text/20"></div>
     </div>
 
@@ -39,7 +41,7 @@
 
     <div class="col-span-full flex items-center gap-2 mt-3 mb-1">
       {% comment %} <div class="h-px flex-1 bg-gradient-to-r from-transparent via-text/20 to-text/20"></div> {% endcomment %}
-      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">Decentralized Exchanges</h6>
+      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">{% trans "Decentralized Exchanges" %}</h6>
       <div class="h-px flex-1 bg-gradient-to-l from-transparent via-text/20 to-text/20"></div>
     </div>
 
@@ -60,7 +62,7 @@
 
     <div class="col-span-full flex items-center gap-2 mt-3 mb-1">
       {% comment %} <div class="h-px flex-1 bg-gradient-to-r from-transparent via-text/20 to-text/20"></div> {% endcomment %}
-      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">Centralized Exchanges</h6>
+      <h6 class="text-text/70 font-semibold text-xs uppercase tracking-wider">{% trans "Centralized Exchanges" %}</h6>
       <div class="h-px flex-1 bg-gradient-to-l from-transparent via-text/20 to-text/20"></div>
     </div>
 

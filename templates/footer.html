@@ -18,12 +18,12 @@
           <ellipse cx="107.059" cy="36.1608" rx="15.2944" ry="17.3112" />
         </svg>
         <p class="sm:max-w-sm max-w-xs text-title sm:text-xl text-lg font-semibold text-start align-top">
-          <span class="font-bold">{% trans "W" %}</span>{% trans "e develop cutting-edge trading tools to provide more intelligent, quicker, and easier insights into the market." %}
+          <span class="font-bold">{% trans 'W' %}</span>{% trans 'e develop cutting-edge trading tools to provide more intelligent, quicker, and easier insights into the market.' %}
         </p>
       </div>
 
       <div class="flex items-center mt-4">
-        <span class="text-text text-sm font-semibold mr-2">{% trans "Follow us on" %}</span>
+        <span class="text-text text-sm font-semibold mr-2">{% trans 'Follow us on' %}</span>
         <a class="" href="https://www.tradingview.com/u/isalgo/?aff_id=134591&aff_sub=134591&source=134591" target="_blank">
           <svg class="h-5 aspect-square fill-text hover:fill-title mr-1" viewBox="0 0 246 128" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.0421406 2.08597L99.3354 2.102L99.8644 127.19L49.6599 126.839L49.6452 51.7831L-0.00524902 51.705L0.0421406 2.08597Z" />
@@ -46,51 +46,104 @@
             <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
           </svg>
         </a>
-        <!--                                                                                              
-        <a class="" href="https://www.tradingview.com/u/isalgo/?aff_id=134591" target="_blank">
-          <svg class="h-5 w-5 fill-text hover:fill-title mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
-        </a>                                                                                               -->
+
+        {% comment %} <a class="" href="https://www.tradingview.com/u/isalgo/?aff_id=134591" target="_blank">
+          <svg class="h-[1.1rem] aspect-square fill-text hover:fill-title mx-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+          </svg>
+        </a> {% endcomment %}
       </div>
     </div>
+  </div>
 
-    <div class="grid grid-cols-1 max-sm:hidden w-12">
-      <div class="relative z-0 inline-grid grid-cols-2 gap-1 rounded-full bg-text/5 p-[3px] sm:p-[1px] text-text">
-        {% comment %} <label class="relative cursor-pointer">
-          <input type="radio" class="peer sr-only" name="footer-theme-toggle" aria-label="System theme" value="system" />
-          <div class="rounded-full p-0 peer-checked:bg-text/10 peer-checked:ring-1 peer-checked:ring-text/30 transition-all">
-            <svg class="w-full aspect-square" viewBox="0 0 28 28" fill="none">
-              <path d="M7.5 8.5C7.5 7.94772 7.94772 7.5 8.5 7.5H19.5C20.0523 7.5 20.5 7.94772 20.5 8.5V16.5C20.5 17.0523 20.0523 17.5 19.5 17.5H8.5C7.94772 17.5 7.5 17.0523 7.5 16.5V8.5Z" stroke="currentColor"></path>
-              <path d="M7.5 8.5C7.5 7.94772 7.94772 7.5 8.5 7.5H19.5C20.0523 7.5 20.5 7.94772 20.5 8.5V14.5C20.5 15.0523 20.0523 15.5 19.5 15.5H8.5C7.94772 15.5 7.5 15.0523 7.5 14.5V8.5Z" stroke="currentColor"></path>
-              <path d="M16.5 20.5V17.5H11.5V20.5M16.5 20.5H11.5M16.5 20.5H17.5M11.5 20.5H10.5" stroke="currentColor" stroke-linecap="round"></path>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" refer></script>
+
+  <!-- Disclaimer -->
+  <div class="text-text/60 text-xs mb-6">
+    <p class="mb-2">
+      {% trans 'Please note that the information provided on our website is intended for educational purposes only and should not be construed as financial or investment advice.' %}
+    </p>
+    <p class="mb-2">
+      {% trans 'Risk Disclaimer: Trading carries inherent risks, and the majority of day traders experience losses. The potential for loss in trading can be significant. Decisions to buy, sell, hold, or trade securities, commodities, and other investments involve risk and should be made based on advice from qualified financial professionals. Past performance is not indicative of future results. All content is hypothetical and selected after the fact to illustrate our product and should not be considered financial advice. It is important to carefully consider whether trading is suitable for you given your financial circumstances.' %}
+    </p>
+    <p class="mb-1">
+      {% trans 'Read the full disclaimer' %} <a href="{% url 'docs_disclaimer' %}" class="underline">{% trans 'here.' %}</a>
+    </p>
+    <p class="mb-4">
+      <a href="{% url 'docs_terms_of_use' %}" class="underline">{% trans 'Terms of use' %}</a> - <a href="{% url 'docs_privacy_policy' %}" class="underline">{% trans 'Privacy policy' %}</a>
+    </p>
+
+    <div class="flex justify-between items-center">
+      <span class="text-text/80">Copyright &copy; IsAlgo {% now 'Y' %}</span>
+      <div class="gap-2 flex items-center">
+        <div class="relative">
+          {% get_current_language as LANGUAGE_CODE %}
+          {% get_available_languages as LANGUAGES %}
+          <button class="btn-text border-0 rounded-full text-xs" onclick="openCustomDropdown('lang-dropdown')">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 aspect-auto mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+              <path d="M2 12h20" />
             </svg>
+            {% for lang_code, lang_name in LANGUAGES %}
+              {% if lang_code == LANGUAGE_CODE %}{{ lang_name }}{% endif %}
+            {% endfor %}
+          </button>
+
+          <div class="py-2 z-10 absolute bottom-full left-0 mb-2 hidden nav-bg-backdrop rounded-md " id="lang-dropdown">
+            {% for lang_code, lang_name in LANGUAGES %}
+              <form action="{% url 'set_language' %}" method="post">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}">
+                <input name="language" type="hidden" value="{{ lang_code }}">
+                <button type="submit" class="w-full text-left px-6 py-1.5 text-sm hover:bg-text/10 transition-colors {% if lang_code == LANGUAGE_CODE %}text-title font-semibold{% else %}text-text{% endif %}">
+                  {{ lang_name }}
+                </button>
+              </form>
+            {% endfor %}
           </div>
-        </label> {% endcomment %}
-        <label class="relative cursor-pointer">
-          <input type="radio" class="peer sr-only" name="footer-theme-toggle" aria-label="Light theme" value="light" />
-          <div class="rounded-full p-0 peer-checked:bg-text/10 peer-checked:ring-1 peer-checked:ring-text/30 transition-all">
-            <svg class="w-full aspect-square" viewBox="0 0 28 28" fill="none">
-              <circle cx="14" cy="14" r="3.5" stroke="currentColor"></circle>
-              <path d="M14 8.5V6.5" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M17.889 10.1115L19.3032 8.69727" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M19.5 14L21.5 14" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M17.889 17.8885L19.3032 19.3027" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M14 21.5V19.5" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M8.69663 19.3029L10.1108 17.8887" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M6.5 14L8.5 14" stroke="currentColor" stroke-linecap="round"></path>
-              <path d="M8.69663 8.69711L10.1108 10.1113" stroke="currentColor" stroke-linecap="round"></path>
-            </svg>
+        </div>
+
+        <div class="grid grid-cols-1 max-sm:hidden w-12">
+          <div class="relative z-0 inline-grid grid-cols-2 gap-1 rounded-full bg-text/10 p-[3px] sm:p-[1px] text-text">
+            {% comment %} <label class="relative cursor-pointer">
+              <input type="radio" class="peer sr-only" name="footer-theme-toggle" aria-label="System theme" value="system" />
+              <div class="rounded-full p-0 peer-checked:bg-text/10 peer-checked:ring-1 peer-checked:ring-text/30 transition-all">
+                <svg class="w-full aspect-square" viewBox="0 0 28 28" fill="none">
+                  <path d="M7.5 8.5C7.5 7.94772 7.94772 7.5 8.5 7.5H19.5C20.0523 7.5 20.5 7.94772 20.5 8.5V16.5C20.5 17.0523 20.0523 17.5 19.5 17.5H8.5C7.94772 17.5 7.5 17.0523 7.5 16.5V8.5Z" stroke="currentColor"></path>
+                  <path d="M7.5 8.5C7.5 7.94772 7.94772 7.5 8.5 7.5H19.5C20.0523 7.5 20.5 7.94772 20.5 8.5V14.5C20.5 15.0523 20.0523 15.5 19.5 15.5H8.5C7.94772 15.5 7.5 15.0523 7.5 14.5V8.5Z" stroke="currentColor"></path>
+                  <path d="M16.5 20.5V17.5H11.5V20.5M16.5 20.5H11.5M16.5 20.5H17.5M11.5 20.5H10.5" stroke="currentColor" stroke-linecap="round"></path>
+                </svg>
+              </div>
+            </label> {% endcomment %}
+            <label class="relative cursor-pointer">
+              <input type="radio" class="peer sr-only" name="footer-theme-toggle" aria-label="Light theme" value="light" />
+              <div class="rounded-full p-0 peer-checked:bg-text/10 peer-checked:ring-1 peer-checked:ring-text/30 transition-all">
+                <svg class="w-full aspect-square" viewBox="0 0 28 28" fill="none">
+                  <circle cx="14" cy="14" r="3.5" stroke="currentColor"></circle>
+                  <path d="M14 8.5V6.5" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M17.889 10.1115L19.3032 8.69727" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M19.5 14L21.5 14" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M17.889 17.8885L19.3032 19.3027" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M14 21.5V19.5" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M8.69663 19.3029L10.1108 17.8887" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M6.5 14L8.5 14" stroke="currentColor" stroke-linecap="round"></path>
+                  <path d="M8.69663 8.69711L10.1108 10.1113" stroke="currentColor" stroke-linecap="round"></path>
+                </svg>
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input type="radio" class="peer sr-only" name="footer-theme-toggle" aria-label="Dark theme" value="dark" />
+              <div class="rounded-full p-0 peer-checked:bg-text/10 peer-checked:ring-1 peer-checked:ring-text/30 transition-all">
+                <svg class="w-full aspect-square" viewBox="0 0 28 28" fill="none">
+                  <path d="M10.5 9.99914C10.5 14.1413 13.8579 17.4991 18 17.4991C19.0332 17.4991 20.0176 17.2902 20.9132 16.9123C19.7761 19.6075 17.109 21.4991 14 21.4991C9.85786 21.4991 6.5 18.1413 6.5 13.9991C6.5 10.8902 8.39167 8.22304 11.0868 7.08594C10.7089 7.98159 10.5 8.96597 10.5 9.99914Z" stroke="currentColor" stroke-linejoin="round"></path>
+                  <path d="M16.3561 6.50754L16.5 5.5L16.6439 6.50754C16.7068 6.94752 17.0525 7.29321 17.4925 7.35607L18.5 7.5L17.4925 7.64393C17.0525 7.70679 16.7068 8.05248 16.6439 8.49246L16.5 9.5L16.3561 8.49246C16.2932 8.05248 15.9475 7.70679 15.5075 7.64393L14.5 7.5L15.5075 7.35607C15.9475 7.29321 16.2932 6.94752 16.3561 6.50754Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M20.3561 11.5075L20.5 10.5L20.6439 11.5075C20.7068 11.9475 21.0525 12.2932 21.4925 12.3561L22.5 12.5L21.4925 12.6439C21.0525 12.7068 20.7068 13.0525 20.6439 13.4925L20.5 14.5L20.3561 13.4925C20.2932 13.0525 19.9475 12.7068 19.5075 12.6439L18.5 12.5L19.5075 12.3561C19.9475 12.2932 20.2932 11.9475 20.3561 11.5075Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+            </label>
           </div>
-        </label>
-        <label class="relative cursor-pointer">
-          <input type="radio" class="peer sr-only" name="footer-theme-toggle" aria-label="Dark theme" value="dark" />
-          <div class="rounded-full p-0 peer-checked:bg-text/10 peer-checked:ring-1 peer-checked:ring-text/30 transition-all">
-            <svg class="w-full aspect-square" viewBox="0 0 28 28" fill="none">
-              <path d="M10.5 9.99914C10.5 14.1413 13.8579 17.4991 18 17.4991C19.0332 17.4991 20.0176 17.2902 20.9132 16.9123C19.7761 19.6075 17.109 21.4991 14 21.4991C9.85786 21.4991 6.5 18.1413 6.5 13.9991C6.5 10.8902 8.39167 8.22304 11.0868 7.08594C10.7089 7.98159 10.5 8.96597 10.5 9.99914Z" stroke="currentColor" stroke-linejoin="round"></path>
-              <path d="M16.3561 6.50754L16.5 5.5L16.6439 6.50754C16.7068 6.94752 17.0525 7.29321 17.4925 7.35607L18.5 7.5L17.4925 7.64393C17.0525 7.70679 16.7068 8.05248 16.6439 8.49246L16.5 9.5L16.3561 8.49246C16.2932 8.05248 15.9475 7.70679 15.5075 7.64393L14.5 7.5L15.5075 7.35607C15.9475 7.29321 16.2932 6.94752 16.3561 6.50754Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M20.3561 11.5075L20.5 10.5L20.6439 11.5075C20.7068 11.9475 21.0525 12.2932 21.4925 12.3561L22.5 12.5L21.4925 12.6439C21.0525 12.7068 20.7068 13.0525 20.6439 13.4925L20.5 14.5L20.3561 13.4925C20.2932 13.0525 19.9475 12.7068 19.5075 12.6439L18.5 12.5L19.5075 12.3561C19.9475 12.2932 20.2932 11.9475 20.3561 11.5075Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-          </div>
-        </label>
+        </div>
       </div>
     </div>
   </div>
@@ -145,22 +198,6 @@
     applyTheme(localStorage.getItem('color-theme') || 'system')
     syncFooterThemeRadios()
   </script>
-
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" refer></script>
-
-  <!-- Disclaimer -->
-  <div class="text-text/60 text-xs mb-6">
-    <p class="mb-2">{% trans "Please note that the information provided on our website is intended for educational purposes only and should not be construed as financial or investment advice." %}</p>
-    <p class="mb-2">{% trans "Risk Disclaimer: Trading carries inherent risks, and the majority of day traders experience losses. The potential for loss in trading can be significant. Decisions to buy, sell, hold, or trade securities, commodities, and other investments involve risk and should be made based on advice from qualified financial professionals. Past performance is not indicative of future results. All content is hypothetical and selected after the fact to illustrate our product and should not be considered financial advice. It is important to carefully consider whether trading is suitable for you given your financial circumstances." %}</p>
-    <p class="mb-1">
-      {% trans "Read the full disclaimer" %} <a href="{% url 'docs_disclaimer' %}" class="underline">{% trans "here." %}</a>
-    </p>
-    <p class="mb-4">
-      <a href="{% url 'docs_terms_of_use' %}" class="underline">{% trans "Terms of use" %}</a> - <a href="{% url 'docs_privacy_policy' %}" class="underline">{% trans "Privacy policy" %}</a>
-    </p>
-
-    <span class="text-text/80">Copyright &copy; IsAlgo{% now 'Y' %}</span>
-  </div>
 </footer>
 
 <div class="fixed bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none"></div>

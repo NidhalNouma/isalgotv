@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% for log in logs %}
   {% comment %} {% ifchanged log.created_at.date %}
   <li class="mb-1 flex items-start">
@@ -51,12 +53,12 @@
         </svg>
         <p class=" text-sm flex-1 mr-1.5 {% if log.response_status == 'E' %} text-error/80 {% elif log.response_status == 'S' %} text-success/80 {% elif log.response_status == 'I' %} text-text/80 {% elif log.response_status == 'W' %} text-warning/80 {% endif %}">
           {{ log.response_message }} <br />
-          <span class="text-xs text-text/60 inline-block">Triggered: {{ log.created_at|date:'D d M Y H:i:s' }}</span>
+          <span class="text-xs text-text/60 inline-block">{% trans "Triggered" %}: {{ log.created_at|date:'D d M Y H:i:s' }}</span>
           {% if log.trade_latency > 0 %}
-            <span class="bg-error/10 text-text text-xs px-1 rounded-md">Exe latency: {{ log.trade_latency|floatformat:3 }} sec</span>
+            <span class="bg-error/10 text-text text-xs px-1 rounded-md">{% trans "Exe latency" %}: {{ log.trade_latency|floatformat:3 }} sec</span>
           {% endif %}
           {% if log.latency and user.is_staff %}
-            <span class="bg-error/10 text-text text-xs px-1 ml-1 rounded-md">Latency: {{ log.latency|floatformat:3 }} sec</span>
+            <span class="bg-error/10 text-text text-xs px-1 ml-1 rounded-md">{% trans "Latency" %}: {{ log.latency|floatformat:3 }} sec</span>
           {% endif %}
         </p>
       </div>
@@ -66,6 +68,6 @@
 
 {% if next_start is not None %}
   <li hx-ext="intersect" hx-trigger="intersect once" hx-get="{% url 'get_logs' broker_type id %}?start={{ next_start }}" hx-swap="outerHTML">
-    <span colspan="11" class="py-4 text-center text-text/60 text-xs">Loading more...</span>
+    <span colspan="11" class="py-4 text-center text-text/60 text-xs">{% trans "Loading more..." %}</span>
   </li>
 {% endif %}

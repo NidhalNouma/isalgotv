@@ -1,8 +1,9 @@
+{% load i18n %}
 {% load custom_tags %}
 
 <div class="mx-auto w-full rounded-md bg-text/5 py-4 px-6 max-w-lg mb-6">
   <div class="flex items-center justify-between w-full mb-6">
-    <h5 class="text-title font-semibold">Payment methods</h5>
+    <h5 class="text-title font-semibold">{% trans 'Payment methods' %}</h5>
 
     <button onclick="openModel('staticModal-payment_methods');mountStripeElement('payment_methods', true);" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
       <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512">
@@ -14,7 +15,7 @@
   <div class="" id="setting-payment_methods">
     {% if payment_methods|length == 0 %}
       <div class="text-left text-title text-lg font-semibold">
-        <h6 class="text-sm text-title">Looks like you don't have any payment methods available.</h6>
+        <h6 class="text-sm text-title">{% trans "Looks like you don't have any payment methods available." %}</h6>
       </div>
     {% else %}
       <div>
@@ -30,6 +31,7 @@
 <!-- payment_methods model -->
 
 {% render_template 'include/settings/add_payment_method_form.html' as add_payment_methods_body %}
-{% with header_html="<h3 class='text-xl font-semibold text-title'>New payment method</h3>" %}
-  {% include 'include/modal.html' with modal_id='staticModal-payment_methods' header=header_html body=add_payment_methods_body close_modal_btn_id='add-payment_methods-close-form-btn' stripe_element_id='payment_methods' body_class='px-2 !mt-1' %}
+{% trans 'New payment method' as new_pm_header %}
+{% with header_html="<h3 class='text-xl font-semibold text-title'>" %}
+  {% include 'include/modal.html' with modal_id='staticModal-payment_methods' header=header_html|add:new_pm_header|add:'</h3>' body=add_payment_methods_body close_modal_btn_id='add-payment_methods-close-form-btn' stripe_element_id='payment_methods' body_class='px-2 !mt-1' %}
 {% endwith %}

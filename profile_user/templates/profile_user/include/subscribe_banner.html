@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <div onclick="toggleGetStarted()" class="group cursor-pointer relative overflow-hidden rounded-xl {{ class }}">
   {# Gradient overlay #}
   <div class="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-primary/10 via-primary/5 to-transparent"></div>
@@ -24,15 +26,15 @@
 
       {# Content #}
       <div class="flex-1">
-        <h3 class="text-sm font-semibold text-title mb-0.5">Premium Trading Features</h3>
-        <p class="text-xs sm:text-sm text-text/70">Access premium strategies, trading reports, and much more</p>
+        <h3 class="text-sm font-semibold text-title mb-0.5">{% trans 'Premium Trading Features' %}</h3>
+        <p class="text-xs sm:text-sm text-text/70">{% trans 'Access premium strategies, trading reports, and much more' %}</p>
       </div>
     </div>
 
     {# CTA Button #}
     <div class="flex-shrink-0">
       <span class="inline-flex items-center text-primary bg-primary/10 group-hover:bg-primary/20 rounded-lg px-3 py-1.5 text-sm font-medium transition-all">
-        <span>Get Access</span>
+        <span>{% trans 'Get Access' %}</span>
         <svg class="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M7 7h10v10"></path>
           <path d="M7 17 17 7"></path>

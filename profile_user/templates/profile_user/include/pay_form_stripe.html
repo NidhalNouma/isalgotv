@@ -1,16 +1,17 @@
+{% load i18n %}
 {% if not has_subscription %}
   <div class="mb-4">
     <h6 class="text-text/80 text-sm font-medium">
       {% if remaining_balance %}
-        You have a remaining balance of ${{ remaining_balance }}. Please complete your payment below.
+        {% trans "You have a remaining balance of" %} ${{ remaining_balance }}. {% trans "Please complete your payment below." %}
       {% elif strategy_price %}
-        You’re a few clicks away from gaining access to this exclusive trading strategy.
+        {% trans "You're a few clicks away from gaining access to this exclusive trading strategy." %}
       {% else %}
-        You’re a few click away from gaining access to our expert trading strategies, premium access, and much more.
+        {% trans "You're a few click away from gaining access to our expert trading strategies, premium access, and much more." %}
       {% endif %}
     </h6>
     {% if free_trial_days and free_trial_days|add:'0' > 0 and title != "LIFETIME" and not user_profile.subscription_id %}
-      <h6 class="mt-1.5 text-title bg-title/20 rounded-lg px-2 py-1 inline-block text-xs font-medium">First {{ free_trial_days }} days free</h6>
+      <h6 class="mt-1.5 text-title bg-title/20 rounded-lg px-2 py-1 inline-block text-xs font-medium">{% blocktrans with days=free_trial_days %}First {{ days }} days free{% endblocktrans %}</h6>
     {% endif %}
   </div>
 {% endif %}
@@ -18,7 +19,7 @@
 <form hx-post="{% url 'membership-coupon' %}?plan={{ title }}" class="relative" id="coupon-pay-{{ title }}-form">
     {% csrf_token %}
     {% include 'include/pay_form_coupon.html' with current_subscription=current_subscription %}
-    <div id="have-coupon-{{title}}" class=" w-full flex mb-4"><button type="button" onclick="changeHidden('coupon-input-{{title}}', 'have-coupon-{{title}}')" class="btn-icon ml-auto px-0">Have a coupon?</button></div>
+    <div id="have-coupon-{{title}}" class=" w-full flex mb-4"><button type="button" onclick="changeHidden('coupon-input-{{title}}', 'have-coupon-{{title}}')" class="btn-icon ml-auto px-0">{% trans "Have a coupon?" %}</button></div>
 </form>
 
 <form
@@ -61,9 +62,9 @@
     >
       <div id="submit-btn-sub-{{title}}" class="flex items-center justify-center w-full">
         {% if remaining_balance %}
-        Pay
+        {% trans "Pay" %}
         {% else %}
-        Subscribe
+        {% trans "Subscribe" %}
         {% endif %}
         <svg
           class="h-4 w-4 ml-1 group-hover:scale-110 transition-transform"
@@ -92,9 +93,9 @@
       class="hidden btn-accent w-full mx-auto"
     >
     {% if remaining_balance %}
-      Paying 
+      {% trans "Paying" %} 
     {% else %}
-      Subscribing 
+      {% trans "Subscribing" %} 
     {% endif %}
       {% include 'svg/spinner.html' with class='ml-1 h-4' %}
     </button>

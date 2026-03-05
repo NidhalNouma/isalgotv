@@ -1,11 +1,13 @@
+{% load i18n %}
+
 <article class="docs">
   <section id="alert-placeholders">
     <aside>
-      <h3>Placeholders</h3>
+      <h3>{% trans 'Placeholders' %}</h3>
 
       <p>
-        These placeholders can be used in the alert message, and they will be replaced with dynamic values when the alert is triggered. They are the sole method for including dynamic values that can vary from bar to bar.
-        <br /><span>The placeholders need to be enclosed within double curly braces.</span> Below are the placeholders you can use:
+        {% trans 'These placeholders can be used in the alert message, and they will be replaced with dynamic values when the alert is triggered. They are the sole method for including dynamic values that can vary from bar to bar.' %}
+        <br /><span>{% trans 'The placeholders need to be enclosed within double curly braces.' %}</span> {% trans 'Below are the placeholders you can use:' %}
       </p>
 
       <p>
@@ -40,46 +42,51 @@
 
   <section id="alert-examples">
     <aside>
-      <h3>Examples</h3>
-
-      <p>Here are some practical examples of how to use placeholders in your alert messages. These templates demonstrate common use cases and can be customized to fit your needs.</p>
+      <h3>{% trans 'Examples' %}</h3>
 
       <p>
-        A simple alert for entering a trade with basic information:{% comment %} <br /> {% endcomment %}
-        <h6 class="mt-2">Template:</h6>
+        {% trans 'Here are some practical examples of how to use placeholders in your alert messages. These templates demonstrate common use cases and can be customized to fit your needs.' %}
+      </p>
+
+      <p>
+        {% trans 'A simple alert for entering a trade with basic information:' %}
+        {% comment %} <br /> {% endcomment %}
+        <h6 class="mt-2">{% trans 'Template:' %}</h6>
         <code>
           {% verbatim %}
           {{ type }} - {{ order_type }} at {{ entry_price }} (ID: {{ ID }}) No:{{ No }}
           {% endverbatim %}
         </code>
         {% comment %} <br /> {% endcomment %}
-        <h6 class="mt-2">Example Output:</h6>
+        <h6 class="mt-2">{% trans 'Example Output:' %}</h6>
         <code>Entry - BUY at 50000.00 (ID: Long 123) No:96</code>
       </p>
 
       <p class="pt-4">
-        A comprehensive alert including entry price and targets:{% comment %} <br /> {% endcomment %}
-        <h6 class="mt-2">Template:</h6>
+        {% trans 'A comprehensive alert including entry price and targets:' %}
+        {% comment %} <br /> {% endcomment %}
+        <h6 class="mt-2">{% trans 'Template:' %}</h6>
         <code>
           {% verbatim %}
           {{ order_type }} {{ exchange }} at {{ entry_price }} SL: {{ SL }} | TP1: {{ TP1 }} | TP2: {{ TP2 }} Time: {{ timenow }}
           {% endverbatim %}
         </code>
         {% comment %} <br /> {% endcomment %}
-        <h6 class="mt-2">Example Output:</h6>
+        <h6 class="mt-2">{% trans 'Example Output:' %}</h6>
         <code>BUY NASDAQ at 50000.00 SL: 100 | TP1: 150 | TP2: 300 Time: 2024-01-20T14:30:00Z</code>
       </p>
 
       <p class="pt-4">
-        An alert showing current market conditions:{% comment %} <br /> {% endcomment %}
-        <h6 class="mt-2">Template:</h6>
+        {% trans 'An alert showing current market conditions:' %}
+        {% comment %} <br /> {% endcomment %}
+        <h6 class="mt-2">{% trans 'Template:' %}</h6>
         <code>
           {% verbatim %}
           {{ exchange }} {{ interval }} Update O: {{ open }} H: {{ high }} L: {{ low }} C: {{ close }} Volume: {{ volume }}
           {% endverbatim %}
         </code>
         {% comment %} <br /> {% endcomment %}
-        <h6 class="mt-2">Example Output:</h6>
+        <h6 class="mt-2">{% trans 'Example Output:' %}</h6>
         <code>NASDAQ 5m Update O: 49800.00 H: 50100.00 L: 49750.00 C: 50000.00 Volume: 1234567</code>
       </p>
     </aside>

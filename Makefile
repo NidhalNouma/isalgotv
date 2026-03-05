@@ -9,7 +9,7 @@
 #   make clean-messages  — Remove all compiled .mo files
 # ──────────────────────────────────────────────
 
-PYTHON = ./venv_etv/bin/python
+PYTHON ?= ./venv_etv/bin/python
 MANAGE = $(PYTHON) manage.py
 
 # Languages matching settings.LANGUAGES (exclude 'en' — it's the source)

@@ -1,12 +1,15 @@
+{% load i18n %}
+
 {% if not user_profile.tradingview_username and has_subscription %}
-  {% include 'include/warnings.html' with warning='No tradingview username found. share your tradingview username below to get access.' %}
+  {% trans 'No tradingview username found. Share your tradingview username below to get access.' as no_tv_warning %}
+  {% include 'include/warnings.html' with warning=no_tv_warning %}
 
   {% include 'include/home_get_started_tv_username.html' %}
 {% else %}
   <section class="space-y-4">
     {% if user_profile.tradingview_username %}
       <h6 class="text-text text-sm">
-        TradingView Username:
+        {% trans 'TradingView Username:' %}
         <a href="{% url 'settings' %}" class="btn-a font-semibold">{{ user_profile.tradingview_username }}</a>
       </h6>
     {% endif %}

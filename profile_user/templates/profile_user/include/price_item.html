@@ -1,7 +1,20 @@
 {% load custom_tags %}
+{% load i18n %}
 
 {% with price_key=title %}
-  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %} bg-gradient-to-t from-primary/30 to-text/5 {% elif title == 'LIFETIME' %} bg-gradient-to-t from-primary/30 to-success/30 {% else %} bg-text/5 {% endif %} backdrop-blur-3xl border-0 border-text relative">
+  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %}
+      
+       bg-gradient-to-t from-primary/30 to-text/5
+
+    {% elif title == 'LIFETIME' %}
+      
+       bg-gradient-to-t from-primary/30 to-success/30
+
+    {% else %}
+      
+       bg-text/5
+
+    {% endif %} backdrop-blur-3xl border-0 border-text relative">
     <h3 class="text-text text-2xl font-extrabold pt-4 rounded-xl">{{ title }}</h3>
     {% if save %}
       {% comment %} <div class="relative my-2">
@@ -12,22 +25,30 @@
       <h3 class="text-text text-5xl font-bold">
         ${{ prices|get_item:price_key }}
         {% if title == 'YEARLY' %}
-          <span class="text-text/90 text-sm font-medium">/year</span>
+          <span class="text-text/90 text-sm font-medium">{% trans '/year' %}</span>
         {% elif title == 'QUARTERLY' %}
-          <span class="text-text/90 text-sm font-medium">/quarter</span>
+          <span class="text-text/90 text-sm font-medium">{% trans '/quarter' %}</span>
         {% elif title == 'MONTHLY' %}
-          <span class="text-text/90 text-sm font-medium">/month</span>
+          <span class="text-text/90 text-sm font-medium">{% trans '/month' %}</span>
         {% endif %}
       </h3>
 
       {% if title == 'LIFETIME' %}
-        <p class="text-text/80 text-xs font-normal mt-2">One-time payment for unlimited access</p>
+        <p class="text-text/80 text-xs font-normal mt-2">
+          {% trans 'One-time payment for unlimited access' %}
+        </p>
       {% elif title == 'YEARLY' %}
-        <p class="text-text/80 text-xs font-normal mt-2">Best value for long-term success</p>
+        <p class="text-text/80 text-xs font-normal mt-2">
+          {% trans 'Best value for long-term success' %}
+        </p>
       {% elif title == 'QUARTERLY' %}
-        <p class="text-text/80 text-xs font-normal mt-2">Most flexible option for steady growth</p>
+        <p class="text-text/80 text-xs font-normal mt-2">
+          {% trans 'Most flexible option for steady growth' %}
+        </p>
       {% elif title == 'MONTHLY' %}
-        <p class="text-text/80 text-xs font-normal mt-2">Perfect for trying out our service</p>
+        <p class="text-text/80 text-xs font-normal mt-2">
+          {% trans 'Perfect for trying out our service' %}
+        </p>
       {% endif %}
 
       <ol class="mt-6 text-text/90 text-sm font-medium truncate space-y-4">
@@ -44,7 +65,7 @@
               <path d="M423.001 32.9769C428.11 24.0237 433.185 15.447 438.664 6.18701C463.556 36.0756 488.055 65.4923 513.254 95.7498C470.241 95.7498 428.728 95.7498 386.448 95.7498C392.164 85.8093 397.581 76.3813 403.005 66.9579C409.016 56.5167 415.023 46.0738 421.068 35.6524C421.56 34.8042 422.328 34.1159 423.001 32.9769Z" />
             </svg>
           </span>
-          Premium Strategies
+          {% trans 'Premium Strategies' %}
         </li>
         <li class="flex items-center gap-1.5  {% if title != 'LIFETIME' %} opacity-20 {% endif %}">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -53,7 +74,7 @@
               <path d="M48.016 33.9217C48.016 66.9488 100.567 80.1596 100.567 113.187C100.567 120.194 97.7991 126.915 92.8714 131.87C87.9438 136.825 81.2604 139.608 74.2917 139.608C67.3229 139.608 60.6396 136.825 55.7119 131.87C50.7843 126.915 48.016 120.194 48.016 113.187C48.016 80.1596 100.567 66.9488 100.567 33.9217C100.567 26.9142 97.7991 20.1938 92.8714 15.2387C87.9438 10.2837 81.2604 7.5 74.2917 7.5C67.3229 7.5 60.6396 10.2837 55.7119 15.2387C50.7843 20.1938 48.016 26.9142 48.016 33.9217Z" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </span>
-          Elite Strategies
+          {% trans 'Elite Strategies' %}
         </li>
         <li class="flex items-center truncate gap-1.5">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -61,7 +82,7 @@
               <path d="M55.2164 68.871H46.5656V78.7097H39.1507V68.871H30.5L42.8582 54.1129L55.2164 68.871ZM61 34.0911L47.6532 45.8976C43.5997 49.5379 37.5194 49.6855 33.3177 46.2911L23.0851 38.125C22.3979 37.5802 21.5386 37.296 20.6604 37.323C19.7822 37.35 18.9422 37.6865 18.2901 38.2726L4.94327 50.079L0 44.6185L13.3468 32.7629C15.3149 31.0189 17.8413 30.027 20.4758 29.964C23.1103 29.9009 25.6817 30.7708 27.7318 32.4185L37.9149 40.5847C39.3485 41.7161 41.3752 41.6177 42.7099 40.4371L56.0567 28.6306L61 34.0911ZM21.8493 9.83871H30.5L18.1418 24.5968L5.78363 9.83871H14.4344V0H21.8493V9.83871Z" />
             </svg>
           </span>
-          Strategies Reports
+          {% trans 'Strategies Reports' %}
         </li>
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -69,7 +90,7 @@
               <path d="M7.45996 14.375C7.45996 13.3616 6.63844 12.54 5.625 12.54C4.61156 12.54 3.79004 13.3616 3.79004 14.375C3.79004 15.3884 4.61156 16.21 5.625 16.21C6.63844 16.21 7.45996 15.3884 7.45996 14.375ZM16.21 14.375C16.21 13.3616 15.3884 12.54 14.375 12.54C13.3616 12.54 12.54 13.3616 12.54 14.375C12.54 15.3884 13.3616 16.21 14.375 16.21C15.3884 16.21 16.21 15.3884 16.21 14.375ZM7.45996 5.625C7.45996 4.61156 6.63844 3.79004 5.625 3.79004C4.61156 3.79004 3.79004 4.61156 3.79004 5.625C3.79004 6.63844 4.61156 7.45996 5.625 7.45996C6.63844 7.45996 7.45996 6.63844 7.45996 5.625ZM16.21 5.625C16.21 4.61156 15.3884 3.79004 14.375 3.79004C13.3616 3.79004 12.54 4.61156 12.54 5.625C12.54 6.63844 13.3616 7.45996 14.375 7.45996C15.3884 7.45996 16.21 6.63844 16.21 5.625ZM17.54 14.375C17.54 16.123 16.123 17.54 14.375 17.54C12.627 17.54 11.21 16.123 11.21 14.375C11.21 12.627 12.627 11.21 14.375 11.21C16.123 11.21 17.54 12.627 17.54 14.375ZM8.79004 5.625C8.79004 7.37298 7.37298 8.79004 5.625 8.79004C3.87702 8.79004 2.45996 7.37298 2.45996 5.625C2.45996 3.87702 3.87702 2.45996 5.625 2.45996C7.37298 2.45996 8.79004 3.87702 8.79004 5.625ZM17.54 5.625C17.54 7.37298 16.123 8.79004 14.375 8.79004C13.7416 8.79004 13.153 8.60173 12.6582 8.28125L8.28125 12.6582C8.60173 13.153 8.79004 13.7416 8.79004 14.375C8.79004 16.123 7.37298 17.54 5.625 17.54C3.87702 17.54 2.45996 16.123 2.45996 14.375C2.45996 12.627 3.87702 11.21 5.625 11.21C6.25794 11.21 6.84623 11.3977 7.34082 11.7178L11.7178 7.34082C11.3977 6.84623 11.21 6.25794 11.21 5.625C11.21 3.87702 12.627 2.45996 14.375 2.45996C16.123 2.45996 17.54 3.87702 17.54 5.625Z"></path>
             </svg>
           </span>
-          Automation<span class="text-[0.6rem] -ml-1 -translate-y-0.5">&#8704;</span>
+          {% trans 'Automation' %}<span class="text-[0.6rem] -ml-1 -translate-y-0.5">&#8704;</span>
         </li>
         {% comment %} <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -93,14 +114,14 @@
               <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
             </svg>
           </span>
-          VIP Discord
+          {% trans 'VIP Discord' %}
         </li>
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
             <svg class="h-3.5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M21 8C22.1046 8 23 8.89543 23 10V14C23 15.1046 22.1046 16 21 16H19.9381C19.446 19.9463 16.0796 23 12 23V21C15.3137 21 18 18.3137 18 15V9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V16H3C1.89543 16 1 15.1046 1 14V10C1 8.89543 1.89543 8 3 8H4.06189C4.55399 4.05369 7.92038 1 12 1C16.0796 1 19.446 4.05369 19.9381 8H21ZM7.75944 15.7849L8.81958 14.0887C9.74161 14.6662 10.8318 15 12 15C13.1682 15 14.2584 14.6662 15.1804 14.0887L16.2406 15.7849C15.0112 16.5549 13.5576 17 12 17C10.4424 17 8.98882 16.5549 7.75944 15.7849Z"></path>
             </svg>
-          </span>Customer Support
+          </span>{% trans 'Customer Support' %}
         </li>
         <li class="gap-1.5 flex items-center truncate">
           {% if title != 'LIFETIME' %}
@@ -110,14 +131,14 @@
                 <path d="M16.5 9c-.42 0-.83.04-1.24.11L1.01 3 1 10l10.06 1.34c-.42.44-.78.93-1.09 1.46L1 14l.01 7 8.07-3.46C9.59 21.19 12.71 24 16.5 24c4.14 0 7.5-3.36 7.5-7.5S20.64 9 16.5 9zM3 8.25l.01-2.22 7.51 3.22-7.52-1zm6.1 7.11L3 17.97v-2.22l6.17-.82c-.03.14-.05.28-.07.43zM16.5 22c-3.03 0-5.5-2.47-5.5-5.5s2.47-5.5 5.5-5.5 5.5 2.47 5.5 5.5-2.47 5.5-5.5 5.5z"></path>
                 <path d="m18.27 14.03-1.77 1.76-1.77-1.76-.7.7 1.76 1.77-1.76 1.77.7.7 1.77-1.76 1.77 1.76.7-.7-1.76-1.77 1.76-1.77z"></path>
               </svg>
-            </span>Cancel at any Time
+            </span>{% trans 'Cancel at any Time' %}
           {% else %}
             <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
               <svg class="h-3.5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path fill="none" d="M0 0h24v24H0z"></path>
                 <path d="M20 2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h4v5l4-2 4 2v-5h4c1.11 0 2-.89 2-2V4c0-1.11-.89-2-2-2zm0 13H4v-2h16v2zm0-5H4V4h16v6z"></path>
               </svg>
-            </span>Life Time Access
+            </span>{% trans 'Life Time Access' %}
           {% endif %}
         </li>
       </ol>
@@ -127,41 +148,46 @@
         {% if has_subscription %}
           {% if subscription.plan == title %}
             {% if subscription.cancel_at_period_end or subscription.status == 'past_due' %}
-              <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3 outline-2 outline-offset-4 outline outline-secondary">Reactivate &#8634;</button>
+              <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3 outline-2 outline-offset-4 outline outline-secondary">{% trans 'Reactivate' %}&#8634;</button>
             {% elif subscription.status == 'incomplete' or subscription.status == 'incomplete_expired' %}
-              <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3">Complete &#8634;</button>
+              <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3">{% trans 'Complete' %}&#8634;</button>
             {% else %}
-              <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="truncate pointer-events-none bg-transparentl mx-auto mt-3 text-title bg-primary-light dark:bg-primary-dark text-2xl font-bold px-0 py-3 rounded-xl">Curent plan</button>
+              <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="truncate pointer-events-none bg-transparentl mx-auto mt-3 text-title bg-primary-light dark:bg-primary-dark text-2xl font-bold px-0 py-3 rounded-xl">{% trans 'Current plan' %}</button>
             {% endif %}
           {% else %}
             <div class="">
               {% if subscription.plan != 'LIFETIME' and title == 'LIFETIME' %}
                 <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3">
-                  Upgrade<svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  {% trans 'Upgrade' %}
+                  <svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M256 21.95l-5.4 4.03C187.5 73.41 125.4 104.5 30.58 120.3l-7.5 1.2v7.6c0 19 8.4 48.7 22.1 85.1 13.6 36.5 32.8 78.8 55.02 119.2 22.3 40.4 47.4 78.9 73.8 107.7 26.1 28.9 53.5 48.9 82 48.9s55.9-20 82.2-48.9c26.2-28.8 51.3-67.3 73.7-107.7 22.2-40.4 41.3-82.7 55-119.2 13.6-36.4 22-66.1 22-85.1v-7.6l-7.4-1.2c-94.6-15.8-156.9-46.89-220.1-94.32zm0 22.2c61.1 45.04 124.4 76.15 214.4 92.35-1.9 15.2-9 41.4-20.3 71.5-4.1 10.8-8.6 22.2-13.7 34H288v-48.9l64 16-96-111.96-96 111.96 64-16V242H75.57c-5-11.8-9.59-23.2-13.69-34-11.2-30.1-18.4-56.3-20.3-71.5C131.6 120.3 194.8 89.19 256 44.15z"></path>
                   </svg>
                 </button>
               {% elif subscription.plan == 'MONTHLY' %}
                 <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3">
-                  Upgrade<svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  {% trans 'Upgrade' %}
+                  <svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M256 21.95l-5.4 4.03C187.5 73.41 125.4 104.5 30.58 120.3l-7.5 1.2v7.6c0 19 8.4 48.7 22.1 85.1 13.6 36.5 32.8 78.8 55.02 119.2 22.3 40.4 47.4 78.9 73.8 107.7 26.1 28.9 53.5 48.9 82 48.9s55.9-20 82.2-48.9c26.2-28.8 51.3-67.3 73.7-107.7 22.2-40.4 41.3-82.7 55-119.2 13.6-36.4 22-66.1 22-85.1v-7.6l-7.4-1.2c-94.6-15.8-156.9-46.89-220.1-94.32zm0 22.2c61.1 45.04 124.4 76.15 214.4 92.35-1.9 15.2-9 41.4-20.3 71.5-4.1 10.8-8.6 22.2-13.7 34H288v-48.9l64 16-96-111.96-96 111.96 64-16V242H75.57c-5-11.8-9.59-23.2-13.69-34-11.2-30.1-18.4-56.3-20.3-71.5C131.6 120.3 194.8 89.19 256 44.15z"></path>
                   </svg>
                 </button>
               {% elif subscription.plan == 'YEARLY' %}
                 <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-text mx-auto mt-3">
-                  Downgrade<svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  {% trans 'Downgrade' %}
+                  <svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M256 21.95l-5.4 4.03C187.5 73.41 125.4 104.5 30.58 120.3l-7.5 1.2v7.6c0 19 8.4 48.7 22.1 85.1 13.6 36.5 32.8 78.8 55.02 119.2 22.3 40.4 47.4 78.9 73.8 107.7 26.1 28.9 53.5 48.9 82 48.9s55.9-20 82.2-48.9c26.2-28.8 51.3-67.3 73.7-107.7 22.2-40.4 41.3-82.7 55-119.2 13.6-36.4 22-66.1 22-85.1v-7.6l-7.4-1.2c-94.6-15.8-156.9-46.89-220.1-94.32zm0 22.2c61.1 45.04 124.4 76.15 214.4 92.35-1.9 15.2-9 41.4-20.3 71.5-4.1 10.8-8.6 22.2-13.7 34H288v46l64-16-96 112-96-112 64 16v-46H75.57c-5-11.8-9.59-23.2-13.69-34-11.2-30.1-18.4-56.3-20.3-71.5C131.6 120.3 194.8 89.19 256 44.15z"></path>
                   </svg>
                 </button>
               {% elif title == 'MONTHLY' %}
                 <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-text mx-auto mt-3">
-                  Downgrade<svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  {% trans 'Downgrade' %}
+                  <svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M256 21.95l-5.4 4.03C187.5 73.41 125.4 104.5 30.58 120.3l-7.5 1.2v7.6c0 19 8.4 48.7 22.1 85.1 13.6 36.5 32.8 78.8 55.02 119.2 22.3 40.4 47.4 78.9 73.8 107.7 26.1 28.9 53.5 48.9 82 48.9s55.9-20 82.2-48.9c26.2-28.8 51.3-67.3 73.7-107.7 22.2-40.4 41.3-82.7 55-119.2 13.6-36.4 22-66.1 22-85.1v-7.6l-7.4-1.2c-94.6-15.8-156.9-46.89-220.1-94.32zm0 22.2c61.1 45.04 124.4 76.15 214.4 92.35-1.9 15.2-9 41.4-20.3 71.5-4.1 10.8-8.6 22.2-13.7 34H288v46l64-16-96 112-96-112 64 16v-46H75.57c-5-11.8-9.59-23.2-13.69-34-11.2-30.1-18.4-56.3-20.3-71.5C131.6 120.3 194.8 89.19 256 44.15z"></path>
                   </svg>
                 </button>
               {% else %}
                 <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="w-full btn-secondary mx-auto mt-3">
-                  Upgrade<svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  {% trans 'Upgrade' %}
+                  <svg class="ml-1 h-4 w-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M256 21.95l-5.4 4.03C187.5 73.41 125.4 104.5 30.58 120.3l-7.5 1.2v7.6c0 19 8.4 48.7 22.1 85.1 13.6 36.5 32.8 78.8 55.02 119.2 22.3 40.4 47.4 78.9 73.8 107.7 26.1 28.9 53.5 48.9 82 48.9s55.9-20 82.2-48.9c26.2-28.8 51.3-67.3 73.7-107.7 22.2-40.4 41.3-82.7 55-119.2 13.6-36.4 22-66.1 22-85.1v-7.6l-7.4-1.2c-94.6-15.8-156.9-46.89-220.1-94.32zm0 22.2c61.1 45.04 124.4 76.15 214.4 92.35-1.9 15.2-9 41.4-20.3 71.5-4.1 10.8-8.6 22.2-13.7 34H288v-48.9l64 16-96-111.96-96 111.96 64-16V242H75.57c-5-11.8-9.59-23.2-13.69-34-11.2-30.1-18.4-56.3-20.3-71.5C131.6 120.3 194.8 89.19 256 44.15z"></path>
                   </svg>
                 </button>
@@ -170,13 +196,14 @@
           {% endif %}
         {% else %}
           <button onclick="openModel('staticModal-{{ title }}');mountStripeElement('{{ title }}');" class="group w-full btn-secondary font-semibold">
-            Get Started<svg class="group-hover:scale-110 transition-transform h-3.5 w-3.5 dark:stroke-background stroke-title rounded-full bg-current p-0.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {% trans 'Get Started' %}
+            <svg class="group-hover:scale-110 transition-transform h-3.5 w-3.5 dark:stroke-background stroke-title rounded-full bg-current p-0.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
           </button>
         {% endif %}
       {% else %}
-        <a href="{% url 'register' %}" class="btn-secondary w-full font-semibold !from-text via-text/70 to-text/50 !bg-text !text-background">Sign up</a>
+        <a href="{% url 'register' %}" class="btn-secondary w-full font-semibold !from-text via-text/70 to-text/50 !bg-text !text-background">{% trans 'Sign up' %}</a>
       {% endif %}
 
       {% comment %} <p class="mt-4 text-text/50 text-center text-xs">
@@ -195,7 +222,9 @@
 
   {% render_template 'include/pay_form_stripe.html' current_subscription=subscription base_price=prices|get_item:price_key final_price=prices|get_item:price_key get_started=get_started as pay_form_stripe %}
   {% with formatted_title=title|lower|capfirst %}
-    {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>Unlock "|add:formatted_title|add:' Access</h3>' %}
+    {% trans 'Unlock' as unlock_label %}
+    {% trans 'Access' as access_label %}
+    {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>"|add:unlock_label|add:' '|add:formatted_title|add:' '|add:access_label|add:'</h3>' %}
       {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=pay_form_stripe stripe_element_id=title body_class='px-2 mt-3' %}
     {% endwith %}
   {% endwith %}

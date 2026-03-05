@@ -1,20 +1,23 @@
+{% load i18n %}
+
 <article class="docs">
   <div class="mb-4">
-    {% include 'include/infos.html' with info='We are committed to building a community that values sharing successes with others. If you achieve positive results, we encourage you to share them with the community to enhance our collective experience and continue refining our systems.' %}
+    {% trans 'We are committed to building a community that values sharing successes with others. If you achieve positive results, we encourage you to share them with the community to enhance our collective experience and continue refining our systems.' as share_info %}
+    {% include 'include/infos.html' with info=share_info %}
   </div>
 
   <section id="share-inputs">
     <aside>
-      <h3>Share properties & perfermance</h3>
+      <h3>{% trans 'Share properties & perfermance' %}</h3>
 
       <p>
-        The easiest way to share the properties and performance you used is by exporting the data from the TradingView strategy tester as an Excel file.<br />
-        To do this, open the strategy tester, click on the strategy name, and select ‘Export Data.’ <br />
-        The video below demonstrates this process. While you can manually enter the details, we highly recommend using the exported file for accuracy and convenience.
+        {% trans 'The easiest way to share the properties and performance you used is by exporting the data from the TradingView strategy tester as an Excel file.' %}<br />
+        {% trans 'To do this, open the strategy tester, click on the strategy name, and select ‘Export Data.’' %}<br />
+        {% trans 'The video below demonstrates this process. While you can manually enter the details, we highly recommend using the exported file for accuracy and convenience.' %}
       </p>
 
       <p>
-        <strong>Note:</strong> Ensure your TradingView language is set to English so the exported file is generated in English.
+        <strong>{% trans 'Note:' %}</strong> {% trans 'Ensure your TradingView language is set to English so the exported file is generated in English.' %}
       </p>
 
       <video muted="" controls="controls">
@@ -25,11 +28,11 @@
   {% comment %}
   <section id="share-perfermance">
     <aside>
-      <h3>Share perfermance</h3>
+      <h3>{% trans 'Share perfermance' %}</h3>
 
       <p>
-        Similarly to the inputs and properties, you can download the performance summary from the TradingView strategy tester.
-        <br />Refer to the video below to see how to do this.
+        {% trans 'Similarly to the inputs and properties, you can download the performance summary from the TradingView strategy tester.' %}<br />
+        {% trans 'Refer to the video below to see how to do this.' %}
       </p>
       <video muted="" controls="controls">
         <source src="https://isalgotest.s3.amazonaws.com/docs/add_performance.mp4" type="video/mp4" />
@@ -39,13 +42,16 @@
 
   <section id="share-description">
     <aside>
-      <h3>Description</h3>
+      <h3>{% trans 'Description' %}</h3>
 
-      <p>Please write and provide a detailed description of how you utilized the strategy, including the specific settings and parameters you applied. This will allow the community to fully understand and benefit from your experience.</p>
+      <p>
+        {% trans 'Please write and provide a detailed description of how you utilized the strategy, including the specific settings and parameters you applied. This will allow the community to fully understand and benefit from your experience.' %}
+      </p>
     </aside>
   </section>
 
   <div class="mt-4">
-    {% include 'include/infos.html' with info='We only accept profitable results with a minimum of 100 closed trades.<br />All results must be realistic, please ensure that commission and slippage are applied during testing.' %}
+    {% blocktrans asvar results_info %}We only accept profitable results with a minimum of 100 closed trades.<br />All results must be realistic, please ensure that commission and slippage are applied during testing.{% endblocktrans %}
+    {% include 'include/infos.html' with info=results_info %}
   </div>
 </article>

@@ -1,56 +1,59 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
   <section id="what-is-ctrader">
     <aside>
-      <h3>What's cTrader?</h3>
-      <p>cTrader is a widely used trading platform that offers a robust trading environment for both beginners and experienced traders. It provides:</p>
+      <h3>{% trans "What's cTrader?" %}</h3>
+      <p>
+        {% trans 'cTrader is a widely used trading platform that offers a robust trading environment for both beginners and experienced traders. It provides:' %}
+      </p>
       <ul>
-        <li>Advanced charting and analysis tools</li>
-        <li>Automated trading capabilities</li>
-        <li>Secure and reliable execution</li>
-        <li>Extensive broker support</li>
+        <li>{% trans 'Advanced charting and analysis tools' %}</li>
+        <li>{% trans 'Automated trading capabilities' %}</li>
+        <li>{% trans 'Secure and reliable execution' %}</li>
+        <li>{% trans 'Extensive broker support' %}</li>
       </ul>
     </aside>
   </section>
 
   <section id="">
     <aside>
-      <h3>What can you trade in cTrader?</h3>
-      <p>With cTrader, you can trade a wide range of financial instruments depending on your broker, including:</p>
+      <h3>{% trans 'What can you trade in cTrader?' %}</h3>
+      <p>
+        {% trans 'With cTrader, you can trade a wide range of financial instruments depending on your broker, including:' %}
+      </p>
       <ul>
-        <li>
-          <strong>Forex</strong>: Major, minor, and exotic currency pairs.
-        </li>
-        <li>
-          <strong>Commodities</strong>: Gold, silver, oil, and other commodities.
-        </li>
-        <li>
-          <strong>Indices</strong>: Popular stock market indices such as S&amp;P 500, NASDAQ, DAX, and more.
-        </li>
-        <li>
-          <strong>Cryptocurrencies</strong>: Bitcoin, Ethereum, and other cryptocurrencies (availability depends on broker).
-        </li>
-        <li>
-          <strong>CFDs</strong>: Contracts for Difference for various markets offered by your broker.
-        </li>
+        <li><strong>{% trans 'Forex' %}</strong>: {% trans 'Major, minor, and exotic currency pairs.' %}</li>
+        <li><strong>{% trans 'Commodities' %}</strong>: {% trans 'Gold, silver, oil, and other commodities.' %}</li>
+        <li><strong>{% trans 'Indices' %}</strong>: {% trans 'Popular stock market indices such as S&amp;P 500, NASDAQ, DAX, and more.' %}</li>
+        <li><strong>{% trans 'Cryptocurrencies' %}</strong>: {% trans 'Bitcoin, Ethereum, and other cryptocurrencies (availability depends on broker).' %}</li>
+        <li><strong>{% trans 'CFDs' %}</strong>: {% trans 'Contracts for Difference for various markets offered by your broker.' %}</li>
       </ul>
-      <p>Note: The availability of instruments may vary depending on your chosen broker and account type (demo or live).</p>
+      <p>
+        {% trans 'Note: The availability of instruments may vary depending on your chosen broker and account type (demo or live).' %}
+      </p>
     </aside>
   </section>
 
   <section id="api-ctrader">
     <aside>
-      <h3>cTrader credentials</h3>
-      <p>Follow the steps below to get your cTrader credentials.</p>
+      <h3>{% trans 'cTrader credentials' %}</h3>
+      <p>
+        {% trans 'Follow the steps below to get your cTrader credentials.' %}
+      </p>
     </aside>
   </section>
 
   <section>
     <aside>
-      <h3><span>1</span> Choose a cTrader Broker</h3>
+      <h3><span>1</span> {% trans 'Choose a cTrader Broker' %}</h3>
       <div>
-        <p>To get started with cTrader, choose one of the brokers that support it:</p>
-        <p>Here are some brokers that support cTrader:</p>
+        <p>
+        {% trans 'To get started with cTrader, choose one of the brokers that support it:' %}
+      </p>
+        <p>
+        {% trans 'Here are some brokers that support cTrader:' %}
+      </p>
         <ul>
           <li>
             <a class="!text-text" href="https://direct-fxpro.com/en/partner/2N8oPfooF" target="_blank">FXPro</a>
@@ -63,7 +66,9 @@
           </li>
         </ul>
         <p>
-          To see all brokers supporting cTrader, visit the <a class="!text-text" href="https://ctrader.com/brokers" target="_blank">cTrader Brokers List</a>.
+          {% trans 'To see all brokers supporting cTrader, visit the' %}
+          <a class="!text-text" href="https://ctrader.com/brokers" target="_blank">{% trans 'cTrader Brokers List' %}</a>
+          {% trans '.' %}
         </p>
       </div>
     </aside>
@@ -71,12 +76,12 @@
 
   <section>
     <aside>
-      <h3><span>2</span> Create a cTrader Account</h3>
+      <h3><span>2</span> {% trans 'Create a cTrader Account' %}</h3>
       <div>
         <ol>
-          <li>If you don’t already have a cTrader account, visit the website of your chosen broker from the list above.</li>
-          <li>Create an account or log in if you already have one.</li>
-          <li>Open a cTrader trading account (demo or live) from the broker's dashboard.</li>
+          <li>{% trans 'If you don’t already have a cTrader account, visit the website of your chosen broker from the list above.' %}</li>
+          <li>{% trans 'Create an account or log in if you already have one.' %}</li>
+          <li>{% trans "Open a cTrader trading account (demo or live) from the broker's dashboard." %}</li>
         </ol>
       </div>
     </aside>
@@ -84,26 +89,27 @@
 
   <section>
     <aside>
-      <h3><span>3</span> Get Your cTrader Authentication Token</h3>
+      <h3><span>3</span> {% trans 'Get Your cTrader Authentication Token' %}</h3>
       <div>
         <ol>
           <li>
-            Get your cTrader authentication token <button class="!text-text underline" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">here</button> or by clicking on Get Token from our automate dashboard when you're adding a cTrader account.
+            {% trans "Get your cTrader authentication token" %} <button class="!text-text underline" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">{% trans "here" %}</button> {% trans "or by clicking on Get Token from our automate dashboard when you're adding a cTrader account." %}
           </li>
           <li>
-            From your accounts list select only one account to generate the authentication token for it. If select multiple accounts, the token will be generated for the first one only.
-            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/ctrader/step-1.png' %}" alt="cTrader - Select account to generate authentication token" />
+            {% trans 'From your accounts list select only one account to generate the authentication token for it. If select multiple accounts, the token will be generated for the first one only.' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/ctrader/step-1.png' %}" alt="cTrader - Select account to generate authentication token" />
           </li>
-          <li>Click on "Allow access" to generate your authentication token.</li>
-          <li>Copy the generated authentication token.</li>
+          <li>{% trans 'Click on "Allow access" to generate your authentication token.' %}</li>
+          <li>{% trans 'Copy the generated authentication token.' %}</li>
         </ol>
       </div>
     </aside>
   </section>
   <section id="complete-ctrader">
     <aside>
-      <h3>Complete Integration</h3>
-      <p>Once you have your authentication token, return to our platform's Automate section to link your cTrader account. This will enable automated trading based on your TradingView alerts.</p>
+      <h3>{% trans 'Complete Integration' %}</h3>
+      <p>
+        {% trans "Once you have your authentication token, return to our platform's Automate section to link your cTrader account. This will enable automated trading based on your TradingView alerts." %}
+      </p>
     </aside>
   </section>
 </article>

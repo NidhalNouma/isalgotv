@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load custom_tags %}
 
 <div id="coupon-pay-{{ title }}">
@@ -5,12 +6,12 @@
     {% if current_subscription and title != 'LIFETIME' %}
       {% include 'include/pay_form_price.html' with base_price=base_price coupon_off='-100%' final_price=0 %}
       <p class="mt-2.5 text-[0.85rem] text-text/80">
-        &#9737; Next charge is scheduled for <span class="text-text">${{ final_price|trim_zeros }}</span> on <span class="text-text/90">{{ current_subscription.period_end|date:'M d, Y' }}</span>
+        &#9737;{% trans 'Next charge is scheduled for' %} <span class="text-text">${{ final_price|trim_zeros }}</span> {% trans 'on' %} <span class="text-text/90">{{ current_subscription.period_end|date:'M d, Y' }}</span>
       </p>
     {% elif not current_subscription and free_trial_days|add:'0' > 0 and title != 'LIFETIME' %}
       {% include 'include/pay_form_price.html' with base_price=base_price coupon_off='-100%' final_price=0 %}
       <p class="mt-2.5 text-[0.85rem] text-text/80">
-        &#9737; Next charge is scheduled for <span class="text-text">${{ final_price|trim_zeros }}</span> after the <span class="text-text/90">{{ free_trial_days }} day trial</span>
+        &#9737;{% trans 'Next charge is scheduled for' %} <span class="text-text">${{ final_price|trim_zeros }}</span> {% trans 'after the' %} <span class="text-text/90">{{ free_trial_days }} {% trans 'day trial' %}</span>
       </p>
     {% else %}
       {% include 'include/pay_form_price.html' with base_price=base_price coupon_off=coupon_off final_price=final_price %}
@@ -18,7 +19,7 @@
   </div>
 
   <div id="coupon-input-{{ title }}" class="mb-4 {% if not coupon_val and not empty %} hidden {% endif %} ">
-    <label for="coupon" class="input-label">Coupon code</label>
+    <label for="coupon" class="input-label">{% trans 'Coupon code' %}</label>
     <div class="flex items-center w-full gap-2">
       <div class="relative grow">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -40,12 +41,10 @@
             </g>
           </svg>
         </div>
-        <input type="text" name="coupon" id="coupon-{{ title }}" class="block w-full pl-10 input-text" placeholder="10%off" value="{{ coupon_val }}" />
+        <input type="text" name="coupon" id="coupon-{{ title }}" class="block w-full pl-10 input-text" placeholder="{% trans '10%off' %}" value="{{ coupon_val }}" />
       </div>
-      <button id="btn-{{ title }}-coupon" onclick="openLoader('', '-{{ title }}-coupon', 'flex');" class="btn-text">Apply</button>
-      <button id="spinner-{{ title }}-coupon" class="btn-text hidden !from-background !to-background" disabled>
-        {% include 'svg/spinner.html' with class='ml-1 h-4' %}
-      </button>
+      <button id="btn-{{ title }}-coupon" onclick="openLoader('', '-{{ title }}-coupon', 'flex');" class="btn-text">{% trans 'Apply' %}</button>
+      <button id="spinner-{{ title }}-coupon" class="btn-text hidden !from-background !to-background" disabled>{% include 'svg/spinner.html' with class='ml-1 h-4' %}</button>
     </div>
 
     <div class="mb-2 mt-3" id="{{ title }}-coupon-form-errors">

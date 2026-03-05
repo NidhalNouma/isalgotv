@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% if stripe_customer %}
 {% with default_pm=default_pm_id|default:stripe_customer.invoice_settings.default_payment_method %}
   {% for pm in payment_methods %}
@@ -33,12 +35,12 @@
         <div class="ml-3">
           <h6 class="text-sm">**** {{ pm.card.last4 }}</h6>
           <h6 class="text-xs">
-            Expire on: {{ pm.card.exp_month }}/{{ pm.card.exp_year }}
+            {% trans "Expire on:" %} {{ pm.card.exp_month }}/{{ pm.card.exp_year }}
             {% if default_pm == pm.id and to_select is None and hide_default is None %}
-              <span class="ml-1 text-background text-xs bg-accent px-1 py-0.5 font-semibold rounded">default</span>
+              <span class="ml-1 text-background text-xs bg-accent px-1 py-0.5 font-semibold rounded">{% trans "default" %}</span>
             {% endif %}
             {% if to_select == True %}
-              <span id="span-{{ pm.id }}-{{ inputId }}" class="{% if default_pm != pm.id %}hidden{% endif %} ml-1 text-background text-xs font-semibold bg-accent px-1 py-0.5 rounded">Selected</span>
+              <span id="span-{{ pm.id }}-{{ inputId }}" class="{% if default_pm != pm.id %}hidden{% endif %} ml-1 text-background text-xs font-semibold bg-accent px-1 py-0.5 rounded">{% trans "Selected" %}</span>
             {% endif %}
           </h6>
         </div>
@@ -55,10 +57,10 @@
           <h6 class="text-xs">
             {{ pm.cashapp.cashtag }}
             {% if default_pm == pm.id and to_select is None and hide_default is None %}
-              <span class="ml-1 text-background text-xs bg-accent px-1 py-0.5 font-semibold rounded">default</span>
+              <span class="ml-1 text-background text-xs bg-accent px-1 py-0.5 font-semibold rounded">{% trans "default" %}</span>
             {% endif %}
             {% if to_select == True %}
-              <span id="span-{{ pm.id }}-{{ inputId }}" class="{% if default_pm != pm.id %}hidden{% endif %} ml-1 text-background text-xs font-semibold bg-accent px-1 py-0.5 rounded">Selected</span>
+              <span id="span-{{ pm.id }}-{{ inputId }}" class="{% if default_pm != pm.id %}hidden{% endif %} ml-1 text-background text-xs font-semibold bg-accent px-1 py-0.5 rounded">{% trans "Selected" %}</span>
             {% endif %}
           </h6>
         </div>

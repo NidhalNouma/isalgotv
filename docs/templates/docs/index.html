@@ -1,7 +1,8 @@
-{% extends 'page.html' %} {% load static %}
+{% extends 'page.html' %} {% load i18n %}
+{% load static %}
 
 {% block head_title %}
-  <title>IsAlgo Documentation | Overview of TradingView Strategies, Alerts & Automation</title>
+  <title>{% trans 'IsAlgo Documentation | Overview of TradingView Strategies, Alerts & Automation' %}</title>
 {% endblock %}
 
 {% block head_description %}
@@ -17,69 +18,91 @@
       <article class="docs">
         <section id="intro">
           <aside>
-            <h3>Introduction</h3>
+            <h3>{% trans 'Introduction' %}</h3>
 
             <p>
-              IsAlgo is your go-to source for expertly crafted trading strategies designed specifically for the
+              {% trans 'IsAlgo is your go-to source for expertly crafted trading strategies designed specifically for the' %}
               <a href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591" target="_blank">TradingView</a>
-              platform, it also provides automation solutions to streamline your trading process.
-            </p> <p>Our mission is to empower traders of all levels with tools that enhance their trading experience and improve their decision-making process.</p>
+              {% trans 'platform, it also provides automation solutions to streamline your trading process.' %}
+            </p> <p>
+              {% trans 'Our mission is to empower traders of all levels with tools that enhance their trading experience and improve their decision-making process.' %}
+            </p>
           </aside>
         </section>
 
         <section id="offering">
           <aside>
-            <h3>Offering</h3>
+            <h3>{% trans 'Offering' %}</h3>
 
-            <p>We offer an extensive collection of trading strategies, tailored to suit a wide range of trading styles and goals. Whether you’re into the fast-paced world of day trading or prefer a more calculated approach to long-term investments, our strategies are designed to meet diverse trading needs.</p>
-            <p>Each strategy is developed with meticulous attention to detail, incorporating technical analysis, market trends, and risk management principles. Our team of experienced traders and developers continuously refines these strategies to ensure they remain effective in the ever-evolving market landscape.</p>
-            <p>Beyond strategies, IsAlgo provides robust alert systems that notify traders of critical market movements and trading opportunities. These alerts can be customized to fit individual preferences, ensuring that traders receive timely information that aligns with their trading plans.</p>
-            <p>To further enhance the trading experience, we offer automation solutions that allow traders to execute trades automatically based on predefined criteria. This not only saves time but also helps in minimizing emotional decision-making, leading to more consistent trading outcomes.</p>
+            <p>
+              {% trans 'We offer an extensive collection of trading strategies, tailored to suit a wide range of trading styles and goals. Whether you’re into the fast-paced world of day trading or prefer a more calculated approach to long-term investments, our strategies are designed to meet diverse trading needs.' %}
+            </p>
+            <p>
+              {% trans 'Each strategy is developed with meticulous attention to detail, incorporating technical analysis, market trends, and risk management principles. Our team of experienced traders and developers continuously refines these strategies to ensure they remain effective in the ever-evolving market landscape.' %}
+            </p>
+            <p>
+              {% trans 'Beyond strategies, IsAlgo provides robust alert systems that notify traders of critical market movements and trading opportunities. These alerts can be customized to fit individual preferences, ensuring that traders receive timely information that aligns with their trading plans.' %}
+            </p>
+            <p>
+              {% trans 'To further enhance the trading experience, we offer automation solutions that allow traders to execute trades automatically based on predefined criteria. This not only saves time but also helps in minimizing emotional decision-making, leading to more consistent trading outcomes.' %}
+            </p>
           </aside>
         </section>
 
         <section id="community">
           <aside>
-            <h3>Community and Collaboration</h3>
+            <h3>{% trans 'Community and Collaboration' %}</h3>
 
-            <p>At the heart of our service is a strong belief in the power of community. We encourage our users to not only utilize these strategies but also to share their own trading experiences and insights. This collaborative approach creates a vibrant learning environment, fostering growth and mutual success among all our members.</p>
+            <p>
+              {% trans 'At the heart of our service is a strong belief in the power of community. We encourage our users to not only utilize these strategies but also to share their own trading experiences and insights. This collaborative approach creates a vibrant learning environment, fostering growth and mutual success among all our members.' %}
+            </p>
           </aside>
         </section>
 
         <section id="invitation">
           <aside>
-            <h3>Invitation</h3>
+            <h3>{% trans 'Invitation' %}</h3>
 
-            <p>Join our journey to elevate your trading experience. Discover strategies that align with your trading style and be a part of a community that values shared success and continuous innovation.</p>
+            <p>
+              {% trans 'Join our journey to elevate your trading experience. Discover strategies that align with your trading style and be a part of a community that values shared success and continuous innovation.' %}
+            </p>
           </aside>
         </section>
 
         <section id="setup">
           <aside>
-            <h3>Get set up quickly</h3>
+            <h3>{% trans 'Get set up quickly' %}</h3>
             <section class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
               <a href="{% url 'docs_instalation' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
-                <h4 class="font-bold tracking-tight">Get access</h4>
+                <h4 class="font-bold tracking-tight">{% trans 'Get access' %}</h4>
 
-                <p class="text-text/60">What you need to do to get access to our strategies.</p>
+                <p class="text-text/60">
+                  {% trans 'What you need to do to get access to our strategies.' %}
+                </p>
               </a>
 
               <a href="{% url 'docs_setup' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
-                <h4 class="font-bold tracking-tight">Setup your chart</h4>
+                <h4 class="font-bold tracking-tight">{% trans 'Setup your chart' %}</h4>
 
-                <p class="text-text/60">Steps on how to use our stratregies.</p>
+                <p class="text-text/60">
+                  {% trans 'Steps on how to use our stratregies.' %}
+                </p>
               </a>
 
               <a href="{% url 'docs_alerts' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
-                <h4 class="font-bold tracking-tight">Configure your alerts.</h4>
+                <h4 class="font-bold tracking-tight">{% trans 'Configure your alerts.' %}</h4>
 
-                <p class="text-text/60">How to get notify on every action.</p>
+                <p class="text-text/60">
+                  {% trans 'How to get notify on every action.' %}
+                </p>
               </a>
 
               <a href="{% url 'docs_automate' %}" class="block px-6 py-4 border rounded border-text/30 hover:bg-text/30 !no-underline">
-                <h4 class="font-bold tracking-tight">Automate your alerts.</h4>
+                <h4 class="font-bold tracking-tight">{% trans 'Automate your alerts.' %}</h4>
 
-                <p class="text-text/60">Link the alerts to your trading account and start the automation.</p>
+                <p class="text-text/60">
+                  {% trans 'Link the alerts to your trading account and start the automation.' %}
+                </p>
               </a>
             </section>
           </aside>
@@ -87,9 +110,11 @@
 
         <dl class="flex pt-6 mt-8 border-t border-text/30">
           <div class="ml-auto text-right">
-            <dt class="text-sm font-sans font-normal tracking-tight">Next</dt>
+            <dt class="text-sm font-sans font-normal tracking-tight">
+              {% trans 'Next' %}
+            </dt>
 
-            <dd class="mt-1"><a href="{% url 'docs_instalation' %}" class="text-base font-semibold hover:underline">How to install our strategies?</a></dd>
+            <dd class="mt-1"><a href="{% url 'docs_instalation' %}" class="text-base font-semibold hover:underline">{% trans 'How to install our strategies?' %}</a></dd>
           </div>
         </dl>
       </article>

@@ -1,15 +1,10 @@
-
+{% load i18n %}
 <dl class="flex pt-6 mt-8 border-t border-text/30">
-    <div class="ml-auto text-right">
-      <dt class="text-sm font-sans font-normal tracking-tight">Next</dt>
+  <div class="ml-auto text-right">
+    <dt class="text-sm font-sans font-normal tracking-tight">
+      {% trans 'Next' %}
+    </dt>
 
-      <dd class="mt-1">
-        <a
-          href="{{ href}}"
-          class="text-base font-semibold hover:underline"
-        >
-          {{ text}}
-        </a>
-      </dd>
-    </div>
-  </dl>
+    <dd class="mt-1"><a href="{{ href }}" class="text-base font-semibold hover:underline">{{ text }}</a></dd>
+  </div>
+</dl>

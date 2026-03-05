@@ -1,41 +1,42 @@
+{% load i18n %}
 {% load custom_tags %}
 <form class="relative w-full max-w-md mx-auto flex flex-col gap-y-4" id="add-{{ broker_type }}-form" hx-post="{% url 'add_forex_broker_account' broker_type %}" hx-target="#at-accounts" hx-wait="swap">
   {% comment %} {% if broker_type == 'metatrader4' or broker_type == 'metatrader5' %}
     {% include 'include/warnings.html' with class='w-full' warning='We use a third-party connection to link your trading account. Occasionally, this connection may experience temporary downtime due to external provider issues.' %}
   {% endif %} {% endcomment %}
   <div class="w-full">
-    <label for="{{ broker_type }}_name" class="input-label">Name</label>
-    <input type="text" id="{{ broker_type }}_name" name="{{ broker_type }}_name" class="input-text w-full" placeholder="Give your account a name" />
+    <label for="{{ broker_type }}_name" class="input-label">{% trans "Name" %}</label>
+    <input type="text" id="{{ broker_type }}_name" name="{{ broker_type }}_name" class="input-text w-full" placeholder="{% trans "Give your account a name" %}" />
   </div>
   {% if broker_type != 'ctrader' and broker_type != 'deriv' %}
     <div class="w-full">
       {% if broker_type == 'tradelocker' %}
-        <label for="{{ broker_type }}_username" class="input-label">Email/Username</label>
-        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your account email/username" />
+        <label for="{{ broker_type }}_username" class="input-label">{% trans "Email/Username" %}</label>
+        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="{% trans "Your account email/username" %}" />
       {% elif broker_type == 'alpaca' %}
-        <label for="{{ broker_type }}_username" class="input-label">API Key</label>
-        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your API key" />
+        <label for="{{ broker_type }}_username" class="input-label">{% trans "API Key" %}</label>
+        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="{% trans "Your API key" %}" />
       {% elif broker_type == 'tastytrade' %}
-        <label for="{{ broker_type }}_username" class="input-label">Refresh Token</label>
-        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your API key" />
+        <label for="{{ broker_type }}_username" class="input-label">{% trans "Refresh Token" %}</label>
+        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="{% trans "Your API key" %}" />
       {% else %}
-        <label for="{{ broker_type }}_username" class="input-label">Number/ID</label>
-        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="Your account number/ID" />
+        <label for="{{ broker_type }}_username" class="input-label">{% trans "Number/ID" %}</label>
+        <input type="text" id="{{ broker_type }}_username" name="{{ broker_type }}_username" class="input-text w-full" placeholder="{% trans "Your account number/ID" %}" />
       {% endif %}
     </div>
     <div class="w-full">
       {% if broker_type == 'alpaca' or broker_type == 'tastytrade' %}
         <label for="{{ broker_type }}_password" class="input-label">
           {% if broker_type == 'alpaca' %}
-            Secret Key
+            {% trans "Secret Key" %}
           {% elif broker_type == 'tastytrade' %}
-            Client Secret
+            {% trans "Client Secret" %}
           {% endif %}
         </label>
-        <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="Your API secret key" />
+        <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="{% trans "Your API secret key" %}" />
       {% else %}
-        <label for="{{ broker_type }}_password" class="input-label">Password</label>
-        <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="Your account password" />
+        <label for="{{ broker_type }}_password" class="input-label">{% trans "Password" %}</label>
+        <input type="password" id="{{ broker_type }}_password" name="{{ broker_type }}_password" class="input-text w-full" placeholder="{% trans "Your account password" %}" />
       {% endif %}
     </div>
   {% endif %}
@@ -43,20 +44,20 @@
     <div class="w-full">
       <label for="{{ broker_type }}_server" class="input-label">
         {% if broker_type == 'ctrader' or broker_type == 'deriv' %}
-          Authorization Token
+          {% trans "Authorization Token" %}
         {% else %}
-          Server
+          {% trans "Server" %}
         {% endif %}
         {% if broker_type == 'ctrader' %}
           <button class="btn-icon text-xs" type="button" onclick="openCtraderAuthWindow('{{ ctrader_client_id }}', '{% url 'ctrader_auth_code' %}')">
-            Get Token<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            {% trans "Get Token" %}<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
           </button>
         {% elif broker_type == 'deriv' %}
           <a href="https://oauth.deriv.com/oauth2/authorize?app_id={{ deriv_app_id }}&affiliate_token=AE6E51CC-4CFE-480F-9CC9-FD177F318574&utm_campaign=dynamicworks" target="_blank" class="btn-icon text-xs">
-            Get Token<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            {% trans "Get Token" %}<svg class="h-3.5 aspect-auto stroke-current ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
@@ -67,33 +68,33 @@
         id="{{ broker_type }}_server"
         name="{{ broker_type }}_server"
         class="input-text w-full"
-        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}Get your authorization token and past it here{% else %}Your account server{% endif %}" />
+        placeholder="{% if broker_type == 'ctrader' or broker_type == 'deriv' %}{% trans "Get your authorization token and paste it here" %}{% else %}{% trans "Your account server" %}{% endif %}" />
     </div>
   {% endif %}
 
   {% if broker_type == 'tradelocker' or broker_type == 'tastytrade' or broker_type == 'deriv' %}
     <div class="w-full">
-      <label for="{{ broker_type }}_account_id" class="input-label">Account ID</label>
-      <input type="text" id="{{ broker_type }}_account_id" name="{{ broker_type }}_account_id" class="input-text w-full" placeholder="Your account ID" />
+      <label for="{{ broker_type }}_account_id" class="input-label">{% trans "Account ID" %}</label>
+      <input type="text" id="{{ broker_type }}_account_id" name="{{ broker_type }}_account_id" class="input-text w-full" placeholder="{% trans "Your account ID" %}" />
     </div>
   {% endif %}
 
   {% if broker_type == 'dxtrade' or broker_type == 'tradelocker' or broker_type == 'hankotrade' or broker_type == 'alpaca' or broker_type == 'tastytrade' %}
     <div class="w-full">
-      <label for="type" class="input-label">Environment</label>
+      <label for="type" class="input-label">{% trans "Environment" %}</label>
 
       <ul class="items-center w-full text-sm font-medium text-text/80 bg-text/10 rounded-md">
         <li class="w-full">
           <div class="flex items-center ps-3">
             <input id="{{ broker_type }}-type-D" type="radio" value="D" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" />
-            <label for="{{ broker_type }}-type-D" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">Demo</label>
+            <label for="{{ broker_type }}-type-D" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">{% trans "Demo" %}</label>
           </div>
         </li>
 
         <li class="w-full">
           <div class="flex items-center ps-3">
             <input id="{{ broker_type }}-type-L" type="radio" value="L" name="{{ broker_type }}_type" class="w-4 h-4 text-title bg-background border-text border checked:!border checked:!border-text dark:checked:!bg-transparent focus:ring-0" checked />
-            <label for="{{ broker_type }}-type-L" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">Live</label>
+            <label for="{{ broker_type }}-type-L" class="w-full py-3 ms-2 input-label mb-0 cursor-pointer">{% trans "Live" %}</label>
           </div>
         </li>
       </ul>
@@ -114,14 +115,14 @@
 
   <div class="w-full">
     <button id="btn-add-{{ broker_type }}" type="submit" class="group btn-accent mb-2 w-full mx-auto" onclick="submitStripeElementForm('{{ broker_type }}', 'add-{{ broker_type }}-form-errors', event)">
-      Connect<svg xmlns="http://www.w3.org/2000/svg" class="group-hover:scale-110 transition-transform h-4 aspect-square ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      {% trans "Connect" %}<svg xmlns="http://www.w3.org/2000/svg" class="group-hover:scale-110 transition-transform h-4 aspect-square ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 17H7A5 5 0 0 1 7 7h2" />
         <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
         <line x1="8" x2="16" y1="12" y2="12" />
       </svg>
     </button>
     <button id="spinner-add-{{ broker_type }}" disabled type="button" class="btn-accent mb-2 w-full mx-auto hidden">
-      Connecting {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
+      {% trans "Connecting" %} {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
     </button>
   </div>
 </form>

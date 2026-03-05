@@ -40,5 +40,6 @@ urlpatterns += i18n_patterns(
     path('performance/', include('performance.urls')),
     path('tero/', include('tero.urls')),
     path('docs/', include('docs.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
     prefix_default_language=False,
 )

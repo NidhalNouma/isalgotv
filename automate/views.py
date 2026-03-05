@@ -388,10 +388,10 @@ def toggle_broker(request, broker_type, pk):
                 if model_instance.subscription_id:
                     if not model_instance.active:
                         # Pause the subscription by setting the status to "paused"
-                        subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
+                        subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id, pause_active=True)
                     else:
                         # Resume by setting it back to "active"
-                        subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id)
+                        subscription, user_profile = pause_unpause_subscription(user_profile, model_instance.subscription_id, pause_active=False)
             except Exception as e:
                 model_instance.active = False
                 model_instance.save(update_fields=['active'])

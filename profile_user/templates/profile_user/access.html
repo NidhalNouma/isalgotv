@@ -1,15 +1,16 @@
 {% extends 'page.html' %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>IsAlgo | Request Access to TradingView Strategies | Manage Your Permissions</title>
+  <title>{% trans "IsAlgo | Request Access to TradingView Strategies | Manage Your Permissions" %}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="Manage and request access to premium TradingView strategies. View your current permissions, request new strategy access, and start optimizing your trading experience with IsAlgo." />
+  <meta name="description" content="{% trans "Manage and request access to premium TradingView strategies. View your current permissions, request new strategy access, and start optimizing your trading experience with IsAlgo." %}" />
 {% endblock %}
 
 {% block page %}
-  <h1 class="main-title">Access</h1>
+  <h1 class="main-title">{% trans "Access" %}</h1>
 
   <main class="mt-4 mb-16 w-full">
     <div class="w-full mx-auto" id="access-main">

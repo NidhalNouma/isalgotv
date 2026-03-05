@@ -1,38 +1,42 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
   <section id="what-is-apex">
     <aside>
-      <h3>What's Apex?</h3>
+      <h3>{% trans "What's Apex?" %}</h3>
       <p>
-        Apex Omni is one of the decentralized exchanges (DEX) that provides a platform for trading various cryptocurrencies. <br />The platform is known for its:
+        {% trans 'Apex Omni is one of the decentralized exchanges (DEX) that provides a platform for trading various cryptocurrencies.' %}<br />
+        {% trans 'The platform is known for its:' %}
       </p>
       <ul>
-        <li>Decentralized trading with non-custodial wallets</li>
-        <li>Wide range of supported cryptocurrencies</li>
-        <li>Advanced trading features</li>
+        <li>{% trans 'Decentralized trading with non-custodial wallets' %}</li>
+        <li>{% trans 'Wide range of supported cryptocurrencies' %}</li>
+        <li>{% trans 'Advanced trading features' %}</li>
       </ul>
     </aside>
   </section>
 
   <section id="">
     <aside>
-      <h3>What can you trade with Apex?</h3>
+      <h3>{% trans 'What can you trade with Apex?' %}</h3>
       <p>
-        With Apex, you can trade <strong>perpetual contracts</strong> through our platform.
+        {% trans "With Apex, you can trade" %} <strong>{% trans "perpetual contracts" %}</strong> {% trans "through our platform." %}
       </p>
       <p>
-        Quantities for perpetual contracts are measured in <strong>base asset units</strong>.
+        {% trans "Quantities for perpetual contracts are measured in" %} <strong>{% trans "base asset units" %}</strong>.
       </p>
       <p>
-        <strong>Hedge Mode</strong> is not available; only <strong>One-Way Mode</strong> is supported.
+        <strong>{% trans "Hedge Mode" %}</strong> {% trans "is not available; only" %} <strong>{% trans "One-Way Mode" %}</strong> {% trans "is supported." %}
       </p>
     </aside>
   </section>
 
   <section id="api-apex">
     <aside>
-      <h3>API Key Setup Process</h3>
-      <p>follow the steps below to configure your API Keys.</p>
+      <h3>{% trans 'API Key Setup Process' %}</h3>
+      <p>
+        {% trans 'follow the steps below to configure your API Keys.' %}
+      </p>
     </aside>
   </section>
 
@@ -42,15 +46,14 @@
 
   <section>
     <aside>
-      <h3><span>1</span> Connect your wallet</h3>
+      <h3><span>1</span> {% trans 'Connect your wallet' %}</h3>
       <div>
         <ol>
           <li>
-            Go to Apex exchange by clicking on <a href="https://omni.apex.exchange/" target="_blank">this link</a>.
+            {% trans "Go to Apex exchange by clicking on" %} <a href="https://omni.apex.exchange/" target="_blank">{% trans "this link" %}</a>.
           </li>
           <li>
-            Connect your wallet or sign up by clicking on the "Log in" button in the top-right corner.
-            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-1.png' %}" alt="Apex - connect wallet" />
+            {% trans 'Connect your wallet or sign up by clicking on the "Log in" button in the top-right corner.' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-1.png' %}" alt="Apex - connect wallet" />
           </li>
         </ol>
       </div>
@@ -59,16 +62,14 @@
 
   <section>
     <aside>
-      <h3><span>2</span> Access API Management</h3>
+      <h3><span>2</span> {% trans 'Access API Management' %}</h3>
       <div>
         <ol>
           <li>
-            Click on your account in the top-right corner
-            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-2.png' %}" alt="Apex - profile icon" />
+            {% trans 'Click on your account in the top-right corner' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-2.png' %}" alt="Apex - profile icon" />
           </li>
           <li>
-            Select "API Management" from the dropdown menu
-            <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-3.png' %}" alt="Apex - API Management" />
+            {% trans 'Select "API Management" from the dropdown menu' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-3.png' %}" alt="Apex - API Management" />
           </li>
         </ol>
       </div>
@@ -77,20 +78,20 @@
 
   <section>
     <aside>
-      <h3><span>3</span> Generate API Key</h3>
+      <h3><span>3</span> {% trans 'Generate API Key' %}</h3>
       <div>
         <ol>
-          <li>Click on "Generate API"</li>
-          <li>Give your API key a name and leave the API type as default</li>
-          <li>Enable "Restrict to Trusted IPs Only (Recommended)" option</li>
+          <li>{% trans 'Click on "Generate API"' %}</li>
+          <li>{% trans 'Give your API key a name and leave the API type as default' %}</li>
+          <li>{% trans 'Enable "Restrict to Trusted IPs Only (Recommended)" option' %}</li>
           <li>
-            Add our server's IP address: <span>{{ server_ip }}</span>
+            {% trans "Add our server's IP address:" %} <span>{{ server_ip }}</span>
             <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-6.png' %}" alt="Apex - add our server IP address to the whitelist" />
           </li>
           <li>
-            Click on "Confirm" to get your API key <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-7.png' %}" alt="Apex - API keys" />
+            {% trans 'Click on "Confirm" to get your API key' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-7.png' %}" alt="Apex - API keys" />
           </li>
-          <li>Make sure to copy your API Key, Secret and passphrase and store them in a safe place as you will need them to connect your Apex account to our platform.</li>
+          <li>{% trans 'Make sure to copy your API Key, Secret and passphrase and store them in a safe place as you will need them to connect your Apex account to our platform.' %}</li>
         </ol>
       </div>
     </aside>
@@ -98,15 +99,15 @@
 
   <section>
     <aside>
-      <h3><span>4</span> Generate Omni key</h3>
+      <h3><span>4</span> {% trans 'Generate Omni key' %}</h3>
       <div>
         <ol>
-          <li>Click on "Omni Key"</li>
-          {% comment %} <li>Click on "Understand"</li> {% endcomment %}
+          <li>{% trans 'Click on "Omni Key"' %}</li>
+          {% comment %} <li>{% trans 'Click on "Understand"' %}</li> {% endcomment %}
           <li>
-            Click on "Next" to get your Omni key <img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-9.png' %}" alt="Apex - Omni key" />
+            {% trans 'Click on "Next" to get your Omni key' %}<img onclick="showModalImages(this)" loading="lazy" src="{% static 'images/docs/automate/apex/step-9.png' %}" alt="Apex - Omni key" />
           </li>
-          <li>Make sure to copy your Omni Key and store it in a safe place as you will need it to connect your Apex account to our platform.</li>
+          <li>{% trans 'Make sure to copy your Omni Key and store it in a safe place as you will need it to connect your Apex account to our platform.' %}</li>
         </ol>
       </div>
     </aside>
@@ -114,8 +115,10 @@
 
   <section id="complete-apex">
     <aside>
-      <h3>Complete Integration</h3>
-      <p>Once you have your API keys and Omni key, return to our platform's Automate section and use them to link your Apex account with our automation system. This will enable automated trading based on your TradingView alerts.</p>
+      <h3>{% trans 'Complete Integration' %}</h3>
+      <p>
+        {% trans "Once you have your API keys and Omni key, return to our platform's Automate section and use them to link your Apex account with our automation system. This will enable automated trading based on your TradingView alerts." %}
+      </p>
     </aside>
   </section>
 </article>

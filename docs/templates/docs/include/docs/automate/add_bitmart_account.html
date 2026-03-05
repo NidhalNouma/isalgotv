@@ -1,36 +1,45 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
   <section id="what-is-bitmart">
     <aside>
-      <h3>What's BitMart?</h3>
-      <p>BitMart is a globally recognized cryptocurrency exchange known for its wide range of digital assets and trading options. Whether you're a beginner or a seasoned trader, BitMart offers an intuitive platform, high liquidity, and advanced features to support efficient and secure trading experiences.</p>
+      <h3>{% trans "What's BitMart?" %}</h3>
+      <p>
+        {% trans "BitMart is a globally recognized cryptocurrency exchange known for its wide range of digital assets and trading options. Whether you're a beginner or a seasoned trader, BitMart offers an intuitive platform, high liquidity, and advanced features to support efficient and secure trading experiences." %}
+      </p>
       <ul>
-        <li>Diverse crypto assets and trading pairs</li>
-        <li>Low fees and high performance</li>
-        <li>Enterprise-grade security infrastructure</li>
-        <li>Easy-to-navigate interface for all users</li>
+        <li>{% trans 'Diverse crypto assets and trading pairs' %}</li>
+        <li>{% trans 'Low fees and high performance' %}</li>
+        <li>{% trans 'Enterprise-grade security infrastructure' %}</li>
+        <li>{% trans 'Easy-to-navigate interface for all users' %}</li>
       </ul>
     </aside>
   </section>
 
   <section id="">
     <aside>
-      <h3>What can you trade with BitMart?</h3>
-      <p>With BitMart, you can trade the following:</p>
+      <h3>{% trans 'What can you trade with BitMart?' %}</h3>
+      <p>
+        {% trans 'With BitMart, you can trade the following:' %}
+      </p>
       <ul>
-        <li><strong>Spot Trading</strong>: Quantity is measured in base asset units. Your account must have sufficient base and quote balances to trade in both directions.</li>
-        <li><strong>USD‑M Futures (USDT‑M, USDC‑M)</strong>: Quantity is measured in base asset units.</li>
-        <li><strong>COIN‑M Futures</strong>: Quantity is measured in contract units.</li>
+        <li><strong>{% trans 'Spot Trading' %}</strong>: {% trans 'Quantity is measured in base asset units. Your account must have sufficient base and quote balances to trade in both directions.' %}</li>
+        <li><strong>{% trans 'USD‑M Futures (USDT‑M, USDC‑M)' %}</strong>: {% trans 'Quantity is measured in base asset units.' %}</li>
+        <li><strong>{% trans 'COIN‑M Futures' %}</strong>: {% trans 'Quantity is measured in contract units.' %}</li>
       </ul>
-      <p><strong>USD‑M and COIN‑M Futures</strong>: Hedge Mode is available by switching your position mode to <em>Hedge</em>; otherwise, the account will operate in One‑Way Mode.</p>
-      <p><strong>USD‑M and COIN‑M Futures</strong>: Margin and leverage settings can be adjusted directly on the BitMart trading platform.</p>
+      <p><strong>{% trans "USD‑M and COIN‑M Futures" %}</strong>: {% trans "Hedge Mode is available by switching your position mode to" %} <em>{% trans "Hedge" %}</em>{% trans "; otherwise, the account will operate in One‑Way Mode." %}</p>
+      <p>
+          <strong>{% trans 'USD‑M and COIN‑M Futures' %}</strong>: {% trans 'Margin and leverage settings can be adjusted directly on the BitMart trading platform.' %}
+        </p>
     </aside>
   </section>
 
   <section id="api-bitmart">
     <aside>
-      <h3>API Key Setup Process</h3>
-      <p>Follow the steps below to create and configure your API keys for BitMart.</p>
+      <h3>{% trans 'API Key Setup Process' %}</h3>
+      <p>
+        {% trans 'Follow the steps below to create and configure your API keys for BitMart.' %}
+      </p>
     </aside>
   </section>
 
@@ -40,10 +49,12 @@
 
   <section>
     <aside>
-      <h3><span>1</span> Create a BitMart Account</h3>
+      <h3><span>1</span> {% trans 'Create a BitMart Account' %}</h3>
       <div>
         <p>
-          If you don’t already have a BitMart account, please sign up <a href="https://www.bitmart.com/invite/c5dw5R/en" target="_blank">here</a>.
+          {% trans 'If you don’t already have a BitMart account, please sign up' %}
+          <a href="https://www.bitmart.com/invite/c5dw5R/en" target="_blank">{% trans 'here' %}</a>
+          {% trans '.' %}
         </p>
       </div>
     </aside>
@@ -51,12 +62,12 @@
 
   <section>
     <aside>
-      <h3><span>2</span> Go to API Management</h3>
+      <h3><span>2</span> {% trans 'Go to API Management' %}</h3>
       <div>
         <ol>
-          <li>Log in to your BitMart account.</li>
+          <li>{% trans 'Log in to your BitMart account.' %}</li>
           <li>
-            Click on your profile icon at the top-right corner and select <strong>API Management</strong>.
+            {% trans "Click on your profile icon at the top-right corner and select" %} <strong>{% trans "API Management" %}</strong>.
             <img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitmart/step-1.png" %}' alt="Bitmart - Navigate to API Management" loading="lazy" />
           </li>
         </ol>
@@ -66,17 +77,16 @@
 
   <section>
     <aside>
-      <h3><span>3</span> Create an API Key</h3>
+      <h3><span>3</span> {% trans 'Create an API Key' %}</h3>
       <div>
         <ol>
             <li>
-              Click <strong>Create API</strong>.
+              {% trans "Click" %} <strong>{% trans "Create API" %}</strong>.
             </li>
-            <li>Enter a memo for your API key (Make sure to remember the memo because you will need it).</li>
+            <li>{% trans 'Enter a memo for your API key (Make sure to remember the memo because you will need it).' %}</li>
             <li>
-                Set the necessery permissions (Spot Trade, Future Trade).
-                <img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitmart/step-2.png" %}' alt="Bitmart - Enable permissions" loading="lazy" />
-            </li>
+            {% trans 'Set the necessery permissions (Spot Trade, Future Trade).' %}<img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitmart/step-2.png" %}' alt="Bitmart - Enable permissions" loading="lazy" />
+          </li>
         </ol>
       </div>
     </aside>
@@ -84,18 +94,16 @@
 
   <section>
     <aside>
-      <h3><span>4</span> Set IP Whitelist and Confirm</h3>
+      <h3><span>4</span> {% trans 'Set IP Whitelist and Confirm' %}</h3>
       <div>
         <ol>
           <li>
-            Paste our server's IP address in the IP whitelist field: <span>{{ server_ip }}</span>.
+            {% trans "Paste our server's IP address in the IP whitelist field:" %} <span>{{ server_ip }}</span>.
             <img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitmart/step-3.png" %}' alt="BitMart - Add serever's IP address to the whitelist" loading="lazy" />
           </li>
-          <li>
-            Complete any security verification required (e.g., 2FA, email code).
-        </li>
+          <li>{% trans 'Complete any security verification required (e.g., 2FA, email code).' %}</li>
         <li>
-            Once done, click <strong>Confirm</strong> to get your API credentials.
+            {% trans "Once done, click" %} <strong>{% trans "Confirm" %}</strong> {% trans "to get your API credentials." %}
             <img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitmart/step-4.png" %}' alt="Bitmart - Get API credentials" loading="lazy" />
           </li>
         </ol>
@@ -105,8 +113,10 @@
 
   <section id="complete-bitmart">
     <aside>
-      <h3>Complete the Connection</h3>
-      <p>Copy your API Key and Secret, then paste them into the integration form in your IsAlgo automate dashboard. Ensure you keep your credentials safe and never share them.</p>
+      <h3>{% trans 'Complete the Connection' %}</h3>
+      <p>
+        {% trans 'Copy your API Key and Secret, then paste them into the integration form in your IsAlgo automate dashboard. Ensure you keep your credentials safe and never share them.' %}
+      </p>
     </aside>
   </section>
 </article>

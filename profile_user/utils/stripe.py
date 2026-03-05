@@ -662,7 +662,7 @@ def cancel_reactivate_subscription(user_profile, subscription_id) -> (tuple):
         print("Error canceling subscription:", e)
         raise
 
-def pause_unpause_subscription(user_profile, subscription_id) -> (tuple):
+def pause_unpause_subscription(user_profile, subscription_id, pause_active) -> (tuple):
     """
     Pause or unpause a user's strategy subscription.
     """
@@ -672,7 +672,7 @@ def pause_unpause_subscription(user_profile, subscription_id) -> (tuple):
         if subscription.status == "incomplete":
             raise Exception("Incomplete subscriptions cannot be paused. Please complete the subscription first.")
         
-        pause_active = subscription.pause_collection is None
+        # pause_active = subscription.pause_collection is None
 
         updated_subscription = stripe.Subscription.modify(
             subscription_id,

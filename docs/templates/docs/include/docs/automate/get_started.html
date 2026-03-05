@@ -1,23 +1,39 @@
+{% load i18n %}
 {% load static %}
+
 <article class="docs">
   <section id="how-it-works">
     <aside>
-      <h3>How it works</h3>
-      <p>TradingView's alert system provides a powerful webhook feature that enables automated trading. When an alert triggers, it sends the alert message to a specified webhook URL, which then forwards the instruction to your broker for execution.</p>
-      <p>To utilize this feature, you need to set up alerts in TradingView with messages formatted according to our automation system's requirements. Once configured, TradingView will send these alerts to the webhook URL provided by our platform, allowing for seamless trade execution based on your strategies.</p>
+      <h3>{% trans 'How it works' %}</h3>
+      <p>
+        {% trans "TradingView's alert system provides a powerful webhook feature that enables automated trading. When an alert triggers, it sends the alert message to a specified webhook URL, which then forwards the instruction to your broker for execution." %}
+      </p>
+      <p>
+        {% trans "To utilize this feature, you need to set up alerts in TradingView with messages formatted according to our automation system's requirements. Once configured, TradingView will send these alerts to the webhook URL provided by our platform, allowing for seamless trade execution based on your strategies." %}
+      </p>
       {% comment %} <img onclick="showModalImages(this)" src="https://isalgotest.s3.amazonaws.com/docs/webhook_url_tv.png" /> {% endcomment %}
     </aside>
   </section>
 
   <section id="automation-system">
     <aside>
-      <h3>Built-in Automation System</h3>
-      <p>Our platform features a built-in automation system designed to handle TradingView webhook alerts seamlessly. Key benefits include:</p>
+      <h3>{% trans 'Built-in Automation System' %}</h3>
+      <p>
+        {% trans 'Our platform features a built-in automation system designed to handle TradingView webhook alerts seamlessly. Key benefits include:' %}
+      </p>
       <ul>
-        <li>Support for multiple crypto, stock, and forex accounts.</li>
-        <li>Simple accounts integration process.</li>
-        <li>Comprehensive documentation and setup guides.</li>
-        <li>Real-time trade execution monitoring.</li>
+        <li>
+          {% trans 'Support for multiple crypto, stock, and forex accounts.' %}
+        </li>
+        <li>
+          {% trans 'Simple accounts integration process.' %}
+        </li>
+        <li>
+          {% trans 'Comprehensive documentation and setup guides.' %}
+        </li>
+        <li>
+          {% trans 'Real-time trade execution monitoring.' %}
+        </li>
       </ul>
       {% comment %} <p class="pt-4">
         Alternative Automation Platforms:{% include 'include/docs/automation_sites.html' with class='!pl-1 mt-2 flex flex-col gap-1.5' %}
@@ -27,28 +43,34 @@
 
   <section id="get-started">
     <aside>
-      <h3>Getting Started</h3>
-      <p>To begin automating your trades, follow these essential steps:</p>
+      <h3>{% trans 'Getting Started' %}</h3>
+      <p>
+        {% trans 'To begin automating your trades, follow these essential steps:' %}
+      </p>
       <ol class="pl-2 pt-2">
         <li>
-          <span>Link Your Trading Account</span>
+          <span>{% trans 'Link Your Trading Account' %}</span>
           <p>
-            Connect your preferred trading account by navigating to <a class="text-text" href="{% url 'automate' %}">the Automate page</a> and following the account-specific integration steps. We support various crypto, stock, and forex accounts with secure API integration.
+            {% trans 'Connect your preferred trading account by navigating to' %} <a class="text-text" href="{% url 'automate' %}">{% trans 'the Automate page' %}</a> {% trans 'and following the account-specific integration steps. We support various crypto, stock, and forex accounts with secure API integration.' %}
           </p>
         </li>
         <li class="mt-4">
-          <span>Get Your Webhook URL</span>
-          <p>After linking your trading account, obtain your unique webhook URL from the Automate page. This URL will receive and process your TradingView alerts.</p>
-        </li>
-        <li class="mt-4">
-          <span>Configure Alert Messages</span>
+          <span>{% trans 'Get Your Webhook URL' %}</span>
           <p>
-            Set up your strategy/indicator alert messages in the format required by your automation system. You can generate the correct format using our <a href="{% url 'docs_automate_playground' %}">Alert Playground.</a>
+            {% trans 'After linking your trading account, obtain your unique webhook URL from the Automate page. This URL will receive and process your TradingView alerts.' %}
           </p>
         </li>
         <li class="mt-4">
-          <span>Test Your Setup</span>
-          <p>Before going live, thoroughly test your automation setup using small positions to ensure everything works as expected.</p>
+          <span>{% trans 'Configure Alert Messages' %}</span>
+          <p>
+            {% trans 'Set up your strategy/indicator alert messages in the format required by your automation system. You can generate the correct format using our' %} <a href="{% url 'docs_automate_playground' %}">{% trans 'Alert Playground.' %}</a>
+          </p>
+        </li>
+        <li class="mt-4">
+          <span>{% trans 'Test Your Setup' %}</span>
+          <p>
+            {% trans 'Before going live, thoroughly test your automation setup using small positions to ensure everything works as expected.' %}
+          </p>
         </li>
       </ol>
     </aside>

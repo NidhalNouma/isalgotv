@@ -1,12 +1,13 @@
 {% extends 'page.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>IsAlgo | Start Trading Smarter | Best TradingView Strategies & Verified Backtest Results</title>
+  <title>{% trans "IsAlgo | Start Trading Smarter | Best TradingView Strategies & Verified Backtest Results" %}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="Discover the best and latest TradingView strategies, verified backtest results, and powerful automation tools. Explore winning strategies, connect to brokers, and start optimizing your trades with IsAlgo. Your smarter trading journey begins here." />
+  <meta name="description" content="{% trans "Discover the best and latest TradingView strategies, verified backtest results, and powerful automation tools. Explore winning strategies, connect to brokers, and start optimizing your trades with IsAlgo. Your smarter trading journey begins here." %}" />
 {% endblock %}
 
 {% block head %}

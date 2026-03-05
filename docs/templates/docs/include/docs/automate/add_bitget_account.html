@@ -1,40 +1,45 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
     <section id="what-is-bitget">
         <aside>
-            <h3>What's Bitget?</h3>
+            <h3>{% trans "What's Bitget?" %}</h3>
             <p>
-                Bitget is a leading global cryptocurrency exchange that specializes in derivatives trading. The platform offers a comprehensive suite of trading services including:
-            </p>
+        {% trans 'Bitget is a leading global cryptocurrency exchange that specializes in derivatives trading. The platform offers a comprehensive suite of trading services including:' %}
+      </p>
             <ul>
-                <li>Spot trading with competitive fees</li>
-                <li>Futures trading with up to 125x leverage</li>
-                <li>Advanced trading features and tools</li>
-                <li>Copy trading functionality</li>
+                <li>{% trans 'Spot trading with competitive fees' %}</li>
+                <li>{% trans 'Futures trading with up to 125x leverage' %}</li>
+                <li>{% trans 'Advanced trading features and tools' %}</li>
+                <li>{% trans 'Copy trading functionality' %}</li>
             </ul>
         </aside>
     </section>
     
     <section id="">
         <aside>
-            <h3>What can you trade with Bitget?</h3>
-            <p>With Bitget, you can trade the following:</p>
+            <h3>{% trans 'What can you trade with Bitget?' %}</h3>
+            <p>
+        {% trans 'With Bitget, you can trade the following:' %}
+      </p>
             <ul>
-                <li><strong>Spot Trading</strong>: Quantity is measured in base asset units. Your account must have sufficient base and quote assets to trade in both directions.</li>
-                <li><strong>USDT-M Futures</strong>: Quantity is measured in base asset units. Margin mode should be set to <em>Isolated</em>, using USDT as the margin coin. Leverage can be adjusted directly on the exchange.</li>
-                <li><strong>COIN-M Futures</strong>: Quantity is measured in base asset units. Margin mode should be set to <em>Isolated</em>, using USDE as the margin coin. Leverage can be adjusted on the exchange.</li>
-                <li><strong>USDC-M Futures</strong>: Quantity is measured in base asset units. Margin mode should be set to <em>Isolated</em>, using USDC as the margin coin. Leverage can be adjusted on the exchange.</li>
+                <li><strong>{% trans 'Spot Trading' %}</strong>: {% trans 'Quantity is measured in base asset units. Your account must have sufficient base and quote assets to trade in both directions.' %}</li>
+                <li><strong>{% trans "USDT-M Futures" %}</strong>: {% trans "Quantity is measured in base asset units. Margin mode should be set to" %} <em>{% trans "Isolated" %}</em>{% trans ", using USDT as the margin coin. Leverage can be adjusted directly on the exchange." %}</li>
+                <li><strong>{% trans "COIN-M Futures" %}</strong>: {% trans "Quantity is measured in base asset units. Margin mode should be set to" %} <em>{% trans "Isolated" %}</em>{% trans ", using USDE as the margin coin. Leverage can be adjusted on the exchange." %}</li>
+                <li><strong>{% trans "USDC-M Futures" %}</strong>: {% trans "Quantity is measured in base asset units. Margin mode should be set to" %} <em>{% trans "Isolated" %}</em>{% trans ", using USDC as the margin coin. Leverage can be adjusted on the exchange." %}</li>
             </ul>
-            <p><strong>USDT-M, COIN-M, and USDC-M Futures</strong>: Hedge Mode can be enabled from the exchange platform if you want to use dual-side trading; otherwise, the account will operate in One-Way Mode.</p>
+            <p>
+          <strong>{% trans 'USDT-M, COIN-M, and USDC-M Futures' %}</strong>: {% trans 'Hedge Mode can be enabled from the exchange platform if you want to use dual-side trading; otherwise, the account will operate in One-Way Mode.' %}
+        </p>
         </aside>
     </section>
     
     <section id="api-bitget">
         <aside>
-            <h3>API Key Setup Process</h3>
+            <h3>{% trans 'API Key Setup Process' %}</h3>
             <p>
-                follow the steps below to configure your API Keys.
-            </p>
+        {% trans 'follow the steps below to configure your API Keys.' %}
+      </p>
         </aside>
     </section>
 
@@ -45,27 +50,29 @@
     
     <section>
         <aside>
-            <h3><span>1</span> Create a Bitget Account</h3>
+            <h3><span>1</span> {% trans 'Create a Bitget Account' %}</h3>
             <div>
                 <p>
-                    If you don’t already have a Bitget account, please sign up <a href="https://partner.bitget.com/bg/VT1JM4" target="_blank">here</a>.
-                </p>
+          {% trans 'If you don’t already have a Bitget account, please sign up' %}
+          <a href="https://partner.bitget.com/bg/VT1JM4" target="_blank">{% trans 'here' %}</a>
+          {% trans '.' %}
+        </p>
             </div>
         </aside>
     </section>
 
     <section>
         <aside>
-            <h3><span>2</span> Navigate to API Keys</h3>
+            <h3><span>2</span> {% trans 'Navigate to API Keys' %}</h3>
             <div>
                 <ol>
-                    <li>Log in to your Bitget account.</li>
-                    <li>Click on your profile icon in the top-right corner.
-                        <img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitget/step-1.png" %}' alt="Bitget - Navigate to your profile" loading="lazy" />
-                    </li>
-                    <li>Select "API Keys" from the dropdown menu.
-                        <img class="!-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitget/step-2.png" %}' alt="Bitget - Navigate to API Management" loading="lazy" />
-                    </li>
+                    <li>{% trans 'Log in to your Bitget account.' %}</li>
+                    <li>
+            {% trans 'Click on your profile icon in the top-right corner.' %}<img class="mb-2 !-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitget/step-1.png" %}' alt="Bitget - Navigate to your profile" loading="lazy" />
+          </li>
+                    <li>
+            {% trans 'Select "API Keys" from the dropdown menu.' %}<img class="!-ml-4" onclick="showModalImages(this)" src='{% static "images/docs/automate/bitget/step-2.png" %}' alt="Bitget - Navigate to API Management" loading="lazy" />
+          </li>
                 </ol>
             </div>
         </aside>
@@ -73,29 +80,23 @@
 
     <section>
         <aside>
-            <h3><span>3</span> Create API Key</h3>
+            <h3><span>3</span> {% trans 'Create API Key' %}</h3>
             <div>
                 <ol>
+                    <li>{% trans 'Click "Create API Key"' %}</li>
                     <li>
-                        Click "Create API Key"
-                    </li>
-                    <li>
-                        Choose "System generated"
-                        <img class="!-ml-4 mb-2" onclick="showModalImages(this)"
+            {% trans 'Choose "System generated"' %}<img class="!-ml-4 mb-2" onclick="showModalImages(this)"
                         loading="lazy"
                         src='{% static "images/docs/automate/bitget/step-3.png" %}' 
                         alt="Bitget - Select System generated" />
-                    </li>
+          </li>
+                    <li>{% trans 'Give your API key a descriptive name in the Note.' %}</li>
                     <li>
-                        Give your API key a descriptive name in the Note.
-                    </li>
-                    <li>
-                        Set a Passphrase.
-                        <img class="!-ml-4" onclick="showModalImages(this)"
+            {% trans 'Set a Passphrase.' %}<img class="!-ml-4" onclick="showModalImages(this)"
                         loading="lazy"
                         src='{% static "images/docs/automate/bitget/step-4.png" %}' 
                         alt="Bitget - Set API Passphrase" />
-                    </li>
+          </li>
                 </ol>
             </div>
         </aside>
@@ -103,42 +104,39 @@
 
     <section>
         <aside>
-            <h3><span>4</span> Configure Security Settings</h3>
+            <h3><span>4</span> {% trans 'Configure Security Settings' %}</h3>
             <div>
                 <ol>
+                    <li>{% trans 'Under "Permissions" select "Read-write"' %}</li>
                     <li>
-                        Under "Permissions" select "Read-write"
-                    </li>
-                    <li>
-                        Under "Permission Type" tick "Name"
-                        <img class="!-ml-4 mb-2" onclick="showModalImages(this)"
+            {% trans 'Under "Permission Type" tick "Name"' %}<img class="!-ml-4 mb-2" onclick="showModalImages(this)"
                             src='{% static "images/docs/automate/bitget/step-5.png" %}' 
                             loading="lazy"
                             alt="Bitget - Enable Permission" />
-                    </li>
+          </li>
                     <li>
-                        Scroll down and Add our server's IP address: <span>{{server_ip}}</span>
+                        {% trans "Scroll down and add our server's IP address:" %} <span>{{server_ip}}</span>
                         <img class="!-ml-4 mb-2" onclick="showModalImages(this)"
                             loading="lazy"
                             src='{% static "images/docs/automate/bitget/step-6.png" %}' 
                             alt="Bitget - Add server's IP address to the whitelist" />
                     </li>
 
-                    <li>
-                       Click "Next" to get your API Keys.
-                    </li>
+                    <li>{% trans 'Click "Next" to get your API Keys.' %}</li>
                 </ol>
-                <p class="font-semibold pt-2">IMPORTANT: Ensure you copy your secret key before clicking Confirm.</p>
+                <p class="font-semibold pt-2">
+        {% trans 'IMPORTANT: Ensure you copy your secret key before clicking Confirm.' %}
+      </p>
             </div>
         </aside>
     </section>
 
     <section id="complete-bitget">
         <aside>
-            <h3>Complete Integration</h3>
+            <h3>{% trans 'Complete Integration' %}</h3>
             <p>
-                Once you have your API keys, return to our platform's Automate section and use them to link your Binance account with our automation system. This will enable automated trading based on your TradingView alerts.
-            </p>
+        {% trans "Once you have your API keys, return to our platform's Automate section and use them to link your Binance account with our automation system. This will enable automated trading based on your TradingView alerts." %}
+      </p>
         </aside>
     </section>
 </article>

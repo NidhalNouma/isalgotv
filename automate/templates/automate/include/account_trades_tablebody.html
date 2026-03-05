@@ -1,9 +1,11 @@
+{% load i18n %}
+
 {% for trade in trades %}
   {% include 'include/trade_row.html' with trade=trade %}
 {% endfor %}
 
 {% if next_start is not None %}
   <tr hx-ext="intersect" hx-trigger="intersect once" hx-get="{% url 'get_trades' broker_type id %}?start={{ next_start }}&only_closed_trades={{ only_closed_trades|default:"false" }}" hx-swap="outerHTML">
-    <td colspan="11" class="py-4 text-center text-text/60 text-xs">Loading more...</td>
+    <td colspan="11" class="py-4 text-center text-text/60 text-xs">{% trans "Loading more..." %}</td>
   </tr>
 {% endif %}

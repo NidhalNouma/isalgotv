@@ -1,31 +1,32 @@
+{% load i18n %}
 {% if stripe_customer %}
-{% with default_pm_id=default_pm_id|default:stripe_customer.invoice_settings.default_payment_method %}
-  <section class="py-2 rounded">
-    {% if not hide_header %}
-      <p class="text-sm text-text/80">
-        By adding this account you'll be cherged with <span class="text-text">${{ price }}</span>/Month.
-      </p>
-    {% endif %}
-
-    <div id="payment-card-list-{{ title }}" class="{% if payment_methods|length == 0 %} hidden {% endif %}">
-      {% if subtitle %}
-        <h3 class="text-text my-2 font-semibold">{{ subtitle|default:'Select a payment method' }}</h3>
+  {% with default_pm_id=default_pm_id|default:stripe_customer.invoice_settings.default_payment_method %}
+    <section class="py-2 rounded">
+      {% if not hide_header %}
+        <p class="text-sm text-text/80">
+          {% trans 'By adding this account you will be charged with' %} <span class="text-text">${{ price }}</span>/Month.
+        </p>
       {% endif %}
-      <div class="scale-y-90">
-        {% include 'include/payment_methods.html' with to_select=True inputId='pm-'|add:title selected_pm_id=default_pm_id %}
-      </div>
-      <button type="button" class="font-semibold btn-icon" onclick="document.getElementById('span-' + document.getElementById('pm-{{ title }}').value + '-pm-{{ title }}')?.classList?.add('hidden'); document.getElementById('pm-{{ title }}').value=''; changeHidden('payment-card-new-{{ title }}', 'payment-card-list-{{ title }}');">Add new +</button>
-    </div>
-    <div id="payment-card-new-{{ title }}" class="mt-2 {% if payment_methods|length > 0 %} hidden {% endif %}">
-      <div class="relative">
-        <div id="stripe-element-{{ title }}" class="block w-full"></div>
-      </div>
-      {% if payment_methods|length > 0 %}
-        <button type="button" class="font-semibold mt-4 btn-icon" onclick="document.getElementById('pm-{{ title }}').value='{{ default_pm_id }}'; document.getElementById('span-' + document.getElementById('pm-{{ title }}').value + '-pm-{{ title }}')?.classList?.remove('hidden'); changeHidden('payment-card-list-{{ title }}', 'payment-card-new-{{ title }}');">&#8701; Select a payment method</button>
-      {% endif %}
-    </div>
 
-    <input id="pm-{{ title }}" type="hidden" name="pm_id" value="{{ default_pm_id }}" />
-  </section>
-{% endwith %}
+      <div id="payment-card-list-{{ title }}" class="{% if payment_methods|length == 0 %} hidden {% endif %}">
+        {% if subtitle %}
+          <h3 class="text-text my-2 font-semibold">{{ subtitle|default:'Select a payment method' }}</h3>
+        {% endif %}
+        <div class="scale-y-90">
+          {% include 'include/payment_methods.html' with to_select=True inputId='pm-'|add:title selected_pm_id=default_pm_id %}
+        </div>
+        <button type="button" class="font-semibold btn-icon" onclick="document.getElementById('span-' + document.getElementById('pm-{{ title }}').value + '-pm-{{ title }}')?.classList?.add('hidden'); document.getElementById('pm-{{ title }}').value=''; changeHidden('payment-card-new-{{ title }}', 'payment-card-list-{{ title }}');">{% trans 'Add new +' %}</button>
+      </div>
+      <div id="payment-card-new-{{ title }}" class="mt-2 {% if payment_methods|length > 0 %} hidden {% endif %}">
+        <div class="relative">
+          <div id="stripe-element-{{ title }}" class="block w-full"></div>
+        </div>
+        {% if payment_methods|length > 0 %}
+          <button type="button" class="font-semibold mt-4 btn-icon" onclick="document.getElementById('pm-{{ title }}').value='{{ default_pm_id }}'; document.getElementById('span-' + document.getElementById('pm-{{ title }}').value + '-pm-{{ title }}')?.classList?.remove('hidden'); changeHidden('payment-card-list-{{ title }}', 'payment-card-new-{{ title }}');">&#8701; {% trans 'Select a payment method' %}</button>
+        {% endif %}
+      </div>
+
+      <input id="pm-{{ title }}" type="hidden" name="pm_id" value="{{ default_pm_id }}" />
+    </section>
+  {% endwith %}
 {% endif %}

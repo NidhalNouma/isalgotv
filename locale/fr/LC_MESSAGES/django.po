@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-04 08:29-0600\n"
+"POT-Creation-Date: 2026-03-05 08:01-0600\n"
 "PO-Revision-Date: 2026-03-04 09:30-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: French\n"
@@ -15,6 +15,4777 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid ""
+"IsAlgo | Automate TradingView Alerts | Connect to Binance, Bybit, MetaTrader "
+"& More"
+msgstr ""
+
+msgid ""
+"Automate your TradingView alerts and execute trades instantly across top "
+"brokers like Binance, Bybit, Bitget, Coinbase, MetaTrader, and more. "
+"Seamlessly link your strategies and trade smarter with IsAlgo."
+msgstr ""
+
+msgid "Automate"
+msgstr "Automatiser"
+
+msgid "Account"
+msgstr ""
+
+msgid "Alert Creation Playground"
+msgstr ""
+
+#, fuzzy
+#| msgid "Automate alerts once ready"
+msgid "Automate Your Trading"
+msgstr "Automatisez les alertes une fois prêt"
+
+msgid "with any broker"
+msgstr ""
+
+msgid "Connect TradingView alerts to multiple brokers and execute trades in"
+msgstr ""
+
+msgid "milliseconds"
+msgstr ""
+
+#, fuzzy
+#| msgid "Start now"
+msgid "Start Automating Now"
+msgstr "Commencer maintenant"
+
+msgid "How it works"
+msgstr ""
+
+msgid "STEP 1"
+msgstr ""
+
+msgid "Choose a Strategy/Indicator to automate"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "the ideal"
+msgstr ""
+
+msgid "strategy or indicator to automate after"
+msgstr ""
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "thorough testing"
+msgstr "Stratégie en place."
+
+msgid "It can be from IsAlgo or any other source."
+msgstr ""
+
+msgid "STEP 2"
+msgstr ""
+
+msgid "Set up the alert messages"
+msgstr ""
+
+msgid ""
+"Configure the alert messages so our software can interpret them correctly. "
+"Use"
+msgstr ""
+
+msgid "the playground"
+msgstr ""
+
+msgid "for guidance."
+msgstr ""
+
+msgid "STEP 3"
+msgstr ""
+
+msgid "Link your broker"
+msgstr ""
+
+#, fuzzy
+#| msgid "Go to your"
+msgid "Connect your"
+msgstr "Allez sur votre"
+
+msgid "preferred broker"
+msgstr ""
+
+msgid "by following the simple steps to obtain the"
+msgstr ""
+
+msgid "webhook URL"
+msgstr ""
+
+msgid "STEP 4"
+msgstr ""
+
+#, fuzzy
+#| msgid "TradingView"
+msgid "Create TradingView alert"
+msgstr "TradingView"
+
+#, fuzzy
+#| msgid "Set your trading view username"
+msgid "Set up a TradingView alert and"
+msgstr "Définir votre nom d'utilisateur TradingView"
+
+msgid "enable the alert webhook"
+msgstr ""
+
+#, fuzzy
+#| msgid "Join the Conversation"
+msgid "to establish the connection."
+msgstr "Rejoignez la conversation"
+
+#, fuzzy
+#| msgid "All done"
+msgid "All Set!"
+msgstr "Terminé"
+
+msgid "Everything is set—sit back and watch the trades execute automatically."
+msgstr ""
+
+msgid "Try it Now"
+msgstr ""
+
+msgid "Ctrader Authentication code"
+msgstr ""
+
+msgid "Your Authentication code"
+msgstr ""
+
+msgid "Copy authentication code"
+msgstr ""
+
+msgid "Deriv Authentication code"
+msgstr ""
+
+msgid "Deriv Authorization Codes"
+msgstr ""
+
+msgid ""
+"Below are the authorization codes for your Deriv accounts. Copy the ID and "
+"token of the account you want to use."
+msgstr ""
+
+msgid "Account ID"
+msgstr ""
+
+msgid "Copy Webhook URL"
+msgstr ""
+
+msgid "Token"
+msgstr ""
+
+msgid "No logs available for this account at this moment."
+msgstr ""
+
+#, fuzzy
+#| msgid "start trading"
+msgid "Loading"
+msgstr "commencer à trader"
+
+msgid "Triggered"
+msgstr ""
+
+msgid "Exe latency"
+msgstr ""
+
+msgid "Latency"
+msgstr ""
+
+msgid "Loading more..."
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Asset"
+msgstr ""
+
+msgid "Side"
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "P&L"
+msgstr ""
+
+msgid "Fees"
+msgstr ""
+
+msgid "Open Price"
+msgstr ""
+
+msgid "Close Price"
+msgstr ""
+
+msgid "Open Time (UTC)"
+msgstr ""
+
+msgid "Close Time (UTC)"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "No trades available for this account at this moment."
+msgstr ""
+
+msgid "Are you ready to automate any strategy?"
+msgstr ""
+
+msgid "Link Your Broker"
+msgstr ""
+
+msgid "Click here"
+msgstr ""
+
+msgid ""
+"to connect your preferred broker. We support various crypto and forex "
+"brokers with secure API integration."
+msgstr ""
+
+msgid "Get Your Webhook URL"
+msgstr ""
+
+msgid ""
+"Obtain your unique webhook URL by adding a broker. This URL will receive and "
+"process your TradingView alerts."
+msgstr ""
+
+msgid "Configure Alert Messages"
+msgstr ""
+
+msgid ""
+"Set up your strategy/indicator alert messages in the format required by our "
+"automation system. You can generate the correct format using our"
+msgstr ""
+
+msgid "Alert Playground"
+msgstr ""
+
+#, fuzzy
+#| msgid "TradingView"
+msgid "Create a TradingView alert"
+msgstr "TradingView"
+
+msgid "Create a"
+msgstr ""
+
+#, fuzzy
+#| msgid "TradingView"
+msgid "new TradingView alert"
+msgstr "TradingView"
+
+msgid ""
+"with your configured webhook URL. Save your alert and start automating your "
+"trading strategy."
+msgstr ""
+
+msgid "Need more help?"
+msgstr ""
+
+msgid "Add Account"
+msgstr ""
+
+msgid "Futures, Forex, Stocks, and more"
+msgstr ""
+
+msgid "Decentralized Exchanges"
+msgstr ""
+
+msgid "Centralized Exchanges"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Give your account a name"
+msgstr ""
+
+msgid "Wallet Address"
+msgstr ""
+
+msgid "API key"
+msgstr ""
+
+msgid "Your wallet address"
+msgstr ""
+
+msgid "Your API key"
+msgstr ""
+
+msgid "Secret key"
+msgstr ""
+
+msgid "Your secret key"
+msgstr ""
+
+msgid "Passphrase"
+msgstr ""
+
+msgid "Your passphrase"
+msgstr ""
+
+msgid "Memo"
+msgstr ""
+
+msgid "Your memo"
+msgstr ""
+
+msgid "Omni Key"
+msgstr ""
+
+msgid "Your omni key"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Spot"
+msgstr ""
+
+msgid "USDⓢ@M"
+msgstr ""
+
+msgid "COIN@M"
+msgstr ""
+
+msgid "USDT-M"
+msgstr ""
+
+msgid "COIN-M"
+msgstr ""
+
+msgid "USDC-M"
+msgstr ""
+
+msgid "Futures"
+msgstr ""
+
+msgid "Perps"
+msgstr ""
+
+msgid "Expiry"
+msgstr ""
+
+msgid "Ensure that the IP address"
+msgstr ""
+
+msgid "is added to the list of trusted IPs."
+msgstr ""
+
+msgid "Connect"
+msgstr ""
+
+msgid "Connecting"
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your username"
+msgid "Email/Username"
+msgstr "Définir votre nom d'utilisateur"
+
+msgid "Your account email/username"
+msgstr ""
+
+msgid "API Key"
+msgstr ""
+
+msgid "Refresh Token"
+msgstr ""
+
+msgid "Number/ID"
+msgstr ""
+
+msgid "Your account number/ID"
+msgstr ""
+
+msgid "Secret Key"
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your username"
+msgid "Client Secret"
+msgstr "Définir votre nom d'utilisateur"
+
+msgid "Your API secret key"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Your account password"
+msgstr ""
+
+msgid "Authorization Token"
+msgstr ""
+
+msgid "Server"
+msgstr ""
+
+msgid "Get Token"
+msgstr ""
+
+msgid "Get your authorization token and paste it here"
+msgstr ""
+
+msgid "Your account server"
+msgstr ""
+
+msgid "Your account ID"
+msgstr ""
+
+msgid "Environment"
+msgstr ""
+
+msgid "Demo"
+msgstr ""
+
+msgid "Live"
+msgstr ""
+
+msgid "By adding this account you will be charged with"
+msgstr ""
+
+msgid "Add new +"
+msgstr ""
+
+msgid "Select a payment method"
+msgstr ""
+
+msgid "USD@M"
+msgstr ""
+
+msgid "Derivatives"
+msgstr ""
+
+msgid "USD@C"
+msgstr ""
+
+msgid "Unknown Type"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Inactive"
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Activate/Deactivate Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid "Edit Account"
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Delete Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid "Webhook URL"
+msgstr ""
+
+msgid "Logs"
+msgstr ""
+
+#, fuzzy
+#| msgid "For Traders"
+msgid "Trades"
+msgstr "Pour les traders"
+
+msgid "Before You Delete"
+msgstr ""
+
+msgid "Update or disable all TradingView alerts using this account."
+msgstr ""
+
+msgid "Close any open positions you want to manage manually."
+msgstr ""
+
+msgid ""
+"Consider pausing the account instead of deleting if you might reconnect "
+"later."
+msgstr ""
+
+msgid ""
+"This action cannot be undone. All trading data and settings will be "
+"permanently removed."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Subscription"
+msgstr ""
+
+msgid "paused"
+msgstr ""
+
+msgid "Next Payment"
+msgstr ""
+
+msgid "Subtotal"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Scheduled for"
+msgstr ""
+
+msgid "Payment Issue"
+msgstr ""
+
+msgid ""
+"There was an issue with your last payment. Please update your payment method "
+"to reactivate your subscription."
+msgstr ""
+
+msgid "Payment Method"
+msgstr ""
+
+msgid "Reactivate the subscription"
+msgstr ""
+
+msgid "Change Payment Method"
+msgstr ""
+
+msgid "Select Payment Method"
+msgstr ""
+
+msgid "Saving"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Keep it"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Partially Closed"
+msgstr ""
+
+msgid "Closed"
+msgstr ""
+
+msgid "NA"
+msgstr ""
+
+msgid "BUY"
+msgstr ""
+
+msgid "SELL"
+msgstr ""
+
+msgid "Closing trade"
+msgstr ""
+
+msgid "Volume to close"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | TradingView Alerts Overview | How to Set Up and Use "
+"Alerts"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | How to Create TradingView Alerts | Step-by-Step Setup "
+"Guide"
+msgstr ""
+
+msgid "IsAlgo Documentation | Alert Placeholders | Customize Strategy Alerts"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | TradingView Automation Overview | How IsAlgo's Auto-"
+"Trading System Works"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Alpaca Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Connect Your Apex Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Binance Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Binance.US Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Connect Your BingX Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Bitget Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your BitMart Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Connect Your Bybit Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your coinbase Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Crypto.com Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your cTrader Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Connect Your Deriv Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your HankoTrade Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Hyperliquid Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Kraken Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your KuCoin Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Metatrader4 Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Metatrader5 Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Connect Your MEXC Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Important Notes for Automation Setup"
+msgstr ""
+
+msgid "IsAlgo Documentation | Connect Your OKX Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo Documentation | Automation Playground | Write TradingView Alerts"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your Tastytrade Account for Automated Trading"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Connect Your TradeLocker Account for Automated Trading"
+msgstr ""
+
+msgid "IsAlgo | Contact Us | Get Support, Ask Questions, Share Feedback"
+msgstr ""
+
+msgid "Contacts"
+msgstr ""
+
+msgid "Contact us"
+msgstr ""
+
+msgid ""
+"Please make sure to check the <a class=\"underline font-semibold\" href=\"/"
+"docs/q&a/\">FAQ page</a> to see if you can find what you're looking for; it "
+"will save you time."
+msgstr ""
+
+msgid "IsAlgo | Disclaimer"
+msgstr ""
+
+msgid "Disclaimer"
+msgstr ""
+
+msgid ""
+"The following disclaimer clarifies that the information provided on our site "
+"is for educational use only and should not be considered financial or "
+"investment advice."
+msgstr ""
+
+msgid "Risk Disclaimer"
+msgstr ""
+
+msgid ""
+"Trading involves significant risk, and most day traders lose money. The risk "
+"of loss in trading can be substantial. Decisions to buy, sell, hold, or "
+"trade in securities, commodities, and other investments involve risk and are "
+"best made based on the advice of qualified financial professionals. Past "
+"performance does not guarantee future results. All content is hypothetical, "
+"selected after the fact to demonstrate our product, and should not be "
+"construed as financial advice. You should carefully consider whether such "
+"trading is suitable for you in light of your financial condition."
+msgstr ""
+
+msgid "Hypothetical and Simulated Performance Disclaimer"
+msgstr ""
+
+msgid ""
+"Hypothetical or simulated performance results have certain limitations. "
+"Unlike an actual performance record, simulated results do not represent "
+"actual trading. Since the trades have not been executed, the results may "
+"have under-or-over compensated for the impact, if any, of certain market "
+"factors. Simulated trading programs are also subject to the fact that they "
+"are designed with the benefit of hindsight. No representation is being made "
+"that any account will or is likely to achieve profit or losses similar to "
+"those shown."
+msgstr ""
+
+msgid "Additional Disclaimer"
+msgstr ""
+
+msgid ""
+"As a provider of technical analysis tools for charting platforms, we do not "
+"have access to the personal trading accounts or brokerage statements of our "
+"customers. We have no reason to believe our customers perform better or "
+"worse than traders as a whole based on any content or tools we provide."
+msgstr ""
+
+msgid "No Financial Advisor-Client Relationship"
+msgstr ""
+
+msgid ""
+"This site does not establish a financial advisor-client relationship. The "
+"information presented does not constitute an offer to provide investment "
+"advisory services. Any interactions or communications through this site do "
+"not create a professional relationship between the user and the site owner "
+"or any associated parties."
+msgstr ""
+
+msgid "Personal Responsibility"
+msgstr ""
+
+msgid ""
+"Any investment decisions or actions you undertake are solely your "
+"responsibility. You should independently evaluate the suitability of any "
+"investment based on your financial objectives, risk tolerance, and "
+"investment timeframe. It is recommended to seek advice from a certified "
+"financial professional who can provide personalized guidance tailored to "
+"your specific needs."
+msgstr ""
+
+msgid "Risks and Uncertainties"
+msgstr ""
+
+msgid ""
+"Investing involves risks, and there is no guarantee of future investment "
+"performance. The value of investments can fluctuate, and past performance "
+"should not be relied upon as an indication of future results. You should "
+"carefully consider the risks involved and conduct thorough research before "
+"making any investment decisions."
+msgstr ""
+
+msgid "Accuracy of Information"
+msgstr ""
+
+msgid ""
+"While efforts are made to provide accurate and up-to-date information, no "
+"warranty or representation is made regarding the accuracy, completeness, or "
+"timeliness of the content on this site. Financial markets and investment "
+"opportunities are subject to frequent changes, and it is important to verify "
+"any information independently before making investment decisions."
+msgstr ""
+
+msgid "Educational Purposes"
+msgstr ""
+
+msgid ""
+"The content and information provided by IsAlgo, the Site, and the products "
+"and services of IsAlgo, is solely incidental to the business and activities "
+"of IsAlgo in providing educational tools for technical analysis. The tools, "
+"scanners, data, content, and information offered are impersonal and not "
+"customized to meet the investment needs of any individual. As such, the "
+"tools, scanners, data, content, and information are provided solely for "
+"informational and educational purposes only. <br/><br/>The tools & scanners "
+"IsAlgo offers are provided to help you research and evaluate securities "
+"based on your individual criteria and inputs, and those individual criteria, "
+"sorting, and inputs are controlled and entered solely by you. Use of the "
+"tools & scanners does not indicate or guarantee any predictable, general, "
+"specific, or other results and should not be the sole basis for any "
+"investment decision or transaction."
+msgstr ""
+
+msgid "General Nature"
+msgstr ""
+
+msgid ""
+"All content on this site is information of a general nature and does not "
+"address the circumstances of any particular individual or entity. Nothing on "
+"this site constitutes a comprehensive or complete statement of the matters "
+"discussed or the law relating thereto. isalgo.com is not a fiduciary by "
+"virtue of any person’s use of or access to the site or content. You alone "
+"assume the sole responsibility of evaluating the merits and risks associated "
+"with the use of any information or other content on the site before making "
+"any decisions based on such information or other content. In exchange for "
+"using the site or content, you agree not to hold isalgo.com, its affiliates, "
+"or any third provider liable for any possible claim for damages arising from "
+"decisions you make based on information or other content made available to "
+"you through the site. <br/><br/>IsAlgo does not and will not provide you "
+"with any legal, tax, estate planning, or accounting advice, or any advice "
+"regarding the suitability, profitability, or appropriateness for you of any "
+"security, investment, financial product, investment strategy, or other "
+"matter. The data, content, and information within the tools & scanners "
+"should not be construed as investment or trading advice and is not meant to "
+"be a solicitation or recommendation to buy, sell, or hold any positions in "
+"any securities or to engage in any other transaction."
+msgstr ""
+
+msgid "Site Disclaimer"
+msgstr ""
+
+msgid ""
+"By viewing any material or using the information within this Site, you agree "
+"that this is general education material, and you will not hold any person or "
+"entity responsible for loss or damages resulting from the content or general "
+"information provided by isalgo.com. This Site cannot accept responsibility "
+"for any errors or omissions to the accuracy of information contained on this "
+"Site. We recommend that visitors and users seek advice from an independent "
+"financial advisor before buying or selling securities. IsAlgo and all "
+"affiliated parties are not registered as financial advisors. This Site and "
+"all individuals and entities affiliated with this Site assume no "
+"responsibility for your trading results or investments. Our partners or "
+"affiliated companies are in no way associated with the proprietary "
+"information provided by this Site."
+msgstr ""
+
+msgid "No Liability"
+msgstr ""
+
+msgid ""
+"The site owner, associated parties, and the AI model provider shall not be "
+"held liable for any losses, damages, or adverse consequences arising "
+"directly or indirectly from the use of the information provided on this "
+"site. By accessing and using the site, you acknowledge and accept that you "
+"are solely responsible for any investment decisions and their outcomes."
+msgstr ""
+
+msgid "Consultation with Professionals"
+msgstr ""
+
+msgid ""
+"It is strongly advised to consult with qualified financial professionals, "
+"such as certified financial advisors, tax advisors, or legal experts, who "
+"can provide personalized advice based on your specific financial "
+"circumstances and goals."
+msgstr ""
+
+#, fuzzy
+#| msgid "TradingView"
+msgid "TradingView Disclosure"
+msgstr "TradingView"
+
+msgid ""
+"Charts used on this site are by TradingView in which our tools are built on."
+"<br/><br/>TradingView® is a registered trademark of TradingView, Inc. "
+"www.TradingView.com. TradingView has no affiliation with the owner, "
+"developer, or provider of the products or services described herein, or any "
+"interest, ownership, or otherwise, in any such product or service, nor "
+"endorses or recommends any such product or service."
+msgstr ""
+
+msgid "Adding strategy to the chart"
+msgstr ""
+
+msgid ""
+"Now that you have access to our strategies, the easiest way to use them is "
+"by clicking on the strategy you want to work with. After selecting"
+msgstr ""
+
+msgid ""
+"the strategy, it will take a few seconds to load, and then you will see it "
+"on the chart."
+msgstr ""
+
+msgid ""
+"Each strategy will have a list of properties that you can adjust, and you "
+"will see the results changing in real-time."
+msgstr ""
+
+msgid ""
+"NOTE: The strategy will take a few seconds to load. If you don't see it on "
+"the chart, please wait a bit longer. If it still doesn't appear, try "
+"refreshing the page."
+msgstr ""
+
+#, fuzzy
+#| msgid "Trending Strategies"
+msgid "Manual strategies"
+msgstr "Stratégies tendance"
+
+msgid ""
+"We also offer some manual trend strategies that require you to manually "
+"select the time and price points to determine where to draw the trendline."
+msgstr ""
+
+msgid "The video below provides instructions on how to do this."
+msgstr ""
+
+msgid "Add to favorite"
+msgstr ""
+
+msgid ""
+"For convenient access to your favorite strategies, you can add them to your "
+"favorites list and access them quickly."
+msgstr ""
+
+msgid "After setting up the alert message on the strategy you're using,"
+msgstr ""
+
+msgid ""
+"to start receiving alert messages on TradingView, you'll need to add one. "
+"With our strategies, you'll only need to create one, and it will send alerts "
+"on any entry as well as on any exit, one alert per strategy."
+msgstr ""
+
+msgid "The video below will show you how to add one."
+msgstr ""
+
+msgid "Steps"
+msgstr ""
+
+msgid "Make sure your strategy/indicator are in the TradingView chart."
+msgstr ""
+
+msgid ""
+"Click on the Alert icon (bell symbol) in the top right corner of the chart."
+msgstr ""
+
+msgid ""
+"Or from the strategy/indicator by clicking the three dots next to its name "
+"and selecting \"Add Alert.\""
+msgstr ""
+
+msgid ""
+"Or by clicking on the strategy/indicator name and pressing the \"Alt + A\" "
+"keys on your keyboard."
+msgstr ""
+
+msgid "In the Condition dropdown, make sure to select your strategy/indicator."
+msgstr ""
+
+msgid "Then select alert() function calls only."
+msgstr ""
+
+msgid "Ensure that the Expiration time is set to Open-ended alert."
+msgstr ""
+
+msgid "Provide a name for the alert."
+msgstr ""
+
+msgid ""
+"Go to the Notifications tab, enable the Webhook URL option, and paste your "
+"Webhook URL."
+msgstr ""
+
+msgid "This is your webhook URL related to"
+msgstr ""
+
+msgid "Click Create to finalize the alert."
+msgstr ""
+
+msgid ""
+"IMPORTANT: The alert will be created based on the current settings of the "
+"strategy/indicator. To make it work on the new settings, you need to create "
+"a new alert and delete the old one if it's no longer needed."
+msgstr ""
+
+msgid ""
+"Changing the strategy/indicator settings after the alert is created will not "
+"update the existing alert; it will continue to function based on the "
+"settings that were active when it was created."
+msgstr ""
+
+msgid ""
+"Keep your webhook URL private to ensure the security of your alerts and "
+"avoid any disruptions. Sharing it could lead to missed or unauthorized "
+"alerts."
+msgstr ""
+
+msgid "Need help?"
+msgstr ""
+
+msgid ""
+"If you encounter any issues during the integration process, our support team "
+"is here to help. Contact us"
+msgstr ""
+
+msgid "here"
+msgstr ""
+
+#, fuzzy
+#| msgid "TradingView"
+msgid "TradingView Alerts"
+msgstr "TradingView"
+
+msgid ""
+"TradingView alerts are customizable notifications that inform traders and "
+"investors about specific market conditions, such as price movements, "
+"technical indicator triggers, or trend reversals. These alerts are highly "
+"versatile, offering options like pop-up messages, emails, push "
+"notifications, or webhooks for automation. They are ideal for staying "
+"updated without constantly monitoring the market, enabling users to act "
+"quickly on trading opportunities or risk management strategies in real-time."
+msgstr ""
+
+#, fuzzy
+#| msgid "8+ strategies available"
+msgid "Strategies Alerts"
+msgstr "8+ stratégies disponibles"
+
+msgid ""
+"Each strategy will come with a minimum of four built-in alerts, designed for "
+"both entry and exit signals. These alerts serve the dual purpose of keeping "
+"you informed about every action the strategy takes and enabling automation "
+"if you wish to implement alert-based automation."
+msgstr ""
+
+msgid "Write Alerts"
+msgstr ""
+
+msgid ""
+"Alert messages can be fully customized with any text, including emojis, to "
+"suit your preferences. To include dynamic values, placeholders can be used "
+"to fetch real-time information from the chart or strategy."
+msgstr ""
+
+msgid "to see the full list of available placeholders."
+msgstr ""
+
+msgid "Placeholders"
+msgstr ""
+
+msgid ""
+"These placeholders can be used in the alert message, and they will be "
+"replaced with dynamic values when the alert is triggered. They are the sole "
+"method for including dynamic values that can vary from bar to bar."
+msgstr ""
+
+msgid "The placeholders need to be enclosed within double curly braces."
+msgstr ""
+
+msgid "Below are the placeholders you can use:"
+msgstr ""
+
+msgid "Examples"
+msgstr ""
+
+msgid ""
+"Here are some practical examples of how to use placeholders in your alert "
+"messages. These templates demonstrate common use cases and can be customized "
+"to fit your needs."
+msgstr ""
+
+msgid "A simple alert for entering a trade with basic information:"
+msgstr ""
+
+msgid "Template:"
+msgstr ""
+
+msgid "Example Output:"
+msgstr ""
+
+msgid "A comprehensive alert including entry price and targets:"
+msgstr ""
+
+msgid "An alert showing current market conditions:"
+msgstr ""
+
+msgid "Playground"
+msgstr ""
+
+msgid "This playground is designed to assist you in creating alerts for any"
+msgstr ""
+
+msgid ""
+"strategy or indicator. Simply follow the steps below to configure your "
+"alerts."
+msgstr ""
+
+msgid "Preparation Checklist:"
+msgstr ""
+
+msgid ""
+"Ensure you are on the correct chart with the desired asset and timeframe."
+msgstr ""
+
+msgid ""
+"Add the strategy/indicator to the chart and confirm it's the tested setup."
+msgstr ""
+
+msgid ""
+"Test your strategy/indicator to verify its performance before proceeding."
+msgstr ""
+
+msgid ""
+"Ensure you thoroughly test the strategy or indicator you plan to automate "
+"before initiating the automation process."
+msgstr ""
+
+msgid "Alert Messages:"
+msgstr ""
+
+msgid ""
+"The alert messages are the message that will be sent on every action taken "
+"by the strategy/indicator, whether closing or opening a trade."
+msgstr ""
+
+msgid ""
+"By default the alerts will have the asset name of the tradingview chart and "
+"the volume that you set in the strategy/indicator, but you can override them."
+msgstr ""
+
+msgid "Asset Name:"
+msgstr ""
+
+msgid "leave empty to use strategy-defined asset"
+msgstr ""
+
+msgid "Volume/Amount Per Trade:"
+msgstr ""
+
+msgid "leave empty to use strategy-defined volume"
+msgstr ""
+
+msgid "Long Entry:"
+msgstr ""
+
+msgid "Short Entry:"
+msgstr ""
+
+msgid "Long Exit:"
+msgstr ""
+
+msgid "Short Exit:"
+msgstr ""
+
+msgid "Alert Parameters:"
+msgstr ""
+
+msgid "Using Placeholders:"
+msgstr ""
+
+msgid "You can use TradingView placeholders"
+msgstr ""
+
+msgid ""
+"to dynamically pull values from your strategy/indicator, or use static values"
+msgstr ""
+
+msgid "to override them."
+msgstr ""
+
+msgid "Required Parameters:"
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "Action:"
+msgstr ""
+
+msgid "for Entry,"
+msgstr ""
+
+msgid "for Exit"
+msgstr ""
+
+msgid "Asset: Use"
+msgstr ""
+
+msgid "for strategy asset or"
+msgstr ""
+
+msgid "for custom"
+msgstr ""
+
+msgid "Unique identifier: Use"
+msgstr ""
+
+msgid "Volume: Use"
+msgstr ""
+
+msgid "for strategy volume or"
+msgstr ""
+
+msgid "Optional Parameters:"
+msgstr ""
+
+msgid "Partial close: Use"
+msgstr ""
+
+#, python-format
+msgid "can include %% like"
+msgstr ""
+
+msgid "Volume Options:"
+msgstr ""
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "Strategy volume:"
+msgstr "Stratégie en place."
+
+msgid "Static value:"
+msgstr ""
+
+msgid "Math expressions:"
+msgstr ""
+
+msgid "Rounding:"
+msgstr ""
+
+msgid "rounds to 2 decimal places"
+msgstr ""
+
+msgid ""
+"Copy and paste these alerts into the strategy/indicator's Alerts section in "
+"the settings and click OK."
+msgstr ""
+
+msgid ""
+"After setting up the alert messages in the strategy/indicator the last step "
+"is to create the alert,"
+msgstr ""
+
+#, fuzzy
+#| msgid "See how"
+msgid "to see how."
+msgstr "Voir comment"
+
+msgid ""
+"When changing the asset or volume settings, there is no need to add a new "
+"account. Each account, once added can handle all available assets and "
+"volumes."
+msgstr ""
+
+msgid "What's Alpaca?"
+msgstr ""
+
+msgid ""
+"Alpaca is a commission-free trading platform that provides an API for "
+"algorithmic trading. It offers:"
+msgstr ""
+
+msgid "Commission-free trading"
+msgstr ""
+
+msgid "Robust API for algorithmic trading"
+msgstr ""
+
+msgid "Access to US stock markets"
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your trading view username"
+msgid "Paper trading environment"
+msgstr "Définir votre nom d'utilisateur TradingView"
+
+msgid "What can you trade with Alpaca?"
+msgstr ""
+
+msgid "With Alpaca, you can trade the following assets:"
+msgstr ""
+
+msgid "Stocks"
+msgstr ""
+
+msgid "Funds"
+msgstr ""
+
+msgid "Crypto"
+msgstr ""
+
+msgid "Indices"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Hedge trading is not available, only One-Way Mode is supported."
+msgstr ""
+
+msgid "API key setup"
+msgstr ""
+
+msgid "Follow the steps below to configure your API Keys."
+msgstr ""
+
+msgid "Create an Alpaca Account"
+msgstr ""
+
+msgid "Sign up for an Alpaca account if you don't have one."
+msgstr ""
+
+msgid "Sign up here"
+msgstr ""
+
+msgid "."
+msgstr ""
+
+msgid "Get API Keys"
+msgstr ""
+
+msgid "Log in to your Alpaca account"
+msgstr ""
+
+msgid "In the Home page, scroll down to the \"API Key\" section"
+msgstr ""
+
+msgid "Click on \"Regenerate\" to generate a new set of keys"
+msgstr ""
+
+msgid "Copy your API Key and Secret Key for use in our platform"
+msgstr ""
+
+#, fuzzy
+#| msgid "documentation"
+msgid "Complete Integration"
+msgstr "documentation"
+
+msgid ""
+"Once you have your API Key and Secret Key, return to our platform's Automate "
+"section to link your Alpaca account. This will enable automated trading "
+"based on your TradingView alerts."
+msgstr ""
+
+msgid "What's Apex?"
+msgstr ""
+
+msgid ""
+"Apex Omni is one of the decentralized exchanges (DEX) that provides a "
+"platform for trading various cryptocurrencies."
+msgstr ""
+
+msgid "The platform is known for its:"
+msgstr ""
+
+msgid "Decentralized trading with non-custodial wallets"
+msgstr ""
+
+msgid "Wide range of supported cryptocurrencies"
+msgstr ""
+
+msgid "Advanced trading features"
+msgstr ""
+
+msgid "What can you trade with Apex?"
+msgstr ""
+
+msgid "With Apex, you can trade"
+msgstr ""
+
+msgid "perpetual contracts"
+msgstr ""
+
+msgid "through our platform."
+msgstr ""
+
+msgid "Quantities for perpetual contracts are measured in"
+msgstr ""
+
+msgid "base asset units"
+msgstr ""
+
+msgid "Hedge Mode"
+msgstr ""
+
+msgid "is not available; only"
+msgstr ""
+
+msgid "One-Way Mode"
+msgstr ""
+
+msgid "is supported."
+msgstr ""
+
+msgid "API Key Setup Process"
+msgstr ""
+
+msgid "follow the steps below to configure your API Keys."
+msgstr ""
+
+msgid "Connect your wallet"
+msgstr ""
+
+msgid "Go to Apex exchange by clicking on"
+msgstr ""
+
+msgid "this link"
+msgstr ""
+
+msgid ""
+"Connect your wallet or sign up by clicking on the \"Log in\" button in the "
+"top-right corner."
+msgstr ""
+
+msgid "Access API Management"
+msgstr ""
+
+msgid "Click on your account in the top-right corner"
+msgstr ""
+
+msgid "Select \"API Management\" from the dropdown menu"
+msgstr ""
+
+msgid "Generate API Key"
+msgstr ""
+
+msgid "Click on \"Generate API\""
+msgstr ""
+
+msgid "Give your API key a name and leave the API type as default"
+msgstr ""
+
+msgid "Enable \"Restrict to Trusted IPs Only (Recommended)\" option"
+msgstr ""
+
+msgid "Add our server's IP address:"
+msgstr ""
+
+msgid "Click on \"Confirm\" to get your API key"
+msgstr ""
+
+msgid ""
+"Make sure to copy your API Key, Secret and passphrase and store them in a "
+"safe place as you will need them to connect your Apex account to our "
+"platform."
+msgstr ""
+
+msgid "Generate Omni key"
+msgstr ""
+
+msgid "Click on \"Omni Key\""
+msgstr ""
+
+msgid "Click on \"Next\" to get your Omni key"
+msgstr ""
+
+msgid ""
+"Make sure to copy your Omni Key and store it in a safe place as you will "
+"need it to connect your Apex account to our platform."
+msgstr ""
+
+msgid ""
+"Once you have your API keys and Omni key, return to our platform's Automate "
+"section and use them to link your Apex account with our automation system. "
+"This will enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's Binance?"
+msgstr ""
+
+msgid ""
+"Binance is one of the world's largest cryptocurrency exchanges by trading "
+"volume. It offers a comprehensive platform for trading various "
+"cryptocurrencies, including spot trading, futures, options, and more."
+msgstr ""
+
+msgid "High liquidity and trading volume"
+msgstr ""
+
+#, fuzzy
+#| msgid "24/7 automated trading"
+msgid "Robust API for automated trading"
+msgstr "Trading automatisé 24h/24"
+
+msgid "What can you trade with Binance?"
+msgstr ""
+
+msgid "With Binance, you can trade the following:"
+msgstr ""
+
+msgid ""
+"Quantity is measured in base asset units. Your account must have sufficient "
+"base and quote assets to trade in both directions."
+msgstr ""
+
+msgid "USDT-M Futures"
+msgstr ""
+
+msgid "Quantity is measured in base asset units."
+msgstr ""
+
+msgid "COIN-M Futures"
+msgstr ""
+
+msgid "Quantity is measured in contract units."
+msgstr ""
+
+msgid "USDT-M and COIN-M Futures"
+msgstr ""
+
+msgid ""
+"Margin and leverage settings can be adjusted directly from the Binance "
+"exchange platform."
+msgstr ""
+
+msgid "Make sure your futures account is set to"
+msgstr ""
+
+msgid "if you want to use dual-side trading."
+msgstr ""
+
+msgid "Create a Binance Account"
+msgstr ""
+
+msgid "Sign up for a Binance account if you don't have one."
+msgstr ""
+
+msgid "Log in to your Binance account"
+msgstr ""
+
+msgid "Click on your profile icon in the top-right corner"
+msgstr ""
+
+msgid "Create API Key"
+msgstr ""
+
+msgid "Click \"Create API\""
+msgstr ""
+
+msgid "Choose \"System generated\""
+msgstr ""
+
+msgid "Give your API key a descriptive name."
+msgstr ""
+
+msgid "Configure Security Settings"
+msgstr ""
+
+msgid "Enable \"Restrict access to trusted IPs only\""
+msgstr ""
+
+#, fuzzy
+#| msgid "AI Trading Assistant"
+msgid "Set Trading Permissions"
+msgstr "Assistant de trading IA"
+
+msgid "Enable the following permissions based on your needs:"
+msgstr ""
+
+msgid "Spot & Margin Trading"
+msgstr ""
+
+#, fuzzy
+#| msgid "start trading"
+msgid "Futures Trading"
+msgstr "commencer à trader"
+
+msgid "IMPORTANT: Make sure to copy your secret key before clicking save."
+msgstr ""
+
+msgid ""
+"Once you have your API keys, return to our platform's Automate section and "
+"use them to link your Binance account with our automation system. This will "
+"enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's Binance.US?"
+msgstr ""
+
+msgid ""
+"Binance.US is the United States-regulated arm of Binance, specifically "
+"designed for U.S. residents. It provides a secure and compliant platform for "
+"trading cryptocurrencies with features including:"
+msgstr ""
+
+msgid "Regulated cryptocurrency trading for U.S. residents"
+msgstr ""
+
+msgid "Competitive trading fees"
+msgstr ""
+
+msgid "Secure API integration for automated trading"
+msgstr ""
+
+msgid "Compliance with U.S. regulations and requirements"
+msgstr ""
+
+msgid "What can you trade with Binance.US?"
+msgstr ""
+
+msgid "With Binance.US, only Spot trading is supported."
+msgstr ""
+
+msgid ""
+"Your account must have sufficient base and quote asset balances to trade in "
+"both directions."
+msgstr ""
+
+#, fuzzy
+#| msgid "start trading"
+msgid "Spot Trading"
+msgstr "commencer à trader"
+
+msgid "Create a Binance.US Account"
+msgstr ""
+
+msgid "If you don’t already have a Binance.US account, please sign up"
+msgstr ""
+
+msgid "Navigate to API Management"
+msgstr ""
+
+msgid "Log in to your Binance.US account."
+msgstr ""
+
+msgid "Click your Email/Username at the top-right corner."
+msgstr ""
+
+msgid "Select \"API Management\" from the dropdown menu."
+msgstr ""
+
+msgid "Generate an API Key"
+msgstr ""
+
+msgid "Enter a name for your key."
+msgstr ""
+
+msgid "click \"Create API\"."
+msgstr ""
+
+msgid "Click \"Edit restrictions.\""
+msgstr ""
+
+msgid ""
+"Enable \"Restrict access to trusted IPs only\" and add our server’s IP "
+"address."
+msgstr ""
+
+msgid "Enable \"Spot Trading.\""
+msgstr ""
+
+msgid "Copy your API keys and then click \"Save.\""
+msgstr ""
+
+msgid "IMPORTANT: Ensure you copy your secret key before saving changes."
+msgstr ""
+
+msgid "What's BingX?"
+msgstr ""
+
+msgid ""
+"BingX is a leading global cryptocurrency exchange that empowers users with "
+"seamless spot and derivatives trading. Known for its intuitive interface, "
+"advanced trading tools, and strong security infrastructure, BingX serves "
+"both beginner and professional traders across diverse markets."
+msgstr ""
+
+msgid "Comprehensive spot and futures trading"
+msgstr ""
+
+msgid "Low, transparent fees"
+msgstr ""
+
+msgid "Top-tier security protocols"
+msgstr ""
+
+msgid "Easy-to-use platform for all experience levels"
+msgstr ""
+
+msgid "What can you trade with BingX?"
+msgstr ""
+
+msgid "With BingX, you can trade the following:"
+msgstr ""
+
+msgid ""
+"Quantity is measured in units of the base currency. Your account must hold "
+"enough base and quote assets to trade in both directions."
+msgstr ""
+
+msgid ""
+"Position size is measured in units of the base currency, with USDT used as "
+"margin."
+msgstr ""
+
+msgid ""
+"Position size is measured in contract units, using the base currency as "
+"margin."
+msgstr ""
+
+msgid "Hedge Mode is available by setting your Position Mode to"
+msgstr ""
+
+msgid "Hedge"
+msgstr ""
+
+msgid ""
+"from the BingX trading platform; otherwise, the account operates in One-Way "
+"Mode."
+msgstr ""
+
+msgid ""
+"Margin and leverage settings can be adjusted directly from the BingX trading "
+"platform."
+msgstr ""
+
+msgid "Follow the steps below to create and configure your API keys for BingX."
+msgstr ""
+
+msgid "Create a BingX Account"
+msgstr ""
+
+msgid "If you don’t already have a BingX account, please sign up"
+msgstr ""
+
+msgid "Log in to your BingX account."
+msgstr ""
+
+msgid "Click on your profile icon in the top-right corner and select"
+msgstr ""
+
+msgid "API Management"
+msgstr ""
+
+msgid "Create Your API Key"
+msgstr ""
+
+msgid "Click"
+msgstr ""
+
+msgid "Create API"
+msgstr ""
+
+msgid "Enter a name for your API key (e.g., “IsAlgo Key”)."
+msgstr ""
+
+msgid ""
+"Enable the required permissions (read, Spot trading, and Futures trading)."
+msgstr ""
+
+msgid "Enable IP Restrictions and Confirm"
+msgstr ""
+
+msgid "Paste our server's IP address in the IP whitelist field:"
+msgstr ""
+
+msgid ""
+"Click Confirm and Complete any required security verifications like email or "
+"Google Authenticator code."
+msgstr ""
+
+msgid "Once verified, click"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "to get your API key credentials."
+msgstr ""
+
+#, fuzzy
+#| msgid "Join the Conversation"
+msgid "Complete the Integration"
+msgstr "Rejoignez la conversation"
+
+msgid ""
+"Copy your API Key and Secret and paste them into the form. Keep them secure "
+"and never share them with anyone."
+msgstr ""
+
+msgid "What's Bitget?"
+msgstr ""
+
+msgid ""
+"Bitget is a leading global cryptocurrency exchange that specializes in "
+"derivatives trading. The platform offers a comprehensive suite of trading "
+"services including:"
+msgstr ""
+
+msgid "Spot trading with competitive fees"
+msgstr ""
+
+msgid "Futures trading with up to 125x leverage"
+msgstr ""
+
+msgid "Advanced trading features and tools"
+msgstr ""
+
+msgid "Copy trading functionality"
+msgstr ""
+
+msgid "What can you trade with Bitget?"
+msgstr ""
+
+msgid "With Bitget, you can trade the following:"
+msgstr ""
+
+msgid "Quantity is measured in base asset units. Margin mode should be set to"
+msgstr ""
+
+msgid "Isolated"
+msgstr ""
+
+msgid ""
+", using USDT as the margin coin. Leverage can be adjusted directly on the "
+"exchange."
+msgstr ""
+
+msgid ""
+", using USDE as the margin coin. Leverage can be adjusted on the exchange."
+msgstr ""
+
+msgid "USDC-M Futures"
+msgstr ""
+
+msgid ""
+", using USDC as the margin coin. Leverage can be adjusted on the exchange."
+msgstr ""
+
+msgid "USDT-M, COIN-M, and USDC-M Futures"
+msgstr ""
+
+msgid ""
+"Hedge Mode can be enabled from the exchange platform if you want to use dual-"
+"side trading; otherwise, the account will operate in One-Way Mode."
+msgstr ""
+
+msgid "Create a Bitget Account"
+msgstr ""
+
+msgid "If you don’t already have a Bitget account, please sign up"
+msgstr ""
+
+msgid "Navigate to API Keys"
+msgstr ""
+
+msgid "Log in to your Bitget account."
+msgstr ""
+
+msgid "Click on your profile icon in the top-right corner."
+msgstr ""
+
+msgid "Select \"API Keys\" from the dropdown menu."
+msgstr ""
+
+msgid "Click \"Create API Key\""
+msgstr ""
+
+msgid "Give your API key a descriptive name in the Note."
+msgstr ""
+
+msgid "Set a Passphrase."
+msgstr ""
+
+msgid "Under \"Permissions\" select \"Read-write\""
+msgstr ""
+
+msgid "Under \"Permission Type\" tick \"Name\""
+msgstr ""
+
+msgid "Scroll down and add our server's IP address:"
+msgstr ""
+
+msgid "Click \"Next\" to get your API Keys."
+msgstr ""
+
+msgid "IMPORTANT: Ensure you copy your secret key before clicking Confirm."
+msgstr ""
+
+msgid "What's BitMart?"
+msgstr ""
+
+msgid ""
+"BitMart is a globally recognized cryptocurrency exchange known for its wide "
+"range of digital assets and trading options. Whether you're a beginner or a "
+"seasoned trader, BitMart offers an intuitive platform, high liquidity, and "
+"advanced features to support efficient and secure trading experiences."
+msgstr ""
+
+msgid "Diverse crypto assets and trading pairs"
+msgstr ""
+
+msgid "Low fees and high performance"
+msgstr ""
+
+msgid "Enterprise-grade security infrastructure"
+msgstr ""
+
+msgid "Easy-to-navigate interface for all users"
+msgstr ""
+
+msgid "What can you trade with BitMart?"
+msgstr ""
+
+msgid "With BitMart, you can trade the following:"
+msgstr ""
+
+msgid ""
+"Quantity is measured in base asset units. Your account must have sufficient "
+"base and quote balances to trade in both directions."
+msgstr ""
+
+msgid "USD‑M Futures (USDT‑M, USDC‑M)"
+msgstr ""
+
+msgid "COIN‑M Futures"
+msgstr ""
+
+msgid "USD‑M and COIN‑M Futures"
+msgstr ""
+
+msgid "Hedge Mode is available by switching your position mode to"
+msgstr ""
+
+msgid "; otherwise, the account will operate in One‑Way Mode."
+msgstr ""
+
+msgid ""
+"Margin and leverage settings can be adjusted directly on the BitMart trading "
+"platform."
+msgstr ""
+
+msgid ""
+"Follow the steps below to create and configure your API keys for BitMart."
+msgstr ""
+
+msgid "Create a BitMart Account"
+msgstr ""
+
+msgid "If you don’t already have a BitMart account, please sign up"
+msgstr ""
+
+msgid "Go to API Management"
+msgstr ""
+
+msgid "Log in to your BitMart account."
+msgstr ""
+
+msgid "Click on your profile icon at the top-right corner and select"
+msgstr ""
+
+msgid "Create an API Key"
+msgstr ""
+
+msgid ""
+"Enter a memo for your API key (Make sure to remember the memo because you "
+"will need it)."
+msgstr ""
+
+msgid "Set the necessery permissions (Spot Trade, Future Trade)."
+msgstr ""
+
+msgid "Set IP Whitelist and Confirm"
+msgstr ""
+
+msgid "Complete any security verification required (e.g., 2FA, email code)."
+msgstr ""
+
+msgid "Once done, click"
+msgstr ""
+
+msgid "to get your API credentials."
+msgstr ""
+
+#, fuzzy
+#| msgid "Join the Conversation"
+msgid "Complete the Connection"
+msgstr "Rejoignez la conversation"
+
+msgid ""
+"Copy your API Key and Secret, then paste them into the integration form in "
+"your IsAlgo automate dashboard. Ensure you keep your credentials safe and "
+"never share them."
+msgstr ""
+
+msgid "What's Bybit?"
+msgstr ""
+
+msgid ""
+"Bybit is a popular cryptocurrency exchange platform known for its robust "
+"trading features and user-friendly interface. The platform offers:"
+msgstr ""
+
+msgid "Spot and derivatives trading"
+msgstr ""
+
+msgid "High-performance trading engine"
+msgstr ""
+
+msgid "Advanced order types and trading tools"
+msgstr ""
+
+msgid "Institutional-grade security"
+msgstr ""
+
+msgid "What can you trade with Bybit?"
+msgstr ""
+
+msgid "With Bybit, you can trade the following:"
+msgstr ""
+
+msgid ""
+"Quantity is measured in base asset units. Margin and leverage can be "
+"adjusted directly on the Bybit platform."
+msgstr ""
+
+msgid "Position Mode will automatically be set to"
+msgstr ""
+
+msgid "for dual-side trading."
+msgstr ""
+
+msgid "Create a Bybit Account"
+msgstr ""
+
+msgid "If you don’t already have a Bybit account, please sign up"
+msgstr ""
+
+msgid "Navigate to API Key"
+msgstr ""
+
+msgid "Log in to your Bybit account."
+msgstr ""
+
+msgid "Select \"API\" from the dropdown menu."
+msgstr ""
+
+msgid "Click \"Create New Key\""
+msgstr ""
+
+msgid "Choose \"System generated API Keys\""
+msgstr ""
+
+msgid "Configure API Settings"
+msgstr ""
+
+msgid "Set the API key permissions to \"Read-Write\"."
+msgstr ""
+
+msgid ""
+"Enable \"Only IPs with permissions granted are allowed to access the "
+"OpenAPI\"."
+msgstr ""
+
+msgid "Paste our server's IP address:"
+msgstr ""
+
+msgid "Scroll down and enable \"Unified Trading\"."
+msgstr ""
+
+msgid "Click \"Submit\" to see your API Keys."
+msgstr ""
+
+msgid "IMPORTANT: Ensure you copy your secret key before clicking Understood."
+msgstr ""
+
+msgid "What's coinbase?"
+msgstr ""
+
+msgid ""
+"Coinbase is one of the most trusted and widely used cryptocurrency exchanges "
+"in the world. It offers a secure, user-friendly platform for buying, "
+"selling, and managing a broad range of digital assets. Designed for both "
+"beginners and experienced investors, Coinbase combines simplicity with "
+"advanced features and regulatory compliance."
+msgstr ""
+
+msgid "Buy, sell, and hold hundreds of cryptocurrencies"
+msgstr ""
+
+msgid "Regulated and compliant with major financial standards"
+msgstr ""
+
+msgid "Robust security including cold storage and 2FA"
+msgstr ""
+
+msgid "Easy-to-use interface on both web and mobile"
+msgstr ""
+
+msgid "What can you trade with Coinbase?"
+msgstr ""
+
+msgid "With Coinbase, you can trade the following:"
+msgstr ""
+
+msgid "Perpetuals and Futures"
+msgstr ""
+
+msgid "Quantity is measured in base asset units. Leverage is fixed at 20x."
+msgstr ""
+
+msgid "Hedge Mode is not supported; trading is limited to One‑Way Mode."
+msgstr ""
+
+msgid ""
+"Follow the steps below to create and configure your API keys for KuCoin."
+msgstr ""
+
+msgid "Create a coinbase Account"
+msgstr ""
+
+msgid "If you don’t already have a coinbase account, please sign up"
+msgstr ""
+
+msgid "Log in to your coinbase account."
+msgstr ""
+
+msgid "In the left-hand navigation menu, click on"
+msgstr ""
+
+msgid "More"
+msgstr ""
+
+msgid "Advanced API"
+msgstr ""
+
+msgid "Configure Your API Key"
+msgstr ""
+
+msgid "Enter a name for the API (e.g., “IsAlgo key”)."
+msgstr ""
+
+msgid ""
+"Choose the appropriate portfolio: use \"Default\" for Spot trading and "
+"\"Perpetuals\" for Futures trading."
+msgstr ""
+
+msgid "Enable Trade execution."
+msgstr ""
+
+msgid "Enable Security and Whitelist IP"
+msgstr ""
+
+msgid "and click"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Complete 2FA and any other required verification."
+msgstr ""
+
+msgid "to generate your API Key and Secret."
+msgstr ""
+
+msgid "What's Crypto.com?"
+msgstr ""
+
+msgid ""
+"Crypto.com is a leading cryptocurrency exchange offering a range of trading "
+"services including spot trading and various financial products, all through "
+"a user-friendly and secure platform."
+msgstr ""
+
+msgid "Spot and advanced trading"
+msgstr ""
+
+msgid "Competitive fees"
+msgstr ""
+
+msgid "Robust security measures"
+msgstr ""
+
+msgid "User-friendly experience"
+msgstr ""
+
+msgid "What can you trade with Crypto.com?"
+msgstr ""
+
+msgid "With Crypto.com, you can trade the following:"
+msgstr ""
+
+msgid "Perpetuals"
+msgstr ""
+
+msgid "Follow the steps below to configure your API keys for Crypto.com."
+msgstr ""
+
+msgid "Create a Crypto.com Account"
+msgstr ""
+
+msgid "If you don’t already have a Crypto.com account, please sign up"
+msgstr ""
+
+msgid "Log in to your Crypto.com account."
+msgstr ""
+
+msgid "Manage Account"
+msgstr ""
+
+msgid "from the dropdown menu."
+msgstr ""
+
+#, fuzzy
+#| msgid "Go to your"
+msgid "Go to"
+msgstr "Allez sur votre"
+
+msgid "Save the provider Secret key; you'll need it later."
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "on the API key that you just created."
+msgstr ""
+
+msgid "Enable trading for your API key."
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "to complete the setup."
+msgstr ""
+
+msgid ""
+"Once you have your API keys, return to our platform's Automate section and "
+"use them to link your Crypto.com account with our automation system. This "
+"will enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's cTrader?"
+msgstr ""
+
+msgid ""
+"cTrader is a widely used trading platform that offers a robust trading "
+"environment for both beginners and experienced traders. It provides:"
+msgstr ""
+
+msgid "Advanced charting and analysis tools"
+msgstr ""
+
+#, fuzzy
+#| msgid "24/7 automated trading"
+msgid "Automated trading capabilities"
+msgstr "Trading automatisé 24h/24"
+
+msgid "Secure and reliable execution"
+msgstr ""
+
+msgid "Extensive broker support"
+msgstr ""
+
+msgid "What can you trade in cTrader?"
+msgstr ""
+
+msgid ""
+"With cTrader, you can trade a wide range of financial instruments depending "
+"on your broker, including:"
+msgstr ""
+
+msgid "Forex"
+msgstr ""
+
+msgid "Major, minor, and exotic currency pairs."
+msgstr ""
+
+msgid "Commodities"
+msgstr ""
+
+msgid "Gold, silver, oil, and other commodities."
+msgstr ""
+
+msgid ""
+"Popular stock market indices such as S&amp;P 500, NASDAQ, DAX, and more."
+msgstr ""
+
+msgid "Cryptocurrencies"
+msgstr ""
+
+msgid ""
+"Bitcoin, Ethereum, and other cryptocurrencies (availability depends on "
+"broker)."
+msgstr ""
+
+msgid "CFDs"
+msgstr ""
+
+msgid "Contracts for Difference for various markets offered by your broker."
+msgstr ""
+
+msgid ""
+"Note: The availability of instruments may vary depending on your chosen "
+"broker and account type (demo or live)."
+msgstr ""
+
+msgid "cTrader credentials"
+msgstr ""
+
+msgid "Follow the steps below to get your cTrader credentials."
+msgstr ""
+
+msgid "Choose a cTrader Broker"
+msgstr ""
+
+msgid "To get started with cTrader, choose one of the brokers that support it:"
+msgstr ""
+
+msgid "Here are some brokers that support cTrader:"
+msgstr ""
+
+msgid "To see all brokers supporting cTrader, visit the"
+msgstr ""
+
+msgid "cTrader Brokers List"
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Create a cTrader Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid ""
+"If you don’t already have a cTrader account, visit the website of your "
+"chosen broker from the list above."
+msgstr ""
+
+msgid "Create an account or log in if you already have one."
+msgstr ""
+
+msgid ""
+"Open a cTrader trading account (demo or live) from the broker's dashboard."
+msgstr ""
+
+msgid "Get Your cTrader Authentication Token"
+msgstr ""
+
+msgid "Get your cTrader authentication token"
+msgstr ""
+
+msgid ""
+"or by clicking on Get Token from our automate dashboard when you're adding a "
+"cTrader account."
+msgstr ""
+
+msgid ""
+"From your accounts list select only one account to generate the "
+"authentication token for it. If select multiple accounts, the token will be "
+"generated for the first one only."
+msgstr ""
+
+msgid "Click on \"Allow access\" to generate your authentication token."
+msgstr ""
+
+msgid "Copy the generated authentication token."
+msgstr ""
+
+msgid ""
+"Once you have your authentication token, return to our platform's Automate "
+"section to link your cTrader account. This will enable automated trading "
+"based on your TradingView alerts."
+msgstr ""
+
+msgid "What's Deriv?"
+msgstr ""
+
+msgid ""
+"Deriv is an online multi‑asset trading platform that allows you to trade "
+"forex, commodities, indices, cryptocurrencies, and synthetic indices with a "
+"fast, secure, and intuitive experience."
+msgstr ""
+
+msgid "User friendly interface suitable for beginners and experts"
+msgstr ""
+
+msgid "Wide range of markets and instruments"
+msgstr ""
+
+msgid "Automated and manual trading options"
+msgstr ""
+
+msgid "Reliable execution and 24/7 synthetic markets"
+msgstr ""
+
+msgid "What can you trade in Deriv?"
+msgstr ""
+
+msgid ""
+"With Deriv, you can trade a wide range of financial instruments, including:"
+msgstr ""
+
+msgid "Gold, silver, and other commodities."
+msgstr ""
+
+msgid "Popular global stock indices."
+msgstr ""
+
+msgid "Bitcoin, Ethereum, and other cryptocurrencies may be available."
+msgstr ""
+
+msgid "Note:"
+msgstr ""
+
+msgid "Only Options trading accounts are supported through this account type."
+msgstr ""
+
+msgid ""
+"This account type supports multiplier contracts only and does not support "
+"partial closures."
+msgstr ""
+
+msgid "Deriv credentials"
+msgstr ""
+
+msgid "Follow the steps below to get your Deriv credentials."
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Create a Deriv Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid "If you don't already have a Deriv account,"
+msgstr ""
+
+msgid "visit the Deriv website"
+msgstr ""
+
+msgid "to create one."
+msgstr ""
+
+msgid "Log in to your Deriv account."
+msgstr ""
+
+msgid "Get your Options Trading Account ID"
+msgstr ""
+
+msgid "from the nav bar."
+msgstr ""
+
+msgid "Activate your Options trading account if you haven't done so already."
+msgstr ""
+
+msgid ""
+"Your Options Trading Account ID is displayed below your account balance."
+msgstr ""
+
+msgid "Get Your Deriv Authentication Token"
+msgstr ""
+
+msgid "Get your Deriv authentication token"
+msgstr ""
+
+msgid ""
+"or by clicking on Get Token from our automate dashboard when you're adding a "
+"Deriv account."
+msgstr ""
+
+msgid "to generate your authentication token."
+msgstr ""
+
+msgid "From your accounts list copy the token of your options trading account."
+msgstr ""
+
+msgid ""
+"Once you have your authentication token and options trading account ID, "
+"return to our platform's Automate section to link your Deriv account. This "
+"will enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's HankoTrade?"
+msgstr ""
+
+msgid ""
+"HankoTrade is a widely used trading platform that offers a robust trading "
+"environment for both beginners and experienced traders. It provides:"
+msgstr ""
+
+msgid "What can you trade in HankoTrade?"
+msgstr ""
+
+msgid ""
+"With HankoTrade, you can trade a variety of financial instruments depending "
+"on your account type and broker, including:"
+msgstr ""
+
+msgid "Popular stock market indices such as S&P 500, NASDAQ, DAX, and more."
+msgstr ""
+
+msgid "Bitcoin, Ethereum, and other cryptocurrencies."
+msgstr ""
+
+msgid "HankoTrade login Details"
+msgstr ""
+
+msgid "Follow the steps below to get your HankoTrade login details."
+msgstr ""
+
+msgid "Create a HankoTrade Account"
+msgstr ""
+
+msgid "If you don't already have a HankoTrade account,"
+msgstr ""
+
+msgid "Create one here."
+msgstr ""
+
+msgid "Access Your Trading Account Credentials"
+msgstr ""
+
+msgid "After signing up:"
+msgstr ""
+
+msgid "Create a demo or live trading account from the HankoTrade dashboard."
+msgstr ""
+
+msgid ""
+"Save the trading account credentials securely - you'll need them for "
+"platform integration."
+msgstr ""
+
+msgid ""
+"Once you have your trading account login credentials, return to our "
+"platform's Automate section to link your HankoTrade account. This will "
+"enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's Hyperliquid?"
+msgstr ""
+
+msgid ""
+"Hyperliquid is a decentralized exchanges (DEX) that provides a platform for "
+"trading various cryptocurrencies."
+msgstr ""
+
+msgid "What can you trade with Hyperliquid?"
+msgstr ""
+
+msgid "With Hyperliquid, you can trade"
+msgstr ""
+
+msgid "Go to Hyperliquid exchange by clicking on"
+msgstr ""
+
+msgid ""
+"Connect your wallet by clicking on the \"Connect\" button in the top-right "
+"corner."
+msgstr ""
+
+msgid "Click on tools from the navigation."
+msgstr ""
+
+msgid "Type a name for your API key."
+msgstr ""
+
+msgid "Click on \"Generate address\" (This is not your wallet address)."
+msgstr ""
+
+msgid "Click on \"Authorize API wallet\"."
+msgstr ""
+
+msgid "Set the Days Valid to MAX."
+msgstr ""
+
+msgid ""
+"This private key will expire when it reaches its maximum validity period. "
+"Make sure to renew it by following the same steps before expiration."
+msgstr ""
+
+msgid "Copy your Private Key to a secure location."
+msgstr ""
+
+msgid ""
+"Get your wallet address from your wallet provider or by clicking on the "
+"\"Copy Address\" icon."
+msgstr ""
+
+msgid ""
+"Use your wallet address and private key to connect your account to our "
+"platform."
+msgstr ""
+
+msgid ""
+"Once you have your API keys and wallet address, return to our platform's "
+"Automate section and use them to link your Hyperliquid account with our "
+"automation system. This will enable automated trading based on your "
+"TradingView alerts."
+msgstr ""
+
+msgid "What's Kraken?"
+msgstr ""
+
+msgid ""
+"Kraken is one of the world's largest cryptocurrency exchanges by trading "
+"volume. It offers a comprehensive platform for trading various "
+"cryptocurrencies, including spot trading, futures, options, and more."
+msgstr ""
+
+msgid "What can you trade with Kraken?"
+msgstr ""
+
+msgid "With Kraken, you can trade the following instruments:"
+msgstr ""
+
+msgid ""
+"Available for certain account types. Does not include expiry or stock "
+"contracts."
+msgstr ""
+
+msgid "Create a Kraken Account"
+msgstr ""
+
+msgid "Sign up for a Kraken account if you don't have one."
+msgstr ""
+
+#, fuzzy
+#| msgid "Go to your"
+msgid "Log in to your"
+msgstr "Allez sur votre"
+
+msgid "Kraken Pro account"
+msgstr ""
+
+msgid "Select \"Settings\" from the dropdown menu"
+msgstr ""
+
+msgid "Navigate to the \"Connections & API\" tab"
+msgstr ""
+
+msgid "Set permissions to \"Query Funds\" and \"Orders and trades\"."
+msgstr ""
+
+msgid "Enable IP address restriction and add our server's IP address:"
+msgstr ""
+
+msgid "Click \"Generate Key\""
+msgstr ""
+
+msgid ""
+"Make sure to copy and securely store your API Key and Secret Key as they "
+"will be shown only once."
+msgstr ""
+
+msgid ""
+"Once you have your API keys, return to our platform's Automate section and "
+"use them to link your Kraken account with our automation system. This will "
+"enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's KuCoin?"
+msgstr ""
+
+msgid ""
+"KuCoin is a globally trusted cryptocurrency exchange known for its expansive "
+"selection of digital assets, powerful trading tools, and innovative "
+"features. It caters to both novice and professional traders by offering "
+"seamless spot, margin, and futures trading in a highly secure environment."
+msgstr ""
+
+msgid "Extensive range of cryptocurrencies and trading pairs"
+msgstr ""
+
+msgid "Advanced trading options including spot, margin, and futures"
+msgstr ""
+
+msgid "Strong security measures including 2FA and encryption"
+msgstr ""
+
+msgid "User-friendly platform with a responsive mobile app"
+msgstr ""
+
+msgid "What can you trade with KuCoin?"
+msgstr ""
+
+msgid "With KuCoin, you can trade the following instruments:"
+msgstr ""
+
+msgid ""
+"Includes USDT-Margined, Coin-Margined, and USDC-Margined contracts. Quantity "
+"is measured in contracts."
+msgstr ""
+
+msgid "Margin is set to"
+msgstr ""
+
+msgid "ISOLATED"
+msgstr ""
+
+msgid "with up to 25x leverage."
+msgstr ""
+
+msgid "USDT-Margined and USDC-Margined Futures"
+msgstr ""
+
+msgid "Account balance must have sufficient quote asset to open positions."
+msgstr ""
+
+msgid "Coin-Margined Futures"
+msgstr ""
+
+msgid "Account balance must have sufficient base asset to open positions."
+msgstr ""
+
+msgid "Futures Position Mode"
+msgstr ""
+
+msgid "Can be set to"
+msgstr ""
+
+msgid "on the exchange platform if desired."
+msgstr ""
+
+msgid "Create a KuCoin Account"
+msgstr ""
+
+msgid "If you don’t already have a KuCoin account, please sign up"
+msgstr ""
+
+msgid "Log in to your KuCoin account."
+msgstr ""
+
+msgid "Click on your profile icon in the upper right."
+msgstr ""
+
+msgid "Create an API passphrase and store it securely—you will need it later."
+msgstr ""
+
+msgid "Select the required permissions (Spot, futures trading)."
+msgstr ""
+
+msgid "Set up IP whitelisting for added protection."
+msgstr ""
+
+msgid "What's MetaTrader 4?"
+msgstr ""
+
+msgid ""
+"MetaTrader 4 is a widely used trading platform that offers a robust trading "
+"environment for both beginners and experienced traders. It provides:"
+msgstr ""
+
+msgid "What can you trade with MetaTrader 4?"
+msgstr ""
+
+msgid ""
+"With MetaTrader 4, you can trade a wide range of financial instruments "
+"depending on your broker, including:"
+msgstr ""
+
+msgid "MetaTrader 4 login details"
+msgstr ""
+
+msgid "Follow the steps below to get your MetaTrader 4 login details."
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Create a MetaTrader 4 Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid ""
+"If you don't already have a MetaTrader 4 account, visit one of the following "
+"brokers:"
+msgstr ""
+
+msgid "Select a trading account type that suits your trading needs."
+msgstr ""
+
+msgid "Access Your MetaTrader 4 Credentials"
+msgstr ""
+
+msgid "After signing up with your chosen broker:"
+msgstr ""
+
+msgid "Check your email for your MetaTrader 4 login credentials."
+msgstr ""
+
+msgid ""
+"Save these credentials securely - you'll need them for platform integration."
+msgstr ""
+
+msgid ""
+"Once you have your MetaTrader 4 login credentials, return to our platform's "
+"Automate section to link your account. This will enable automated trading "
+"based on your TradingView alerts."
+msgstr ""
+
+msgid "What's MetaTrader 5?"
+msgstr ""
+
+msgid ""
+"MetaTrader 5 is a comprehensive trading platform that offers advanced "
+"trading features for both beginner and professional traders. It provides:"
+msgstr ""
+
+msgid "Enhanced charting and technical analysis tools"
+msgstr ""
+
+msgid "Automated trading and expert advisors"
+msgstr ""
+
+msgid "Multi-asset trading capabilities"
+msgstr ""
+
+msgid "Advanced order management"
+msgstr ""
+
+msgid "What can you trade with MetaTrader 5?"
+msgstr ""
+
+msgid ""
+"With MetaTrader 5, you can trade a wide range of financial instruments "
+"depending on your broker, including:"
+msgstr ""
+
+msgid "MetaTrader 5 login details"
+msgstr ""
+
+msgid "Follow the steps below to get your MetaTrader 5 login details."
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Create a MetaTrader 5 Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid ""
+"If you don't already have a MetaTrader 5 account, visit one of the following "
+"brokers:"
+msgstr ""
+
+msgid "Access Your MetaTrader 5 Credentials"
+msgstr ""
+
+msgid "Check your email for your MetaTrader 5 login credentials."
+msgstr ""
+
+msgid ""
+"Once you have your MetaTrader 5 login credentials, return to our platform's "
+"Automate section to link your account. This will enable automated trading "
+"based on your TradingView alerts."
+msgstr ""
+
+msgid "What's MEXC.com?"
+msgstr ""
+
+msgid ""
+"MEXC.com is a global cryptocurrency exchange offering a wide range of "
+"digital assets and advanced trading capabilities with a secure and intuitive "
+"user experience."
+msgstr ""
+
+msgid "Spot trading and other advanced tools"
+msgstr ""
+
+msgid "Secure and fast platform"
+msgstr ""
+
+msgid "Easy to use interface"
+msgstr ""
+
+msgid "What can you trade with Mexc?"
+msgstr ""
+
+msgid "With Mexc, you can trade the following instruments:"
+msgstr ""
+
+msgid "Futures Trading is not supported by the exchange."
+msgstr ""
+
+msgid "Follow the steps below to configure your API keys for MEXC.com."
+msgstr ""
+
+msgid "Create a MEXC Account"
+msgstr ""
+
+msgid "If you don’t already have a MEXC account, please sign up"
+msgstr ""
+
+msgid "Log in to your MEXC account."
+msgstr ""
+
+msgid "Give the API key a name in the note input."
+msgstr ""
+
+msgid ""
+"Turn on the necessary functions required for our system (Spot, view account "
+"data, trade permissions, etc.)."
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid ""
+"Make sure to save your API and Secret key securely; you will need them later."
+msgstr ""
+
+msgid ""
+"Once you have your MEXC API keys, return to our platform's Automate section "
+"and use them to link your MEXC account with our automation system. This "
+"enables automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's OKX?"
+msgstr ""
+
+msgid ""
+"OKX is one of the world's largest cryptocurrency exchanges by trading "
+"volume. It offers a comprehensive platform for trading various "
+"cryptocurrencies, including spot trading, futures, options, and more."
+msgstr ""
+
+msgid "What can you trade with OKX?"
+msgstr ""
+
+msgid "With OKX, you can trade the following instruments:"
+msgstr ""
+
+msgid "Perpetual Futures (USDT-M, USDC-M, COIN-M)"
+msgstr ""
+
+msgid "by default. Leverage can be adjusted directly on the exchange."
+msgstr ""
+
+msgid "Expiry Futures"
+msgstr ""
+
+msgid ""
+"Asset names follow the format BTC-USD-YYMMDD, e.g., BTC-USD-230329 for March "
+"29, 2023 expiry."
+msgstr ""
+
+msgid ""
+"Hedge mode can be enabled by setting the position side to Hedge Mode on the "
+"exchange."
+msgstr ""
+
+msgid "Create an OKX Account"
+msgstr ""
+
+msgid "Sign up for an OKX account if you don't have one."
+msgstr ""
+
+msgid "Log in to your OKX account"
+msgstr ""
+
+msgid "Select \"API\" from the dropdown menu"
+msgstr ""
+
+msgid "Add our server's IP address to the allowlist:"
+msgstr ""
+
+msgid "Set permissions to \"Trade\"."
+msgstr ""
+
+msgid "Set a passphrase for your API key."
+msgstr ""
+
+msgid "Click \"Submit all\" to create the API keys."
+msgstr ""
+
+msgid ""
+"Make sure to copy and securely store your API Key, Secret Key and passphrase "
+"as they will be shown only once."
+msgstr ""
+
+msgid ""
+"Once you have your API keys, return to our platform's Automate section and "
+"use them to link your OKX account with our automation system. This will "
+"enable automated trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's Tastytrade?"
+msgstr ""
+
+msgid ""
+"Tastytrade is a commission-free trading platform that provides an API for "
+"algorithmic trading. It offers:"
+msgstr ""
+
+msgid "Commission-free trading for stocks, ETFs, futures, and crypto"
+msgstr ""
+
+msgid "Advanced trading tools and analytics"
+msgstr ""
+
+msgid "Educational resources for traders of all levels"
+msgstr ""
+
+msgid "What can you trade with Tastytrade?"
+msgstr ""
+
+msgid "With Tastytrade, you can trade the following assets:"
+msgstr ""
+
+msgid "ETFs"
+msgstr ""
+
+msgid "Credentials setup"
+msgstr ""
+
+msgid "Follow the steps below to link your Tastytrade account."
+msgstr ""
+
+msgid "Create an Tastytrade Account"
+msgstr ""
+
+msgid "Sign up for an Tastytrade account if you don't have one."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your username"
+msgid "Get your client secret"
+msgstr "Définir votre nom d'utilisateur"
+
+msgid "Log in to your Tastytrade account"
+msgstr ""
+
+msgid "From the top navbar select \"Manage\""
+msgstr ""
+
+msgid "In the left sidebar, click on \"Profile\""
+msgstr ""
+
+msgid "Select the \"API\" from the profile options"
+msgstr ""
+
+msgid "Click on \"OAuth Applications\" tab"
+msgstr ""
+
+msgid ""
+"Click on \"Create New Application\" button if you do not have any existing "
+"application"
+msgstr ""
+
+msgid "Fill in the application details as follows:"
+msgstr ""
+
+msgid "Application Name:"
+msgstr ""
+
+msgid "Choose a name for your application (e.g., \"Automate Trading App\")"
+msgstr ""
+
+msgid "Scopes:"
+msgstr ""
+
+msgid "Select the following scopes:"
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+#, fuzzy
+#| msgid "For Traders"
+msgid "Trade"
+msgstr "Pour les traders"
+
+msgid "OpenId"
+msgstr ""
+
+msgid "Redirect URI:"
+msgstr ""
+
+msgid "Use the following URI:"
+msgstr ""
+
+msgid ""
+"After filling in the details, click on \"Finish\" to create the application "
+"and obtain your Client Secret."
+msgstr ""
+
+msgid ""
+"If you have existing applications, click on \"Manage\" then \"Settings\" of "
+"the application you want to use"
+msgstr ""
+
+msgid "Click on \"Regenerate\" to get a new Client Secret"
+msgstr ""
+
+msgid "Copy your Client Secret for use in our platform"
+msgstr ""
+
+msgid "Get your refresh token"
+msgstr ""
+
+msgid ""
+"In the OAth Applications tab, click on \"Manage\" then \"Create Grant\" of "
+"the application you want to use"
+msgstr ""
+
+msgid "In the Scopes section, select the following scopes:"
+msgstr ""
+
+msgid "And then click on \"Create\""
+msgstr ""
+
+msgid "Copy your refresh token for use in our platform"
+msgstr ""
+
+msgid ""
+"Once you have your Client Secret and refresh token, return to our platform's "
+"Automate section to link your Tastytrade account. This will enable automated "
+"trading based on your TradingView alerts."
+msgstr ""
+
+msgid "What's TradeLocker?"
+msgstr ""
+
+msgid ""
+"TradeLocker is a trading platform that connects traders with brokers and "
+"proprietary trading firms. It offers:"
+msgstr ""
+
+msgid "Access to multiple brokers and prop firms"
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your trading view username"
+msgid "Secure trading environment"
+msgstr "Définir votre nom d'utilisateur TradingView"
+
+msgid "Performance tracking"
+msgstr ""
+
+msgid "Integration capabilities with trading platforms"
+msgstr ""
+
+msgid "What can you trade with TradeLocker?"
+msgstr ""
+
+msgid ""
+"With TradeLocker, you can trade a variety of financial instruments depending "
+"on your broker and account type, including:"
+msgstr ""
+
+msgid "For the list of brokers and prop firms supported by TradeLocker,"
+msgstr ""
+
+msgid "TradeLocker login details"
+msgstr ""
+
+msgid "follow the steps below to ge your TradeLocker login details."
+msgstr ""
+
+#, fuzzy
+#| msgid "Delete Seller Account"
+msgid "Create a TradeLocker Account"
+msgstr "Supprimer le compte vendeur"
+
+msgid "If you don't already have a TradeLocker account, visit"
+msgstr ""
+
+msgid ""
+"Choose a broker/prop to trade with from the list of brokers supported by "
+"TradeLocker and sign up to it."
+msgstr ""
+
+msgid "Access Your TradeLocker Credentials"
+msgstr ""
+
+msgid "After signing up with your chosen broker/prop firm:"
+msgstr ""
+
+msgid "Check your email for TradeLocker login credentials."
+msgstr ""
+
+msgid "Get your account ID"
+msgstr ""
+
+msgid "You can find your account ID in the TradeLocker trading platform."
+msgstr ""
+
+msgid "Log in to the TradeLocker trading platform."
+msgstr ""
+
+msgid ""
+"Click on your profile icon in the bottom left corner to find your account ID."
+msgstr ""
+
+msgid ""
+"By default we will use the first account if you have multiple accounts and "
+"you didn't specify a specific account ID."
+msgstr ""
+
+msgid ""
+"Once you have your TradeLocker login credentials, return to our platform's "
+"Automate section to link your TradeLocker account. This will enable "
+"automated trading through our system based on your TradingView alerts."
+msgstr ""
+
+msgid ""
+"TradingView's alert system provides a powerful webhook feature that enables "
+"automated trading. When an alert triggers, it sends the alert message to a "
+"specified webhook URL, which then forwards the instruction to your broker "
+"for execution."
+msgstr ""
+
+msgid ""
+"To utilize this feature, you need to set up alerts in TradingView with "
+"messages formatted according to our automation system's requirements. Once "
+"configured, TradingView will send these alerts to the webhook URL provided "
+"by our platform, allowing for seamless trade execution based on your "
+"strategies."
+msgstr ""
+
+msgid "Built-in Automation System"
+msgstr ""
+
+msgid ""
+"Our platform features a built-in automation system designed to handle "
+"TradingView webhook alerts seamlessly. Key benefits include:"
+msgstr ""
+
+msgid "Support for multiple crypto, stock, and forex accounts."
+msgstr ""
+
+msgid "Simple accounts integration process."
+msgstr ""
+
+msgid "Comprehensive documentation and setup guides."
+msgstr ""
+
+msgid "Real-time trade execution monitoring."
+msgstr ""
+
+#, fuzzy
+#| msgid "Get started"
+msgid "Getting Started"
+msgstr "Commencer"
+
+msgid "To begin automating your trades, follow these essential steps:"
+msgstr ""
+
+msgid "Link Your Trading Account"
+msgstr ""
+
+msgid "Connect your preferred trading account by navigating to"
+msgstr ""
+
+#, fuzzy
+#| msgid "Automate"
+msgid "the Automate page"
+msgstr "Automatiser"
+
+msgid ""
+"and following the account-specific integration steps. We support various "
+"crypto, stock, and forex accounts with secure API integration."
+msgstr ""
+
+msgid ""
+"After linking your trading account, obtain your unique webhook URL from the "
+"Automate page. This URL will receive and process your TradingView alerts."
+msgstr ""
+
+msgid ""
+"Set up your strategy/indicator alert messages in the format required by your "
+"automation system. You can generate the correct format using our"
+msgstr ""
+
+msgid "Alert Playground."
+msgstr ""
+
+msgid "Test Your Setup"
+msgstr ""
+
+msgid ""
+"Before going live, thoroughly test your automation setup using small "
+"positions to ensure everything works as expected."
+msgstr ""
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "Strategy Testing"
+msgstr "Stratégie en place."
+
+msgid ""
+"Before enabling automation, thoroughly test your strategy to ensure it "
+"performs as expected. We recommend:"
+msgstr ""
+
+msgid "Back-testing with historical data."
+msgstr ""
+
+msgid "Paper trading to validate performance."
+msgstr ""
+
+msgid "Starting with small position sizes when going live."
+msgstr ""
+
+msgid "Monitoring initial trades closely."
+msgstr ""
+
+msgid "Automation Setup Process"
+msgstr ""
+
+msgid "Follow these steps to properly set up your automation:"
+msgstr ""
+
+msgid "Connect your broker in the Automate page to receive your webhook URL."
+msgstr ""
+
+msgid "See how"
+msgstr "Voir comment"
+
+msgid "Prepare Alert Messages"
+msgstr ""
+
+msgid "Configure your alert messages in the Strategy/indicator alerts section."
+msgstr ""
+
+msgid "Learn more"
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your trading view username"
+msgid "Set Up TradingView Alerts"
+msgstr "Définir votre nom d'utilisateur TradingView"
+
+msgid "Create alerts in TradingView to start receiving trade signals."
+msgstr ""
+
+msgid "View guide"
+msgstr ""
+
+msgid "Webhook Flexibility"
+msgstr ""
+
+msgid "A single webhook URL from our platform is versatile and can handle:"
+msgstr ""
+
+msgid "Multiple assets."
+msgstr ""
+
+msgid "Different timeframes."
+msgstr ""
+
+msgid "Various strategy settings."
+msgstr ""
+
+msgid "Multiple TradingView alerts."
+msgstr ""
+
+msgid ""
+"Simply use the same webhook URL across different TradingView alerts for "
+"seamless integration."
+msgstr ""
+
+msgid "Crypto Trading Requirements"
+msgstr ""
+
+msgid "For spot trading, you need to have sufficient balance in both:"
+msgstr ""
+
+msgid "Base currency (the asset you want to trade, e.g., BTC)"
+msgstr ""
+
+msgid "Quote currency (the currency used for pricing, e.g., USDT)"
+msgstr ""
+
+msgid ""
+"Example: For BTC/USDT trading, you need BTC for selling and USDT for buying"
+msgstr ""
+
+msgid "For futures trading, you only need balance in:"
+msgstr ""
+
+msgid "Quote currency (e.g., USDT) for margin and position maintenance"
+msgstr ""
+
+msgid "Example: For BTC/USDT Perpetual futures, you only need USDT balance"
+msgstr ""
+
+msgid "Security Warnings"
+msgstr ""
+
+msgid ""
+"Never share your webhook URL with anyone - it provides direct access to your "
+"trading automation."
+msgstr ""
+
+msgid ""
+"Keep your API keys and credentials private - sharing them compromises your "
+"account security."
+msgstr ""
+
+msgid ""
+"If you encounter any issues or you have a question, our support team is here "
+"to help. Contact us"
+msgstr ""
+
+msgid ""
+"This guide will walk you through setting up automated alerts on TradingView, "
+"helping you streamline your trading process and save time."
+msgstr ""
+
+msgid "Visit"
+msgstr ""
+
+msgid "and open a chart from the"
+msgstr ""
+
+msgid "Product -> Supercharts"
+msgstr ""
+
+msgid ""
+"section. To automate your alerts, use a strategy or indicator that supports "
+"built-in alerts. We recommend the IsAlgo strategy for its integrated alert "
+"system."
+msgstr ""
+
+msgid "Step 1: Configure Your Chart"
+msgstr ""
+
+msgid "1. Select the Asset:"
+msgstr ""
+
+msgid ""
+"Choose the asset to trade (e.g., BTCUSD, NAS100) and ensure the correct "
+"timeframe is displayed."
+msgstr ""
+
+msgid "2. Add the Strategy:"
+msgstr ""
+
+msgid ""
+"Apply your strategy to the chart. Test it thoroughly before automating your "
+"alerts."
+msgstr ""
+
+msgid "Step 2: Writing Alerts"
+msgstr ""
+
+msgid "Alerts require specific inputs. Here’s how to structure them:"
+msgstr ""
+
+msgid "Entry Alerts"
+msgstr ""
+
+msgid "Inputs for entry alerts:"
+msgstr ""
+
+msgid "Direction (Buy or Sell)"
+msgstr ""
+
+msgid "Asset name (e.g., BTCUSD, NAS100)"
+msgstr ""
+
+msgid "Volume or trade amount"
+msgstr ""
+
+msgid "Trade ID"
+msgstr ""
+
+msgid "use"
+msgstr ""
+
+msgid "with IsAlgo"
+msgstr ""
+
+msgid "Example Entry Alerts:"
+msgstr ""
+
+msgid "Exit Alerts"
+msgstr ""
+
+msgid "Inputs for exit alerts:"
+msgstr ""
+
+msgid "Trade type to exit (Buy or Sell)"
+msgstr ""
+
+msgid "Asset name"
+msgstr ""
+
+msgid "Partial close percentage"
+msgstr ""
+
+msgid "Example Exit Alerts:"
+msgstr ""
+
+msgid "Step 3: Paste Alerts"
+msgstr ""
+
+msgid ""
+"If using IsAlgo, paste the alert messages into the relevant input fields: "
+"Entry Long, Entry Short, Exit Long, Exit Short. Click OK to save."
+msgstr ""
+
+msgid "Step 4: Create a TradingView Alert"
+msgstr ""
+
+msgid "To create a TradingView alert:"
+msgstr ""
+
+msgid "Click the Alert icon (bell) in the chart toolbar."
+msgstr ""
+
+msgid "Create Alert"
+msgstr ""
+
+msgid "In"
+msgstr ""
+
+msgid "Condition"
+msgstr ""
+
+msgid "choose your strategy/indicator and select"
+msgstr ""
+
+msgid "Give the alert a descriptive name."
+msgstr ""
+
+#, fuzzy
+#| msgid "Go to your"
+msgid "Go to the"
+msgstr "Allez sur votre"
+
+msgid "Notifications"
+msgstr ""
+
+msgid "tab, enable"
+msgstr ""
+
+msgid "and paste your Webhook URL."
+msgstr ""
+
+msgid ""
+"Alerts are tied to the current asset and timeframe. Changing these or "
+"modifying strategy inputs requires recreating the alert."
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Add up to 5 screenshots or videos."
+msgstr ""
+
+msgid "Max file size is 10 MB"
+msgstr ""
+
+msgid ""
+"This is a new img This is a new img This is a new img This is a new img This "
+"is a new img"
+msgstr ""
+
+msgid "0.05 MB"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Sending"
+msgstr ""
+
+msgid "Adding username"
+msgstr ""
+
+msgid "After selecting your preferred"
+msgstr ""
+
+msgid "plan"
+msgstr ""
+
+msgid "you'll need to provide us with your"
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your username"
+msgid "username."
+msgstr "Définir votre nom d'utilisateur"
+
+msgid "The video below demonstrates where you can locate your username."
+msgstr ""
+
+#, fuzzy
+#| msgid "Discover Strategies"
+msgid "Find the strategies"
+msgstr "Découvrir les stratégies"
+
+msgid "The video below demonstrates how to do that."
+msgstr ""
+
+msgid "Get the new strategies"
+msgstr ""
+
+msgid ""
+"We release new strategies every few months. To gain access to them, simply "
+"visit the strategy page and click"
+msgstr ""
+
+#, fuzzy
+#| msgid "Access"
+msgid "'Get Access'"
+msgstr "Accéder"
+
+msgid ""
+"If you're a member, you will receive access to the new strategies at no "
+"additional cost."
+msgstr ""
+
+msgid "Having a trouble"
+msgstr ""
+
+msgid ""
+"If you've subscribed and encounter any issues with adding your TradingView "
+"username or accessing the strategies, please click"
+msgstr ""
+
+msgid "to contact us for assistance."
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "On this page"
+msgstr ""
+
+msgid ""
+"We are committed to building a community that values sharing successes with "
+"others. If you achieve positive results, we encourage you to share them with "
+"the community to enhance our collective experience and continue refining our "
+"systems."
+msgstr ""
+
+msgid "Share properties & perfermance"
+msgstr ""
+
+msgid ""
+"The easiest way to share the properties and performance you used is by "
+"exporting the data from the TradingView strategy tester as an Excel file."
+msgstr ""
+
+msgid ""
+"To do this, open the strategy tester, click on the strategy name, and select "
+"‘Export Data.’"
+msgstr ""
+
+msgid ""
+"The video below demonstrates this process. While you can manually enter the "
+"details, we highly recommend using the exported file for accuracy and "
+"convenience."
+msgstr ""
+
+msgid ""
+"Ensure your TradingView language is set to English so the exported file is "
+"generated in English."
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid ""
+"Please write and provide a detailed description of how you utilized the "
+"strategy, including the specific settings and parameters you applied. This "
+"will allow the community to fully understand and benefit from your "
+"experience."
+msgstr ""
+
+msgid ""
+"We only accept profitable results with a minimum of 100 closed trades.<br /"
+">All results must be realistic, please ensure that commission and slippage "
+"are applied during testing."
+msgstr ""
+
+#, fuzzy
+#| msgid "documentation"
+msgid "Documentation"
+msgstr "documentation"
+
+msgid "Introduction"
+msgstr ""
+
+msgid "Installation"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Alerts"
+msgstr ""
+
+msgid "Create alert"
+msgstr ""
+
+msgid "Get started"
+msgstr "Commencer"
+
+msgid "Accounts"
+msgstr ""
+
+msgid "Binance"
+msgstr ""
+
+msgid "Binance.US"
+msgstr ""
+
+msgid "Bitget"
+msgstr ""
+
+msgid "Bybit"
+msgstr ""
+
+msgid "Mexc"
+msgstr ""
+
+msgid "BingX"
+msgstr ""
+
+msgid "BitMart"
+msgstr ""
+
+msgid "KuCoin"
+msgstr ""
+
+msgid "OKX"
+msgstr ""
+
+msgid "Kraken"
+msgstr ""
+
+msgid "Coinbase"
+msgstr ""
+
+msgid "Apex"
+msgstr ""
+
+msgid "HyperLiquid"
+msgstr ""
+
+msgid "TradeLocker"
+msgstr ""
+
+msgid "Tastytrade"
+msgstr ""
+
+msgid "Alpaca"
+msgstr ""
+
+msgid "Metatrade 4"
+msgstr ""
+
+msgid "Metatrade 5"
+msgstr ""
+
+#, fuzzy
+#| msgid "For Traders"
+msgid "cTrader"
+msgstr "Pour les traders"
+
+msgid "Deriv"
+msgstr ""
+
+msgid "HankoTrade"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+#, fuzzy
+#| msgid "Automate alerts once ready"
+msgid "Automate your alerts"
+msgstr "Automatisez les alertes une fois prêt"
+
+msgid "These are some companies that you can use"
+msgstr ""
+
+msgid "Alert messages"
+msgstr ""
+
+msgid ""
+"Each automation company will provide you with the types of messages that you "
+"will need to automate the trades. The messages will be for entry and exit "
+"signals."
+msgstr ""
+
+msgid "Checkout"
+msgstr ""
+
+msgid "the alerts page"
+msgstr ""
+
+msgid ""
+"to see where you can add the alert messages and create the TradingView alert."
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | Overview of TradingView Strategies, Alerts & "
+"Automation"
+msgstr ""
+
+msgid ""
+"IsAlgo is your go-to source for expertly crafted trading strategies designed "
+"specifically for the"
+msgstr ""
+
+msgid ""
+"platform, it also provides automation solutions to streamline your trading "
+"process."
+msgstr ""
+
+msgid ""
+"Our mission is to empower traders of all levels with tools that enhance "
+"their trading experience and improve their decision-making process."
+msgstr ""
+
+msgid "Offering"
+msgstr ""
+
+msgid ""
+"We offer an extensive collection of trading strategies, tailored to suit a "
+"wide range of trading styles and goals. Whether you’re into the fast-paced "
+"world of day trading or prefer a more calculated approach to long-term "
+"investments, our strategies are designed to meet diverse trading needs."
+msgstr ""
+
+msgid ""
+"Each strategy is developed with meticulous attention to detail, "
+"incorporating technical analysis, market trends, and risk management "
+"principles. Our team of experienced traders and developers continuously "
+"refines these strategies to ensure they remain effective in the ever-"
+"evolving market landscape."
+msgstr ""
+
+msgid ""
+"Beyond strategies, IsAlgo provides robust alert systems that notify traders "
+"of critical market movements and trading opportunities. These alerts can be "
+"customized to fit individual preferences, ensuring that traders receive "
+"timely information that aligns with their trading plans."
+msgstr ""
+
+msgid ""
+"To further enhance the trading experience, we offer automation solutions "
+"that allow traders to execute trades automatically based on predefined "
+"criteria. This not only saves time but also helps in minimizing emotional "
+"decision-making, leading to more consistent trading outcomes."
+msgstr ""
+
+msgid "Community and Collaboration"
+msgstr ""
+
+msgid ""
+"At the heart of our service is a strong belief in the power of community. We "
+"encourage our users to not only utilize these strategies but also to share "
+"their own trading experiences and insights. This collaborative approach "
+"creates a vibrant learning environment, fostering growth and mutual success "
+"among all our members."
+msgstr ""
+
+#, fuzzy
+#| msgid "documentation"
+msgid "Invitation"
+msgstr "documentation"
+
+msgid ""
+"Join our journey to elevate your trading experience. Discover strategies "
+"that align with your trading style and be a part of a community that values "
+"shared success and continuous innovation."
+msgstr ""
+
+msgid "Get set up quickly"
+msgstr ""
+
+#, fuzzy
+#| msgid "Access"
+msgid "Get access"
+msgstr "Accéder"
+
+msgid "What you need to do to get access to our strategies."
+msgstr ""
+
+#, fuzzy
+#| msgid "Set your username"
+msgid "Setup your chart"
+msgstr "Définir votre nom d'utilisateur"
+
+msgid "Steps on how to use our stratregies."
+msgstr ""
+
+msgid "Configure your alerts."
+msgstr ""
+
+msgid "How to get notify on every action."
+msgstr ""
+
+#, fuzzy
+#| msgid "Automate alerts once ready"
+msgid "Automate your alerts."
+msgstr "Automatisez les alertes une fois prêt"
+
+msgid "Link the alerts to your trading account and start the automation."
+msgstr ""
+
+msgid "How to install our strategies?"
+msgstr ""
+
+msgid ""
+"IsAlgo Documentation | How to Install TradingView Strategies | Step-by-Step "
+"Guide"
+msgstr ""
+
+msgid "IsAlgo | Privacy policy"
+msgstr ""
+
+msgid "Privacy & Cookie Policy"
+msgstr ""
+
+msgid ""
+"We are committed to protecting your personal information and your right to "
+"privacy. If you have any questions or concerns about our policy, or our "
+"practices regarding your personal information, please contact us at "
+"support@isalgo.com.<br /><br />When you visit our website (https://"
+"www.isalgo.com/) and use our services, you trust us with your personal "
+"information. We take your privacy very seriously. In this privacy notice, we "
+"describe our privacy policy. We seek to explain to you in the clearest way "
+"possible what information we collect, how we use it, and what rights you "
+"have in relation to it. We hope you take some time to read through it "
+"carefully, as it is important. If there are any terms in this privacy policy "
+"that you do not agree with, please contact us using the provided contact "
+"information below.<br /><br />This Privacy Policy describes our policies and "
+"procedures on the collection, use, and disclosure of your information when "
+"you use the Service and tells you about your privacy rights and how the law "
+"protects you.<br /><br />We use your Personal Data to provide and improve "
+"the Service. By using the Service, you agree to the collection and use of "
+"information in accordance with this Privacy Policy.<br /><br />This Policy "
+"is a legally binding agreement between you (“you” or “user”) and us. By "
+"visiting, accessing, or using the Website, or providing information to us in "
+"any other format, you agree to and accept the terms of this Privacy Policy, "
+"as amended from time to time, and you consent to the collection and use of "
+"information in the manner set out in this Policy. We encourage you to review "
+"this Policy carefully and to periodically refer to it so that you understand "
+"it and its subsequent changes if any. If you do not agree to the terms of "
+"this privacy policy, please stop using the service immediately."
+msgstr ""
+
+msgid "Interpretation and Definitions"
+msgstr ""
+
+#, python-format
+msgid ""
+"<h3 class=\"text-lg font-semibold my-2\">Interpretation</h3>The words of "
+"which the initial letter is capitalized have meanings defined under the "
+"following conditions. The following definitions shall have the same meaning "
+"regardless of whether they appear in singular or in plural.<br /><br /><h3 "
+"class=\"text-lg font-semibold my-2\">Definitions</h3>For the purposes of "
+"this Privacy Policy:<br /><br /><ol class=\"list-disc\">\n"
+"        <li>Account means a unique account created for you to access our "
+"Service or parts of our Service.</li>\n"
+"        <li>Affiliate means an entity that controls, is controlled by, or is "
+"under common control with a party, where “control” means ownership of 50%% "
+"or more of the shares, equity interest, or other securities entitled to vote "
+"for election of directors or other managing authority.</li>\n"
+"        <li>Log Files track actions occurring on the Site, and collect data "
+"including your IP address, browser type, Internet service provider, "
+"referring/exit pages, and date/time stamps.</li>\n"
+"        <li>Web Beacons are electronic files used to record information "
+"about how you browse the Site.</li>\n"
+"        <li>Company (referred to as either “the Company”, “We”, “Us” or "
+"“Our” in this Agreement) refers to IsAlgo, located in Florida, US.</li>\n"
+"        <li>Cookies are small files that are placed on your computer, mobile "
+"device, or any other device by a website, containing the details of your "
+"browsing history on that website among its many uses.</li>\n"
+"        <li>Country refers to the United States.</li>\n"
+"        <li>Device means any device that can access the Service such as a "
+"computer, a cell phone, or a digital tablet.</li>\n"
+"        <li>Personal Data is any information that relates to an identified "
+"or identifiable individual.</li>\n"
+"        <li>Service refers to the Website.</li>\n"
+"        <li>Service Provider means any natural or legal person who processes "
+"the data on behalf of the Company. It refers to third-party companies or "
+"individuals employed by the Company to facilitate the Service, to provide "
+"the Service on behalf of the Company, to perform services related to the "
+"Service, or to assist the Company in analyzing how the Service is used.</"
+"li>\n"
+"        <li>Usage Data refers to data collected automatically, either "
+"generated by the use of the Service or from the Service infrastructure "
+"itself (for example, the duration of a page visit).</li>\n"
+"        <li>Website refers to IsAlgo, accessible from https://www.isalgo.com/"
+"</li>\n"
+"        <li>You means the individual accessing or using the Service, or the "
+"company, or other legal entity on behalf of which such individual is "
+"accessing or using the Service, as applicable.</li>\n"
+"      </ol>\n"
+"      "
+msgstr ""
+
+msgid "Collecting and Using Your Personal Data"
+msgstr ""
+
+msgid ""
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Types of Data Collected</"
+"h3>\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Personal Data</h3>\n"
+"        While using Our Service, We may ask you to provide Us with certain "
+"personally identifiable information that can be used to contact or identify "
+"you. Personally identifiable information may include, but is not limited to:"
+"<br /><br />\n"
+"        <ol class=\"list-disc\">\n"
+"          <li>Email address</li>\n"
+"          <li>Usage Data</li>\n"
+"        </ol>\n"
+"        <br />\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Usage Data</h3>\n"
+"        Usage Data is collected automatically when using the Service.\n"
+"        <br /><br />\n"
+"        Usage Data may include information such as your Device’s Internet "
+"Protocol address (e.g. IP address), browser type, browser version, the pages "
+"of our Service that you visit, the time and date of your visit, the time "
+"spent on those pages, unique device identifiers, and other diagnostic data.\n"
+"        <br /><br />\n"
+"        When you access the Service by or through a mobile device, we may "
+"collect certain information automatically, including, but not limited to, "
+"the type of mobile device you use, your mobile device unique ID, the IP "
+"address of your mobile device, your mobile operating system, the type of "
+"mobile Internet browser you use, unique device identifiers, and other "
+"diagnostic data.\n"
+"        <br /><br />\n"
+"        We may also collect information that your browser sends whenever you "
+"visit our Service or when you access the Service by or through a mobile "
+"device.\n"
+"        <br /><br />\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Tracking Technologies and "
+"Cookies</h3>\n"
+"        We use Cookies and similar tracking technologies to track the "
+"activity on Our Service and store certain information. Tracking technologies "
+"used are beacons, tags, and scripts to collect and track information and to "
+"improve and analyze Our Service. The technologies We use may include:<br /"
+"><br />\n"
+"        <ol class=\"list-disc\">\n"
+"          <li>Cookies or Browser Cookies: A cookie is a small file placed on "
+"Your Device. You can instruct Your browser to refuse all Cookies or to "
+"indicate when a Cookie is being sent. However, if You do not accept Cookies, "
+"You may not be able to use some parts of our Service. Unless you have "
+"adjusted Your browser setting so that it will refuse Cookies, our Service "
+"may use Cookies.</li>\n"
+"          <li>Web Beacons: Certain sections of our Service and our emails "
+"may contain small electronic files known as web beacons (also referred to as "
+"clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for "
+"example, to count users who have visited those pages or opened an email and "
+"for other related website statistics (for example, recording the popularity "
+"of a certain section and verifying system and server integrity).</li>\n"
+"        </ol>\n"
+"        <br />Cookies can be “Persistent” or “Session” Cookies. Persistent "
+"Cookies remain on your personal computer or mobile device when you go "
+"offline, while Session Cookies are deleted as soon as you close your web "
+"browser. You can learn more about cookies on the TermsFeed website article.\n"
+"        <br /><br />We use both Session and Persistent Cookies for the "
+"purposes set out below:\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Necessary / Essential "
+"Cookies</h3>\n"
+"        <ol class=\"list-disc\">\n"
+"          <li>Type: Session Cookies</li>\n"
+"          <li>Administered by: Us</li>\n"
+"          <li>Purpose: These Cookies are essential to provide You with "
+"services available through the Website and to enable You to use some of its "
+"features. They help to authenticate users and prevent fraudulent use of user "
+"accounts. Without these Cookies, the services that You have asked for cannot "
+"be provided, and We only use these Cookies to provide You with those "
+"services.</li>\n"
+"        </ol>\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Cookies Policy / Notice "
+"Acceptance Cookies</h3>\n"
+"        <ol class=\"list-disc\">\n"
+"          <li>Type: Session Cookies</li>\n"
+"          <li>Administered by: Us</li>\n"
+"          <li>Purpose: These Cookies identify if users have accepted the use "
+"of cookies on the Website.</li>\n"
+"        </ol>\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Functionality Cookies</h3>\n"
+"        <ol class=\"list-disc\">\n"
+"          <li>Type: Session Cookies</li>\n"
+"          <li>Administered by: Us</li>\n"
+"          <li>Purpose: These Cookies allow us to remember choices you make "
+"when you use the Website, such as remembering your login details or language "
+"preference. The purpose of these Cookies is to provide You with a more "
+"personal experience and to avoid You having to re-enter your preferences "
+"every time You use the Website.</li>\n"
+"        </ol>\n"
+"        <br />For more information about the cookies we use and your choices "
+"regarding cookies, please visit our Cookies Policy or the Cookies section of "
+"our Privacy Policy.\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Use of Your Personal Data</"
+"h3>\n"
+"        The Company may use Personal Data for the following purposes:<ol "
+"class=\"list-disc my-2\">\n"
+"          <li>To provide and maintain our Service, including to monitor the "
+"usage of our Service.</li>\n"
+"          <li>To manage Your Account: to manage Your registration as a user "
+"of the Service. The Personal Data You provide can give You access to "
+"different functionalities of the Service that are available to You as a "
+"registered user.</li>\n"
+"          <li>For the performance of a contract: the development, "
+"compliance, and undertaking of the purchase contract for the products, "
+"items, or services You have purchased or of any other contract with Us "
+"through the Service.</li>\n"
+"          <li>To contact You: To contact You by email, telephone calls, SMS, "
+"or other equivalent forms of electronic communication, such as a mobile "
+"application’s push notifications regarding updates or informative "
+"communications related to the functionalities, products, or contracted "
+"services, including security updates, when necessary or reasonable for their "
+"implementation.</li>\n"
+"          <li>To provide You with news, special offers, and general "
+"information about other goods, services, and events which we offer that are "
+"similar to those that you have already purchased or enquired about unless "
+"You have opted not to receive such information.</li>\n"
+"          <li>To manage Your requests: To attend and manage Your requests to "
+"Us.</li>\n"
+"          <li>For business transfers: We may use Your information to "
+"evaluate or conduct a merger, divestiture, restructuring, reorganization, "
+"dissolution, or other sale or transfer of some or all of Our assets, whether "
+"as a going concern or as part of bankruptcy, liquidation, or similar "
+"proceeding, in which Personal Data held by Us about our Service users is "
+"among the assets transferred.</li>\n"
+"          <li>For other purposes: We may use Your information for other "
+"purposes, such as data analysis, identifying usage trends, determining the "
+"effectiveness of our promotional campaigns, and evaluating and improving our "
+"Service, products, services, marketing, and your experience.</li>\n"
+"        </ol>We may share Your personal information in the following "
+"situations:<ol class=\"list-disc my-2\">\n"
+"          <li>With Service Providers: We may share Your personal information "
+"with Service Providers to monitor and analyze the use of our Service, and to "
+"contact You.</li>\n"
+"          <li>For business transfers: We may share or transfer Your personal "
+"information in connection with, or during negotiations of, any merger, sale "
+"of Company assets, financing, or acquisition of all or a portion of Our "
+"business to another company.</li>\n"
+"          <li>With Affiliates: We may share Your information with Our "
+"affiliates, in which case we will require those affiliates to honor this "
+"Privacy Policy. Affiliates include Our parent company and any other "
+"subsidiaries, joint venture partners, or other companies that We control or "
+"that are under common control with Us.</li>\n"
+"          <li>With business partners: We may share Your information with Our "
+"business partners to offer You certain products, services, or promotions.</"
+"li>\n"
+"          <li>With other users: when You share personal information or "
+"otherwise interact in the public areas with other users, such information "
+"may be viewed by all users and may be publicly distributed outside.</li>\n"
+"          <li>With Your consent: We may disclose Your personal information "
+"for any other purpose with Your consent.</li>\n"
+"        </ol>We may also share your Personal Information and other "
+"information in special cases if we have a good reason to believe that it is "
+"necessary to: (i) comply with law, regulation, request by an applicable "
+"authority or court order; (ii) detect, prevent or otherwise address fraud, "
+"security, violation of our policies or technical issues; (iii) enforce the "
+"provisions of this Privacy Policy or any other agreements between you and "
+"IsAlgo, including investigation of potential violations thereof; or (iv) "
+"protect against harm to the rights, property or safety of the Company, its "
+"partners, its affiliates, users, or the public.\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Retention of Your Personal "
+"Data</h3>\n"
+"        The Company will retain Your Personal Data only for as long as is "
+"necessary for the purposes set out in this Privacy Policy. We will retain "
+"and use Your Personal Data to the extent necessary to comply with our legal "
+"obligations (for example, if we are required to retain your data to comply "
+"with applicable laws), resolve disputes, and enforce our legal agreements "
+"and policies.\n"
+"        <br /><br />\n"
+"        The Company will also retain Usage Data for internal analysis "
+"purposes. Usage Data is generally retained for a shorter period of time, "
+"except when this data is used to strengthen the security or to improve the "
+"functionality of Our Service, or We are legally obligated to retain this "
+"data for longer time periods.\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Transfer of Your Personal "
+"Data</h3>\n"
+"        Your information, including Personal Data, is processed at the "
+"Company’s operating offices and in any other places where the parties "
+"involved in the processing are located. It means that this information may "
+"be transferred to, and maintained on, computers located outside of Your "
+"state, province, country, or other governmental jurisdiction where the data "
+"protection laws may differ from those of Your jurisdiction.\n"
+"        <br /><br />\n"
+"        Your consent to this Privacy Policy followed by Your submission of "
+"such information represents Your agreement to that transfer.\n"
+"        <br /><br />\n"
+"        The Company will take all steps reasonably necessary to ensure that "
+"Your data is treated securely and in accordance with this Privacy Policy and "
+"no transfer of Your Personal Data will take place to an organization or a "
+"country unless there are adequate controls in place including the security "
+"of Your data and other personal information.\n"
+"        <br /><br />\n"
+"        Any processing performed by any of our third-party service providers "
+"(“Recipients”) will, where required by law, be governed by a data processing "
+"agreement in the form required by law, preserving any and all of your "
+"statutory data protection rights and obligating the Recipients to respect "
+"the Personal Information and handle it in accordance with the relevant laws. "
+"If a Recipient is located outside the EEA, we will transfer your data only "
+"to such countries as approved by the European Commission as providing an "
+"adequate level of data protection, or ensure that the legal agreements "
+"governing the data transfer provide an adequate level of data protection. "
+"The Recipients are required to maintain the confidentiality of such "
+"information and to use your Personal Information only in the course of "
+"providing the aforementioned services and only for the purposes that https://"
+"www.isalgo.com/ dictates.\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Delete Your Personal Data</"
+"h3>\n"
+"        You have the right to delete or request that We assist in deleting "
+"the Personal Data that We have collected about You.\n"
+"        <br /><br />\n"
+"        Our Service may give You the ability to delete certain information "
+"about You from within the Service.\n"
+"        <br /><br />\n"
+"        You may update, amend, or delete Your information at any time by "
+"signing in to Your Account, if you have one, and visiting the account "
+"settings section that allows you to manage Your personal information. You "
+"may also contact Us to request access to, correct, or delete any personal "
+"information that You have provided to Us.\n"
+"        <br /><br />\n"
+"        Please note, however, that We may need to retain certain information "
+"when we have a legal obligation or lawful basis to do so.\n"
+"\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Disclosure of Your Personal "
+"Data</h3>\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Business Transactions</h3>\n"
+"        If the Company is involved in a merger, acquisition, or asset sale, "
+"Your Personal Data may be transferred. We will provide notice before Your "
+"Personal Data is transferred and becomes subject to a different Privacy "
+"Policy.\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Law Enforcement</h3>\n"
+"        Under certain circumstances, the Company may be required to disclose "
+"Your Personal Data if required to do so by law or in response to valid "
+"requests by public authorities (e.g., a court or a government agency).\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Other Legal Requirements</"
+"h3>\n"
+"        The Company may disclose Your Personal Data in the good faith belief "
+"that such action is necessary to:<ol class=\"list-disc my-2\">\n"
+"          <li>Comply with a legal obligation</li>\n"
+"          <li>Protect and defend the rights or property of the Company</li>\n"
+"          <li>Prevent or investigate possible wrongdoing in connection with "
+"the Service</li>\n"
+"          <li>Protect the personal safety of Users of the Service or the "
+"public</li>\n"
+"          <li>Protect against legal liability</li>\n"
+"        </ol>\n"
+"        <h3 class=\"text-lg font-semibold my-2\">Security of Your Personal "
+"Data</h3>\n"
+"        We use reasonable efforts to safeguard the integrity, availability, "
+"and confidentiality of all personal data that we process relating to you and "
+"regularly review and enhance our technical, physical, and managerial "
+"procedures to ensure that your personal data is protected from:<ol "
+"class=\"list-disc my-2\">\n"
+"          <li>Unauthorized access;</li>\n"
+"          <li>Improper use or disclosure;</li>\n"
+"          <li>Unauthorized modification;</li>\n"
+"          <li>Unlawful destruction or accidental loss.</li>\n"
+"        </ol>To this end, we have implemented security policies, rules, and "
+"technical measures to protect the personal data that we have under our "
+"control. All our employees and data processors, who have access to and are "
+"associated with the processing of personal data, are further obliged to "
+"respect the confidentiality of our clients’ and visitors’ personal data.\n"
+"        <br /><br />\n"
+"        By its very nature, however, the Internet is not a secure medium and "
+"data sent via this medium can potentially be subject to unauthorized acts by "
+"third parties. We cannot guarantee the privacy or confidentiality of any "
+"information passing over our website.\n"
+"        <br /><br />\n"
+"        Moreover, data sent via the Internet may be transmitted across "
+"international borders even where the sender and receiver of information are "
+"located in the same country. Consequently, data relating to you may be "
+"transmitted via a country having a lower level of data protection than that "
+"existing in your country of residence. We shall accept no responsibility or "
+"liability whatsoever for the security of your data while in transit through "
+"the Internet."
+msgstr ""
+
+msgid "Your Legal Rights"
+msgstr ""
+
+msgid ""
+"You have rights we need to make you aware of. The rights available to you "
+"depend on our reason for processing your personal data. If you need more "
+"detailed information or wish to exercise any of the rights set out below, "
+"please contact us."
+msgstr ""
+
+msgid ""
+"You may:<ol class=\"list-disc my-2\">\n"
+"          <li>Request access to your personal data, which enables you to "
+"obtain confirmation of whether we are processing your personal data, to "
+"receive a copy of the personal data we hold about you and information "
+"regarding how your personal data is being used by us;</li>\n"
+"          <li>Request rectification of your personal data by asking us to "
+"rectify information you think is inaccurate and to complete information you "
+"think is incomplete, though we may need to verify the accuracy of the new "
+"data you provide to us;</li>\n"
+"          <li>Request erasure of your personal data by asking us to delete "
+"or remove personal data we hold about you; note, however, that we may not "
+"always be able to comply with your request for erasure for specific legal "
+"reasons which will be notified to you;</li>\n"
+"          <li>Object to the processing of your personal data, where we are "
+"relying on a legitimate interest (or those of a third party) and there is "
+"something about your particular situation which makes you want to object to "
+"processing on this ground as you feel it impacts on your fundamental rights "
+"and freedoms; in some cases, we may demonstrate that we have compelling "
+"legitimate grounds to process your information which override your rights "
+"and freedoms; you also have the right to object where we are processing your "
+"personal data for direct marketing purposes;</li>\n"
+"          <li>Require that decisions be reconsidered if they are made solely "
+"by automated means, without human involvement; we use automated tools to "
+"make sure that you are eligible to be our customer taking into account our "
+"interests and legal obligations; if these automated tools indicate that you "
+"do not meet our acceptance criteria, we will not onboard you as our customer;"
+"</li>\n"
+"          <li>Request restriction of processing your personal data, which "
+"enables you to ask us to suspend the processing of your personal data, if "
+"you want us to establish the data accuracy; where our use of the data is "
+"unlawful, but you do not want us to erase it; where you need us to hold the "
+"data even if we no longer require it as you need it to establish, exercise "
+"or defend legal claims, or if you have objected to our use of your data, but "
+"we need to verify whether we have overriding legitimate grounds to use it;</"
+"li>\n"
+"          <li>Request the transfer of your personal data to you or to a "
+"third party, and we will provide to you, or a third party you have chosen "
+"(where technically feasible), your personal data in a structured, commonly "
+"used, machine-readable format; note that this right only applies to "
+"automated information which you initially provided consent for us to use or "
+"where we used the information to perform a contract with you;</li>\n"
+"          <li>Withdraw consent at any time where we are relying on consent "
+"to process your personal data; however, this will not affect the lawfulness "
+"of any processing carried out before you withdraw your consent; if you "
+"withdraw your consent, we may not be able to provide certain products or "
+"services to you, but we will advise you if this is the case at the time you "
+"withdraw your consent;</li>\n"
+"          <li>Complain to the relevant authority about any perceived "
+"violation and to seek compensation for damages in the courts.</li>\n"
+"        </ol>\n"
+"        "
+msgstr ""
+
+msgid "Children’s Privacy"
+msgstr ""
+
+msgid ""
+"Our Service does not address anyone under the age of 13. We do not knowingly "
+"collect personally identifiable information from anyone under the age of 13. "
+"If you are a parent or guardian and you are aware that your child has "
+"provided Us with Personal Data, please contact Us. If We become aware that "
+"We have collected Personal Data from anyone under the age of 13 without "
+"verification of parental consent, We take steps to remove that information "
+"from Our servers.<br /><br />If We need to rely on consent as a legal basis "
+"for processing Your information and Your country requires consent from a "
+"parent, We may require Your parent’s consent before We collect and use that "
+"information."
+msgstr ""
+
+msgid "Links to Other Websites"
+msgstr ""
+
+msgid ""
+"Our Service may contain links to other websites that are not operated by Us. "
+"If You click on a third-party link, You will be directed to that third "
+"party’s site. We strongly advise You to review the Privacy Policy of every "
+"site You visit.<br /><br />We have no control over and assume no "
+"responsibility for the content, privacy policies, or practices of any third-"
+"party sites or services."
+msgstr ""
+
+msgid "Changes to this Privacy Policy"
+msgstr ""
+
+msgid ""
+"We may update Our Privacy Policy from time to time. We will notify You of "
+"any changes by posting the new Privacy Policy on this page.<br /><br />We "
+"will let You know via email and/or a prominent notice on Our Service, prior "
+"to the change becoming effective and update the “Last updated” date at the "
+"top of this Privacy Policy.<br /><br />You are advised to review this "
+"Privacy Policy periodically for any changes. Changes to this Privacy Policy "
+"are effective when they are posted on this page."
+msgstr ""
+
+msgid "Governing Law and Jurisdiction"
+msgstr ""
+
+msgid ""
+"This agreement and any dispute or claim (including non-contractual disputes "
+"or claims) arising out of or in connection with it or its subject matter or "
+"formation shall be governed by and construed in accordance with the laws of "
+"Florida, US."
+msgstr ""
+
+msgid "Data Controller"
+msgstr ""
+
+msgid ""
+"https://www.isalgo.com/ is the controller of your personal information. The "
+"contact person for data protection-related matters is support@isalgo.com."
+msgstr ""
+
+msgid "Contact Us"
+msgstr ""
+
+msgid ""
+"If you have any questions about this Privacy Policy, You can contact us by "
+"email: support@isalgo.com"
+msgstr ""
+
+msgid "IsAlgo | Frequently Asked Questions About IsAlgo"
+msgstr ""
+
+msgid "These are some of the frequently asked questions:"
+msgstr ""
+
+msgid "What is IsAlgo?"
+msgstr ""
+
+msgid ""
+"IsAlgo is a platform that provides advanced trading strategies built for "
+"TradingView. Our strategies are backtestable, automatable, and work across "
+"any market — crypto, forex, stocks — and any timeframe. Whether you're a "
+"beginner or a pro, our tools are designed to help you trade smarter."
+msgstr ""
+
+#, fuzzy
+#| msgid "Choose your desired plan to get started"
+msgid "What do I need to get started?"
+msgstr "Choisissez le plan souhaité pour commencer"
+
+msgid ""
+"All you need is a <a class=\"underline\" href=\"https://tradingview.com?"
+"aff_id=134591&aff_sub=134591&source=134591\" target=\"_blank\">TradingView "
+"account</a> and basic trading knowledge. Once you sign up on IsAlgo and "
+"choose a plan, you will enter your TradingView username and gain instant "
+"access to all the strategies included in your plan."
+msgstr ""
+
+msgid "How do I access the strategies?"
+msgstr ""
+
+msgid ""
+"After subscribing, go to your settings and enter your TradingView username. "
+"We'll guide you on where to find it. Once submitted, all strategies included "
+"in your plan are automatically added to your TradingView account and ready "
+"to use."
+msgstr ""
+
+msgid "What are the different strategy types?"
+msgstr ""
+
+msgid ""
+"<strong>Free</strong> — available to all registered users, no subscription "
+"needed.<br /><strong>Premium</strong> — requires an active Monthly or Yearly "
+"subscription.<br /><strong>Elite</strong> — exclusive to Lifetime members "
+"only.<br /><strong>Exclusive</strong> — created by independent traders and "
+"published on our platform. These are not included in any membership and must "
+"be purchased separately from their authors."
+msgstr ""
+
+msgid "Do I need a paid TradingView account?"
+msgstr ""
+
+msgid ""
+"No, a free TradingView account is enough to get started. However, the free "
+"version has some limitations — for example, you can only have one active "
+"alert and one chart with one strategy. A paid TradingView plan is "
+"recommended for full functionality, especially if you plan to use automation."
+msgstr ""
+
+msgid "What plans are available?"
+msgstr ""
+
+msgid ""
+"We offer three plans:<br /><strong>Monthly</strong> — perfect for trying out "
+"the service, cancel anytime.<br /><strong>Yearly</strong> — best value for "
+"long-term use, save significantly vs monthly.<br /><strong>Lifetime</strong> "
+"— a one-time payment for permanent access to all Premium and Elite "
+"strategies, plus a numbered digital membership card."
+msgstr ""
+
+msgid "Can I automate my trades?"
+msgstr ""
+
+msgid ""
+"Yes. You can connect any TradingView strategy or indicator to multiple "
+"crypto and forex brokers using our webhook integration. Use our Playground "
+"tool to configure alert messages, connect your broker, and trades execute "
+"automatically.<br /><br />An additional fee of $3 to $20/month applies per "
+"connected trading account depending on the broker type."
+msgstr ""
+
+msgid "Can I trust the performance reports?"
+msgstr ""
+
+msgid ""
+"Yes. Our reports reflect the actual backtested performance of each strategy "
+"over a specific time period. The longer the period covered, the more "
+"reliable the results. Keep in mind that past performance does not guarantee "
+"future results, but it gives you a solid basis for evaluating a strategy."
+msgstr ""
+
+msgid "Can I change or cancel my plan?"
+msgstr ""
+
+msgid ""
+"Yes, you can upgrade, downgrade, or cancel at any time. When you upgrade, "
+"remaining time converts into extra days on your new plan. Downgrades take "
+"effect after the current billing period ends. When you cancel, you keep "
+"access until the end of your current period."
+msgstr ""
+
+msgid "IsAlgo Documentation | Share Your Strategy Results After Backtesting"
+msgstr ""
+
+msgid "IsAlgo | Terms of use"
+msgstr ""
+
+msgid "Terms and Conditions"
+msgstr ""
+
+msgid "OVERVIEW"
+msgstr ""
+
+msgid ""
+"This website is operated by IsAlgo. Throughout the site, the terms “we”, "
+"“us” and “our” refer to IsAlgo. IsAlgo offers this website, including all "
+"information, tools, and services available from this site to you, the user, "
+"conditioned upon your acceptance of all terms, conditions, policies, and "
+"notices stated here.<br /><br />By visiting our site and/or purchasing "
+"something from us, you engage in our “Service” and agree to be bound by the "
+"following Terms and Conditions (“Terms”, “Terms and Conditions of Service”), "
+"including those additional terms and conditions and policies referenced "
+"herein. These Terms of Service apply to all users of the site, including "
+"without limitation users who are browsers, vendors, customers, merchants, "
+"and/or contributors of content.<br /><br />Please read these Terms and "
+"Conditions of Service carefully before accessing or using our website. If "
+"you do not agree to all the terms and conditions of this agreement, then you "
+"may not access the website or use any services. If these Terms of Service "
+"are considered an offer, acceptance is expressly limited to these Terms of "
+"Service.<br /><br />Any new features or tools which are added to the current "
+"store shall also be subject to the Terms and Conditions. We reserve the "
+"right to update, change or replace any part of these Terms and Conditions of "
+"Service by posting updates and/or changes to our website. It is your "
+"responsibility to check this page periodically for changes. Your continued "
+"use of or access to the website following the posting of any changes "
+"constitutes acceptance of those changes."
+msgstr ""
+
+msgid "Online Site Terms"
+msgstr ""
+
+msgid ""
+"By agreeing to these Terms and Conditions of Service, you represent that you "
+"are at least the age of majority in your state or province of residence, or "
+"that you are the age of majority in your state or province of residence and "
+"you have given us your consent to allow any of your minor dependents to use "
+"this site.<br /><br />You may not use our products for any illegal or "
+"unauthorized purpose nor may you, in the use of the Service, violate any "
+"laws in your jurisdiction, including but not limited to copyright laws.<br /"
+"><br />You must not transmit any worms or viruses or any code of a "
+"destructive nature.<br /><br />A breach or violation of any of these Terms "
+"and Conditions will result in an immediate termination of your Services."
+msgstr ""
+
+msgid "General Conditions"
+msgstr ""
+
+msgid ""
+"We reserve the right to refuse service to anyone for any reason at any time."
+"<br /> <br />You understand that your content (excluding credit card "
+"information) may be transferred unencrypted and involve (a) transmissions "
+"over various networks; and (b) changes to conform and adapt to technical "
+"requirements of connecting networks or devices. Credit card information is "
+"always encrypted during transfer over networks.<br /> <br />You agree not to "
+"reproduce, duplicate, copy, sell, resell or exploit any portion of the "
+"Service, use of the Service, or access to the Service or any contact on the "
+"website through which the service is provided, without express written "
+"permission by us."
+msgstr ""
+
+msgid "Payments"
+msgstr ""
+
+msgid ""
+"Payments for our Service will be processed through our secure payment "
+"gateway on the Website. You agree to pay the fees as displayed on the "
+"Website at the time of purchase."
+msgstr ""
+
+msgid "Refunds"
+msgstr ""
+
+msgid ""
+"We do not offer refunds at this moment. All sales are final. Please ensure "
+"you understand our services before making a purchase."
+msgstr ""
+
+msgid "Non Guarantee"
+msgstr ""
+
+msgid ""
+"While we strive to provide valuable and relevant advice, we cannot guarantee "
+"specific outcomes or results from our Services. The success of implementing "
+"any recommendations is dependent on various factors beyond our control."
+msgstr ""
+
+msgid ""
+"We are not responsible if information made available on this site is not "
+"accurate, complete, or current. The material on this site is provided for "
+"general information only and should not be relied upon or used as the sole "
+"basis for making decisions without consulting primary, more accurate, more "
+"complete, or more timely sources of information. Any reliance on the "
+"material on this site is at your own risk. We reserve the right to modify "
+"the contents of this site at any time, but we have no obligation to update "
+"any information on our site. You agree that it is your responsibility to "
+"monitor changes to our site."
+msgstr ""
+
+msgid "Prohibited Uses"
+msgstr ""
+
+msgid ""
+"In addition to other prohibitions as set forth in the Terms and Conditions "
+"of Service, you are prohibited from using the site or its content:<br />(a) "
+"for any unlawful purpose;<br />(b) to solicit others to perform or "
+"participate in any unlawful acts;<br />(c) to violate any international, "
+"federal, provincial, or state regulations, rules, laws, or local ordinances;"
+"<br />(d) to infringe upon or violate our intellectual property rights or "
+"the intellectual property rights of others;<br />(e) to harass, abuse, "
+"insult, harm, defame, slander, disparage, intimidate, or discriminate based "
+"on gender, sexual orientation, religion, ethnicity, race, age, national "
+"origin, or disability;<br />(f) to submit false or misleading information;"
+"<br />(g) to upload or transmit viruses or any other type of malicious code "
+"that will or may be used in any way that will affect the functionality or "
+"operation of the Service or of any related website, other websites, or the "
+"Internet;<br />(h) to collect or track the personal information of others;"
+"<br />(i) to spam, phish, pharm, pretext, spider, crawl, or scrape;<br />(j) "
+"for any obscene or immoral purpose;<br />(k) to interfere with or circumvent "
+"the security features of the Service or any related website, other websites, "
+"or the Internet;<br />(l) to forge headers or otherwise manipulate "
+"identifiers in order to disguise the origin of any information transmitted "
+"through the Services;<br />(m) to “frame” or “mirror” any part of the "
+"Services, without our prior written authorization, or use meta tags or code "
+"or other devices containing any reference to us in order to direct any "
+"person to any other service or website for any purpose;<br />(n) to modify, "
+"adapt, translate, reverse engineer, decipher, decompile, separate, or "
+"otherwise disassemble any portion of the Services or any software used on or "
+"for the Services;<br />(o) to interfere with or circumvent the security "
+"features of the Services.<br /><br />We reserve the right to terminate your "
+"use of the Service or any related website for violating any of the "
+"prohibited uses."
+msgstr ""
+
+msgid "Limitation of Liability"
+msgstr ""
+
+msgid ""
+"We do not guarantee, represent, or warrant that your use of our service will "
+"be uninterrupted, timely, secure, or error-free. We do not warrant that the "
+"results that may be obtained from the use of the service will be accurate or "
+"reliable. You expressly agree that your use of, or inability to use, the "
+"service is at your sole risk.<br /><br />The service and all products and "
+"services delivered to you through the service are (except as expressly "
+"stated by us) provided ‘as is’ and ‘as available’ for your use, without any "
+"representation, warranties, or conditions of any kind, either express or "
+"implied, including all implied warranties or conditions of merchantability, "
+"merchantable quality, fitness for a particular purpose, durability, title, "
+"and non-infringement.<br /><br />In no case shall [Your Company Name], our "
+"directors, officers, employees, affiliates, agents, contractors, interns, "
+"suppliers, service providers, or licensors be liable for any injury, loss, "
+"claim, or any direct, indirect, incidental, punitive, special, or "
+"consequential damages of any kind, including, without limitation lost "
+"profits, lost revenue, lost savings, loss of data, replacement costs, or any "
+"similar damages, whether based in contract, tort (including negligence), "
+"strict liability, or otherwise, arising from your use of any of the service "
+"or any products procured using the service, or for any other claim related "
+"in any way to your use of the service or any product, including, but not "
+"limited to, any errors or omissions in any content, or any loss or damage of "
+"any kind incurred as a result of the use of the service or any content (or "
+"product) posted, transmitted, or otherwise made available via the service, "
+"even if advised of their possibility.<br /><br />Because some states or "
+"jurisdictions do not allow the exclusion or the limitation of liability for "
+"consequential or incidental damages, in such states or jurisdictions, our "
+"liability shall be limited to the maximum extent permitted by law."
+msgstr ""
+
+msgid "Indemnification"
+msgstr ""
+
+msgid ""
+"You agree to indemnify and hold harmless IsAlgo, its officers, employees, "
+"and agents from any claims, liabilities, damages, costs, or expenses arising "
+"from your use of our Services."
+msgstr ""
+
+msgid "Termination"
+msgstr ""
+
+msgid ""
+"We reserve the right to terminate or suspend your access to our Services at "
+"any time and for any reason, including but not limited to any violation of "
+"these Terms and Conditions.<br /><br />Termination will not affect our "
+"continuing rights and obligations under any provision which is expressed or "
+"intended to survive such completion, termination, or expiration, or which is "
+"required to give effect to such termination or expiration. Without limiting "
+"the foregoing, the provisions contained in these Terms and Conditions that "
+"are intended to survive, include but are not limited to those in relation to "
+"payment, confidentiality, intellectual property rights, warranties, "
+"indemnities, limitations of liability, dispute resolution, and obligations "
+"related to termination, shall all survive termination and expiry of the "
+"agreement between us for the benefit of the Party to whom they are given."
+msgstr ""
+
+msgid ""
+"These Terms and Conditions shall be governed by and construed in accordance "
+"with the laws of the US. Any dispute arising out of or relating to these "
+"Terms and Conditions or the Services shall be subject to the exclusive "
+"jurisdiction of the courts in the US."
+msgstr ""
+
+msgid "Miscellaneous"
+msgstr ""
+
+msgid ""
+"We reserve the right to modify, add, or remove any part of these Terms and "
+"Conditions at any time without prior notice. Your continued use of the "
+"Website after any changes to these Terms and Conditions shall constitute "
+"your acceptance of such changes.<br /><br />These Terms and Conditions "
+"constitute the entire agreement between you and IsAlgo concerning the "
+"Services and supersede any prior agreements or understandings."
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid ""
+"If you have any questions or concerns regarding these Terms and Conditions "
+"or our Services, please contact us at support@isalgo.com<br /><br />By using "
+"our Services, you acknowledge that you have read, understood, and agree to "
+"be bound by these Terms and Conditions."
+msgstr ""
 
 msgid "English"
 msgstr "Anglais"
@@ -52,6 +4823,31 @@ msgstr "Envoyer un e-mail"
 msgid "Marketing Email"
 msgstr "E-mail marketing"
 
+msgid ""
+"IsAlgo | Request Access to TradingView Strategies | Manage Your Permissions"
+msgstr ""
+
+msgid ""
+"Manage and request access to premium TradingView strategies. View your "
+"current permissions, request new strategy access, and start optimizing your "
+"trading experience with IsAlgo."
+msgstr ""
+
+msgid "Access"
+msgstr "Accéder"
+
+msgid ""
+"IsAlgo | Start Trading Smarter | Best TradingView Strategies & Verified "
+"Backtest Results"
+msgstr ""
+
+msgid ""
+"Discover the best and latest TradingView strategies, verified backtest "
+"results, and powerful automation tools. Explore winning strategies, connect "
+"to brokers, and start optimizing your trades with IsAlgo. Your smarter "
+"trading journey begins here."
+msgstr ""
+
 msgid "Strategy In."
 msgstr "Stratégie en place."
 
@@ -76,9 +4872,6 @@ msgstr "Pour les traders"
 msgid "Master the market with our all‑in‑one solution"
 msgstr "Maîtrisez le marché avec notre solution tout-en-un"
 
-msgid "Access"
-msgstr "Accéder"
-
 msgid ""
 "Browse our library of proven trading strategies, pick the one that fits your "
 "style, and get started in minutes."
@@ -93,11 +4886,8 @@ msgid ""
 "Backtest your strategies on historical data, fine-tune the settings, and "
 "validate performance before going live."
 msgstr ""
-"Backtestez vos stratégies sur des données historiques, affinez les paramètres "
-"et validez les performances avant de passer en réel."
-
-msgid "Automate"
-msgstr "Automatiser"
+"Backtestez vos stratégies sur des données historiques, affinez les "
+"paramètres et validez les performances avant de passer en réel."
 
 msgid ""
 "Connect your broker, set your rules, and let automation execute your trades "
@@ -116,8 +4906,9 @@ msgid ""
 "Find and backtest proven trading strategies. Use historical data to optimize "
 "your approach and maximize potential returns."
 msgstr ""
-"Trouvez et backtestez des stratégies de trading éprouvées. Utilisez les données "
-"historiques pour optimiser votre approche et maximiser vos rendements."
+"Trouvez et backtestez des stratégies de trading éprouvées. Utilisez les "
+"données historiques pour optimiser votre approche et maximiser vos "
+"rendements."
 
 msgid "Start exploring"
 msgstr "Commencer à explorer"
@@ -133,11 +4924,8 @@ msgid ""
 "stop while you focus on strategy development."
 msgstr ""
 "Configurez des alertes personnalisées et des règles de trading automatisées. "
-"Vos stratégies fonctionnent sans arrêt pendant que vous vous concentrez sur le "
-"développement de stratégies."
-
-msgid "Get started"
-msgstr "Commencer"
+"Vos stratégies fonctionnent sans arrêt pendant que vous vous concentrez sur "
+"le développement de stratégies."
 
 msgid "AI Trading Assistant"
 msgstr "Assistant de trading IA"
@@ -167,9 +4955,6 @@ msgstr "Ne manquez jamais un signal"
 msgid "Set up TradingView alerts for your trading strategies"
 msgstr "Configurez vos alertes TradingView pour vos stratégies de trading"
 
-msgid "See how"
-msgstr "Voir comment"
-
 msgid "Recently Added Strategies"
 msgstr "Stratégies récemment ajoutées"
 
@@ -195,7 +4980,8 @@ msgid "Join our Discord Community!"
 msgstr "Rejoignez notre communauté Discord !"
 
 msgid "Connect with traders, share strategies, and get support"
-msgstr "Échangez avec des traders, partagez des stratégies et obtenez du soutien"
+msgstr ""
+"Échangez avec des traders, partagez des stratégies et obtenez du soutien"
 
 msgid "Join us"
 msgstr "Rejoignez-nous"
@@ -262,3 +5048,412 @@ msgstr "pour un guide étape par étape."
 
 msgid "All done"
 msgstr "Terminé"
+
+msgid ""
+"IsAlgo | Pricing Plans | Unlock Backtestable TradingView Strategies & more"
+msgstr ""
+
+msgid ""
+"Choose the perfect membership plan to unlock powerful TradingView "
+"strategies, backtesting tools, and automated trading features. Start your "
+"trading journey today with IsAlgo — Monthly, Quarterly, and Yearly plans "
+"available."
+msgstr ""
+
+msgid "Membership"
+msgstr ""
+
+#, fuzzy
+#| msgid "You're ready"
+msgid "You're a"
+msgstr "Vous êtes prêt"
+
+msgid "Lifetime"
+msgstr ""
+
+msgid "member! Thank you for your support."
+msgstr ""
+
+msgid "You're subscribing to our"
+msgstr ""
+
+msgid "plan."
+msgstr ""
+
+msgid "Your subscription was canceled, end on"
+msgstr ""
+
+msgid "Your subscription is incomplete."
+msgstr ""
+
+msgid "Choose your plan and unlock access to"
+msgstr ""
+
+msgid "our premium strategies <br />and much more"
+msgstr ""
+
+msgid "IsAlgo | Notifications | Stay Updated on Your Activity"
+msgstr ""
+
+msgid ""
+"View your latest notifications about strategy updates, trading alerts, "
+"membership status, and important system messages. Stay informed and manage "
+"your trading activities easily with IsAlgo."
+msgstr ""
+
+msgid "No notification available yet."
+msgstr ""
+
+msgid ""
+"IsAlgo | Account Settings | Manage Profile, Trading Connections & Membership"
+msgstr ""
+
+msgid ""
+"Update your profile, connect TradingView and Discord accounts, manage "
+"payment methods, memberships, AI tokens, and more. Customize your IsAlgo "
+"experience easily from your account settings page."
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Create Your Custom Strategy"
+msgstr ""
+
+msgid ""
+"Have a trading strategy idea? Contact IsAlgo to develop your custom "
+"strategy. Provide your rules, get a quote, and automate your trades with "
+"full performance tracking."
+msgstr ""
+
+msgid "Custom Strategy"
+msgstr ""
+
+msgid "Have a trading strategy idea?"
+msgstr ""
+
+msgid ""
+"We'll build it for you. Share your concept with our team and we'll turn it "
+"into a fully functional strategy you can use on IsAlgo complete with"
+msgstr ""
+
+#, fuzzy
+#| msgid "Automate"
+msgid "automation"
+msgstr "Automatiser"
+
+msgid "and"
+msgstr ""
+
+msgid "performance tracking"
+msgstr ""
+
+msgid "How It Works"
+msgstr ""
+
+#, fuzzy
+#| msgid "Discover Strategies"
+msgid "Describe Your Strategy"
+msgstr "Découvrir les stratégies"
+
+msgid ""
+"Send us a clear and detailed description of how your strategy works, "
+"including entry and exit rules."
+msgstr ""
+
+msgid "Get a Quote & Timeline"
+msgstr ""
+
+msgid ""
+"Our team will review your request and respond with a price quote and "
+"estimated delivery time."
+msgstr ""
+
+#, fuzzy
+#| msgid "Automate"
+msgid "Automate & Track"
+msgstr "Automatiser"
+
+msgid ""
+"Once your strategy is ready, use it with our automation tools to execute "
+"trades and track performance in real time."
+msgstr ""
+
+msgid "What to Include in Your Request"
+msgstr ""
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "Strategy Description"
+msgstr "Stratégie en place."
+
+msgid ""
+"A clear explanation of how your strategy works — the indicators, conditions, "
+"or logic it relies on."
+msgstr ""
+
+msgid "Entry & Exit Rules"
+msgstr ""
+
+msgid ""
+"Define when to open a trade and when to close it. The more specific, the "
+"better — include conditions for both long and short positions if applicable."
+msgstr ""
+
+msgid "Screenshots"
+msgstr ""
+
+msgid ""
+"Include chart screenshots showing correct entry and exit points. Visual "
+"examples help us understand your strategy faster and build it accurately."
+msgstr ""
+
+msgid "Additional Details (optional)"
+msgstr ""
+
+msgid ""
+"Any extra context such as preferred timeframes, risk management rules, stop-"
+"loss/take-profit levels, or asset types."
+msgstr ""
+
+msgid "Things to Know"
+msgstr ""
+
+msgid "Private & Source-Protected"
+msgstr ""
+
+msgid ""
+"If your strategy idea uses one or more features from our published "
+"strategies, it will be built as a"
+msgstr ""
+
+msgid "private-only strategy"
+msgstr ""
+
+msgid "The source code will not be shared it remains fully protected."
+msgstr ""
+
+msgid "Future Changes Are Quoted Separately"
+msgstr ""
+
+msgid ""
+"Any modifications or new features you'd like added to your strategy after "
+"delivery will require a"
+msgstr ""
+
+msgid "separate quote"
+msgstr ""
+
+msgid "Each update is scoped and priced independently."
+msgstr ""
+
+msgid "Earn From Your Strategy"
+msgstr ""
+
+msgid ""
+"If your strategy meets our quality standards, it may be eligible to be "
+"published as an"
+msgstr ""
+
+msgid "Exclusive strategy"
+msgstr ""
+
+msgid "on IsAlgo allowing you to earn from other users who subscribe to it."
+msgstr ""
+
+msgid "Send Your Strategy Request"
+msgstr ""
+
+msgid ""
+"Describe your strategy idea and we'll get back to you with a quote and "
+"timeline."
+msgstr ""
+
+msgid ""
+"IsAlgo | Trading Strategy Results Shared by Traders | Verified Backtests by "
+"Our Community"
+msgstr ""
+
+msgid ""
+"Explore real trading strategy results shared by our community. Browse "
+"verified backtests, analyze performance data, and find strategies that fit "
+"your trading style. Start learning and improving with IsAlgo."
+msgstr ""
+
+#, fuzzy
+#| msgid "Latest Reports"
+msgid "Reports"
+msgstr "Derniers rapports"
+
+msgid "What You'll Find Here"
+msgstr ""
+
+#, fuzzy
+#| msgid "Best Performing Reports"
+msgid "Real Trading Reports"
+msgstr "Meilleurs rapports de performance"
+
+msgid ""
+"Browse verified trading reports from community members using various "
+"strategies"
+msgstr ""
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "Strategy Insights"
+msgstr "Stratégie en place."
+
+msgid "Learn from successful traders by studying their strategy configurations"
+msgstr ""
+
+#, fuzzy
+#| msgid "Latest Reports"
+msgid "Reports Analysis"
+msgstr "Derniers rapports"
+
+msgid ""
+"Compare different approaches and find strategies that match your trading "
+"style"
+msgstr ""
+
+msgid "IsAlgo | TradingView Strategies | Premium Backtestable Systems"
+msgstr ""
+
+msgid ""
+"Access a growing library of expert TradingView strategies. Explore premium, "
+"backtestable, and automatable trading systems designed for all markets and "
+"skill levels. Start mastering your trades today with IsAlgo."
+msgstr ""
+
+#, fuzzy
+#| msgid "Discover Strategies"
+msgid "Strategies"
+msgstr "Découvrir les stratégies"
+
+#, fuzzy
+#| msgid "8+ strategies available"
+msgid "No strategy available yet."
+msgstr "8+ stratégies disponibles"
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "Have a Strategy Idea?"
+msgstr "Stratégie en place."
+
+msgid "We're here to help you turn it into a fully functional strategy."
+msgstr ""
+
+#, fuzzy
+#| msgid "See how"
+msgid "See How"
+msgstr "Voir comment"
+
+#, fuzzy
+#| msgid "TradingView"
+msgid "Backtestable TradingView Strategy"
+msgstr "TradingView"
+
+msgid "Live chart"
+msgstr ""
+
+#, fuzzy
+#| msgid "Strategy In."
+msgid "Strategy"
+msgstr "Stratégie en place."
+
+msgid "Performance"
+msgstr ""
+
+msgid "Comments"
+msgstr ""
+
+msgid "Unlock access to this strategy and more"
+msgstr ""
+
+msgid ""
+"Gain access to some of the best and most powerful trading strategies in the "
+"market"
+msgstr ""
+
+#, fuzzy
+#| msgid "Access"
+msgid "Unlock access"
+msgstr "Accéder"
+
+msgid "YouTube video player"
+msgstr ""
+
+msgid "By"
+msgstr ""
+
+#, fuzzy
+#| msgid "Latest Reports"
+msgid "Report A BUG"
+msgstr "Derniers rapports"
+
+#, fuzzy
+#| msgid "Latest Reports"
+msgid "Report a bug"
+msgstr "Derniers rapports"
+
+msgid "W"
+msgstr ""
+
+msgid ""
+"e develop cutting-edge trading tools to provide more intelligent, quicker, "
+"and easier insights into the market."
+msgstr ""
+
+msgid "Follow us on"
+msgstr ""
+
+msgid ""
+"Please note that the information provided on our website is intended for "
+"educational purposes only and should not be construed as financial or "
+"investment advice."
+msgstr ""
+
+msgid ""
+"Risk Disclaimer: Trading carries inherent risks, and the majority of day "
+"traders experience losses. The potential for loss in trading can be "
+"significant. Decisions to buy, sell, hold, or trade securities, commodities, "
+"and other investments involve risk and should be made based on advice from "
+"qualified financial professionals. Past performance is not indicative of "
+"future results. All content is hypothetical and selected after the fact to "
+"illustrate our product and should not be considered financial advice. It is "
+"important to carefully consider whether trading is suitable for you given "
+"your financial circumstances."
+msgstr ""
+
+msgid "Read the full disclaimer"
+msgstr ""
+
+msgid "here."
+msgstr ""
+
+msgid "Terms of use"
+msgstr ""
+
+msgid "Privacy policy"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Earnings"
+msgstr ""
+
+msgid "Log out"
+msgstr ""
+
+msgid "Log in"
+msgstr ""
+
+msgid "Open main menu"
+msgstr ""
+
+msgid "Pricing"
+msgstr ""
+
+msgid "Docs"
+msgstr ""

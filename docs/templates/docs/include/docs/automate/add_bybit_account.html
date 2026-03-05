@@ -1,38 +1,41 @@
+{% load i18n %}
 {% load static %}
 <article class="docs">
     <section id="what-is-bybit">
         <aside>
-            <h3>What's Bybit?</h3>
+            <h3>{% trans "What's Bybit?" %}</h3>
             <p>
-                Bybit is a popular cryptocurrency exchange platform known for its robust trading features and user-friendly interface. The platform offers:
-            </p>
+        {% trans 'Bybit is a popular cryptocurrency exchange platform known for its robust trading features and user-friendly interface. The platform offers:' %}
+      </p>
             <ul>
-                <li>Spot and derivatives trading</li>
-                <li>High-performance trading engine</li>
-                <li>Advanced order types and trading tools</li>
-                <li>Institutional-grade security</li>
+                <li>{% trans 'Spot and derivatives trading' %}</li>
+                <li>{% trans 'High-performance trading engine' %}</li>
+                <li>{% trans 'Advanced order types and trading tools' %}</li>
+                <li>{% trans 'Institutional-grade security' %}</li>
             </ul>
         </aside>
     </section>
     
     <section id="">
       <aside>
-        <h3>What can you trade with Bybit?</h3>
-        <p>With Bybit, you can trade the following:</p>
+        <h3>{% trans 'What can you trade with Bybit?' %}</h3>
+        <p>
+        {% trans 'With Bybit, you can trade the following:' %}
+      </p>
         <ul>
-          <li><strong>Spot Trading</strong>: Quantity is measured in base asset units. Your account must have sufficient base and quote balances to trade in both directions.</li>
-          <li><strong>USDT-M Futures</strong>: Quantity is measured in base asset units. Margin and leverage can be adjusted directly on the Bybit platform.</li>
+          <li><strong>{% trans 'Spot Trading' %}</strong>: {% trans 'Quantity is measured in base asset units. Your account must have sufficient base and quote balances to trade in both directions.' %}</li>
+          <li><strong>{% trans 'USDT-M Futures' %}</strong>: {% trans 'Quantity is measured in base asset units. Margin and leverage can be adjusted directly on the Bybit platform.' %}</li>
         </ul>
-        <p><strong>USDT-M Futures</strong>: Position Mode will automatically be set to <em>Hedge Mode</em> for dual-side trading.</p>
+        <p><strong>{% trans "USDT-M Futures" %}</strong>: {% trans "Position Mode will automatically be set to" %} <em>{% trans "Hedge Mode" %}</em> {% trans "for dual-side trading." %}</p>
       </aside>
     </section>
 
     <section id="api-bybit">
         <aside>
-            <h3>API Key Setup Process</h3>
+            <h3>{% trans 'API Key Setup Process' %}</h3>
             <p>
-                follow the steps below to configure your API Keys.
-            </p>
+        {% trans 'follow the steps below to configure your API Keys.' %}
+      </p>
         </aside>
     </section>
 
@@ -42,27 +45,29 @@
 
     <section>
         <aside>
-            <h3><span>1</span> Create a Bybit Account</h3>
+            <h3><span>1</span> {% trans 'Create a Bybit Account' %}</h3>
             <div>
                 <p>
-                    If you don’t already have a Bybit account, please sign up <a href="https://www.bybit.com/en/register" target="_blank">here</a>.
-                </p>
+          {% trans 'If you don’t already have a Bybit account, please sign up' %}
+          <a href="https://www.bybit.com/en/register" target="_blank">{% trans 'here' %}</a>
+          {% trans '.' %}
+        </p>
             </div>
         </aside>
     </section>
 
     <section>
         <aside>
-            <h3><span>2</span> Navigate to API Key</h3>
+            <h3><span>2</span> {% trans 'Navigate to API Key' %}</h3>
             <div>
                 <ol>
-                    <li>Log in to your Bybit account.</li>
-                    <li>Click on your profile icon in the top-right corner.
-                        <img onclick="showModalImages(this)" src='{% static "images/docs/automate/bybit/step-1.png" %}' alt="Bybit - Navigate to your profile" loading="lazy" />
-                    </li>
-                    <li>Select "API" from the dropdown menu.
-                        <img onclick="showModalImages(this)" src='{% static "images/docs/automate/bybit/step-2.png" %}' alt="Bybit - Navigate to API Management" loading="lazy" />
-                    </li>
+                    <li>{% trans 'Log in to your Bybit account.' %}</li>
+                    <li>
+            {% trans 'Click on your profile icon in the top-right corner.' %}<img onclick="showModalImages(this)" src='{% static "images/docs/automate/bybit/step-1.png" %}' alt="Bybit - Navigate to your profile" loading="lazy" />
+          </li>
+                    <li>
+            {% trans 'Select "API" from the dropdown menu.' %}<img onclick="showModalImages(this)" src='{% static "images/docs/automate/bybit/step-2.png" %}' alt="Bybit - Navigate to API Management" loading="lazy" />
+          </li>
                 </ol>
             </div>
         </aside>
@@ -70,23 +75,21 @@
 
     <section>
         <aside>
-            <h3><span>3</span> Create API Key</h3>
+            <h3><span>3</span> {% trans 'Create API Key' %}</h3>
             <div>
                 <ol>
                     <li>
-                        Click "Create New Key"
-                        <img onclick="showModalImages(this)"
+            {% trans 'Click "Create New Key"' %}<img onclick="showModalImages(this)"
                             src='{% static "images/docs/automate/bybit/step-3.png" %}' 
                             loading="lazy"
                             alt="Bybit - Create new API key" />
-                    </li>
+          </li>
                     <li>
-                        Choose "System generated API Keys"
-                        <img onclick="showModalImages(this)" 
+            {% trans 'Choose "System generated API Keys"' %}<img onclick="showModalImages(this)" 
                             src='{% static "images/docs/automate/bybit/step-4.png" %}' 
                             loading="lazy"
                             alt="Bybit - choose system generated" />
-                    </li>
+          </li>
                 </ol>
             </div>
         </aside>
@@ -94,46 +97,41 @@
 
     <section>
         <aside>
-            <h3><span>4</span> Configure API Settings</h3>
+            <h3><span>4</span> {% trans 'Configure API Settings' %}</h3>
             <div>
                 <ol>
+                    <li>{% trans 'Set the API key permissions to "Read-Write".' %}</li>
+                    <li>{% trans 'Enable "Only IPs with permissions granted are allowed to access the OpenAPI".' %}</li>
                     <li>
-                        Set the API key permissions to "Read-Write".
-                    </li>
-                    <li>
-                        Enable "Only IPs with permissions granted are allowed to access the OpenAPI".
-                    </li>
-                    <li>
-                        Past our server's IP address: <span>{{server_ip}}</span>
+                        {% trans "Paste our server's IP address:" %} <span>{{server_ip}}</span>
                         <img onclick="showModalImages(this)" 
                             src='{% static "images/docs/automate/bybit/step-5.png" %}' 
                             loading="lazy"
                             alt="Bybit - Add our server's IP address to the whitelist" />
                     </li>
                     <li>
-                        Scroll down and enable "Unified Trading".
-                        <img onclick="showModalImages(this)"
+            {% trans 'Scroll down and enable "Unified Trading".' %}<img onclick="showModalImages(this)"
                             src='{% static "images/docs/automate/bybit/step-6.png" %}' 
                             loading="lazy"
                             alt="Bybit - Enable permissions" />
-                    </li>
+          </li>
 
-                    <li>
-                        Click "Submit" to see your API Keys.
-                    </li>
+                    <li>{% trans 'Click "Submit" to see your API Keys.' %}</li>
                 </ol>
 
-                <p class="font-semibold pt-2">IMPORTANT: Ensure you copy your secret key before clicking Understood.</p>
+                <p class="font-semibold pt-2">
+        {% trans 'IMPORTANT: Ensure you copy your secret key before clicking Understood.' %}
+      </p>
             </div>
         </aside>
     </section>
 
     <section id="complete-bybit">
         <aside>
-            <h3>Complete Integration</h3>
+            <h3>{% trans 'Complete Integration' %}</h3>
             <p>
-                Once you have your API keys, return to our platform's Automate section and use them to link your Binance account with our automation system. This will enable automated trading based on your TradingView alerts.
-            </p>
+        {% trans "Once you have your API keys, return to our platform's Automate section and use them to link your Binance account with our automation system. This will enable automated trading based on your TradingView alerts." %}
+      </p>
         </aside>
     </section>
 

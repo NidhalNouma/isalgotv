@@ -1,12 +1,13 @@
 {% extends 'page.html' %} {% load static %}
+{% load i18n %}
 {% load custom_tags %}
 
 {% block head_title %}
-  <title>Create Your Custom Strategy | IsAlgo</title>
+  <title>{% trans "Create Your Custom Strategy" %} | IsAlgo</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="Have a trading strategy idea? Contact IsAlgo to develop your custom strategy. Provide your rules, get a quote, and automate your trades with full performance tracking." />
+  <meta name="description" content="{% trans "Have a trading strategy idea? Contact IsAlgo to develop your custom strategy. Provide your rules, get a quote, and automate your trades with full performance tracking." %}" />
 {% endblock %}
 
 {% block head %}
@@ -14,24 +15,24 @@
 {% endblock %}
 
 {% block page %}
-  <h1 class="mt-4 text-center text-3xl sm:text-6xl text-title font-extrabold">Create your<br /> <span class="bg-clip-text bg-gradient-to-tl to-yellow-400 from-accent text-transparent">Custom Strategy</span></h1>
+  <h1 class="mt-4 text-center text-3xl sm:text-6xl text-title font-extrabold">Create your<br /> <span class="bg-clip-text bg-gradient-to-tl to-yellow-400 from-accent text-transparent">{% trans "Custom Strategy" %}</span></h1>
 
   <main class="mt-8 mb-16 max-w-4xl mx-auto">
     <!-- Intro -->
     <p class="text-text text-base sm:text-lg leading-relaxed">
-      <strong>Have a trading strategy idea?</strong> We'll build it for you. Share your concept with our team and we'll turn it into a fully functional strategy you can use on IsAlgo complete with <strong>automation</strong> and <strong>performance tracking</strong>.
+      <strong>{% trans "Have a trading strategy idea?" %}</strong> {% trans "We'll build it for you. Share your concept with our team and we'll turn it into a fully functional strategy you can use on IsAlgo complete with" %} <strong>{% trans "automation" %}</strong> {% trans "and" %} <strong>{% trans "performance tracking" %}</strong>.
     </p>
 
     <!-- How It Works -->
-    <h2 class="text-2xl font-bold text-title mt-14 mb-6">How It Works</h2>
+    <h2 class="text-2xl font-bold text-title mt-14 mb-6">{% trans "How It Works" %}</h2>
     <div class="grid md:grid-cols-3 gap-6">
       <!-- Step 1 -->
       <div class="">
         <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center mb-4">
           <span class="text-accent font-bold text-lg">1</span>
         </div>
-        <h3 class="font-semibold text-title mb-2">Describe Your Strategy</h3>
-        <p class="text-sm text-text/60">Send us a clear and detailed description of how your strategy works, including entry and exit rules.</p>
+        <h3 class="font-semibold text-title mb-2">{% trans "Describe Your Strategy" %}</h3>
+        <p class="text-sm text-text/60">{% trans "Send us a clear and detailed description of how your strategy works, including entry and exit rules." %}</p>
       </div>
 
       <!-- Step 2 -->
@@ -39,8 +40,8 @@
         <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center mb-4">
           <span class="text-accent font-bold text-lg">2</span>
         </div>
-        <h3 class="font-semibold text-title mb-2">Get a Quote & Timeline</h3>
-        <p class="text-sm text-text/60">Our team will review your request and respond with a price quote and estimated delivery time.</p>
+        <h3 class="font-semibold text-title mb-2">{% trans "Get a Quote & Timeline" %}</h3>
+        <p class="text-sm text-text/60">{% trans "Our team will review your request and respond with a price quote and estimated delivery time." %}</p>
       </div>
 
       <!-- Step 3 -->
@@ -48,13 +49,13 @@
         <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center mb-4">
           <span class="text-accent font-bold text-lg">3</span>
         </div>
-        <h3 class="font-semibold text-title mb-2">Automate & Track</h3>
-        <p class="text-sm text-text/60">Once your strategy is ready, use it with our automation tools to execute trades and track performance in real time.</p>
+        <h3 class="font-semibold text-title mb-2">{% trans "Automate & Track" %}</h3>
+        <p class="text-sm text-text/60">{% trans "Once your strategy is ready, use it with our automation tools to execute trades and track performance in real time." %}</p>
       </div>
     </div>
 
     <!-- What to Include -->
-    <h2 class="text-2xl font-bold text-title mt-14 mb-6">What to Include in Your Request</h2>
+    <h2 class="text-2xl font-bold text-title mt-14 mb-6">{% trans "What to Include in Your Request" %}</h2>
     <div class="space-y-5">
       <div class="flex items-start gap-4">
         <div class="bg-accent/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -66,8 +67,8 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Strategy Description</p>
-          <p class="text-sm text-text/60">A clear explanation of how your strategy works — the indicators, conditions, or logic it relies on.</p>
+          <p class="font-medium text-title mb-1">{% trans "Strategy Description" %}</p>
+          <p class="text-sm text-text/60">{% trans "A clear explanation of how your strategy works — the indicators, conditions, or logic it relies on." %}</p>
         </div>
       </div>
 
@@ -79,8 +80,8 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Entry & Exit Rules</p>
-          <p class="text-sm text-text/60">Define when to open a trade and when to close it. The more specific, the better — include conditions for both long and short positions if applicable.</p>
+          <p class="font-medium text-title mb-1">{% trans "Entry & Exit Rules" %}</p>
+          <p class="text-sm text-text/60">{% trans "Define when to open a trade and when to close it. The more specific, the better — include conditions for both long and short positions if applicable." %}</p>
         </div>
       </div>
 
@@ -93,8 +94,8 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Screenshots</p>
-          <p class="text-sm text-text/60">Include chart screenshots showing correct entry and exit points. Visual examples help us understand your strategy faster and build it accurately.</p>
+          <p class="font-medium text-title mb-1">{% trans "Screenshots" %}</p>
+          <p class="text-sm text-text/60">{% trans "Include chart screenshots showing correct entry and exit points. Visual examples help us understand your strategy faster and build it accurately." %}</p>
         </div>
       </div>
 
@@ -110,14 +111,14 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Additional Details (optional)</p>
-          <p class="text-sm text-text/60">Any extra context such as preferred timeframes, risk management rules, stop-loss/take-profit levels, or asset types.</p>
+          <p class="font-medium text-title mb-1">{% trans "Additional Details (optional)" %}</p>
+          <p class="text-sm text-text/60">{% trans "Any extra context such as preferred timeframes, risk management rules, stop-loss/take-profit levels, or asset types." %}</p>
         </div>
       </div>
     </div>
 
     <!-- Things to Know -->
-    <h2 class="text-2xl font-bold text-title mt-14 mb-6">Things to Know</h2>
+    <h2 class="text-2xl font-bold text-title mt-14 mb-6">{% trans "Things to Know" %}</h2>
     <div class="space-y-5">
       <div class="flex items-start gap-4">
         <div class="bg-accent/10 w-8 h-8 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -127,9 +128,9 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Private & Source-Protected</p>
+          <p class="font-medium text-title mb-1">{% trans "Private & Source-Protected" %}</p>
           <p class="text-sm text-text/60">
-            If your strategy idea uses one or more features from our published strategies, it will be built as a <strong class="text-text/80">private-only strategy</strong>. The source code will not be shared it remains fully protected.
+            {% trans "If your strategy idea uses one or more features from our published strategies, it will be built as a" %} <strong class="text-text/80">{% trans "private-only strategy" %}</strong>. {% trans "The source code will not be shared it remains fully protected." %}
           </p>
         </div>
       </div>
@@ -143,9 +144,9 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Future Changes Are Quoted Separately</p>
+          <p class="font-medium text-title mb-1">{% trans "Future Changes Are Quoted Separately" %}</p>
           <p class="text-sm text-text/60">
-            Any modifications or new features you'd like added to your strategy after delivery will require a <strong class="text-text/80">separate quote</strong>. Each update is scoped and priced independently.
+            {% trans "Any modifications or new features you'd like added to your strategy after delivery will require a" %} <strong class="text-text/80">{% trans "separate quote" %}</strong>. {% trans "Each update is scoped and priced independently." %}
           </p>
         </div>
       </div>
@@ -158,9 +159,9 @@
           </svg>
         </div>
         <div>
-          <p class="font-medium text-title mb-1">Earn From Your Strategy</p>
+          <p class="font-medium text-title mb-1">{% trans "Earn From Your Strategy" %}</p>
           <p class="text-sm text-text/60">
-            If your strategy meets our quality standards, it may be eligible to be published as an <strong class="text-text/80">Exclusive strategy</strong> on IsAlgo allowing you to earn from other users who subscribe to it.
+            {% trans "If your strategy meets our quality standards, it may be eligible to be published as an" %} <strong class="text-text/80">{% trans "Exclusive strategy" %}</strong> {% trans "on IsAlgo allowing you to earn from other users who subscribe to it." %}
           </p>
         </div>
       </div>
@@ -173,8 +174,8 @@
     </div> {% endcomment %}
 
     <!-- Send Request Form -->
-    <h2 class="text-2xl font-bold text-title mt-14 mb-2">Send Your Strategy Request</h2>
-    <p class="text-sm text-text/60 mb-6">Describe your strategy idea and we'll get back to you with a quote and timeline.</p>
+    <h2 class="text-2xl font-bold text-title mt-14 mb-2">{% trans "Send Your Strategy Request" %}</h2>
+    <p class="text-sm text-text/60 mb-6">{% trans "Describe your strategy idea and we'll get back to you with a quote and timeline." %}</p>
     <div id="strategy_request_form_wrapper">
       {% include 'strategies/include/strategy_request_form.html' %}
     </div>

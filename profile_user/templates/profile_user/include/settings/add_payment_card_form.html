@@ -1,8 +1,10 @@
+{% load i18n %}
+
 <form hx-post="{% url 'payment_method-create' %}" class="relative" id="form-pay-payment_methods">
   {% csrf_token %}
 
   <div class="mb-3">
-    <label for="cardName" class="input-label">Name on card</label>
+    <label for="cardName" class="input-label">{% trans 'Name on card' %}</label>
     <div class="relative mb-6">
       <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
         <svg aria-hidden="true" class="w-5 h-5 text-title/40" fill="currentColor" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +16,7 @@
   </div>
 
   <div class="mb-3">
-    <label id="lbl-card-element-payment_methods" for="card-element-payment_methods" class="input-label">Card details</label>
+    <label id="lbl-card-element-payment_methods" for="card-element-payment_methods" class="input-label">{% trans 'Card details' %}</label>
     <div class="relative mb-7">
       <div id="card-element-payment_methods" class="block w-full py-2.5 input-text"></div>
     </div>
@@ -29,14 +31,13 @@
   <div class="w-full">
     <button type="button" onclick="onPayFormStripeSubmit('payment_methods')" id="btn-pay-submit-payment_methods" class="btn-accent block w-full max-w-full mx-auto font-semibold text-center">
       <div class="flex items-center justify-center w-full">
-        ADD<svg xmlns="http://www.w3.org/2000/svg" class="fill-current w-3 h-3 ml-1 stroke-2" viewBox="0 0 448 512">
+        {% trans 'ADD' %}
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current w-3 h-3 ml-1 stroke-2" viewBox="0 0 448 512">
           <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
         </svg>
       </div>
     </button>
 
-    <button id="spinner-pay-submit-payment_methods" disabled type="button" class="hidden btn-accent w-full mx-auto">
-      Checking card {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
-    </button>
+    <button id="spinner-pay-submit-payment_methods" disabled type="button" class="hidden btn-accent w-full mx-auto">{% trans 'Checking card' %} {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}</button>
   </div>
 </form>

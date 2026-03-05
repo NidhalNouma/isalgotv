@@ -1,6 +1,8 @@
+{% load i18n %}
+
 <div class="mx-auto w-full rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden py-4 px-6 max-w-lg mb-6">
   <div class="flex items-center justify-between w-full mb-6">
-    <h5 class="text-title font-semibold">AI Tokens</h5>
+    <h5 class="text-title font-semibold">{% trans 'AI Tokens' %}</h5>
 
     <button onclick="openAITokensModalSettings()" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
       <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512">
@@ -19,7 +21,7 @@
           <circle cx="16" cy="9" r="2.9" />
           <circle cx="6" cy="5" r="3" />
         </svg>
-        <h2 class="text-sm font-medium text-text">Free Daily Tokens</h2>
+        <h2 class="text-sm font-medium text-text">{% trans 'Free Daily Tokens' %}</h2>
       </div>
       <div class="space-y-3">
         <p class="text-xl font-bold text-title">{{ user_profile.ai_free_daily_tokens_available }}</p>
@@ -34,7 +36,7 @@
           <path d="M7 6h1v4" />
           <path d="m16.71 13.88.7.71-2.82 2.82" />
         </svg>
-        <h2 class="text-sm font-medium text-text">Available Tokens</h2>
+        <h2 class="text-sm font-medium text-text">{% trans 'Available Tokens' %}</h2>
       </div>
       <p class="text-xl font-bold text-title">{{ user_profile.ai_tokens_available }}</p>
     </div>

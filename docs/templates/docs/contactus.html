@@ -1,7 +1,8 @@
-{% extends 'page.html' %} {% load static %}
+{% extends 'page.html' %} {% load i18n %}
+{% load static %}
 
 {% block head_title %}
-  <title>IsAlgo | Contact Us | Get Support, Ask Questions, Share Feedback</title>
+  <title>{% trans 'IsAlgo | Contact Us | Get Support, Ask Questions, Share Feedback' %}</title>
 {% endblock %}
 
 {% block head_description %}
@@ -12,13 +13,15 @@
   <main class="docs-main">
     {% include 'include/docs/side_nav.html' %}
     <div class="docs-container">
-      {% include 'include/docs/side_nav_mobile.html' with title='Contacts' %}
+      {% trans 'Contacts' as contacts_title %}
+      {% include 'include/docs/side_nav_mobile.html' with title=contacts_title %}
 
       <section class="">
-        <h1 class="text-2xl font-bold text-title tracking-tight">Contact us</h1>
+        <h1 class="text-2xl font-bold text-title tracking-tight">{% trans 'Contact us' %}</h1>
 
         <div class="mb-8 mt-2">
-          {% include 'include/infos.html' with close='alert_to_red' info="Please make sure to check the <a class='underline font-semibold' href='/docs/q&a/'>FAQ page</a> to see if you can find what you're looking for; it will save you time." %}
+          {% blocktrans asvar faq_info %}Please make sure to check the <a class="underline font-semibold" href="/docs/q&a/">FAQ page</a> to see if you can find what you're looking for; it will save you time.{% endblocktrans %}
+          {% include 'include/infos.html' with close='alert_to_red' info=faq_info %}
         </div>
 
         <div class="mt-2 flex lg:flex-row flex-col justify-center items-center max-w-full">

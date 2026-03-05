@@ -1,96 +1,103 @@
+{% load i18n %}
+
 <article class="docs">
-    <p class="par mb-4">
-        This guide will walk you through setting up automated alerts on TradingView, helping you streamline your trading process and save time.
+  <p class="par mb-4">
+    {% trans 'This guide will walk you through setting up automated alerts on TradingView, helping you streamline your trading process and save time.' %}
+  </p>
+
+  <section>
+    <h1 class="">{% trans 'Getting Started' %}</h1>
+    <p class="">
+      {% trans 'Visit' %}
+      <a href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591" target="_blank" class="">TradingView</a>
+      {% trans 'and open a chart from the' %}
+      <span class="">{% trans 'Product -> Supercharts' %}</span>
+      {% trans 'section. To automate your alerts, use a strategy or indicator that supports built-in alerts. We recommend the IsAlgo strategy for its integrated alert system.' %}
     </p>
-    
-    <section>
-        <h1 class=" ">Getting Started</h1>
-        <p class="">
-        Visit
-        <a
-            href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591"
-            target="_blank"
-            class=""
-        >
-            TradingView
-        </a>
-        and open a chart from the
-        <span class="">Product -> Supercharts</span>
-        section. To automate your alerts, use a strategy or indicator that supports built-in alerts. We recommend the IsAlgo strategy for its integrated alert system.
-        </p>
-    </section>
-    
-    <section>
-        <h1>Step 1: Configure Your Chart</h1>
-        <p >
-        <strong>1. Select the Asset:</strong> Choose the asset to trade (e.g., BTCUSD, NAS100) and ensure the correct timeframe is displayed.
-        </p>
-        <p >
-        <strong>2. Add the Strategy:</strong> Apply your strategy to the chart. Test it thoroughly before automating your alerts.
-        </p>
-    </section>
-    
-    <section>
-        <h1 >Step 2: Writing Alerts</h1>
-        <p >
-        Alerts require specific inputs. Here’s how to structure them:
-        </p>
-    
-        <h2 >Entry Alerts</h2>
-        <p>
-        Inputs for entry alerts:
-        <br />
-        • D: Direction (Buy or Sell) <br />
-        • A: Asset name (e.g., BTCUSD, NAS100) <br />
-        • V: Volume or trade amount <br />
-        • ID: Trade ID (use <code> {{ "{{ID}" }}}</code> with IsAlgo) <br />
-        </p>
-        <p >
-        Example Entry Alerts: <br />
-        • Long: <code>D=Buy A=BTCUSD V=10 ID={{ "{{ID}" }}}</code> <br />
-        • Short: <code>D=Sell A=BTCUSD V=10 ID={{ "{{ID}" }}}</code>
-        </p>
-    
-        <h2 >Exit Alerts</h2>
-        <p >
-        Inputs for exit alerts:
-        <br />
-        • X: Trade type to exit (Buy or Sell) <br />
-        • A: Asset name <br />
-        • P: Partial close percentage (use <code>{{ "{{partial_close}" }}}</code> with IsAlgo) <br />
-        • ID: Trade ID (use <code>{{ "{{ID}" }}}</code> with IsAlgo) <br />
-        </p>
-        <p>
-        Example Exit Alerts: <br />
-        • Long Exit: <code>X=Buy A=BTCUSD P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}}</code> <br />
-        • Short Exit: <code>X=Sell A=BTCUSD P={{ "{{partial_close}" }}} ID={{ "{{ID}" }}}</code>
-        </p>
-    </section>
-    
-    <section>
-        <h1>Step 3: Paste Alerts</h1>
-        <p >
-        If using IsAlgo, paste the alert messages into the relevant input fields: Entry Long, Entry Short, Exit Long, Exit Short. Click OK to save.
-        </p>
-    </section>
-    
-    <section >
-        <h1 >Step 4: Create a TradingView Alert</h1>
-        <p >
-        To create a TradingView alert:
-        </p>
-        <ol>
-        <li>Click the Alert icon (bell) in the chart toolbar.</li>
-        <li>Select <strong>Create Alert</strong>.</li>
-        <li>In <strong>Condition</strong>, choose your strategy/indicator and select <code>alert() function calls only</code>.</li>
-        <li>Give the alert a descriptive name.</li>
-        <li>Go to the <strong>Notifications</strong> tab, enable <strong>Webhook URL</strong>, and paste your Webhook URL.</li>
-        <li>Click <strong>Create</strong>.</li>
-        </ol>
+  </section>
 
-        <p >
-        <strong>Note:</strong> Alerts are tied to the current asset and timeframe. Changing these or modifying strategy inputs requires recreating the alert.
-        </p>
-    </section>
+  <section>
+    <h1>{% trans 'Step 1: Configure Your Chart' %}</h1>
+    <p>
+      <strong>{% trans '1. Select the Asset:' %}</strong> {% trans 'Choose the asset to trade (e.g., BTCUSD, NAS100) and ensure the correct timeframe is displayed.' %}
+    </p>
+    <p>
+      <strong>{% trans '2. Add the Strategy:' %}</strong> {% trans 'Apply your strategy to the chart. Test it thoroughly before automating your alerts.' %}
+    </p>
+  </section>
 
-  </article>
+  <section>
+    <h1>{% trans 'Step 2: Writing Alerts' %}</h1>
+    <p>
+      {% trans 'Alerts require specific inputs. Here’s how to structure them:' %}
+    </p>
+
+    <h2>{% trans 'Entry Alerts' %}</h2>
+    <p>
+      {% trans 'Inputs for entry alerts:' %}
+      <br />
+      • D:{% trans 'Direction (Buy or Sell)' %} <br />
+      • A:{% trans 'Asset name (e.g., BTCUSD, NAS100)' %} <br />
+      • V:{% trans 'Volume or trade amount' %} <br />
+      • ID:{% trans 'Trade ID' %}({% trans 'use' %} <code>{{ '{{ID}' }}}</code> {% trans 'with IsAlgo' %}) <br />
+    </p>
+    <p>
+      {% trans 'Example Entry Alerts:' %} <br />
+      • Long: <code>D=Buy A=BTCUSD V=10 ID={{ '{{ID}' }}}</code> <br />
+      • Short: <code>D=Sell A=BTCUSD V=10 ID={{ '{{ID}' }}}</code>
+    </p>
+
+    <h2>{% trans 'Exit Alerts' %}</h2>
+    <p>
+      {% trans 'Inputs for exit alerts:' %}
+      <br />
+      • X:{% trans 'Trade type to exit (Buy or Sell)' %} <br />
+      • A:{% trans 'Asset name' %} <br />
+      • P:{% trans 'Partial close percentage' %}({% trans 'use' %} <code>{{ '{{partial_close}' }}}</code> {% trans 'with IsAlgo' %}) <br />
+      • ID:{% trans 'Trade ID' %}({% trans 'use' %} <code>{{ '{{ID}' }}}</code> {% trans 'with IsAlgo' %}) <br />
+    </p>
+    <p>
+      {% trans 'Example Exit Alerts:' %} <br />
+      • Long Exit: <code>X=Buy A=BTCUSD P={{ '{{partial_close}' }}} ID={{ '{{ID}' }}}</code> <br />
+      • Short Exit: <code>X=Sell A=BTCUSD P={{ '{{partial_close}' }}} ID={{ '{{ID}' }}}</code>
+    </p>
+  </section>
+
+  <section>
+    <h1>{% trans 'Step 3: Paste Alerts' %}</h1>
+    <p>
+      {% trans 'If using IsAlgo, paste the alert messages into the relevant input fields: Entry Long, Entry Short, Exit Long, Exit Short. Click OK to save.' %}
+    </p>
+  </section>
+
+  <section>
+    <h1>{% trans 'Step 4: Create a TradingView Alert' %}</h1>
+    <p>
+      {% trans 'To create a TradingView alert:' %}
+    </p>
+    <ol>
+      <li>
+        {% trans 'Click the Alert icon (bell) in the chart toolbar.' %}
+      </li>
+      <li>
+        {% trans 'Select' %} <strong>{% trans 'Create Alert' %}</strong>.
+      </li>
+      <li>
+        {% trans 'In' %} <strong>{% trans 'Condition' %}</strong>,{% trans 'choose your strategy/indicator and select' %} <code>alert() function calls only</code>.
+      </li>
+      <li>
+        {% trans 'Give the alert a descriptive name.' %}
+      </li>
+      <li>
+        {% trans 'Go to the' %} <strong>{% trans 'Notifications' %}</strong> {% trans 'tab, enable' %} <strong>{% trans 'Webhook URL' %}</strong>,{% trans 'and paste your Webhook URL.' %}
+      </li>
+      <li>
+        {% trans 'Click' %} <strong>{% trans 'Create' %}</strong>.
+      </li>
+    </ol>
+
+    <p>
+      <strong>{% trans 'Note:' %}</strong> {% trans 'Alerts are tied to the current asset and timeframe. Changing these or modifying strategy inputs requires recreating the alert.' %}
+    </p>
+  </section>
+</article>
