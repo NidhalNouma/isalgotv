@@ -1,11 +1,12 @@
 {% extends 'page.html' %} {% load static %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>{{ strategy.name }} Strategy Performance - {{ overview_data.win_rate|default:'0' }}% Win Rate | Live Trading Results</title>
+  <title>{{ strategy.name }} {% trans 'Strategy Performance -' %} {{ overview_data.win_rate|default:'0' }}%{% trans 'Win Rate | Live Trading Results' %}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="Live performance results for {{ strategy.name }} trading strategy on {{ account.name }}. {{ overview_data.win_rate|default:'0' }}% win rate across {{ overview_data.trades }} trades. Analyze equity curve, asset breakdown, and complete trade history." />
+  <meta name="description" content="{% trans 'Live performance results for' %} {{ strategy.name }} {% trans 'trading strategy on' %} {{ account.name }}. {{ overview_data.win_rate|default:'0' }}% {% trans 'win rate across' %} {{ overview_data.trades }} {% trans 'trades. Analyze equity curve, asset breakdown, and complete trade history.' %}" />
 {% endblock %}
 
 {% block head %}

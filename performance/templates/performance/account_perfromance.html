@@ -1,11 +1,12 @@
 {% extends 'page.html' %} {% load static %}
+{% load i18n %}
 
 {% block head_title %}
-  <title>{{ overview_data.win_rate|default:'0' }}% win rate | {{ account.name }}</title>
+  <title>{{ overview_data.win_rate|default:'0' }}%{% trans 'win rate' %}| {{ account.name }}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="{{ account.broker_type }} account overview for {{ account.name }} with a {{ overview_data.win_rate|default:'0' }}% win rate" />
+  <meta name="description" content="{{ account.broker_type }} {% trans 'account overview for' %} {{ account.name }} {% trans 'with a' %} {{ overview_data.win_rate|default:'0' }}% {% trans 'win rate' %}" />
 {% endblock %}
 
 {% block head %}

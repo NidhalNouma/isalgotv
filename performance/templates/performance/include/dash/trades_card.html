@@ -1,5 +1,6 @@
 {% load custom_tags %}
 {% load custom_filters %}
+{% load i18n %}
 
 <div class="bg-text/5 rounded-xl p-4">
   <div class="flex items-center justify-between mb-4">
@@ -9,20 +10,20 @@
       {% endif %}
       {{ title }}
     </h4>
-    <span class="text-xs {{ badge_bg|default:'bg-profit/10' }} {{ badge_text|default:'text-profit' }} px-2 py-0.5 rounded-full">{{ win_rate|default:'0' }}% WR</span>
+    <span class="text-xs {{ badge_bg|default:'bg-profit/10' }} {{ badge_text|default:'text-profit' }} px-2 py-0.5 rounded-full">{{ win_rate|default:'0' }}%{% trans 'WR' %}</span>
   </div>
 
   <div class="space-y-3">
     <div class="flex justify-between items-center">
-      <span class="text-xs text-text/60">Trades</span>
+      <span class="text-xs text-text/60">{% trans 'Trades' %}</span>
       <span class="text-sm font-medium text-text/80">{{ value|default:'0' }}</span>
     </div>
     <div class="hidden sm:flex justify-between items-center">
-      <span class="text-xs text-text/60">Winners</span>
+      <span class="text-xs text-text/60">{% trans 'Winners' %}</span>
       <span class="text-sm font-medium text-profit">{{ win|default:'0' }}</span>
     </div>
     <div class="hidden sm:flex justify-between items-center">
-      <span class="text-xs text-text/60">Losers</span>
+      <span class="text-xs text-text/60">{% trans 'Losers' %}</span>
       <span class="text-sm font-medium text-loss">{{ loss|default:'0' }}</span>
     </div>
 
@@ -35,8 +36,8 @@
         {% endif %}
       </div>
       <div class="flex justify-between mt-1">
-        <span class="text-xs text-profit">{{ win|default:'0' }} W</span>
-        <span class="text-xs text-loss">{{ loss|default:'0' }} L</span>
+        <span class="text-xs text-profit">{{ win|default:'0' }} {% trans 'W' %}</span>
+        <span class="text-xs text-loss">{{ loss|default:'0' }} {% trans 'L' %}</span>
       </div>
     </div>
   </div>

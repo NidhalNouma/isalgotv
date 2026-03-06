@@ -1,5 +1,8 @@
 {% load custom_tags %}
 {% load custom_filters %}
+{% load i18n %}
+
+
 <div id="profit-chart-container-{{cid}}" class="w-full ">
     {# Currency Tabs - Scrollable #}
     <div class="relative mb-4">
@@ -32,29 +35,29 @@
                 <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
                 <div class="flex flex-nowrap items-stretch gap-3 overflow-x-auto no-scrollbar pr-8">
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
-                        <span class="text-xs text-text/50">Trades</span>
+                        <span class="text-xs text-text/50">{% trans 'Trades' %}</span>
                         <p class="text-lg font-bold text-text/80">{{ curr_perf.trades }}</p>
                     </div>
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
-                        <span class="text-xs text-text/50">Net Profit</span>
+                        <span class="text-xs text-text/50">{% trans 'Net Profit' %}</span>
                         <p class="text-lg font-bold {{curr_perf.net_profit|profit_color}}">
                             {% if curr_perf.net_profit >= 0 %}+{% endif %}{{ curr_perf.net_profit|floatformat:4|trim_zeros }}
                         </p>
                     </div>
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
-                        <span class="text-xs text-text/50">Max Profit</span>
+                        <span class="text-xs text-text/50">{% trans 'Max Profit' %}</span>
                         <p class="text-lg font-bold text-profit">+{{ info.max_net_profit|floatformat:4|trim_zeros }}</p>
                     </div>
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
-                        <span class="text-xs text-text/50">Max Drawdown</span>
+                        <span class="text-xs text-text/50">{% trans 'Max Drawdown' %}</span>
                         <p class="text-lg font-bold text-loss">{{ info.max_drawdown|floatformat:4|trim_zeros }}</p>
                     </div>
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
-                        <span class="text-xs text-text/50">Profit Factor</span>
+                        <span class="text-xs text-text/50">{% trans 'Profit Factor' %}</span>
                         <p class="text-lg font-bold {% if curr_perf.profit_factor >= 1 %}text-profit{% else %}text-loss{% endif %}">{{ curr_perf.profit_factor|floatformat:2|default:'0' }}</p>
                     </div>
                     <div class="flex-shrink-0 bg-text/5 rounded-lg p-3 min-w-[220px]">
-                        <span class="text-xs text-text/50">Days Traded</span>
+                        <span class="text-xs text-text/50">{% trans 'Days Traded' %}</span>
                         <p class="text-lg font-bold text-text/80">{{ info.number_of_days|default:'0' }}</p>
                     </div>
                 </div>
@@ -73,17 +76,17 @@
         {% with info=data|get_item:currency %}
             <div id="avg-stats-{{currency}}-{{cid}}" class="avg-stats-{{cid}} hidden mt-4 flex flex-wrap gap-4 text-xs">
                 <div class="flex items-center gap-2">
-                    <span class="text-text/50">Avg Daily Profit:</span>
+                    <span class="text-text/50">{% trans 'Avg Daily Profit' %}:</span>
                     <span class="font-medium {{info.avg_daily_net_profit|profit_color}}">
                         {{ info.avg_daily_net_profit|floatformat:4|trim_zeros|default:'0' }}
                     </span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-text/50">Avg Daily Trades:</span>
+                    <span class="text-text/50">{% trans 'Avg Daily Trades' %}:</span>
                     <span class="font-medium text-text/80">{{ info.avg_daily_trades|floatformat:0|default:'0' }}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-text/50">Today's P/L:</span>
+                    <span class="text-text/50">{% trans "Today's P/L" %}:</span>
                     <span class="font-medium {{info.today_net_profit|profit_color}}">
                         {{ info.today_net_profit|floatformat:4|trim_zeros|default:'0' }}
                     </span>
@@ -96,47 +99,47 @@
 
     <div class="relative mt-10 mb-4 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="relative">
-            <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Profit structure</h4>
+            <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">{% trans 'Profit structure' %}</h4>
             <div class="relative h-72 md:h-80">
                 <canvas id="accountProfitStructureChart-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
             </div>
             <div class="mt-3 flex items-center justify-center gap-4 text-xs text-text/60">
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-profit"></span>
-                    <span>Profit</span>
+                    <span>{% trans 'Profit' %}</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-loss"></span>
-                    <span>Loss</span>
+                    <span>{% trans 'Loss' %}</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-text/60"></span>
-                    <span>Fees</span>
+                    <span>{% trans 'Fees' %}</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-primary"></span>
-                    <span>Net</span>
+                    <span>{% trans 'Net' %}</span>
                 </div>
             </div>
         </div>
 
         <div class="relative">
-            <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">Buy vs Sell</h4>
+            <h4 class="text-sm sm:text-base font-semibold text-title/80 mb-4">{% trans 'Buy vs Sell' %}</h4>
             <div class="relative h-72 md:h-80">
                 <canvas id="accountProfitRadar-{{ id }}-{{cid}}" class="!w-full !h-full bg-transparent backdrop-blur-3xl rounded-lg"></canvas>
             </div>
             <div class="mt-3 flex items-center justify-center gap-4 text-xs text-text/60">
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-profit"></span>
-                    <span>Profit</span>
+                    <span>{% trans 'Profit' %}</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-text/80"></span>
-                    <span>Fees</span>
+                    <span>{% trans 'Fees' %}</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="w-2 aspect-square rounded-full bg-primary"></span>
-                    <span>Net</span>
+                    <span>{% trans 'Net' %}</span>
                 </div>
             </div>
         </div>
@@ -145,7 +148,7 @@
     {# Details Table per Currency #}
     {% for currency, info in currencies_performance.items %}
         <div id="perf-table-{{currency}}-{{cid}}" class="perf-table-{{cid}} hidden mt-6 w-full overflow-auto no-scrollbar">
-            <h6 class="text-title/80 text-sm font-semibold bg-text/10 rounded-md py-2 px-2">Details</h6>
+            <h6 class="text-title/80 text-sm font-semibold bg-text/10 rounded-md py-2 px-2">{% trans 'Details' %}</h6>
             {% include 'include/dash/perf_table.html' with perf=info %}
         </div>
     {% endfor %}

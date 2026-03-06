@@ -1,10 +1,11 @@
 {% extends 'auth/auth_page.html' %} {% block page %}
   {% load socialaccount %}
+  {% load i18n %}
 
   <main class="my-auto mx-auto max-w-[100%] md:max-w-xl w-[27rem]">
     <div class="text-title text-xl">
-      <h3 class="text-center">Get started with <span class="font-semibold">IsAlgo</span></h3>
-      <h3 class="text-center text-lg">Create your Account</h3>
+      <h3 class="text-center">{% trans 'Get started with' %} <span class="font-semibold">IsAlgo</span></h3>
+      <h3 class="text-center text-lg">{% trans 'Create your Account' %}</h3>
     </div>
 
     {% comment %} <div class="my-5">
@@ -15,18 +16,19 @@
       <a href="{% provider_login_url 'google' %}" type="button" class="btn-title w-full mr-2 mb-2 auth-google-btn">
         <svg class="w-4 h-4 mr-2 -ml-1" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
           <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
-        </svg>Sign up with Google
+        </svg>
+        {% trans 'Sign up with Google' %}
       </a>
 
       <div class="inline-flex items-center justify-center w-full">
         <hr class="w-64 h-px my-8 bg-text border-0" />
-        <span class="absolute px-3 font-medium text-text -translate-x-1/2 left-1/2 bg-background">or</span>
+        <span class="absolute px-3 font-medium text-text -translate-x-1/2 left-1/2 bg-background">{% trans 'or' %}</span>
       </div>
 
       <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="next" id="auth-next-input" value="" />
-        <label for="{{ form.username.id_for_label }}" class="input-label">Your Email</label>
+        <label for="{{ form.username.id_for_label }}" class="input-label">{% trans 'Your Email' %}</label>
         <div class="relative mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg aria-hidden="true" class="w-5 h-5 text-text/60" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +38,7 @@
           </div>
           <input name="{{ form.username.html_name }}" type="text" id="{{ form.username.id_for_label }}" class="input-text pl-10 w-full" placeholder="name@company.com" />
         </div>
-        <label for="{{ form.password1.id_for_label }}" class="input-label">Password</label>
+        <label for="{{ form.password1.id_for_label }}" class="input-label">{% trans 'Password' %}</label>
         <div class="relative mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg aria-hidden="true" class="w-5 h-5 text-text/60" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +47,7 @@
           </div>
           <input type="password" name="{{ form.password1.html_name }}" id="{{ form.password1.id_for_label }}" class="input-text pl-10 w-full" placeholder="****************" />
         </div>
-        <label for="{{ form.password2.id_for_label }}" class="input-label">Confirm password</label>
+        <label for="{{ form.password2.id_for_label }}" class="input-label">{% trans 'Confirm password' %}</label>
         <div class="relative mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg aria-hidden="true" class="w-5 h-5 text-text/60" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -57,14 +59,17 @@
 
         {% include './errors.html' %}
 
-        <button id="btn-register" onclick="openLoader('', '-register', 'flex');" type="submit" class="btn-primary mt-4 mb-2 w-full">Sign up</button>
+        <button id="btn-register" onclick="openLoader('', '-register', 'flex');" type="submit" class="btn-primary mt-4 mb-2 w-full">{% trans 'Sign up' %}</button>
 
-        <button id="spinner-register" type="button" disabled class="btn-primary mt-4 mb-2 w-full hidden">Signing up{% include 'svg/spinner.html' with class='ml-1.5 h-4' %}</button>
+        <button id="spinner-register" type="button" disabled class="btn-primary mt-4 mb-2 w-full hidden">
+          {% trans 'Signing up' %}
+          {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
+        </button>
       </form>
 
       <div class="">
-        <span class="text-text text-xs">Already have an account?</span>
-        <a href="{% url 'login' %}" class="text-secondary text-sm font-bold ml-0.5">Sign in</a>
+        <span class="text-text text-xs">{% trans 'Already have an account?' %}</span>
+        <a href="{% url 'login' %}" class="text-secondary text-sm font-bold ml-0.5">{% trans 'Sign in' %}</a>
       </div>
     </div>
     {% comment %} {{ form.username.html_name }} {{ form.username.id_for_label }}
