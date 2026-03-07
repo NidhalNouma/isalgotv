@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.utils.translation import gettext as _
 from django.contrib.contenttypes.models import ContentType
 
 from django_htmx.http import retarget, trigger_client_event, HttpResponseClientRedirect
@@ -69,7 +70,7 @@ def index(request):
     return render(request, "automate/automate.html", context=context_accounts_by_user(request))
 
 def webhook_404(request, exception):
-    return HttpResponse("Page not found!", content_type="text/plain")
+    return HttpResponse(_("Page not found!"), content_type="text/plain")
 
 @require_http_methods(["GET"])
 def ctrader_auth_code(request):
@@ -78,7 +79,7 @@ def ctrader_auth_code(request):
 
     context = {
         "auth_code": auth_code,
-        "error": None if auth_code else "Authorization code not found in the request."
+        "error": None if auth_code else _("Authorization code not found in the request.")
     }
 
     return render(request, "automate/ctrader_auth_code.html", context=context)
@@ -125,7 +126,7 @@ def deriv_auth_code(request):
 
     context = {
         'accounts': user_accounts,
-        'error': None if len(user_accounts) > 0 else "No account information found in the request."
+        'error': None if len(user_accounts) > 0 else _("No account information found in the request.")
     }
 
     return render(request, "automate/deriv_auth_code.html", context=context)
@@ -147,7 +148,7 @@ def add_broker(request, broker_type):
 
             if doesnt_require_payment == False:
                 if not payment_method or payment_method == "None":
-                    response = render(request, 'include/errors.html', {'error': 'No payment method has been detected.'})
+                    response = render(request, 'include/errors.html', {'error': _('No payment method has been detected.')})
                     return retarget(response, f'#add-{broker_type}-form-errors')
 
             if broker_type in crypto_broker_types:
@@ -185,7 +186,7 @@ def add_broker(request, broker_type):
                 form = AddForexBrokerAccountForm(form_data) 
 
             else:
-                raise Exception("Invalid Broker Type")
+                raise Exception(_("Invalid Broker Type"))
 
             if form.is_valid():
 
@@ -263,7 +264,7 @@ def edit_broker(request, broker_type, pk):
             forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
 
             if broker_type == "metatrader4" or broker_type == "metatrader5":
-                raise Exception("Editing of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed.")
+                raise Exception(_("Editing of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed."))
 
             if broker_type in crypto_broker_types:
                 account = CryptoBrokerAccount.objects.get(pk=pk)
@@ -302,7 +303,7 @@ def edit_broker(request, broker_type, pk):
 
                 form = AddForexBrokerAccountForm(form_data, instance=account) 
             else:
-                raise Exception("Invalid Broker Type")
+                raise Exception(_("Invalid Broker Type"))
 
             if form.is_valid():
                 if broker_type in crypto_broker_types:
@@ -315,12 +316,12 @@ def edit_broker(request, broker_type, pk):
                     if account.subscription_id != 'free_access':
                          # Check subscription
                         if not account.subscription_id:
-                            raise Exception("No subscription found.")
+                            raise Exception(_("No subscription found."))
                         
                         subscription = subscription_object(subscription_id=account.subscription_id)
 
                         if not subscription:
-                            raise Exception("Subscription is not active. Please activate your subscription.")
+                            raise Exception(_("Subscription is not active. Please activate your subscription."))
 
                         account.subscription_id = subscription.get('id')
 
@@ -366,7 +367,7 @@ def toggle_broker(request, broker_type, pk):
 
     try:
         if broker_type == "metatrader4" or broker_type == "metatrader5":
-            raise Exception("Toggling of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed.")
+            raise Exception(_("Toggling of Metatrader accounts is not allowed directly. Please delete and re-add the account if needed."))
         
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
@@ -376,7 +377,7 @@ def toggle_broker(request, broker_type, pk):
         elif broker_type in forex_broker_types:
             model_instance = ForexBrokerAccount.objects.get(pk=pk)
         else:
-            raise Exception("Invalid Broker Type")
+            raise Exception(_("Invalid Broker Type"))
         
         user_profile = request.user_profile
 
@@ -440,7 +441,7 @@ def delete_broker(request, broker_type, pk):
 
             obj.delete()
         else:
-            raise Exception("Invalid Broker Type")
+            raise Exception(_("Invalid Broker Type"))
         
         send_broker_account_deleted_task(request.user.email, obj)
 
@@ -463,7 +464,7 @@ def account_subscription_context(broker_type, pk, subscription_id):
     elif broker_type in forex_broker_types:
         account = ForexBrokerAccount.objects.get(pk=pk)
     else:
-        raise Exception("Invalid Broker Type")
+        raise Exception(_("Invalid Broker Type"))
 
     subscription = subscription_object(subscription_id=account.subscription_id)
 
@@ -474,7 +475,7 @@ def account_subscription_context(broker_type, pk, subscription_id):
             'id': str(pk),
             'broker_type': broker_type,
             'subscription_id': subscription_id,
-            'account_subscription': 'No subscription found.',
+            'account_subscription': _('No subscription found.'),
             'subscription_status': 'canceled',
             'subscription_active': False,
         }
@@ -525,7 +526,7 @@ def change_account_subscription_payment(request, broker_type, pk, account_subscr
     try:
         new_payment_method = request.POST.get("pm_id")  
         if not new_payment_method:
-            raise Exception("No payment method provided.")
+            raise Exception(_("No payment method provided."))
 
         user_profile = request.user_profile
         subscription = subscription_object(subscription_id=account_subscription_id)
@@ -792,7 +793,7 @@ def close_trade(request, broker_type, pk, trade_id):
     try:
         volume_str = request.POST.get('close_volume')
         if not volume_str:
-            raise ValueError("Close volume not provided.")
+            raise ValueError(_("Close volume not provided."))
         volume = float(volume_str)
         crypto_broker_types = [choice[0] for choice in CryptoBrokerAccount.BROKER_TYPES]
         forex_broker_types = [choice[0] for choice in ForexBrokerAccount.BROKER_TYPES]
@@ -802,10 +803,10 @@ def close_trade(request, broker_type, pk, trade_id):
         elif broker_type in forex_broker_types:
             account = ForexBrokerAccount.objects.get(pk=pk)
         else:
-            raise ValueError("Invalid Broker Type")
+            raise ValueError(_("Invalid Broker Type"))
         
         if account.created_by != request.user.user_profile:
-            raise PermissionError("You do not have permission to close trades on this account.")
+            raise PermissionError(_("You do not have permission to close trades on this account."))
 
         content_type = ContentType.objects.get_for_model(type(account))
         trade = TradeDetails.objects.get(content_type=content_type, object_id=pk, id=trade_id)
@@ -823,7 +824,7 @@ def close_trade(request, broker_type, pk, trade_id):
             response = render(request, 'include/trade_row.html', context={'trade': closed_trade, 'broker_type': broker_type, 'id': pk})
             return retarget(response, f'#trade-{broker_type}-{pk}-{trade.id}')
         else:
-            raise Exception("Failed to close the trade.")
+            raise Exception(_("Failed to close the trade."))
     except Exception as e:
         html_error = f'<p class="max-w-full w-full text-error text-xs break-words mt-0.5 overflow-auto" id="{broker_type}-{pk}-{trade_id}-closetrade-form-errors">{str(e)}</p>'
         response = HttpResponse(html_error, content_type="text/html")

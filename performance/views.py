@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils.translation import gettext as _
 from performance.functions.context import *
 from automate.models import CryptoBrokerAccount, ForexBrokerAccount
 
@@ -8,7 +9,7 @@ def get_asset_performance(request, asset, perf_id):
     context = {}
     perf = get_asset_performance_context(asset, perf_id)
     if perf is None:
-        context['perf_emsg'] = 'No performance data available for this asset.'
+        context['perf_emsg'] = _('No performance data available for this asset.')
     else:
         context.update(perf)
 
@@ -21,11 +22,11 @@ def get_asset_performance(request, asset, perf_id):
 def get_strategy_performance(request, strategy_id, perf_id):
     strategy = Strategy.objects.get(id=strategy_id)
     if strategy is None:
-        context['perf_emsg'] = 'This strategy does not exist.'
+        context['perf_emsg'] = _('This strategy does not exist.')
     context = {}
     perf = get_strategy_performance_context(strategy_id, perf_id)
     if perf is None:
-        context['perf_emsg'] = 'No performance data available for this strategy.'
+        context['perf_emsg'] = _('No performance data available for this strategy.')
     else:
         context.update(perf)
 
@@ -43,7 +44,7 @@ def get_strategy_asset_performance(request, strategy_perf_id, asset_perf_id):
     
     perf = get_strategy_asset_performance_context(strategy_perf_id, asset_perf_id)
     if perf is None:
-        context['perf_emsg'] = 'No performance data available for this strategy and asset combination.'
+        context['perf_emsg'] = _('No performance data available for this strategy and asset combination.')
     else:
         context.update(perf)
     inpage = request.GET.get('inpage', False)

@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 
 from django.shortcuts import render, redirect
+from django.utils.translation import gettext as _
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -47,11 +48,11 @@ def register(request):
                     return redirect(next_url)
                 return redirect('home')
             else:
-                messages.error(request, "An error occurred while registering")
+                messages.error(request, _("An error occurred while registering"))
 
         except Exception as e:
             print("An error occurred while registering", e)
-            messages.error(request, "An error occurred while registering")
+            messages.error(request, _("An error occurred while registering"))
 
     return render(request,'auth/register.html', {'form': form})
 
@@ -77,7 +78,7 @@ def login_user(request):
         try:
             user = User.objects.get(username = email)
         except Exception as e:
-            messages.error(request, "User does not exist!")
+            messages.error(request, _("User does not exist!"))
             return render(request, 'auth/login.html')
 
         user = authenticate(request, username = email, password = password)
@@ -89,7 +90,7 @@ def login_user(request):
                 return redirect(next_url)
             return redirect('home')
         else:
-            messages.error(request, "Email or Password incorrect!")
+            messages.error(request, _("Email or Password incorrect!"))
 
     return render(request, 'auth/login.html')
 
@@ -101,6 +102,6 @@ def update_user_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return render(request, 'include/settings/password.html', {'msg': 'Password updated succesfully!'})
+            return render(request, 'include/settings/password.html', {'msg': _('Password updated succesfully!')})
 
         return render(request, 'include/settings/password.html', {'form': form})

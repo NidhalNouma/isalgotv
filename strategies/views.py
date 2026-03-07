@@ -1,5 +1,6 @@
 
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch, OuterRef, Subquery
@@ -160,7 +161,7 @@ def get_strategy(request, slug):
         return render(request, 'strategy.html', context)
     
     except Strategy.DoesNotExist:
-        raise Http404("The object does not exist.")
+        raise Http404(_("The object does not exist."))
     
 
 def get_strategy_id(request, id):
@@ -169,7 +170,7 @@ def get_strategy_id(request, id):
         return HttpResponseRedirect(reverse('strategy', args=[strategy.slug]))
         
     except Strategy.DoesNotExist:
-        raise Http404("The object does not exist.")
+        raise Http404(_("The object does not exist."))
 
 def create(request):
     try:
@@ -179,19 +180,19 @@ def create(request):
         elif request.method == 'POST':
             email = request.POST.get('email')
             content = request.POST.get('content')
-            subject = 'Custom Strategy Development'
+            subject = _('Custom Strategy Development')
 
             try:
                 if not email:
-                    error = "Email address not provided!"
+                    error = _("Email address not provided!")
                     raise ValueError(error)
 
                 if not content:
-                    error = "Message not provided!"
+                    error = _("Message not provided!")
                     raise ValueError(error)
 
                 if len(content) < 200:
-                    error = "Minimum message length is 200 characters!"
+                    error = _("Minimum message length is 200 characters!")
                     raise ValueError(error)
 
                 email_message = EmailMessage(
@@ -209,13 +210,13 @@ def create(request):
                 email_message.send()
 
                 response = render(request, 'strategies/include/strategy_request_form.html', context={
-                    "succes": "Your strategy request has been sent! We'll get back to you shortly with a quote and timeline."
+                    "succes": _("Your strategy request has been sent! We'll get back to you shortly with a quote and timeline.")
                 })
                 return retarget(response, "#strategy_request_form_wrapper")
 
             except Exception as e:
                 print("Error sending strategy request email:", e)
-                error = str(e) if str(e) else "An error occurred while sending your request. Please try again later."
+                error = str(e) if str(e) else _("An error occurred while sending your request. Please try again later.")
                 response = render(request, 'include/errors.html', context={"error": error})
                 return retarget(response, "#strategy-request-form-errors")
         
@@ -310,7 +311,7 @@ def add_report(request, id):
                     performance_data[performance_key] = value
 
             if not request.POST.get('list_of_trades'):
-                raise ValueError("List of trades was not found.")
+                raise ValueError(_("List of trades was not found."))
             
             form_data = {
                 'pair': request.POST.get('performance_pair'),
@@ -360,7 +361,7 @@ def add_report(request, id):
                 return retarget(response, "#add-result-form-errors")
         
         except Exception as e:
-            error_message = e.messages[0] if isinstance(e.messages, list) else "An error occurred while adding the result." #str(e)
+            error_message = e.messages[0] if isinstance(e.messages, list) else _("An error occurred while adding the result.") #str(e)
 
             context = {'errors': error_message}
             response = render(request, "include/st_post_errors.html", context=context)
@@ -511,14 +512,14 @@ def strategy_subscribe(request, id):
     context = { 'title': title}
 
     if not title:
-        return HttpResponseBadRequest("Title parameter is required.")
+        return HttpResponseBadRequest(_("Title parameter is required."))
 
     try:
         strategy_price = get_object_or_404(StrategyPrice, pk=id)
 
         if request.method == 'POST':
             if not strategy_price.stripe_price_id:
-                context["error"] = 'No plan has been specified, please refresh the page and try again.'
+                context["error"] = _('No plan has been specified, please refresh the page and try again.')
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
 
@@ -530,14 +531,14 @@ def strategy_subscribe(request, id):
             user_profile = request.user_profile
 
             if not payment_method or payment_method == "None":
-                context["error"] = 'No payment method has been detected.'
+                context["error"] = _('No payment method has been detected.')
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
             
             subscriber = StrategySubscriber.objects.filter(strategy=strategy_price.strategy, user_profile=user_profile).first()
             is_subscribed = subscriber.is_active()[0] if subscriber else False
             if is_subscribed:
-                context["error"] = 'You are already subscribed to this strategy.'
+                context["error"] = _('You are already subscribed to this strategy.')
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
 
@@ -586,14 +587,14 @@ def strategy_unsubscribe(request, id, subscription_id):
 
             subscriber = StrategySubscriber.objects.filter(strategy=strategy_price.strategy, user_profile=user_profile).first()
             if not subscriber or subscriber.subscription_id != subscription_id:
-                context["error"] = 'Subscription not found.'
+                context["error"] = _('Subscription not found.')
                 response = render(request, 'include/errors.html', context=context)
                 return retarget(response, "#"+context['title']+"-form-errors")
 
             is_subscribed, subscription = subscriber.is_active()
 
             if not is_subscribed or not subscription:
-                context["error"] = 'No active subscription found.'
+                context["error"] = _('No active subscription found.')
                 context["class"] = 'mt-2'
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#"+context['title']+"-form-errors")
@@ -625,7 +626,7 @@ def strategy_change_payment(request, id, subscription_id):
 
         if request.method == 'POST':
             if not strategy_price.stripe_price_id:
-                context["error"] = 'No plan has been specified, please refresh the page and try again.'
+                context["error"] = _('No plan has been specified, please refresh the page and try again.')
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#"+context['title']+"-form-errors")
             
@@ -637,7 +638,7 @@ def strategy_change_payment(request, id, subscription_id):
             user_profile = request.user_profile
 
             if not payment_method or payment_method == "None":
-                context["error"] = 'No payment method has been detected.'
+                context["error"] = _('No payment method has been detected.')
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#"+context['title']+"-form-errors")
 

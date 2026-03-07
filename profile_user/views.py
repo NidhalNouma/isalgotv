@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django_htmx.http import trigger_client_event
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count, Q
@@ -298,7 +299,7 @@ def edit_tradingview_username(request):
         
         response_data = username_search(tv_username)
         if response_data == None:
-            error = "an error occurred while searching for username. Please try again later."
+            error = _("an error occurred while searching for username. Please try again later.")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#tradingview_username_submit_error")
         
@@ -309,14 +310,14 @@ def edit_tradingview_username(request):
                 check_username = True
 
         if check_username == False:
-            error = "The username provided cannot be found. Please ensure that you enter a valid TradingView username."
+            error = _("The username provided cannot be found. Please ensure that you enter a valid TradingView username.")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#tradingview_username_submit_error")
         
         is_tv_user_exist = User_Profile.objects.exclude(user=request.user).filter(tradingview_username=tv_username).exists()
 
         if is_tv_user_exist:
-            error = "The username you entered has already been used by another account. If you believe this is a mistake, please contact us for further assistance."
+            error = _("The username you entered has already been used by another account. If you believe this is a mistake, please contact us for further assistance.")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#tradingview_username_submit_error")
 
@@ -367,11 +368,11 @@ def edit_tradingview_username(request):
             return response
 
         else:
-            response = render(request, 'include/settings/tradingview.html', {'succes': 'Username updated succesfully!'})
+            response = render(request, 'include/settings/tradingview.html', {'succes': _('Username updated succesfully!')})
             return trigger_client_event(response, 'hide-animate')
 
     else:
-        error = "Username is required."
+        error = _("Username is required.")
         response = render(request, 'include/errors.html', context = {"error": error})
         return retarget(response, "#tradingview_username_submit_error")
 
@@ -384,7 +385,7 @@ def edit_discord_username(request):
 
             discord_user_id = get_discord_user_id(discord_username)
             if not discord_user_id:
-                raise Exception("User not found on Discord")
+                raise Exception(_("User not found on Discord"))
                 
             profile_user = request.user_profile
             if profile_user.discord_username:
@@ -394,13 +395,13 @@ def edit_discord_username(request):
                 profile_user.discord_username = discord_username
                 profile_user.save()
 
-                response = render(request, 'include/settings/discord.html', {'succes': 'User granted access!'})
+                response = render(request, 'include/settings/discord.html', {'succes': _('User granted access!')})
                 return trigger_client_event(response, 'hide-animate')
             else:
-                raise Exception("Failed to add role.")
+                raise Exception(_("Failed to add role."))
 
         else:
-            raise Exception("Username is required.")
+            raise Exception(_("Username is required."))
     
     except Exception as e:
         response = render(request, 'include/errors.html', context = {"error": e})
@@ -447,7 +448,7 @@ def get_access(request, strategy_id):
 
     except Exception as e:
         print("Error in get_access:", e)
-        error = "An unexpected error occurred while granting access. Please try again later."
+        error = _("An unexpected error occurred while granting access. Please try again later.")
         strategies = Strategy.objects.filter(premium=premium, is_live=True)
         return render(request, 'include/access_list_strategies.html', context = {"strategies": strategies, "premium": premium, "error": error, "error_id": strategy_id})
     
@@ -477,7 +478,7 @@ def create_payment_method(request):
         payment_method = data['pm_id']
 
         if not payment_method:
-            context["error"] = 'No payment method has been detected.'
+            context["error"] = _('No payment method has been detected.')
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-payment_methods")
 
@@ -510,7 +511,7 @@ def delete_payment_method(request):
         payment_method = data['pm_id']
 
         if not payment_method:
-            context["error"] = 'No payment method has been detected.'
+            context["error"] = _('No payment method has been detected.')
 
         user_profile = request.user_profile
 
@@ -539,7 +540,7 @@ def setdefault_payment_method(request):
             payment_method = data['pm_id']
 
             if not payment_method:
-                context["error"] = 'No payment method has been detected.'
+                context["error"] = _('No payment method has been detected.')
 
             user_profile = request.user_profile
 
@@ -552,7 +553,7 @@ def setdefault_payment_method(request):
             return retarget(response, "#setting-payment_methods")
         
         except Exception as e:
-            context["error"] = 'Attached payment to customer '+str(e)
+            context["error"] = _('Attached payment to customer ') + str(e)
 
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-delete-payment_methods")
@@ -567,7 +568,7 @@ def pay_remaining_amount(request):
             payment_method = data['pm_id']
 
             if not payment_method:
-                context["error"] = 'No payment method has been detected.'
+                context["error"] = _('No payment method has been detected.')
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-pay_remaining_amount")
 
@@ -595,7 +596,7 @@ def check_coupon(request):
         context["coupon_val"] = ""
 
         if not price_id:
-            context["error"] = 'No plan has been specified, please refresh the page and try again.'
+            context["error"] = _('No plan has been specified, please refresh the page and try again.')
             # return render(request, 'include/pay_form_stripe.html', context)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#"+context['title']+"-coupon-form-errors")
@@ -638,7 +639,7 @@ def check_coupon(request):
             # context["price"] = txt_price
             # context["msg"] = str(trial_ends) +" Creating subscription " + txt_price
 
-            context["succes"] = 'Coupon code is valid.'
+            context["succes"] = _('Coupon code is valid.')
             context["plan"] = plan_id  
             context["coupon_val"] = coupon_id
             context["coupon_off"] = coupon_off
@@ -672,7 +673,7 @@ def subscription_stripeform(request):
         context = {"error": '', 'title': plan_id}
 
         if not price_id:
-            context["error"] = 'No plan has been specified, please refresh the page and try again.'
+            context["error"] = _('No plan has been specified, please refresh the page and try again.')
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
@@ -689,7 +690,7 @@ def subscription_stripeform(request):
             try:
                 price, price_off, promo_id = check_coupon_fn(user_profile, coupon_id, price)
             except Exception as e:
-                context["error"] = 'Invalid coupon code '+str(e)
+                context["error"] = _('Invalid coupon code ') + str(e)
                 response = render(request, 'include/errors.html', context)
                 return retarget(response, "#stripe-error-"+context['title'])
         else:
@@ -697,7 +698,7 @@ def subscription_stripeform(request):
 
 
         if not payment_method or payment_method == "None":
-            context["error"] = 'No payment method has been detected.'
+            context["error"] = _('No payment method has been detected.')
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
@@ -743,7 +744,7 @@ def subscription_stripeform(request):
             return HttpResponseClientRedirect(reverse('membership') + '?sub=True')
 
         except Exception as e:
-            context["error"] = 'Subscription failed. ' + str(e)
+            context["error"] = _('Subscription failed. ') + str(e)
             response = render(request, 'include/errors.html', context)
             return retarget(response, "#stripe-error-"+context['title'])
 
@@ -766,7 +767,7 @@ def cancel_subscription(request):
 
                 return render(request, 'include/settings/membership.html', context)
             except Exception as e:
-                context['error'] = 'An error occurred while attempting to cancel your subscription. Please contact us for assistance. \n' + str(e)
+                context['error'] = _('An error occurred while attempting to cancel your subscription. Please contact us for assistance.') + ' \n' + str(e)
 
         return render(request, 'include/settings/membership.html', context)
 
@@ -779,7 +780,7 @@ def complete_seller_account_onboarding(request):
         
         account_id = profile_user.get_seller_account_id()
         if not account_id:
-            messages.error(request, "No seller account found. Please contact support.")
+            messages.error(request, _("No seller account found. Please contact support."))
             return redirect(referer_url if referer_url else 'home')
 
         return_url = referer_url if referer_url else request.build_absolute_uri(reverse('home'))
@@ -788,14 +789,14 @@ def complete_seller_account_onboarding(request):
         redirect_obj = get_seller_account_link(account_id, refresh_url, return_url)
 
         if not redirect_obj or not redirect_obj.url:
-            messages.error(request, "Failed to create onboarding link. Please contact support.")
+            messages.error(request, _("Failed to create onboarding link. Please contact support."))
             return redirect(referer_url if referer_url else 'home')
 
         print("Redirecting to:", redirect_obj.url)
         return HttpResponseRedirect(redirect_obj.url)
     except Exception as e:
         print("Error completing seller onboarding:", e)
-        messages.error(request, "An error occurred while completing seller onboarding. Please try again later.")
+        messages.error(request, _("An error occurred while completing seller onboarding. Please try again later."))
         return redirect(referer_url if referer_url else 'home')
 
 @login_required
@@ -806,20 +807,20 @@ def stripe_seller_dashboard(request):
 
         account_id = profile_user.get_seller_account_id()
         if not account_id:
-            messages.error(request, "No seller account found. Please contact support.")
+            messages.error(request, _("No seller account found. Please contact support."))
             return redirect(referer_url if referer_url else 'home')
 
         dashboard_link = get_seller_login_link(account_id)
 
         if not dashboard_link or not dashboard_link.url:
-            messages.error(request, "Failed to create dashboard link. Please contact support.")
+            messages.error(request, _("Failed to create dashboard link. Please contact support."))
             return redirect(referer_url if referer_url else 'home')
 
         print("Redirecting to:", dashboard_link.url)
         return HttpResponseRedirect(dashboard_link.url)
     except Exception as e:
         print("Error accessing seller dashboard:", e)
-        messages.error(request, "An error occurred while accessing the seller dashboard. Please try again later.")
+        messages.error(request, _("An error occurred while accessing the seller dashboard. Please try again later."))
         return redirect(referer_url if referer_url else 'home')
         
 def preview_email(request):
@@ -838,22 +839,22 @@ def send_email(request):
         #     email = request.user.username
 
         if not email:
-            error = "Email address not provided!"
+            error = _("Email address not provided!")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
 
         if not subject:
-            error = "Subject not provided!"
+            error = _("Subject not provided!")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
 
         if not content:
-            error = "Message not provided!"
+            error = _("Message not provided!")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
 
         if len(content) < 200:
-            error = "Minimum message length is 200 characters!"
+            error = _("Minimum message length is 200 characters!")
             response = render(request, 'include/errors.html', context={"error": error})
             return retarget(response, "#contact_us_mail_error")
         
@@ -878,13 +879,13 @@ def send_email(request):
             email_message.send()
             print('Email sent successfully!')
 
-            response = render(request, 'include/docs/contact_us_form.html', context = {"succes": "Email sent successfully. We will get back to you in less than 48 hours."})
+            response = render(request, 'include/docs/contact_us_form.html', context = {"succes": _("Email sent successfully. We will get back to you in less than 48 hours.")})
 
             return retarget(response, "#contact_us_mail")
 
         except Exception as e:
             print("Error sending maill", e)
-            error = "An error occured please try again!"
+            error = _("An error occured please try again!")
             response = render(request, 'include/errors.html', context = {"error": error})
             return retarget(response, "#contact_us_mail_error")
         

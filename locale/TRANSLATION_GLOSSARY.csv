@@ -1,0 +1,85 @@
+key,domain,en,fr,es,de,zh_Hans,ja,ar,ru,notes
+brand_isalgo,brand,IsAlgo,IsAlgo,IsAlgo,IsAlgo,IsAlgo,IsAlgo,IsAlgo,IsAlgo,Do not translate brand name
+brand_tero,brand,Tero,Tero,Tero,Tero,Tero,Tero,Tero,Tero,Do not translate brand name
+brand_tradingview,brand,TradingView,TradingView,TradingView,TradingView,TradingView,TradingView,TradingView,TradingView,Do not translate brand name
+brand_stripe,brand,Stripe,Stripe,Stripe,Stripe,Stripe,Stripe,Stripe,Stripe,Do not translate brand name
+brand_discord,brand,Discord,Discord,Discord,Discord,Discord,Discord,Discord,Discord,Do not translate brand name
+term_api,technical,API,API,API,API,API,API,API,API,Do not translate acronym
+term_webhook,technical,Webhook,Webhook,Webhook,Webhook,Webhook,Webhook,Webhook,Webhook,Keep as technical term
+term_json,technical,JSON,JSON,JSON,JSON,JSON,JSON,JSON,JSON,Do not translate acronym
+term_url,technical,URL,URL,URL,URL,URL,URL,URL,URL,Do not translate acronym
+term_id,technical,ID,ID,ID,ID,ID,ID,ID,ID,Do not translate acronym
+ui_home,ui,Home,Accueil,Inicio,Startseite,首页,ホーム,الرئيسية,Главная,Navigation label
+ui_settings,ui,Settings,Parametres,Configuracion,Einstellungen,设置,設定,الإعدادات,Настройки,Navigation label
+ui_profile,ui,Profile,Profil,Perfil,Profil,个人资料,プロフィール,الملف الشخصي,Профиль,Navigation label
+ui_notifications,ui,Notifications,Notifications,Notificaciones,Benachrichtigungen,通知,通知,الإشعارات,Уведомления,Navigation label
+ui_save,ui,Save,Enregistrer,Guardar,Speichern,保存,保存,حفظ,Сохранить,Action button
+ui_cancel,ui,Cancel,Annuler,Cancelar,Abbrechen,取消,キャンセル,إلغاء,Отмена,Action button
+ui_delete,ui,Delete,Supprimer,Eliminar,Loschen,删除,削除,حذف,Удалить,Action button
+ui_confirm,ui,Confirm,Confirmer,Confirmar,Bestatigen,确认,確認,تأكيد,Подтвердить,Action button
+ui_search,ui,Search,Rechercher,Buscar,Suchen,搜索,検索,بحث,Поиск,Action button
+ui_loading,ui,Loading...,Chargement...,Cargando...,Wird geladen...,加载中...,読み込み中...,جار التحميل...,Загрузка...,Status label
+auth_login,auth,Login,Connexion,Iniciar sesion,Anmelden,登录,ログイン,تسجيل الدخول,Вход,Auth flow
+auth_logout,auth,Logout,Deconnexion,Cerrar sesion,Abmelden,退出登录,ログアウト,تسجيل الخروج,Выход,Auth flow
+auth_register,auth,Register,Inscription,Registrarse,Registrieren,注册,登録,تسجيل,Регистрация,Auth flow
+auth_reset_password,auth,Reset password,Reinitialiser le mot de passe,Restablecer contrasena,Passwort zurucksetzen,重置密码,パスワードをリセット,إعادة تعيين كلمة المرور,Сбросить пароль,Auth flow
+billing_membership,billing,Membership,Abonnement,Membresia,Mitgliedschaft,会员,メンバーシップ,العضوية,Подписка,Billing product
+billing_subscription,billing,Subscription,Abonnement,Suscripcion,Abonnement,订阅,サブスクリプション,الاشتراك,Подписка,Billing concept
+billing_plan,billing,Plan,Forfait,Plan,Tarif,套餐,プラン,الخطة,Тариф,Billing concept
+billing_monthly,billing,Monthly,Mensuel,Mensual,Monatlich,每月,月次,شهري,Ежемесячно,Plan interval
+billing_yearly,billing,Yearly,Annuel,Anual,Jahrlich,每年,年次,سنوي,Ежегодно,Plan interval
+billing_lifetime,billing,Lifetime,A vie,De por vida,Lebenslang,终身,永久,مدى الحياة,Пожизненно,Plan interval
+billing_payment_method,billing,Payment method,Methode de paiement,Metodo de pago,Zahlungsmethode,付款方式,支払い方法,طريقة الدفع,Способ оплаты,Billing UI
+billing_coupon,billing,Coupon,Code promo,Cupon,Gutschein,优惠券,クーポン,قسيمة,Купон,Billing UI
+billing_invoice,billing,Invoice,Facture,Factura,Rechnung,发票,請求書,فاتورة,Счет,Billing UI
+billing_refund,billing,Refund,Remboursement,Reembolso,Ruckerstattung,退款,返金,استرداد,Возврат,Billing UI
+billing_cancel_subscription,billing,Cancel subscription,Annuler l'abonnement,Cancelar suscripcion,Abonnement kundigen,取消订阅,サブスクリプションを解約,إلغاء الاشتراك,Отменить подписку,Billing action
+strategy_strategy,marketplace,Strategy,Strategie,Estrategia,Strategie,策略,ストラテジー,الاستراتيجية,Стратегия,Core marketplace entity
+strategy_marketplace,marketplace,Marketplace,Marketplace,Marketplace,Marktplatz,市场,マーケットプレイス,السوق,Маркетплейс,Feature area
+strategy_premium,marketplace,Premium,Premium,Premium,Premium,高级,プレミアム,مميز,Премиум,Tier label
+strategy_subscribe,marketplace,Subscribe,S'abonner,Suscribirse,Abonnieren,订阅,購読する,اشترك,Подписаться,Action button
+strategy_unsubscribe,marketplace,Unsubscribe,Se desabonner,Darse de baja,Abbestellen,取消订阅,購読解除,إلغاء الاشتراك,Отписаться,Action button
+strategy_comment,marketplace,Comment,Commentaire,Comentario,Kommentar,评论,コメント,تعليق,Комментарий,Community feature
+strategy_report,marketplace,Report,Signaler,Reportar,Melden,举报,報告,إبلاغ,Жалоба,Community feature
+strategy_vote,marketplace,Vote,Vote,Voto,Abstimmung,投票,投票,تصويت,Голос,Community feature
+trading_entry,trading,Entry,Entree,Entrada,Einstieg,入场,エントリー,دخول,Вход,Trading term
+trading_exit,trading,Exit,Sortie,Salida,Ausstieg,离场,エグジット,خروج,Выход,Trading term
+trading_position,trading,Position,Position,Posicion,Position,仓位,ポジション,مركز,Позиция,Trading term
+trading_order,trading,Order,Ordre,Orden,Order,订单,注文,أمر,Ордер,Trading term
+trading_stop_loss,trading,Stop loss,Stop loss,Stop loss,Stop Loss,止损,ストップロス,وقف الخسارة,Стоп-лосс,Keep widely used market term
+trading_take_profit,trading,Take profit,Take profit,Take profit,Take Profit,止盈,利確,جني الأرباح,Тейк-профит,Keep widely used market term
+trading_leverage,trading,Leverage,Effet de levier,Apalancamiento,Hebel,杠杆,レバレッジ,رافعة مالية,Кредитное плечо,Trading term
+trading_drawdown,trading,Drawdown,Drawdown,Drawdown,Drawdown,回撤,ドローダウン,تراجع,Просадка,Keep technical term if preferred
+trading_pnl,trading,PnL,PnL,PnL,PnL,盈亏,損益,الربح والخسارة,PnL,Keep acronym PnL or common local equivalent
+trading_risk,trading,Risk,Risque,Riesgo,Risiko,风险,リスク,المخاطر,Риск,Trading term
+trading_asset,trading,Asset,Actif,Activo,Vermogenswert,资产,資産,أصل,Актив,Trading term
+trading_base_asset,trading,Base asset,Actif de base,Activo base,Basiswert,基础资产,基軸資産,الأصل الاساسي,Базовый актив,Trading pair term
+trading_quote_asset,trading,Quote asset,Actif de cotation,Activo cotizado,Kurswert,计价资产,決済資産,أصل التسعير,Котируемый актив,Trading pair term
+trading_spot,trading,Spot,Spot,Spot,Spot,现货,現物,فوري,Спот,Keep market term
+trading_futures,trading,Futures,Futures,Futuros,Futures,期货,先物,عقود آجلة,Фьючерсы,Market term
+auto_automation,automation,Automation,Automatisation,Automatizacion,Automatisierung,自动化,自動化,الأتمتة,Автоматизация,Feature area
+auto_connect_broker,automation,Connect broker,Connecter un broker,Conectar broker,Broker verbinden,连接经纪商,ブローカーを接続,ربط الوسيط,Подключить брокера,Action label
+auto_broker_account,automation,Broker account,Compte broker,Cuenta de broker,Brokerkonto,经纪商账户,ブローカー口座,حساب الوسيط,Брокерский счет,Entity label
+auto_api_key,automation,API key,Cle API,Clave API,API-Schlussel,API 密钥,APIキー,مفتاح API,API-ключ,Credential label
+auto_api_secret,automation,API secret,Secret API,Secreto API,API-Secret,API 密钥机密,APIシークレット,سر API,API-секрет,Credential label
+auto_account_id,automation,Account ID,ID du compte,ID de cuenta,Konto-ID,账户 ID,アカウントID,معرف الحساب,ID счета,Identifier label
+auto_status,automation,Status,Statut,Estado,Status,状态,ステータス,الحالة,Статус,State label
+auto_active,automation,Active,Actif,Activo,Aktiv,启用中,有効,نشط,Активен,State label
+auto_inactive,automation,Inactive,Inactif,Inactivo,Inaktiv,未启用,無効,غير نشط,Неактивен,State label
+auto_logs,automation,Logs,Journaux,Registros,Protokolle,日志,ログ,السجلات,Логи,Feature label
+auto_retries,automation,Retries,Nouvelles tentatives,Reintentos,Wiederholungen,重试,再試行,إعادات المحاولة,Повторные попытки,Technical label
+auto_execute,automation,Execute,Executer,Ejecutar,Ausfuhren,执行,実行,تنفيذ,Выполнить,Action label
+auto_trigger,automation,Trigger,Declencheur,Disparador,Ausloser,触发器,トリガー,مشغل,Триггер,Technical term
+perf_performance,performance,Performance,Performance,Rendimiento,Performance,绩效,パフォーマンス,الاداء,Эффективность,Feature area
+perf_analytics,performance,Analytics,Analytique,Analitica,Analytik,分析,分析,التحليلات,Аналитика,Feature area
+perf_win_rate,performance,Win rate,Taux de reussite,Tasa de aciertos,Trefferquote,胜率,勝率,معدل النجاح,Процент прибыльных сделок,Metric label
+perf_sharpe_ratio,performance,Sharpe ratio,Ratio de Sharpe,Ratio de Sharpe,Sharpe-Ratio,夏普比率,シャープレシオ,نسبة شارب,Коэффициент Шарпа,Metric label
+perf_max_drawdown,performance,Max drawdown,Drawdown maximal,Drawdown maximo,Maximaler Drawdown,最大回撤,最大ドローダウン,اقصى تراجع,Максимальная просадка,Metric label
+ai_chat_session,ai,Chat session,Session de chat,Sesion de chat,Chat-Sitzung,聊天会话,チャットセッション,جلسة دردشة,Чат-сессия,AI feature
+ai_message_history,ai,Message history,Historique des messages,Historial de mensajes,Nachrichtenverlauf,消息历史,メッセージ履歴,سجل الرسائل,История сообщений,AI feature
+ai_token_usage,ai,Token usage,Utilisation des jetons,Uso de tokens,Token-Nutzung,令牌使用量,トークン使用量,استخدام الرموز,Использование токенов,AI billing concept
+ai_buy_tokens,ai,Buy tokens,Acheter des jetons,Comprar tokens,Token kaufen,购买令牌,トークンを購入,شراء الرموز,Купить токены,AI billing action
+docs_disclaimer,legal,Disclaimer,Avertissement,Descargo de responsabilidad,Haftungsausschluss,免责声明,免責事項,إخلاء المسؤولية,Отказ от ответственности,Legal page
+docs_terms_of_use,legal,Terms of use,Conditions d'utilisation,Terminos de uso,Nutzungsbedingungen,使用条款,利用規約,شروط الاستخدام,Условия использования,Legal page
+docs_privacy_policy,legal,Privacy policy,Politique de confidentialite,Politica de privacidad,Datenschutzerklarung,隐私政策,プライバシーポリシー,سياسة الخصوصية,Политика конфиденциальности,Legal page
+title_prefix,style,IsAlgo |,IsAlgo |,IsAlgo |,IsAlgo |,IsAlgo |,IsAlgo |,IsAlgo |,IsAlgo |,Keep title prefix unchanged

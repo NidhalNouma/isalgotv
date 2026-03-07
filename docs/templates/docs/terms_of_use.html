@@ -58,8 +58,11 @@
       {% include 'include/docs/section.html' with class='mt-8' title=sec13_title p=sec13_p %}
 
       {% trans 'Contact' as sec14_title %}
-      {% blocktrans asvar sec14_p %}If you have any questions or concerns regarding these Terms and Conditions or our Services, please contact us at support@isalgo.com<br /><br />By using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.{% endblocktrans %}
-      {% include 'include/docs/section.html' with class='mt-8' title=sec14_title p=sec14_p %}
+      {% blocktrans asvar sec14_p1 %}If you have any questions or concerns regarding these Terms and Conditions or our Services, please contact us at{% endblocktrans %}
+      {% blocktrans asvar sec14_p2 %}By using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.{% endblocktrans %}
+      {% with sec14_combined=sec14_p1|add:' support@isalgo.com<br /><br />'|add:sec14_p2 %}
+        {% include 'include/docs/section.html' with class='mt-8' title=sec14_title p=sec14_combined %}
+      {% endwith %}
     </div>
   </main>
 {% endblock %}
