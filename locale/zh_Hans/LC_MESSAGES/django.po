@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-07 21:26-0600\n"
+"POT-Creation-Date: 2026-03-08 09:07-0500\n"
 "PO-Revision-Date: 2026-03-04 10:00-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -161,36 +161,26 @@ msgstr "不支持帐户模型。"
 msgid "Unsupported account model: %s"
 msgstr "不支持的帐户模型：%s"
 
-#, fuzzy
-#| msgid "Volume to close"
 msgid "No volume left to close."
-msgstr "成交量"
+msgstr "没有剩余数量可平仓。"
 
-#, fuzzy
-#| msgid "Set up the alert messages"
 msgid "No ID found in alert message."
-msgstr "设置警报消息"
+msgstr "在警报消息中未找到ID。"
 
-#, fuzzy
-#| msgid "No account information found in the request."
 msgid "No action found in alert message."
-msgstr "请求中未找到帐户信息。"
+msgstr "在警报消息中未找到操作。"
 
 msgid "No symbol found in alert message."
 msgstr "警报消息中未找到符号。"
 
-#, fuzzy
-#| msgid "Set up the alert messages"
 msgid "No side found in alert message."
-msgstr "设置警报消息"
+msgstr "在警报消息中未找到方向。"
 
 msgid "Invalid side value in alert message. Must be 'BUY' or 'SELL'."
 msgstr "警报消息中的辅助值无效。必须是“买入”或“卖出”。"
 
-#, fuzzy
-#| msgid "Set up the alert messages"
 msgid "No volume found in alert message."
-msgstr "设置警报消息"
+msgstr "在警报消息中未找到数量。"
 
 #, python-format
 msgid "Invalid volume expression: %s"
@@ -211,20 +201,15 @@ msgstr "登录失败"
 msgid "Login failed: %s"
 msgstr "登录失败：%s"
 
-#, fuzzy
-#| msgid "Unknown Type"
 msgid "Unknown error"
-msgstr "未知类型"
+msgstr "未知错误"
 
-#, fuzzy
-#| msgid "No strategies found."
 msgid "No accounts found."
-msgstr "没有找到策略。"
+msgstr "未找到账户。"
 
-#, fuzzy, python-format
-#| msgid "Failed to retrieve chat sessions"
+#, python-format
 msgid "Failed to get account info: %s"
-msgstr "检索聊天会话失败"
+msgstr "获取账户信息失败：%s"
 
 #, python-format
 msgid "Get account info Error: %s"
@@ -238,10 +223,9 @@ msgstr "获取货币错误：%s"
 msgid "Get balance Error: %s"
 msgstr "获取余额错误：%s"
 
-#, fuzzy, python-format
-#| msgid "Subscription not found."
+#, python-format
 msgid "Symbol %s not found."
-msgstr "未找到订阅。"
+msgstr "未找到交易品种 %s。"
 
 #, python-format
 msgid "Failed to get symbol info: %s"
@@ -267,28 +251,25 @@ msgstr "交易已关闭，订单 ID 为 %s。"
 msgid "Close trade Error: %s"
 msgstr "关闭交易错误：%s"
 
-#, fuzzy, python-format
-#| msgid "Failed to close the trade."
+#, python-format
 msgid "Failed to get open trades: %s"
-msgstr "未能关闭交易。"
+msgstr "获取未平仓交易失败：%s"
 
 #, python-format
 msgid "Get trade error: %s"
 msgstr "获取交易错误：%s"
 
-#, fuzzy, python-format
-#| msgid "List of trades was not found."
+#, python-format
 msgid "Open trade with ID %s not found."
-msgstr "未找到交易列表。"
+msgstr "未找到ID为 %s 的未平仓交易。"
 
 #, python-format
 msgid "Get open trade error: %s"
 msgstr "获取未平仓交易错误：%s"
 
-#, fuzzy, python-format
-#| msgid "Failed to close the trade."
+#, python-format
 msgid "Failed to get closed trades: %s"
-msgstr "未能关闭交易。"
+msgstr "获取已平仓交易失败：%s"
 
 #, python-format
 msgid "Get closed trades Error: %s"
@@ -302,10 +283,9 @@ msgstr "无法检索代码 %s 的当前价格"
 msgid "Get price Error: %s"
 msgstr "获取价格错误：%s"
 
-#, fuzzy, python-format
-#| msgid "Diverse crypto assets and trading pairs"
+#, python-format
 msgid "Failed to get trading pairs: %s"
-msgstr "丰富的加密资产和交易对"
+msgstr "获取交易对失败：%s"
 
 #, python-format
 msgid "Get trading pairs Error: %s"
@@ -315,15 +295,11 @@ msgstr "获取交易对错误：%s"
 msgid "Market and account data Error: %s"
 msgstr "市场和帐户数据错误：%s"
 
-#, fuzzy
-#| msgid "cTrader credentials"
 msgid "Invalid credentials."
-msgstr "cTrader 凭证"
+msgstr "凭证无效。"
 
-#, fuzzy
-#| msgid "Credentials setup"
 msgid "Credentials are valid."
-msgstr "凭证设置"
+msgstr "凭证有效。"
 
 msgid "Invalid symbol/asset."
 msgstr "符号/资产无效。"
@@ -335,10 +311,8 @@ msgstr "不支持订单方。"
 msgid "Trade closed for order ID %s."
 msgstr "订单 ID %s 的交易已关闭。"
 
-#, fuzzy
-#| msgid "is not available; only"
 msgid "Order not available."
-msgstr "不可用；仅有的"
+msgstr "订单不可用。"
 
 msgid "Order placed but not filled yet."
 msgstr "已下订单但尚未完成。"
@@ -357,18 +331,14 @@ msgstr "API 凭证有效。"
 msgid "API credentials are invalid."
 msgstr "API 凭据无效。"
 
-#, fuzzy
-#| msgid "Page not found!"
 msgid "Symbol was not found!"
-msgstr "找不到页面！"
+msgstr "未找到交易品种！"
 
 msgid "Insufficient balance for the trade."
 msgstr "交易余额不足。"
 
-#, fuzzy
-#| msgid "User not found on Discord"
 msgid "Order ID not found in response."
-msgstr "在 Discord 上找不到用户"
+msgstr "在响应中未找到订单ID。"
 
 msgid "Invalid account type. Use 'S' for Spot or 'P' for Perpetual."
 msgstr "帐户类型无效。使用“S”表示现货，“P”表示永久。"
@@ -397,10 +367,8 @@ msgstr "获取 %s 的交换信息时出错：%s"
 msgid "Error getting account balance: %s"
 msgstr "获取帐户余额时出错：%s"
 
-#, fuzzy
-#| msgid "Subscription not found."
 msgid "Symbol not found."
-msgstr "未找到订阅。"
+msgstr "未找到交易品种。"
 
 #, python-format
 msgid "Error getting exchange price for %s: %s"
@@ -414,10 +382,9 @@ msgstr "获取 %s 的历史蜡烛图时出错：%s"
 msgid "Error getting order book for %s: %s"
 msgstr "获取 %s 的订单簿时出错：%s"
 
-#, fuzzy, python-format
-#| msgid "Diverse crypto assets and trading pairs"
+#, python-format
 msgid "Error getting trading pairs: %s"
-msgstr "丰富的加密资产和交易对"
+msgstr "获取交易对时出错：%s"
 
 msgid "No response from server"
 msgstr "服务器没有响应"
@@ -425,20 +392,15 @@ msgstr "服务器没有响应"
 msgid "Could not fetch exchange info"
 msgstr "无法获取交易所信息"
 
-#, fuzzy
-#| msgid "Subscription not found."
 msgid "Symbol not found"
-msgstr "未找到订阅。"
+msgstr "未找到交易品种"
 
-#, fuzzy, python-format
-#| msgid "An error occurred while registering"
+#, python-format
 msgid "An error occurred! #%s"
-msgstr "注册时发生错误"
+msgstr "发生错误！#%s"
 
-#, fuzzy
-#| msgid "User not found"
 msgid "Order not found"
-msgstr "未找到用户"
+msgstr "未找到订单"
 
 msgid "Could not fetch price"
 msgstr "无法获取价格"
@@ -452,15 +414,11 @@ msgstr "无法获取蜡烛"
 msgid "Could not fetch order book"
 msgstr "无法获取订单簿"
 
-#, fuzzy
-#| msgid "User does not exist!"
 msgid "Symbol does not exist"
-msgstr "用户不存在！"
+msgstr "交易品种不存在"
 
-#, fuzzy
-#| msgid "User not found on Discord"
 msgid "Order ID not found in response"
-msgstr "在 Discord 上找不到用户"
+msgstr "在响应中未找到订单ID"
 
 msgid "No data found in response"
 msgstr "回复中未找到数据"
@@ -480,31 +438,23 @@ msgstr "价格为零，无法计算订单数量。"
 msgid "Insufficient base balance."
 msgstr "基础余额不足。"
 
-#, fuzzy
-#| msgid "is supported."
 msgid "Order type is not supported."
-msgstr "是支持的。"
+msgstr "不支持该订单类型。"
 
-#, fuzzy
-#| msgid "User does not exist!"
 msgid "OrderId do not exisit."
-msgstr "用户不存在！"
+msgstr "订单ID不存在。"
 
 msgid "Twisted reactor failed to start. Please restart the application."
 msgstr "扭曲反应堆未能启动。请重新启动应用程序。"
 
-#, fuzzy
-#| msgid "No token amount has been specified, please try again."
 msgid "cTrader authentication failed. Please try again."
-msgstr "未指定代币金额，请重试。"
+msgstr "cTrader 认证失败。请重试。"
 
 msgid "Timeout connecting to cTrader Demo server. Please try again."
 msgstr "连接到 cTrader 演示服务器超时。请再试一次。"
 
-#, fuzzy
-#| msgid "List of trades was not found."
 msgid "No trading account found."
-msgstr "未找到交易列表。"
+msgstr "未找到交易账户。"
 
 msgid ""
 "cTrader demo accounts are not supported in this environment. Please use a "
@@ -517,10 +467,8 @@ msgstr "交易者信息中未找到余额"
 msgid "Unknown response format from cTrader."
 msgstr "cTrader 的响应格式未知。"
 
-#, fuzzy
-#| msgid "Failed to close the trade."
 msgid "Failed to close position."
-msgstr "未能关闭交易。"
+msgstr "平仓失败。"
 
 #, python-format
 msgid "Trade closed for position ID %s."
@@ -529,10 +477,8 @@ msgstr "仓位 ID %s 的交易已关闭。"
 msgid "No trendbar data returned."
 msgstr "没有返回趋势栏数据。"
 
-#, fuzzy
-#| msgid "No subscription found."
 msgid "No symbols found."
-msgstr "未找到订阅。"
+msgstr "未找到交易品种。"
 
 #, python-format
 msgid ""
@@ -547,38 +493,26 @@ msgstr "Websocket 未连接。"
 msgid "Token and Account ID must be provided."
 msgstr "必须提供令牌和帐户 ID。"
 
-#, fuzzy
-#| msgid "Log in to your BingX account."
 msgid "Account is not a trading account."
-msgstr "登录您的 BingX 帐户。"
+msgstr "该账户不是交易账户。"
 
-#, fuzzy
-#| msgid "Deriv credentials"
 msgid "Deriv credentials are valid."
-msgstr "派生凭证"
+msgstr "Deriv 凭证有效。"
 
-#, fuzzy
-#| msgid "Deriv credentials"
 msgid "Invalid Deriv credentials."
-msgstr "派生凭证"
+msgstr "Deriv 凭证无效。"
 
-#, fuzzy
-#| msgid "Account ID"
 msgid "Account ID not found."
-msgstr "账户ID"
+msgstr "未找到账户ID。"
 
-#, fuzzy
-#| msgid "Failed to close the trade."
 msgid "Failed to get proposal for the trade."
-msgstr "未能关闭交易。"
+msgstr "获取交易提案失败。"
 
 msgid "Failed to open trade, no contract ID returned."
 msgstr "开仓失败，没有返回合约ID。"
 
-#, fuzzy
-#| msgid "You're ready to go."
 msgid "No current trade to close."
-msgstr "您已准备就绪。"
+msgstr "没有当前交易可平仓。"
 
 msgid "Current trade does not have an order ID."
 msgstr "当前交易没有订单 ID。"
@@ -611,15 +545,12 @@ msgstr "开仓后获取订单详情失败。"
 msgid "Error fetching order info: %s"
 msgstr "获取订单信息出错：%s"
 
-#, fuzzy
-#| msgid "No data"
 msgid "No data returned"
-msgstr "无数据"
+msgstr "未返回数据"
 
-#, fuzzy, python-format
-#| msgid "List of trades was not found."
+#, python-format
 msgid "Order with ID %s not found."
-msgstr "未找到交易列表。"
+msgstr "未找到ID为 %s 的订单。"
 
 #, python-format
 msgid "Unsupported interval: %s"
@@ -629,10 +560,9 @@ msgstr "不支持的时间间隔：%s"
 msgid "Error fetching exchange info: %s"
 msgstr "获取交易所信息出错：%s"
 
-#, fuzzy, python-format
-#| msgid "Subscription not found."
+#, python-format
 msgid "Symbol not found: %s"
-msgstr "未找到订阅。"
+msgstr "未找到交易品种：%s"
 
 #, python-format
 msgid "Error fetching account: %s"
@@ -646,10 +576,9 @@ msgstr "开仓出错：%s"
 msgid "Unsupported account type for opening trades: %s"
 msgstr "不支持的账户类型用于开仓：%s"
 
-#, fuzzy, python-format
-#| msgid "User not found"
+#, python-format
 msgid "Order ID not found: %s"
-msgstr "未找到用户"
+msgstr "未找到订单ID：%s"
 
 #, python-format
 msgid "Error fetching trading pairs: %s"
@@ -670,28 +599,20 @@ msgstr "获取订单簿出错：%s"
 msgid "Error fetching trade info"
 msgstr "获取交易信息出错"
 
-#, fuzzy
-#| msgid "Chat session deleted successfully"
 msgid "Account deployed successfully."
-msgstr "聊天会话删除成功"
+msgstr "账户部署成功。"
 
 msgid "Failed to deploy/undeploy account."
 msgstr "部署/取消部署账户失败。"
 
-#, fuzzy
-#| msgid "Chat session deleted successfully"
 msgid "Account deleted successfully."
-msgstr "聊天会话删除成功"
+msgstr "账户已成功删除。"
 
-#, fuzzy
-#| msgid "Failed to close the trade."
 msgid "Failed to delete account."
-msgstr "未能关闭交易。"
+msgstr "删除账户失败。"
 
-#, fuzzy
-#| msgid "Failed to close the trade."
 msgid "Failed to open trade."
-msgstr "未能关闭交易。"
+msgstr "开仓失败。"
 
 msgid "Error getting trade data."
 msgstr "获取交易数据出错。"
@@ -703,10 +624,8 @@ msgstr ""
 "无效的时间间隔。支持的间隔：1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m, 1h, 2h, 3h, "
 "4h, 6h, 8h, 12h, 1d, 1w, 1mn。"
 
-#, fuzzy
-#| msgid "cTrader credentials"
 msgid "Invalid credentials"
-msgstr "cTrader 凭证"
+msgstr "凭证无效"
 
 msgid "Futures order placement failed"
 msgstr "期货下单失败"
@@ -714,10 +633,8 @@ msgstr "期货下单失败"
 msgid "Failed to login to this account. please try again later."
 msgstr "登录此账户失败，请稍后再试。"
 
-#, fuzzy
-#| msgid "Page not found!"
 msgid "Price not found!"
-msgstr "找不到页面！"
+msgstr "未找到价格！"
 
 msgid ""
 "Invalid credentials. If you received an email to allow access, please follow"
@@ -731,20 +648,14 @@ msgstr "未提供账户ID且无法获取。"
 msgid "HTTP Error %s: %s"
 msgstr "HTTP 错误 %s：%s"
 
-#, fuzzy
-#| msgid "List of trades was not found."
 msgid "Login failed: Access token not found."
-msgstr "未找到交易列表。"
+msgstr "登录失败：未找到访问令牌。"
 
-#, fuzzy
-#| msgid "Chat session not found"
 msgid "Account info not found"
-msgstr "找不到聊天会话"
+msgstr "未找到账户信息"
 
-#, fuzzy
-#| msgid "No subscription found."
 msgid "No symbol info found"
-msgstr "未找到订阅。"
+msgstr "未找到交易品种信息"
 
 #, python-format
 msgid "Symbol info not found for %s"
@@ -753,24 +664,19 @@ msgstr "未找到 %s 的品种信息"
 msgid "Order data not found in response"
 msgstr "响应中未找到订单数据"
 
-#, fuzzy
-#| msgid "User not found on Discord"
 msgid "Order ID not found in order data"
-msgstr "在 Discord 上找不到用户"
+msgstr "在订单数据中未找到订单ID"
 
-#, fuzzy
-#| msgid "Failed to retrieve chat messages"
 msgid "Failed to retrieve order info after placing order"
-msgstr "检索聊天消息失败"
+msgstr "下单后获取订单信息失败"
 
 #, python-format
 msgid "Trade closed successfully for %s"
 msgstr "%s 的交易已成功关闭"
 
-#, fuzzy, python-format
-#| msgid "Username updated succesfully!"
+#, python-format
 msgid "Trade opened successfully for %s"
-msgstr "用户名更新成功！"
+msgstr "已成功为 %s 开仓"
 
 msgid "Login failed."
 msgstr "登录失败。"
@@ -778,20 +684,15 @@ msgstr "登录失败。"
 msgid "Login successful."
 msgstr "登录成功。"
 
-#, fuzzy
-#| msgid "Invalid request method"
 msgid "Invalid HTTP method."
-msgstr "请求方法无效"
+msgstr "无效的HTTP方法。"
 
-#, fuzzy
-#| msgid "Failed to retrieve chat sessions"
 msgid "Failed to retrieve account. Invalid credentials."
-msgstr "检索聊天会话失败"
+msgstr "获取账户失败。凭证无效。"
 
-#, fuzzy, python-format
-#| msgid "No performance data available for this asset."
+#, python-format
 msgid "No trading route available for symbol %s."
-msgstr "该资产没有可用的性能数据。"
+msgstr "交易品种 %s 没有可用的交易路由。"
 
 #, python-format
 msgid "Failed to get symbol info for %s: %s"
@@ -803,24 +704,19 @@ msgstr "交易已执行但未找到持仓"
 msgid "Quantity must be greater than 0.01."
 msgstr "数量必须大于 0.01。"
 
-#, fuzzy
-#| msgid "User not found"
 msgid "Open trade not found."
-msgstr "未找到用户"
+msgstr "未找到未平仓交易。"
 
-#, fuzzy
-#| msgid "Failed to close the trade."
 msgid "Failed to close trade."
-msgstr "未能关闭交易。"
+msgstr "平仓失败。"
 
 #, python-format
 msgid "Trade partially closed for order ID %s."
 msgstr "订单 %s 的交易已部分平仓。"
 
-#, fuzzy, python-format
-#| msgid "is supported."
+#, python-format
 msgid "Interval %s is not supported."
-msgstr "是支持的。"
+msgstr "不支持间隔 %s。"
 
 msgid "Failed to get candles for any INFO route."
 msgstr "无法从任何 INFO 路由获取K线数据。"
@@ -6589,10 +6485,8 @@ msgstr "设置"
 msgid "Please set your TradingView username in your profile settings."
 msgstr "请在个人资料设置中设置您的 TradingView 用户名。"
 
-#, fuzzy
-#| msgid "Failed to create onboarding link. Please contact support."
 msgid "This strategy does not have a TradingView ID. Please contact support."
-msgstr "无法创建入门链接。请联系支持人员。"
+msgstr "此策略没有TradingView ID。请联系支持。"
 
 msgid "This strategy is premium. Please upgrade your plan to access it."
 msgstr "此策略为高级策略，请升级您的计划以访问。"
@@ -6857,23 +6751,17 @@ msgstr "上传图片"
 msgid "Your thoughts on this strategy and how we can improve it..."
 msgstr "您对此策略的看法以及我们如何改进..."
 
-#, fuzzy
-#| msgid "Alert messages"
 msgid "Send message"
-msgstr "警报消息"
+msgstr "发送消息"
 
 msgid "Your reply..."
 msgstr "您的回复..."
 
-#, fuzzy
-#| msgid "Setup your chart"
 msgid "Share your report"
-msgstr "设置您的图表"
+msgstr "分享您的报告"
 
-#, fuzzy
-#| msgid "Close Price"
 msgid "Close menu"
-msgstr "收盘价"
+msgstr "关闭菜单"
 
 msgid "Upload xlsx file"
 msgstr "上传 xlsx 文件"
@@ -6893,60 +6781,41 @@ msgstr "初始资金"
 msgid "Long"
 msgstr "做多"
 
-#, fuzzy
-#| msgid "Short Exit:"
 msgid "Short"
-msgstr "短退出："
+msgstr "做空"
 
-#, fuzzy
-#| msgid "Winning Trades"
 msgid "Winning trades"
-msgstr "获胜交易"
+msgstr "盈利交易"
 
-#, fuzzy
-#| msgid "Losing Trades"
 msgid "Losing trades"
 msgstr "亏损交易"
 
-#, fuzzy
-#| msgid "Net Profit"
 msgid "Net profit"
-msgstr "纯利"
+msgstr "净利润"
 
-#, fuzzy, python-format
-#| msgid "Net Profit"
+#, python-format
 msgid "Net profit %%"
-msgstr "纯利"
+msgstr "净利润 %%"
 
-#, fuzzy
-#| msgid "Gross Profit"
 msgid "Gross profit"
-msgstr "毛利"
+msgstr "总利润"
 
-#, fuzzy, python-format
-#| msgid "Gross Profit"
+#, python-format
 msgid "Gross profit %%"
-msgstr "毛利"
+msgstr "总利润 %%"
 
-#, fuzzy
-#| msgid "Gross Loss"
 msgid "Gross loss"
-msgstr "总损失"
+msgstr "总亏损"
 
-#, fuzzy, python-format
-#| msgid "Gross Loss"
+#, python-format
 msgid "Gross loss %%"
-msgstr "总损失"
+msgstr "总亏损 %%"
 
-#, fuzzy
-#| msgid "Profit Factor"
 msgid "Profit factor"
-msgstr "利润系数"
+msgstr "盈利因子"
 
-#, fuzzy
-#| msgid "Net Profit"
 msgid "Percent Profitable"
-msgstr "纯利"
+msgstr "盈利百分比"
 
 msgid "Avg P&L"
 msgstr "平均盈亏"
@@ -6955,43 +6824,32 @@ msgstr "平均盈亏"
 msgid "Avg P&L %%"
 msgstr "平均盈亏 %%"
 
-#, fuzzy
-#| msgid "Winning Trades"
 msgid "Avg Winning Trade"
-msgstr "获胜交易"
+msgstr "平均盈利交易"
 
-#, fuzzy, python-format
-#| msgid "Winning Trades"
+#, python-format
 msgid "Avg Winning Trade %%"
-msgstr "获胜交易"
+msgstr "平均盈利交易 %%"
 
-#, fuzzy
-#| msgid "Losing Trades"
 msgid "Avg Losing Trade"
-msgstr "亏损交易"
+msgstr "平均亏损交易"
 
-#, fuzzy, python-format
-#| msgid "Losing Trades"
+#, python-format
 msgid "Avg Losing Trade %%"
-msgstr "亏损交易"
+msgstr "平均亏损交易 %%"
 
 msgid "Ratio"
 msgstr "比率"
 
-#, fuzzy, python-format
-#| msgid "Max Drawdown"
+#, python-format
 msgid "Max Drawdown %%"
-msgstr "最大回撤"
+msgstr "最大回撤 %%"
 
-#, fuzzy
-#| msgid "Get started with"
 msgid "Test start at"
-msgstr "开始使用"
+msgstr "测试开始于"
 
-#, fuzzy
-#| msgid "Resend Email"
 msgid "Test end at"
-msgstr "重新发送电子邮件"
+msgstr "测试结束于"
 
 msgid "Timeframe"
 msgstr "时间周期"
@@ -6999,10 +6857,8 @@ msgstr "时间周期"
 msgid "Timeframe period"
 msgstr "时间周期段"
 
-#, fuzzy
-#| msgid "milliseconds"
 msgid "Seconds"
-msgstr "毫秒"
+msgstr "秒"
 
 msgid "Minutes"
 msgstr "分钟"
@@ -7016,10 +6872,8 @@ msgstr "天"
 msgid "Weeks"
 msgstr "周"
 
-#, fuzzy
-#| msgid "/month"
 msgid "Months"
-msgstr "/月"
+msgstr "月"
 
 msgid "Years"
 msgstr "年"
@@ -7030,20 +6884,14 @@ msgstr "发布"
 msgid "Properties"
 msgstr "属性"
 
-#, fuzzy
-#| msgid "Built by traders"
 msgid "List of trades"
-msgstr "由交易者打造"
+msgstr "交易列表"
 
-#, fuzzy
-#| msgid "Add Account"
 msgid "Add a comment"
-msgstr "添加账户"
+msgstr "添加评论"
 
-#, fuzzy
-#| msgid "Comments"
 msgid "Comment..."
-msgstr "评论"
+msgstr "评论..."
 
 msgid "Posting"
 msgstr "发布中"
@@ -7055,10 +6903,8 @@ msgstr "%(age)s 前"
 msgid "likes"
 msgstr "点赞"
 
-#, fuzzy
-#| msgid "Read More"
 msgid "Read and reply"
-msgstr "阅读更多"
+msgstr "阅读并回复"
 
 msgid "Reply"
 msgstr "回复"
@@ -7081,10 +6927,8 @@ msgid ""
 "Want to share your thoughts? Join us to unlock commenting and more features!"
 msgstr "想分享您的想法吗？加入我们以解锁评论功能和更多特性！"
 
-#, fuzzy
-#| msgid "Join us"
 msgid "Join Us Now"
-msgstr "加入我们"
+msgstr "立即加入我们"
 
 msgid "Already a member?"
 msgstr "已经是会员？"
@@ -7092,25 +6936,19 @@ msgstr "已经是会员？"
 msgid "Get access to unlock commenting and more features!"
 msgstr "获取访问权限以解锁评论功能和更多特性！"
 
-#, fuzzy
-#| msgid "Closed"
 msgid "Close modal"
-msgstr "关闭"
+msgstr "关闭窗口"
 
-#, fuzzy
-#| msgid "Upgrade"
 msgid "Upgrade now"
-msgstr "升级"
+msgstr "立即升级"
 
 msgid ""
 "You now have access to this strategy! Click below to learn more about where "
 "to find it and how to use it."
 msgstr "您现在可以访问此策略了！点击下方了解更多关于如何找到和使用它的信息。"
 
-#, fuzzy
-#| msgid "How it works"
 msgid "How to use"
-msgstr "它是如何运作的"
+msgstr "使用方法"
 
 msgid "Likes"
 msgstr "点赞"
@@ -7118,10 +6956,8 @@ msgstr "点赞"
 msgid "Strategy"
 msgstr "战略"
 
-#, fuzzy
-#| msgid "Performance"
 msgid "Performances"
-msgstr "表现"
+msgstr "绩效"
 
 msgid "Reports"
 msgstr "报告"
@@ -7129,48 +6965,32 @@ msgstr "报告"
 msgid "Comments"
 msgstr "评论"
 
-#, fuzzy
-#| msgid "Termination"
 msgid "Test Duration"
-msgstr "终止"
+msgstr "测试时长"
 
-#, fuzzy
-#| msgid "Max Drawdown"
 msgid "Drawdown"
-msgstr "最大回撤"
+msgstr "回撤"
 
 msgid "Your browser does not support the video tag."
 msgstr "您的浏览器不支持视频标签。"
 
-#, fuzzy
-#| msgid "Learn more"
 msgid "Learn more →"
-msgstr "了解更多"
+msgstr "了解更多 →"
 
-#, fuzzy
-#| msgid "P&L"
 msgid "P&P"
-msgstr "损益表"
+msgstr "属性与绩效"
 
-#, fuzzy
-#| msgid "Share properties & perfermance"
 msgid "Properties and Performance"
-msgstr "分享财产和绩效"
+msgstr "属性与绩效"
 
-#, fuzzy
-#| msgid "Trades"
 msgid "Trade Stats"
-msgstr "交易"
+msgstr "交易统计"
 
-#, fuzzy
-#| msgid "Total trades"
 msgid "Total Trades"
-msgstr "总交易量"
+msgstr "总交易数"
 
-#, fuzzy
-#| msgid "Winning Trades"
 msgid "Win Trades"
-msgstr "获胜交易"
+msgstr "盈利交易数"
 
 msgid "Share result link"
 msgstr "分享结果链接"
@@ -7184,23 +7004,17 @@ msgstr "从"
 msgid "To"
 msgstr "到"
 
-#, fuzzy
-#| msgid "Documentation"
 msgid "Duration"
-msgstr "文档"
+msgstr "持续时间"
 
 msgid "All"
 msgstr "全部"
 
-#, fuzzy
-#| msgid "win rate"
 msgid "Win rate"
 msgstr "胜率"
 
-#, fuzzy
-#| msgid "Losing Trades"
 msgid "Loss Trades"
-msgstr "亏损交易"
+msgstr "亏损交易数"
 
 msgid "Waiting for your first trading reports..."
 msgstr "等待您的第一份交易报告..."
@@ -7208,10 +7022,8 @@ msgstr "等待您的第一份交易报告..."
 msgid "Quick Start Guide"
 msgstr "快速入门指南"
 
-#, fuzzy
-#| msgid "2. Add the Strategy:"
 msgid "Test the Strategy"
-msgstr "2. 添加策略："
+msgstr "测试策略"
 
 msgid ""
 "Run the strategy extensively to ensure it performs well and aligns with your"
@@ -7233,10 +7045,8 @@ msgid ""
 " to maximize this strategy."
 msgstr "了解如何上传您的报告并获取洞察和社区互动以最大化此策略的价值。"
 
-#, fuzzy
-#| msgid "Automate your alerts"
 msgid "Share your reports"
-msgstr "自动化您的警报"
+msgstr "分享您的报告"
 
 msgid ""
 "Become a member today and unlock full access to this strategy and many more."
@@ -7259,20 +7069,14 @@ msgstr "高级"
 msgid "Free"
 msgstr "免费"
 
-#, fuzzy
-#| msgid "Exclusive strategy"
 msgid "Exclusive"
-msgstr "独家策略"
+msgstr "专属"
 
-#, fuzzy
-#| msgid "Describe Your Strategy"
 msgid "Describe your strategy"
-msgstr "描述你的策略"
+msgstr "描述您的策略"
 
-#, fuzzy
-#| msgid "Minimum message length is 200 characters!"
 msgid "Minimum 200 characters"
-msgstr "最小消息长度为 200 个字符！"
+msgstr "最少200个字符"
 
 msgid "Attach screenshots showing entry & exit points."
 msgstr "附加显示入场和出场点的截图。"
@@ -7280,15 +7084,11 @@ msgstr "附加显示入场和出场点的截图。"
 msgid "Up to 5 files, max 10 MB each."
 msgstr "最多 5 个文件，每个最大 10 MB。"
 
-#, fuzzy
-#| msgid "Send Your Strategy Request"
 msgid "Send Request"
-msgstr "发送您的策略请求"
+msgstr "发送请求"
 
-#, fuzzy
-#| msgid "Username is required."
 msgid "Exclusive access required"
-msgstr "需要用户名。"
+msgstr "需要专属访问权限"
 
 msgid "Unlock this exclusive strategy and start using it"
 msgstr "解锁此独家策略并开始使用"
@@ -7300,49 +7100,33 @@ msgstr "解锁访问权限"
 msgid "Full access to %(name)s"
 msgstr "完全访问 %(name)s"
 
-#, fuzzy
-#| msgid "Please complete your payment below."
 msgid "Payment overdue - please update your payment method."
-msgstr "请在下面完成您的付款。"
+msgstr "付款逾期 - 请更新您的支付方式。"
 
-#, fuzzy
-#| msgid "Next Payment"
 msgid "Update Payment"
-msgstr "下次付款"
+msgstr "更新付款"
 
 msgid "End on"
 msgstr "结束于"
 
-#, fuzzy
-#| msgid "Next Payment"
 msgid "Next payment on"
-msgstr "下次付款"
+msgstr "下次付款日期"
 
-#, fuzzy
-#| msgid "Subscription"
 msgid "Manage subscription"
-msgstr "订阅"
+msgstr "管理订阅"
 
-#, fuzzy
-#| msgid "Change Payment Method"
 msgid "Change payment"
-msgstr "更改付款方式"
+msgstr "更改支付"
 
-#, fuzzy
-#| msgid "Subscription"
 msgid "Cancel subscription"
-msgstr "订阅"
+msgstr "取消订阅"
 
-#, fuzzy
-#| msgid "Change Payment Method"
 msgid "Change payment method"
-msgstr "更改付款方式"
+msgstr "更改支付方式"
 
 msgid "If you're unsure how to get the most out of this strategy, please"
 msgstr "如果您不确定如何充分利用此策略，请"
 
-#, fuzzy
-#| msgid "Contact us"
 msgid "contact us"
 msgstr "联系我们"
 
@@ -7360,19 +7144,13 @@ msgstr "反馈"
 msgid ". Your thoughts help us improve and serve you better."
 msgstr "。您的想法帮助我们改进并更好地为您服务。"
 
-#, fuzzy
-#| msgid ""
-#| "By canceling your membership, you will no longer have access to our premium "
-#| "products after the current billing period ends."
 msgid ""
 "By canceling your subscription, you will no longer have access to this "
 "exclusive strategy after the current billing period ends."
-msgstr "取消您的会员资格后，当前计费周期结束后您将无法再访问我们的高级产品。"
+msgstr "取消订阅后，在当前计费周期结束后，您将无法再访问此专属策略。"
 
-#, fuzzy
-#| msgid "Subscribe"
 msgid "Total Subscribers"
-msgstr "订阅"
+msgstr "总订阅者"
 
 msgid "This Month"
 msgstr "本月"
@@ -7380,35 +7158,23 @@ msgstr "本月"
 msgid "This Week"
 msgstr "本周"
 
-#, fuzzy
-#| msgid "Today's P/L"
 msgid "Today"
-msgstr "今日盈亏"
+msgstr "今天"
 
-#, fuzzy
-#| msgid "Subscription"
 msgid "Subscription Price"
-msgstr "订阅"
+msgstr "订阅价格"
 
-#, fuzzy
-#| msgid "Current plan"
 msgid "Current pricing plan"
-msgstr "目前计划"
+msgstr "当前定价计划"
 
-#, fuzzy
-#| msgid "Connect"
 msgid "Connected as"
-msgstr "连接"
+msgstr "已连接为"
 
-#, fuzzy
-#| msgid "Set your trading view username"
 msgid "Set your tradingview username"
 msgstr "设置您的TradingView用户名"
 
-#, fuzzy
-#| msgid "Unlock access to this strategy and more"
 msgid "to get access to this strategy."
-msgstr "解锁此策略及更多内容"
+msgstr "以获取此策略的访问权限。"
 
 msgid ""
 "IsAlgo | Trading Strategy Results Shared by Traders | Verified Backtests by "
@@ -7505,23 +7271,17 @@ msgstr "/ 2 周"
 msgid "/ 3 weeks"
 msgstr "/ 3 周"
 
-#, fuzzy
-#| msgid "/month"
 msgid "/ month"
-msgstr "/月"
+msgstr "/ 月"
 
-#, fuzzy
-#| msgid "/quarter"
 msgid "/ Quarter"
-msgstr "/四分之一"
+msgstr "/ 季度"
 
 msgid "/ Half Year"
 msgstr "/ 半年"
 
-#, fuzzy
-#| msgid "Years"
 msgid "/ Year"
-msgstr "年"
+msgstr "/ 年"
 
 #, python-format
 msgid "/ %s %ss"
@@ -7531,17 +7291,15 @@ msgstr "/ %s %ss"
 msgid "/ %s"
 msgstr "/ %s"
 
-#, fuzzy
-#| msgid "/year"
 msgid "year"
 msgid_plural "years"
-msgstr[0] "/年"
+msgstr[0] "年"
+msgstr[1] "年"
 
-#, fuzzy
-#| msgid "/month"
 msgid "month"
 msgid_plural "months"
-msgstr[0] "/月"
+msgstr[0] "个月"
+msgstr[1] "个月"
 
 msgid "The object does not exist."
 msgstr "该对象不存在。"
@@ -7575,10 +7333,13 @@ msgstr "未找到订阅。"
 msgid "No active subscription found."
 msgstr "未找到有效订阅。"
 
+#| msgid ""
+#| "e develop cutting-edge trading tools to provide more intelligent, quicker, "
+#| "and easier insights into the market."
 msgid ""
-"e develop cutting-edge trading tools to provide more intelligent, quicker, "
-"and easier insights into the market."
-msgstr "我们开发尖端的交易工具，以提供更智能、更快速、更轻松的市场洞察。"
+"<span class=\"font-bold\">W</span>e develop cutting-edge trading tools to "
+"provide more intelligent, quicker, and easier insights into the market."
+msgstr "<span class=\"font-bold\">我</span>们开发尖端交易工具，为市场提供更智能、更快速、更便捷的洞察。"
 
 msgid "Follow us on"
 msgstr "关注我们"

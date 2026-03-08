@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-07 21:26-0600\n"
+"POT-Creation-Date: 2026-03-08 09:07-0500\n"
 "PO-Revision-Date: 2026-03-04 09:30-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: French\n"
@@ -8499,23 +8499,17 @@ msgstr "/ 2 semaines"
 msgid "/ 3 weeks"
 msgstr "/ 3 semaines"
 
-#, fuzzy
-#| msgid "/month"
 msgid "/ month"
-msgstr "/mois"
+msgstr "/ mois"
 
-#, fuzzy
-#| msgid "/quarter"
 msgid "/ Quarter"
-msgstr "/quart"
+msgstr "/ trimestre"
 
 msgid "/ Half Year"
 msgstr "/ Semestre"
 
-#, fuzzy
-#| msgid "Years"
 msgid "/ Year"
-msgstr "Années"
+msgstr "/ an"
 
 #, python-format
 msgid "/ %s %ss"
@@ -8525,19 +8519,15 @@ msgstr "/ %s %ss"
 msgid "/ %s"
 msgstr "/ %s"
 
-#, fuzzy
-#| msgid "/year"
 msgid "year"
 msgid_plural "years"
-msgstr[0] "/année"
-msgstr[1] "/année"
+msgstr[0] "an"
+msgstr[1] "ans"
 
-#, fuzzy
-#| msgid "/month"
 msgid "month"
 msgid_plural "months"
-msgstr[0] "/mois"
-msgstr[1] "/mois"
+msgstr[0] "mois"
+msgstr[1] "mois"
 
 msgid "The object does not exist."
 msgstr "L'objet n'existe pas."
@@ -8575,12 +8565,16 @@ msgstr "Abonnement introuvable."
 msgid "No active subscription found."
 msgstr "Aucun abonnement actif trouvé."
 
+#| msgid ""
+#| "e develop cutting-edge trading tools to provide more intelligent, quicker, "
+#| "and easier insights into the market."
 msgid ""
-"e develop cutting-edge trading tools to provide more intelligent, quicker, "
-"and easier insights into the market."
+"<span class=\"font-bold\">W</span>e develop cutting-edge trading tools to "
+"provide more intelligent, quicker, and easier insights into the market."
 msgstr ""
-"Nous développons des outils de trading de pointe pour fournir des "
-"informations plus intelligentes, plus rapides et plus simples sur le marché."
+"<span class=\"font-bold\">N</span>ous développons des outils de trading de "
+"pointe pour fournir des informations plus intelligentes, plus rapides et "
+"plus simples sur le marché."
 
 msgid "Follow us on"
 msgstr "Suivez-nous sur"
