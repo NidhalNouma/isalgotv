@@ -10,6 +10,7 @@ import hashlib
 from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_UP
 
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 class BrokerClient(abc.ABC):
 
@@ -396,12 +397,12 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
         try:
             base_asset, quote_asset = exchange_info.get("base_asset"), exchange_info.get("quote_asset")
             if not base_asset or not quote_asset:
-                raise ValueError("Invalid symbol format or exchange info not found.")
+                raise ValueError(_("Invalid symbol format or exchange info not found."))
 
             balances = self.get_account_balance()
 
             if not balances:
-                raise ValueError("Could not fetch account info. Please check your API credentials.")
+                raise ValueError(_("Could not fetch account info. Please check your API credentials."))
             
             base_balance = balances.get(base_asset, {}).get('available', 0)
             quote_balance = balances.get(quote_asset, {}).get('available', 0)
@@ -424,13 +425,13 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
             if self.account_type == "S":
                 if side.upper() == "BUY":
                     if float(quote_balance) <= 0:
-                        raise ValueError("Insufficient quote balance.")
+                        raise ValueError(_("Insufficient quote balance."))
                     
                     if self.account.broker_type == "bitget" or self.account.broker_type == "bitmart":
                         price = self.get_current_price(exchange_info.get('symbol'))
                         print('price', price)
                         if price == 0 or not price:
-                            raise ValueError("Price is zero, cannot calculate order quantity.")
+                            raise ValueError(_("Price is zero, cannot calculate order quantity."))
                         # Calculate the maximum order quantity based on the quote balance
 
                         try:
@@ -450,7 +451,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
                 elif side.upper() == "SELL":
                     # print("Base balance:", base_balance, "Quote order qty:", quote_order_qty)
                     if float(base_balance) <= 0:
-                        raise ValueError("Insufficient base balance.")
+                        raise ValueError(_("Insufficient base balance."))
                     
                     if float(base_balance) < float(quote_order_qty):
                         # Format quantity to max base_decimals and return as string
@@ -492,7 +493,7 @@ class CryptoBrokerClient(BrokerClient, abc.ABC):
 
             for intv in intervals:
                 if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
-                    raise ValueError(f"Invalid interval: {intv}")
+                    raise ValueError(_("Invalid interval: %s") % intv)
                 history_candles[intv] = self.get_history_candles(symbol, intv, limit=limit)
                 
             try:

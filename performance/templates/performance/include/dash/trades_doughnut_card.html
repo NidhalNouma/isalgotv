@@ -1,6 +1,7 @@
 {% load custom_tags %}
 {% load custom_filters %}
 {% load i18n %}
+{% load l10n %}
 
 {% with breakeven=value|subtract:win|subtract:loss win_pct=win|divide:value|multiply:100 loss_pct=loss|divide:value|multiply:100 %}
   {% with be_pct=breakeven|divide:value|multiply:100 %}
@@ -17,6 +18,7 @@
       <div class="flex flex-col sm:flex-row items-center gap-4">
         {# Doughnut Chart #}
         <div class="relative w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0">
+          {% localize off %}
           <svg class="w-full h-full" viewBox="0 0 36 36" style="transform: scaleX(-1) rotate(-90deg); transform-origin: 50% 50%;">
             {# Background circle #}
             {% if value == 0 %}
@@ -59,6 +61,7 @@
               {% endif %}
             {% endif %}
           </svg>
+          {% endlocalize %}
 
           {# Center text - Total trades #}
           <div class="absolute inset-0 flex flex-col items-center justify-center">

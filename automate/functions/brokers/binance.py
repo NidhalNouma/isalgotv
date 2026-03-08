@@ -12,6 +12,7 @@ import time
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+from django.utils.translation import gettext as _
 
 
 class BinanceClient(CryptoBrokerClient):
@@ -25,7 +26,7 @@ class BinanceClient(CryptoBrokerClient):
         elif self.account_type == "C":  # COINM
             self.client = CMFutures(key=self.api_key, secret=self.api_secret)
         else:
-            raise ValueError("Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'.")
+            raise ValueError(_("Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'."))
 
     @staticmethod
     def check_credentials(api_key, api_secret, account_type="S"):
@@ -34,9 +35,9 @@ class BinanceClient(CryptoBrokerClient):
             account = client.account()
 
             if account:
-                return {'message': "API credentials are valid.", "valid": True}
+                return {'message': _("API credentials are valid."), "valid": True}
             else:
-                return {'message': "API credentials are invalid.", "valid": False}
+                return {'message': _("API credentials are invalid."), "valid": False}
         
         except ClientError as e:
             return {"error": e.error_message}
@@ -112,7 +113,7 @@ class BinanceClient(CryptoBrokerClient):
                         'locked': float(balance['maxWithdrawAmount']) - float(balance['availableBalance'])
                     }
             else:
-                raise ValueError("Invalid trade type. Use 'spot', 'usdm', or 'coinm'.")
+                raise ValueError(_("Invalid trade type. Use 'spot', 'usdm', or 'coinm'."))
 
             return balances
         
@@ -129,7 +130,7 @@ class BinanceClient(CryptoBrokerClient):
             # print(sys_info)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
@@ -138,7 +139,7 @@ class BinanceClient(CryptoBrokerClient):
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
-                raise ValueError("Insufficient balance for the trade.")
+                raise ValueError(_("Insufficient balance for the trade."))
 
             order_params = {
                 "symbol": order_symbol,
@@ -175,7 +176,7 @@ class BinanceClient(CryptoBrokerClient):
                 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     "side": side.upper(),
@@ -190,7 +191,7 @@ class BinanceClient(CryptoBrokerClient):
                 }
             else:
                 return {
-                    'message': f"Trade opened with order ID {response.get('orderId')}.",
+                    'message': _("Trade opened with order ID %s.") % response.get('orderId'),
                     'order_id': response.get('orderId'),
                     'symbol': symbol,
                     "side": side.upper(),
@@ -331,7 +332,7 @@ class BinanceClient(CryptoBrokerClient):
         try:
             sys_info = self.get_exchange_info(symbol)
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
 
             order_symbol = sys_info.get('symbol')
 
@@ -360,7 +361,7 @@ class BinanceClient(CryptoBrokerClient):
         try:
             sys_info = self.get_exchange_info(symbol)
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
 
             order_symbol = sys_info.get('symbol')
 
@@ -384,7 +385,7 @@ class BinanceClient(CryptoBrokerClient):
         try:
             sys_info = self.get_exchange_info(symbol)
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
 
             order_symbol = sys_info.get('symbol')
 
@@ -393,7 +394,7 @@ class BinanceClient(CryptoBrokerClient):
             # If the response is a list/tuple, use the first item
             if isinstance(response, (list, tuple)):
                 if not response:
-                    raise Exception('Empty price response')
+                    raise Exception(_('Empty price response'))
                 response = response[0]
 
             # Normalize possible response shapes
@@ -408,7 +409,7 @@ class BinanceClient(CryptoBrokerClient):
                 price = response
 
             if price is None:
-                raise Exception(f"Could not find price in response: {response}")
+                raise Exception(_("Could not find price in response: %s") % response)
 
             return float(price)
         

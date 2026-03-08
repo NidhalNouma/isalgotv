@@ -24,6 +24,7 @@ from kucoin_universal_sdk.model.common import RestError
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 
 class KucoinClient(CryptoBrokerClient):
@@ -65,8 +66,8 @@ class KucoinClient(CryptoBrokerClient):
 
             # print(response)
             if response.get('code') != "200000":  # Example error code handling
-                return {'error': "Invalid API key or secret.", "valid": False}
-            return {'message': "API credentials are valid.", "valid": True}
+                return {'error': _("Invalid API key or secret."), "valid": False}
+            return {'message': _("API credentials are valid."), "valid": True}
         except RestError as e:
             # print('error msf', e.msg)
             return {'error': str(e.msg)}
@@ -126,7 +127,7 @@ class KucoinClient(CryptoBrokerClient):
                         'contract_val': sym_info.get('multiplier', None)
                     }
 
-            raise Exception('Symbol was not found!')
+            raise Exception(_('Symbol was not found!'))
         except RestError as e:
             # print(e, e.response)
             raise Exception(e.__str__())
@@ -183,7 +184,7 @@ class KucoinClient(CryptoBrokerClient):
             print(sys_info)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
@@ -250,7 +251,7 @@ class KucoinClient(CryptoBrokerClient):
                 
                 if order_details:
                     return {
-                        'message': f"Trade opened with order ID {order_id}.",
+                        'message': _("Trade opened with order ID %s.") % order_id,
                         'order_id': order_id,
                         'closed_order_id': order_id,
                         'symbol': order_symbol,
@@ -267,7 +268,7 @@ class KucoinClient(CryptoBrokerClient):
                 
                 else:
                     return {
-                        'message': f"Trade opened with order ID {order_id}.",
+                        'message': _("Trade opened with order ID %s.") % order_id,
                         'order_id': order_id,
                         'closed_order_id': order_id,
                         'symbol': order_symbol,
@@ -293,7 +294,7 @@ class KucoinClient(CryptoBrokerClient):
             def trade_found(resp, order_id):
                 data = resp.to_dict().get('common_response', {})
                 if data.get('code') != "200000":
-                    raise Exception('Error fetching trade info')
+                    raise Exception(_('Error fetching trade info'))
                 trades = data.get('data', {}).get('items', [])
                 trade = next((item for item in trades if item.get('orderId') == order_id), None)
                 return trade is not None
@@ -461,7 +462,7 @@ class KucoinClient(CryptoBrokerClient):
                 if sym_info:
                     return float(sym_info.get('price'))
 
-            raise Exception('Symbol was not found!')
+            raise Exception(_('Symbol was not found!'))
         except RestError as e:
             # print(e, e.response)
             raise Exception(e.__str__())

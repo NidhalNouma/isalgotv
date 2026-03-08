@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="flex items-center w-full mt-1">
   <div class="flex items-center mr-3" id="comment-likes-{{comment.id}}">
     {% include "include/comment_likes.html" with comment=comment %}
@@ -9,7 +10,7 @@
     onclick='toggleForm("add-reply-{{comment.id}}-comment", "add-form-reply-{{comment.id}}-comment")'
     class=" text-text text-xs font-semibold cursor-pointer"
   >
-    Reply
+    {% trans "Reply" %}
   </button>
   {% elif user.is_authenticated and not has_subscription %}
   <button
@@ -17,7 +18,7 @@
     data-modal-target="upgrade-modal"
     data-modal-toggle="upgrade-modal"
   >
-  Reply
+  {% trans "Reply" %}
   </button>
   {% else %}
   {% comment %} <a
@@ -55,8 +56,8 @@
         d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"
       ></path>
     </svg>
-    {% if reply_count == 1 %} {{ reply_count }} Reply {% elif reply_count > 1%}
-    {{ reply_count }} Replies {% endif %}
+    {% if reply_count == 1 %} {{ reply_count }} {% trans "Reply" %} {% elif reply_count > 1%}
+    {{ reply_count }} {% trans "Replies" %} {% endif %}
   </span>
   {% endif %} {% endwith %}
 

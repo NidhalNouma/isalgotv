@@ -13,6 +13,7 @@ import json
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 class KrakenClient(CryptoBrokerClient):
     symbol_cache = {}
@@ -94,8 +95,8 @@ class KrakenClient(CryptoBrokerClient):
             account = client.get_account_balance()
             # print(account)
             if not account:
-                raise Exception("API credentials are invalid.")
-            return {'message': "API credentials are valid.", "valid": True}
+                raise Exception(_("API credentials are invalid."))
+            return {'message': _("API credentials are valid."), "valid": True}
         except Exception as e:
             return {'error': str(e), "valid": False}
         
@@ -109,7 +110,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching exchange info: " + str(data["error"]))
+                    raise Exception(_("Error fetching exchange info: %s") % str(data["error"]))
                 result = data.get("ticker", {})
                 return float(result.get("bid", 0.0))
             
@@ -121,11 +122,11 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching exchange info: " + str(data["error"]))
+                    raise Exception(_("Error fetching exchange info: %s") % str(data["error"]))
                 result = data.get("result", {})
                 if symbol in result:
                     return float(result[symbol]["c"][0])
-                raise Exception("Symbol not found: " + symbol)
+                raise Exception(_("Symbol not found: %s") % symbol)
         except Exception as e:
             raise e
         
@@ -141,7 +142,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching exchange info: " + str(data["error"]))
+                    raise Exception(_("Error fetching exchange info: %s") % str(data["error"]))
                 result = data.get("instruments", [])
                 for item in result:
                     if item.get("symbol") == symbol:
@@ -165,7 +166,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching exchange info: " + str(data["error"]))
+                    raise Exception(_("Error fetching exchange info: %s") % str(data["error"]))
                 result = data.get("result", {})
                 if symbol in result:
                     symb_info = result[symbol]
@@ -179,7 +180,7 @@ class KrakenClient(CryptoBrokerClient):
                     }
                     self.symbol_cache[symbol] = sym
                     return sym
-            raise Exception("Symbol not found: " + symbol)
+            raise Exception(_("Symbol not found: %s") % symbol)
         except Exception as e:
             raise e
         
@@ -193,7 +194,7 @@ class KrakenClient(CryptoBrokerClient):
                 data = json.loads(response.read())
                 print("Account balance data:", data)
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching account: " + str(data["error"]))
+                    raise Exception(_("Error fetching account: %s") % str(data["error"]))
                 result = data.get("balances", {})
 
                 balances = {}
@@ -216,7 +217,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching account: " + str(data["error"]))
+                    raise Exception(_("Error fetching account: %s") % str(data["error"]))
                 result = data.get("result", {})
 
                 balances = {}
@@ -235,7 +236,7 @@ class KrakenClient(CryptoBrokerClient):
             symbol_info = self.get_exchange_info(symbol)
 
             if not symbol_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             print("Symbol info:", symbol_info)
 
@@ -268,7 +269,7 @@ class KrakenClient(CryptoBrokerClient):
                 print("Open trade response data:", data)
 
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error opening trade: " + str(data["error"]))
+                    raise Exception(_("Error opening trade: %s") % str(data["error"]))
                 result = data.get("sendStatus", {})
                 order_id = result.get("order_id", None)
             
@@ -294,11 +295,11 @@ class KrakenClient(CryptoBrokerClient):
                 print("Open trade response data:", data)
 
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error opening trade: " + str(data["error"]))
+                    raise Exception(_("Error opening trade: %s") % str(data["error"]))
                 result = data.get("result", {})
                 order_id = result.get("txid", [None])[0]
             else:
-                raise Exception("Unsupported account type for opening trades: " + self.account_type)
+                raise Exception(_("Unsupported account type for opening trades: %s") % self.account_type)
             
 
             if not self.current_trade:
@@ -310,7 +311,7 @@ class KrakenClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     "side": side.upper(),
@@ -324,7 +325,7 @@ class KrakenClient(CryptoBrokerClient):
                     "end_exe": end_exe
                 }
             else:
-                raise Exception("Failed to retrieve order details after opening trade.")
+                raise Exception(_("Failed to retrieve order details after opening trade."))
         except Exception as e:
             raise e
 
@@ -349,7 +350,7 @@ class KrakenClient(CryptoBrokerClient):
 
             data = json.loads(response.read())
             if "error" in data and len(data["error"]) > 0:
-                raise Exception("Error fetching order info: " + str(data["error"]))
+                raise Exception(_("Error fetching order info: %s") % str(data["error"]))
             result = data.get("result", {})
             trades = result.get("trades", {})
             for trade_id, trade_info in trades.items():
@@ -363,7 +364,7 @@ class KrakenClient(CryptoBrokerClient):
                         "time": self.convert_timestamp(int(float(trade_info.get("time"))) * 1000),
                         "fees": float(trade_info.get("fee")),
                     }
-            raise Exception("Order ID not found: " + order_id) 
+            raise Exception(_("Order ID not found: %s") % order_id) 
 
         except Exception as e:
             raise e
@@ -378,7 +379,7 @@ class KrakenClient(CryptoBrokerClient):
                 data = json.loads(response.read())
 
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching trading pairs: " + str(data["error"]))
+                    raise Exception(_("Error fetching trading pairs: %s") % str(data["error"]))
                 symbols = [s.get('symbol') for s in data.get('tickers', [])]
 
                 return symbols
@@ -390,7 +391,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching trading pairs: " + str(data["error"]))
+                    raise Exception(_("Error fetching trading pairs: %s") % str(data["error"]))
                 result = data.get("result", {})
                 return list(result.keys())
         except Exception as e:
@@ -403,7 +404,7 @@ class KrakenClient(CryptoBrokerClient):
             if self.account_type == "F":
                 possible_intervals = ["1m", "5m", "15m", "30m", "1h", "4h", "1d", "1w"]
                 if interval not in possible_intervals:
-                    raise Exception("Invalid interval for futures: " + interval)
+                    raise Exception(_("Invalid interval for futures: %s") % interval)
                 response = self._request(
                     method="GET",
                     path="/api/charts/v1/mark/"+symbol+"/"+interval,
@@ -413,7 +414,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching historical candles: " + str(data["error"]))
+                    raise Exception(_("Error fetching historical candles: %s") % str(data["error"]))
                 result = data.get("candles", [])
                 return [
                     {
@@ -452,7 +453,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching historical candles: " + str(data["error"]))
+                    raise Exception(_("Error fetching historical candles: %s") % str(data["error"]))
                 result = data.get("result", {})
                 if symbol in result:
                     candles = result[symbol]
@@ -467,7 +468,7 @@ class KrakenClient(CryptoBrokerClient):
                         }
                         for c in candles
                     ]
-            raise Exception("Symbol not found: " + symbol)
+            raise Exception(_("Symbol not found: %s") % symbol)
         except Exception as e:
             print("Error in get_history_candles:", e)
             return []
@@ -485,7 +486,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching order book: " + str(data["error"]))
+                    raise Exception(_("Error fetching order book: %s") % str(data["error"]))
                 result = data.get("orderBook", {})
                 return {
                     "bids": [
@@ -508,7 +509,7 @@ class KrakenClient(CryptoBrokerClient):
                 )
                 data = json.loads(response.read())
                 if "error" in data and len(data["error"]) > 0:
-                    raise Exception("Error fetching order book: " + str(data["error"]))
+                    raise Exception(_("Error fetching order book: %s") % str(data["error"]))
                 result = data.get("result", {})
                 if symbol in result:
                     order_book = result[symbol]
@@ -522,7 +523,7 @@ class KrakenClient(CryptoBrokerClient):
                             for ask in order_book.get("asks", [])
                         ],
                     }
-            raise Exception("Symbol not found: " + symbol)
+            raise Exception(_("Symbol not found: %s") % symbol)
         except Exception as e:
             print("Error in get_order_book:", e)
             return {"bids": [], "asks": []}

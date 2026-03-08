@@ -11,6 +11,7 @@ import time
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 
 class CoinbaseClient(CryptoBrokerClient):
@@ -31,7 +32,7 @@ class CoinbaseClient(CryptoBrokerClient):
 
             # print(accounts)
             
-            return {'message': "API credentials are valid.", 'valid': True}
+            return {'message': _("API credentials are valid."), 'valid': True}
         except Exception as e:
             return {'error': str(e), 'valid': False}
 
@@ -88,7 +89,7 @@ class CoinbaseClient(CryptoBrokerClient):
             print(sys_info)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
@@ -102,7 +103,7 @@ class CoinbaseClient(CryptoBrokerClient):
             elif str.lower(side) == 'sell':            
                 response = self.client.market_order_sell(client_order_id=None, product_id=order_symbol, base_size=str(adjusted_quantity), leverage="20" if self.account_type != 'S' else "1")
             else:
-                raise Exception('Order type is not supported.')
+                raise Exception(_('Order type is not supported.'))
             
             end_exe = time.perf_counter()
             result = response.to_dict()
@@ -117,7 +118,7 @@ class CoinbaseClient(CryptoBrokerClient):
             order_id = result.get('success_response', {}).get('order_id')
 
             if not order_id:
-                raise Exception('OrderId do not exisit.')
+                raise Exception(_('OrderId do not exisit.'))
             
             if not self.current_trade:
                 order_details = self.get_order_info(order_symbol, str(order_id))
@@ -128,7 +129,7 @@ class CoinbaseClient(CryptoBrokerClient):
             
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -145,7 +146,7 @@ class CoinbaseClient(CryptoBrokerClient):
             
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -168,7 +169,7 @@ class CoinbaseClient(CryptoBrokerClient):
 
             symbol_info = self.get_exchange_info(symbol)
             if not symbol_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             order_symbol = symbol_info.get('symbol')
 
@@ -198,7 +199,7 @@ class CoinbaseClient(CryptoBrokerClient):
             
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -213,7 +214,7 @@ class CoinbaseClient(CryptoBrokerClient):
             
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,

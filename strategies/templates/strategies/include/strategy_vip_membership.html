@@ -1,28 +1,53 @@
 {% load custom_tags %}
 {% load custom_filters %}
+{% load i18n %}
 
 <div id="vip-membership" class="w-full {{ class|default:'' }}">
-  <div class="p-4 rounded-lg bg-gradient-to-r {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %} from-profit/10 via-profit/5 {% elif vip_subscription.cancel_at_period_end %} from-warning/10 via-warning/5 {% elif vip_subscription.status == 'past_due' %} from-error/10 via-error/5 {% endif %}">
+  <div class="p-4 rounded-lg bg-gradient-to-r {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %}
+      
+       from-profit/10 via-profit/5
+
+    {% elif vip_subscription.cancel_at_period_end %}
+      
+       from-warning/10 via-warning/5
+
+    {% elif vip_subscription.status == 'past_due' %}
+      
+       from-error/10 via-error/5
+
+    {% endif %}">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <!-- Left Section: Icon + Title -->
       <div class="flex items-center gap-3">
         <div>
           <div class="text-base font-semibold text-title flex items-center gap-2">
-            Subscription
-            <span class="px-2 py-0.5 text-xs font-medium rounded-full {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %} bg-profit/10 text-profit {% elif vip_subscription.cancel_at_period_end %} bg-warning/10 text-warning {% elif vip_subscription.status == 'past_due' %} bg-error/10 text-error {% endif %}">
+            {% trans 'Subscription' %}
+            <span class="px-2 py-0.5 text-xs font-medium rounded-full {% if vip_subscription.status == 'active' and not vip_subscription.cancel_at_period_end %}
+                
+                 bg-profit/10 text-profit
+
+              {% elif vip_subscription.cancel_at_period_end %}
+                
+                 bg-warning/10 text-warning
+
+              {% elif vip_subscription.status == 'past_due' %}
+                
+                 bg-error/10 text-error
+
+              {% endif %}">
               {{ vip_subscription.status|capfirst }}
             </span>
           </div>
-          <div class="text-xs text-text/70 mt-0.5">Full access to {{ strategy.name }}</div>
+          <div class="text-xs text-text/70 mt-0.5">
+            {% blocktrans with name=strategy.name %}Full access to {{ name }}{% endblocktrans %}
+          </div>
         </div>
       </div>
 
       <!-- Right Section: Price -->
       <div class="flex sm:flex-col flex-row sm:items-end items-baseline gap-1 sm:gap-0">
         <div class="text-2xl font-bold text-title">${{ vip_subscription.amount|trim_zeros }}</div>
-        <div class="text-xs text-text/60">
-          {{ vip_subscription.interval_count|price_interval:vip_subscription.interval }} 
-        </div>
+        <div class="text-xs text-text/60">{{ vip_subscription.interval_count|price_interval:vip_subscription.interval }}</div>
       </div>
     </div>
 
@@ -35,9 +60,9 @@
             <circle cx="12" cy="12" r="10" />
           </svg>
           <p class="text-error font-medium">
-            Payment overdue - please update your payment method.
+            {% trans 'Payment overdue - please update your payment method.' %}
 
-            <button class="btn-a ml-2" onclick="openModel('staticModal-change-payment-{{ vip_subscription.id }}'); mountStripeElement('change-pm');"><span class="text-xs">Update Payment</span></button>
+            <button class="btn-a ml-2" onclick="openModel('staticModal-change-payment-{{ vip_subscription.id }}'); mountStripeElement('change-pm');"><span class="text-xs">{% trans 'Update Payment' %}</span></button>
           </p>
         {% else %}
           <svg class="w-3.5 aspect-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -45,9 +70,9 @@
           </svg>
           <span>
             {% if vip_subscription.cancel_at_period_end %}
-              End on
+              {% trans 'End on' %}
             {% else %}
-              Next payment on
+              {% trans 'Next payment on' %}
             {% endif %}
             {{ vip_subscription.period_end|date:'M d, Y' }}
           </span>
@@ -58,7 +83,7 @@
           <form hx-post="{% url 'strategy_cancel_subscription' strategy.price.id vip_subscription.id %}" hx-target="#vip-membership" class="">
             {% csrf_token %}
             <button class="btn-a" onclick="openLoader('-renew-{{ vip_subscription.id }}', '', 'inline-flex');" id="btn-renew-{{ vip_subscription.id }}" type="submit">
-              <span class="text-xs">Reactivate</span>
+              <span class="text-xs">{% trans 'Reactivate' %}</span>
 
               <svg class="w-2.5 aspect-auto ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
@@ -68,7 +93,7 @@
               </svg>
             </button>
             <button class="btn-a hidden" id="spinner-renew-{{ vip_subscription.id }}" type="button" disabled>
-              <span class="text-xs">Reactivate</span>
+              <span class="text-xs">{% trans 'Reactivate' %}</span>
 
               {% include 'svg/spinner.html' with class='ml-0.5 h-2.5' %}
             </button>
@@ -77,23 +102,23 @@
       {% elif not vip_subscription.cancel_at_period_end %}
         <div class="ml-auto relative">
           <button class="btn-a" onclick="openCustomDropdown('manage-subscription-{{ vip_subscription.id }}')" id="btn-dropdownMenuIconButton-{{ vip_subscription.id }}" type="button">
-            <span class="text-xs sm:inline hidden">Manage subscription</span>
+            <span class="text-xs sm:inline hidden">{% trans 'Manage subscription' %}</span>
             <svg class="h-2.5 aspect-square ml-0.5 fill-current" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 15">
               <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
             </svg>
           </button>
           <button class="btn-a hidden" disabled id="spinner-dropdownMenuIconButton-{{ vip_subscription.id }}" type="button">
-            <span class="text-xs sm:inline hidden">Manage subscription</span>
+            <span class="text-xs sm:inline hidden">{% trans 'Manage subscription' %}</span>
             {% include 'svg/spinner.html' with class='ml-0.5 h-2.5' %}
           </button>
           <!-- Dropdown menu -->
           <div id="manage-subscription-{{ vip_subscription.id }}" class="absolute right-1 z-[35] hidden divide-y divide-text/10 w-44 nav-bg-backdrop">
             <ul class="py-2 text-sm" aria-labelledby="btn-dropdownMenuIconButton-{{ vip_subscription.id }}">
               <li>
-                <button onclick="openModel('staticModal-change-payment-{{ vip_subscription.id }}'); mountStripeElement('change-pm');" class="w-full text-left block px-4 py-2 btn-icon">Change payment</button>
+                <button onclick="openModel('staticModal-change-payment-{{ vip_subscription.id }}'); mountStripeElement('change-pm');" class="w-full text-left block px-4 py-2 btn-icon">{% trans 'Change payment' %}</button>
               </li>
               <li>
-                <button onclick="openModel('staticModal-cancel-{{ vip_subscription.id }}')" class="w-full text-left block px-4 py-2 text-error hover:text-error/80">Cancel subscription</button>
+                <button onclick="openModel('staticModal-cancel-{{ vip_subscription.id }}')" class="w-full text-left block px-4 py-2 text-error hover:text-error/80">{% trans 'Cancel subscription' %}</button>
               </li>
             </ul>
           </div>
@@ -106,7 +131,7 @@
             <div class="relative bg-background rounded-lg shadow">
               <!-- Modal header -->
               <div class="flex items-center justify-between p-4 rounded-t">
-                <h3 class="text-xl font-semibold text-title">Change payment method</h3>
+                <h3 class="text-xl font-semibold text-title">{% trans 'Change payment method' %}</h3>
                 <button onclick="hideModel('staticModal-change-payment-{{ vip_subscription.id }}')" type="button" class="btn-icon">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -124,11 +149,12 @@
                 </div>
 
                 <div class="flex items-center justify-between gap-2 mt-2">
-                  <button type="button" class="btn-icon w-full justify-center border border-text/20 py-1.5" onclick="hideModel('staticModal-change-payment-{{ vip_subscription.id }}'); unmountStripeElement('{{ vip_subscription.id }}');">Cancel</button>
+                  <button type="button" class="btn-icon w-full justify-center border border-text/20 py-1.5" onclick="hideModel('staticModal-change-payment-{{ vip_subscription.id }}'); unmountStripeElement('{{ vip_subscription.id }}');">{% trans 'Cancel' %}</button>
                   <button id="spinner-add-change-pm" disabled type="button" class="btn-text w-full hidden">
-                    Saving{% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
+                    {% trans 'Saving' %}
+                    {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
                   </button>
-                  <button id="btn-add-change-pm" type="submit" onclick="submitStripeElementForm('change-pm', 'add-change-pm-form-errors', event)" class="btn-text w-full">Save</button>
+                  <button id="btn-add-change-pm" type="submit" onclick="submitStripeElementForm('change-pm', 'add-change-pm-form-errors', event)" class="btn-text w-full">{% trans 'Save' %}</button>
                 </div>
               </form>
             </div>
@@ -142,7 +168,7 @@
             <div class="relative bg-background rounded-lg shadow">
               <!-- Modal header -->
               <div class="flex items-center justify-between p-4 rounded-t">
-                <h3 class="text-xl font-semibold text-title">Cancel subscription</h3>
+                <h3 class="text-xl font-semibold text-title">{% trans 'Cancel subscription' %}</h3>
                 <button onclick="hideModel('staticModal-cancel-{{ vip_subscription.id }}')" type="button" class="btn-icon">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -154,23 +180,26 @@
                 {% csrf_token %}
 
                 <div class="rounded-md px-4 mb-8">
-                  <h6 class="text-title font-bold">Before You Cancel</h6>
+                  <h6 class="text-title font-bold">{% trans 'Before You Cancel' %}</h6>
                   <ul class="text-text text-sm space-y-2 my-4">
                     <li>
-                      &#9679; If you’re unsure how to get the most out of this strategy, please <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">contact us</a> we’re happy to guide you or schedule a one-on-one call with the strategy provider.
+                      &#9679;{% trans "If you're unsure how to get the most out of this strategy, please" %} <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">{% trans 'contact us' %}</a> {% trans "we're happy to guide you or schedule a one-on-one call with the strategy provider." %}
                     </li>
                     <li>
-                      &#9679; If you didn’t enjoy this strategy, we’d really appreciate your <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">feedback</a>. Your thoughts help us improve and serve you better.
+                      &#9679;{% trans "If you didn't enjoy this strategy, we'd really appreciate your" %} <a class="btn-a font-semibold text-title hover:text-title/80" href="{% url 'docs_contactus' %}">{% trans 'feedback' %}</a>{% trans '. Your thoughts help us improve and serve you better.' %}
                     </li>
                   </ul>
 
-                  <p class="text-error text-sm font-semibold">By canceling your subscription, you will no longer have access to this exclusive strategy after the current billing period ends.</p>
+                  <p class="text-error text-sm font-semibold">
+                    {% trans 'By canceling your subscription, you will no longer have access to this exclusive strategy after the current billing period ends.' %}
+                  </p>
                 </div>
 
                 <div class="mt-6 flex items-center justify-around">
-                  <button data-modal-hide="staticModal-cancel-{{ vip_subscription.id }}" type="submit" class="btn-icon text-error hover:text-error/80 mr-auto" onclick="openLoader('-dropdownMenuIconButton-{{ vip_subscription.id }}', '', 'inline-flex');hideModel('staticModal-cancel-{{ vip_subscription.id }}');">Cancel</button>
+                  <button data-modal-hide="staticModal-cancel-{{ vip_subscription.id }}" type="submit" class="btn-icon text-error hover:text-error/80 mr-auto" onclick="openLoader('-dropdownMenuIconButton-{{ vip_subscription.id }}', '', 'inline-flex');hideModel('staticModal-cancel-{{ vip_subscription.id }}');">{% trans 'Cancel' %}</button>
                   <button onclick="hideModel('staticModal-cancel-{{ vip_subscription.id }}')" type="button" class="btn-icon mr-auto font-semibold">
-                    Keep it<svg class="h-3.5 aspect-auto ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    {% trans 'Keep it' %}
+                    <svg class="h-3.5 aspect-auto ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M20 6 9 17l-5-5" />
                     </svg>
                   </button>

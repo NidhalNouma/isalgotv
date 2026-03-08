@@ -9,6 +9,7 @@ from alpaca.data.requests import CryptoLatestQuoteRequest, StockLatestQuoteReque
 from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
 from datetime import datetime, timedelta, timezone
 
+from django.utils.translation import gettext as _
 from automate.functions.brokers.broker import BrokerClient
 from automate.functions.brokers.types import *
 import time
@@ -36,8 +37,8 @@ class AlpacaClient(BrokerClient):
             client = AlpacaClient(username=username, password=password, type=type)
             account = client.get_account_info()
             if not account:
-                raise Exception('Invalid credentials.')
-            return {'valid': True, 'message': 'Credentials are valid.'}
+                raise Exception(_('Invalid credentials.'))
+            return {'valid': True, 'message': _('Credentials are valid.')}
         except Exception as e:
             print(f"Credential check failed: {e}")
             return {'valid': False, 'error': str(e)}
@@ -47,7 +48,7 @@ class AlpacaClient(BrokerClient):
             symbol_info = self.get_symbol_info(symbol=symbol)
 
             if not symbol_info:
-                raise Exception('Invalid symbol/asset.')
+                raise Exception(_('Invalid symbol/asset.'))
 
             req_side = None
             if side.lower() == 'buy':
@@ -55,7 +56,7 @@ class AlpacaClient(BrokerClient):
             elif side.lower() == 'sell':
                 req_side = OrderSide.SELL
             else:
-                raise Exception('Unsupported order side.')
+                raise Exception(_('Unsupported order side.'))
 
             order_req = MarketOrderRequest(
                 symbol=symbol,
@@ -83,7 +84,7 @@ class AlpacaClient(BrokerClient):
             close_id = close_market.id
 
             return {
-                'message': f"Trade closed for order ID {id}.", 
+                'message': _("Trade closed for order ID %s.") % id, 
                 "closed_order_id": close_id,
                 'qty': close_market.qty,
                 'end_exe': end_exe
@@ -104,9 +105,9 @@ class AlpacaClient(BrokerClient):
             )
             
             if not order:
-                raise Exception('Order NA.')
+                raise Exception(_('Order not available.'))
             if order.status != 'filled':
-                raise Exception('Order placed but not filled yet.')
+                raise Exception(_('Order placed but not filled yet.'))
 
             # print(order)
             
@@ -311,7 +312,7 @@ class AlpacaClient(BrokerClient):
 
             for intv in intervals:
                 if intv not in ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]:
-                    raise ValueError(f"Invalid interval: {intv}")
+                    raise ValueError(_("Invalid interval: %s") % intv)
                 history_candles[intv] = self.get_history_candles(symbol, intv, limit=limit)
 
             try:

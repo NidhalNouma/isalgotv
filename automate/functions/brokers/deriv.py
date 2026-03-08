@@ -10,6 +10,7 @@ import json
 import threading
 import time
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from automate.functions.brokers.broker import BrokerClient
 from automate.functions.brokers.types import *
@@ -79,7 +80,7 @@ class DerivClient(BrokerClient):
     # --------------------------------------------------------------
     async def _async_send(self, data):
         if self.ws is None:
-            raise Exception("Websocket is not connected.")
+            raise Exception(_("Websocket is not connected."))
         await self.ws.send(json.dumps(data))
         response_raw = await self.ws.recv()
         response = json.loads(response_raw)
@@ -98,18 +99,18 @@ class DerivClient(BrokerClient):
         try:
             print("Checking Deriv credentials...", account_id)
             if not token or not account_id:
-                raise Exception("Token and Account ID must be provided.")
+                raise Exception(_("Token and Account ID must be provided."))
             client = DerivClient(server=token, account_id=account_id, type=type)
             account_info = client.get_account_info()
             # print("Account Info:", account_info)
             if account_info.get('account_category') not in ['trading']:
-                raise Exception("Account is not a trading account.")
+                raise Exception(_("Account is not a trading account."))
             
             account_type = 'L' if account_info.get('is_virtual', 0) == 1 else 'D'
 
             return {
                 "valid": True,  
-                "message": "Deriv credentials are valid.",
+                "message": _("Deriv credentials are valid."),
                 "account_api_id": account_id,
                 "account_type": account_type,
                 "additional_info": {
@@ -120,7 +121,7 @@ class DerivClient(BrokerClient):
         except Exception as e:
             return {
                 "error": str(e),
-                "message": "Invalid Deriv credentials.",
+                "message": _("Invalid Deriv credentials."),
                 "valid": False
             }
         
@@ -133,7 +134,7 @@ class DerivClient(BrokerClient):
             for account in accounts:
                 if str(account.get("loginid")) == str(self.account_id):
                     return account
-            raise Exception("Account ID not found.")
+            raise Exception(_("Account ID not found."))
         except Exception as e:
             print("Error getting account info:", str(e))
             raise e
@@ -154,7 +155,7 @@ class DerivClient(BrokerClient):
             adjusted_quantity = round(float(quantity), decimals)
             proposal = self.get_proposal(symbol, side, adjusted_quantity)
             if not proposal:
-                raise Exception("Failed to get proposal for the trade.")
+                raise Exception(_("Failed to get proposal for the trade."))
             
             print(f"Opening trade for {symbol}: side={side}, qty={adjusted_quantity}")
 
@@ -168,12 +169,12 @@ class DerivClient(BrokerClient):
             end_exe = time.perf_counter()
 
             if not order_id:
-                raise Exception("Failed to open trade, no contract ID returned.")
+                raise Exception(_("Failed to open trade, no contract ID returned."))
 
             order_info = self.get_order_info(symbol, order_id)
             # print(f"Trade opened successfully for {symbol} with order ID {order_id}: {order_info}")
             return {
-                'message': f"Trade opened with order ID {order_id}.",
+                'message': _("Trade opened with order ID %s.") % order_id,
                 'end_exe': end_exe,
                 'order_id': order_id,
                 'symbol': symbol,
@@ -192,10 +193,10 @@ class DerivClient(BrokerClient):
     def close_trade(self, symbol, side, quantity):
         try:
             if not self.current_trade:
-                raise Exception("No current trade to close.")
+                raise Exception(_("No current trade to close."))
             order_id = self.current_trade.order_id
             if not order_id:
-                raise Exception("Current trade does not have an order ID.")
+                raise Exception(_("Current trade does not have an order ID."))
             request = {
                 "sell": order_id,
                 "price": 0,
@@ -205,7 +206,7 @@ class DerivClient(BrokerClient):
 
             trade_details = self.get_final_trade_details(self.current_trade)
             return {
-                'message': f"Trade closed with order ID {order_id}.",
+                'message': _("Trade closed with order ID %s.") % order_id,
                 'order_id': order_id,
                 'symbol': symbol,
                 'qty': self.current_trade.volume,
@@ -246,7 +247,7 @@ class DerivClient(BrokerClient):
         try:
             order_id = trade.order_id
             if not order_id:
-                raise Exception("Trade does not have an order ID.")
+                raise Exception(_("Trade does not have an order ID."))
             trade_info = self._send_request({
                 "proposal_open_contract": 1,
                 "contract_id": order_id
@@ -303,7 +304,7 @@ class DerivClient(BrokerClient):
             account_info = self.get_account_info()
             currency = account_info.get("currency")
             if not currency:
-                raise Exception("Currency information not found in account info.")
+                raise Exception(_("Currency information not found in account info."))
             return currency
         except Exception as e:
             print("Error getting account currency:", str(e))

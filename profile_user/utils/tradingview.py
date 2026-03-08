@@ -1,6 +1,5 @@
 import requests
-from django.conf import settings
-
+from django.utils.translation import gettext as _
 
 from strategies.models import Strategy, StrategySubscriber
 from profile_user.models import User_Profile
@@ -23,24 +22,24 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
         r = {"error": "", "access": None, 'strategy': strategy, 'user_profile': profile}
 
         if not profile.tradingview_username:
-            r['error'] = "Please set your TradingView username in your profile settings."
+            r['error'] = _("Please set your TradingView username in your profile settings.")
             return r
         if not strategy.tradingview_ID:
-            r['error'] = "This strategy does not have a TradingView ID. Please contact support."
+            r['error'] = _("This strategy does not have a TradingView ID. Please contact support.")
             return r
         
         if access:
           if profile.has_subscription == False and profile.is_lifetime == False and strategy.premium in ['Premium', 'Elite']:
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
-              r['error'] = "This strategy is premium. Please upgrade your plan to access it."
+              r['error'] = _("This strategy is premium. Please upgrade your plan to access it.")
               r['upgrade'] = True
               return r
           
           if not profile.is_lifetime and strategy.premium == 'Elite':
               if profile.strategies.filter(pk=strategy_id).exists():
                   profile.strategies.remove(strategy)
-              r['error'] = "This is an Elite strategy. only availble for lifetime users."
+              r['error'] = _("This is an Elite strategy. only availble for lifetime users.")    
               r['upgrade'] = True
               return r
           
@@ -51,7 +50,7 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
                 if not is_subscribed:
                     if profile.strategies.filter(pk=strategy_id).exists():
                         profile.strategies.remove(strategy)
-                    r['error'] = "This is an Exclusive strategy. Please subscribe to access it."
+                    r['error'] = _("This is an Exclusive strategy. Please subscribe to access it.") 
                     # r['upgrade'] = True
                     return r
 
@@ -90,7 +89,7 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
         return r
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-        r['error'] =  "We encountered an error while granting access. Please reach out to us so we can assist you promptly!"
+        r['error'] =  _("We encountered an error while granting access. Please reach out to us so we can assist you promptly!") 
         return r
     except Exception as e:
         print(f"An error occurred: {e}")

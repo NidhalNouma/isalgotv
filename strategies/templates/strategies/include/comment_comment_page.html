@@ -1,30 +1,22 @@
 {% load custom_filters %}
+{% load i18n %}
 
 <div class="">
-    <a class="" href="{% url 'strategy' slug=comment.strategy.slug %}">
-        <h6 class="text-xs text-title underline truncate line-clamp-1">
-          {{comment.strategy.name}}
-        </h6>
-    </a>
+  <a class="" href="{% url 'strategy' slug=comment.strategy.slug %}"><h6 class="text-xs text-title underline truncate line-clamp-1">{{ comment.strategy.name }}</h6></a>
   <p class="text-xs text-text mt-2 line-clamp-4">{{ comment.description }}</p>
 
-  <span class="text-text/60 text-xs font-light">{% with total=comment.likes.count|subtract:comment.dislike.count %} {{ total }} {% endwith %} likes</span>
+  <span class="text-text/60 text-xs font-light">
+    {% with total=comment.likes.count|subtract:comment.dislike.count %}
+      {{ total }}
+    {% endwith %} {% trans 'likes' %}
+  </span>
 
- <div class="flex items-center justify-between mt-1">
-    <a href="{% url 'strategy' slug=comment.strategy.slug %}?comment={{comment.id}}"
-        class="w-fit flex items-center bg-transparent text-xs rounded font-medium text-secondary"
-        >
-        Read and reply
-        <svg
-            class="w-4 h-4 stroke-current fill-current"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-            ></path>
-        </svg>
+  <div class="flex items-center justify-between mt-1">
+    <a href="{% url 'strategy' slug=comment.strategy.slug %}?comment={{ comment.id }}" class="w-fit flex items-center bg-transparent text-xs rounded font-medium text-secondary">
+      {% trans 'Read and reply' %}
+      <svg class="w-4 h-4 stroke-current fill-current" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"></path>
+      </svg>
     </a>
   </div>
 </div>

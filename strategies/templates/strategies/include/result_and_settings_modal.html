@@ -1,4 +1,7 @@
 {% load custom_filters %}
+{% load i18n %}
+{% load i18n %}
+{% load i18n %}
 
 <div
   id="result-modal-{{result.id}}"
@@ -13,7 +16,7 @@
       >
         <h3 class="text-lg sm:text-xl font-semibold text-text">{{result.performance.broker}}:{{result.pair}} 
           <a href="https://www.tradingview.com/chart/?symbol={{result.performance.broker}}:{{result.pair}}&aff_id=134591" target="_blank" rel="noopener noreferrer" class="btn-text border-none">
-            Launch Chart<svg class="h-3.5 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            {% trans "Launch Chart" %}<svg class="h-3.5 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
               <line x1="10" x2="21" y1="14" y2="3"></line>
@@ -49,7 +52,7 @@
           class="inline-block px-2 py-1 text-sm rounded-md text-background  bg-text transition-all"
         >
           <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"><path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path></svg> -->
-          Performance
+          {% trans "Performance" %}
         </button>
         <button
           onclick='swapDivBtn("r-{{result.id}}-result", "r-{{result.id}}-settings")'
@@ -57,7 +60,7 @@
           class="inline-block px-2 py-1 text-sm rounded-md hover:text-background text-text bg-transparent hover:bg-text transition-all"
         >
         <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path></svg> -->
-        Properties
+        {% trans "Properties" %}
         </button>
       </div>
     </div>
@@ -68,35 +71,35 @@
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-text/60" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <div>
-              <p class="text-sm text-text/60">Symbol</p>
+              <p class="text-sm text-text/60">{% trans "Symbol" %}</p>
               <p class="font-medium text-text">{{result.performance.pair}}</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
             <div>
-              <p class="text-sm text-text/60">Broker</p>
+              <p class="text-sm text-text/60">{% trans "Broker" %}</p>
               <p class="font-medium text-text">{{result.performance.broker}}</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
             <div>
-              <p class="text-sm text-text/60">Initial Capital</p>
+              <p class="text-sm text-text/60">{% trans "Initial Capital" %}</p>
               <p class="font-medium text-text">{{result.performance.initial_capital}}</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <div>
-              <p class="text-sm text-text/60">Timeframe</p>
+              <p class="text-sm text-text/60">{% trans "Timeframe" %}</p>
               <p class="font-medium text-text">{{result.performance.time_frame_int}} {{result.performance.time_frame}}</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12"/></svg>
             <div>
-              <p class="text-sm text-text/60">From</p>
+              <p class="text-sm text-text/60">{% trans "From" %}</p>
               <p class="font-medium text-text">{{result.test_start_at|date:'M d Y'}}</p>
               <p class="font-light text-xs text-text">{{result.test_start_at|date:'H:i'}}</p>
             </div>
@@ -104,7 +107,7 @@
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-text/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 9.5 16"/></svg>
             <div>
-              <p class="text-sm text-text/60">To</p>
+              <p class="text-sm text-text/60">{% trans "To" %}</p>
               <p class="font-medium text-text">{{result.test_end_at|date:'M d Y'}}</p>
               <p class="font-light text-xs text-text">{{result.test_end_at|date:'H:i'}}</p>
             </div>
@@ -115,7 +118,7 @@
 
           <p class="text-sm text-text/60 flex items-center gap-2 mb-1.5">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
-            Duration
+            {% trans "Duration" %}
           </p>
           <div class="w-full bg-text/20 rounded-md mb-1">
             <div
@@ -134,21 +137,21 @@
             class="flex items-center justify-center gap-1.5 text-sm font-bold  text-text rounded-md bg-text/30 py-1.5 hover:bg-text/30  transition-all"
             onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}', ['bg-text/30'])"
           >
-            All
+            {% trans "All" %}
           </button>
           <button
             id="btn-result-long-{{result.id}}"
             class="flex items-center justify-center gap-1.5 text-sm font-bold text-title rounded-md py-1.5 hover:bg-text/30 transition-all"
             onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}', ['bg-text/30'])"
           >
-            Long
+            {% trans "Long" %}
           </button>
           <button
             id="btn-result-short-{{result.id}}"
             class="flex items-center justify-center gap-1.5 text-sm font-bold text-title rounded-md py-1.5 hover:bg-text/30 transition-all" 
             onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}', ['bg-text/30'])"
           >
-            Short
+            {% trans "Short" %}
           </button>
         </div>
 
@@ -157,7 +160,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                <span class="text-sm text-profit">Net Profit</span>
+                <span class="text-sm text-profit">{% trans "Net Profit" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -171,7 +174,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                <span class="text-sm text-profit">Gross Profit</span>
+                <span class="text-sm text-profit">{% trans "Gross Profit" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -185,7 +188,7 @@
             <div class="rounded-lg bg-loss/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
-                <span class="text-sm text-loss">Gross Loss</span>
+                <span class="text-sm text-loss">{% trans "Gross Loss" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">
@@ -199,7 +202,7 @@
             <div class="rounded-lg bg-primary/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-                <span class="text-sm text-primary">Profit Factor</span>
+                <span class="text-sm text-primary">{% trans "Profit Factor" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-primary">
@@ -210,7 +213,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
-                <span class="text-sm text-profit">Win rate</span>
+                <span class="text-sm text-profit">{% trans "Win rate" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -221,7 +224,7 @@
             <div class="rounded-lg bg-loss/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
-                <span class="text-sm text-loss">Max Drawdown</span>
+                <span class="text-sm text-loss">{% trans "Max Drawdown" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">
@@ -237,7 +240,7 @@
           <section class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4">
             <div class="rounded-lg bg-primary/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-primary">Total Trades</span>
+                <span class="text-sm text-primary">{% trans "Total Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-primary">
@@ -247,7 +250,7 @@
             </div>
             <div class="rounded-lg bg-profit/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-profit">Win Trades</span>
+                <span class="text-sm text-profit">{% trans "Win Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -257,7 +260,7 @@
             </div>
             <div class="rounded-lg bg-loss/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-loss">Loss Trades</span>
+                <span class="text-sm text-loss">{% trans "Loss Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">
@@ -273,7 +276,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                <span class="text-sm text-profit">Net Profit</span>
+                <span class="text-sm text-profit">{% trans "Net Profit" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -287,7 +290,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                <span class="text-sm text-profit">Gross Profit</span>
+                <span class="text-sm text-profit">{% trans "Gross Profit" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -301,7 +304,7 @@
             <div class="rounded-lg bg-loss/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
-                <span class="text-sm text-loss">Gross Loss</span>
+                <span class="text-sm text-loss">{% trans "Gross Loss" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">
@@ -315,7 +318,7 @@
             <div class="rounded-lg bg-primary/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-                <span class="text-sm text-primary">Profit Factor</span>
+                <span class="text-sm text-primary">{% trans "Profit Factor" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-primary">
@@ -326,7 +329,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
-                <span class="text-sm text-profit">Win rate</span>
+                <span class="text-sm text-profit">{% trans "Win rate" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -339,7 +342,7 @@
           <section class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4">
             <div class="rounded-lg bg-primary/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-primary">Total Trades</span>
+                <span class="text-sm text-primary">{% trans "Total Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-primary">
@@ -349,7 +352,7 @@
             </div>
             <div class="rounded-lg bg-profit/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-profit">Win Trades</span>
+                <span class="text-sm text-profit">{% trans "Win Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -359,7 +362,7 @@
             </div>
             <div class="rounded-lg bg-loss/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-loss">Loss Trades</span>
+                <span class="text-sm text-loss">{% trans "Loss Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">
@@ -375,7 +378,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                <span class="text-sm text-profit">Net Profit</span>
+                <span class="text-sm text-profit">{% trans "Net Profit" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -389,7 +392,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                <span class="text-sm text-profit">Gross Profit</span>
+                <span class="text-sm text-profit">{% trans "Gross Profit" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -403,7 +406,7 @@
             <div class="rounded-lg bg-loss/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
-                <span class="text-sm text-loss">Gross Loss</span>
+                <span class="text-sm text-loss">{% trans "Gross Loss" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">
@@ -417,7 +420,7 @@
             <div class="rounded-lg bg-primary/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-                <span class="text-sm text-primary">Profit Factor</span>
+                <span class="text-sm text-primary">{% trans "Profit Factor" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-primary">
@@ -428,7 +431,7 @@
             <div class="rounded-lg bg-profit/5 p-4">
               <div class="flex items-center gap-2 mb-1">
                 <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
-                <span class="text-sm text-profit">Win rate</span>
+                <span class="text-sm text-profit">{% trans "Win rate" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -441,7 +444,7 @@
           <section class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4">
             <div class="rounded-lg bg-primary/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-primary">Total Trades</span>
+                <span class="text-sm text-primary">{% trans "Total Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-primary">
@@ -451,7 +454,7 @@
             </div>
             <div class="rounded-lg bg-profit/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-profit">Win Trades</span>
+                <span class="text-sm text-profit">{% trans "Win Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-profit">
@@ -461,7 +464,7 @@
             </div>
             <div class="rounded-lg bg-loss/5 p-3">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-loss">Loss Trades</span>
+                <span class="text-sm text-loss">{% trans "Loss Trades" %}</span>
               </div>
               <div class="flex items-baseline gap-2">
                 <span class="text-xl font-bold text-loss">

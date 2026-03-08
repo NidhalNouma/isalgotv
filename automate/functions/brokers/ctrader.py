@@ -21,6 +21,7 @@ from django.urls import reverse
 
 from automate.models import ForexBrokerAccount
 from automate.functions.brokers.broker import BrokerClient
+from django.utils.translation import gettext as _
 
 import environ
 
@@ -168,7 +169,7 @@ class CtraderConnectionManager:
         # Ensure reactor is running
         if not self._reactor_started.is_set():
             if not self._reactor_started.wait(timeout=10):
-                raise Exception("Twisted reactor failed to start. Please restart the application.")
+                raise Exception(_("Twisted reactor failed to start. Please restart the application."))
         
         # If client doesn't exist yet, start it (in case _start_connection_async hasn't run yet)
         with self._lock:
@@ -190,12 +191,12 @@ class CtraderConnectionManager:
             else:
                 # Connected but auth failed
                 self._client = None
-                raise Exception("cTrader authentication failed. Please try again.")
+                raise Exception(_("cTrader authentication failed. Please try again."))
         
         # Timeout
         print(" cTrader connection timeout")
         self._client = None
-        raise Exception("Timeout connecting to cTrader Demo server. Please try again.")
+        raise Exception(_("Timeout connecting to cTrader Demo server. Please try again."))
         
         return self._client
 
@@ -295,7 +296,7 @@ class CtraderClient(BrokerClient):
         if not self.account_id:
             acc = self.get_first_account()
             if not acc:
-                raise Exception("No trading account found.")
+                raise Exception(_("No trading account found."))
             self.account_id = acc.get('account_id', None)
             self.is_demo = not acc.get('is_live', False)
             self.type = 'D' if self.is_demo else 'L'
@@ -327,7 +328,7 @@ class CtraderClient(BrokerClient):
             #     raise Exception("cTrader live accounts are not supported yet. Please use a demo account.")
 
             if temp_client.is_demo:
-                raise Exception("cTrader demo accounts are not supported in this environment. Please use a live account or contact support.")
+                raise Exception(_("cTrader demo accounts are not supported in this environment. Please use a live account or contact support."))
             
             # Authorize the account
             temp_client.authorize_account()
@@ -445,7 +446,7 @@ class CtraderClient(BrokerClient):
                     'is_live': account.isLive,
                     'login': account.traderLogin,
                 }
-            raise Exception("No trading account found.")
+            raise Exception(_("No trading account found."))
 
         account_list_req = ProtoOAGetAccountListByAccessTokenReq()
         account_list_req.accessToken = self.access_token
@@ -497,7 +498,7 @@ class CtraderClient(BrokerClient):
         if hasattr(account, "balance"):
             return account.balance
         else:
-            raise Exception("balance not found in trader info")
+            raise Exception(_("balance not found in trader info"))
 
     def get_account_currency(self):
         try:
@@ -522,7 +523,7 @@ class CtraderClient(BrokerClient):
                     return MessageToDict(res.order, preserving_proto_field_name=True)
                 if hasattr(res, "errorCode"):
                     raise Exception(f"Order rejected: {res.errorCode}. {res.description}")
-                raise Exception("Unknown response format from cTrader.")
+                raise Exception(_("Unknown response format from cTrader."))
 
             req = ProtoOANewOrderReq()
             req.ctidTraderAccountId = self.account_id
@@ -539,7 +540,7 @@ class CtraderClient(BrokerClient):
 
             orderInfo = self.get_order_info(symbol, order_id)
             return {
-                'message': f"Trade opened with order ID {order_id}.",
+                'message': _("Trade opened with order ID %s.") % order_id,
                 'order_id': orderInfo.get('position_id'),
                 'symbol': symbol,
                 'price': orderInfo.get('price'),
@@ -572,7 +573,7 @@ class CtraderClient(BrokerClient):
                 if hasattr(close_res, "errorCode"):
                     raise Exception(f"Close position rejected: {close_res.errorCode}. {close_res.description}")
 
-                raise Exception("Failed to close position.")
+                raise Exception(_("Failed to close position."))
 
             req = ProtoOAClosePositionReq()
             req.ctidTraderAccountId = self.account_id
@@ -590,7 +591,7 @@ class CtraderClient(BrokerClient):
             )
 
             return {
-                'message': f"Trade closed for position ID {position_id_toclose}.",
+                'message': _("Trade closed for position ID %s.") % position_id_toclose,
                 "symbol": symbol,
                 'qty': close_volume,
                 'order_id': self.current_trade.order_id,
@@ -818,7 +819,7 @@ class CtraderClient(BrokerClient):
 
         def callback(res):
             if not hasattr(res, "trendbar") or len(res.trendbar) == 0:
-                raise Exception("No trendbar data returned.")
+                raise Exception(_("No trendbar data returned."))
 
             trendbars = []
             for tb in res.trendbar:
@@ -863,7 +864,7 @@ class CtraderClient(BrokerClient):
                         self.account_id, symbol.symbolName, symbol.symbolId
                     )
                 return symbols_data
-            raise Exception("No symbols found.")
+            raise Exception(_("No symbols found."))
 
         symbols_req = ProtoOASymbolsListReq()
         symbols_req.ctidTraderAccountId = self.account_id
@@ -963,7 +964,7 @@ class CtraderClient(BrokerClient):
             history_candles = {}
             for interval in intervals:
                 if interval not in ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']:
-                    return {'error': f"Interval {interval} is not supported. use one of ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']"}
+                    return {'error': _("Interval %s is not supported. use one of ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1mn']") % interval}
 
                 candles = self.get_history_candles(symbol, interval, limit)
                 history_candles[interval] = candles

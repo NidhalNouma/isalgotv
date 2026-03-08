@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 21:02-0600\n"
+"POT-Creation-Date: 2026-03-07 21:26-0600\n"
 "PO-Revision-Date: 2026-03-04 09:30-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: French\n"
@@ -34,7 +34,6 @@ msgstr ""
 msgid "Email"
 msgstr "E-mail"
 
-#| msgid "Go to your"
 msgid "Log in to your"
 msgstr "Connectez-vous à votre"
 
@@ -65,11 +64,9 @@ msgstr "Vous n'avez pas de compte ?"
 msgid "Sign up"
 msgstr "S'inscrire"
 
-#| msgid "Get started"
 msgid "Get started with"
 msgstr "Commencez avec"
 
-#| msgid "Delete Seller Account"
 msgid "Create your Account"
 msgstr "Créez votre compte"
 
@@ -143,7 +140,6 @@ msgstr ""
 "Veuillez vérifier votre boîte de réception et suivre les instructions pour "
 "réinitialiser votre mot de passe."
 
-#| msgid "Send email"
 msgid "Resend Email"
 msgstr "Renvoyer l'e-mail"
 
@@ -161,6 +157,609 @@ msgstr "Email ou mot de passe incorrect !"
 
 msgid "Password updated succesfully!"
 msgstr "Mot de passe mis à jour avec succès !"
+
+#, python-format
+msgid "Unsupported broker type: %s"
+msgstr "Type de courtier non pris en charge : %s"
+
+msgid "Unsupported broker type."
+msgstr "Type de courtier non pris en charge."
+
+msgid "Account model not supported."
+msgstr "Modèle de compte non pris en charge."
+
+#, python-format
+msgid "Unsupported account model: %s"
+msgstr "Modèle de compte non pris en charge : %s"
+
+msgid "No volume left to close."
+msgstr "Plus aucun volume à fermer."
+
+msgid "No ID found in alert message."
+msgstr "Aucun identifiant trouvé dans le message d'alerte."
+
+msgid "No action found in alert message."
+msgstr "Aucune action trouvée dans le message d'alerte."
+
+msgid "No symbol found in alert message."
+msgstr "Aucun symbole trouvé dans le message d'alerte."
+
+msgid "No side found in alert message."
+msgstr "Aucun côté trouvé dans le message d'alerte."
+
+msgid "Invalid side value in alert message. Must be 'BUY' or 'SELL'."
+msgstr ""
+"Valeur latérale non valide dans le message d'alerte. Doit être « ACHETER » "
+"ou « VENDRE »."
+
+msgid "No volume found in alert message."
+msgstr "Aucun volume trouvé dans le message d'alerte."
+
+#, python-format
+msgid "Invalid volume expression: %s"
+msgstr "Expression de volume non valide : %s"
+
+#, python-format
+msgid "Error parsing volume '%s': %s"
+msgstr "Erreur lors de l'analyse du volume '%s' : %s"
+
+#, python-format
+msgid "Error parsing partial value '%s'"
+msgstr "Erreur lors de l'analyse de la valeur partielle '%s'"
+
+msgid "Login failed"
+msgstr "La connexion a échoué"
+
+#, python-format
+msgid "Login failed: %s"
+msgstr "Échec de la connexion : %s"
+
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+msgid "No accounts found."
+msgstr "Aucun compte trouvé."
+
+#, python-format
+msgid "Failed to get account info: %s"
+msgstr "Échec de l'obtention des informations sur le compte : %s"
+
+#, python-format
+msgid "Get account info Error: %s"
+msgstr "Obtenir les informations sur le compte Erreur : %s"
+
+#, python-format
+msgid "Get currency Error: %s"
+msgstr "Erreur d'obtention de la devise : %s"
+
+#, python-format
+msgid "Get balance Error: %s"
+msgstr "Erreur d'obtention du solde : %s"
+
+#, python-format
+msgid "Symbol %s not found."
+msgstr "Symbole %s introuvable."
+
+#, python-format
+msgid "Failed to get symbol info: %s"
+msgstr "Échec de l'obtention des informations sur le symbole : %s"
+
+#, python-format
+msgid "Get symbol Error: %s"
+msgstr "Obtenir le symbole Erreur : %s"
+
+#, python-format
+msgid "Trade opened with order ID %s."
+msgstr "Trade ouverte avec l'ID de commande %s."
+
+#, python-format
+msgid "Open trade Error: %s"
+msgstr "Erreur d'échange ouvert : %s"
+
+#, python-format
+msgid "Trade closed with order ID %s."
+msgstr "Transaction clôturée avec l'ID de commande %s."
+
+#, python-format
+msgid "Close trade Error: %s"
+msgstr "Erreur de clôture de transaction : %s"
+
+#, python-format
+msgid "Failed to get open trades: %s"
+msgstr "Échec de l'obtention des transactions ouvertes : %s"
+
+#, python-format
+msgid "Get trade error: %s"
+msgstr "Erreur d'obtention d'échange : %s"
+
+#, python-format
+msgid "Open trade with ID %s not found."
+msgstr "Échange ouvert avec l'ID %s introuvable."
+
+#, python-format
+msgid "Get open trade error: %s"
+msgstr "Erreur d'obtention d'une transaction ouverte : %s"
+
+#, python-format
+msgid "Failed to get closed trades: %s"
+msgstr "Échec de la clôture des transactions : %s"
+
+#, python-format
+msgid "Get closed trades Error: %s"
+msgstr "Obtenir des transactions clôturées Erreur : %s"
+
+#, python-format
+msgid "Could not retrieve current price for symbol %s"
+msgstr "Impossible de récupérer le prix actuel pour le symbole %s"
+
+#, python-format
+msgid "Get price Error: %s"
+msgstr "Obtenir le prix Erreur : %s"
+
+#, python-format
+msgid "Failed to get trading pairs: %s"
+msgstr "Échec de l'obtention des paires de trading : %s"
+
+#, python-format
+msgid "Get trading pairs Error: %s"
+msgstr "Obtenir des paires de trading Erreur : %s"
+
+#, python-format
+msgid "Market and account data Error: %s"
+msgstr "Données de marché et de compte Erreur : %s"
+
+msgid "Invalid credentials."
+msgstr "Identifiants invalides."
+
+msgid "Credentials are valid."
+msgstr "Les informations d'identification sont valides."
+
+msgid "Invalid symbol/asset."
+msgstr "Symbole/actif non valide."
+
+msgid "Unsupported order side."
+msgstr "Côté commande non pris en charge."
+
+#, python-format
+msgid "Trade closed for order ID %s."
+msgstr "Transaction clôturée pour l'ID de commande %s."
+
+msgid "Order not available."
+msgstr "Commande non disponible."
+
+msgid "Order placed but not filled yet."
+msgstr "Commande passée mais pas encore exécutée."
+
+#, python-format
+msgid "Invalid interval: %s"
+msgstr "Intervalle non valide : %s"
+
+#, python-format
+msgid "Error %s: %s"
+msgstr "Erreur %s : %s"
+
+msgid "API credentials are valid."
+msgstr "Les informations d'identification de l'API sont valides."
+
+msgid "API credentials are invalid."
+msgstr "Les informations d'identification de l'API ne sont pas valides."
+
+msgid "Symbol was not found!"
+msgstr "Le symbole n'a pas été trouvé !"
+
+msgid "Insufficient balance for the trade."
+msgstr "Solde insuffisant pour le commerce."
+
+msgid "Order ID not found in response."
+msgstr "ID de commande introuvable dans la réponse."
+
+msgid "Invalid account type. Use 'S' for Spot or 'P' for Perpetual."
+msgstr ""
+"Type de compte invalide. Utilisez « S » pour Spot ou « P » pour Perpétuel."
+
+msgid "Invalid trade type specified. Choose 'spot', 'usdm', or 'coinm'."
+msgstr ""
+"Type d'échange spécifié non valide. Choisissez « spot », « usdm » ou "
+"« coinm »."
+
+msgid "Invalid trade type. Use 'spot', 'usdm', or 'coinm'."
+msgstr "Type d'échange invalide. Utilisez « spot », « usdm » ou « coinm »."
+
+msgid "Empty price response"
+msgstr "Réponse de prix vide"
+
+#, python-format
+msgid "Could not find price in response: %s"
+msgstr "Impossible de trouver le prix en réponse : %s"
+
+msgid "Invalid API key or secret."
+msgstr "Clé API ou secret non valide."
+
+#, python-format
+msgid "Error getting exchange info for %s: %s"
+msgstr "Erreur lors de l'obtention des informations d'échange pour %s : %s"
+
+#, python-format
+msgid "Error getting account balance: %s"
+msgstr "Erreur lors de l'obtention du solde du compte : %s"
+
+msgid "Symbol not found."
+msgstr "Symbole introuvable."
+
+#, python-format
+msgid "Error getting exchange price for %s: %s"
+msgstr "Erreur lors de l'obtention du prix d'échange pour %s : %s"
+
+#, python-format
+msgid "Error getting historical candles for %s: %s"
+msgstr "Erreur lors de l'obtention des bougies historiques pour %s : %s"
+
+#, python-format
+msgid "Error getting order book for %s: %s"
+msgstr "Erreur lors de l'obtention du carnet de commandes pour %s : %s"
+
+#, python-format
+msgid "Error getting trading pairs: %s"
+msgstr "Erreur lors de l'obtention des paires de trading : %s"
+
+msgid "No response from server"
+msgstr "Aucune réponse du serveur"
+
+msgid "Could not fetch exchange info"
+msgstr "Impossible de récupérer les informations d'échange"
+
+msgid "Symbol not found"
+msgstr "Symbole introuvable"
+
+#, python-format
+msgid "An error occurred! #%s"
+msgstr "Une erreur s'est produite ! #%s"
+
+msgid "Order not found"
+msgstr "Commande introuvable"
+
+msgid "Could not fetch price"
+msgstr "Impossible d'obtenir le prix"
+
+msgid "Could not fetch trading pairs"
+msgstr "Impossible de récupérer les paires de trading"
+
+msgid "Could not fetch candles"
+msgstr "Impossible de récupérer les bougies"
+
+msgid "Could not fetch order book"
+msgstr "Impossible de récupérer le carnet de commandes"
+
+msgid "Symbol does not exist"
+msgstr "Le symbole n'existe pas"
+
+msgid "Order ID not found in response"
+msgstr "ID de commande introuvable dans la réponse"
+
+msgid "No data found in response"
+msgstr "Aucune donnée trouvée en réponse"
+
+msgid "Invalid symbol format or exchange info not found."
+msgstr "Format de symbole invalide ou informations d'échange introuvables."
+
+msgid "Could not fetch account info. Please check your API credentials."
+msgstr ""
+"Impossible de récupérer les informations du compte. Veuillez vérifier vos "
+"informations d'identification API."
+
+msgid "Insufficient quote balance."
+msgstr "Solde du devis insuffisant."
+
+msgid "Price is zero, cannot calculate order quantity."
+msgstr "Le prix est nul, impossible de calculer la quantité commandée."
+
+msgid "Insufficient base balance."
+msgstr "Solde de base insuffisant."
+
+msgid "Order type is not supported."
+msgstr "Le type de commande n'est pas pris en charge."
+
+msgid "OrderId do not exisit."
+msgstr "OrderId n’existe pas."
+
+msgid "Twisted reactor failed to start. Please restart the application."
+msgstr ""
+"Le réacteur tordu n'a pas réussi à démarrer. Veuillez redémarrer "
+"l'application."
+
+msgid "cTrader authentication failed. Please try again."
+msgstr "L'authentification cTrader a échoué. Veuillez réessayer."
+
+msgid "Timeout connecting to cTrader Demo server. Please try again."
+msgstr ""
+"Délai d'expiration de la connexion au serveur de démonstration cTrader. "
+"Veuillez réessayer."
+
+msgid "No trading account found."
+msgstr "Aucun compte de trading trouvé."
+
+msgid ""
+"cTrader demo accounts are not supported in this environment. Please use a "
+"live account or contact support."
+msgstr ""
+"Les comptes de démonstration cTrader ne sont pas pris en charge dans cet "
+"environnement. Veuillez utiliser un compte réel ou contacter l'assistance."
+
+msgid "balance not found in trader info"
+msgstr "solde introuvable dans les informations du commerçant"
+
+msgid "Unknown response format from cTrader."
+msgstr "Format de réponse inconnu de cTrader."
+
+msgid "Failed to close position."
+msgstr "Échec de la clôture de la position."
+
+#, python-format
+msgid "Trade closed for position ID %s."
+msgstr "Trade clôturée pour l'ID de position %s."
+
+msgid "No trendbar data returned."
+msgstr "Aucune donnée de barre de tendance renvoyée."
+
+msgid "No symbols found."
+msgstr "Aucun symbole trouvé."
+
+#, python-format
+msgid ""
+"Interval %s is not supported. use one of ['1m', '5m', '15m', '30m', '1h', "
+"'4h', '1d', '1w', '1mn']"
+msgstr ""
+"L'intervalle %s n'est pas pris en charge. utilisez l'un des ['1m', '5m', "
+"'15m', '30m', '1h', '4h', '1d', '1w', '1mn']"
+
+msgid "Websocket is not connected."
+msgstr "Websocket n'est pas connecté."
+
+msgid "Token and Account ID must be provided."
+msgstr "Le jeton et l’identifiant du compte doivent être fournis."
+
+msgid "Account is not a trading account."
+msgstr "Le compte n'est pas un compte de trading."
+
+msgid "Deriv credentials are valid."
+msgstr "Les informations d’identification dérivées sont valides."
+
+msgid "Invalid Deriv credentials."
+msgstr "Informations d'identification Deriv non valides."
+
+msgid "Account ID not found."
+msgstr "ID de compte introuvable."
+
+msgid "Failed to get proposal for the trade."
+msgstr "Échec de l'obtention d'une proposition d'échange."
+
+msgid "Failed to open trade, no contract ID returned."
+msgstr ""
+"Échec de l'ouverture de l'échange, aucun identifiant de contrat n'a été "
+"renvoyé."
+
+msgid "No current trade to close."
+msgstr "Aucune transaction en cours à clôturer."
+
+msgid "Current trade does not have an order ID."
+msgstr "La transaction en cours n'a pas d'identifiant de commande."
+
+msgid "Trade does not have an order ID."
+msgstr "Trade n’a pas d’identifiant de commande."
+
+msgid "Currency information not found in account info."
+msgstr ""
+"Informations sur la devise introuvables dans les informations du compte."
+
+#, python-format
+msgid "Login failed: HTTP %s - %s"
+msgstr "Échec de la connexion : HTTP %s - %s"
+
+#, python-format
+msgid "Open trade failed: HTTP %s - %s"
+msgstr "Échec de l'échange ouvert : HTTP %s - %s"
+
+#, python-format
+msgid "Failed to fetch account info: HTTP %s - %s"
+msgstr ""
+"Échec de la récupération des informations sur le compte : HTTP %s - %s"
+
+msgid "No response from exchange when opening trade."
+msgstr "Aucune réponse de l'échange lors de l'ouverture du commerce."
+
+msgid "Failed to retrieve order details after opening trade."
+msgstr ""
+"Échec de la récupération des détails de la commande après l'ouverture de la "
+"transaction."
+
+#, python-format
+msgid "Error fetching order info: %s"
+msgstr "Erreur lors de la récupération des informations sur la commande : %s"
+
+msgid "No data returned"
+msgstr "Aucune donnée renvoyée"
+
+#, python-format
+msgid "Order with ID %s not found."
+msgstr "Commande avec l'ID %s introuvable."
+
+#, python-format
+msgid "Unsupported interval: %s"
+msgstr "Intervalle non pris en charge : %s"
+
+#, python-format
+msgid "Error fetching exchange info: %s"
+msgstr "Erreur lors de la récupération des informations d'échange : %s"
+
+#, python-format
+msgid "Symbol not found: %s"
+msgstr "Symbole introuvable : %s"
+
+#, python-format
+msgid "Error fetching account: %s"
+msgstr "Erreur lors de la récupération du compte : %s"
+
+#, python-format
+msgid "Error opening trade: %s"
+msgstr "Erreur lors de l'ouverture de la transaction : %s"
+
+#, python-format
+msgid "Unsupported account type for opening trades: %s"
+msgstr ""
+"Type de compte non pris en charge pour l'ouverture de transactions : %s"
+
+#, python-format
+msgid "Order ID not found: %s"
+msgstr "Numéro de commande introuvable : %s"
+
+#, python-format
+msgid "Error fetching trading pairs: %s"
+msgstr "Erreur lors de la récupération des paires de trading : %s"
+
+#, python-format
+msgid "Invalid interval for futures: %s"
+msgstr "Intervalle non valide pour les contrats à terme : %s"
+
+#, python-format
+msgid "Error fetching historical candles: %s"
+msgstr "Erreur lors de la récupération des bougies historiques : %s"
+
+#, python-format
+msgid "Error fetching order book: %s"
+msgstr "Erreur lors de la récupération du carnet de commandes : %s"
+
+msgid "Error fetching trade info"
+msgstr "Erreur lors de la récupération des informations commerciales"
+
+msgid "Account deployed successfully."
+msgstr "Compte déployé avec succès."
+
+msgid "Failed to deploy/undeploy account."
+msgstr "Échec du déploiement/annulation du déploiement du compte."
+
+msgid "Account deleted successfully."
+msgstr "Compte supprimé avec succès."
+
+msgid "Failed to delete account."
+msgstr "Échec de la suppression du compte."
+
+msgid "Failed to open trade."
+msgstr "Échec de l'ouverture du commerce."
+
+msgid "Error getting trade data."
+msgstr "Erreur lors de l'obtention des données commerciales."
+
+msgid ""
+"Invalid interval. Supported intervals: 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, "
+"15m, 20m, 30m, 1h, 2h, 3h, 4h, 6h, 8h, 12h, 1d, 1w, 1mn."
+msgstr ""
+"Intervalle invalide. Intervalles pris en charge : 1m, 2m, 3m, 4m, 5m, 6m, "
+"10m, 12m, 15m, 20m, 30m, 1h, 2h, 3h, 4h, 6h, 8h, 12h, 1j, 1w, 1mn."
+
+msgid "Invalid credentials"
+msgstr "Identifiants invalides"
+
+msgid "Futures order placement failed"
+msgstr "Échec de la passation des ordres à terme"
+
+msgid "Failed to login to this account. please try again later."
+msgstr "Échec de la connexion à ce compte. veuillez réessayer plus tard."
+
+msgid "Price not found!"
+msgstr "Prix ​​introuvable !"
+
+msgid ""
+"Invalid credentials. If you received an email to allow access, please follow"
+" the instructions in the email and try again."
+msgstr ""
+"Identifiants invalides. Si vous avez reçu un e-mail pour autoriser l'accès, "
+"veuillez suivre les instructions contenues dans l'e-mail et réessayer."
+
+msgid "Account ID not provided and could not be retrieved."
+msgstr ""
+"L'identifiant de compte n'a pas été fourni et n'a pas pu être récupéré."
+
+#, python-format
+msgid "HTTP Error %s: %s"
+msgstr "Erreur HTTP %s : %s"
+
+msgid "Login failed: Access token not found."
+msgstr "Échec de la connexion : jeton d'accès introuvable."
+
+msgid "Account info not found"
+msgstr "Informations sur le compte introuvables"
+
+msgid "No symbol info found"
+msgstr "Aucune information sur le symbole trouvée"
+
+#, python-format
+msgid "Symbol info not found for %s"
+msgstr "Informations sur le symbole introuvables pour %s"
+
+msgid "Order data not found in response"
+msgstr "Données de commande introuvables dans la réponse"
+
+msgid "Order ID not found in order data"
+msgstr "ID de commande introuvable dans les données de commande"
+
+msgid "Failed to retrieve order info after placing order"
+msgstr ""
+"Impossible de récupérer les informations de commande après avoir passé la "
+"commande"
+
+#, python-format
+msgid "Trade closed successfully for %s"
+msgstr "Trade clôturé avec succès pour %s"
+
+#, python-format
+msgid "Trade opened successfully for %s"
+msgstr "Trade ouvert avec succès pour %s"
+
+msgid "Login failed."
+msgstr "La connexion a échoué."
+
+msgid "Login successful."
+msgstr "Connexion réussie."
+
+msgid "Invalid HTTP method."
+msgstr "Méthode HTTP non valide."
+
+msgid "Failed to retrieve account. Invalid credentials."
+msgstr "Échec de la récupération du compte. Identifiants invalides."
+
+#, python-format
+msgid "No trading route available for symbol %s."
+msgstr "Aucune route commerciale disponible pour le symbole %s."
+
+#, python-format
+msgid "Failed to get symbol info for %s: %s"
+msgstr "Échec de l'obtention des informations sur le symbole pour %s : %s"
+
+msgid "Trade has been executed but Position was not found"
+msgstr "La transaction a été exécutée mais la position n'a pas été trouvée"
+
+msgid "Quantity must be greater than 0.01."
+msgstr "La quantité doit être supérieure à 0,01."
+
+msgid "Open trade not found."
+msgstr "Commerce ouvert introuvable."
+
+msgid "Failed to close trade."
+msgstr "Échec de la clôture du commerce."
+
+#, python-format
+msgid "Trade partially closed for order ID %s."
+msgstr "Trade partiellement clôturée pour l'ID de commande %s."
+
+#, python-format
+msgid "Interval %s is not supported."
+msgstr "L'intervalle %s n'est pas pris en charge."
+
+msgid "Failed to get candles for any INFO route."
+msgstr "Impossible d'obtenir des bougies pour un itinéraire INFO."
+
+msgid "Failed to get current price for any INFO route."
+msgstr "Impossible d'obtenir le prix actuel pour un itinéraire INFO."
 
 msgid ""
 "IsAlgo | Automate TradingView Alerts | Connect to Binance, Bybit, MetaTrader"
@@ -185,7 +784,6 @@ msgstr "Automatiser"
 msgid "Alert Creation Playground"
 msgstr "Terrain de jeu de création d’alertes"
 
-#| msgid "Automate alerts once ready"
 msgid "Automate Your Trading"
 msgstr "Automatisez votre trading"
 
@@ -200,7 +798,6 @@ msgstr ""
 msgid "milliseconds"
 msgstr "millisecondes"
 
-#| msgid "Start now"
 msgid "Start Automating Now"
 msgstr "Commencez à automatiser maintenant"
 
@@ -222,7 +819,6 @@ msgstr "l'idéal"
 msgid "strategy or indicator to automate after"
 msgstr "stratégie ou indicateur à automatiser après"
 
-#| msgid "Strategy In."
 msgid "thorough testing"
 msgstr "des tests approfondis"
 
@@ -254,7 +850,6 @@ msgstr "ÉTAPE 3"
 msgid "Link your broker"
 msgstr "Liez votre courtier"
 
-#| msgid "Go to your"
 msgid "Connect your"
 msgstr "Connectez votre"
 
@@ -270,22 +865,18 @@ msgstr "URL du webhook"
 msgid "STEP 4"
 msgstr "ÉTAPE 4"
 
-#| msgid "TradingView"
 msgid "Create TradingView alert"
 msgstr "Créer une alerte TradingView"
 
-#| msgid "Set your trading view username"
 msgid "Set up a TradingView alert and"
 msgstr "Configurez une alerte TradingView et"
 
 msgid "enable the alert webhook"
 msgstr "activer le webhook d'alerte"
 
-#| msgid "Join the Conversation"
 msgid "to establish the connection."
 msgstr "pour établir la connexion."
 
-#| msgid "All done"
 msgid "All Set!"
 msgstr "Tout est prêt !"
 
@@ -331,7 +922,6 @@ msgstr "Jeton"
 msgid "No logs available for this account at this moment."
 msgstr "Aucun journal disponible pour ce compte pour le moment."
 
-#| msgid "start trading"
 msgid "Loading"
 msgstr "Chargement"
 
@@ -426,14 +1016,12 @@ msgstr ""
 msgid "Alert Playground"
 msgstr "Terrain de jeu d’alerte"
 
-#| msgid "TradingView"
 msgid "Create a TradingView alert"
 msgstr "Créer une alerte TradingView"
 
 msgid "Create a"
 msgstr "Créer un"
 
-#| msgid "TradingView"
 msgid "new TradingView alert"
 msgstr "nouvelle alerte TradingView"
 
@@ -543,7 +1131,6 @@ msgstr "Connecter"
 msgid "Connecting"
 msgstr "De liaison"
 
-#| msgid "Set your username"
 msgid "Email/Username"
 msgstr "E-mail/Nom d'utilisateur"
 
@@ -565,7 +1152,6 @@ msgstr "Votre numéro de compte/ID"
 msgid "Secret Key"
 msgstr "Clé secrète"
 
-#| msgid "Set your username"
 msgid "Client Secret"
 msgstr "Secret client"
 
@@ -629,14 +1215,12 @@ msgstr "Actif"
 msgid "Inactive"
 msgstr "Inactif"
 
-#| msgid "Delete Seller Account"
 msgid "Activate/Deactivate Account"
 msgstr "Activer/Désactiver le compte"
 
 msgid "Edit Account"
 msgstr "Modifier le compte"
 
-#| msgid "Delete Seller Account"
 msgid "Delete Account"
 msgstr "Supprimer le compte"
 
@@ -646,7 +1230,6 @@ msgstr "URL du webhook"
 msgid "Logs"
 msgstr "Journaux"
 
-#| msgid "For Traders"
 msgid "Trades"
 msgstr "Métiers"
 
@@ -1288,7 +1871,6 @@ msgstr ""
 "personnalisés en fonction de votre situation et de vos objectifs financiers "
 "spécifiques."
 
-#| msgid "TradingView"
 msgid "TradingView Disclosure"
 msgstr "Divulgation de TradingView"
 
@@ -1342,7 +1924,6 @@ msgstr ""
 "ne le voyez pas sur le graphique, veuillez patienter encore un peu. S'il "
 "n'apparaît toujours pas, essayez d'actualiser la page."
 
-#| msgid "Trending Strategies"
 msgid "Manual strategies"
 msgstr "Stratégies manuelles"
 
@@ -1483,7 +2064,6 @@ msgstr ""
 msgid "here"
 msgstr "ici"
 
-#| msgid "TradingView"
 msgid "TradingView Alerts"
 msgstr "Alertes TradingView"
 
@@ -1506,7 +2086,6 @@ msgstr ""
 "aux utilisateurs d'agir rapidement sur les opportunités de trading ou les "
 "stratégies de gestion des risques en temps réel."
 
-#| msgid "8+ strategies available"
 msgid "Strategies Alerts"
 msgstr "Alertes de stratégies"
 
@@ -1736,7 +2315,6 @@ msgstr "peut inclure %% comme"
 msgid "Volume Options:"
 msgstr "Options de volumes :"
 
-#| msgid "Strategy In."
 msgid "Strategy volume:"
 msgstr "Volume de stratégie :"
 
@@ -1766,7 +2344,6 @@ msgstr ""
 "Après avoir configuré les messages d'alerte dans la stratégie/indicateur, la"
 " dernière étape consiste à créer l'alerte,"
 
-#| msgid "See how"
 msgid "to see how."
 msgstr "pour voir comment."
 
@@ -1798,7 +2375,6 @@ msgstr "API robuste pour le trading algorithmique"
 msgid "Access to US stock markets"
 msgstr "Accès aux marchés boursiers américains"
 
-#| msgid "Set your trading view username"
 msgid "Paper trading environment"
 msgstr "Environnement de paper trading"
 
@@ -1863,7 +2439,6 @@ msgstr ""
 "Copiez votre clé API et votre clé secrète pour les utiliser sur notre "
 "plateforme"
 
-#| msgid "documentation"
 msgid "Complete Integration"
 msgstr "Intégration complète"
 
@@ -2031,7 +2606,6 @@ msgstr ""
 msgid "High liquidity and trading volume"
 msgstr "Liquidité et volume de transactions élevés"
 
-#| msgid "24/7 automated trading"
 msgid "Robust API for automated trading"
 msgstr "API robuste pour le trading automatisé"
 
@@ -2108,7 +2682,6 @@ msgid "Enable \"Restrict access to trusted IPs only\""
 msgstr ""
 "Activez « Restreindre l'accès aux adresses IP de confiance uniquement »"
 
-#| msgid "AI Trading Assistant"
 msgid "Set Trading Permissions"
 msgstr "Définir les autorisations de trading"
 
@@ -2118,7 +2691,6 @@ msgstr "Activez les autorisations suivantes en fonction de vos besoins :"
 msgid "Spot & Margin Trading"
 msgstr "Trading au comptant et sur marge"
 
-#| msgid "start trading"
 msgid "Futures Trading"
 msgstr "Négociation à terme"
 
@@ -2175,7 +2747,6 @@ msgstr ""
 "Votre compte doit disposer de soldes d’actifs de base et de cotation "
 "suffisants pour pouvoir négocier dans les deux sens."
 
-#| msgid "start trading"
 msgid "Spot Trading"
 msgstr "Trading au comptant"
 
@@ -2368,7 +2939,6 @@ msgstr "Confirmer"
 msgid "to get your API key credentials."
 msgstr "pour obtenir vos informations d'identification de clé API."
 
-#| msgid "Join the Conversation"
 msgid "Complete the Integration"
 msgstr "Terminer l'intégration"
 
@@ -2608,7 +3178,6 @@ msgstr "Une fois terminé, cliquez sur"
 msgid "to get your API credentials."
 msgstr "pour obtenir vos informations d'identification API."
 
-#| msgid "Join the Conversation"
 msgid "Complete the Connection"
 msgstr "Terminez la connexion"
 
@@ -2867,7 +3436,6 @@ msgstr "Gérer le compte"
 msgid "from the dropdown menu."
 msgstr "dans le menu déroulant."
 
-#| msgid "Go to your"
 msgid "Go to"
 msgstr "Aller à"
 
@@ -2914,7 +3482,6 @@ msgstr ""
 msgid "Advanced charting and analysis tools"
 msgstr "Outils avancés de cartographie et d’analyse"
 
-#| msgid "24/7 automated trading"
 msgid "Automated trading capabilities"
 msgstr "Capacités de trading automatisées"
 
@@ -3001,7 +3568,6 @@ msgstr "Pour voir tous les courtiers prenant en charge cTrader, visitez le"
 msgid "cTrader Brokers List"
 msgstr "Liste des courtiers cTrader"
 
-#| msgid "Delete Seller Account"
 msgid "Create a cTrader Account"
 msgstr "Créer un compte cTrader"
 
@@ -3127,7 +3693,6 @@ msgstr ""
 "Suivez les étapes ci-dessous pour obtenir vos informations d'identification "
 "Deriv."
 
-#| msgid "Delete Seller Account"
 msgid "Create a Deriv Account"
 msgstr "Créer un compte Deriv"
 
@@ -3541,7 +4106,6 @@ msgstr ""
 "Suivez les étapes ci-dessous pour obtenir vos informations de connexion "
 "MetaTrader 4."
 
-#| msgid "Delete Seller Account"
 msgid "Create a MetaTrader 4 Account"
 msgstr "Créer un compte MetaTrader 4"
 
@@ -3624,7 +4188,6 @@ msgstr ""
 "Suivez les étapes ci-dessous pour obtenir vos informations de connexion "
 "MetaTrader 5."
 
-#| msgid "Delete Seller Account"
 msgid "Create a MetaTrader 5 Account"
 msgstr "Créer un compte MetaTrader 5"
 
@@ -3852,7 +4415,6 @@ msgstr "Créer un compte Tastytrade"
 msgid "Sign up for an Tastytrade account if you don't have one."
 msgstr "Créez un compte Tastytrade si vous n'en avez pas."
 
-#| msgid "Set your username"
 msgid "Get your client secret"
 msgstr "Obtenez votre secret client"
 
@@ -3898,7 +4460,6 @@ msgstr "Sélectionnez les étendues suivantes :"
 msgid "Read"
 msgstr "Lire"
 
-#| msgid "For Traders"
 msgid "Trade"
 msgstr "Commerce"
 
@@ -3974,7 +4535,6 @@ msgstr ""
 msgid "Access to multiple brokers and prop firms"
 msgstr "Accès à plusieurs courtiers et sociétés d'accessoires"
 
-#| msgid "Set your trading view username"
 msgid "Secure trading environment"
 msgstr "Environnement commercial sécurisé"
 
@@ -4007,7 +4567,6 @@ msgstr ""
 "suivez les étapes ci-dessous pour obtenir vos informations de connexion "
 "TradeLocker."
 
-#| msgid "Delete Seller Account"
 msgid "Create a TradeLocker Account"
 msgstr "Créer un compte TradeLocker"
 
@@ -4115,7 +4674,6 @@ msgstr "Documentation complète et guides de configuration."
 msgid "Real-time trade execution monitoring."
 msgstr "Surveillance de l'exécution des transactions en temps réel."
 
-#| msgid "Get started"
 msgid "Getting Started"
 msgstr "Commencer"
 
@@ -4130,7 +4688,6 @@ msgstr "Liez votre compte de trading"
 msgid "Connect your preferred trading account by navigating to"
 msgstr "Connectez votre compte de trading préféré en accédant à"
 
-#| msgid "Automate"
 msgid "the Automate page"
 msgstr "la page Automatiser"
 
@@ -4172,7 +4729,6 @@ msgstr ""
 "d'automatisation en utilisant de petites positions pour vous assurer que "
 "tout fonctionne comme prévu."
 
-#| msgid "Strategy In."
 msgid "Strategy Testing"
 msgstr "Tests de stratégie"
 
@@ -4222,7 +4778,6 @@ msgstr ""
 msgid "Learn more"
 msgstr "Apprendre encore plus"
 
-#| msgid "Set your trading view username"
 msgid "Set Up TradingView Alerts"
 msgstr "Configurer les alertes TradingView"
 
@@ -4458,7 +5013,6 @@ msgstr "choisissez votre stratégie/indicateur et sélectionnez"
 msgid "Give the alert a descriptive name."
 msgstr "Donnez à l'alerte un nom descriptif."
 
-#| msgid "Go to your"
 msgid "Go to the"
 msgstr "Allez au"
 
@@ -4512,7 +5066,6 @@ msgstr "plan"
 msgid "you'll need to provide us with your"
 msgstr "vous devrez nous fournir votre"
 
-#| msgid "Set your username"
 msgid "username."
 msgstr "nom d'utilisateur."
 
@@ -4520,7 +5073,6 @@ msgid "The video below demonstrates where you can locate your username."
 msgstr ""
 "La vidéo ci-dessous montre où vous pouvez localiser votre nom d'utilisateur."
 
-#| msgid "Discover Strategies"
 msgid "Find the strategies"
 msgstr "Trouver les stratégies"
 
@@ -4537,7 +5089,6 @@ msgstr ""
 "Nous publions de nouvelles stratégies tous les quelques mois. Pour y "
 "accéder, visitez simplement la page stratégie et cliquez sur"
 
-#| msgid "Access"
 msgid "'Get Access'"
 msgstr "« Obtenir l'accès »"
 
@@ -4636,7 +5187,6 @@ msgstr ""
 "veuillez vous assurer que la commission et le dérapage sont appliqués lors "
 "des tests."
 
-#| msgid "documentation"
 msgid "Documentation"
 msgstr "Documentation"
 
@@ -4715,7 +5265,6 @@ msgstr "MetaTrader 4"
 msgid "Metatrade 5"
 msgstr "MetaTrader 5"
 
-#| msgid "For Traders"
 msgid "cTrader"
 msgstr "cTrader"
 
@@ -4734,7 +5283,6 @@ msgstr "Partager"
 msgid "FAQ"
 msgstr "FAQ"
 
-#| msgid "Automate alerts once ready"
 msgid "Automate your alerts"
 msgstr "Automatisez vos alertes"
 
@@ -4865,7 +5413,6 @@ msgstr ""
 "d'apprentissage dynamique, favorisant la croissance et la réussite mutuelle "
 "entre tous nos membres."
 
-#| msgid "documentation"
 msgid "Invitation"
 msgstr "Invitation"
 
@@ -4881,14 +5428,12 @@ msgstr ""
 msgid "Get set up quickly"
 msgstr "Installez-vous rapidement"
 
-#| msgid "Access"
 msgid "Get access"
 msgstr "Accéder"
 
 msgid "What you need to do to get access to our strategies."
 msgstr "Ce que vous devez faire pour accéder à nos stratégies."
 
-#| msgid "Set your username"
 msgid "Setup your chart"
 msgstr "Configurez votre graphique"
 
@@ -4901,7 +5446,6 @@ msgstr "Configurez vos alertes."
 msgid "How to get notify on every action."
 msgstr "Comment être averti de chaque action."
 
-#| msgid "Automate alerts once ready"
 msgid "Automate your alerts."
 msgstr "Automatisez vos alertes."
 
@@ -5433,7 +5977,6 @@ msgstr ""
 "n'importe quelle période. Que vous soyez débutant ou professionnel, nos "
 "outils sont conçus pour vous aider à trader plus intelligemment."
 
-#| msgid "Choose your desired plan to get started"
 msgid "What do I need to get started?"
 msgstr "De quoi ai-je besoin pour commencer ?"
 
@@ -5997,14 +6540,12 @@ msgstr "aperçu du compte pour"
 msgid "with a"
 msgstr "avec un"
 
-#| msgid "AI Trading Assistant"
 msgid "Trading Performance"
 msgstr "Performance de trading"
 
 msgid "Win Rate"
 msgstr "Taux de victoire"
 
-#| msgid "Latest Reports"
 msgid "Trades Analysis"
 msgstr "Analyse des transactions"
 
@@ -6027,7 +6568,6 @@ msgstr ""
 "transactions perdantes. Consultez la courbe des capitaux propres, la "
 "répartition des stratégies et l'historique détaillé."
 
-#| msgid "For Traders"
 msgid "trades"
 msgstr "transactions"
 
@@ -6049,11 +6589,9 @@ msgstr "Métrique"
 msgid "ALL"
 msgstr "TOUS"
 
-#| msgid "For Traders"
 msgid "Winning Trades"
 msgstr "Transactions gagnantes"
 
-#| msgid "For Traders"
 msgid "Losing Trades"
 msgstr "Transactions perdantes"
 
@@ -6078,11 +6616,9 @@ msgstr "Le plus grand échange gagnant"
 msgid "Largest Losing Trade"
 msgstr "Le plus gros échange perdant"
 
-#| msgid "For Traders"
 msgid "Total trades"
 msgstr "Total des transactions"
 
-#| msgid "Built by traders"
 msgid "Buy trades"
 msgstr "Acheter des transactions"
 
@@ -6095,7 +6631,6 @@ msgstr "Performance"
 msgid "Assets"
 msgstr "Actifs"
 
-#| msgid "Discover Strategies"
 msgid "Strategies"
 msgstr "Stratégies"
 
@@ -6108,7 +6643,6 @@ msgstr "Bénéfice maximum"
 msgid "Max Drawdown"
 msgstr "Tirage maximum"
 
-#| msgid "For Traders"
 msgid "Days Traded"
 msgstr "Jours échangés"
 
@@ -6180,7 +6714,6 @@ msgstr "Performance des métiers"
 msgid "Detailed trading performance of"
 msgstr "Performance commerciale détaillée de"
 
-#| msgid "Strategy In."
 msgid "strategy on"
 msgstr "stratégie sur"
 
@@ -6192,7 +6725,6 @@ msgstr ""
 "transactions. Consultez la courbe des capitaux propres, l'analyse "
 "profits/pertes et l'historique sur"
 
-#| msgid "Strategy In."
 msgid "Strategy Performance -"
 msgstr "Performance de la stratégie -"
 
@@ -6202,7 +6734,6 @@ msgstr "Taux de victoire | Résultats de trading en direct"
 msgid "Live performance results for"
 msgstr "Résultats des performances en direct pour"
 
-#| msgid "Trending Strategies"
 msgid "trading strategy on"
 msgstr "stratégie de trading sur"
 
@@ -6282,19 +6813,15 @@ msgstr ""
 "Aucun nom d'utilisateur tradingview trouvé. Partagez votre nom d’utilisateur"
 " tradingview ci-dessous pour y accéder."
 
-#| msgid "TradingView"
 msgid "TradingView Username:"
 msgstr "Nom d'utilisateur TradingView :"
 
-#| msgid "Access"
 msgid "Grant access"
 msgstr "Accorder l'accès"
 
-#| msgid "Access"
 msgid "Access granted"
 msgstr "Accès accordé"
 
-#| msgid "8+ strategies available"
 msgid "No strategies found."
 msgstr "Aucune stratégie trouvée."
 
@@ -6509,11 +7036,9 @@ msgstr ""
 "La vidéo ci-dessous montre où vous pouvez trouver votre nom d'utilisateur "
 "TradingView."
 
-#| msgid "Set your trading view username"
 msgid "Tradingview username"
 msgstr "Nom d'utilisateur TradingView"
 
-#| msgid "Set your username"
 msgid "UserName"
 msgstr "Nom d'utilisateur"
 
@@ -6632,19 +7157,15 @@ msgstr "Option la plus flexible pour une croissance régulière"
 msgid "Perfect for trying out our service"
 msgstr "Idéal pour tester notre service"
 
-#| msgid "Trending Strategies"
 msgid "Premium Strategies"
 msgstr "Stratégies premium"
 
-#| msgid "Discover Strategies"
 msgid "Elite Strategies"
 msgstr "Stratégies d'élite"
 
-#| msgid "8+ strategies available"
 msgid "Strategies Reports"
 msgstr "Rapports de stratégies"
 
-#| msgid "Automate"
 msgid "Automation"
 msgstr "Automatisation"
 
@@ -6669,18 +7190,15 @@ msgstr "Complet"
 msgid "Current plan"
 msgstr "Forfait actuel"
 
-#| msgid "For Traders"
 msgid "Upgrade"
 msgstr "Mise à niveau"
 
 msgid "Downgrade"
 msgstr "Rétrograder"
 
-#| msgid "Get started"
 msgid "Get Started"
 msgstr "Commencer"
 
-#| msgid "Access"
 msgid "Unlock"
 msgstr "Ouvrir"
 
@@ -6844,7 +7362,6 @@ msgstr "Jetons disponibles"
 msgid "Discord"
 msgstr "Discord"
 
-#| msgid "Set your username"
 msgid "Discord username"
 msgstr "Nom d'utilisateur Discord"
 
@@ -6859,7 +7376,6 @@ msgstr ""
 "En modifiant votre nom d'utilisateur Discord, le nom d'utilisateur précédent"
 " n'aura plus accès à nos chaînes Discord privées."
 
-#| msgid "Select one of our plans to get premium access."
 msgid "Choose one of our plans to get started and gain access."
 msgstr "Choisissez l’un de nos forfaits pour commencer et y accéder."
 
@@ -6978,7 +7494,6 @@ msgstr "Il semble que vous ne disposiez d'aucun moyen de paiement disponible."
 msgid "New payment method"
 msgstr "Nouveau mode de paiement"
 
-#| msgid "TradingView"
 msgid "Tradingview"
 msgstr "TradingView"
 
@@ -6997,7 +7512,6 @@ msgstr ""
 "Accédez à des stratégies premium, des rapports de trading et bien plus "
 "encore"
 
-#| msgid "Access"
 msgid "Get Access"
 msgstr "Obtenir l'accès"
 
@@ -7021,7 +7535,6 @@ msgstr ""
 "automatisées. Commencez votre parcours de trading dès aujourd'hui avec "
 "IsAlgo – Plans mensuels, trimestriels et annuels disponibles."
 
-#| msgid "You're ready"
 msgid "You're a"
 msgstr "Tu es un"
 
@@ -7084,6 +7597,44 @@ msgstr ""
 msgid "Settings"
 msgstr "Paramètres"
 
+msgid "Please set your TradingView username in your profile settings."
+msgstr ""
+"Veuillez définir votre nom d'utilisateur TradingView dans les paramètres de "
+"votre profil."
+
+msgid "This strategy does not have a TradingView ID. Please contact support."
+msgstr ""
+"Cette stratégie n'a pas d'identifiant TradingView. Veuillez contacter "
+"l'assistance."
+
+msgid "This strategy is premium. Please upgrade your plan to access it."
+msgstr ""
+"Cette stratégie est premium. Veuillez mettre à niveau votre forfait pour y "
+"accéder."
+
+msgid "This is an Elite strategy. only availble for lifetime users."
+msgstr ""
+"Il s'agit d'une stratégie d'élite. uniquement disponible pour les "
+"utilisateurs à vie."
+
+msgid "This is an Exclusive strategy. Please subscribe to access it."
+msgstr ""
+"Il s'agit d'une stratégie exclusive. Merci de vous inscrire pour y accéder."
+
+msgid ""
+"We encountered an error while granting access. Please reach out to us so we "
+"can assist you promptly!"
+msgstr ""
+"Nous avons rencontré une erreur lors de l'octroi de l'accès. N'hésitez pas à"
+" nous contacter afin que nous puissions vous aider rapidement !"
+
+msgid ""
+"TradingView Or trading strategies OR forex trading strategies OR crypto "
+"trading strategies OR stock trading strategies"
+msgstr ""
+"TradingView Ou stratégies de trading OU stratégies de trading forex OU "
+"stratégies de trading crypto OU stratégies de trading d'actions"
+
 msgid ""
 "an error occurred while searching for username. Please try again later."
 msgstr ""
@@ -7114,7 +7665,6 @@ msgstr "Le nom d'utilisateur est requis."
 msgid "User not found on Discord"
 msgstr "Utilisateur introuvable sur Discord"
 
-#| msgid "Access"
 msgid "User granted access!"
 msgstr "L'utilisateur a obtenu l'accès !"
 
@@ -7223,7 +7773,6 @@ msgstr ""
 "nous le transformerons en une stratégie entièrement fonctionnelle que vous "
 "pourrez utiliser sur IsAlgo avec"
 
-#| msgid "Automate"
 msgid "automation"
 msgstr "automation"
 
@@ -7236,7 +7785,6 @@ msgstr "suivi des performances"
 msgid "How It Works"
 msgstr "Comment ça marche"
 
-#| msgid "Discover Strategies"
 msgid "Describe Your Strategy"
 msgstr "Décrivez votre stratégie"
 
@@ -7257,7 +7805,6 @@ msgstr ""
 "Notre équipe examinera votre demande et vous répondra avec un devis et un "
 "délai de livraison estimé."
 
-#| msgid "Automate"
 msgid "Automate & Track"
 msgstr "Automatiser et suivre"
 
@@ -7271,7 +7818,6 @@ msgstr ""
 msgid "What to Include in Your Request"
 msgstr "Que faut-il inclure dans votre demande"
 
-#| msgid "Strategy In."
 msgid "Strategy Description"
 msgstr "Description de la stratégie"
 
@@ -7378,6 +7924,468 @@ msgstr ""
 "Décrivez votre idée de stratégie et nous vous répondrons avec un devis et un"
 " calendrier."
 
+msgid "Share Your Thoughts"
+msgstr "Partagez vos pensées"
+
+msgid "Upload image"
+msgstr "Télécharger une image"
+
+msgid "Your thoughts on this strategy and how we can improve it..."
+msgstr ""
+"Vos réflexions sur cette stratégie et comment nous pouvons l'améliorer..."
+
+msgid "Send message"
+msgstr "Envoyer un message"
+
+msgid "Your reply..."
+msgstr "Votre réponse..."
+
+msgid "Share your report"
+msgstr "Partagez votre rapport"
+
+msgid "Close menu"
+msgstr "Fermer le menu"
+
+msgid "Upload xlsx file"
+msgstr "Téléchargez le fichier xlsx"
+
+msgid "Upload xlsx"
+msgstr "Télécharger xlsx"
+
+msgid "Symbol"
+msgstr "Symbole"
+
+msgid "Broker"
+msgstr "Courtier"
+
+msgid "Initial capital"
+msgstr "Capital initial"
+
+msgid "Long"
+msgstr "Long"
+
+msgid "Short"
+msgstr "Court"
+
+msgid "Winning trades"
+msgstr "Des métiers gagnants"
+
+msgid "Losing trades"
+msgstr "Perdre des métiers"
+
+msgid "Net profit"
+msgstr "Bénéfice net"
+
+#, python-format
+msgid "Net profit %%"
+msgstr "Bénéfice net %%"
+
+msgid "Gross profit"
+msgstr "Bénéfice brut"
+
+#, python-format
+msgid "Gross profit %%"
+msgstr "Bénéfice brut %%"
+
+msgid "Gross loss"
+msgstr "Perte brute"
+
+#, python-format
+msgid "Gross loss %%"
+msgstr "Perte brute %%"
+
+msgid "Profit factor"
+msgstr "Facteur de profit"
+
+msgid "Percent Profitable"
+msgstr "Pourcentage de rentabilité"
+
+msgid "Avg P&L"
+msgstr "P&L moyen"
+
+#, python-format
+msgid "Avg P&L %%"
+msgstr "P&L moyen %%"
+
+msgid "Avg Winning Trade"
+msgstr "Moyenne des échanges gagnants"
+
+#, python-format
+msgid "Avg Winning Trade %%"
+msgstr "Moyenne des transactions gagnantes %%"
+
+msgid "Avg Losing Trade"
+msgstr "Moyenne des échanges perdants"
+
+#, python-format
+msgid "Avg Losing Trade %%"
+msgstr "Moyenne des transactions perdantes %%"
+
+msgid "Ratio"
+msgstr "Rapport"
+
+#, python-format
+msgid "Max Drawdown %%"
+msgstr "Tirage maximum %%"
+
+msgid "Test start at"
+msgstr "Début des tests à"
+
+msgid "Test end at"
+msgstr "Fin des tests à"
+
+msgid "Timeframe"
+msgstr "Laps de temps"
+
+msgid "Timeframe period"
+msgstr "Période"
+
+msgid "Seconds"
+msgstr "Secondes"
+
+msgid "Minutes"
+msgstr "Minutes"
+
+msgid "Hours"
+msgstr "Heures"
+
+msgid "Days"
+msgstr "Jours"
+
+msgid "Weeks"
+msgstr "Semaines"
+
+msgid "Months"
+msgstr "Mois"
+
+msgid "Years"
+msgstr "Années"
+
+msgid "Post"
+msgstr "Poste"
+
+msgid "Properties"
+msgstr "Propriétés"
+
+msgid "List of trades"
+msgstr "Liste des métiers"
+
+msgid "Add a comment"
+msgstr "Ajouter un commentaire"
+
+msgid "Comment..."
+msgstr "Commentaire..."
+
+msgid "Posting"
+msgstr "Affectation"
+
+#, python-format
+msgid "%(age)s ago"
+msgstr "Il y a %(age)s"
+
+msgid "likes"
+msgstr "goûts"
+
+msgid "Read and reply"
+msgstr "Lire et répondre"
+
+msgid "Reply"
+msgstr "Répondre"
+
+msgid "Replies"
+msgstr "Réponses"
+
+msgid "Waiting for your first comment..."
+msgstr "En attendant votre premier commentaire..."
+
+msgid "Your Feedback Matters"
+msgstr "Vos commentaires comptent"
+
+msgid ""
+"We value your feedback! Let us know your thoughts and suggestions to help "
+"improve this strategy."
+msgstr ""
+"Nous apprécions vos commentaires ! Faites-nous part de vos réflexions et "
+"suggestions pour nous aider à améliorer cette stratégie."
+
+msgid ""
+"Want to share your thoughts? Join us to unlock commenting and more features!"
+msgstr ""
+"Vous souhaitez partager vos réflexions ? Rejoignez-nous pour débloquer des "
+"commentaires et plus de fonctionnalités !"
+
+msgid "Join Us Now"
+msgstr "Rejoignez-nous maintenant"
+
+msgid "Already a member?"
+msgstr "Déjà membre ?"
+
+msgid "Get access to unlock commenting and more features!"
+msgstr "Accédez à débloquer des commentaires et à plus de fonctionnalités !"
+
+msgid "Close modal"
+msgstr "Fermer modale"
+
+msgid "Upgrade now"
+msgstr "Mettre à niveau maintenant"
+
+msgid ""
+"You now have access to this strategy! Click below to learn more about where "
+"to find it and how to use it."
+msgstr ""
+"Vous avez désormais accès à cette stratégie ! Cliquez ci-dessous pour savoir"
+" où le trouver et comment l'utiliser."
+
+msgid "How to use"
+msgstr "Comment utiliser"
+
+msgid "Likes"
+msgstr "Goûts"
+
+msgid "Strategy"
+msgstr "Stratégie"
+
+msgid "Performances"
+msgstr "Représentations"
+
+msgid "Reports"
+msgstr "Rapports"
+
+msgid "Comments"
+msgstr "Commentaires"
+
+msgid "Test Duration"
+msgstr "Durée du test"
+
+msgid "Drawdown"
+msgstr "Tirage"
+
+msgid "Your browser does not support the video tag."
+msgstr "Votre navigateur ne prend pas en charge la balise vidéo."
+
+msgid "Learn more →"
+msgstr "En savoir plus →"
+
+msgid "P&P"
+msgstr "P&P"
+
+msgid "Properties and Performance"
+msgstr "Propriétés et performances"
+
+msgid "Trade Stats"
+msgstr "Statistiques commerciales"
+
+msgid "Total Trades"
+msgstr "Total des transactions"
+
+msgid "Win Trades"
+msgstr "Gagner des échanges"
+
+msgid "Share result link"
+msgstr "Partager le lien du résultat"
+
+msgid "Initial Capital"
+msgstr "Capital initial"
+
+msgid "From"
+msgstr "Depuis"
+
+msgid "To"
+msgstr "À"
+
+msgid "Duration"
+msgstr "Durée"
+
+msgid "All"
+msgstr "Tous"
+
+msgid "Win rate"
+msgstr "Taux de victoire"
+
+msgid "Loss Trades"
+msgstr "Transactions à perte"
+
+msgid "Waiting for your first trading reports..."
+msgstr "En attendant vos premiers rapports de trading..."
+
+msgid "Quick Start Guide"
+msgstr "Guide de démarrage rapide"
+
+msgid "Test the Strategy"
+msgstr "Testez la stratégie"
+
+msgid ""
+"Run the strategy extensively to ensure it performs well and aligns with your"
+" goals."
+msgstr ""
+"Exécutez la stratégie de manière approfondie pour vous assurer qu’elle "
+"fonctionne bien et qu’elle correspond à vos objectifs."
+
+msgid "Download the Required Files"
+msgstr "Téléchargez les fichiers requis"
+
+msgid ""
+"Download the performance and properties files for easy reports uploading."
+msgstr ""
+"Téléchargez les fichiers de performances et de propriétés pour faciliter le "
+"téléchargement des rapports."
+
+msgid "Upload Your Reports"
+msgstr "Téléchargez vos rapports"
+
+msgid ""
+"to see how to upload your reports and get insights and community interaction"
+" to maximize this strategy."
+msgstr ""
+"pour voir comment télécharger vos rapports et obtenir des informations et "
+"une interaction avec la communauté afin de maximiser cette stratégie."
+
+msgid "Share your reports"
+msgstr "Partagez vos rapports"
+
+msgid ""
+"Become a member today and unlock full access to this strategy and many more."
+" Gain insights, share your performance, and engage with a vibrant trading "
+"community to reach your full potential!"
+msgstr ""
+"Devenez membre aujourd'hui et débloquez un accès complet à cette stratégie "
+"et bien d'autres. Obtenez des informations, partagez vos performances et "
+"engagez-vous avec une communauté commerciale dynamique pour atteindre votre "
+"plein potentiel !"
+
+msgid "Get access to unlock sharing your reports and more features!"
+msgstr ""
+"Accédez pour débloquer le partage de vos rapports et plus de "
+"fonctionnalités !"
+
+msgid "Error!"
+msgstr "Erreur!"
+
+msgid "Elite"
+msgstr "Élite"
+
+msgid "Premium"
+msgstr "Prime"
+
+msgid "Free"
+msgstr "Gratuit"
+
+msgid "Exclusive"
+msgstr "Exclusif"
+
+msgid "Describe your strategy"
+msgstr "Décrivez votre stratégie"
+
+msgid "Minimum 200 characters"
+msgstr "Minimum 200 caractères"
+
+msgid "Attach screenshots showing entry & exit points."
+msgstr ""
+"Joignez des captures d'écran montrant les points d'entrée et de sortie."
+
+msgid "Up to 5 files, max 10 MB each."
+msgstr "Jusqu'à 5 fichiers, maximum 10 Mo chacun."
+
+msgid "Send Request"
+msgstr "Envoyer la demande"
+
+msgid "Exclusive access required"
+msgstr "Accès exclusif requis"
+
+msgid "Unlock this exclusive strategy and start using it"
+msgstr "Débloquez cette stratégie exclusive et commencez à l'utiliser"
+
+msgid "Unlock access"
+msgstr "Débloquer l'accès"
+
+#, python-format
+msgid "Full access to %(name)s"
+msgstr "Accès complet à %(name)s"
+
+msgid "Payment overdue - please update your payment method."
+msgstr "Paiement en retard – veuillez mettre à jour votre mode de paiement."
+
+msgid "Update Payment"
+msgstr "Mettre à jour le paiement"
+
+msgid "End on"
+msgstr "Terminer le"
+
+msgid "Next payment on"
+msgstr "Prochain paiement le"
+
+msgid "Manage subscription"
+msgstr "Gérer l'abonnement"
+
+msgid "Change payment"
+msgstr "Modifier le paiement"
+
+msgid "Cancel subscription"
+msgstr "Annuler l'abonnement"
+
+msgid "Change payment method"
+msgstr "Changer de mode de paiement"
+
+msgid "If you're unsure how to get the most out of this strategy, please"
+msgstr ""
+"Si vous ne savez pas comment tirer le meilleur parti de cette stratégie, "
+"veuillez"
+
+msgid "contact us"
+msgstr "Contactez-nous"
+
+msgid ""
+"we're happy to guide you or schedule a one-on-one call with the strategy "
+"provider."
+msgstr ""
+"nous serons heureux de vous guider ou de planifier un appel individuel avec "
+"le fournisseur de stratégie."
+
+msgid "If you didn't enjoy this strategy, we'd really appreciate your"
+msgstr ""
+"Si vous n'avez pas apprécié cette stratégie, nous apprécierions vraiment "
+"votre"
+
+msgid "feedback"
+msgstr "retour"
+
+msgid ". Your thoughts help us improve and serve you better."
+msgstr ". Vos réflexions nous aident à nous améliorer et à mieux vous servir."
+
+msgid ""
+"By canceling your subscription, you will no longer have access to this "
+"exclusive strategy after the current billing period ends."
+msgstr ""
+"En annulant votre abonnement, vous n'aurez plus accès à cette stratégie "
+"exclusive après la fin de la période de facturation en cours."
+
+msgid "Total Subscribers"
+msgstr "Nombre total d'abonnés"
+
+msgid "This Month"
+msgstr "Ce mois-ci"
+
+msgid "This Week"
+msgstr "Cette semaine"
+
+msgid "Today"
+msgstr "Aujourd'hui"
+
+msgid "Subscription Price"
+msgstr "Prix ​​d'abonnement"
+
+msgid "Current pricing plan"
+msgstr "Plan tarifaire actuel"
+
+msgid "Connected as"
+msgstr "Connecté comme"
+
+msgid "Set your tradingview username"
+msgstr "Définissez votre nom d'utilisateur tradingview"
+
+msgid "to get access to this strategy."
+msgstr "pour accéder à cette stratégie."
+
 msgid ""
 "IsAlgo | Trading Strategy Results Shared by Traders | Verified Backtests by "
 "Our Community"
@@ -7395,14 +8403,9 @@ msgstr ""
 "performances et trouvez des stratégies adaptées à votre style de trading. "
 "Commencez à apprendre et à vous améliorer avec IsAlgo."
 
-#| msgid "Latest Reports"
-msgid "Reports"
-msgstr "Rapports"
-
 msgid "What You'll Find Here"
 msgstr "Ce que vous trouverez ici"
 
-#| msgid "Best Performing Reports"
 msgid "Real Trading Reports"
 msgstr "Rapports de trading réels"
 
@@ -7413,7 +8416,6 @@ msgstr ""
 "Parcourez les rapports de trading vérifiés des membres de la communauté en "
 "utilisant diverses stratégies"
 
-#| msgid "Strategy In."
 msgid "Strategy Insights"
 msgstr "Aperçus stratégiques"
 
@@ -7422,7 +8424,6 @@ msgid ""
 msgstr ""
 "Apprenez des traders à succès en étudiant leurs configurations stratégiques"
 
-#| msgid "Latest Reports"
 msgid "Reports Analysis"
 msgstr "Analyse des rapports"
 
@@ -7447,11 +8448,9 @@ msgstr ""
 "conçus pour tous les marchés et tous les niveaux de compétence. Commencez à "
 "maîtriser vos transactions dès aujourd'hui avec IsAlgo."
 
-#| msgid "8+ strategies available"
 msgid "No strategy available yet."
 msgstr "Aucune stratégie disponible pour l'instant."
 
-#| msgid "Strategy In."
 msgid "Have a Strategy Idea?"
 msgstr "Vous avez une idée de stratégie ?"
 
@@ -7460,23 +8459,14 @@ msgstr ""
 "Nous sommes là pour vous aider à en faire une stratégie entièrement "
 "fonctionnelle."
 
-#| msgid "See how"
 msgid "See How"
 msgstr "Voir comment"
 
-#| msgid "TradingView"
 msgid "Backtestable TradingView Strategy"
 msgstr "Stratégie TradingView rétrotestable"
 
 msgid "Live chart"
 msgstr "Graphique en direct"
-
-#| msgid "Strategy In."
-msgid "Strategy"
-msgstr "Stratégie"
-
-msgid "Comments"
-msgstr "Commentaires"
 
 msgid "Unlock access to this strategy and more"
 msgstr "Débloquez l'accès à cette stratégie et plus encore"
@@ -7488,28 +8478,70 @@ msgstr ""
 "Accédez à certaines des stratégies de trading les meilleures et les plus "
 "puissantes du marché"
 
-#| msgid "Access"
-msgid "Unlock access"
-msgstr "Débloquer l'accès"
-
 msgid "YouTube video player"
 msgstr "Lecteur vidéo YouTube"
 
 msgid "By"
 msgstr "Par"
 
-#| msgid "Latest Reports"
 msgid "Report A BUG"
 msgstr "Signaler un bug"
 
-#| msgid "Latest Reports"
 msgid "Report a bug"
 msgstr "Signaler un bug"
+
+msgid "/ week"
+msgstr "/ semaine"
+
+msgid "/ 2 weeks"
+msgstr "/ 2 semaines"
+
+msgid "/ 3 weeks"
+msgstr "/ 3 semaines"
+
+#, fuzzy
+#| msgid "/month"
+msgid "/ month"
+msgstr "/mois"
+
+#, fuzzy
+#| msgid "/quarter"
+msgid "/ Quarter"
+msgstr "/quart"
+
+msgid "/ Half Year"
+msgstr "/ Semestre"
+
+#, fuzzy
+#| msgid "Years"
+msgid "/ Year"
+msgstr "Années"
+
+#, python-format
+msgid "/ %s %ss"
+msgstr "/ %s %ss"
+
+#, python-format
+msgid "/ %s"
+msgstr "/ %s"
+
+#, fuzzy
+#| msgid "/year"
+msgid "year"
+msgid_plural "years"
+msgstr[0] "/année"
+msgstr[1] "/année"
+
+#, fuzzy
+#| msgid "/month"
+msgid "month"
+msgid_plural "months"
+msgstr[0] "/mois"
+msgstr[1] "/mois"
 
 msgid "The object does not exist."
 msgstr "L'objet n'existe pas."
 
-#| msgid "Strategy In."
 msgid "Custom Strategy Development"
 msgstr "Développement de stratégie personnalisée"
 

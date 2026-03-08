@@ -7,6 +7,7 @@ from urllib.parse import urlencode
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 class MexcClient(CryptoBrokerClient):
     BASE_URL = 'https://api.mexc.com'
@@ -25,8 +26,8 @@ class MexcClient(CryptoBrokerClient):
 
             # Assuming a successful response returns a code of 200
             if not account_info:
-                return {"error": account_info.get("message", "Invalid credentials"), "valid": False}
-            return {"message": "API credentials are valid.", "valid": True}
+                return {"error": account_info.get("message") or _("Invalid credentials"), "valid": False}
+            return {"message": _("API credentials are valid."), "valid": True}
         except Exception as e:
             return {"error": str(e)}
 
@@ -182,7 +183,7 @@ class MexcClient(CryptoBrokerClient):
                         "quote_decimals": s.get("quoteAssetPrecision"),
                     }
         
-        raise Exception('Symbol was not found!')
+        raise Exception(_("Symbol was not found!"))
         
 
     def _new_order(self, order_params):
@@ -241,7 +242,7 @@ class MexcClient(CryptoBrokerClient):
             
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': order_symbol,
@@ -258,7 +259,7 @@ class MexcClient(CryptoBrokerClient):
             
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': order_symbol,
@@ -339,7 +340,7 @@ class MexcClient(CryptoBrokerClient):
             response = self._new_futures_order(order_params)
             end_exe = time.perf_counter()
             if response.get("code") != 200:
-                raise ValueError(response.get("message", "Futures order placement failed"))
+                raise ValueError(response.get("message") or _("Futures order placement failed"))
             order_id = response["data"]
             return {
                 "order_id": order_id,

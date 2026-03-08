@@ -5,6 +5,7 @@
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+from django.utils.translation import gettext as _
 import time
 
 from pybit.unified_trading import HTTP
@@ -36,7 +37,7 @@ class BybitClient(CryptoBrokerClient):
             response = client.session.get_account_info()
             if response.get('retCode') != 0:
                 return {'error': response.get('retMsg'), 'valid': False}
-            return {'message': "API credentials are valid.", 'valid': True}
+            return {'message': _("API credentials are valid."), 'valid': True}
         except (InvalidRequestError, FailedRequestError) as e:
             # return {'error': "API credentials are not valid.", 'valid': False}
             return {'error': str(e.message), 'valid': False}
@@ -121,7 +122,7 @@ class BybitClient(CryptoBrokerClient):
             # print("System info:", sys_info, quantity)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             base_asset = sys_info.get('base_asset')
@@ -131,7 +132,7 @@ class BybitClient(CryptoBrokerClient):
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
-                raise ValueError("Insufficient balance for the trade.")
+                raise ValueError(_("Insufficient balance for the trade."))
 
             if self.account_type != "S":
                 try:
@@ -183,7 +184,7 @@ class BybitClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -200,7 +201,7 @@ class BybitClient(CryptoBrokerClient):
             
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -229,7 +230,7 @@ class BybitClient(CryptoBrokerClient):
             response = response.get('result', {}).get('list', [])
             
             if response is None:
-                raise ValueError("No data found in response")
+                raise ValueError(_("No data found in response"))
             
             if isinstance(response, list):
                 if len(response) > 1:

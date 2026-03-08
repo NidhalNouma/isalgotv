@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="flex items-center gap-2 w-full mt-1">
     <div class="flex items-center" id="result-votes-{{result.id}}">
         {% include "include/result_votes.html" with result=result %}
@@ -10,7 +11,7 @@
         onclick='toggleForm("add-reply-{{result.id}}-result", "add-form-reply-{{result.id}}-result")'
         class="btn-icon"
       >
-        Reply
+        {% trans "Reply" %}
       </button>
       {% elif user.is_authenticated and not has_subscription %}
       <button
@@ -18,7 +19,7 @@
         data-modal-target="upgrade-modal"
         data-modal-toggle="upgrade-modal"
       >
-      Reply
+      {% trans "Reply" %}
       </button>
       {% else %}
       {% comment %} <a
@@ -58,8 +59,8 @@
           d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"
         ></path>
       </svg>
-      {% if reply_count == 1 %} {{ reply_count }} Reply {% elif reply_count > 1%}
-      {{ reply_count }} Replies {% endif %}
+      {% if reply_count == 1 %} {{ reply_count }} {% trans "Reply" %} {% elif reply_count > 1%}
+      {{ reply_count }} {% trans "Replies" %} {% endif %}
     </span>
     {% endif %} {% endwith %}
   

@@ -10,6 +10,7 @@ import time
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+from django.utils.translation import gettext as _
 
 class CryptoComClient(CryptoBrokerClient):
 
@@ -24,7 +25,7 @@ class CryptoComClient(CryptoBrokerClient):
             # print("Account Info:", account_info)  # Debugging line to check the response
             if account_info.get("code") != 0:
                 return {"error": account_info.get("message", "Invalid credentials"), "valid": False}
-            return {"message": "API credentials are valid.", "valid": True}
+            return {"message": _("API credentials are valid."), "valid": True}
         except Exception as e:
             return {"error": str(e)}
 
@@ -152,12 +153,12 @@ class CryptoComClient(CryptoBrokerClient):
 
             symbol_info = self.get_exchange_info(symbol)
             if not symbol_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
 
             adjusted_quantity = self.adjust_trade_quantity(symbol_info, side, float(quantity))
 
             if float(adjusted_quantity) <= 0:
-                raise ValueError("Insufficient quote balance.")
+                raise ValueError(_("Insufficient quote balance."))
 
             print("Adjusted quantity:", adjusted_quantity)
 
@@ -187,7 +188,7 @@ class CryptoComClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     "side": side.upper(),
@@ -200,7 +201,7 @@ class CryptoComClient(CryptoBrokerClient):
                 }
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     "side": side.upper(),
@@ -221,12 +222,12 @@ class CryptoComClient(CryptoBrokerClient):
             
             symbol_info = self.get_exchange_info(symbol)
             if not symbol_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
 
             adjusted_quantity = self.adjust_trade_quantity(symbol_info, t_side, float(quantity))
 
             if float(adjusted_quantity) <= 0:
-                raise ValueError("Insufficient quote balance.")
+                raise ValueError(_("Insufficient quote balance."))
             
             order_symbol = symbol_info.get('symbol')
 

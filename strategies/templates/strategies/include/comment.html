@@ -1,17 +1,16 @@
-<div class="my-2 w-fit max-w-full mb-3 bg-background rounded-xl " id="comment-{{comment.id}}">
+{% load i18n %}
+<div class="my-2 w-fit max-w-full mb-3 bg-background rounded-xl" id="comment-{{ comment.id }}">
   <div class="border-b-0 border-text/50 flex flex-col pb-2">
-    <p class="text-text/80 text-sm break-all">
-      {{comment.description|linebreaksbr}}
-    </p>
-    {% include "include/images.html" with images=comment.images.all %}
+    <p class="text-text/80 text-sm break-all">{{ comment.description|linebreaksbr }}</p>
+    {% include 'include/images.html' with images=comment.images.all %}
 
     <div class="mt-2 flex items-center">
-      <span class="text-text/50 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ comment.created_by.get_tradingview_username}}/?aff_id=134591&aff_sub=134591&source=134591">@{{ comment.created_by.get_tradingview_username}}</a></span>
-      <span class="ml-4 text-text/50 text-xs">{{ comment.created_at|timesince }} ago</span>
+      <span class="text-text/50 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ comment.created_by.get_tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ comment.created_by.get_tradingview_username }}</a></span>
+      <span class="ml-4 text-text/50 text-xs">{% blocktrans with age=comment.created_at|timesince %}{{ age }} ago{% endblocktrans %}</span>
     </div>
 
-    <div id="replies-{{comment.id}}-comment" class="">
-      {% include "include/comment_replies.html" %}
+    <div id="replies-{{ comment.id }}-comment" class="">
+      {% include 'include/comment_replies.html' %}
     </div>
   </div>
 </div>

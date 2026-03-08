@@ -1,3 +1,4 @@
+{% load i18n %}
 <form
   class="hidden mt-2 w-11/12 ml-auto"
   id="add-form-reply-{{id}}-{{name}}"
@@ -69,14 +70,14 @@
             d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
           />
         </svg>
-        <span class="sr-only">Upload image</span>
+        <span class="sr-only">{% trans "Upload image" %}</span>
       </button>
     </div>
     <textarea
       name="description"
       rows="3"
       class="block mx-2 p-2.5 w-full text-sm input-text"
-      placeholder="Your reply..."
+      placeholder="{% trans "Your reply..." %}"
     ></textarea>
     <button
       type="submit"
@@ -95,7 +96,7 @@
           d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"
         />
       </svg>
-      <span class="sr-only">Send message</span>
+      <span class="sr-only">{% trans "Send message" %}</span>
     </button>
 
     <button

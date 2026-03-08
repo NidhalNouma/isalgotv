@@ -11,6 +11,7 @@ meta_api_token = env('META_API_TOKEN')
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import BrokerClient
+from django.utils.translation import gettext as _
 
 class MetatraderClient(BrokerClient):
     region = "london"
@@ -174,10 +175,10 @@ class MetatraderClient(BrokerClient):
 
             if response.status_code == 204:
                 print("Account deployed successfully.")
-                return {"message": "Account deployed successfully."}
+                return {"message": _("Account deployed successfully.")}
             else:
                 data = response.json()
-                raise Exception(data.get("message", "Failed to deploy/undeploy account."))
+                raise Exception(data.get("message") or _("Failed to deploy/undeploy account."))
         except Exception as e:
             print("Error:", e)
             return {"error": str(e)}
@@ -206,10 +207,10 @@ class MetatraderClient(BrokerClient):
 
             if response.status_code == 204:
                 print("Account deleted successfully.")
-                return {"message": "Account deleted successfully."}
+                return {"message": _("Account deleted successfully.")}
             else:
                 data = response.json()
-                raise Exception(data.get("message", "Failed to delete account."))
+                raise Exception(data.get("message") or _("Failed to delete account."))
         except Exception as e:
             print("Error:", e)
             return {"error": str(e)}
@@ -306,10 +307,10 @@ class MetatraderClient(BrokerClient):
 
 
             if not order_id:
-                error_message = data.get("message", "Failed to open trade.")
+                error_message = data.get("message") or _("Failed to open trade.")
                 return {"error": error_message}
             return {
-                'message': f"Trade opened with order ID {order_id}.",
+                'message': _("Trade opened with order ID %s.") % order_id,
                 'order_id': order_id,
                 'symbol': symbol,
                 'price': open_price,
@@ -378,7 +379,7 @@ class MetatraderClient(BrokerClient):
                 return {"error": resp_data.get("message")}
             else:
                 return {
-                    'message': f"Trade closed for order ID {id}.", 
+                    'message': _("Trade closed for order ID %s.") % id, 
                     "order_id": trade.order_id,
                     'qty': partial_close,
                     'end_exe': end_exe
@@ -406,7 +407,7 @@ class MetatraderClient(BrokerClient):
         try:
             response = requests.get(url, json=data, headers=headers)
             if response.status_code != 200:
-                raise Exception("Error getting trade data ,")
+                raise Exception(_("Error getting trade data."))
             else:
                 resp_data = response.json()
                 
@@ -494,7 +495,7 @@ class MetatraderClient(BrokerClient):
     def get_history_candles(self, symbol, interval, limit = 500):
         try:
             if interval not in ["1m", "2m", "3m", "4m", "5m", "6m", "10m", "12m", "15m", "20m", "30m", "1h", "2h", "3h", "4h", "6h", "8h", "12h", "1d", "1w", "1mn"]:
-                return {"error": "Invalid interval. Supported intervals: 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m, 1h, 2h, 3h, 4h, 6h, 8h, 12h, 1d, 1w, 1mn."}
+                return {"error": _("Invalid interval. Supported intervals: 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m, 1h, 2h, 3h, 4h, 6h, 8h, 12h, 1d, 1w, 1mn.")}
 
             if limit > 1000:
                 limit = 1000

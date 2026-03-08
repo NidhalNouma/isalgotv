@@ -1,16 +1,13 @@
+{% load i18n %}
 {% for reply in replies reversed %}
-<div class="relative py-1 px-2 my-2 bg-background brightness-110i rounded-lg">
-  <p class="text-text/70 text-xs whitespace-pre-line break-all">
-    {{reply.description}}
-  </p>
+  <div class="relative py-1 px-2 my-2 bg-background brightness-110i rounded-lg">
+    <p class="text-text/70 text-xs whitespace-pre-line break-all">{{ reply.description }}</p>
 
-  {% include "include/images.html" with images=reply.images.all %}
+    {% include 'include/images.html' with images=reply.images.all %}
 
-  <div class="mt-2 mb-2 flex items-center">
-    <span class="text-text/70 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ reply.created_by.get_tradingview_username}}/?aff_id=134591&aff_sub=134591&source=134591">@{{ reply.created_by.get_tradingview_username}}</a></span>
-    <span class="ml-4 text-text/50 text-xs"
-      >{{ reply.created_at|timesince }} ago</span
-    >
+    <div class="mt-2 mb-2 flex items-center">
+      <span class="text-text/70 text-xs hover:text-text/80"><a class="font-bold" target="_blank" href="https://www.tradingview.com/u/{{ reply.created_by.get_tradingview_username }}/?aff_id=134591&aff_sub=134591&source=134591">@{{ reply.created_by.get_tradingview_username }}</a></span>
+      <span class="ml-4 text-text/50 text-xs">{% blocktrans with age=reply.created_at|timesince %}{{ age }} ago{% endblocktrans %}</span>
+    </div>
   </div>
-</div>
 {% endfor %}

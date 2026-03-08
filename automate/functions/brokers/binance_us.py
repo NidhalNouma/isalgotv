@@ -5,6 +5,7 @@ import requests
 import time
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+from django.utils.translation import gettext as _
 
 class BinanceUSClient(CryptoBrokerClient):
     API_URL = 'https://api.binance.us'
@@ -34,8 +35,8 @@ class BinanceUSClient(CryptoBrokerClient):
             client = BinanceUSClient(api_key=api_key, api_secret=api_secret)
             response = client._send_request('GET', '/api/v3/account')
             if response.get('code') == -2014:  # Example error code handling
-                return {'error': "Invalid API key or secret.", "valid": False}
-            return {'message': "API credentials are valid.", "valid": True}
+                return {'error': _("Invalid API key or secret."), "valid": False}
+            return {'message': _("API credentials are valid."), "valid": True}
         except Exception as e:
             return {'error': str(e)}
         
@@ -80,7 +81,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return None
         except Exception as e:
             print('Error getting exchange info:', e)
-            raise Exception(f"Error getting exchange info for {symbol}: {str(e)}")
+            raise Exception(_("Error getting exchange info for %s: %s") % (symbol, str(e)))
 
     def get_account_balance(self, symbol=None) -> AccountBalance:
         try:
@@ -107,7 +108,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return balances
         except Exception as e:
             print('Error getting account balance:', e)
-            raise Exception(f"Error getting account balance: {str(e)}")
+            raise Exception(_("Error getting account balance: %s") % str(e))
         
     def open_trade(self, symbol, side, quantity, custom_id = '') -> OpenTrade:
         try:
@@ -115,7 +116,7 @@ class BinanceUSClient(CryptoBrokerClient):
             symbol_info = self.get_exchange_info(symbol)
 
             if not symbol_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             print("Symbol info:", symbol_info)
 
@@ -149,7 +150,7 @@ class BinanceUSClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     "side": side.upper(),
@@ -162,7 +163,7 @@ class BinanceUSClient(CryptoBrokerClient):
                 }
             else:
                 return {
-                    'message': f"Trade opened with order ID {response.get('orderId')}.",
+                    'message': _("Trade opened with order ID %s.") % response.get('orderId'),
                     'order_id': response.get('orderId'),
                     'symbol': response.get('symbol', symbol),
 
@@ -183,7 +184,7 @@ class BinanceUSClient(CryptoBrokerClient):
             symbol_info = self.get_exchange_info(symbol)
 
             if not symbol_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
 
             adjusted_quantity = self.adjust_trade_quantity(symbol_info, t_side, quantity)
 
@@ -206,7 +207,7 @@ class BinanceUSClient(CryptoBrokerClient):
                 raise Exception(response.get('msg'))
 
             return {
-                'message': f"Trade closed for order ID {response.get('orderId')}.",
+                'message': _("Trade closed for order ID %s.") % response.get('orderId'),
                 "symbol": symbol,
 
                 "id": response.get('orderId'),
@@ -282,11 +283,11 @@ class BinanceUSClient(CryptoBrokerClient):
             }
             response = self._send_request('GET', '/api/v3/ticker/price', params, False)
             if response.get('code') == -1121:  # Example error code handling
-                raise Exception("Symbol not found.")
+                raise Exception(_("Symbol not found."))
             return float(response['price'])
         except Exception as e:
             print('Error getting exchange price:', e)
-            raise Exception(f"Error getting exchange price for {symbol}: {str(e)}")
+            raise Exception(_("Error getting exchange price for %s: %s") % (symbol, str(e)))
         
     def get_history_candles(self, symbol, interval, limit = 500):
         try:
@@ -319,7 +320,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return candles
         except Exception as e:
             print('Error getting historical candles:', e)
-            raise Exception(f"Error getting historical candles for {symbol}: {str(e)}")
+            raise Exception(_("Error getting historical candles for %s: %s") % (symbol, str(e)))
 
     def get_order_book(self, symbol, limit = 100):
         try:
@@ -342,7 +343,7 @@ class BinanceUSClient(CryptoBrokerClient):
             }
         except Exception as e:
             print('Error getting order book:', e)
-            raise Exception(f"Error getting order book for {symbol}: {str(e)}")
+            raise Exception(_("Error getting order book for %s: %s") % (symbol, str(e)))
 
     def get_trading_pairs(self):
         try:
@@ -354,6 +355,6 @@ class BinanceUSClient(CryptoBrokerClient):
             return symbols
         except Exception as e:
             print('Error getting trading pairs:', e)
-            raise Exception(f"Error getting trading pairs: {str(e)}")
+            raise Exception(_("Error getting trading pairs: %s") % str(e))
 
 

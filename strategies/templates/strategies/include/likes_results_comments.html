@@ -1,3 +1,4 @@
+{% load i18n %}
 <form hx-post="{% url 'strategy_like' strategy.id %}" hx-target="#btns-list">
   {% csrf_token %}
   {% if user.is_authenticated %}
@@ -32,7 +33,7 @@
   role="tooltip"
   class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip"
 >
-  Likes
+  {% trans "Likes" %}
   <div class="tooltip-arrow" data-popper-arrow></div>
 </div>
 <button
@@ -51,7 +52,7 @@ onclick="showStrategy()"
   role="tooltip"
   class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip"
 >
-  Strategy
+  {% trans "Strategy" %}
   <div class="tooltip-arrow" data-popper-arrow></div>
 </div>
 {% if show_performance %} <button
@@ -68,7 +69,7 @@ onclick="showPerformances()"
   role="tooltip"
   class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip"
 >
-  Performances
+  {% trans "Performances" %}
   <div class="tooltip-arrow" data-popper-arrow></div>
 </div> {% endif %}
 <button
@@ -88,7 +89,7 @@ id="tooltip-results"
 role="tooltip"
 class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip"
 >
-Reports
+{% trans "Reports" %}
 <div class="tooltip-arrow" data-popper-arrow></div>
 </div>
 
@@ -110,7 +111,7 @@ onclick="showComments()"
   role="tooltip"
   class="transition-opacity duration-300 font-sans text-xs absolute z-10 invisible inline-block px-3 py-2 font-medium text-background bg-text rounded-lg shadow-sm opacity-0 tooltip"
 >
-  Comments
+  {% trans "Comments" %}
   <div class="tooltip-arrow" data-popper-arrow></div>
 </div>
 {% comment %} <button

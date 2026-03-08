@@ -6,6 +6,7 @@ from datetime import datetime
 from django.utils import timezone
 
 from automate.functions.brokers.broker import BrokerClient
+from django.utils.translation import gettext as _
 
 class TradeLockerClient(BrokerClient):
 
@@ -51,17 +52,17 @@ class TradeLockerClient(BrokerClient):
             self.access_token = data.get("accessToken")
 
             if not self.access_token:
-                return {"error": "Login failed."}
+                return {"error": _("Login failed.")}
 
             self._get_account()
             if self.account_id:
-                return {"message": "Login successful."}
+                return {"message": _("Login successful.")}
             else:
-                return {"error": "Login failed."}
+                return {"error": _("Login failed.")}
         except Exception as e:
             print("Error:", e)
             response = e.response.json() if hasattr(e, 'response') else {}
-            raise Exception("Login failed: " + str(response.get('message') if response else str(e)))
+            raise Exception(_("Login failed: %s") % str(response.get('message') if response else str(e)))
 
     def _get_config(self):
         try:
@@ -84,7 +85,7 @@ class TradeLockerClient(BrokerClient):
                 accounts = data.get("accounts", [])
                 account = next((acc for acc in accounts if str(acc.get("id")) == str(self.account_id)), None)
                 if not account:
-                    raise ValueError("Account ID not found.")
+                    raise ValueError(_("Account ID not found."))
                 
             self.account_number = account.get("accNum")
             self.account_currency = account.get("currency")
@@ -136,7 +137,7 @@ class TradeLockerClient(BrokerClient):
                     delay_seconds=4
                 )
             else:
-                raise ValueError("Invalid HTTP method.")
+                raise ValueError(_("Invalid HTTP method."))
 
             response.raise_for_status()  # Raise an error for HTTP errors
             return response.json()
@@ -150,9 +151,9 @@ class TradeLockerClient(BrokerClient):
             client = TradeLockerClient(username=username, password=password, server=server, type=type, account_id=account_id)
 
             if client.account_id:
-                return {'message': "API credentials are valid.", "valid": True, "account_api_id": client.account_id}
+                return {'message': _("API credentials are valid."), "valid": True, "account_api_id": client.account_id}
             else:
-                return {'error': "Failed to retrieve account. Invalid credentials.", "valid": False}
+                return {'error': _("Failed to retrieve account. Invalid credentials."), "valid": False}
         except Exception as e:
             return {'error': str(e), "valid": False}
 
@@ -164,16 +165,16 @@ class TradeLockerClient(BrokerClient):
 
             instrument_id = instrument.get("tradableInstrumentId") if instrument else None
             if not instrument_id:
-                return {'error': f"Symbol {symbol} not found."}
+                return {'error': _("Symbol %s not found.") % symbol}
             
             route = next((r for r in instrument.get("routes", []) if r.get("type") == "TRADE"), None)
 
             if not route:
-                return {'error': f"No trading route available for symbol {symbol}."}
+                return {'error': _("No trading route available for symbol %s.") % symbol}
 
             symbol_info = self.get_symbol_info(symbol)
             if symbol_info.get('error'):
-                return {'error': f"Failed to get symbol info for {symbol}: {symbol_info.get('error')}"}
+                return {'error': _("Failed to get symbol info for %s: %s") % (symbol, symbol_info.get('error'))}
 
             lot_step = symbol_info.get("lotStep") if symbol_info else 0.01
             lot_step_decimals = str(lot_step)[::-1].find('.') if '.' in str(lot_step) else 0
@@ -193,7 +194,7 @@ class TradeLockerClient(BrokerClient):
 
             data = self._send_request('POST', f"/backend-api/trade/accounts/{self.account_id}/orders", data=json)
             if data.get('s') != 'ok':
-                raise Exception(data.get('errmsg', 'Failed to open trade.'))
+                raise Exception(data.get('errmsg') or _("Failed to open trade."))
             order_id = data.get('d', {}).get('orderId')
 
             end_exe = time.perf_counter()
@@ -213,10 +214,10 @@ class TradeLockerClient(BrokerClient):
                     # print(trade_details)
 
                     if trade_details is None:
-                        raise Exception('Trade has been executed but Position was not found')
+                        raise Exception(_("Trade has been executed but Position was not found"))
 
                     return {
-                        'message': f"Trade opened with order ID {order_id}.",
+                        'message': _("Trade opened with order ID %s.") % order_id,
                         'order_id': position_id,
                         'symbol': symbol,
                         'qty': trade_details.get('qty', quantity),
@@ -232,7 +233,7 @@ class TradeLockerClient(BrokerClient):
                         }
                     }
             else:
-                return {'error': "Failed to open trade."}
+                return {'error': _("Failed to open trade.")}
         except Exception as e:
             print("Error:", e)
             return {'error': str(e)}
@@ -241,13 +242,13 @@ class TradeLockerClient(BrokerClient):
     def close_trade(self, symbol, side, quantity, custom_id = ''):
         try:
             if(float(quantity) < 0.01):
-                raise ValueError("Quantity must be greater than 0.01.")
+                raise ValueError(_("Quantity must be greater than 0.01."))
             
             trade = self.current_trade
 
             position = self.get_order_info(symbol, trade.order_id)
             if not position:
-                raise Exception("Open trade not found.")
+                raise Exception(_("Open trade not found."))
 
             if position and  float(quantity) > float(position.get('qty')) and float(position.get('qty')) > 0:
                 quantity = position.get('qty')
@@ -260,14 +261,14 @@ class TradeLockerClient(BrokerClient):
             data = self._send_request('DELETE', path, data=json)
 
             if data.get('s') != 'ok':
-                raise Exception(data.get('errmsg', 'Failed to close trade.'))
+                raise Exception(data.get('errmsg') or _("Failed to close trade."))
 
             end_exe = time.perf_counter()
             trade_details = self.get_final_trade_details(trade)
 
             if trade_details:
                 return {
-                        'message': f"Trade partially closed for order ID {trade.order_id}.", 
+                        'message': _("Trade partially closed for order ID %s.") % trade.order_id, 
                         "id": trade.order_id,
                         'qty': quantity,
                         "trade_details": trade_details,
@@ -275,7 +276,7 @@ class TradeLockerClient(BrokerClient):
                     }
             else:
                 return {
-                        'message': f"Trade closed for order ID {trade.order_id}.", 
+                        'message': _("Trade closed for order ID %s.") % trade.order_id, 
                         "id": trade.order_id,
                         'qty': quantity,
                         "end_exe": end_exe
@@ -552,7 +553,7 @@ class TradeLockerClient(BrokerClient):
         try:
             instrument= self.get_instrument(symbol)
             if not instrument:
-                return {'error': f"Symbol {symbol} not found."}
+                return {'error': _("Symbol %s not found.") % symbol}
 
             interval_map = {
                 '1m': ('1m', 60),
@@ -568,7 +569,7 @@ class TradeLockerClient(BrokerClient):
 
             tl_interval = interval_map.get(interval)
             if not tl_interval:
-                return {'error': f"Interval {interval} is not supported."}
+                return {'error': _("Interval %s is not supported.") % interval}
 
             end_ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
             start_ts = end_ts - (limit * tl_interval[1] * 1000)
@@ -602,7 +603,7 @@ class TradeLockerClient(BrokerClient):
                         })
                     return candle_list
                 
-            return {'error': f"Failed to get candles for any INFO route."}
+            return {'error': _("Failed to get candles for any INFO route.")}
         except Exception as e:
             return {'error': str(e)}
         
@@ -611,7 +612,7 @@ class TradeLockerClient(BrokerClient):
         try:
             instrument = self.get_instrument(symbol)
             if not instrument:
-                return {'error': f"Symbol {symbol} not found."}
+                return {'error': _("Symbol %s not found.") % symbol}
 
             info_routes = [r for r in instrument.get("routes", []) if r.get("type") == "INFO"]
             for route in info_routes:
@@ -630,7 +631,7 @@ class TradeLockerClient(BrokerClient):
                         "bid": float(bid)
                     }
             # If none returned ok
-            return {'error': "Failed to get current price for any INFO route."}
+            return {'error': _("Failed to get current price for any INFO route.")}
         except Exception as e:
             return {'error': str(e)}
         
@@ -641,7 +642,7 @@ class TradeLockerClient(BrokerClient):
 
             instrument = self.get_instrument(symbol)
             if not instrument:
-                return {'error': f"Symbol {symbol} not found."}
+                return {'error': _("Symbol %s not found.") % symbol}
 
             info_routes = [r for r in instrument.get("routes", []) if r.get("type") == "INFO"]
             instrument_id = instrument.get("tradableInstrumentId")

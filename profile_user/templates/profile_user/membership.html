@@ -1,20 +1,20 @@
 {% extends 'page.html' %}
-{% load i18n %} 
+{% load i18n %}
 
 {% block head_title %}
-  <title>{% trans "IsAlgo | Pricing Plans | Unlock Backtestable TradingView Strategies & more" %}</title>
+  <title>{% trans 'IsAlgo | Pricing Plans | Unlock Backtestable TradingView Strategies & more' %}</title>
 {% endblock %}
 
 {% block head_description %}
-  <meta name="description" content="{% trans "Choose the perfect membership plan to unlock powerful TradingView strategies, backtesting tools, and automated trading features. Start your trading journey today with IsAlgo — Monthly, Quarterly, and Yearly plans available." %}" />
+  <meta name="description" content="{% trans 'Choose the perfect membership plan to unlock powerful TradingView strategies, backtesting tools, and automated trading features. Start your trading journey today with IsAlgo — Monthly, Quarterly, and Yearly plans available.' %}" />
 {% endblock %}
 
 {% block page %}
   {% if user_profile.is_lifetime %}
-    <h1 class="main-title">{% trans "Membership" %}</h1>
+    <h1 class="main-title">{% trans 'Membership' %}</h1>
     <div class="mt-4">
       <p class="text-left text-title text-lg font-semibold">
-        {% trans "You're a" %} <span class="text-title font-extrabold">{% trans "Lifetime" %}</span> {% trans "member! Thank you for your support." %}
+        {% trans "You're a" %} <span class="text-title font-extrabold">{% trans 'Lifetime' %}</span> {% trans 'member! Thank you for your support.' %}
       </p>
     </div>
 
@@ -52,31 +52,36 @@
     </div>
   {% else %}
     {% if has_subscription %}
-      <h1 class="main-title">{% trans "Membership" %}</h1>
+      <h1 class="main-title">{% trans 'Membership' %}</h1>
       <div class="mt-4 mb-4">
         <p class="text-left text-title text-lg font-semibold">
-          {% trans "You're subscribing to our" %} <span class="text-title font-extrabold">{{ subscription.plan }}</span> {% trans "plan." %}
+          {% trans "You're subscribing to our" %} <span class="text-title font-extrabold">{{ subscription.plan }}</span> {% trans 'plan.' %}
         </p>
         {% if subscription.cancel_at_period_end %}
           <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">
-            {% trans "Your subscription was canceled, end on" %} <span class="text-warning font-semibold inline-block">{{ subscription.period_end|date:'M d Y' }}</span>
+            {% trans 'Your subscription was canceled, end on' %} <span class="text-warning font-semibold inline-block">{{ subscription.period_end|date:'M d Y' }}</span>
           </p>
         {% elif subscription.status == 'past_due' %}
-          {% include 'include/errors.html' with class='mt-2 mb-2 ' error='{% trans "There is an issue with your payment method. Please update it or change your default payment method to avoid interruption of your subscription." %}' %}
+          {% trans 'There is an issue with your payment method. Please update it or change your default payment method to avoid interruption of your subscription.' as payment_error_msg %}
+          {% include 'include/errors.html' with class='mt-2 mb-2 ' error=payment_error_msg %}
         {% elif subscription.status == 'incomplete' or subscription.status == 'incomplete_expired' %}
-          <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">{% trans "Your subscription is incomplete." %}</p>
+          <p class="mt-2 text-left text-warning bg-warning/10 px-2 py-1 rounded-md text-base inline-block">
+            {% trans 'Your subscription is incomplete.' %}
+          </p>
         {% else %}
 
         {% endif %}
       </div>
     {% else %}
-      <h1 class="mt-4 text-center text-3xl sm:text-6xl text-title font-extrabold">{% trans "Choose your plan and unlock access to" %}<br /> <span class="bg-clip-text bg-gradient-to-tl to-primary from-accent text-transparent">{% trans "our premium strategies <br />and much more" %}</span></h1>
+      <h1 class="mt-4 text-center text-3xl sm:text-6xl text-title font-extrabold">{% trans 'Choose your plan and unlock access to' %}<br /> <span class="bg-clip-text bg-gradient-to-tl to-primary from-accent text-transparent">{% trans 'our premium strategies <br />and much more' %}</span></h1>
 
       {% if not user_profile.subscription_id and not has_subscription %}
         {% if free_trial_days|add:'0' > 0 %}
           <h6 class="text-title/60 text-base font-medium mt-4 text-center">
-            {% trans "Start today with" %}<div class="relative inline-block text-title tracking-wider ml-1">
-              {{ free_trial_days }} {% trans "day free trial" %}<div class="absolute top-[90%] w-full">
+            {% trans 'Start today with' %}
+            <div class="relative inline-block text-title tracking-wider ml-1">
+              {{ free_trial_days }} {% trans 'day free trial' %}
+              <div class="absolute top-[90%] w-full">
                 <svg class="w-full scale-125 rotate-6 stroke-secondary" height="18" viewBox="0 0 103 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path class="w-full" d="M2.85161 15.21C8.91183 12.5794 16.2972 11.5802 22.6641 10.1433C39.4496 6.35525 56.2817 3.74063 73.4989 3.21717C82.6093 2.94019 91.7767 2.81569 100.889 2.80055" stroke-width="3.5" stroke-linecap="round" />
                 </svg>

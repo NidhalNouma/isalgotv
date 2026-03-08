@@ -4,6 +4,7 @@ import uuid
 
 from automate.functions.brokers.broker import BrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 
 class NinjatraderClient(BrokerClient):
@@ -62,7 +63,7 @@ class NinjatraderClient(BrokerClient):
 
         resp = self.s.post(url, headers=headers, data=json.dumps(payload))
         if resp.status_code != 200:
-            raise Exception(f"Login failed: HTTP {resp.status_code} - {resp.text}")
+            raise Exception(_("Login failed: HTTP %s - %s") % (resp.status_code, resp.text))
         
         data = resp.json()
         print(data)
@@ -74,7 +75,7 @@ class NinjatraderClient(BrokerClient):
             self.accessToken = data.get('accessToken')
             return True
         else:
-            raise Exception('Failed to login to this account. please try again later.')
+            raise Exception(_("Failed to login to this account. please try again later."))
         
         
 

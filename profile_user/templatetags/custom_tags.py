@@ -210,11 +210,26 @@ def trim_zeros(value):
     """
     Removes unnecessary trailing zeros from a decimal or float.
     E.g., 0.002000 -> "0.002", 2.5000 -> "2.5", 3.000 -> "3"
+    Works correctly regardless of the active locale (handles comma decimals).
     """
     from decimal import Decimal, InvalidOperation
     try:
-        d = Decimal(str(value))
-        # Normalize and format in fixed-point to remove trailing zeros
+        # Normalize locale-formatted strings (e.g. "1.234,56" -> "1234.56")
+        s = str(value).strip()
+        # Replace locale thousands separator and decimal comma
+        # Handles both "1,234.56" (en) and "1.234,56" (de/fr) styles
+        if ',' in s and '.' in s:
+            # Ambiguous — determine which is decimal by position of last separator
+            if s.rfind(',') > s.rfind('.'):
+                # Comma is decimal: "1.234,56" -> "1234.56"
+                s = s.replace('.', '').replace(',', '.')
+            else:
+                # Period is decimal: "1,234.56" -> "1234.56"
+                s = s.replace(',', '')
+        elif ',' in s:
+            # Only comma present — treat as decimal separator: "1234,56" -> "1234.56"
+            s = s.replace(',', '.')
+        d = Decimal(s)
         normalized = d.normalize()
         return format(normalized, 'f')
     except (InvalidOperation, ValueError, TypeError):

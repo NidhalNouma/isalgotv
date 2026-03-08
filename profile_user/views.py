@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, get_language
 from django_htmx.http import trigger_client_event
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count, Q
@@ -100,7 +100,7 @@ quick_chart_symbols = [
     'BITMART:CHZUSDT',
 ]
 
-def market_news():
+def market_news(language='en'):
     """
     Fetch recent 10 news articles related to forex, stock, and crypto markets.
     """
@@ -110,11 +110,11 @@ def market_news():
             return JsonResponse({"error": "Missing NEWS_API_KEY in settings."}, status=500)
 
         url = "https://newsapi.org/v2/everything"
-        query = "TradingView Or trading strategies OR forex trading strategies OR crypto trading strategies OR stock trading strategies"
+        query = _("TradingView Or trading strategies OR forex trading strategies OR crypto trading strategies OR stock trading strategies")
 
         params = {
             "q": query,
-            "language": "en",
+            "language": language,
             "pageSize": 30,
             "sortBy": "publishedAt",
             "apiKey": NEWS_API_KEY,
@@ -155,8 +155,8 @@ def market_news():
         return []
 
 def random_strategies_results_context():
-    cash_timeout = 3600 * 6
     context = {}
+    language = get_language() or 'en'
 
     strategy_filter = {
         'is_live': True,
@@ -168,61 +168,33 @@ def random_strategies_results_context():
         'strategy__premium__in': ['Free', 'Elite', 'Premium'],
     }
 
-    # Cache key names for each query
-    new_strategies = cache.get('new_strategies')
-    if new_strategies is None:
-        new_strategies = list(Strategy.objects.filter(**strategy_filter).order_by('-created_at')[:8])
-        cache.set('new_strategies', new_strategies, timeout=cash_timeout)
-        
+    new_strategies = list(Strategy.objects.filter(**strategy_filter).order_by('-created_at')[:8])
     random.shuffle(new_strategies)
     context['new_strategies'] = new_strategies[:6]
 
-    most_viewed_strategies = cache.get('most_viewed_strategies')
-    if most_viewed_strategies is None:
-        most_viewed_strategies = list(
-            Strategy.objects.filter(**strategy_filter).annotate(like_count=Count('likes')).order_by('-like_count')[:8]
-        )
-        cache.set('most_viewed_strategies', most_viewed_strategies, timeout=cash_timeout)
-
+    most_viewed_strategies = list(
+        Strategy.objects.filter(**strategy_filter).annotate(like_count=Count('likes')).order_by('-like_count')[:8]
+    )
     random.shuffle(most_viewed_strategies)
     context['most_viewed_strategies'] = most_viewed_strategies[:6]
 
-    best_results = cache.get('best_results')
-    if best_results is None:
-        best_results = list(
-            StrategyResults.objects.filter(**result_strategy_filter).annotate(
-                positive_votes_count=Count('positive_votes')
-            ).order_by('-positive_votes_count')[:8]
-        )
-        cache.set('best_results', best_results, timeout=cash_timeout)
-
+    best_results = list(
+        StrategyResults.objects.filter(**result_strategy_filter).annotate(
+            positive_votes_count=Count('positive_votes')
+        ).order_by('-positive_votes_count')[:8]
+    )
     random.shuffle(best_results)
     context['best_results'] = best_results[:6]
 
-    new_results = cache.get('new_results')
-    if new_results is None:
-        new_results = list(StrategyResults.objects.filter(**result_strategy_filter).order_by('-created_at')[:8])
-        cache.set('new_results', new_results, timeout=cash_timeout)
-
+    new_results = list(StrategyResults.objects.filter(**result_strategy_filter).order_by('-created_at')[:8])
     random.shuffle(new_results)
     context['new_results'] = new_results[:6]
 
-    comments = cache.get('comments')
-    if comments is None:
-        comments = list(StrategyComments.objects.filter(**result_strategy_filter).order_by('-created_at')[:6])
-        cache.set('comments', comments, timeout=cash_timeout)
-
+    comments = list(StrategyComments.objects.filter(**result_strategy_filter).order_by('-created_at')[:6])
     random.shuffle(comments)
     context['comments'] = comments
 
-
-    recent_news = cache.get('recent_news')
-    if recent_news is None:
-        recent_news = market_news()
-        cache.set('recent_news', recent_news, timeout=cash_timeout)
-    recent_news = market_news()
-
-    context['recent_news'] = recent_news
+    context['recent_news'] = market_news(language=language)
     context['quick_chart_symbols'] = random.sample(quick_chart_symbols, 6)
     return context
 

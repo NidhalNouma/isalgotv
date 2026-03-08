@@ -4,6 +4,7 @@ from django.utils.dateparse import parse_datetime
 
 from automate.functions.brokers.broker import BrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 
 class TastytradeClient(BrokerClient):
@@ -46,7 +47,7 @@ class TastytradeClient(BrokerClient):
             )
 
             if not client.accessToken:
-                msg = "Invalid credentials. If you received an email to allow access, please follow the instructions in the email and try again."
+                msg = _("Invalid credentials. If you received an email to allow access, please follow the instructions in the email and try again.")
                 return {'error': msg, 'valid': False}
             print("Access token obtained successfully.")
 
@@ -56,16 +57,16 @@ class TastytradeClient(BrokerClient):
                 if first_customer and first_customer.get("account-number"):
                     client.account_number = first_customer.get("account-number")
                 else:
-                    return {'error': "Account ID not provided and could not be retrieved.", 'valid': False}
+                    return {'error': _("Account ID not provided and could not be retrieved."), 'valid': False}
             
             account_info = client.get_account_info()
 
             if account_info:
                 additional_info = {}
                     
-                return {'valid': True, 'message': "Credentials are valid.", 'additional_info': additional_info, 'account_api_id': client.account_number}
+                return {'valid': True, 'message': _("Credentials are valid."), 'additional_info': additional_info, 'account_api_id': client.account_number}
             else:
-                return {'error': "Invalid credentials.", 'valid': False}
+                return {'error': _("Invalid credentials."), 'valid': False}
 
         except Exception as e:
             return {'error': str(e), 'valid': False}
@@ -100,7 +101,7 @@ class TastytradeClient(BrokerClient):
                     error = "\n".join(message_errors)
                 else:
                     error = error.get('message', str(error))
-            raise Exception(f"HTTP Error {response.status_code}: {error}")
+            raise Exception(_("HTTP Error %s: %s") % (response.status_code, error))
         return response.json()
     
     def _login(self):
@@ -117,7 +118,7 @@ class TastytradeClient(BrokerClient):
                 raise Exception(f"Login failed: {response.get('error')}")
             accessToken = response.get("access_token")
             if not accessToken:
-                raise Exception("Login failed: Access token not found.")
+                raise Exception(_("Login failed: Access token not found."))
             self.accessToken = f"Bearer {accessToken}"
         except Exception as e:
             print(f"Login error: {e}")
@@ -137,7 +138,7 @@ class TastytradeClient(BrokerClient):
                 raise Exception(f"Login failed: {data.get('error')}")
             self.accessToken = data.get("session-token")
             if not self.accessToken:
-                raise Exception("Login failed: Access token not found.")
+                raise Exception(_("Login failed: Access token not found."))
         except Exception as e:
             print(f"Login error: {e}")
             raise e
@@ -172,7 +173,7 @@ class TastytradeClient(BrokerClient):
         try:
             account = self.get_account_info()
             if not account:
-                raise Exception("Account info not found")
+                raise Exception(_("Account info not found"))
             cash_balance = account.get("cash-balance", 0.0)
             currency = account.get("currency", "USD")
             net_liquidating_value = account.get("net-liquidating-value", 0.0)
@@ -204,7 +205,7 @@ class TastytradeClient(BrokerClient):
                 self.symbols_cache[symbol] = symbol_info
                 return symbol_info
             else:
-                raise Exception("No symbol info found")
+                raise Exception(_("No symbol info found"))
         except Exception as e:
             print(f"Error fetching symbol info for {symbol}: {e}")
             return None
@@ -232,7 +233,7 @@ class TastytradeClient(BrokerClient):
             sym_info = self.get_symbol_info(symbol)
             print(sym_info)
             if not sym_info:
-                raise Exception(f"Symbol info not found for {symbol}")
+                raise Exception(_("Symbol info not found for %s") % symbol)
             
             symbol_name = sym_info.get("symbol")
             symbol_type = sym_info.get("instrument-type")
@@ -258,20 +259,20 @@ class TastytradeClient(BrokerClient):
             order_data = data.get("order", {})
 
             if not order_data:
-                raise Exception("Order data not found in response")
+                raise Exception(_("Order data not found in response"))
             
             order_id = order_data.get("id", None)
             if not order_id:
-                raise Exception("Order ID not found in order data")
+                raise Exception(_("Order ID not found in order data"))
 
             order_info = self.get_order_info(symbol, order_id)
             if not order_info:
-                raise Exception("Failed to retrieve order info after placing order")
+                raise Exception(_("Failed to retrieve order info after placing order"))
             
             # print(f"Trade opened successfully for {symbol}: {order_info}")
             if oc:
                 return {
-                    "message": f"Trade closed successfully for {symbol}",
+                    "message": _("Trade closed successfully for %s") % symbol,
                     "order_id": order_id,
                     "symbol": symbol,
                     "side": side,
@@ -283,7 +284,7 @@ class TastytradeClient(BrokerClient):
                     "end_exe": end_exe
                 }
             return {
-                "message": f"Trade opened successfully for {symbol}",
+                "message": _("Trade opened successfully for %s") % symbol,
                 "order_id": order_id,
                 "end_exe": end_exe,
                 **order_info

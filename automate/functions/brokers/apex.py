@@ -9,6 +9,7 @@ from apexomni.http_public import HttpPublic
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 import math
 
 
@@ -50,11 +51,11 @@ class ApexClient(CryptoBrokerClient):
             userRes = private_Client.get_user_v3()
 
             if 'code' in userRes:
-                raise Exception(f"Error {userRes['code']}: {userRes.get('message', 'Unknown error')}")
-            return {'message': "API credentials are valid.", "valid": True}
+                raise Exception(_("Error %s: %s") % (userRes['code'], userRes.get('message', _("Unknown error"))))
+            return {'message': _("API credentials are valid."), "valid": True}
         except Exception as e:
             print(f"An error occurred during credential check: {e}")
-            return {'error': "API credentials are invalid.", "valid": False}
+            return {'error': _("API credentials are invalid."), "valid": False}
 
 
     def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None, oc = False):
@@ -63,7 +64,7 @@ class ApexClient(CryptoBrokerClient):
             sys_info = self.get_exchange_info(symbol)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
@@ -75,7 +76,7 @@ class ApexClient(CryptoBrokerClient):
 
             print("Adjusted quantity:", adjusted_quantity)
             if float(adjusted_quantity) <= 0:
-                raise ValueError("Insufficient balance for the trade.")
+                raise ValueError(_("Insufficient balance for the trade."))
 
             currentTime = time.time()
 
@@ -104,12 +105,12 @@ class ApexClient(CryptoBrokerClient):
             end_exe = time.perf_counter()
 
             if 'code' in response:
-                raise Exception(f"Error {response['code']}: {response.get('message', 'Unknown error')}")
+                raise Exception(_("Error %s: %s") % (response['code'], response.get('message', _("Unknown error"))))
 
 
             order_id = response.get('orderId')
             if not order_id:
-                raise Exception("Order ID not found in response.")
+                raise Exception(_("Order ID not found in response."))
 
             if not self.current_trade:
                 order_details = self.get_order_info(order_symbol, order_id)
@@ -120,7 +121,7 @@ class ApexClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': order_symbol,
                     "side": side.upper(),
@@ -134,7 +135,7 @@ class ApexClient(CryptoBrokerClient):
                     "end_exe": end_exe
                 }
             return {
-                'message': f"Trade opened with order ID {order_id}.",
+                'message': _("Trade opened with order ID %s.") % order_id,
                 'order_id': order_id,
                 'closed_order_id': order_id if oc else '',
                 'symbol': response.get('symbol', order_symbol),
@@ -165,7 +166,7 @@ class ApexClient(CryptoBrokerClient):
 
 
             if 'code' in response:
-                raise Exception(f"Error {response['code']}: {response.get('message', 'Unknown error')}")
+                raise Exception(_("Error %s: %s") % (response['code'], response.get('message', _("Unknown error"))))
 
             orders = response.get('data', {}).get('orders', [])
 
@@ -260,7 +261,7 @@ class ApexClient(CryptoBrokerClient):
                     balances[asset['token']] = { 'available': float(asset['balance'])}
                 return balances
             else:
-                raise Exception("Invalid account type. Use 'S' for Spot or 'P' for Perpetual.")
+                raise Exception(_("Invalid account type. Use 'S' for Spot or 'P' for Perpetual."))
         except client.RemoteDisconnected as e:
             print(f"RemoteDisconnected error: {e}")
             return None
@@ -366,7 +367,7 @@ class ApexClient(CryptoBrokerClient):
             elif self.account_type == "P":
                 coins = data.get('contractConfig', {}).get('assets', [])
             else:
-                raise Exception("Invalid account type. Use 'S' for Spot or 'P' for Perpetual.")
+                raise Exception(_("Invalid account type. Use 'S' for Spot or 'P' for Perpetual."))
 
             for coin in coins:
                 if coin['tokenId'] == token_id:

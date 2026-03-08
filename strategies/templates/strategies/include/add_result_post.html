@@ -1,3 +1,4 @@
+{% load i18n %}
 <!-- Modal content -->
 <div class="relative bg-background h-full flex flex-col">
   <!-- Modal header -->
@@ -7,7 +8,7 @@
         <svg class="w-5 h-5 stroke-current" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M244 400L100 256l144-144M120 256h292"></path>
         </svg>
-      </button>Post
+      </button>{% trans 'Post' %}
     </h3>
     <button id="add-result-modal-close-btn-post" type="button" class="btn-icon" onclick="hideModel('add-result-modal-post')">
       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -23,25 +24,25 @@
         <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
         </svg>
-        <span class="text-title text-sm font-medium">Properties</span>
+        <span class="text-title text-sm font-medium">{% trans 'Properties' %}</span>
       </div>
       <div class="flex items-center gap-2">
         <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
         </svg>
-        <span class="text-title text-sm font-medium">Perfermance</span>
+        <span class="text-title text-sm font-medium">{% trans 'Performance' %}</span>
       </div>
       <div class="flex items-center gap-2">
         <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
         </svg>
-        <span class="text-title text-sm font-medium">List of trades</span>
+        <span class="text-title text-sm font-medium">{% trans 'List of trades' %}</span>
       </div>
       <div id="add-result-comment" class="flex items-center gap-2 mt-2">
         {% comment %} <svg class="h-4 fill-success inline-flex" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
         </svg> {% endcomment %}
-        <button type="button" onclick="changeHidden('add-result-comment-input', 'add-result-comment', 'flex')" class="btn-icon ml-0 text-sm font-medium">Add a comment</button>
+        <button type="button" onclick="changeHidden('add-result-comment-input', 'add-result-comment', 'flex')" class="btn-icon ml-0 text-sm font-medium">{% trans 'Add a comment' %}</button>
       </div>
     </div>
 
@@ -54,10 +55,10 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 1H2a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z" />
           </svg>
-          <span class="sr-only">Upload image</span>
+          <span class="sr-only">{% trans 'Upload image' %}</span>
         </button>
       </div>
-      <textarea name="description" rows="3" class="block w-full ml-2 input-text" placeholder="Comment..."></textarea>
+      <textarea name="description" rows="3" class="block w-full ml-2 input-text" placeholder="{% trans 'Comment...' %}"></textarea>
     </div>
 
     <div id="add-result-imgs-list" class="max-w-full"></div>
@@ -68,13 +69,12 @@
   <div id="add-result-form-errors" class="my-2 mx-4"></div>
 
   <button onclick="post()" class="btn-primary w-full max-w-xs mx-auto font-medium px-4" type="submit" id="btn-result-post">
-    Post<svg class="ml-1 h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    {% trans 'Post' %}
+    <svg class="ml-1 h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
       <path d="M6 12h16" />
     </svg>
   </button>
 
-  <button id="spinner-result-post" disabled type="button" class="hidden btn-primary w-full max-w-xs mx-auto font-medium px-4">
-    Posting {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
-  </button>
+  <button id="spinner-result-post" disabled type="button" class="hidden btn-primary w-full max-w-xs mx-auto font-medium px-4">{% trans 'Posting' %} {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}</button>
 </div>

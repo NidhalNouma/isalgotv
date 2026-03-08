@@ -1,6 +1,7 @@
 from django import template
 from dateutil.relativedelta import relativedelta
 from django.utils.timesince import timesince
+from django.utils.translation import gettext as _, ngettext
 
 register = template.Library()
 
@@ -29,30 +30,30 @@ def get_price(prices, title):
 def price_interval(interval_count, interval):
     if interval_count > 1:
         if interval_count == 7 and (interval == 'day' or interval == 'days'):
-            return "/ week"
+            return _("/ week")
         elif interval_count == 14 and (interval == 'day' or interval == 'days'):
-            return "/ 2 weeks"
+            return _("/ 2 weeks")
         elif interval_count == 15 and (interval == 'day' or interval == 'days'):
-            return "/ 2 weeks"
+            return _("/ 2 weeks")
         elif interval_count == 21 and (interval == 'day' or interval == 'days'):
-            return "/ 3 weeks"
+            return _("/ 3 weeks")
         elif interval_count == 30 and (interval == 'day' or interval == 'days'):
-            return "/ month"
+            return _("/ month")
         elif interval_count == 90 and (interval == 'day' or interval == 'days'):
-            return "/ Quarter"
+            return _("/ Quarter")
         elif interval_count == 180 and (interval == 'day' or interval == 'days'):
-            return "/ Half Year"
+            return _("/ Half Year")
         elif interval_count == 365 and (interval == 'day' or interval == 'days'):
-            return "/ Year"
+            return _("/ Year")
         elif interval_count == 3 and (interval == 'month' or interval == 'months'):
-            return "/ Quarter"
+            return _("/ Quarter")
         elif interval_count == 6 and (interval == 'month' or interval == 'months'):
-            return "/ Half Year"
+            return _("/ Half Year")
         elif interval_count == 12 and (interval == 'month' or interval == 'months'):
-                return "/ Year"
-        return f"/ {interval_count} {interval}s"
+                return _("/ Year")
+        return _("/ %s %ss") % (interval_count, interval)
     else:
-        return f"/ {interval}"
+        return _("/ %s") % interval
 
 @register.filter
 def tv_timeframe_to_human_readable(value):
@@ -74,9 +75,9 @@ def period_in_months_years(start_date, end_date):
     months = delta.months
     period_str = ""
     if years > 0:
-        period_str += f"{years} {'year' if years == 1 else 'years'} "
+        period_str += "%s %s " % (years, ngettext("year", "years", years))
     if months > 0:
-        period_str += f"{months} {'month' if months == 1 else 'months'}"
+        period_str += "%s %s" % (months, ngettext("month", "months", months))
     # print('djnjd kjnjws ', start_date, end_date, delta, period_str.strip())
     
     return period_str.strip()

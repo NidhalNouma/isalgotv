@@ -8,6 +8,7 @@ import time
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 from okx import OkxRestClient
 
@@ -28,9 +29,9 @@ class OkxClient(CryptoBrokerClient):
             account = client.get_account_info()
 
             if account:
-                return {'message': "API credentials are valid.", "valid": True}
+                return {'message': _("API credentials are valid."), "valid": True}
             else:
-                return {'error': "API credentials are invalid.", "valid": False}
+                return {'error': _("API credentials are invalid."), "valid": False}
 
         except Exception as e:
             print("ClientError:", e)
@@ -134,7 +135,7 @@ class OkxClient(CryptoBrokerClient):
                 price = data[0].get('last')
                 return price
 
-            raise Exception('Price not found!')
+            raise Exception(_("Price not found!"))
         
         except Exception as e:
             raise Exception(e)
@@ -146,7 +147,7 @@ class OkxClient(CryptoBrokerClient):
             print(sys_info)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_("Symbol was not found!"))
             
             currency_asset = sys_info.get('quote_asset')
             base_asset = sys_info.get('base_asset')
@@ -209,7 +210,7 @@ class OkxClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -225,7 +226,7 @@ class OkxClient(CryptoBrokerClient):
                 }
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,

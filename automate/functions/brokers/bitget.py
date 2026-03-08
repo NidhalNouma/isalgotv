@@ -15,6 +15,7 @@ from decimal import Decimal
 
 from automate.functions.brokers.types import *
 from automate.functions.brokers.broker import CryptoBrokerClient
+from django.utils.translation import gettext as _
 
 class BitgetClient(CryptoBrokerClient):
 
@@ -40,7 +41,7 @@ class BitgetClient(CryptoBrokerClient):
             # Adjust these checks to match Bitget’s actual response format:
             if response.get('code') != '00000':
                 return {'error': response.get('msg'), 'valid': False}
-            return {'message': "API credentials are valid.", 'valid': True}
+            return {'message': _("API credentials are valid."), 'valid': True}
         except Exception as e:
             return {'error': str(e), 'valid': False}
 
@@ -92,7 +93,7 @@ class BitgetClient(CryptoBrokerClient):
             # print(response )
 
             if not response.get('data'):
-                raise Exception('Symbol does not exist')
+                raise Exception(_('Symbol does not exist'))
 
             data = response['data'][0]
             
@@ -156,7 +157,7 @@ class BitgetClient(CryptoBrokerClient):
             sys_info = self.get_exchange_info(symbol)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             base_asset = sys_info.get('base_asset')
@@ -166,7 +167,7 @@ class BitgetClient(CryptoBrokerClient):
             print("Adjusted quantity:", adjusted_quantity)
 
             if float(adjusted_quantity) <= 0:
-                raise ValueError("Insufficient balance for the trade.")
+                raise ValueError(_("Insufficient balance for the trade."))
 
             body = {
                 "symbol": order_symbol,
@@ -211,7 +212,7 @@ class BitgetClient(CryptoBrokerClient):
             order_id = response.get("orderId")
 
             if order_id is None:
-                raise Exception("Order ID not found in response")
+                raise Exception(_("Order ID not found in response"))
             
             if not self.current_trade:
                 order_details = self.get_order_info(order_symbol, order_id)
@@ -222,7 +223,7 @@ class BitgetClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -238,7 +239,7 @@ class BitgetClient(CryptoBrokerClient):
                 }
             else:
                 return {
-                    'message': f"Trade opened with order ID {response.get('orderId')}.",
+                    'message': _("Trade opened with order ID %s.") % response.get('orderId'),
                     'order_id': response.get('orderId'),
                     'closed_order_id': response.get('orderId'),
                     'symbol': response.get('symbol', symbol),
@@ -300,7 +301,7 @@ class BitgetClient(CryptoBrokerClient):
 
             
             if response is None:
-                raise ValueError("No data found in response")
+                raise ValueError(_("No data found in response"))
             
 
             if isinstance(response, list):

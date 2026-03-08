@@ -1,5 +1,6 @@
 {% load custom_tags %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% if owner %}
   {% include 'strategies/include/user_connect.html' %}
@@ -15,8 +16,8 @@
           </svg>
         </div>
         <div>
-          <div class="text-sm font-semibold text-title">Exclusive access required</div>
-          <div class="text-xs text-text/70">Unlock this exclusive strategy and start using it</div>
+          <div class="text-sm font-semibold text-title">{% trans "Exclusive access required" %}</div>
+          <div class="text-xs text-text/70">{% trans "Unlock this exclusive strategy and start using it" %}</div>
         </div>
       </div>
 
@@ -30,7 +31,7 @@
       <div class="flex items-center">
         {% if user.is_authenticated %}
           <button class="btn-accent font-semibold inline-flex items-center" id="btn-acc-{{ strategy.id }}" onclick="openModel('staticmodal-{{ strategy.name|lower|replace_chars:' ||_' }}');mountStripeElement('{{ strategy.name|lower|replace_chars:' ||_' }} ');">
-            <span>Unlock access</span>
+            <span>{% trans "Unlock access" %}</span>
             <svg class="h-4 w-4 ml-2" stroke="currentColor" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 4a4 4 0 00-4 4v2H6a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2h-2V8a4 4 0 00-4-4zM9 10V8a3 3 0 116 0v2H9z"></path>
             </svg>
@@ -44,7 +45,7 @@
           {% endwith %}
         {% else %}
           <a href="{% url 'register' %}" class="btn-accent font-semibold inline-flex items-center">
-            <span>Unlock access</span>
+            <span>{% trans "Unlock access" %}</span>
             <svg class="h-4 w-4 ml-2" stroke="currentColor" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 4a4 4 0 00-4 4v2H6a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2h-2V8a4 4 0 00-4-4zM9 10V8a3 3 0 116 0v2H9z"></path>
             </svg>

@@ -1,5 +1,6 @@
 {% load static %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% comment %} <div class="flex flex-col items-center border-[1px] border-title/20 rounded-lg p-2.5">
   <div class="w-full mb-2.5">
@@ -46,7 +47,8 @@
     <div class="relative h-72 overflow-hidden">
       {% if strategy.short_video_url %}
         <video class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" muted loop playsinline poster="{{ strategy.image_url|default:'/static/images/default_strategy_image.jpg' }}">
-          <source src="{{ strategy.short_video_url }}" type="video/mp4" />Your browser does not support the video tag.
+          <source src="{{ strategy.short_video_url }}" type="video/mp4" />
+          {% trans 'Your browser does not support the video tag.' %}
         </video>
       {% else %}
         <img src="{{ strategy.image_url|default:'/static/images/default_strategy_image.jpg' }}" alt="{{ strategy.name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
@@ -84,7 +86,7 @@
           </div>
         </div>
 
-        <button class="flex items-center gap-1 text-title hover:text-primary transition-colors group/btn"><span class="text-sm font-medium">Learn more &rarr;</span></button>
+        <button class="flex items-center gap-1 text-title hover:text-primary transition-colors group/btn"><span class="text-sm font-medium">{% trans 'Learn more →' %}</span></button>
       </div>
     </div>
   </a>

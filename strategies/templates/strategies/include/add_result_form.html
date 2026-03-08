@@ -1,4 +1,5 @@
 {% load custom_tags %}
+{% load i18n %}
 
 <form class="flex flex-col" id="add-result-form" hx-post="{% url 'submit_report' strategy.id %}" hx-target="#resultsDiv" enctype="multipart/form-data" hx-wait="swap" novalidate>
   {% csrf_token %}
@@ -20,13 +21,13 @@
         <h5 id="drawer-right-label" class="inline-flex items-center text-base font-semibold text-text">
           <svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-          </svg>Share
+          </svg>{% trans "Share" %}
         </h5>
         <button type="button" onclick="hideDrawer('{{ drawer_id }}')" class="text-title/60 bg-transparent hover:text-title rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
           </svg>
-          <span class="sr-only">Close menu</span>
+          <span class="sr-only">{% trans "Close menu" %}</span>
         </button>
       </div>
 

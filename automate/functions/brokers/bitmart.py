@@ -13,6 +13,7 @@ import time
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 class BitmartClient(CryptoBrokerClient):
     def __init__(self, account=None, api_key=None, api_secret=None, passphrase=None, account_type="S", current_trade=None):
@@ -37,7 +38,7 @@ class BitmartClient(CryptoBrokerClient):
             if response[0]['code'] != 1000:
                 return {'error': response[0].get('message'), 'valid': False}
             
-            return {'message': "API credentials are valid.", 'valid': True}
+            return {'message': _("API credentials are valid."), 'valid': True}
         except cloud_exceptions.APIException as apiException:
             error = json.loads(apiException.response)
             error_msg = error.get('msg') or error.get('message', 'API credentials are not valid.')
@@ -83,7 +84,7 @@ class BitmartClient(CryptoBrokerClient):
                         'quote_decimals': quote_decimals,
                     }
 
-            raise Exception("Symbol not found")
+            raise Exception(_("Symbol not found"))
 
         except cloud_exceptions.APIException as apiException:
             error = json.loads(apiException.response)
@@ -120,7 +121,7 @@ class BitmartClient(CryptoBrokerClient):
                     if inst.replace('_', '').upper() == target or inst == target:
                         return item.get('last_price', None) or item.get('index_price', 0)
 
-            raise Exception("Symbol not found")
+            raise Exception(_("Symbol not found"))
 
         except cloud_exceptions.APIException as apiException:
             error = json.loads(apiException.response)
@@ -184,7 +185,7 @@ class BitmartClient(CryptoBrokerClient):
             print(sys_info)
 
             if not sys_info:
-                raise Exception('Symbol was not found!')
+                raise Exception(_('Symbol was not found!'))
             
             currency_asset = sys_info.get('quote_asset')
             order_symbol = sys_info.get('symbol')
@@ -258,7 +259,7 @@ class BitmartClient(CryptoBrokerClient):
             
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,
@@ -275,7 +276,7 @@ class BitmartClient(CryptoBrokerClient):
             
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': symbol,

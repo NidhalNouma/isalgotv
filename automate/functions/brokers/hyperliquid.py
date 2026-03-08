@@ -10,6 +10,7 @@ from eth_account.signers.local import LocalAccount
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 import time
 
@@ -53,7 +54,7 @@ class HyperliquidClient(CryptoBrokerClient):
             if 'error' in user_state:
                 return {'error': user_state['error'], "valid": False}
             
-            return {"valid": True, "message": "Credentials are valid."}
+            return {"valid": True, "message": _("Credentials are valid.")}
         except Exception as e:
             print("Error in credentials:", str(e))
             return {'error': str(e), "valid": False}
@@ -64,7 +65,7 @@ class HyperliquidClient(CryptoBrokerClient):
 
             symbol_info = self.get_exchange_info(symbol)
             if not symbol_info:
-                raise Exception(f"Symbol {symbol} not found.")
+                raise Exception(_("Symbol %s not found.") % symbol)
             
             print("Symbol info:", symbol_info)
             
@@ -82,7 +83,7 @@ class HyperliquidClient(CryptoBrokerClient):
 
             end_exe = time.perf_counter()
             if not order:
-                raise Exception("No response from exchange when opening trade.")
+                raise Exception(_("No response from exchange when opening trade."))
 
             order_data = order.get('response', {}).get('data', {}).get('statuses', [])[0]
 
@@ -100,7 +101,7 @@ class HyperliquidClient(CryptoBrokerClient):
 
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     "side": side.upper(),
@@ -114,7 +115,7 @@ class HyperliquidClient(CryptoBrokerClient):
                     "end_exe": end_exe
                 }
             else:
-                raise Exception("Failed to retrieve order details after opening trade.")
+                raise Exception(_("Failed to retrieve order details after opening trade."))
         
         except Exception as e:
             print("Error opening trade:", str(e))
@@ -131,12 +132,12 @@ class HyperliquidClient(CryptoBrokerClient):
             coin = symbol.split("-")[0]
             orders = self.info.user_fills(self.address)
             if not orders or 'error' in orders:
-                raise Exception(f"Error fetching order info: {orders.get('error', 'No data returned')}")
+                raise Exception(_("Error fetching order info: %s") % orders.get('error', _('No data returned')))
 
             trades = [o for o in orders if o.get('oid') == order_id]
 
             if len(trades) == 0:
-                raise Exception(f"Order with ID {order_id} not found.")
+                raise Exception(_("Order with ID %s not found.") % order_id)
 
             total_size = sum(float(trade.get('sz', 0)) for trade in trades)
             
@@ -192,7 +193,7 @@ class HyperliquidClient(CryptoBrokerClient):
             data = [sym for sym in symbols if sym['name'] == coin]
             sym = data[0] if data else None
             if not sym:
-                raise Exception(f"Symbol {symbol} not found.")
+                raise Exception(_("Symbol %s not found.") % symbol)
             return {
                 "symbol": sym.get('name'),
                 "base_asset": coin,
@@ -277,7 +278,7 @@ class HyperliquidClient(CryptoBrokerClient):
                 "1M": 2592000
             }
             if interval not in interval_map:
-                raise Exception(f"Unsupported interval: {interval}")
+                raise Exception(_("Unsupported interval: %s") % interval)
             interval_seconds = interval_map[interval]
             start_time = int(time.time() * 1000) - (limit * interval_seconds * 1000)
             end_time = int(time.time() * 1000)

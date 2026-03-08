@@ -4,6 +4,7 @@ import requests
 import time
 from dateutil import parser
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 
 from automate.functions.brokers.broker import BrokerClient
@@ -42,7 +43,7 @@ class ActTrader(BrokerClient):
             client = ActTrader(username=username, password=password, type=type)
             client.login()
             if client.accessToken is None or client.account_id is None:
-                raise Exception("Login failed")
+                raise Exception(_("Login failed"))
             return {"error": None, "valid": True}
         except Exception as e:
             return {"error": str(e), "valid": False}
@@ -92,7 +93,7 @@ class ActTrader(BrokerClient):
             account = self.get_account_info()
             self.account_id = account.get('AccountID', None)
         else:
-            raise Exception("Login failed: " + response.get('message', 'Unknown error'))
+            raise Exception(_("Login failed: %s") % response.get('message', _("Unknown error")))
         
     def get_account_info(self):
         try:
@@ -114,11 +115,11 @@ class ActTrader(BrokerClient):
                 if accounts:
                     return accounts[0]  # Return the first account
                 else:
-                    raise Exception("No accounts found.")
+                    raise Exception(_("No accounts found."))
             else:
-                raise Exception("Failed to get account info: " + response.get('message', 'Unknown error'))
+                raise Exception(_("Failed to get account info: %s") % response.get('message', _("Unknown error")))
         except Exception as e:
-            raise Exception("Get account info Error: %s" % e)
+            raise Exception(_("Get account info Error: %s") % e)
 
     def get_account_currency(self):
         try:
@@ -126,7 +127,7 @@ class ActTrader(BrokerClient):
             currency = account_info.get('Currency', 'USD')
             return currency
         except Exception as e:
-            raise Exception("Get currency Error: %s" % e)
+            raise Exception(_("Get currency Error: %s") % e)
 
     def get_account_balance(self, symbol: str = None):
         try:
@@ -135,7 +136,7 @@ class ActTrader(BrokerClient):
             equity = account_info.get('Equity', 0.0)
             return balance, equity
         except Exception as e:
-            raise Exception("Get balance Error: %s" % e)
+            raise Exception(_("Get balance Error: %s") % e)
         
     def adjust_symbol_name(self, symbol: str) -> str:
         return symbol
@@ -173,11 +174,11 @@ class ActTrader(BrokerClient):
 
                         self.symbols_map[symbol] = inst
                         return inst
-                raise Exception(f"Symbol {symbol} not found.")
+                raise Exception(_("Symbol %s not found.") % symbol)
             else:
-                raise Exception("Failed to get symbol info: " + response.get('message', 'Unknown error'))
+                raise Exception(_("Failed to get symbol info: %s") % response.get('message', _("Unknown error")))
         except Exception as e:
-            raise Exception("Get symbol Error: %s" % e) 
+            raise Exception(_("Get symbol Error: %s") % e) 
         
     def set_quantity_size(self, quantity: float, min_size: float, trade_size_digits: int) -> float:
         min_size_decimals = len(str(min_size).split('.')[1]) if '.' in str(min_size) else 0
@@ -234,7 +235,7 @@ class ActTrader(BrokerClient):
                 orderInfo = self.get_open_trade_by_custom_id(symbol, custom_id)
                 # print(orderInfo)
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': orderInfo.get('trade_id'),
                     'symbol': symbol,
                     'price': orderInfo.get('price'),
@@ -246,7 +247,7 @@ class ActTrader(BrokerClient):
             else:
                 raise Exception(response.get('message', 'Unknown error'))
         except Exception as e:
-            raise Exception("Open trade Error: %s" % e)
+            raise Exception(_("Open trade Error: %s") % e)
             
 
 
@@ -295,7 +296,7 @@ class ActTrader(BrokerClient):
                 # print('Closed position info:', closed_position)
 
                 return {
-                    'message': f"Trade closed with order ID {order_id}.",
+                    'message': _("Trade closed with order ID %s.") % order_id,
                     'order_id': order_id,
                     'symbol': symbol,
                     'qty': quantity,
@@ -307,7 +308,7 @@ class ActTrader(BrokerClient):
             else:
                 raise Exception(response.get('message', 'Unknown error'))
         except Exception as e:
-            raise Exception("Close trade Error: %s" % e)
+            raise Exception(_("Close trade Error: %s") % e)
         
     def get_order_info(self, symbol, order_id):
         symbol = self.adjust_symbol_name(symbol)
@@ -355,9 +356,9 @@ class ActTrader(BrokerClient):
                     "currency": self.get_account_currency()
                 }
             else:
-                raise Exception("Failed to get open trades: " + response.get('message', 'Unknown error'))
+                raise Exception(_("Failed to get open trades: %s") % response.get('message', _("Unknown error")))
         except Exception as e:
-            raise Exception("Get trade error: %s" % e)
+            raise Exception(_("Get trade error: %s") % e)
 
     def get_open_trade(self, symbol, trade_id: str) -> OrderInfo:
         try:
@@ -378,7 +379,7 @@ class ActTrader(BrokerClient):
                 open_trades = response.get('result', [])
                 trade = next((t for t in open_trades if str(t.get('TradeID')) == str(trade_id)), None)
                 if trade is None:
-                    raise Exception(f"Open trade with ID {trade_id} not found.")
+                    raise Exception(_("Open trade with ID %s not found.") % trade_id)
                 
                 time_str = trade.get("OpenTime")
                 if time_str:
@@ -399,9 +400,9 @@ class ActTrader(BrokerClient):
                     "currency": self.get_account_currency()
                 }
             else:
-                raise Exception("Failed to get open trades: " + response.get('message', 'Unknown error'))
+                raise Exception(_("Failed to get open trades: %s") % response.get('message', _("Unknown error")))
         except Exception as e:
-            raise Exception("Get open trade error: %s" % e)
+            raise Exception(_("Get open trade error: %s") % e)
         
     def get_closed_trades(self, symbol: str, trade_id: str, from_date: str = None, to_date: str = None) -> list:
         try:
@@ -460,9 +461,9 @@ class ActTrader(BrokerClient):
                 response_trades.sort(key=lambda t: t["close_time"] or "")
                 return response_trades
             else:
-                raise Exception("Failed to get closed trades: " + response.get('message', 'Unknown error'))
+                raise Exception(_("Failed to get closed trades: %s") % response.get('message', _("Unknown error")))
         except Exception as e:
-            raise Exception("Get closed trades Error: %s" % e)
+            raise Exception(_("Get closed trades Error: %s") % e)
 
     def get_current_price(self, symbol):
         try:
@@ -471,13 +472,13 @@ class ActTrader(BrokerClient):
             bid = symbol_info.get('Buy', None)
             ask = symbol_info.get('Sell', None)
             if bid is None or ask is None:
-                raise Exception(f"Could not retrieve current price for symbol {symbol}")
+                raise Exception(_("Could not retrieve current price for symbol %s") % symbol)
             return {
                 "bid": bid,
                 "ask": ask
             }
         except Exception as e:
-            raise Exception("Get price Error: %s" % e)
+            raise Exception(_("Get price Error: %s") % e)
 
     def get_trading_pairs(self):
         try:
@@ -497,9 +498,9 @@ class ActTrader(BrokerClient):
                 symbols = [inst['Symbol'] for inst in instruments]
                 return symbols
             else:
-                raise Exception("Failed to get trading pairs: " + response.get('message', 'Unknown error'))
+                raise Exception(_("Failed to get trading pairs: %s") % response.get('message', _("Unknown error")))
         except Exception as e:
-            raise Exception("Get trading pairs Error: %s" % e)
+            raise Exception(_("Get trading pairs Error: %s") % e)
 
     def get_history_candles(self, symbol, interval, limit = 500):
         symbol = self.adjust_symbol_name(symbol)
@@ -520,7 +521,7 @@ class ActTrader(BrokerClient):
 
             return data
         except Exception as e:
-            raise Exception("Market and account data Error: %s" % e)
+            raise Exception(_("Market and account data Error: %s") % e)
 
          
 
@@ -543,7 +544,7 @@ class HankoTradeClient(ActTrader):
         try:
             client = HankoTradeClient(username=username, password=password, type=type)
             if client.accessToken is None:
-                raise Exception("Login failed")
+                raise Exception(_("Login failed"))
             return {"error": None, "valid": True}
         except Exception as e:
             return {"error": str(e), "valid": False}

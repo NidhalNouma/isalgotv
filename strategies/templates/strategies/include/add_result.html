@@ -1,7 +1,8 @@
+{% load i18n %}
 <div class="mb-4">
   {% if results|length > 0 %}
     {% if user.is_authenticated and strategy in user_profile.strategies.all %}
-      <button class="btn-text text-sm font-semibold underlinei" id="add-result-btn" onclick="openModel('add-result-modal')">Share your report</button>
+      <button class="btn-text text-sm font-semibold underlinei" id="add-result-btn" onclick="openModel('add-result-modal')">{% trans 'Share your report' %}</button>
     {% elif user.is_authenticated and not has_subscription and strategy.premium != 'VIP' %}
       {% comment %} <button class="btn-text text-sm font-semibold underlinei" onclick="openModel('upgrade-modal')">Share your report</button> {% endcomment %}
     {% endif %}

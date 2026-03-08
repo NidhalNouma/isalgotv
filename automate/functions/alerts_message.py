@@ -1,5 +1,6 @@
 import re
 import time
+from django.utils.translation import gettext as _
 from automate.functions.alerts_logs_trades import process_alerts_trades, save_log
 
 def manage_alert(message, account):    
@@ -29,22 +30,22 @@ def manage_alert(message, account):
                 strategy_id = alert_data.get('strategy_ID', None)
 
                 if not custom_id:
-                    raise Exception("No ID found in alert message.")
+                    raise Exception(_("No ID found in alert message."))
 
                 if not action:
-                    raise Exception("No action found in alert message.")
+                    raise Exception(_("No action found in alert message."))
 
                 if not symbol:
-                    raise Exception("No symbol found in alert message.")
+                    raise Exception(_("No symbol found in alert message."))
 
                 if not side:
-                    raise Exception("No side found in alert message.")
+                    raise Exception(_("No side found in alert message."))
                 
                 if side not in ['BUY', 'SELL']:
-                    raise Exception("Invalid side value in alert message. Must be 'BUY' or 'SELL'.")
+                    raise Exception(_("Invalid side value in alert message. Must be 'BUY' or 'SELL'."))
 
                 if not volume and action == 'Entry':
-                    raise Exception("No volume found in alert message.")
+                    raise Exception(_("No volume found in alert message."))
 
                 if reverse:
                     custom_id = f"{custom_id}R{reverse}"
@@ -115,7 +116,7 @@ def extract_alert_data(alert_message):
 
                 # Allow only safe characters (numbers, ., *, /)
                 if not re.match(r'^[0-9\.\*/\s]+$', expr):
-                    raise ValueError(f"Invalid volume expression: {expr}")
+                    raise ValueError(_("Invalid volume expression: %s") % expr)
 
                 # Safely evaluate the math part
                 result = eval(expr)
@@ -126,7 +127,7 @@ def extract_alert_data(alert_message):
 
                 value = result
             except Exception as e:
-                raise ValueError(f"Error parsing volume '{value}': {e}")
+                raise ValueError(_("Error parsing volume '%s': %s") % (value, e))
 
             data['Volume'] = value
         elif key == 'P':
@@ -140,7 +141,7 @@ def extract_alert_data(alert_message):
                 data['Partial'] = round(float(str(value).strip()), 2)
             except Exception as e:
                 print(f"Error parsing partial value '{value}': {e}")
-                raise ValueError(f"Error parsing partial value '{value}'")
+                raise ValueError(_("Error parsing partial value '%s'") % value)
                 
         elif key == 'ID' or key == 'SID':
             # print('Parsing ID value:', value)

@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="mb-4">
   {% if comments|length > 0 %}
     {% if user.is_authenticated and strategy in user_profile.strategies.all %}
@@ -6,7 +7,7 @@
       id="add-comment-btn"
       onclick='toggleForm("add-comment-btn", "add-comment-form")'
     >
-      Share Your Thoughts
+      {% trans "Share Your Thoughts" %}
     </button>
     {% elif user.is_authenticated and not has_subscription and strategy.premium != 'VIP' %}
     {% comment %} <button
@@ -88,14 +89,14 @@
               d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
             />
           </svg>
-          <span class="sr-only">Upload image</span>
+          <span class="sr-only">{% trans "Upload image" %}</span>
         </button>
       </div>
       <textarea
         name="description"
         rows="5"
         class="block mx-1.5 p-2 w-full text-sm input-text"
-        placeholder="Your thoughts on this strategy and how we can improve it..."
+        placeholder="{% trans "Your thoughts on this strategy and how we can improve it..." %}"
       ></textarea>
       <button
         onclick="openLoader('', '-add-comment', 'inline-flex')"
@@ -114,7 +115,7 @@
             d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"
           />
         </svg>
-        <span class="sr-only">Send message</span>
+        <span class="sr-only">{% trans "Send message" %}</span>
       </button>
       <button
         id="spinner-add-comment"

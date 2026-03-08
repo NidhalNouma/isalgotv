@@ -1,6 +1,7 @@
+{% load i18n %}
 <form hx-post="{% url 'create_strategy' %}" class="w-full" enctype="multipart/form-data">
   {% csrf_token %}
-  <label for="strategy-email" class="input-label">Email</label>
+  <label for="strategy-email" class="input-label">{% trans 'Email' %}</label>
   <div class="relative mb-6">
     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
       <svg aria-hidden="true" class="w-5 h-5 text-text/60" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -12,9 +13,11 @@
   </div>
 
   <div class="relative mb-6">
-    <label for="strategy-content" class="input-label">Describe your strategy</label>
+    <label for="strategy-content" class="input-label">{% trans 'Describe your strategy' %}</label>
     <textarea name="content" id="strategy-content" rows="6" class="w-full input-text" placeholder="Describe how your strategy works, include entry and exit rules, indicators used, and any other relevant details..."></textarea>
-    <p class="text-xs text-text/40 mt-1">Minimum 200 characters</p>
+    <p class="text-xs text-text/40 mt-1">
+      {% trans 'Minimum 200 characters' %}
+    </p>
   </div>
 
   <div class="relative mb-0 border border-text/60 rounded-md p-2 flex items-center">
@@ -25,8 +28,8 @@
       </svg>
     </button>
     <p class="text-text text-xs ml-3">
-      Attach screenshots showing entry & exit points.<br />
-      Up to 5 files, max 10 MB each.
+      {% trans 'Attach screenshots showing entry & exit points.' %}<br />
+      {% trans 'Up to 5 files, max 10 MB each.' %}
     </p>
   </div>
 
@@ -39,11 +42,15 @@
 
   <button type="submit" class="btn-accent mb-2 w-full" id="btn-strategy-request" onclick="document.getElementById('strategy-request-form-errors').innerHTML = ''; openLoader('-strategy-request', '', 'flex')">
     <div class="flex items-center justify-center w-full">
-      Send Request<svg class="h-4 w-4 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      {% trans 'Send Request' %}
+      <svg class="h-4 w-4 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path fill="none" stroke-width="2" d="M22,3 L2,11 L20.5,19 L22,3 Z M10,20.5 L13,16 M15.5,9.5 L9,14 L9.85884537,20.0119176 C9.93680292,20.5576204 10.0751625,20.5490248 10.1651297,20.009222 L11,15 L15.5,9.5 Z"></path>
       </svg>
     </div>
   </button>
 
-  <button id="spinner-strategy-request" disabled type="button" class="btn-accent mb-2 w-full hidden">Sending{% include 'svg/spinner.html' with class='ml-1.5 h-4' %}</button>
+  <button id="spinner-strategy-request" disabled type="button" class="btn-accent mb-2 w-full hidden">
+    {% trans 'Sending' %}
+    {% include 'svg/spinner.html' with class='ml-1.5 h-4' %}
+  </button>
 </form>

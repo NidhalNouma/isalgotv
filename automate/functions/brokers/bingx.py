@@ -10,6 +10,7 @@ import json
 
 from automate.functions.brokers.broker import CryptoBrokerClient
 from automate.functions.brokers.types import *
+from django.utils.translation import gettext as _
 
 class BingxClient(CryptoBrokerClient):
     BASE_URL = 'https://open-api.bingx.com'
@@ -20,8 +21,8 @@ class BingxClient(CryptoBrokerClient):
             client = BingxClient(api_key=api_key, api_secret=secret_key, account_type=account_type)
             account = client.get_account_info()
             if not account:  # Example error code handling
-                return {'error': "Invalid API key or secret.", "valid": False}
-            return {'message': "API credentials are valid.", "valid": True}
+                return {'error': _("Invalid API key or secret."), "valid": False}
+            return {'message': _("API credentials are valid."), "valid": True}
         except Exception as e:
             return {'error': str(e), "valid": False}
 
@@ -78,7 +79,7 @@ class BingxClient(CryptoBrokerClient):
                 return None
         else:
             print("No response from server")
-            raise Exception("No response from server")
+            raise Exception(_("No response from server"))
         
 
     def get_account_balance(self, symbol:str = None) -> AccountBalance:
@@ -125,7 +126,7 @@ class BingxClient(CryptoBrokerClient):
 
         response = self._send_request('GET', endpoint, params)
         if response.get("code") != 0:
-            raise ValueError(response.get("msg", "Could not fetch exchange info"))
+            raise ValueError(response.get("msg", _("Could not fetch exchange info")))
         response_data = response.get("data")
 
         if self.account_type == 'S':
@@ -194,7 +195,7 @@ class BingxClient(CryptoBrokerClient):
                             'min_value': min_value,
                         }
             
-        raise ValueError("Symbol not found")
+        raise ValueError(_("Symbol not found"))
     
 
     def open_trade(self, symbol: str, side: str, quantity: float, custom_id: str = None, oc = False) -> OpenTrade:
@@ -252,7 +253,7 @@ class BingxClient(CryptoBrokerClient):
                 if response.get("code") != 0:
                     error_msg = response.get('msg')
                     if error_msg in ('', None):
-                        error_msg = 'an error occured! #' + str(response.get("code"))
+                        error_msg = _("An error occurred! #%s") % str(response.get("code"))
 
                     raise ValueError(error_msg)
                 order_data = response.get("data")
@@ -273,7 +274,7 @@ class BingxClient(CryptoBrokerClient):
             
             if order_details:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': order_symbol,
@@ -290,7 +291,7 @@ class BingxClient(CryptoBrokerClient):
             
             else:
                 return {
-                    'message': f"Trade opened with order ID {order_id}.",
+                    'message': _("Trade opened with order ID %s.") % order_id,
                     'order_id': order_id,
                     'closed_order_id': order_id,
                     'symbol': order_symbol,
@@ -343,7 +344,7 @@ class BingxClient(CryptoBrokerClient):
                     if trade and len(trade) > 0:
                         trade = trade[0]
                     else:
-                        raise Exception('Order not found')
+                        raise Exception(_('Order not found'))
 
                 # print(trade)
 
@@ -387,7 +388,7 @@ class BingxClient(CryptoBrokerClient):
                     }
                 }
             else:
-                raise ValueError(f"Order not found")
+                raise ValueError(_("Order not found"))
         except Exception as e:
             print(f'error getting order {order_id} info ', e)
             return None
@@ -426,7 +427,7 @@ class BingxClient(CryptoBrokerClient):
 
                 return float(trade.get('price'))
             else:
-                raise Exception(response_data.get("msg", "Could not fetch price"))
+                raise Exception(response_data.get("msg", _("Could not fetch price")))
         except Exception as e:
             raise ValueError(str(e))
         
@@ -454,7 +455,7 @@ class BingxClient(CryptoBrokerClient):
                         pairs.append(s.get("symbol"))
                 return pairs
             else:
-                raise Exception(response_data.get("msg", "Could not fetch trading pairs"))
+                raise Exception(response_data.get("msg", _("Could not fetch trading pairs")))
         except Exception as e:
             raise ValueError(str(e))
         
@@ -500,7 +501,7 @@ class BingxClient(CryptoBrokerClient):
                         })
                 return candles
             else:
-                raise Exception(response_data.get("msg", "Could not fetch candles"))
+                raise Exception(response_data.get("msg", _("Could not fetch candles")))
         except Exception as e:
             raise ValueError(str(e))
         
@@ -535,6 +536,6 @@ class BingxClient(CryptoBrokerClient):
                     'asks': [{"price":float(price), "qty":float(quantity)} for price, quantity in data.get('asks', [])],
                 }
             else:
-                raise Exception(response_data.get("msg", "Could not fetch order book"))
+                raise Exception(response_data.get("msg", _("Could not fetch order book")))
         except Exception as e:
             raise ValueError(str(e))

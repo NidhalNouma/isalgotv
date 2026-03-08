@@ -5,6 +5,7 @@ from django.db.models import Q
 from decimal import Decimal
 from django.utils import timezone
 import time
+from django.utils.translation import gettext as _
 
 from automate.models import *
 
@@ -86,7 +87,7 @@ def check_crypto_credentials(broker_type, api_key, api_secret, phrase, account_t
 
     client_cls = CLIENT_CLASSES.get(broker_type)
     if client_cls is None:
-        raise Exception(f"Unsupported broker type: {broker_type}")
+        raise Exception(_("Unsupported broker type: %s") % broker_type)
     params = CREDENTIAL_PARAMS[broker_type]
     return client_cls.check_credentials(api_key, api_secret, account_type=account_type, **params)
 
@@ -113,7 +114,7 @@ def check_forex_credentials(broker_type, username, password, server, type="D", a
     elif broker_type == 'tastytrade':
         return TastytradeClient.check_credentials(username=username, password=password, server=server, type=type, account_id=account_id)
     else:
-        raise Exception("Unsupported broker type.")
+        raise Exception(_("Unsupported broker type."))
 
     
 def open_trade_by_account(account, symbol, side, volume, custom_id, opposit_trades=[]):
@@ -122,7 +123,7 @@ def open_trade_by_account(account, symbol, side, volume, custom_id, opposit_trad
         
         client_cls = CLIENT_CLASSES.get(broker_type)
         if client_cls is None:
-            raise Exception(f"Unsupported broker type: {broker_type}")
+            raise Exception(_("Unsupported broker type: %s") % broker_type)
         
         client = client_cls(account=account)
 
@@ -140,7 +141,7 @@ def close_trade_by_account(account, trade_to_close, symbol, side, volume_close):
         
         client_cls = CLIENT_CLASSES.get(broker_type)
         if client_cls is None:
-            raise Exception(f"Unsupported broker type: {broker_type}")
+            raise Exception(_("Unsupported broker type: %s") % broker_type)
         
         client = client_cls(account=account, current_trade=trade_to_close)
         return client.close_trade(symbol, side, volume_close)
@@ -154,7 +155,7 @@ def get_trade_data(account, trade):
 
         client_cls = CLIENT_CLASSES.get(broker_type)
         if client_cls is None:
-            raise Exception(f"Unsupported broker type: {broker_type}")
+            raise Exception(_("Unsupported broker type: %s") % broker_type)
         
         client = client_cls(account=account)
         return client.get_final_trade_details(trade)
@@ -194,7 +195,7 @@ def save_log(response_status, alert_message, response_message, account, latency_
             object_id=account.id
         )
     else:
-        raise Exception("Account model not supported.")
+        raise Exception(_("Account model not supported."))
 
 
     return log
@@ -241,7 +242,7 @@ def save_new_trade(custom_id, symbol, side, opend_trade, account, strategy_id):
             )
 
         else:
-            raise ValueError(f"Unsupported account model: {type(account)}")
+            raise ValueError(_("Unsupported account model: %s") % type(account))
         
         return trade
     except Exception as e:
@@ -337,7 +338,7 @@ def volume_to_close(trade, partial):
             volume_to_close = Decimal(trade.remaining_volume)
         
         if Decimal(trade.remaining_volume) <= 0:
-            raise Exception("No volume left to close.")
+            raise Exception(_("No volume left to close."))
         
         # Return as a fixed-point decimal string
         return format(volume_to_close, 'f')
@@ -353,7 +354,7 @@ def process_alerts_trades(alerts_data, account, start):
         client_cls = CLIENT_CLASSES.get(broker_type)
         if client_cls is None:
             exce = {
-                'error': f"Unsupported broker type: {broker_type}"
+                'error': _("Unsupported broker type: %s") % broker_type
             }
             raise Exception(exce)
         
@@ -464,7 +465,7 @@ def close_open_trade(account, trade, volume=None):
         
         client_cls = CLIENT_CLASSES.get(broker_type)
         if client_cls is None:
-            raise Exception(f"Unsupported broker type: {broker_type}")
+            raise Exception(_("Unsupported broker type: %s") % broker_type)
         
         client = client_cls(account=account, current_trade=trade)
         volume_to_close = volume if volume is not None and volume > 0 and volume <= trade.remaining_volume else trade.remaining_volume
