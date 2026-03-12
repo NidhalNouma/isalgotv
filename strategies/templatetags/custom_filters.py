@@ -51,7 +51,7 @@ def price_interval(interval_count, interval):
             return _("/ Half Year")
         elif interval_count == 12 and (interval == 'month' or interval == 'months'):
                 return _("/ Year")
-        return _("/ %s %ss") % (interval_count, interval)
+        return _("/ %(count)s %(interval)ss") % {'count': interval_count, 'interval': interval}
     else:
         return _("/ %s") % interval
 

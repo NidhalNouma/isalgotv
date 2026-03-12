@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
-from django.utils.translation import gettext as _, get_language
+from django.utils.translation import gettext as _, get_language, activate
+from django.views.i18n import set_language as django_set_language
 from django_htmx.http import trigger_client_event
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count, Q
@@ -110,7 +111,7 @@ def market_news(language='en'):
             return JsonResponse({"error": "Missing NEWS_API_KEY in settings."}, status=500)
 
         url = "https://newsapi.org/v2/everything"
-        query = _("TradingView Or trading strategies OR forex trading strategies OR crypto trading strategies OR stock trading strategies")
+        query = _("TradingView OR trading strategies OR forex trading strategies OR crypto trading strategies OR stock trading strategies")
 
         params = {
             "q": query,
@@ -119,6 +120,8 @@ def market_news(language='en'):
             "sortBy": "publishedAt",
             "apiKey": NEWS_API_KEY,
         }
+
+        # print(f"Fetching news with params: {params}")
 
         response = requests.get(url, params=params)
         data = response.json()
@@ -318,6 +321,7 @@ def edit_tradingview_username(request):
             if strategy.is_live:
                 access_response = profile_user.give_tradingview_access(strategy.id, access=True)
                 if access_response.get('error'):
+                    continue
 
                     error = access_response.get('error')
                     response = render(request, 'include/errors.html', context = {"error": error})
@@ -699,11 +703,11 @@ def subscription_stripeform(request):
 
             if lifetime_params:
                 print("New lifetime has been created ...")
-                send_new_lifetime_email_task(request.user.email)
+                send_new_lifetime_email_task(request.user.email, language=user_profile.language)
             else:
                 print("New subscription has been created ...", subscription.id)
                 if not old_subscription_deleted:
-                    send_new_member_email_task(request.user.email)
+                    send_new_member_email_task(request.user.email, language=user_profile.language)
 
             # Handle free-trial UI if requested
             from_get_started = request.GET.get('get_started', '')
@@ -735,7 +739,7 @@ def cancel_subscription(request):
                 context['subscription'] = subscription
 
                 if subscription and subscription.get('cancel_at_period_end', False):
-                    send_cancel_membership_email_task(request.user.email)
+                    send_cancel_membership_email_task(request.user.email, language=user_profile.language)
 
                 return render(request, 'include/settings/membership.html', context)
             except Exception as e:
@@ -1002,3 +1006,15 @@ def api_send_marketing_email(request):
         "message": f"Marketing email sent to {len(emails)} recipient(s).",
         "recipient_count": len(emails),
     })
+
+
+@require_http_methods(["POST"])
+def set_user_language(request):
+    """Wraps Django's set_language and persists the choice to User_Profile."""
+    response = django_set_language(request)
+    lang_code = request.POST.get('language')
+    if lang_code and request.user.is_authenticated:
+        profile = getattr(request, 'user_profile', None)
+        if profile and lang_code != profile.language:
+            profile.set_language(lang_code)
+    return response

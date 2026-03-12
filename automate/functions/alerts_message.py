@@ -127,7 +127,7 @@ def extract_alert_data(alert_message):
 
                 value = result
             except Exception as e:
-                raise ValueError(_("Error parsing volume '%s': %s") % (value, e))
+                raise ValueError(_("Error parsing volume '%(value)s': %(error)s") % {'value': value, 'error': e})
 
             data['Volume'] = value
         elif key == 'P':

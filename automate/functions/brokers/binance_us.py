@@ -81,7 +81,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return None
         except Exception as e:
             print('Error getting exchange info:', e)
-            raise Exception(_("Error getting exchange info for %s: %s") % (symbol, str(e)))
+            raise Exception(_("Error getting exchange info for %(symbol)s: %(error)s") % {'symbol': symbol, 'error': str(e)})
 
     def get_account_balance(self, symbol=None) -> AccountBalance:
         try:
@@ -287,7 +287,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return float(response['price'])
         except Exception as e:
             print('Error getting exchange price:', e)
-            raise Exception(_("Error getting exchange price for %s: %s") % (symbol, str(e)))
+            raise Exception(_("Error getting exchange price for %(symbol)s: %(error)s") % {'symbol': symbol, 'error': str(e)})
         
     def get_history_candles(self, symbol, interval, limit = 500):
         try:
@@ -320,7 +320,7 @@ class BinanceUSClient(CryptoBrokerClient):
             return candles
         except Exception as e:
             print('Error getting historical candles:', e)
-            raise Exception(_("Error getting historical candles for %s: %s") % (symbol, str(e)))
+            raise Exception(_("Error getting historical candles for %(symbol)s: %(error)s") % {'symbol': symbol, 'error': str(e)})
 
     def get_order_book(self, symbol, limit = 100):
         try:
@@ -343,7 +343,7 @@ class BinanceUSClient(CryptoBrokerClient):
             }
         except Exception as e:
             print('Error getting order book:', e)
-            raise Exception(_("Error getting order book for %s: %s") % (symbol, str(e)))
+            raise Exception(_("Error getting order book for %(symbol)s: %(error)s") % {'symbol': symbol, 'error': str(e)})
 
     def get_trading_pairs(self):
         try:

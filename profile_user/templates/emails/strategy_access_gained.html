@@ -1,49 +1,57 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Strategy Access Granted - IsAlgo
+  {% trans 'Strategy Access Granted - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  You now have full access to {{ strategy_name }}. Let's get you started!
+  {% blocktrans %}You now have full access to {{ strategy_name }}. Let's get you started!{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='strategy.png' header_title='Strategy Access Granted' header_subtitle=strategy_name header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
+  {% trans 'Strategy Access Granted' as header_title_text %}
+  {% with icon_name='strategy.png' header_title=header_title_text header_subtitle=strategy_name header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
-    Congratulations! You now have full access to <strong>{{ strategy_name }}</strong>. Your subscription has been successfully activated, and you're ready to start your automated trading journey.
+    {% blocktrans %}Congratulations! You now have full access to <strong>{{ strategy_name }}</strong>. Your subscription has been successfully activated, and you're ready to start your automated trading journey.{% endblocktrans %}
   </p>
 
   <!-- Getting started card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">What's next:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans "What's next:" %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> Review strategy performance and settings
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> {% trans 'Review strategy performance and settings' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> Connect your account to receive trade signals
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> {% trans 'Connect your account to receive trade signals' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> Configure your automation and go live
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> {% trans 'Configure your automation and go live' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">If you have any questions or need assistance getting started, our support team is here to help.</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'If you have any questions or need assistance getting started, our support team is here to help.' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=strategy_url primary_text='View Strategy' secondary_url=automate_url secondary_text='Set Up Automation' %}
+  {% trans 'View Strategy' as cta_primary_text %}
+  {% trans 'Set Up Automation' as cta_secondary_text %}
+  {% with primary_url=strategy_url primary_text=cta_primary_text secondary_url=automate_url secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

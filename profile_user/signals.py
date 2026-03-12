@@ -17,8 +17,8 @@ def user_profile_save(sender, instance, created, **kwargs):
         user_email = instance.user.email
         if user_email:
             # print('New user signal fired ...')
-            send_welcome_email_task(user_email, user_email)
-            # send_welcome_email_task.delay(user_email, user_email)
+            send_welcome_email_task(user_email, user_email, instance.language)
+            # send_welcome_email_task.delay(user_email, user_email, instance.language)
 
 @receiver(post_init, sender=User_Profile)
 def store_original_amount(sender, instance, **kwargs):
@@ -32,4 +32,4 @@ def detect_amount_to_pay_change(sender, instance, **kwargs):
     if instance._original_amount_to_pay != instance.amount_to_pay:
         if instance.amount_to_pay > 0:
             print(f"amount_to_pay changed: {instance._original_amount_to_pay} → {instance.amount_to_pay}")
-            send_amount_to_pay_email_task(instance.user.email, instance.amount_to_pay)
+            send_amount_to_pay_email_task(instance.user.email, instance.amount_to_pay, instance.language)

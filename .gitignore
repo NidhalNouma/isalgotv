@@ -166,3 +166,4 @@ gh-deploy-key.pub
 
 # Compiled translation files
 *.mo
+/locale/*.json

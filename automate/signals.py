@@ -32,6 +32,7 @@ def notify_automate_log_error(sender, instance, created, **kwargs):
             account_name,
             instance.alert_message,
             instance.response_message,
+            language=user_profile.language if user_profile else 'en'
         )
     except Exception as e:
         print(f" Error sending automate log error email: {e}")

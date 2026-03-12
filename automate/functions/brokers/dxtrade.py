@@ -61,7 +61,7 @@ class DxtradeClient(BrokerClient):
         print("response status code:", resp.status_code)
 
         if resp.status_code != 200:
-            raise Exception(_("Login failed: HTTP %s - %s") % (resp.status_code, resp.text))
+            raise Exception(_("Login failed: HTTP %(status)s - %(text)s") % {'status': resp.status_code, 'text': resp.text})
         
         resp_json = resp.json()
         # After login
@@ -147,7 +147,7 @@ class DxtradeClient(BrokerClient):
         compact_json = json.dumps(body, separators=(",", ":"))
         resp = self.s.post(url, headers=headers, data=compact_json)
         if resp.status_code != 200:
-            raise Exception(_("Open trade failed: HTTP %s - %s") % (resp.status_code, resp.text))
+            raise Exception(_("Open trade failed: HTTP %(status)s - %(text)s") % {'status': resp.status_code, 'text': resp.text})
 
         return OpenTrade(**resp.json())
 
@@ -172,7 +172,7 @@ class DxtradeClient(BrokerClient):
 
         resp = self.s.get(url, headers=headers)
         if resp.status_code != 200:
-            raise Exception(_("Failed to fetch account info: HTTP %s - %s") % (resp.status_code, resp.text))
+            raise Exception(_("Failed to fetch account info: HTTP %(status)s - %(text)s") % {'status': resp.status_code, 'text': resp.text})
 
         print(resp.json())
 

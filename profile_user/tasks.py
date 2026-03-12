@@ -5,41 +5,41 @@ from django.core.mail import EmailMessage
 from .utils.send_mails import *
 
 @shared_task
-def send_welcome_email_task(user_email, user_name):
-    send_welcome_email(user_email, user_name)
+def send_welcome_email_task(user_email, user_name, language='en'):
+    send_welcome_email(user_email, user_name, language)
 
 @shared_task
-def send_new_member_email_task(user_email):
-    new_member_email(user_email)
+def send_new_member_email_task(user_email, language='en'):
+    new_member_email(user_email, language)
 
 @shared_task
-def send_new_lifetime_email_task(user_email):
-    new_lifetime_email(user_email)
+def send_new_lifetime_email_task(user_email, language='en'):
+    new_lifetime_email(user_email, language)
 
 @shared_task
-def send_cancel_membership_email_task(user_email):
-    cancel_membership_email(user_email)
+def send_cancel_membership_email_task(user_email, language='en'):
+    cancel_membership_email(user_email, language)
 
 @shared_task
-def access_removed_email_task(user_email):
-    access_removed_email(user_email)
+def access_removed_email_task(user_email, language='en'):
+    access_removed_email(user_email, language)
 
 @shared_task
-def overdue_access_removed_email_task(user_email):
-    overdue_access_removed_email(user_email)
+def overdue_access_removed_email_task(user_email, language='en'):
+    overdue_access_removed_email(user_email, language)
 
 @shared_task
-def send_complete_seller_account_email_task(user_email):
-    complete_seller_account(user_email)
+def send_complete_seller_account_email_task(user_email, language='en'):
+    complete_seller_account(user_email, language)
 
 @shared_task
-def send_seller_account_verified_email_task(user_email):
-    seller_account_verified(user_email)
+def send_seller_account_verified_email_task(user_email, language='en'):
+    seller_account_verified(user_email, language)
 
 @shared_task
-def send_amount_to_pay_email_task(user_email, amount):
-    amount_to_pay_email(user_email, amount)
+def send_amount_to_pay_email_task(user_email, amount, language='en'):
+    amount_to_pay_email(user_email, amount, language)
 
 @shared_task
-def send_amount_paid_email_task(user_email, amount):
-    amount_paid_email(user_email, amount)
+def send_amount_paid_email_task(user_email, amount, language='en'):
+    amount_paid_email(user_email, amount, language)

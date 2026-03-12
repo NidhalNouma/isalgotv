@@ -1,56 +1,67 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Account connected - IsAlgo
+  {% trans 'Account connected - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Your account {{ account_name }} has been successfully connected.
+  {% blocktrans %}Your account {{ account_name }} has been successfully connected.{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='automate.png' header_title='Account connected' header_subtitle='Successfully Connected' header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
+  {% trans 'Account connected' as header_title_text %}
+  {% trans 'Successfully Connected' as header_subtitle_text %}
+  {% with icon_name='automate.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(22, 163, 74, 0.1)' header_color='#16a34a' header_border='rgba(22, 163, 74, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
-    Great news! Your account <strong>{{ account_name }}</strong> has been successfully linked and is now connected to IsAlgo.
+    {% blocktrans %}Great news! Your account <strong>{{ account_name }}</strong> has been successfully linked and is now connected to IsAlgo.{% endblocktrans %}
   </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">You can now start automating your trading strategies with this account. Here's how to get started:</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "You can now start automating your trading strategies with this account. Here's how to get started:" %}
+  </p>
 
   <!-- Getting started card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Next steps:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'Next steps:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> Find a strategy that fits your trading goals
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> {% trans 'Find a strategy that fits your trading goals' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> Add the strategy to your tradingview chart
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> {% trans 'Add the strategy to your tradingview chart' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> Get the correct alerts messages and add them to the strategy settings
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> {% trans 'Get the correct alerts messages and add them to the strategy settings' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">4</span> Create a tradingview alert and link it to your automate account via the webhook URL provided in your account
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(22, 163, 74, 0.1); color: #16a34a; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">4</span> {% trans 'Create a tradingview alert and link it to your automate account via the webhook URL provided in your account' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">If you need any help setting up your automations, check out our documentation or contact our support team.</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'If you need any help setting up your automations, check out our documentation or contact our support team.' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=automate_url primary_text='Set Up Automation' secondary_url=docs_url secondary_text='Read Documentation' %}
+  {% trans 'Set Up Automation' as cta_primary_text %}
+  {% trans 'Read Documentation' as cta_secondary_text %}
+  {% with primary_url=automate_url primary_text=cta_primary_text secondary_url=docs_url secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

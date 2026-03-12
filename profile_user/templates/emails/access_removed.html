@@ -1,49 +1,62 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Access Removed - IsAlgo
+  {% trans 'Access Removed - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Your access to IsAlgo strategies has been removed.
+  {% trans 'Your access to IsAlgo strategies has been removed.' %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='access.png' header_title='Access Removed' header_subtitle='Membership Canceled' header_bg='rgba(244, 68, 98, 0.1)' header_color='#f44462' header_border='rgba(244, 68, 98, 0.2)' %}
+  {% trans 'Access Removed' as header_title_text %}
+  {% trans 'Membership Canceled' as header_subtitle_text %}
+  {% with icon_name='access.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(244, 68, 98, 0.1)' header_color='#f44462' header_border='rgba(244, 68, 98, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">We regret to inform you that your access to our premium trading strategies has been revoked. This action was taken either due to the cancellation of your membership or because the payment card associated with your account has insufficient funds or has been declined.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'We regret to inform you that your access to our premium trading strategies has been revoked. This action was taken either due to the cancellation of your membership or because the payment card associated with your account has insufficient funds or has been declined.' %}
+  </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">If you believe this was made in error or if you have any questions, please don't hesitate to reach out — we're here to help.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "If you believe this was made in error or if you have any questions, please don't hesitate to reach out — we're here to help." %}
+  </p>
 
   <!-- What you can do card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">What you can do:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'What you can do:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">1.</span> Update your payment method if it was declined
+          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">1.</span> {% trans 'Update your payment method if it was declined' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">2.</span> Resubscribe to regain access to your strategies
+          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">2.</span> {% trans 'Resubscribe to regain access to your strategies' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">3.</span> Contact us if you believe this was an error
+          <span style="color: #f44462; font-weight: 600; margin-right: 8px;">3.</span> {% trans 'Contact us if you believe this was an error' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">We value your membership and would love to welcome you back. We hope you found value in our strategies during your time with us.</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'We value your membership and would love to welcome you back. We hope you found value in our strategies during your time with us.' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=pricing_url primary_text='Resubscribe Now' secondary_url='mailto:'|add:support_email|add:'?subject=Access%20Removed%20-%20Help' secondary_text='Contact Support' %}
+  {% trans 'Resubscribe Now' as cta_primary_text %}
+  {% trans 'Contact Support' as cta_secondary_text %}
+  {% with primary_url=pricing_url primary_text=cta_primary_text secondary_url='mailto:'|add:support_email|add:'?subject=Access%20Removed%20-%20Help' secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

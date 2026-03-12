@@ -1,182 +1,142 @@
-{% comment %}
-  ============================================================
-  IsAlgo Email Color Reference
-  ============================================================
+{% comment %}============================================================ IsAlgo Email Color Reference ============================================================
 
-  PRIMARY / BRAND
-    #3861f6                              — Primary blue (buttons, links, accents)
-    rgba(56, 97, 246, 0.1)              — Primary tint (icon bg, step circles, card border)
-    rgba(56, 97, 246, 0.2)              — Primary border (card border, badge border)
+PRIMARY / BRAND #3861f6 — Primary blue (buttons, links, accents) rgba(56, 97, 246, 0.1) — Primary tint (icon bg, step circles, card border) rgba(56, 97, 246, 0.2) — Primary border (card border, badge border)
 
-  SUCCESS / GREEN
-    #16a34a                              — Success green (broker added, strategy gained)
-    rgba(22, 163, 74, 0.1)              — Success tint (icon bg, badge bg, step circles)
-    rgba(22, 163, 74, 0.2)              — Success border (badge border)
-    #007a67                              — Success alt / teal (new member, lifetime badge)
-    rgba(0, 122, 103, 0.1)              — Success alt tint (icon bg, badge bg)
-    rgba(0, 122, 103, 0.2)              — Success alt border (badge border)
+SUCCESS / GREEN #16a34a — Success green (broker added, strategy gained) rgba(22, 163, 74, 0.1) — Success tint (icon bg, badge bg, step circles) rgba(22, 163, 74, 0.2) — Success border (badge border) #007a67 — Success alt / teal (new member, lifetime badge) rgba(0, 122, 103, 0.1) — Success alt tint (icon bg, badge bg) rgba(0, 122, 103, 0.2) — Success alt border (badge border)
 
-  WARNING / AMBER
-    #d97706                              — Warning amber (overdue, canceled, deleted)
-    rgba(217, 119, 6, 0.1)              — Warning tint (icon bg, badge bg, step circles)
-    rgba(217, 119, 6, 0.2)              — Warning border (badge border)
+WARNING / AMBER #d97706 — Warning amber (overdue, canceled, deleted) rgba(217, 119, 6, 0.1) — Warning tint (icon bg, badge bg, step circles) rgba(217, 119, 6, 0.2) — Warning border (badge border)
 
-  ERROR / RED
-    #dc2626                              — Error red (access removed, broker suspended)
-    rgba(220, 38, 38, 0.1)              — Error tint (icon bg, badge bg, step circles)
-    rgba(220, 38, 38, 0.2)              — Error border (badge border)
-    #f44462                              — Error alt / pink (membership canceled)
-    rgba(244, 68, 98, 0.1)              — Error alt tint (icon bg, badge bg)
-    rgba(244, 68, 98, 0.2)              — Error alt border (badge border)
+ERROR / RED #dc2626 — Error red (access removed, broker suspended) rgba(220, 38, 38, 0.1) — Error tint (icon bg, badge bg, step circles) rgba(220, 38, 38, 0.2) — Error border (badge border) #f44462 — Error alt / pink (membership canceled) rgba(244, 68, 98, 0.1) — Error alt tint (icon bg, badge bg) rgba(244, 68, 98, 0.2) — Error alt border (badge border)
 
-  BADGE — FREE
-    #08a284                              — Free green (text)
-    rgba(8, 162, 132, 0.1)              — Free tint (badge bg)
-    rgba(8, 162, 132, 0.2)              — Free border (badge border)
+BADGE — FREE #08a284 — Free green (text) rgba(8, 162, 132, 0.1) — Free tint (badge bg) rgba(8, 162, 132, 0.2) — Free border (badge border)
 
-  BADGE — VIP / EXCLUSIVE
-    #d4a017                              — VIP gold (text)
-    rgba(250, 204, 21, 0.1)             — VIP tint (badge bg)
-    rgba(250, 204, 21, 0.2)             — VIP border (badge border)
+BADGE — VIP / EXCLUSIVE #d4a017 — VIP gold (text) rgba(250, 204, 21, 0.1) — VIP tint (badge bg) rgba(250, 204, 21, 0.2) — VIP border (badge border)
 
-  BADGE — ELITE
-    #333333                              — Elite dark (text)
-    rgba(51, 51, 51, 0.1)               — Elite tint (badge bg)
-    rgba(51, 51, 51, 0.2)               — Elite border (badge border)
+BADGE — ELITE #333333 — Elite dark (text) rgba(51, 51, 51, 0.1) — Elite tint (badge bg) rgba(51, 51, 51, 0.2) — Elite border (badge border)
 
-  BADGE — PREMIUM
-    #3861f6                              — Premium blue (same as primary)
-    rgba(56, 97, 246, 0.1)              — Premium tint (badge bg)
-    rgba(56, 97, 246, 0.2)              — Premium border (badge border)
+BADGE — PREMIUM #3861f6 — Premium blue (same as primary) rgba(56, 97, 246, 0.1) — Premium tint (badge bg) rgba(56, 97, 246, 0.2) — Premium border (badge border)
 
-  TEXT
-    #000000                              — Headings, card titles
-    #111827                              — Strong / bold text, link titles
-    #333333                              — Body text, secondary button text
-    #374151                              — Paragraph text (welcome email)
-    #6b7280                              — Muted text, descriptions, footer links
-    #9ca3af                              — Copyright text
+TEXT #000000 — Headings, card titles #111827 — Strong / bold text, link titles #333333 — Body text, secondary button text #374151 — Paragraph text (welcome email) #6b7280 — Muted text, descriptions, footer links #9ca3af — Copyright text
 
-  BACKGROUNDS
-    #e7edee                              — Page / body background
-    #ffffff                              — Content card background
-    #f9fafb                              — Card background, footer background
+BACKGROUNDS #e7edee — Page / body background #ffffff — Content card background #f9fafb — Card background, footer background
 
-  BORDERS
-    #e5e7eb                              — Card border, divider, header border, secondary button border, list-item border
+BORDERS #e5e7eb — Card border, divider, header border, secondary button border, list-item border
 
-  BUTTON
-    #3861f6 bg + #ffffff text            — Primary button (on <td>)
-    #e5e7eb 2px border + #333333 text    — Secondary button (on <td>)
-  ============================================================
-{% endcomment %} 
+BUTTON #3861f6 bg + #ffffff text — Primary button (on<td>
+  ) #e5e7eb 2px border + #333333 text — Secondary button (on<td>
+    ) ============================================================{% endcomment %}
+    {% load i18n %}
 
-
-<!DOCTYPE html>
-<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="supported-color-schemes" content="light dark" />
-    <title>
-      {% block title %}
-        IsAlgo
-      {% endblock %}
-    </title>
-    <!--                                                              [if mso]>
+    <!DOCTYPE html>
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="supported-color-schemes" content="light dark" />
+        <title>
+          {% block title %}
+            IsAlgo
+          {% endblock %}
+        </title>
+        <!--                                                               [if mso]>
   <xml>
     <o:OfficeDocumentSettings>
       <o:PixelsPerInch>96</o:PixelsPerInch>
       <o:AllowPNG/>
     </o:OfficeDocumentSettings>
   </xml>
-  <![endif]                                                              -->
-  </head>
-  <body style="background-color: #e7edee; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-    <!-- Preheader -->
-    <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">
-      {% block preheader %}
+  <![endif]                                                               -->
+      </head>
+      <body style="background-color: #e7edee; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+        <!-- Preheader -->
+        <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">
+          {% block preheader %}
 
-      {% endblock %}
-    </div>
+          {% endblock %}
+        </div>
 
-    <!-- Email Container -->
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #e7edee; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-      <tr>
-        <td align="center" style="padding: 40px 20px;">
-          <!-- Main Content Table -->
-          <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-            <!-- Header -->
-            <tr>
-              <td style="padding: 20px 40px 12px; text-align: center; border-bottom: 1px solid #e5e7eb; border-radius: 12px 12px 0px 0px;">
-                {% block header %}
-                  <a href="{{ site_url }}" style="display: inline-block; text-decoration: none;"><img src="{{ icons_url }}logo.png" alt="IsAlgo" style="height: 56px; width: auto; display: block; border: 0; outline: none;" /></a>
-                {% endblock %}
-              </td>
-            </tr>
+        <!-- Email Container -->
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #e7edee; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+          <tr>
+            <td align="center" style="padding: 40px 20px;">
+              <!-- Main Content Table -->
+              <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                <!-- Header -->
+                <tr>
+                  <td style="padding: 20px 40px 12px; text-align: center; border-bottom: 1px solid #e5e7eb; border-radius: 12px 12px 0px 0px;">
+                    {% block header %}
+                      <a href="{{ site_url }}" style="display: inline-block; text-decoration: none;"><img src="{{ icons_url }}logo.png" alt="IsAlgo" style="height: 56px; width: auto; display: block; border: 0; outline: none;" /></a>
+                    {% endblock %}
+                  </td>
+                </tr>
 
-            <!-- Content -->
-            <tr>
-              <td style="padding: 40px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-                {% block content %}
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 40px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+                    {% block content %}
 
-                {% endblock %}
-              </td>
-            </tr>
+                    {% endblock %}
+                  </td>
+                </tr>
 
-            <!-- Footer -->
-            <tr>
-              <td style="padding: 32px 40px; background-color: #ffffff; border-top: 1px solid #e5e7eb; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
-                {% block footer %}
-                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                      <td align="center" style="padding-bottom: 16px;">
-                        <p style="margin: 0; font-size: 10px; color: #6b7280; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-                          <a href="{{ site_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Visit our website</a> •
-                          <a href="{{ pricing_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Pricing</a> •
-                          <a href="{{ docs_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">Documentation</a>
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" style="padding: 20px 0 16px;">
-                        <p style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #333333; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Follow Us</p>
-                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
-                          <tr>
-                            <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.tv }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0;" /></a>
-                            </td>
-                            <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.youtube }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0;" /></a>
-                            </td>
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 32px 40px; background-color: #ffffff; border-top: 1px solid #e5e7eb; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                    {% block footer %}
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td align="center" style="padding-bottom: 16px;">
+                            <p style="margin: 0; font-size: 10px; color: #6b7280; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+                              <a href="{{ site_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">{% trans 'Visit our website' %}</a> •
+                              <a href="{{ pricing_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">{% trans 'Pricing' %}</a> •
+                              <a href="{{ docs_url }}" style="color: #3861f6; text-decoration: none; font-size: 12px;">{% trans 'Documentation' %}</a>
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" style="padding: 20px 0 16px;">
+                            <p style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #333333; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+                              {% trans 'Follow Us' %}
+                            </p>
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+                              <tr>
+                                <td style="padding: 0 8px;">
+                                  <a href="{{ social_urls.tv }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}tv.png" alt="TradingView" style="width: auto; height: 22px; display: block; border: 0;" /></a>
+                                </td>
+                                <td style="padding: 0 8px;">
+                                  <a href="{{ social_urls.youtube }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}youtube.png" alt="YouTube" style="width: auto; height: 22px; display: block; border: 0;" /></a>
+                                </td>
 
-                            <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.instagram }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0;" /></a>
-                            </td>
-                            <td style="padding: 0 8px;">
-                              <a href="{{ social_urls.discord }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0;" /></a>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center">
-                        {% load custom_tags %}
-                        <p style="margin: 0; font-size: 13px; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-                          © {% now 'Y' %} IsAlgo. All rights reserved.
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                {% endblock %}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>
+                                <td style="padding: 0 8px;">
+                                  <a href="{{ social_urls.instagram }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}instagram.png" alt="Instagram" style="width: auto; height: 22px; display: block; border: 0;" /></a>
+                                </td>
+                                <td style="padding: 0 8px;">
+                                  <a href="{{ social_urls.discord }}" style="display: inline-block; text-decoration: none;" target="_blank"><img src="{{ icons_url }}discord.png" alt="Discord" style="width: auto; height: 22px; display: block; border: 0;" /></a>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center">
+                            {% load custom_tags %}
+                            <p style="margin: 0; font-size: 13px; color: #9ca3af; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+                              {% now 'Y' as current_year %}
+                              {% blocktrans with year=current_year %}© {{ year }} IsAlgo. All rights reserved.{% endblocktrans %}
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    {% endblock %}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  </td>
+</td>

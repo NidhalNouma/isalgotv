@@ -1,28 +1,29 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Welcome to IsAlgo - Start Your Trading Journey
+  {% trans 'Welcome to IsAlgo - Start Your Trading Journey' %}
 {% endblock %}
 
 {% block preheader %}
-  Your account is ready! Explore automated trading strategies and start growing your portfolio.
+  {% trans 'Your account is ready! Explore automated trading strategies and start growing your portfolio.' %}
 {% endblock %}
 
 {% block content %}
   <!-- Main Heading -->
-  <h1 style="text-align: center; margin-bottom: 16px; color: #000000;">Welcome to ISAlgo!</h1>
+  <h1 style="text-align: center; margin-bottom: 16px; color: #000000;">{% trans 'Welcome to ISAlgo!' %}</h1>
 
   <!-- Intro Text -->
   <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.6; color: #374151; text-align: center;">
     {% if username %}
-      Hi <strong style="color: #111827;">{{ username }}</strong>,<br /><br />
-    {% endif %}We're thrilled to have you join our community of traders. Your account is now active,<br />
-    and you're ready to explore the world of automated trading strategies.
+      {% blocktrans %}Hi <strong style="color: #111827;">{{ username }}</strong>,{% endblocktrans %}<br /><br />
+    {% endif %}
+    {% trans "We're thrilled to have you join our community of traders. Your account is now active, and you're ready to explore the world of automated trading strategies." %}
   </p>
 
   <!-- What You Can Do Card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 32px 0;">
-    <h3 style="margin: 0 0 20px; color: #000000; font-size: 18px;">What you can do now</h3>
+    <h3 style="margin: 0 0 20px; color: #000000; font-size: 18px;">{% trans 'What you can do now' %}</h3>
 
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
@@ -34,8 +35,8 @@
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
-                  <a href="{{ strategies_url }}" style="color: #111827; text-decoration: none;"><strong>Browse Trading Strategies</strong></a><br />
-                  <span style="color: #6b7280; font-size: 14px;">Explore free, premium, and Exclusive strategies</span>
+                  <a href="{{ strategies_url }}" style="color: #111827; text-decoration: none;"><strong>{% trans 'Browse Trading Strategies' %}</strong></a><br />
+                  <span style="color: #6b7280; font-size: 14px;">{% trans 'Explore free, premium, and Exclusive strategies' %}</span>
                 </p>
               </td>
             </tr>
@@ -52,8 +53,8 @@
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
-                  <a href="{{ reports_url }}" style="color: #111827; text-decoration: none;"><strong>Browse Trading Reports</strong></a><br />
-                  <span style="color: #6b7280; font-size: 14px;">Explore detailed performance reports and analytics</span>
+                  <a href="{{ reports_url }}" style="color: #111827; text-decoration: none;"><strong>{% trans 'Browse Trading Reports' %}</strong></a><br />
+                  <span style="color: #6b7280; font-size: 14px;">{% trans 'Explore detailed performance reports and analytics' %}</span>
                 </p>
               </td>
             </tr>
@@ -70,8 +71,8 @@
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
-                  <a href="{{ automate_url }}" style="color: #111827; text-decoration: none;"><strong>Connect Your account</strong></a><br />
-                  <span style="color: #6b7280; font-size: 14px;">Link your trading account to automate trades</span>
+                  <a href="{{ automate_url }}" style="color: #111827; text-decoration: none;"><strong>{% trans 'Connect Your account' %}</strong></a><br />
+                  <span style="color: #6b7280; font-size: 14px;">{% trans 'Link your trading account to automate trades' %}</span>
                 </p>
               </td>
             </tr>
@@ -88,8 +89,8 @@
               </td>
               <td style="vertical-align: top;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #374151;">
-                  <a href="{{ docs_url }}" style="color: #111827; text-decoration: none;"><strong>Learn & Get Support</strong></a><br />
-                  <span style="color: #6b7280; font-size: 14px;">Access our documentation and reach out to our team</span>
+                  <a href="{{ docs_url }}" style="color: #111827; text-decoration: none;"><strong>{% trans 'Learn & Get Support' %}</strong></a><br />
+                  <span style="color: #6b7280; font-size: 14px;">{% trans 'Access our documentation and reach out to our team' %}</span>
                 </p>
               </td>
             </tr>
@@ -101,24 +102,35 @@
 
   <!-- Quick Start Guide -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid rgba(56, 97, 246, 0.2); margin: 32px 0;">
-    <h3 style="margin: 0 0 12px; color: #000000; font-size: 18px;">Quick Start Guide</h3>
-    <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #374151;">New to automated trading? Check out our beginner's guide to get started with confidence:</p>
+    <h3 style="margin: 0 0 12px; color: #000000; font-size: 18px;">{% trans 'Quick Start Guide' %}</h3>
+    <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #374151;">
+      {% trans "New to automated trading? Check out our beginner's guide to get started with confidence:" %}
+    </p>
     <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; color: #6b7280;">
-      <li>Understanding trading strategies</li>
-      <li>Setting up your first trading account connection</li>
-      <li>Risk management best practices</li>
-      <li>Reading performance metrics</li>
+      <li>
+        {% trans 'Understanding trading strategies' %}
+      </li>
+      <li>
+        {% trans 'Setting up your first trading account connection' %}
+      </li>
+      <li>
+        {% trans 'Risk management best practices' %}
+      </li>
+      <li>
+        {% trans 'Reading performance metrics' %}
+      </li>
     </ul>
   </div>
 
   <!-- CTA Button -->
-  {% with primary_url=strategies_url primary_text='Explore Strategies →' %}
+  {% trans 'Explore Strategies →' as cta_primary_text %}
+  {% with primary_url=strategies_url primary_text=cta_primary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 
   <!-- Closing Message -->
   <p style="margin: 16px 0 0; font-size: 15px; line-height: 1.6; color: #374151; text-align: center;">
-    We're here to support you every step of the way.<br />
-    Happy trading!
+    {% trans "We're here to support you every step of the way." %}<br />
+    {% trans 'Happy trading!' %}
   </p>
 {% endblock %}

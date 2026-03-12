@@ -101,7 +101,7 @@ class TastytradeClient(BrokerClient):
                     error = "\n".join(message_errors)
                 else:
                     error = error.get('message', str(error))
-            raise Exception(_("HTTP Error %s: %s") % (response.status_code, error))
+            raise Exception(_("HTTP Error %(status)s: %(error)s") % {'status': response.status_code, 'error': error})
         return response.json()
     
     def _login(self):

@@ -1,49 +1,62 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Welcome to IsAlgo
+  {% trans 'Welcome to IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Welcome to our Family! Your membership is confirmed.
+  {% trans 'Welcome to our Family! Your membership is confirmed.' %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='access.png' header_title='Welcome to Our Family' header_subtitle='Membership Confirmed' header_bg='rgba(0, 122, 103, 0.1)' header_color='#007a67' header_border='rgba(0, 122, 103, 0.2)' %}
+  {% trans 'Welcome to Our Family' as header_title_text %}
+  {% trans 'Membership Confirmed' as header_subtitle_text %}
+  {% with icon_name='access.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(0, 122, 103, 0.1)' header_color='#007a67' header_border='rgba(0, 122, 103, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Thank you for joining IsAlgo! We are thrilled to have you with us and can't wait to hear your feedback on our trading strategies.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "Thank you for joining IsAlgo! We are thrilled to have you with us and can't wait to hear your feedback on our trading strategies." %}
+  </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">This email confirms that you have successfully purchased one of our memberships. We're excited to welcome you and are eager to support you on your trading journey.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "This email confirms that you have successfully purchased one of our memberships. We're excited to welcome you and are eager to support you on your trading journey." %}
+  </p>
 
   <!-- Getting started card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Getting started:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'Getting started:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #007a67; font-weight: 600; margin-right: 8px;">1.</span> Browse and add strategies to your TradingView chart
+          <span style="color: #007a67; font-weight: 600; margin-right: 8px;">1.</span> {% trans 'Browse and add strategies to your TradingView chart' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #007a67; font-weight: 600; margin-right: 8px;">2.</span> Set up automation with your broker account
+          <span style="color: #007a67; font-weight: 600; margin-right: 8px;">2.</span> {% trans 'Set up automation with your broker account' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #007a67; font-weight: 600; margin-right: 8px;">3.</span> Read the <a href="{{ docs_url }}" style="color: #3861f6; text-decoration: none; font-weight: 500;">documentation</a> for detailed guides
+          <span style="color: #007a67; font-weight: 600; margin-right: 8px;">3.</span>
+          {% blocktrans with doc_url=docs_url %}Read the <a href="{{ doc_url }}" style="color: #3861f6; text-decoration: none; font-weight: 500;">documentation</a> for detailed guides{% endblocktrans %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Welcome aboard — we look forward to helping you achieve your trading goals. Happy trading!</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'Welcome aboard — we look forward to helping you achieve your trading goals. Happy trading!' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=strategies_url primary_text='Browse Strategies' %}
+  {% trans 'Browse Strategies' as cta_primary_text %}
+  {% with primary_url=strategies_url primary_text=cta_primary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

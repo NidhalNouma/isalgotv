@@ -1,51 +1,62 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Broker Account Suspended - IsAlgo
+  {% trans 'Broker Account Suspended - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Your broker account {{ account_name }} has been suspended due to a subscription issue.
+  {% blocktrans %}Your broker account {{ account_name }} has been suspended due to a subscription issue.{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='automate.png' header_title='Broker Account Suspended' header_subtitle='Payment Issue' header_bg='rgba(220, 38, 38, 0.1)' header_color='#dc2626' header_border='rgba(220, 38, 38, 0.2)' %}
+  {% trans 'Broker Account Suspended' as header_title_text %}
+  {% trans 'Payment Issue' as header_subtitle_text %}
+  {% with icon_name='automate.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(220, 38, 38, 0.1)' header_color='#dc2626' header_border='rgba(220, 38, 38, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
-    We wanted to let you know that your automated broker account <strong>{{ account_name }}</strong> has been or will soon be turned off due to an issue with your subscription payment.
+    {% blocktrans %}We wanted to let you know that your automated broker account <strong>{{ account_name }}</strong> has been or will soon be turned off due to an issue with your subscription payment.{% endblocktrans %}
   </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Unfortunately, we were unable to process your payment, which has resulted in the temporary suspension of your broker account.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'Unfortunately, we were unable to process your payment, which has resulted in the temporary suspension of your broker account.' %}
+  </p>
 
   <!-- Action card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">To restore your account:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'To restore your account:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(220, 38, 38, 0.1); color: #dc2626; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> Log in to your account and check your automate account subscription
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(220, 38, 38, 0.1); color: #dc2626; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> {% trans 'Log in to your account and check your automate account subscription' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(220, 38, 38, 0.1); color: #dc2626; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> Update your payment details if needed
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(220, 38, 38, 0.1); color: #dc2626; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> {% trans 'Update your payment details if needed' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(220, 38, 38, 0.1); color: #dc2626; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> Renew your broker account subscription
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(220, 38, 38, 0.1); color: #dc2626; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> {% trans 'Renew your broker account subscription' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Once the payment is successfully processed, your automated broker account will be reactivated. If you believe this was a mistake, please reach out to our support team.</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'Once the payment is successfully processed, your automated broker account will be reactivated. If you believe this was a mistake, please reach out to our support team.' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=automate_url primary_text='Renew Subscription' secondary_url='mailto:'|add:support_email|add:'?subject=Broker%20Account%20Subscription%20Issue' secondary_text='Contact Support' %}
+  {% trans 'Renew Subscription' as cta_primary_text %}
+  {% trans 'Contact Support' as cta_secondary_text %}
+  {% with primary_url=automate_url primary_text=cta_primary_text secondary_url='mailto:'|add:support_email|add:'?subject=Broker%20Account%20Subscription%20Issue' secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

@@ -1,49 +1,61 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Lifetime Membership - IsAlgo
+  {% trans 'Lifetime Membership - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Welcome to IsAlgo Lifetime Membership! You now have permanent access.
+  {% trans 'Welcome to IsAlgo Lifetime Membership! You now have permanent access.' %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='access.png' header_title='Lifetime Membership' header_subtitle='Lifetime Access Granted' header_bg='rgba(0, 122, 103, 0.1)' header_color='#007a67' header_border='rgba(0, 122, 103, 0.2)' icon_bg='rgba(56, 97, 246, 0.1)' %}
+  {% trans 'Lifetime Membership' as header_title_text %}
+  {% trans 'Lifetime Access Granted' as header_subtitle_text %}
+  {% with icon_name='access.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(0, 122, 103, 0.1)' header_color='#007a67' header_border='rgba(0, 122, 103, 0.2)' icon_bg='rgba(56, 97, 246, 0.1)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Welcome to our Lifetime family! We're excited to have you as a member. This is a significant moment for us, and we are thrilled to embark on this journey with you.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "Welcome to our Lifetime family! We're excited to have you as a member. This is a significant moment for us, and we are thrilled to embark on this journey with you." %}
+  </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Your decision to join us as a Lifetime Member reflects your trust and confidence in our trading strategies and community. We are committed to providing you with the best tools, resources, and support to help you achieve your trading goals.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'Your decision to join us as a Lifetime Member reflects your trust and confidence in our trading strategies and community. We are committed to providing you with the best tools, resources, and support to help you achieve your trading goals.' %}
+  </p>
 
   <!-- Benefits card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Your Lifetime benefits:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'Your Lifetime benefits:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">✦</span> Permanent access to all current and future strategies
+          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">&#10022;</span> {% trans 'Permanent access to all current and future strategies' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">✦</span> Early access to new features and updates
+          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">&#10022;</span> {% trans 'Early access to new features and updates' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">✦</span> Priority support from our team
+          <span style="color: #3861f6; font-weight: 600; margin-right: 8px;">&#10022;</span> {% trans 'Priority support from our team' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Thank you for being a part of this milestone with us. Let's achieve great success together — happy trading!</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "Thank you for being a part of this milestone with us. Let's achieve great success together — happy trading!" %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=strategies_url primary_text='Browse Strategies' %}
+  {% trans 'Browse Strategies' as cta_primary_text %}
+  {% with primary_url=strategies_url primary_text=cta_primary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

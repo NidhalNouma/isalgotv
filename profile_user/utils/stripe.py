@@ -903,7 +903,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                 if user_profile:
                     if charges_enabled:
                         if not user_profile.seller_account_verified:
-                            send_seller_account_verified_email_task(user_profile.user.email)
+                            send_seller_account_verified_email_task(user_profile.user.email, language=user_profile.language)
                     if not charges_enabled or not payout_enabled:
                         print("Stripe-Webhook: Seller account disabled ... ", "charges_enabled:", charges_enabled, "payouts_enabled:", payout_enabled, "account_id:", account_id)
                     elif charges_enabled and payout_enabled:
@@ -977,7 +977,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     if user_profile.subscription_id == subscription_id:
                         user_profile.remove_access()
                         # send an email to user to notify them about the failed payment and access removal
-                        overdue_access_removed_email_task(user_profile.user.email)
+                        overdue_access_removed_email_task(user_profile.user.email, language=user_profile.language)
                     return {
                         "status": "success",
                         "message": "Main membership subscription payment failed, access removed if subscription ID matched.",
@@ -997,7 +997,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     accounts = desactivate_account_by_subscription_id(broker_type, subscription_id)
                     # send an email to user to notify them about the failed payment and access removal
                     for account in accounts:
-                        send_broker_account_access_expiring_task(user_profile.user.email, account)
+                        send_broker_account_access_expiring_task(user_profile.user.email, account, language=user_profile.language)
 
                     return {
                         "status": "success",
@@ -1012,7 +1012,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                             raise Exception("Strategy not found for strategy subscription payment failure.")
                         user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
                         # send an email to user to notify them about the failed payment and access removal
-                        send_strategy_access_expiring_email_task(user_profile.user.email, strategy)
+                        send_strategy_access_expiring_email_task(user_profile.user.email, strategy, language=user_profile.language)
                     except Exception as e:
                         print("Stripe-Webhook: Strategy not found for strategy subscription payment failure, ignoring event ...")
                         return {
@@ -1075,7 +1075,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     print("Stripe-Webhook: Main membership subscription deleted ...")
                     if user_profile.subscription_id == subscription.id and not user_profile.is_lifetime:
                         user_profile.remove_access()
-                        access_removed_email_task(user_profile.user.email)
+                        access_removed_email_task(user_profile.user.email, language=user_profile.language)
 
                         return {
                             "status": "success",
@@ -1094,7 +1094,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     if subscription.status == "canceled":
                         if user_profile.subscription_id == subscription.id and not user_profile.is_lifetime:
                             user_profile.remove_access()
-                            access_removed_email_task(user_profile.user.email)
+                            access_removed_email_task(user_profile.user.email, language=user_profile.language)
                             return {
                                 "status": "success",
                                 "message": "Main membership subscription updated, access removed if subscription status is canceled.",
@@ -1109,7 +1109,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                         if user_profile.subscription_id == subscription.id and not user_profile.is_lifetime:
                             user_profile.remove_access()
                             # send an email to user to notify them about the failed payment and access removal
-                            overdue_access_removed_email_task(user_profile.user.email)
+                            overdue_access_removed_email_task(user_profile.user.email, language=user_profile.language)
                             return {
                                 "status": "success",
                                 "message": "Main membership subscription updated, access removed if subscription status is canceled or past due.",
@@ -1145,7 +1145,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     # send an email to user to notify them about the subscription cancellation and access removal
 
                     for account in accounts:
-                        send_broker_account_access_removed_task(user_profile.user.email, account=account)
+                        send_broker_account_access_removed_task(user_profile.user.email, account=account, language=user_profile.language)
                     
                     return {
                         "status": "success",
@@ -1159,7 +1159,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     if subscription.status == "canceled":
                         accounts = desactivate_account_by_subscription_id(broker_account_type, subscription.id)
                         for account in accounts:
-                            send_broker_account_access_removed_task(user_profile.user.email, account=account)
+                            send_broker_account_access_removed_task(user_profile.user.email, account=account, language=user_profile.language)
                         return {
                             "status": "success",
                             "message": "Account subscription updated, user notified if subscription status is canceled.",
@@ -1169,7 +1169,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     elif subscription.status == "past_due":
                         accounts = desactivate_account_by_subscription_id(broker_account_type, subscription.id)
                         for account in accounts:
-                            send_broker_account_access_expiring_task(user_profile.user.email, account)
+                            send_broker_account_access_expiring_task(user_profile.user.email, account, language=user_profile.language)
 
                         return {
                             "status": "success",
@@ -1206,7 +1206,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                 if event['type'] == 'customer.subscription.deleted':
                     user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
                     # send an email to user to notify them about the subscription cancellation and access removal
-                    send_strategy_lost_email_task(user_profile.user.email, strategy)
+                    send_strategy_lost_email_task(user_profile.user.email, strategy, language=user_profile.language)
                     StrategySubscriber.objects.filter(user_profile=user_profile, strategy=strategy).update(active=False)
                     return {
                         "status": "success",
@@ -1218,7 +1218,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     if subscription.status == "canceled":
                         user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
                         # send an email to user to notify them about the subscription cancellation and access removal
-                        send_strategy_lost_email_task(user_profile.user.email, strategy)
+                        send_strategy_lost_email_task(user_profile.user.email, strategy, language=user_profile.language)
                         StrategySubscriber.objects.filter(user_profile=user_profile, strategy=strategy).update(active=False)
                         return {
                             "status": "success",
@@ -1230,7 +1230,7 @@ def handle_webhook_event(User_Profile, Strategy, StrategySubscriber, event):
                     elif subscription.status == "past_due":
                         user_profile.give_tradingview_access(strategy_id=strategy_id, access=False, strategy=strategy)
                         # send an email to user to notify them about the failed payment and access removal
-                        send_strategy_access_expiring_email_task(user_profile.user.email, strategy)
+                        send_strategy_access_expiring_email_task(user_profile.user.email, strategy, language=user_profile.language)
 
                         return {
                             "status": "success",

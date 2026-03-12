@@ -565,7 +565,7 @@ def strategy_subscribe(request, id):
 
             params = ''
             if subscription.get('status') == 'active':
-                send_strategy_gained_email_task(user_profile.user.email, strategy_price.strategy)
+                send_strategy_gained_email_task(user_profile.user.email, strategy_price.strategy, language=user_profile.language)
                 params = '?sub=True'
 
             return HttpResponseClientRedirect(reverse('strategy', args=[strategy_price.strategy.slug]) + params)

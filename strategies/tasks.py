@@ -60,63 +60,63 @@ def send_strategy_email_to_all_users(emails, strategy, header=None, subject=None
 
 
 @shared_task
-def send_strategy_gained_email_task(user_email, strategy):
-    strategy_access_gained(user_email, strategy)
+def send_strategy_gained_email_task(user_email, strategy, language='en'):
+    strategy_access_gained(user_email, strategy, language)
 
 @shared_task
-def send_strategy_access_canceled_email_task(user_email, strategy):
-    strategy_access_canceled(user_email, strategy)
+def send_strategy_access_canceled_email_task(user_email, strategy, language='en'):
+    strategy_access_canceled(user_email, strategy, language)
 
 @shared_task
-def send_strategy_lost_email_task(user_email, strategy):
-    strategy_access_removed(user_email, strategy)
+def send_strategy_lost_email_task(user_email, strategy, language='en'):
+    strategy_access_removed(user_email, strategy, language)
 
 @shared_task
-def send_strategy_access_expiring_email_task(user_email, strategy):
-    strategy_access_overdue(user_email, strategy)
+def send_strategy_access_expiring_email_task(user_email, strategy, language='en'):
+    strategy_access_overdue(user_email, strategy, language)
 
 @shared_task
-def send_strategy_first_subscriber_email_task(seller_email, strategy_id):
+def send_strategy_first_subscriber_email_task(seller_email, strategy_id, language='en'):
     from .models import Strategy
     strategy = Strategy.objects.get(id=strategy_id)
-    seller_first_subscriber_to_strategy(seller_email, strategy)
+    seller_first_subscriber_to_strategy(seller_email, strategy, language)
 
 @shared_task
-def send_strategy_ten_subscribers_email_task(seller_email, strategy_id):
+def send_strategy_ten_subscribers_email_task(seller_email, strategy_id, language='en'):
     from .models import Strategy
     strategy = Strategy.objects.get(id=strategy_id)
-    seller_ten_subscribers_to_strategy(seller_email, strategy)
+    seller_ten_subscribers_to_strategy(seller_email, strategy, language)
 
 @shared_task
-def send_strategy_hundred_subscribers_email_task(seller_email, strategy_id):
+def send_strategy_hundred_subscribers_email_task(seller_email, strategy_id, language='en'):
     from .models import Strategy
     strategy = Strategy.objects.get(id=strategy_id)
-    seller_hundred_subscribers_to_strategy(seller_email, strategy)
+    seller_hundred_subscribers_to_strategy(seller_email, strategy, language)
 
 @shared_task
-def send_strategy_hundred_thousand_subscribers_email_task(seller_email, strategy_id):
+def send_strategy_hundred_thousand_subscribers_email_task(seller_email, strategy_id, language='en'):
     from .models import Strategy
     strategy = Strategy.objects.get(id=strategy_id)
-    seller_hundred_thousand_subscribers_to_strategy(seller_email, strategy)
+    seller_hundred_thousand_subscribers_to_strategy(seller_email, strategy, language)
 
 @shared_task
-def send_strategy_million_subscribers_email_task(seller_email, strategy_id):
+def send_strategy_million_subscribers_email_task(seller_email, strategy_id, language='en'):
     from .models import Strategy
     strategy = Strategy.objects.get(id=strategy_id)
-    seller_million_subscribers_to_strategy(seller_email, strategy)
+    seller_million_subscribers_to_strategy(seller_email, strategy, language)
 
 @shared_task
-def send_new_report_email_task(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker):
-    new_report_added(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker)
+def send_new_report_email_task(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker, language='en'):
+    new_report_added(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker, language)
 
 @shared_task
-def send_new_comment_email_task(owner_email, strategy_name, strategy_url, author_name, comment_preview):
-    new_comment_added(owner_email, strategy_name, strategy_url, author_name, comment_preview)
+def send_new_comment_email_task(owner_email, strategy_name, strategy_url, author_name, comment_preview, language='en'):
+    new_comment_added(owner_email, strategy_name, strategy_url, author_name, comment_preview, language)
 
 @shared_task
-def send_new_reply_on_report_email_task(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
-    new_reply_on_report(recipient_emails, strategy_name, strategy_url, author_name, reply_preview)
+def send_new_reply_on_report_email_task(recipient_emails, strategy_name, strategy_url, author_name, reply_preview, language='en'):
+    new_reply_on_report(recipient_emails, strategy_name, strategy_url, author_name, reply_preview, language)
 
 @shared_task
-def send_new_reply_on_comment_email_task(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
-    new_reply_on_comment(recipient_emails, strategy_name, strategy_url, author_name, reply_preview)
+def send_new_reply_on_comment_email_task(recipient_emails, strategy_name, strategy_url, author_name, reply_preview, language='en'):
+    new_reply_on_comment(recipient_emails, strategy_name, strategy_url, author_name, reply_preview, language)

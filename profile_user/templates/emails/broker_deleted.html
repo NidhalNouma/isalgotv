@@ -1,51 +1,61 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Broker Account Deleted - IsAlgo
+  {% trans 'Broker Account Deleted - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Your broker account {{ account_name }} has been deleted.
+  {% blocktrans %}Your broker account {{ account_name }} has been deleted.{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='automate.png' header_title='Broker Account Deleted' header_subtitle=account_name header_bg='rgba(217, 119, 6, 0.1)' header_color='#d97706' header_border='rgba(217, 119, 6, 0.2)' %}
+  {% trans 'Broker Account Deleted' as header_title_text %}
+  {% with icon_name='automate.png' header_title=header_title_text header_subtitle=account_name header_bg='rgba(217, 119, 6, 0.1)' header_color='#d97706' header_border='rgba(217, 119, 6, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
-    We wanted to inform you that your automated broker account <strong>{{ account_name }}</strong> has been deleted. We understand that managing your accounts is an important part of your trading journey.
+    {% blocktrans %}We wanted to inform you that your automated broker account <strong>{{ account_name }}</strong> has been deleted. We understand that managing your accounts is an important part of your trading journey.{% endblocktrans %}
   </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">If this deletion was intentional, no further action is needed. However, if this was unexpected, please don't hesitate to reach out.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "If this deletion was intentional, no further action is needed. However, if this was unexpected, please don't hesitate to reach out." %}
+  </p>
 
   <!-- Info card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">What you should know:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'What you should know:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #d97706; font-weight: 600; margin-right: 8px;">•</span> All automations linked to this account have been stopped
+          <span style="color: #d97706; font-weight: 600; margin-right: 8px;">&bull;</span> {% trans 'All automations linked to this account have been stopped' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #d97706; font-weight: 600; margin-right: 8px;">•</span> Your strategies and settings remain intact
+          <span style="color: #d97706; font-weight: 600; margin-right: 8px;">&bull;</span> {% trans 'Your strategies and settings remain intact' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="color: #d97706; font-weight: 600; margin-right: 8px;">•</span> You can add a new broker account at any time
+          <span style="color: #d97706; font-weight: 600; margin-right: 8px;">&bull;</span> {% trans 'You can add a new broker account at any time' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">Thank you for being a part of our community. We hope to continue supporting your trading journey.</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'Thank you for being a part of our community. We hope to continue supporting your trading journey.' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=automate_url primary_text='Add New Account' secondary_url='mailto:'|add:support_email|add:'?subject=Broker%20Account%20Deleted' secondary_text='Contact Support' %}
+  {% trans 'Add New Account' as cta_primary_text %}
+  {% trans 'Contact Support' as cta_secondary_text %}
+  {% with primary_url=automate_url primary_text=cta_primary_text secondary_url='mailto:'|add:support_email|add:'?subject=Broker%20Account%20Deleted' secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

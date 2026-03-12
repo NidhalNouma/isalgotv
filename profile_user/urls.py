@@ -30,4 +30,5 @@ urlpatterns = [
     path('send-email/', send_email, name='send_email'),
 
     path('api/send-marketing-email/', api_send_marketing_email, name='api_send_marketing_email'),
+    path('set-language/', set_user_language, name='set_user_language'),
 ]

@@ -719,3 +719,95 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
+
+/* ─── RTL (Arabic) support ─── */
+/* When dir="rtl" is on <html>, auto-flip physical margin/padding to logical equivalents */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Keep numbers and English fragments readable in RTL context */
+[dir="rtl"] .ltr,
+[dir="rtl"] [data-ltr] {
+  direction: ltr;
+  display: inline-block;
+  text-align: left;
+}
+
+/* Force left-to-right for numeric values, prices, dates, percentages */
+[dir="rtl"] .font-mono,
+[dir="rtl"] input[type="number"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="url"] {
+  direction: ltr;
+  text-align: right;
+}
+
+/* Flip flexbox row gap icons (e.g. svg + text with mr-1) */
+[dir="rtl"] .flex {
+  /* flex auto-reverses with dir="rtl" in modern browsers */
+}
+
+/* Override specific directional utilities for RTL */
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* Flip margin-left / margin-right */
+[dir="rtl"] .ml-auto {
+  margin-left: unset;
+  margin-right: auto;
+}
+[dir="rtl"] .mr-auto {
+  margin-right: unset;
+  margin-left: auto;
+}
+
+/* Flip absolute positioning */
+[dir="rtl"] .left-0 {
+  left: unset;
+  right: 0;
+}
+[dir="rtl"] .right-0 {
+  right: unset;
+  left: 0;
+}
+
+/* Flip rounded corners for pill-shaped elements */
+[dir="rtl"] .rounded-l-md {
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+[dir="rtl"] .rounded-r-md {
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
+/* Flip border sides */
+[dir="rtl"] .border-l {
+  border-left: none;
+  border-right: 1px solid;
+}
+[dir="rtl"] .border-r {
+  border-right: none;
+  border-left: 1px solid;
+}
+
+/* Flip float */
+[dir="rtl"] .float-left {
+  float: right;
+}
+[dir="rtl"] .float-right {
+  float: left;
+}
+
+/* Keep code, brand names and URLs always LTR */
+[dir="rtl"] code,
+[dir="rtl"] pre,
+[dir="rtl"] .font-mono {
+  direction: ltr;
+  unicode-bidi: embed;
+}

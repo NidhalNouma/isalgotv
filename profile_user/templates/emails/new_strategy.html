@@ -1,30 +1,39 @@
 {% extends 'emails/components/base_email.html' %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block title %}
-  New Strategy: {{ strategy_name }} - IsAlgo
+  {% blocktrans %}New Strategy: {{ strategy_name }} - IsAlgo{% endblocktrans %}
 {% endblock %}
 
 {% block preheader %}
-  Introducing {{ strategy_name }} — our newest trading strategy is now available!
+  {% blocktrans %}Introducing {{ strategy_name }} — our newest trading strategy is now available!{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
   <!-- Icon -->
   {% if strategy_type == 'Free' %}
-    {% with icon_name='free.png' header_title='New Free Strategy Available' header_subtitle='Free' header_bg='rgba(8, 162, 132, 0.1)' header_color='#08a284' header_border='rgba(8, 162, 132, 0.2)' %}
+    {% trans 'New Free Strategy Available' as header_title_text %}
+    {% trans 'Free' as header_subtitle_text %}
+    {% with icon_name='free.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(8, 162, 132, 0.1)' header_color='#08a284' header_border='rgba(8, 162, 132, 0.2)' %}
       {% include 'emails/components/email_header.html' %}
     {% endwith %}
   {% elif strategy_type == 'VIP' %}
-    {% with icon_name='vip.png' header_title='New Exclusive Strategy Available' header_subtitle='Exclusive' header_bg='rgba(250, 204, 21, 0.1)' header_color='#d4a017' header_border='rgba(250, 204, 21, 0.2)' %}
+    {% trans 'New Exclusive Strategy Available' as header_title_text %}
+    {% trans 'Exclusive' as header_subtitle_text %}
+    {% with icon_name='vip.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(250, 204, 21, 0.1)' header_color='#d4a017' header_border='rgba(250, 204, 21, 0.2)' %}
       {% include 'emails/components/email_header.html' %}
     {% endwith %}
   {% elif strategy_type == 'Elite' %}
-    {% with icon_name='elite.png' header_title='New Elite Strategy Available' header_subtitle='Elite' header_bg='rgba(164, 143, 214, 0.1)' header_color='#A48FD6' header_border='rgba(164, 143, 214, 0.2)' %}
+    {% trans 'New Elite Strategy Available' as header_title_text %}
+    {% trans 'Elite' as header_subtitle_text %}
+    {% with icon_name='elite.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(164, 143, 214, 0.1)' header_color='#A48FD6' header_border='rgba(164, 143, 214, 0.2)' %}
       {% include 'emails/components/email_header.html' %}
     {% endwith %}
   {% else %}
-    {% with icon_name='premium.png' header_title='New Premium Strategy Available' header_subtitle='Premium' header_bg='rgba(56, 97, 246, 0.1)' header_color='#3861f6' header_border='rgba(56, 97, 246, 0.2)' %}
+    {% trans 'New Premium Strategy Available' as header_title_text %}
+    {% trans 'Premium' as header_subtitle_text %}
+    {% with icon_name='premium.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(56, 97, 246, 0.1)' header_color='#3861f6' header_border='rgba(56, 97, 246, 0.2)' %}
       {% include 'emails/components/email_header.html' %}
     {% endwith %}
   {% endif %}
@@ -42,32 +51,40 @@
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
-    We're thrilled to share some exciting news — we've just released our newest trading strategy, <strong>{{ strategy_name }}</strong>, and we're eager for our community to dive in and explore it.
+    {% blocktrans %}We're thrilled to share some exciting news — we've just released our newest trading strategy, <strong>{{ strategy_name }}</strong>, and we're eager for our community to dive in and explore it.{% endblocktrans %}
   </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">Whether you're a seasoned trader or just starting out, this strategy offers powerful insights to enhance your trading experience.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "Whether you're a seasoned trader or just starting out, this strategy offers powerful insights to enhance your trading experience." %}
+  </p>
 
   <!-- Features card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">Available on:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'Available on:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">✦</span> <a href="{{ strategy_url }}" style="color: #3861f6; text-decoration: underline; font-weight: 600;">IsAlgo</a> — Full details, performance & automation
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">&#10022;</span> <a href="{{ strategy_url }}" style="color: #3861f6; text-decoration: underline; font-weight: 600;">IsAlgo</a> —{% trans 'Full details, performance & automation' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">✦</span> <a href="{{ strategy_tv_url }}" style="color: #3861f6; text-decoration: underline; font-weight: 600;">TradingView</a> — Chart integration & backtesting
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(56, 97, 246, 0.1); color: #3861f6; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">&#10022;</span> <a href="{{ strategy_tv_url }}" style="color: #3861f6; text-decoration: underline; font-weight: 600;">TradingView</a> —{% trans 'Chart integration & backtesting' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">We have even more strategies in the pipeline. Stay tuned for updates, and thank you for being a valued member of our community!</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'We have even more strategies in the pipeline. Stay tuned for updates, and thank you for being a valued member of our community!' %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=strategy_url primary_text='Try It Out' secondary_url=strategies_url secondary_text='Browse All Strategies' %}
+  {% trans 'Try It Out' as cta_primary_text %}
+  {% trans 'Browse All Strategies' as cta_secondary_text %}
+  {% with primary_url=strategy_url primary_text=cta_primary_text secondary_url=strategies_url secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

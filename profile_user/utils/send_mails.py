@@ -1,6 +1,7 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage, get_connection
 from django.conf import settings
+from django.utils.translation import gettext as _, override
 
 def email_context():
     url = 'https://www.isalgo.com/'
@@ -39,7 +40,7 @@ def email_context():
     }
 
 
-def send_marketing_email(recipients, subject, sections, preheader=''):
+def send_marketing_email(recipients, subject, sections, preheader='', language='en'):
     """
     Send a marketing email built from an array of section objects.
 
@@ -71,6 +72,7 @@ def send_marketing_email(recipients, subject, sections, preheader=''):
         'sections': sections,
         'email_subject': subject,
         'preheader': preheader,
+        'language': language,
         **email_context(),
     }
     html_content = render_to_string('emails/marketing_email.html', context=context)
@@ -90,11 +92,12 @@ def send_marketing_email(recipients, subject, sections, preheader=''):
         print(f"Error sending marketing emails: {e}")
 
 
-def send_welcome_email(user_email, username):
+def send_welcome_email(user_email, username, language='en'):
     if username.find('@'):
         username = user_email.split("@")[0]
-    subject = 'Welcome to IsAlgo community!'
-    html_content = render_to_string('emails/welcome_email.html', context={'username': username, **email_context()})
+    with override(language):
+        subject = _('Welcome to IsAlgo community!')
+        html_content = render_to_string('emails/welcome_email.html', context={'username': username, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -105,9 +108,10 @@ def send_welcome_email(user_email, username):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def new_member_email(user_email):
-    subject = 'Welcome to Our Community!'
-    html_content = render_to_string('emails/new_member.html', context={**email_context()})
+def new_member_email(user_email, language='en'):
+    with override(language):
+        subject = _('Welcome to Our Community!')
+        html_content = render_to_string('emails/new_member.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -118,9 +122,10 @@ def new_member_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def new_lifetime_email(user_email):
-    subject = 'Welcome to Lifetime Membership!'
-    html_content = render_to_string('emails/new_lifetime.html', context={**email_context()})
+def new_lifetime_email(user_email, language='en'):
+    with override(language):
+        subject = _('Welcome to Lifetime Membership!')
+        html_content = render_to_string('emails/new_lifetime.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -131,9 +136,10 @@ def new_lifetime_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def cancel_membership_email(user_email):
-    subject = "We're Sorry to See You Go"
-    html_content = render_to_string('emails/cancel_membership.html', context={**email_context()})
+def cancel_membership_email(user_email, language='en'):
+    with override(language):
+        subject = _("We're Sorry to See You Go")
+        html_content = render_to_string('emails/cancel_membership.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -144,9 +150,10 @@ def cancel_membership_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def access_removed_email(user_email):
-    subject = "Unfortunately, your access has been removed."
-    html_content = render_to_string('emails/access_removed.html', context={**email_context()})
+def access_removed_email(user_email, language='en'):
+    with override(language):
+        subject = _("Unfortunately, your access has been removed.")
+        html_content = render_to_string('emails/access_removed.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -157,9 +164,10 @@ def access_removed_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def overdue_access_removed_email(user_email):
-    subject = "Action Required: Update Your Payment Method to Restore Access."
-    html_content = render_to_string('emails/overdue_membership.html', context={**email_context()})
+def overdue_access_removed_email(user_email, language='en'):
+    with override(language):
+        subject = _("Action Required: Update Your Payment Method to Restore Access.")
+        html_content = render_to_string('emails/overdue_membership.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -170,9 +178,10 @@ def overdue_access_removed_email(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, strategy_img, strategy_type='Premium'):
-    subject = 'Check this one out!'
-    html_content = render_to_string('emails/new_strategy.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'strategy_img': strategy_img, 'strategy_tv_url': strategy_tv_url, 'strategy_type': strategy_type, **email_context()})
+def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, strategy_img, strategy_type='Premium', language='en'):
+    with override(language):
+        subject = _('Check this one out!')
+        html_content = render_to_string('emails/new_strategy.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'strategy_img': strategy_img, 'strategy_tv_url': strategy_tv_url, 'strategy_type': strategy_type, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -182,10 +191,11 @@ def new_strategy_mail(user_email, strategy_name, strategy_url, strategy_tv_url, 
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def broker_account_added(user_email, account):
-    account_name = account.name if account else "your broker account"
-    subject = f'Account connected: {account_name}!'
-    html_content = render_to_string('emails/broker_added.html', context={'account_name': account_name, **email_context()})
+def broker_account_added(user_email, account, language='en'):
+    with override(language):
+        account_name = account.name if account else _("your broker account")
+        subject = _('Account connected: %(account_name)s!') % {'account_name': account_name}
+        html_content = render_to_string('emails/broker_added.html', context={'account_name': account_name, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -195,10 +205,11 @@ def broker_account_added(user_email, account):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def broker_account_access_removed(user_email, account):
-    account_name = account.name if account else "your broker account"
-    subject = f'Access Removed: {account_name}!'
-    html_content = render_to_string('emails/broker_access_removed.html', context={'account_name': account_name, **email_context()})
+def broker_account_access_removed(user_email, account, language='en'):
+    with override(language):
+        account_name = account.name if account else _("your broker account")
+        subject = _('Access Removed: %(account_name)s!') % {'account_name': account_name}
+        html_content = render_to_string('emails/broker_access_removed.html', context={'account_name': account_name, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -208,10 +219,11 @@ def broker_account_access_removed(user_email, account):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def broker_account_deleted(user_email, account=None):
-    account_name = account.name if account else "your broker account"
-    subject = f'Broker Account Deleted: {account_name}!'
-    html_content = render_to_string('emails/broker_deleted.html', context={'account_name': account_name, **email_context()})
+def broker_account_deleted(user_email, account=None, language='en'):
+    with override(language):
+        account_name = account.name if account else _("your broker account")
+        subject = _('Broker Account Deleted: %(account_name)s!') % {'account_name': account_name}
+        html_content = render_to_string('emails/broker_deleted.html', context={'account_name': account_name, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -221,10 +233,11 @@ def broker_account_deleted(user_email, account=None):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def broker_account_overdue(user_email, account):
-    account_name = account.name if account else "your broker account"
-    subject = f'Broker Account Subscription Overdue: {account_name}!'
-    html_content = render_to_string('emails/broker_overdue.html', context={'account_name': account_name, **email_context()})
+def broker_account_overdue(user_email, account, language='en'):
+    with override(language):
+        account_name = account.name if account else _("your broker account")
+        subject = _('Broker Account Subscription Overdue: %(account_name)s!') % {'account_name': account_name}
+        html_content = render_to_string('emails/broker_overdue.html', context={'account_name': account_name, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -234,14 +247,16 @@ def broker_account_overdue(user_email, account):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def automate_log_error(user_email, account_name, alert_message, error_message):
-    subject = f'Automation Error: {account_name}'
-    html_content = render_to_string('emails/automate_log_error.html', context={
-        'account_name': account_name,
-        'alert_message': alert_message,
-        'error_message': error_message,
-        **email_context()
-    })
+def automate_log_error(user_email, account_name, alert_message, error_message, language='en'):
+    with override(language):
+        subject = _('Automation Error: %(account_name)s') % {'account_name': account_name}
+        html_content = render_to_string('emails/automate_log_error.html', context={
+            'account_name': account_name,
+            'alert_message': alert_message,
+            'error_message': error_message,
+            'language': language,
+            **email_context()
+        })
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'
 
@@ -250,11 +265,12 @@ def automate_log_error(user_email, account_name, alert_message, error_message):
     except Exception as e:
         print(f"Error sending email: {e}")
 
-def strategy_access_gained(user_email, strategy):
-    subject = f'Access Granted: You now have access to {strategy.name}!'
-    e_context = email_context()
-    strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
-    html_content = render_to_string('emails/strategy_access_gained.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **e_context})
+def strategy_access_gained(user_email, strategy, language='en'):
+    with override(language):
+        subject = _('Access Granted: You now have access to %(strategy_name)s!') % {'strategy_name': strategy.name}
+        e_context = email_context()
+        strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
+        html_content = render_to_string('emails/strategy_access_gained.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, 'language': language, **e_context})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -264,11 +280,12 @@ def strategy_access_gained(user_email, strategy):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def strategy_access_removed(user_email, strategy):
-    subject = f'You lost your {strategy.name} access!'
-    e_context = email_context()
-    strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
-    html_content = render_to_string('emails/strategy_access_removed.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **e_context})
+def strategy_access_removed(user_email, strategy, language='en'):
+    with override(language):
+        subject = _('You lost your %(strategy_name)s access!') % {'strategy_name': strategy.name}
+        e_context = email_context()
+        strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
+        html_content = render_to_string('emails/strategy_access_removed.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, 'language': language, **e_context})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -278,12 +295,12 @@ def strategy_access_removed(user_email, strategy):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def strategy_access_overdue(user_email, strategy):
-    subject = f'Strategy Subscription Overdue: {strategy.name}'
-    e_context = email_context()
-    strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
-
-    html_content = render_to_string('emails/strategy_access_overdue.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **e_context})
+def strategy_access_overdue(user_email, strategy, language='en'):
+    with override(language):
+        subject = _('Strategy Subscription Overdue: %(strategy_name)s') % {'strategy_name': strategy.name}
+        e_context = email_context()
+        strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
+        html_content = render_to_string('emails/strategy_access_overdue.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, 'language': language, **e_context})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -293,12 +310,12 @@ def strategy_access_overdue(user_email, strategy):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def strategy_access_canceled(user_email, strategy):
-    subject = f'Your access to {strategy.name} has been canceled'
-    e_context = email_context()
-    strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
-
-    html_content = render_to_string('emails/strategy_access_canceled.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, **e_context})
+def strategy_access_canceled(user_email, strategy, language='en'):
+    with override(language):
+        subject = _('Your access to %(strategy_name)s has been canceled') % {'strategy_name': strategy.name}
+        e_context = email_context()
+        strategy_url = f"{e_context['strategies_url']}{strategy.slug}/"
+        html_content = render_to_string('emails/strategy_access_canceled.html', context={'strategy_name': strategy.name, 'strategy_url': strategy_url, 'language': language, **e_context})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -308,9 +325,10 @@ def strategy_access_canceled(user_email, strategy):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def complete_seller_account(user_email):
-    subject = 'Complete Your Seller Account Setup'
-    html_content = render_to_string('emails/complete_seller_account.html', context={**email_context()})
+def complete_seller_account(user_email, language='en'):
+    with override(language):
+        subject = _('Complete Your Seller Account Setup')
+        html_content = render_to_string('emails/complete_seller_account.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -321,9 +339,10 @@ def complete_seller_account(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def seller_account_verified(user_email):
-    subject = 'Your Seller Account is Verified!'
-    html_content = render_to_string('emails/seller_account_verified.html', context={**email_context()})
+def seller_account_verified(user_email, language='en'):
+    with override(language):
+        subject = _('Your Seller Account is Verified!')
+        html_content = render_to_string('emails/seller_account_verified.html', context={'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -334,14 +353,15 @@ def seller_account_verified(user_email):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def seller_first_subscriber_to_strategy(user_email, strategy):
+def seller_first_subscriber_to_strategy(user_email, strategy, language='en'):
     strategy_name = strategy.name
     strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
     price = strategy.price.amount
     interval = strategy.price.interval
     interval_count = strategy.price.interval_count
-    subject = f'Congratulations on Your First Subscriber for {strategy_name}!'
-    html_content = render_to_string('emails/first_subscriber.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    with override(language):
+        subject = _('Congratulations on Your First Subscriber for %(strategy_name)s!') % {'strategy_name': strategy_name}
+        html_content = render_to_string('emails/first_subscriber.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -352,14 +372,15 @@ def seller_first_subscriber_to_strategy(user_email, strategy):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def seller_ten_subscribers_to_strategy(user_email, strategy):
+def seller_ten_subscribers_to_strategy(user_email, strategy, language='en'):
     strategy_name = strategy.name
     strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
     price = strategy.price.amount
     interval = strategy.price.interval
     interval_count = strategy.price.interval_count
-    subject = f'{strategy_name} Just Hit 10 Subscribers!'
-    html_content = render_to_string('emails/ten_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    with override(language):
+        subject = _('%(strategy_name)s Just Hit 10 Subscribers!') % {'strategy_name': strategy_name}
+        html_content = render_to_string('emails/ten_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'
 
@@ -369,14 +390,15 @@ def seller_ten_subscribers_to_strategy(user_email, strategy):
     except Exception as e:
         print(f"Error sending email: {e}")
 
-def seller_hundred_subscribers_to_strategy(user_email, strategy):
+def seller_hundred_subscribers_to_strategy(user_email, strategy, language='en'):
     strategy_name = strategy.name
     strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
     price = strategy.price.amount
     interval = strategy.price.interval
     interval_count = strategy.price.interval_count
-    subject = f'Incredible — {strategy_name} Just Hit 100 Subscribers!'
-    html_content = render_to_string('emails/hundred_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    with override(language):
+        subject = _('Incredible — %(strategy_name)s Just Hit 100 Subscribers!') % {'strategy_name': strategy_name}
+        html_content = render_to_string('emails/hundred_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'
 
@@ -386,14 +408,15 @@ def seller_hundred_subscribers_to_strategy(user_email, strategy):
     except Exception as e:
         print(f"Error sending email: {e}")
 
-def seller_hundred_thousand_subscribers_to_strategy(user_email, strategy):
+def seller_hundred_thousand_subscribers_to_strategy(user_email, strategy, language='en'):
     strategy_name = strategy.name
     strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
     price = strategy.price.amount
     interval = strategy.price.interval
     interval_count = strategy.price.interval_count
-    subject = f'{strategy_name} Just Hit 100,000 Subscribers!'
-    html_content = render_to_string('emails/hundred_thousand_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    with override(language):
+        subject = _('%(strategy_name)s Just Hit 100,000 Subscribers!') % {'strategy_name': strategy_name}
+        html_content = render_to_string('emails/hundred_thousand_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'
 
@@ -403,14 +426,15 @@ def seller_hundred_thousand_subscribers_to_strategy(user_email, strategy):
     except Exception as e:
         print(f"Error sending email: {e}")
 
-def seller_million_subscribers_to_strategy(user_email, strategy):
+def seller_million_subscribers_to_strategy(user_email, strategy, language='en'):
     strategy_name = strategy.name
     strategy_url = f"https://www.isalgo.com/strategies/{strategy.slug}/"
     price = strategy.price.amount
     interval = strategy.price.interval
     interval_count = strategy.price.interval_count
-    subject = f'Legendary — {strategy_name} Just Hit 1,000,000 Subscribers!'
-    html_content = render_to_string('emails/million_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, **email_context()})
+    with override(language):
+        subject = _('Legendary — %(strategy_name)s Just Hit 1,000,000 Subscribers!') % {'strategy_name': strategy_name}
+        html_content = render_to_string('emails/million_subscribers.html', context={'strategy_name': strategy_name, 'strategy_url': strategy_url, 'price': price, 'interval': interval, 'interval_count': interval_count, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'
 
@@ -420,9 +444,10 @@ def seller_million_subscribers_to_strategy(user_email, strategy):
     except Exception as e:
         print(f"Error sending email: {e}")
 
-def amount_to_pay_email(user_email, amount):
-    subject = 'Outstanding Balance on Your IsAlgo Account'
-    html_content = render_to_string('emails/amount_to_pay.html', context={'amount': amount, **email_context()})
+def amount_to_pay_email(user_email, amount, language='en'):
+    with override(language):
+        subject = _('Outstanding Balance on Your IsAlgo Account')
+        html_content = render_to_string('emails/amount_to_pay.html', context={'amount': amount, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -433,9 +458,10 @@ def amount_to_pay_email(user_email, amount):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def amount_paid_email(user_email, amount):
-    subject = 'Payment Received - Thank You!'
-    html_content = render_to_string('emails/amount_paid.html', context={'amount': amount, **email_context()})
+def amount_paid_email(user_email, amount, language='en'):
+    with override(language):
+        subject = _('Payment Received - Thank You!')
+        html_content = render_to_string('emails/amount_paid.html', context={'amount': amount, 'language': language, **email_context()})
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
     email.content_subtype = 'html'  # This is required because default is plain text
     
@@ -446,18 +472,20 @@ def amount_paid_email(user_email, amount):
         # Handle the exception as needed
         print(f"Error sending email: {e}")
 
-def new_report_added(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker):
-    subject = f'New Report on {strategy_name}'
-    html_content = render_to_string('emails/new_report.html', context={
-        'strategy_name': strategy_name,
-        'strategy_url': strategy_url,
-        'author_name': author_name,
-        'pair': pair,
-        'time_frame_int': time_frame_int,
-        'time_frame': time_frame,
-        'broker': broker,
-        **email_context()
-    })
+def new_report_added(owner_email, strategy_name, strategy_url, author_name, pair, time_frame_int, time_frame, broker, language='en'):
+    with override(language):
+        subject = _('New Report on %(strategy_name)s') % {'strategy_name': strategy_name}
+        html_content = render_to_string('emails/new_report.html', context={
+            'strategy_name': strategy_name,
+            'strategy_url': strategy_url,
+            'author_name': author_name,
+            'pair': pair,
+            'time_frame_int': time_frame_int,
+            'time_frame': time_frame,
+            'broker': broker,
+            'language': language,
+            **email_context()
+        })
     email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[owner_email])
     email.content_subtype = 'html'
 
@@ -468,7 +496,7 @@ def new_report_added(owner_email, strategy_name, strategy_url, author_name, pair
         print(f"Error sending email: {e}")
 
 def new_comment_added(owner_email, strategy_name, strategy_url, author_name, comment_preview):
-    subject = f'New Comment on {strategy_name}'
+    subject = _('New Comment on %(strategy_name)s') % {'strategy_name': strategy_name}
     html_content = render_to_string('emails/new_comment.html', context={
         'strategy_name': strategy_name,
         'strategy_url': strategy_url,
@@ -486,7 +514,7 @@ def new_comment_added(owner_email, strategy_name, strategy_url, author_name, com
         print(f"Error sending email: {e}")
 
 def new_reply_on_report(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
-    subject = f'New Reply on Report — {strategy_name}'
+    subject = _('New Reply on Report — %(strategy_name)s') % {'strategy_name': strategy_name}
     html_content = render_to_string('emails/new_reply_on_report.html', context={
         'strategy_name': strategy_name,
         'strategy_url': strategy_url,
@@ -504,7 +532,7 @@ def new_reply_on_report(recipient_emails, strategy_name, strategy_url, author_na
         print(f"Error sending email: {e}")
 
 def new_reply_on_comment(recipient_emails, strategy_name, strategy_url, author_name, reply_preview):
-    subject = f'New Reply on Comment — {strategy_name}'
+    subject = _('New Reply on Comment — %(strategy_name)s') % {'strategy_name': strategy_name}
     html_content = render_to_string('emails/new_reply_on_comment.html', context={
         'strategy_name': strategy_name,
         'strategy_url': strategy_url,

@@ -46,7 +46,7 @@ def give_access(strategy_id, profile_id, access, user_profile=None, strategy=Non
           if strategy.premium == 'VIP':
             if strategy.created_by != profile.user:
                 subscriber = StrategySubscriber.objects.filter(strategy=strategy, user_profile=profile).first()
-                is_subscribed, _ = subscriber.is_active() if subscriber else (False, None)
+                is_subscribed, _unused = subscriber.is_active() if subscriber else (False, None)
                 if not is_subscribed:
                     if profile.strategies.filter(pk=strategy_id).exists():
                         profile.strategies.remove(strategy)

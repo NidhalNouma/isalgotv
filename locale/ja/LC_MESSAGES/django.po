@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-08 09:07-0500\n"
+"POT-Creation-Date: 2026-03-10 08:39-0500\n"
 "PO-Revision-Date: 2026-03-04 10:00-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: Japanese\n"
@@ -186,8 +186,9 @@ msgid "Invalid volume expression: %s"
 msgstr "無効な数量式：%s"
 
 #, python-format
-msgid "Error parsing volume '%s': %s"
-msgstr "数量 '%s' の解析エラー：%s"
+#| msgid "Error parsing volume '%s': %s"
+msgid "Error parsing volume '%(value)s': %(error)s"
+msgstr "ボリューム '%(value)s' の解析エラー：%(error)s"
 
 #, python-format
 msgid "Error parsing partial value '%s'"
@@ -321,8 +322,9 @@ msgid "Invalid interval: %s"
 msgstr "無効な時間間隔：%s"
 
 #, python-format
-msgid "Error %s: %s"
-msgstr "エラー %s：%s"
+#| msgid "Error %s: %s"
+msgid "Error %(code)s: %(message)s"
+msgstr "エラー %(code)s：%(message)s"
 
 msgid "API credentials are valid."
 msgstr "API認証情報は有効です。"
@@ -359,8 +361,9 @@ msgid "Invalid API key or secret."
 msgstr "無効なAPIキーまたはシークレットです。"
 
 #, python-format
-msgid "Error getting exchange info for %s: %s"
-msgstr "%s の取引所情報取得エラー：%s"
+#| msgid "Error getting exchange info for %s: %s"
+msgid "Error getting exchange info for %(symbol)s: %(error)s"
+msgstr "%(symbol)s の取引所情報の取得エラー：%(error)s"
 
 #, python-format
 msgid "Error getting account balance: %s"
@@ -370,16 +373,19 @@ msgid "Symbol not found."
 msgstr "シンボルが見つかりません。"
 
 #, python-format
-msgid "Error getting exchange price for %s: %s"
-msgstr "%s の取引所価格取得エラー：%s"
+#| msgid "Error getting exchange price for %s: %s"
+msgid "Error getting exchange price for %(symbol)s: %(error)s"
+msgstr "%(symbol)s の取引所価格の取得エラー：%(error)s"
 
 #, python-format
-msgid "Error getting historical candles for %s: %s"
-msgstr "%s の過去のローソク足取得エラー：%s"
+#| msgid "Error getting historical candles for %s: %s"
+msgid "Error getting historical candles for %(symbol)s: %(error)s"
+msgstr "%(symbol)s の過去のローソク足データの取得エラー：%(error)s"
 
 #, python-format
-msgid "Error getting order book for %s: %s"
-msgstr "%s の注文板取得エラー：%s"
+#| msgid "Error getting order book for %s: %s"
+msgid "Error getting order book for %(symbol)s: %(error)s"
+msgstr "%(symbol)s の注文板の取得エラー：%(error)s"
 
 #, python-format
 msgid "Error getting trading pairs: %s"
@@ -524,16 +530,19 @@ msgid "Currency information not found in account info."
 msgstr "アカウント情報に通貨情報が見つかりません。"
 
 #, python-format
-msgid "Login failed: HTTP %s - %s"
-msgstr "ログイン失敗：HTTP %s - %s"
+#| msgid "Login failed: HTTP %s - %s"
+msgid "Login failed: HTTP %(status)s - %(text)s"
+msgstr "ログイン失敗：HTTP %(status)s - %(text)s"
 
 #, python-format
-msgid "Open trade failed: HTTP %s - %s"
-msgstr "取引開始失敗：HTTP %s - %s"
+#| msgid "Open trade failed: HTTP %s - %s"
+msgid "Open trade failed: HTTP %(status)s - %(text)s"
+msgstr "取引の開始に失敗：HTTP %(status)s - %(text)s"
 
 #, python-format
-msgid "Failed to fetch account info: HTTP %s - %s"
-msgstr "アカウント情報の取得に失敗：HTTP %s - %s"
+#| msgid "Failed to fetch account info: HTTP %s - %s"
+msgid "Failed to fetch account info: HTTP %(status)s - %(text)s"
+msgstr "アカウント情報の取得に失敗：HTTP %(status)s - %(text)s"
 
 msgid "No response from exchange when opening trade."
 msgstr "取引開始時に取引所からの応答がありません。"
@@ -645,8 +654,9 @@ msgid "Account ID not provided and could not be retrieved."
 msgstr "アカウントIDが提供されておらず、取得できませんでした。"
 
 #, python-format
-msgid "HTTP Error %s: %s"
-msgstr "HTTPエラー %s：%s"
+#| msgid "HTTP Error %s: %s"
+msgid "HTTP Error %(status)s: %(error)s"
+msgstr "HTTPエラー %(status)s：%(error)s"
 
 msgid "Login failed: Access token not found."
 msgstr "ログイン失敗：アクセストークンが見つかりません。"
@@ -695,8 +705,9 @@ msgid "No trading route available for symbol %s."
 msgstr "シンボル %s に利用可能な取引ルートがありません。"
 
 #, python-format
-msgid "Failed to get symbol info for %s: %s"
-msgstr "%s のシンボル情報の取得に失敗：%s"
+#| msgid "Failed to get symbol info for %s: %s"
+msgid "Failed to get symbol info for %(symbol)s: %(error)s"
+msgstr "%(symbol)s のシンボル情報の取得に失敗：%(error)s"
 
 msgid "Trade has been executed but Position was not found"
 msgstr "取引は実行されましたがポジションが見つかりませんでした"
@@ -5859,6 +5870,1359 @@ msgstr "メールを送信"
 msgid "Marketing Email"
 msgstr "マーケティングメール"
 
+msgid "Access Removed - IsAlgo"
+msgstr "アクセス削除 - IsAlgo"
+
+#| msgid "Unlock access to this strategy and more"
+msgid "Your access to IsAlgo strategies has been removed."
+msgstr "IsAlgo ストラテジーへのアクセスが削除されました。"
+
+#| msgid "Access granted"
+msgid "Access Removed"
+msgstr "アクセス削除"
+
+#| msgid "Membership"
+msgid "Membership Canceled"
+msgstr "メンバーシップがキャンセルされました"
+
+msgid ""
+"We regret to inform you that your access to our premium trading strategies "
+"has been revoked. This action was taken either due to the cancellation of "
+"your membership or because the payment card associated with your account has"
+" insufficient funds or has been declined."
+msgstr ""
+"プレミアムトレーディング戦略へのアクセスが取り消されたことをお知らせいたします。これは、メンバーシップのキャンセルまたはアカウントに関連付けられた支払いカードの残高不足もしくは拒否によるものです。"
+
+msgid ""
+"If you believe this was made in error or if you have any questions, please "
+"don't hesitate to reach out — we're here to help."
+msgstr "これが誤りだと思われる場合やご質問がある場合は、お気軽にお問い合わせください — いつでもサポートいたします。"
+
+#| msgid "With Apex, you can trade"
+msgid "What you can do:"
+msgstr "できること："
+
+#| msgid "No payment method has been detected."
+msgid "Update your payment method if it was declined"
+msgstr "お支払い方法が拒否された場合は更新してください"
+
+#| msgid "What you need to do to get access to our strategies."
+msgid "Resubscribe to regain access to your strategies"
+msgstr "ストラテジーへのアクセスを回復するには再購読してください"
+
+msgid "Contact us if you believe this was an error"
+msgstr "これが誤りだと思われる場合はお問い合わせください"
+
+msgid ""
+"We value your membership and would love to welcome you back. We hope you "
+"found value in our strategies during your time with us."
+msgstr "メンバーシップを大切にしており、またお迎えできることを願っています。ご利用期間中、戦略にご満足いただけたことを願っています。"
+
+#| msgid "Subscribe now"
+msgid "Resubscribe Now"
+msgstr "今すぐ再購読"
+
+#| msgid "Contact us"
+msgid "Contact Support"
+msgstr "サポートに連絡"
+
+msgid "Payment Received - IsAlgo"
+msgstr "お支払い受領 - IsAlgo"
+
+#, python-format
+msgid "Your payment of $%(amount)s has been received. Thank you!"
+msgstr "$%(amount)s のお支払いを受領いたしました。ありがとうございます！"
+
+#| msgid "Payment Method"
+msgid "Payment Received"
+msgstr "お支払い受領済み"
+
+msgid "Thank You"
+msgstr "ありがとうございます"
+
+#, python-format
+msgid ""
+"Your payment of <strong>$%(amount)s</strong> has been successfully "
+"processed. Your account balance is now clear."
+msgstr "<strong>$%(amount)s</strong> のお支払いが正常に処理されました。アカウント残高がクリアされました。"
+
+msgid "Thank you for settling your balance."
+msgstr "残高のお支払いありがとうございます。"
+
+msgid "Outstanding Balance - IsAlgo"
+msgstr "未払い残高 - IsAlgo"
+
+#, python-format
+msgid ""
+"You have an outstanding balance of $%(amount)s. Log in to complete your "
+"payment."
+msgstr "$%(amount)s の未払い残高があります。ログインしてお支払いを完了してください。"
+
+#| msgid "remaining balance."
+msgid "Outstanding Balance"
+msgstr "未払い残高"
+
+#| msgid "Payment Issue"
+msgid "Payment Required"
+msgstr "お支払いが必要です"
+
+#, python-format
+msgid ""
+"You have an outstanding balance of <strong>$%(amount)s</strong> on your "
+"IsAlgo account. Please log in and follow the prompt to complete your "
+"payment."
+msgstr ""
+"IsAlgo アカウントに <strong>$%(amount)s</strong> "
+"の未払い残高があります。ログインしてプロンプトに従いお支払いを完了してください。"
+
+#| msgid "How to use"
+msgid "How to pay:"
+msgstr "お支払い方法："
+
+#| msgid "Log in to your Alpaca account"
+msgid "Log in to your IsAlgo account"
+msgstr "IsAlgo アカウントにログイン"
+
+msgid "Follow the payment prompt displayed on your dashboard"
+msgstr "ダッシュボードに表示される支払いプロンプトに従ってください"
+
+#| msgid "Complete the Connection"
+msgid "Complete the payment"
+msgstr "お支払いを完了する"
+
+msgid ""
+"If you believe this is an error or need help with the payment, please don't "
+"hesitate to contact our support team."
+msgstr "これが誤りだと思われる場合や支払いに関するサポートが必要な場合は、サポートチームまでお気軽にご連絡ください。"
+
+#| msgid "Log in to your"
+msgid "Log In & Pay Now"
+msgstr "ログインして今すぐ支払う"
+
+msgid "Automation Error - IsAlgo"
+msgstr "自動化エラー - IsAlgo"
+
+#, python-format
+msgid "An error occurred on your account %(account_name)s."
+msgstr "アカウント %(account_name)s でエラーが発生しました。"
+
+#| msgid "Automation"
+msgid "Automation Error"
+msgstr "自動化エラー"
+
+msgid "Action Required"
+msgstr "対応が必要です"
+
+#, python-format
+msgid ""
+"We detected an error on your automated account "
+"<strong>%(account_name)s</strong>. Here are the details:"
+msgstr "自動化アカウント <strong>%(account_name)s</strong> でエラーを検出しました。詳細は以下の通りです："
+
+#| msgid "Alerts"
+msgid "Alert:"
+msgstr "アラート："
+
+#| msgid "Error!"
+msgid "Error:"
+msgstr "エラー："
+
+msgid ""
+"Please review your account settings and logs to resolve this issue. If the "
+"problem persists, feel free to contact our support team for assistance."
+msgstr "この問題を解決するために、アカウント設定とログをご確認ください。問題が解決しない場合は、サポートチームまでお気軽にお問い合わせください。"
+
+#| msgid "Edit Account"
+msgid "View Account"
+msgstr "アカウントを表示"
+
+msgid "Broker Account Suspended - IsAlgo"
+msgstr "ブローカーアカウント停止 - IsAlgo"
+
+#, python-format
+msgid ""
+"Your broker account %(account_name)s has been suspended due to a "
+"subscription issue."
+msgstr "サブスクリプションの問題により、ブローカーアカウント %(account_name)s が停止されました。"
+
+#| msgid "Your account server"
+msgid "Broker Account Suspended"
+msgstr "ブローカーアカウントが停止されました"
+
+#, python-format
+msgid ""
+"We wanted to let you know that your automated broker account "
+"<strong>%(account_name)s</strong> has been or will soon be turned off due to"
+" an issue with your subscription payment."
+msgstr ""
+"サブスクリプションの支払いに問題があるため、自動化ブローカーアカウント <strong>%(account_name)s</strong> "
+"が停止されたか、まもなく停止されることをお知らせいたします。"
+
+msgid ""
+"Unfortunately, we were unable to process your payment, which has resulted in"
+" the temporary suspension of your broker account."
+msgstr "残念ながら、お支払いの処理ができなかったため、ブローカーアカウントが一時的に停止されました。"
+
+#| msgid "Create your Account"
+msgid "To restore your account:"
+msgstr "アカウントを復元するには："
+
+msgid "Log in to your account and check your automate account subscription"
+msgstr "アカウントにログインして自動化アカウントのサブスクリプションを確認してください"
+
+msgid "Update your payment details if needed"
+msgstr "必要に応じて支払い情報を更新してください"
+
+#| msgid "Kraken Pro account"
+msgid "Renew your broker account subscription"
+msgstr "ブローカーアカウントのサブスクリプションを更新"
+
+msgid ""
+"Once the payment is successfully processed, your automated broker account "
+"will be reactivated. If you believe this was a mistake, please reach out to "
+"our support team."
+msgstr "支払いが正常に処理されると、自動化ブローカーアカウントが再有効化されます。これが誤りだと思われる場合は、サポートチームまでご連絡ください。"
+
+#| msgid "Subscription"
+msgid "Renew Subscription"
+msgstr "サブスクリプションを更新"
+
+msgid "Account connected - IsAlgo"
+msgstr "アカウント接続完了 - IsAlgo"
+
+#, python-format
+msgid "Your account %(account_name)s has been successfully connected."
+msgstr "アカウント %(account_name)s が正常に接続されました。"
+
+#| msgid "Account info not found"
+msgid "Account connected"
+msgstr "アカウント接続済み"
+
+msgid "Successfully Connected"
+msgstr "接続に成功しました"
+
+#, python-format
+msgid ""
+"Great news! Your account <strong>%(account_name)s</strong> has been "
+"successfully linked and is now connected to IsAlgo."
+msgstr "朗報！アカウント <strong>%(account_name)s</strong> が正常にリンクされ、IsAlgo に接続されました。"
+
+msgid ""
+"You can now start automating your trading strategies with this account. "
+"Here's how to get started:"
+msgstr "このアカウントでトレーディング戦略の自動化を始められます。開始方法は以下の通りです："
+
+msgid "Next steps:"
+msgstr "次のステップ："
+
+#| msgid "Select a trading account type that suits your trading needs."
+msgid "Find a strategy that fits your trading goals"
+msgstr "取引目標に合ったストラテジーを見つけましょう"
+
+#| msgid "Adding strategy to the chart"
+msgid "Add the strategy to your tradingview chart"
+msgstr "ストラテジーをTradingViewチャートに追加"
+
+#| msgid ""
+#| "After setting up the alert message on the strategy you're using,"
+msgid "Get the correct alerts messages and add them to the strategy settings"
+msgstr "正しいアラートメッセージを取得してストラテジー設定に追加"
+
+msgid ""
+"Create a tradingview alert and link it to your automate account via the "
+"webhook URL provided in your account"
+msgstr "TradingView アラートを作成し、アカウントに提供された Webhook URL 経由で自動化アカウントにリンクしてください"
+
+msgid ""
+"If you need any help setting up your automations, check out our "
+"documentation or contact our support team."
+msgstr "自動化の設定でお困りの場合は、ドキュメントをご覧いただくか、サポートチームまでご連絡ください。"
+
+#| msgid "Automation"
+msgid "Set Up Automation"
+msgstr "自動化を設定"
+
+#| msgid "Documentation"
+msgid "Read Documentation"
+msgstr "ドキュメントを読む"
+
+msgid "Broker Account Deleted - IsAlgo"
+msgstr "ブローカーアカウント削除 - IsAlgo"
+
+#, python-format
+msgid "Your broker account %(account_name)s has been deleted."
+msgstr "ブローカーアカウント %(account_name)s が削除されました。"
+
+#| msgid "Before You Delete"
+msgid "Broker Account Deleted"
+msgstr "ブローカーアカウントが削除されました"
+
+#, python-format
+msgid ""
+"We wanted to inform you that your automated broker account "
+"<strong>%(account_name)s</strong> has been deleted. We understand that "
+"managing your accounts is an important part of your trading journey."
+msgstr ""
+"自動化ブローカーアカウント <strong>%(account_name)s</strong> "
+"が削除されたことをお知らせいたします。アカウントの管理がトレーディングの重要な部分であることを理解しています。"
+
+msgid ""
+"If this deletion was intentional, no further action is needed. However, if "
+"this was unexpected, please don't hesitate to reach out."
+msgstr "この削除が意図的なものであれば、追加の操作は不要です。予期しないものであった場合は、お気軽にお問い合わせください。"
+
+msgid "What you should know:"
+msgstr "お知らせ事項："
+
+msgid "All automations linked to this account have been stopped"
+msgstr "このアカウントに紐付けられたすべての自動化が停止されました"
+
+msgid "Your strategies and settings remain intact"
+msgstr "戦略と設定はそのまま保持されます"
+
+msgid "You can add a new broker account at any time"
+msgstr "いつでも新しいブローカーアカウントを追加できます"
+
+msgid ""
+"Thank you for being a part of our community. We hope to continue supporting "
+"your trading journey."
+msgstr "コミュニティの一員でいていただきありがとうございます。引き続きトレーディングの旅をサポートできることを願っています。"
+
+#| msgid "Add Account"
+msgid "Add New Account"
+msgstr "新しいアカウントを追加"
+
+#| msgid "Subscription failed. "
+msgid "Subscription Overdue - IsAlgo"
+msgstr "サブスクリプション期限超過 - IsAlgo"
+
+#, python-format
+msgid ""
+"Your broker account %(account_name)s subscription is overdue. Action "
+"required."
+msgstr "ブローカーアカウント %(account_name)s のサブスクリプションが延滞しています。対応が必要です。"
+
+#| msgid "Subscription Price"
+msgid "Subscription Overdue"
+msgstr "サブスクリプション期限超過"
+
+#, python-format
+msgid ""
+"Your broker account <strong>%(account_name)s</strong> subscription payment "
+"is overdue. To avoid any interruption to your automated trading, please "
+"update your payment as soon as possible."
+msgstr ""
+"ブローカーアカウント <strong>%(account_name)s</strong> "
+"のサブスクリプション支払いが延滞しています。自動売買の中断を避けるため、できるだけ早くお支払いを更新してください。"
+
+msgid ""
+"If the payment is not resolved, your broker account and all linked "
+"automations will be suspended."
+msgstr "支払いが解決されない場合、ブローカーアカウントとすべての紐付けられた自動化が停止されます。"
+
+msgid "What happens if unpaid:"
+msgstr "未払いの場合："
+
+#| msgid "Your account email/username"
+msgid "Your broker account will be temporarily suspended"
+msgstr "ブローカーアカウントは一時的に停止されます"
+
+msgid "All active automations will be paused"
+msgstr "すべてのアクティブな自動化が一時停止されます"
+
+#| msgid "Close any open positions you want to manage manually."
+msgid "Open positions will not be managed automatically"
+msgstr "オープンポジションは自動管理されなくなります"
+
+msgid ""
+"Renew now to keep your automations running smoothly. If you're experiencing "
+"any issues with payment, our support team is here to help."
+msgstr "自動化をスムーズに稼働させ続けるために、今すぐ更新してください。支払いに問題がある場合は、サポートチームがお手伝いいたします。"
+
+msgid "Renew Now"
+msgstr "今すぐ更新"
+
+#| msgid "Subscription failed. "
+msgid "Subscription Canceled - IsAlgo"
+msgstr "サブスクリプションがキャンセルされました - IsAlgo"
+
+#| msgid "Your subscription was canceled, end on"
+msgid "Your subscription has been canceled."
+msgstr "サブスクリプションがキャンセルされました。"
+
+#| msgid "Subscription failed. "
+msgid "Subscription Canceled"
+msgstr "サブスクリプションキャンセル済み"
+
+#| msgid "Cancel"
+msgid "Canceled"
+msgstr "キャンセル済み"
+
+msgid ""
+"Your subscription has been successfully canceled. We're sorry to see you go."
+msgstr "サブスクリプションが正常にキャンセルされました。ご解約は残念です。"
+
+msgid "Your Access Status"
+msgstr "アクセス状況"
+
+msgid "No further charges will be made"
+msgstr "追加の請求は行われません"
+
+#| msgid "Your account email/username"
+msgid "Your account remains active"
+msgstr "アカウントは引き続き有効です"
+
+msgid "All your historical data is preserved"
+msgstr "すべての履歴データは保存されています"
+
+msgid "What happens next:"
+msgstr "今後の流れ："
+
+msgid "No action required — everything is handled automatically"
+msgstr "操作は不要です — すべて自動的に処理されます"
+
+msgid "Your data is safe — all historical performance data remains"
+msgstr "データは安全です — すべての履歴パフォーマンスデータは保持されます"
+
+msgid "Easy to resubscribe — come back anytime, your settings will be waiting"
+msgstr "再登録は簡単 — いつでもお戻りいただけます。設定はそのままお待ちしています"
+
+msgid "We'd love to hear your feedback on how we can improve."
+msgstr "改善のためのフィードバックをお待ちしております。"
+
+#| msgid ". Your thoughts help us improve and serve you better."
+msgid "Your input helps us serve you better."
+msgstr "お客様のご意見がサービス向上に役立ちます。"
+
+#| msgid "feedback"
+msgid "Share Feedback"
+msgstr "フィードバックを共有"
+
+#| msgid "Premium Strategies"
+msgid "Browse Strategies"
+msgstr "ストラテジーを閲覧"
+
+msgid ""
+"Thank you for being part of our community. We hope to see you again soon!"
+msgstr "コミュニティの一員でいてくださりありがとうございます。またお会いできることを願っています！"
+
+#| msgid "Delete Seller Account"
+msgid "Complete Your Seller Profile - IsAlgo"
+msgstr "販売者プロフィールを完成させましょう - IsAlgo"
+
+msgid ""
+"Your seller account is almost ready — complete your profile to start "
+"earning."
+msgstr "セラーアカウントの準備がほぼ完了しました — プロフィールを完成させて収益を得ましょう。"
+
+#| msgid "Delete Seller Account"
+msgid "Complete Your Seller Profile"
+msgstr "販売者プロフィールを完成させましょう"
+
+msgid ""
+"You're almost there! Your seller account has been created, but there are a "
+"few remaining steps to complete before we can publish your strategy on "
+"IsAlgo."
+msgstr "あと少しです！セラーアカウントが作成されましたが、IsAlgo で戦略を公開する前に完了すべき手順がいくつかあります。"
+
+msgid ""
+"Please log in to your account and finish setting up your seller profile. "
+"Once completed, we'll take care of publishing your strategy and you'll start"
+" earning from subscribers. This typically takes just a few minutes."
+msgstr ""
+"アカウントにログインしてセラープロフィールの設定を完了してください。完了後、戦略の公開は私たちが行い、登録者からの収益を得られるようになります。通常、数分で完了します。"
+
+#| msgid "What do I need to get started?"
+msgid "What you need to do:"
+msgstr "必要な手順："
+
+msgid ""
+"Log in to your IsAlgo account and follow the prompts to complete your seller"
+" profile setup"
+msgstr "IsAlgo アカウントにログインし、プロンプトに従ってセラープロフィールの設定を完了してください"
+
+#| msgid "Complete 2FA and any other required verification."
+msgid "Complete the required identity verification"
+msgstr "必要な本人確認を完了してください"
+
+msgid "Add your payout details to receive earnings"
+msgstr "収益を受け取るために支払い情報を追加してください"
+
+msgid ""
+"Once your profile is complete, we'll publish your strategy and you'll start "
+"earning from every new subscriber. If you need any help along the way, don't"
+" hesitate to reach out."
+msgstr ""
+"プロフィールが完成次第、戦略を公開し、新しい登録者ごとに収益を得られるようになります。途中でサポートが必要な場合は、お気軽にお問い合わせください。"
+
+#| msgid "Delete Seller Account"
+msgid "Complete Seller Profile"
+msgstr "販売者プロフィールを完成"
+
+#| msgid "visit the Deriv website"
+msgid "Visit our website"
+msgstr "当社ウェブサイトをご覧ください"
+
+msgid "Pricing"
+msgstr "価格設定"
+
+#| msgid "Follow us on"
+msgid "Follow Us"
+msgstr "フォローする"
+
+#, python-format
+msgid "© %(year)s IsAlgo. All rights reserved."
+msgstr "© %(year)s IsAlgo. All rights reserved."
+
+#| msgid "Total Subscribers"
+msgid "First Subscriber - IsAlgo"
+msgstr "初めての購読者 - IsAlgo"
+
+#, python-format
+msgid ""
+"Congratulations! Your strategy %(strategy_name)s just got its first "
+"subscriber."
+msgstr "おめでとうございます！あなたの戦略 %(strategy_name)s が初の登録者を獲得しました。"
+
+#| msgid "Total Subscribers"
+msgid "Your First Subscriber!"
+msgstr "初めての購読者です！"
+
+#, python-format
+msgid ""
+"Congratulations — someone just subscribed to your strategy "
+"<strong>%(strategy_name)s</strong>! This is a big milestone and a great sign"
+" that your work is valued by the trading community."
+msgstr ""
+"おめでとうございます — 誰かがあなたの戦略 <strong>%(strategy_name)s</strong> "
+"に登録しました！これは大きなマイルストーンであり、あなたの作品がトレーディングコミュニティに評価されている証です。"
+
+msgid ""
+"You're now earning from your strategy on IsAlgo. As more traders discover "
+"your work, your subscriber count and revenue will continue to grow."
+msgstr "IsAlgo で戦略からの収益を得ています。より多くのトレーダーがあなたの作品を発見するにつれ、登録者数と収益は増え続けるでしょう。"
+
+#| msgid "Subscription failed. "
+msgid "Subscription details:"
+msgstr "サブスクリプション詳細："
+
+msgid "Strategy"
+msgstr "戦略"
+
+#| msgid "Open Price"
+msgid "Price"
+msgstr "価格"
+
+msgid "Tips to keep growing:"
+msgstr "成長を続けるためのヒント："
+
+msgid "Keep your strategy reports up to date"
+msgstr "戦略レポートを最新の状態に保ちましょう"
+
+msgid "Engage with users who leave comments or questions"
+msgstr "コメントや質問を残すユーザーと交流しましょう"
+
+msgid "Share your strategy on social media to reach more traders"
+msgstr "ソーシャルメディアで戦略を共有してより多くのトレーダーにリーチしましょう"
+
+msgid ""
+"You can track your earnings and subscribers at any time from your profile. "
+"Thank you for being part of IsAlgo — we're excited to see your strategy "
+"grow!"
+msgstr ""
+"プロフィールからいつでも収益と登録者を追跡できます。IsAlgo の一員でいてくださりありがとうございます — 戦略の成長を楽しみにしています！"
+
+#| msgid "Earnings"
+msgid "View My Earnings"
+msgstr "収益を表示"
+
+msgid "100 Subscribers Milestone - IsAlgo"
+msgstr "100人登録者マイルストーン - IsAlgo"
+
+#, python-format
+msgid "Incredible — your strategy %(strategy_name)s just hit 100 subscribers!"
+msgstr "素晴らしい — あなたの戦略 %(strategy_name)s が100人の登録者を達成しました！"
+
+#| msgid "Total Subscribers"
+msgid "100 Subscribers!"
+msgstr "100人の購読者達成！"
+
+#, python-format
+msgid ""
+"This is incredible — your strategy <strong>%(strategy_name)s</strong> just "
+"reached <strong>100 subscribers</strong>! You've built something truly "
+"valuable and the trading community recognizes it."
+msgstr ""
+"これは信じられないことです — あなたの戦略 <strong>%(strategy_name)s</strong> が "
+"<strong>100人の登録者</strong> に到達しました！本当に価値あるものを構築し、トレーディングコミュニティがそれを認めています。"
+
+msgid ""
+"You are now among the top strategy creators on IsAlgo. This kind of growth "
+"is a testament to the quality and consistency of your work."
+msgstr "あなたは今や IsAlgo のトップ戦略クリエイターの一人です。この成長は、あなたの作品の品質と一貫性の証です。"
+
+msgid "Milestone summary:"
+msgstr "マイルストーンの概要："
+
+#| msgid "Subscribe"
+msgid "Subscribers"
+msgstr "購読者"
+
+msgid ""
+"Thank you for being an exceptional strategy creator on IsAlgo. We truly "
+"appreciate your partnership and look forward to seeing your continued "
+"growth. If there's anything we can do to support you, don't hesitate to "
+"reach out."
+msgstr ""
+"IsAlgo "
+"で卓越した戦略クリエイターでいてくださりありがとうございます。パートナーシップに心から感謝し、今後の成長を楽しみにしています。サポートできることがあれば、お気軽にご連絡ください。"
+
+msgid "100K Subscribers Milestone - IsAlgo"
+msgstr "10万人登録者マイルストーン - IsAlgo"
+
+#, python-format
+msgid ""
+"Unbelievable — your strategy %(strategy_name)s just hit 100,000 subscribers!"
+msgstr "驚異的 — あなたの戦略 %(strategy_name)s が100,000人の登録者を達成しました！"
+
+#| msgid "Total Subscribers"
+msgid "100,000 Subscribers!"
+msgstr "100,000人の購読者達成！"
+
+#, python-format
+msgid ""
+"We're speechless — your strategy <strong>%(strategy_name)s</strong> just "
+"reached <strong>100,000 subscribers</strong>! This is an extraordinary "
+"achievement that very few creators ever reach."
+msgstr ""
+"言葉を失うほどです — あなたの戦略 <strong>%(strategy_name)s</strong> が "
+"<strong>100,000人の登録者</strong> に到達しました！これはごく少数のクリエイターしか達成できない驚異的な成果です。"
+
+msgid ""
+"You've become one of the most influential strategy creators on IsAlgo. A "
+"hundred thousand traders trust your work — that's a massive impact on the "
+"trading community worldwide."
+msgstr ""
+"あなたは IsAlgo で最も影響力のある戦略クリエイターの一人になりました。10万人のトレーダーがあなたの作品を信頼しています — "
+"これは世界中のトレーディングコミュニティへの大きな影響です。"
+
+msgid ""
+"Your dedication and expertise have brought you to this incredible milestone."
+" We're honored to have you as part of IsAlgo and we're committed to "
+"supporting your continued success. If there's anything we can do for you, "
+"please don't hesitate to reach out."
+msgstr ""
+"あなたの献身と専門知識がこの素晴らしいマイルストーンをもたらしました。IsAlgo "
+"の一員としてお迎えできることを光栄に思い、継続的な成功をサポートすることをお約束いたします。お手伝いできることがあれば、お気軽にご連絡ください。"
+
+msgid "1 Million Subscribers Milestone - IsAlgo"
+msgstr "100万登録者マイルストーン - IsAlgo"
+
+#, python-format
+msgid ""
+"Legendary — your strategy %(strategy_name)s just hit 1,000,000 subscribers!"
+msgstr "伝説的 — あなたの戦略 %(strategy_name)s が1,000,000人の登録者を達成しました！"
+
+#| msgid "Total Subscribers"
+msgid "1,000,000 Subscribers!"
+msgstr "1,000,000人の購読者達成！"
+
+#, python-format
+msgid ""
+"This is historic — your strategy <strong>%(strategy_name)s</strong> just "
+"reached <strong>1,000,000 subscribers</strong>! One million traders around "
+"the world are using your strategy. You've made history on IsAlgo."
+msgstr ""
+"これは歴史的な瞬間です — あなたの戦略 <strong>%(strategy_name)s</strong> が "
+"<strong>1,000,000人の登録者</strong> "
+"に到達しました！世界中の100万人のトレーダーがあなたの戦略を使用しています。IsAlgo で歴史を作りました。"
+
+msgid ""
+"What you've accomplished is nothing short of legendary. Your strategy has "
+"become a benchmark in the trading world and your impact on the community is "
+"immeasurable."
+msgstr "あなたが成し遂げたことはまさに伝説的です。あなたの戦略はトレーディング界のベンチマークとなり、コミュニティへの影響は計り知れません。"
+
+msgid ""
+"From everyone at IsAlgo — thank you. You are a true pioneer and we're "
+"incredibly proud to support your journey. We'd love to connect personally "
+"and discuss how we can continue to support your growth. Please reach out "
+"anytime."
+msgstr ""
+"IsAlgo チーム一同 — "
+"ありがとうございます。あなたは真のパイオニアであり、あなたの旅を支援できることを非常に誇りに思います。ぜひ個人的に交流し、今後の成長をどのようにサポートできるかお話ししたいと思います。いつでもご連絡ください。"
+
+msgid "New Comment - IsAlgo"
+msgstr "新しいコメント - IsAlgo"
+
+#, python-format
+msgid "A new comment has been added to your strategy %(strategy_name)s."
+msgstr "あなたの戦略 %(strategy_name)s に新しいコメントが追加されました。"
+
+#| msgid "Comments"
+msgid "New Comment"
+msgstr "新しいコメント"
+
+#, python-format
+msgid ""
+"<strong>%(author_name)s</strong> left a new comment on your strategy "
+"<strong>%(strategy_name)s</strong>."
+msgstr ""
+"<strong>%(author_name)s</strong> があなたの戦略 <strong>%(strategy_name)s</strong> "
+"に新しいコメントを残しました。"
+
+#, python-format
+msgid "%(author_name)s wrote:"
+msgstr "%(author_name)s の投稿："
+
+msgid "Head over to your strategy page to read the full comment and respond."
+msgstr "戦略ページにアクセスして、コメントの全文を読んで返信してください。"
+
+#| msgid "Comments"
+msgid "View Comment"
+msgstr "コメントを表示"
+
+msgid "Lifetime Membership - IsAlgo"
+msgstr "生涯メンバーシップ - IsAlgo"
+
+msgid "Welcome to IsAlgo Lifetime Membership! You now have permanent access."
+msgstr "IsAlgo 生涯メンバーシップへようこそ！永続的なアクセス権を取得しました。"
+
+#| msgid "Membership"
+msgid "Lifetime Membership"
+msgstr "永久メンバーシップ"
+
+#| msgid "Life Time Access"
+msgid "Lifetime Access Granted"
+msgstr "永久アクセスが付与されました"
+
+msgid ""
+"Welcome to our Lifetime family! We're excited to have you as a member. This "
+"is a significant moment for us, and we are thrilled to embark on this "
+"journey with you."
+msgstr ""
+"生涯メンバーファミリーへようこそ！メンバーとしてお迎えできることを嬉しく思います。これは私たちにとって重要な瞬間であり、共にこの旅を歩めることに感激しています。"
+
+msgid ""
+"Your decision to join us as a Lifetime Member reflects your trust and "
+"confidence in our trading strategies and community. We are committed to "
+"providing you with the best tools, resources, and support to help you "
+"achieve your trading goals."
+msgstr ""
+"生涯メンバーとしてご参加いただいたことは、トレーディング戦略とコミュニティへの信頼の表れです。トレーディング目標の達成を支援するために、最高のツール、リソース、サポートを提供することをお約束いたします。"
+
+msgid "Your Lifetime benefits:"
+msgstr "生涯メンバーシップの特典："
+
+#| msgid "Get access to unlock commenting and more features!"
+msgid "Permanent access to all current and future strategies"
+msgstr "現在および将来のすべてのストラテジーへの永久アクセス"
+
+msgid "Early access to new features and updates"
+msgstr "新機能とアップデートへの早期アクセス"
+
+msgid "Priority support from our team"
+msgstr "チームからの優先サポート"
+
+msgid ""
+"Thank you for being a part of this milestone with us. Let's achieve great "
+"success together — happy trading!"
+msgstr "このマイルストーンを共に達成していただきありがとうございます。一緒に大きな成功を収めましょう — ハッピートレーディング！"
+
+msgid "Welcome to IsAlgo"
+msgstr "IsAlgo へようこそ"
+
+msgid "Welcome to our Family! Your membership is confirmed."
+msgstr "ファミリーへようこそ！メンバーシップが確認されました。"
+
+#| msgid "Join our Discord Community!"
+msgid "Welcome to Our Family"
+msgstr "ファミリーへようこそ"
+
+#| msgid "Membership"
+msgid "Membership Confirmed"
+msgstr "メンバーシップ確認済み"
+
+msgid ""
+"Thank you for joining IsAlgo! We are thrilled to have you with us and can't "
+"wait to hear your feedback on our trading strategies."
+msgstr ""
+"IsAlgo "
+"にご参加いただきありがとうございます！ご一緒できることを大変嬉しく思います。トレーディング戦略についてのフィードバックをお待ちしております。"
+
+msgid ""
+"This email confirms that you have successfully purchased one of our "
+"memberships. We're excited to welcome you and are eager to support you on "
+"your trading journey."
+msgstr ""
+"このメールは、メンバーシップのご購入が正常に完了したことを確認するものです。お迎えできることを嬉しく思い、トレーディングの旅をサポートすることを楽しみにしています。"
+
+#| msgid "Getting Started"
+msgid "Getting started:"
+msgstr "はじめに："
+
+msgid "Browse and add strategies to your TradingView chart"
+msgstr "TradingView チャートに戦略を閲覧・追加する"
+
+#| msgid "Kraken Pro account"
+msgid "Set up automation with your broker account"
+msgstr "ブローカーアカウントで自動化を設定"
+
+#, python-format
+msgid ""
+"Read the <a href=\"%(doc_url)s\" style=\"color: #3861f6; text-decoration: "
+"none; font-weight: 500;\">documentation</a> for detailed guides"
+msgstr ""
+"詳しいガイドは<a href=\"%(doc_url)s\" style=\"color: #3861f6; text-decoration: "
+"none; font-weight: 500;\">ドキュメント</a>をお読みください"
+
+msgid ""
+"Welcome aboard — we look forward to helping you achieve your trading goals. "
+"Happy trading!"
+msgstr "ようこそ — トレーディング目標の達成をサポートすることを楽しみにしています。ハッピートレーディング！"
+
+msgid "New Reply on Comment - IsAlgo"
+msgstr "コメントへの新しい返信 - IsAlgo"
+
+#, python-format
+msgid "%(author_name)s replied on a comment for %(strategy_name)s."
+msgstr "%(author_name)s が %(strategy_name)s のコメントに返信しました。"
+
+msgid "New Reply on Comment"
+msgstr "コメントへの新しい返信"
+
+#, python-format
+msgid ""
+"<strong>%(author_name)s</strong> replied on a comment for "
+"<strong>%(strategy_name)s</strong>."
+msgstr ""
+"<strong>%(author_name)s</strong> が <strong>%(strategy_name)s</strong> "
+"のコメントに返信しました。"
+
+msgid "Check out the full conversation and join in the discussion."
+msgstr "会話の全文をご覧いただき、ディスカッションにご参加ください。"
+
+msgid "New Reply on Report - IsAlgo"
+msgstr "レポートへの新しい返信 - IsAlgo"
+
+#, python-format
+msgid "%(author_name)s replied on a report for %(strategy_name)s."
+msgstr "%(author_name)s が %(strategy_name)s のレポートに返信しました。"
+
+#| msgid "Real Trading Reports"
+msgid "New Reply on Report"
+msgstr "レポートに新しい返信"
+
+#, python-format
+msgid ""
+"<strong>%(author_name)s</strong> replied on a report for "
+"<strong>%(strategy_name)s</strong>."
+msgstr ""
+"<strong>%(author_name)s</strong> が <strong>%(strategy_name)s</strong> "
+"のレポートに返信しました。"
+
+#| msgid "Reports"
+msgid "View Report"
+msgstr "レポートを表示"
+
+msgid "New Report Added - IsAlgo"
+msgstr "新しいレポートが追加されました - IsAlgo"
+
+#, python-format
+msgid "A new report has been added to your strategy %(strategy_name)s."
+msgstr "あなたの戦略 %(strategy_name)s に新しいレポートが追加されました。"
+
+msgid "New Report Added"
+msgstr "新しいレポートが追加されました"
+
+#, python-format
+msgid ""
+"A new report has just been added to your strategy "
+"<strong>%(strategy_name)s</strong> by <strong>%(author_name)s</strong>."
+msgstr ""
+"<strong>%(author_name)s</strong> があなたの戦略 <strong>%(strategy_name)s</strong> "
+"に新しいレポートを追加しました。"
+
+#| msgid "Card details"
+msgid "Report details:"
+msgstr "レポート詳細："
+
+msgid "Pair"
+msgstr "通貨ペア"
+
+msgid "Timeframe"
+msgstr "時間枠"
+
+msgid "Broker"
+msgstr "ブローカー"
+
+msgid ""
+"Check out the full report and engage with your community to keep the "
+"conversation going."
+msgstr "レポートの全文をご覧いただき、コミュニティと交流して議論を続けましょう。"
+
+#, python-format
+msgid "New Strategy: %(strategy_name)s - IsAlgo"
+msgstr "新しい戦略：%(strategy_name)s - IsAlgo"
+
+#, python-format
+msgid ""
+"Introducing %(strategy_name)s — our newest trading strategy is now "
+"available!"
+msgstr "%(strategy_name)s のご紹介 — 最新のトレーディング戦略が利用可能になりました！"
+
+#| msgid "No strategy available yet."
+msgid "New Free Strategy Available"
+msgstr "新しい無料ストラテジーが利用可能"
+
+msgid "Free"
+msgstr "無料"
+
+#| msgid "Exclusive strategy"
+msgid "New Exclusive Strategy Available"
+msgstr "新しい限定ストラテジーが利用可能"
+
+msgid "Exclusive"
+msgstr "限定"
+
+#| msgid "Elite Strategies"
+msgid "New Elite Strategy Available"
+msgstr "新しいエリートストラテジーが利用可能"
+
+msgid "Elite"
+msgstr "エリート"
+
+#| msgid "Premium Strategies"
+msgid "New Premium Strategy Available"
+msgstr "新しいプレミアムストラテジーが利用可能"
+
+msgid "Premium"
+msgstr "プレミアム"
+
+#, python-format
+msgid ""
+"We're thrilled to share some exciting news — we've just released our newest "
+"trading strategy, <strong>%(strategy_name)s</strong>, and we're eager for "
+"our community to dive in and explore it."
+msgstr ""
+"エキサイティングなお知らせです — 最新のトレーディング戦略 <strong>%(strategy_name)s</strong> "
+"をリリースしました。コミュニティの皆さんにぜひお試しいただきたいと思います。"
+
+msgid ""
+"Whether you're a seasoned trader or just starting out, this strategy offers "
+"powerful insights to enhance your trading experience."
+msgstr "経験豊富なトレーダーでも初心者でも、この戦略はトレーディング体験を向上させる強力なインサイトを提供します。"
+
+#| msgid "Available Tokens"
+msgid "Available on:"
+msgstr "対応："
+
+msgid "Full details, performance & automation"
+msgstr "詳細情報、パフォーマンス、自動化"
+
+msgid "Chart integration & backtesting"
+msgstr "チャート統合とバックテスト"
+
+msgid ""
+"We have even more strategies in the pipeline. Stay tuned for updates, and "
+"thank you for being a valued member of our community!"
+msgstr "さらに多くの戦略を準備中です。アップデートをお楽しみに。コミュニティの大切なメンバーでいてくださりありがとうございます！"
+
+#| msgid "Try it Now"
+msgid "Try It Out"
+msgstr "試してみる"
+
+#| msgid "Premium Strategies"
+msgid "Browse All Strategies"
+msgstr "すべてのストラテジーを閲覧"
+
+#| msgid "Payment Issue"
+msgid "Payment Issue - IsAlgo"
+msgstr "お支払いの問題 - IsAlgo"
+
+msgid ""
+"Action required: Update your payment method to restore your membership "
+"access."
+msgstr "対応が必要です：メンバーシップのアクセスを復元するために支払い方法を更新してください。"
+
+msgid ""
+"We encountered an issue processing your recent payment for your membership "
+"subscription. As a result, your access has been <strong>temporarily "
+"suspended</strong>."
+msgstr ""
+"メンバーシップサブスクリプションの最近のお支払い処理に問題が発生しました。そのため、アクセスが<strong>一時的に停止</strong>されました。"
+
+msgid ""
+"To restore access and continue using our trading strategies and automations,"
+" please update your payment method as soon as possible."
+msgstr "アクセスを復元してトレーディング戦略と自動化を引き続き使用するには、できるだけ早く支払い方法を更新してください。"
+
+msgid "How to restore access:"
+msgstr "アクセスの復元方法："
+
+#| msgid "Get your client secret"
+msgid "Go to your payment settings"
+msgstr "お支払い設定に移動"
+
+msgid "Update your payment method and confirm"
+msgstr "支払い方法を更新して確認してください"
+
+msgid ""
+"If you need help or believe this is an error, please contact our support "
+"team — we're here to help."
+msgstr "サポートが必要な場合やこれが誤りだと思われる場合は、サポートチームまでご連絡ください — いつでもお手伝いいたします。"
+
+msgid "Update Payment"
+msgstr "支払いを更新"
+
+msgid "Seller Profile Complete - IsAlgo"
+msgstr "セラープロフィール完了 - IsAlgo"
+
+msgid "Your seller profile is complete! Here's how to track your earnings."
+msgstr "セラープロフィールが完了しました！収益の追跡方法は以下の通りです。"
+
+msgid "Seller Profile Complete!"
+msgstr "セラープロフィール完了！"
+
+#| msgid "All Set!"
+msgid "All Set"
+msgstr "準備完了"
+
+msgid ""
+"Great news — your seller profile is now fully set up! We'll take it from "
+"here and publish your strategy on IsAlgo. You'll start earning from every "
+"new subscriber."
+msgstr ""
+"朗報 — セラープロフィールの設定が完了しました！ここからは私たちが引き継ぎ、IsAlgo "
+"で戦略を公開します。新しい登録者ごとに収益を得られるようになります。"
+
+#| msgid ""
+#| "To begin automating your trades, follow these essential steps:"
+msgid "To track your earnings at any time, follow these simple steps:"
+msgstr "いつでも収益を確認するには、以下の簡単な手順に従ってください："
+
+msgid "How to see your earnings:"
+msgstr "収益の確認方法："
+
+#| msgid "Click on your profile icon in the top-right corner"
+msgid "Click on your profile icon in the top right corner"
+msgstr "右上のプロフィールアイコンをクリック"
+
+msgid "Click on <strong>Earnings</strong> to view your revenue and payouts"
+msgstr "<strong>収益</strong>をクリックして収入と支払いを確認してください"
+
+msgid ""
+"Thank you for partnering with us. If you have any questions about your "
+"earnings or payouts, feel free to reach out — we're here to help."
+msgstr "パートナーシップをありがとうございます。収益や支払いについてご質問がある場合は、お気軽にご連絡ください — いつでもサポートいたします。"
+
+#| msgid "Your subscription was canceled, end on"
+msgid "Strategy Subscription Canceled - IsAlgo"
+msgstr "ストラテジーのサブスクリプションがキャンセルされました - IsAlgo"
+
+#, python-format
+#| msgid "Your subscription was canceled, end on"
+msgid "Your subscription to %(strategy_name)s has been canceled."
+msgstr "%(strategy_name)s のサブスクリプションがキャンセルされました。"
+
+#, python-format
+msgid ""
+"Your subscription to the <strong>%(strategy_name)s</strong> has been "
+"canceled. We're sorry to see you go, but we respect your decision."
+msgstr ""
+"<strong>%(strategy_name)s</strong> "
+"のサブスクリプションがキャンセルされました。ご解約は残念ですが、ご判断を尊重いたします。"
+
+msgid ""
+"You will continue to have access until the end of your current billing "
+"period. After that, your strategy access and linked automations will be "
+"deactivated."
+msgstr "現在の請求期間の終了まではアクセスが継続されます。その後、戦略へのアクセスと紐付けられた自動化は無効化されます。"
+
+msgid "Access continues until your billing period ends"
+msgstr "請求期間の終了までアクセスが継続されます"
+
+msgid "Automations will be stopped after expiration"
+msgstr "有効期限後、自動化は停止されます"
+
+msgid "You can resubscribe at any time to regain access"
+msgstr "いつでも再登録してアクセスを回復できます"
+
+msgid ""
+"Changed your mind? You can resubscribe at any time. We'd love to have you "
+"back."
+msgstr "お考えが変わりましたか？いつでも再登録できます。またのご利用をお待ちしております。"
+
+#| msgid "Subscribe"
+msgid "Resubscribe"
+msgstr "再購読"
+
+msgid "Strategy Access Granted - IsAlgo"
+msgstr "戦略アクセス許可 - IsAlgo"
+
+#, python-format
+msgid "You now have full access to %(strategy_name)s. Let's get you started!"
+msgstr "%(strategy_name)s への完全なアクセスを取得しました。さっそく始めましょう！"
+
+#| msgid "Access granted"
+msgid "Strategy Access Granted"
+msgstr "ストラテジーへのアクセスが付与されました"
+
+#, python-format
+msgid ""
+"Congratulations! You now have full access to "
+"<strong>%(strategy_name)s</strong>. Your subscription has been successfully "
+"activated, and you're ready to start your automated trading journey."
+msgstr ""
+"おめでとうございます！<strong>%(strategy_name)s</strong> "
+"への完全なアクセス権を取得しました。サブスクリプションが正常に有効化され、自動売買の旅を始める準備が整いました。"
+
+#| msgid "What's Apex?"
+msgid "What's next:"
+msgstr "次のステップ："
+
+#| msgid "Strategy Performance -"
+msgid "Review strategy performance and settings"
+msgstr "ストラテジーのパフォーマンスと設定を確認"
+
+msgid "Connect your account to receive trade signals"
+msgstr "取引シグナルを受信するためにアカウントを接続してください"
+
+#| msgid "Configure your alerts."
+msgid "Configure your automation and go live"
+msgstr "自動化を設定して運用開始"
+
+#| msgid ""
+#| "If you encounter any issues during the integration process, our support team"
+#| " is here to help. Contact us"
+msgid ""
+"If you have any questions or need assistance getting started, our support "
+"team is here to help."
+msgstr "ご質問やサポートが必要な場合は、サポートチームがお手伝いします。"
+
+#| msgid "Strategy"
+msgid "View Strategy"
+msgstr "ストラテジーを表示"
+
+#| msgid "Strategy Description"
+msgid "Strategy Subscription Overdue - IsAlgo"
+msgstr "ストラテジーのサブスクリプション期限超過 - IsAlgo"
+
+#, python-format
+msgid ""
+"Your %(strategy_name)s subscription payment is overdue. Action required."
+msgstr "%(strategy_name)s のサブスクリプション支払いが延滞しています。対応が必要です。"
+
+#, python-format
+msgid ""
+"We were unable to process the payment for your "
+"<strong>%(strategy_name)s</strong> strategy subscription. This may be due to"
+" insufficient funds, an expired card, or an issue with your payment method."
+msgstr ""
+"<strong>%(strategy_name)s</strong> "
+"戦略サブスクリプションのお支払いを処理できませんでした。残高不足、カードの有効期限切れ、または支払い方法の問題が原因の可能性があります。"
+
+msgid ""
+"Please update your payment as soon as possible to avoid losing access to "
+"this strategy."
+msgstr "この戦略へのアクセスを失わないよう、できるだけ早く支払いを更新してください。"
+
+#, python-format
+msgid "Your access to %(strategy_name)s will be removed"
+msgstr "%(strategy_name)s へのアクセスが削除されます"
+
+msgid "All linked automations will be stopped"
+msgstr "紐付けられたすべての自動化が停止されます"
+
+msgid "Open positions will no longer be managed"
+msgstr "保有ポジションは管理されなくなります"
+
+msgid ""
+"Update your payment now to keep your strategy running. If you're "
+"experiencing any issues, our support team is here to help."
+msgstr "戦略を継続稼働させるために、今すぐ支払いを更新してください。問題がある場合は、サポートチームがお手伝いいたします。"
+
+msgid "Strategy Access Removed - IsAlgo"
+msgstr "戦略アクセス削除 - IsAlgo"
+
+#, python-format
+msgid ""
+"Your access to %(strategy_name)s has been removed due to a payment issue."
+msgstr "支払いの問題により、%(strategy_name)s へのアクセスが削除されました。"
+
+#| msgid "Strategies Reports"
+msgid "Strategy Access Removed"
+msgstr "ストラテジーへのアクセスが削除されました"
+
+#| msgid "Access granted"
+msgid "Access Suspended"
+msgstr "アクセス停止"
+
+#, python-format
+msgid ""
+"We wanted to let you know that your access to "
+"<strong>%(strategy_name)s</strong> has been removed because your "
+"subscription was either canceled or there was an issue processing your "
+"payment."
+msgstr ""
+"<strong>%(strategy_name)s</strong> "
+"へのアクセスが削除されたことをお知らせいたします。サブスクリプションがキャンセルされたか、支払い処理に問題が発生したためです。"
+
+msgid ""
+"This results in the temporary suspension of your access to this strategy."
+msgstr "これにより、この戦略へのアクセスが一時的に停止されます。"
+
+msgid "How to restore your access:"
+msgstr "アクセスの復元方法："
+
+msgid "Log in and review your subscription status"
+msgstr "ログインしてサブスクリプションの状態を確認してください"
+
+#| msgid "No payment method provided."
+msgid "Update your payment method if needed"
+msgstr "必要に応じてお支払い方法を更新してください"
+
+msgid "Renew your subscription to regain access instantly"
+msgstr "サブスクリプションを更新して即座にアクセスを回復しましょう"
+
+msgid ""
+"If you believe this was a mistake or need assistance with your payment, "
+"please don't hesitate to contact our support team."
+msgstr "これが誤りだと思われる場合や支払いに関するサポートが必要な場合は、サポートチームまでお気軽にご連絡ください。"
+
+msgid "10 Subscribers Milestone - IsAlgo"
+msgstr "10人登録者マイルストーン - IsAlgo"
+
+#, python-format
+msgid "Your strategy %(strategy_name)s just hit 10 subscribers!"
+msgstr "あなたの戦略 %(strategy_name)s が10人の登録者を達成しました！"
+
+#| msgid "Total Subscribers"
+msgid "10 Subscribers!"
+msgstr "10人の購読者達成！"
+
+#, python-format
+msgid ""
+"Great news — your strategy <strong>%(strategy_name)s</strong> just reached "
+"<strong>10 subscribers</strong>! Your strategy is gaining real traction and "
+"traders are finding value in your work."
+msgstr ""
+"朗報 — あなたの戦略 <strong>%(strategy_name)s</strong> が <strong>10人の登録者</strong> "
+"に到達しました！戦略が注目を集め始め、トレーダーがあなたの作品に価値を見出しています。"
+
+msgid ""
+"This is a strong signal that you're on the right track. Keep up the great "
+"work and your subscriber count will continue to climb."
+msgstr "これは正しい方向に進んでいる強い証拠です。素晴らしい取り組みを続ければ、登録者数はさらに増え続けるでしょう。"
+
+msgid "Keep the momentum going:"
+msgstr "勢いを維持しましょう："
+
+msgid "Publish fresh backtesting results to show consistent performance"
+msgstr "一貫したパフォーマンスを示すために最新のバックテスト結果を公開しましょう"
+
+msgid "Respond to subscriber questions to build trust"
+msgstr "登録者の質問に回答して信頼を築きましょう"
+
+msgid "Consider creating additional strategies to expand your offering"
+msgstr "提供内容を拡大するために追加の戦略を作成することをご検討ください"
+
+msgid ""
+"You can track all your subscribers and earnings from your profile. Next "
+"milestone: <strong>100 subscribers</strong> — we know you can get there!"
+msgstr ""
+"プロフィールからすべての登録者と収益を追跡できます。次のマイルストーン：<strong>100人の登録者</strong> — "
+"達成できると信じています！"
+
+msgid "Welcome to IsAlgo - Start Your Trading Journey"
+msgstr "IsAlgo へようこそ - トレーディングの旅を始めましょう"
+
+msgid ""
+"Your account is ready! Explore automated trading strategies and start "
+"growing your portfolio."
+msgstr "アカウントの準備が完了しました！自動売買戦略を探索して、ポートフォリオの成長を始めましょう。"
+
+#| msgid "Join our Discord Community!"
+msgid "Welcome to ISAlgo!"
+msgstr "IsAlgo へようこそ！"
+
+#, python-format
+msgid "Hi <strong style=\"color: #111827;\">%(username)s</strong>,"
+msgstr "こんにちは <strong style=\"color: #111827;\">%(username)s</strong> さん、"
+
+msgid ""
+"We're thrilled to have you join our community of traders. Your account is "
+"now active, and you're ready to explore the world of automated trading "
+"strategies."
+msgstr "トレーダーコミュニティへのご参加を心より歓迎いたします。アカウントが有効化され、自動売買戦略の世界を探索する準備が整いました。"
+
+msgid "What you can do now"
+msgstr "今できること"
+
+#| msgid "Trending Strategies"
+msgid "Browse Trading Strategies"
+msgstr "取引ストラテジーを閲覧"
+
+msgid "Explore free, premium, and Exclusive strategies"
+msgstr "無料、プレミアム、エクスクルーシブ戦略を探索"
+
+#| msgid "Real Trading Reports"
+msgid "Browse Trading Reports"
+msgstr "取引レポートを閲覧"
+
+#| msgid "Complete trading performance report for"
+msgid "Explore detailed performance reports and analytics"
+msgstr "詳細なパフォーマンスレポートと分析を探索"
+
+#| msgid "Get your account ID"
+msgid "Connect Your account"
+msgstr "アカウントを接続"
+
+#| msgid ""
+#| "Link the alerts to your trading account and start the automation."
+msgid "Link your trading account to automate trades"
+msgstr "取引アカウントを連携して取引を自動化"
+
+msgid "Learn & Get Support"
+msgstr "学ぶ＆サポートを受ける"
+
+msgid "Access our documentation and reach out to our team"
+msgstr "ドキュメントをご覧いただき、チームまでお問い合わせください"
+
+msgid "Quick Start Guide"
+msgstr "クイックスタートガイド"
+
+msgid ""
+"New to automated trading? Check out our beginner's guide to get started with"
+" confidence:"
+msgstr "自動売買は初めてですか？ビギナーズガイドで安心して始めましょう："
+
+#| msgid "Have a trading strategy idea?"
+msgid "Understanding trading strategies"
+msgstr "取引ストラテジーを理解する"
+
+#| msgid "Waiting for your first trading reports..."
+msgid "Setting up your first trading account connection"
+msgstr "最初の取引アカウント接続を設定"
+
+msgid "Risk management best practices"
+msgstr "リスク管理のベストプラクティス"
+
+#| msgid "Trading Performance"
+msgid "Reading performance metrics"
+msgstr "パフォーマンス指標を読む"
+
+#| msgid "Elite Strategies"
+msgid "Explore Strategies →"
+msgstr "ストラテジーを探索 →"
+
+msgid "We're here to support you every step of the way."
+msgstr "あらゆるステップでサポートいたします。"
+
+#| msgid "start trading"
+msgid "Happy trading!"
+msgstr "良いトレードを！"
+
 msgid ""
 "IsAlgo | Request Access to TradingView Strategies | Manage Your Permissions"
 msgstr "IsAlgo | TradingView ストラテジーへのアクセスをリクエスト |権限を管理する"
@@ -6609,6 +7973,118 @@ msgstr ""
 msgid "Settings"
 msgstr "設定"
 
+msgid "Welcome to IsAlgo community!"
+msgstr "IsAlgo コミュニティへようこそ！"
+
+#| msgid "Join our Discord Community!"
+msgid "Welcome to Our Community!"
+msgstr "コミュニティへようこそ！"
+
+msgid "Welcome to Lifetime Membership!"
+msgstr "生涯メンバーシップへようこそ！"
+
+msgid "We're Sorry to See You Go"
+msgstr "ご解約は残念です"
+
+msgid "Unfortunately, your access has been removed."
+msgstr "残念ながら、アクセス権が削除されました。"
+
+msgid "Action Required: Update Your Payment Method to Restore Access."
+msgstr "対応が必要です：アクセスを復元するために支払い方法を更新してください。"
+
+msgid "Check this one out!"
+msgstr "こちらをチェック！"
+
+#| msgid "Kraken Pro account"
+msgid "your broker account"
+msgstr "ブローカーアカウント"
+
+#, python-format
+msgid "Account connected: %(account_name)s!"
+msgstr "アカウント接続完了：%(account_name)s！"
+
+#, python-format
+msgid "Access Removed: %(account_name)s!"
+msgstr "アクセス削除：%(account_name)s！"
+
+#, python-format
+msgid "Broker Account Deleted: %(account_name)s!"
+msgstr "ブローカーアカウント削除：%(account_name)s！"
+
+#, python-format
+msgid "Broker Account Subscription Overdue: %(account_name)s!"
+msgstr "ブローカーアカウントのサブスクリプション延滞：%(account_name)s！"
+
+#, python-format
+msgid "Automation Error: %(account_name)s"
+msgstr "自動化エラー：%(account_name)s"
+
+#, python-format
+msgid "Access Granted: You now have access to %(strategy_name)s!"
+msgstr "アクセス許可：%(strategy_name)s へのアクセスが付与されました！"
+
+#, python-format
+msgid "You lost your %(strategy_name)s access!"
+msgstr "%(strategy_name)s へのアクセスを失いました！"
+
+#, python-format
+msgid "Strategy Subscription Overdue: %(strategy_name)s"
+msgstr "戦略サブスクリプション延滞：%(strategy_name)s"
+
+#, python-format
+msgid "Your access to %(strategy_name)s has been canceled"
+msgstr "%(strategy_name)s へのアクセスがキャンセルされました"
+
+#| msgid "Delete Seller Account"
+msgid "Complete Your Seller Account Setup"
+msgstr "販売者アカウントの設定を完了"
+
+#| msgid "Your account server"
+msgid "Your Seller Account is Verified!"
+msgstr "販売者アカウントが認証されました！"
+
+#, python-format
+msgid "Congratulations on Your First Subscriber for %(strategy_name)s!"
+msgstr "%(strategy_name)s の初の登録者おめでとうございます！"
+
+#, python-format
+msgid "%(strategy_name)s Just Hit 10 Subscribers!"
+msgstr "%(strategy_name)s が10人の登録者を達成しました！"
+
+#, python-format
+msgid "Incredible — %(strategy_name)s Just Hit 100 Subscribers!"
+msgstr "素晴らしい — %(strategy_name)s が100人の登録者を達成しました！"
+
+#, python-format
+msgid "%(strategy_name)s Just Hit 100,000 Subscribers!"
+msgstr "%(strategy_name)s が100,000人の登録者を達成しました！"
+
+#, python-format
+msgid "Legendary — %(strategy_name)s Just Hit 1,000,000 Subscribers!"
+msgstr "伝説的 — %(strategy_name)s が1,000,000人の登録者を達成しました！"
+
+msgid "Outstanding Balance on Your IsAlgo Account"
+msgstr "IsAlgo アカウントの未払い残高"
+
+msgid "Payment Received - Thank You!"
+msgstr "お支払い確認 - ありがとうございます！"
+
+#, python-format
+msgid "New Report on %(strategy_name)s"
+msgstr "%(strategy_name)s への新しいレポート"
+
+#, python-format
+msgid "New Comment on %(strategy_name)s"
+msgstr "%(strategy_name)s への新しいコメント"
+
+#, python-format
+msgid "New Reply on Report — %(strategy_name)s"
+msgstr "レポートへの新しい返信 — %(strategy_name)s"
+
+#, python-format
+msgid "New Reply on Comment — %(strategy_name)s"
+msgstr "コメントへの新しい返信 — %(strategy_name)s"
+
 msgid "Please set your TradingView username in your profile settings."
 msgstr "プロフィール設定でTradingViewのユーザー名を設定してください。"
 
@@ -6629,10 +8105,14 @@ msgid ""
 "can assist you promptly!"
 msgstr "アクセス権の付与中にエラーが発生しました。迅速にサポートいたしますので、お問い合わせください！"
 
+#| msgid ""
+#| "TradingView Or trading strategies OR forex trading strategies OR crypto "
+#| "trading strategies OR stock trading strategies"
 msgid ""
-"TradingView Or trading strategies OR forex trading strategies OR crypto "
+"TradingView OR trading strategies OR forex trading strategies OR crypto "
 "trading strategies OR stock trading strategies"
-msgstr "TradingView またはトレード戦略 または外国為替トレード戦略 または暗号通貨トレード戦略 または株式トレード戦略"
+msgstr ""
+"TradingView または 取引ストラテジー または FX取引ストラテジー または 仮想通貨取引ストラテジー または 株式取引ストラテジー"
 
 msgid ""
 "an error occurred while searching for username. Please try again later."
@@ -6905,9 +8385,6 @@ msgstr "xlsxをアップロード"
 msgid "Symbol"
 msgstr "シンボル"
 
-msgid "Broker"
-msgstr "ブローカー"
-
 msgid "Initial capital"
 msgstr "初期資金"
 
@@ -6983,9 +8460,6 @@ msgstr "テスト開始日"
 
 msgid "Test end at"
 msgstr "テスト終了日"
-
-msgid "Timeframe"
-msgstr "時間枠"
 
 msgid "Timeframe period"
 msgstr "時間枠期間"
@@ -7086,9 +8560,6 @@ msgstr "使い方"
 msgid "Likes"
 msgstr "いいね"
 
-msgid "Strategy"
-msgstr "戦略"
-
 msgid "Performances"
 msgstr "パフォーマンス"
 
@@ -7152,9 +8623,6 @@ msgstr "負けトレード数"
 msgid "Waiting for your first trading reports..."
 msgstr "最初のトレードレポートをお待ちしています..."
 
-msgid "Quick Start Guide"
-msgstr "クイックスタートガイド"
-
 msgid "Test the Strategy"
 msgstr "戦略をテストする"
 
@@ -7194,18 +8662,6 @@ msgstr "アクセスを取得してレポート共有やその他の機能をア
 msgid "Error!"
 msgstr "エラー！"
 
-msgid "Elite"
-msgstr "エリート"
-
-msgid "Premium"
-msgstr "プレミアム"
-
-msgid "Free"
-msgstr "無料"
-
-msgid "Exclusive"
-msgstr "限定"
-
 msgid "Describe your strategy"
 msgstr "戦略を説明してください"
 
@@ -7236,9 +8692,6 @@ msgstr "%(name)s へのフルアクセス"
 
 msgid "Payment overdue - please update your payment method."
 msgstr "支払い期限超過 - お支払い方法を更新してください。"
-
-msgid "Update Payment"
-msgstr "支払いを更新"
 
 msgid "End on"
 msgstr "終了日"
@@ -7420,8 +8873,8 @@ msgid "/ Year"
 msgstr "/ 年"
 
 #, python-format
-msgid "/ %s %ss"
-msgstr "/ %s %ss"
+msgid "/ %(count)s %(interval)ss"
+msgstr "/ %(count)s %(interval)ss"
 
 #, python-format
 msgid "/ %s"
@@ -7469,9 +8922,6 @@ msgstr "サブスクリプションが見つかりません。"
 msgid "No active subscription found."
 msgstr "アクティブなサブスクリプションが見つかりません。"
 
-#| msgid ""
-#| "e develop cutting-edge trading tools to provide more intelligent, quicker, "
-#| "and easier insights into the market."
 msgid ""
 "<span class=\"font-bold\">W</span>e develop cutting-edge trading tools to "
 "provide more intelligent, quicker, and easier insights into the market."
@@ -7527,9 +8977,6 @@ msgstr "ログアウト"
 msgid "Open main menu"
 msgstr "メインメニューを開く"
 
-msgid "Pricing"
-msgstr "価格設定"
-
 msgid "Docs"
 msgstr "ドキュメント"
 
@@ -7580,3 +9027,7 @@ msgstr "トークンの量が指定されていません。もう一度試して
 
 msgid "Minimum token amount is 500,000."
 msgstr "最小トークン量は 500,000 です。"
+
+#, python-format
+#~ msgid "/ %s %ss"
+#~ msgstr "/ %s %ss"

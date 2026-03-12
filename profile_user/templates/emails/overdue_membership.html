@@ -1,51 +1,62 @@
 {% extends 'emails/components/base_email.html' %}
+{% load i18n %}
 
 {% block title %}
-  Payment Issue - IsAlgo
+  {% trans 'Payment Issue - IsAlgo' %}
 {% endblock %}
 
 {% block preheader %}
-  Action required: Update your payment method to restore your membership access.
+  {% trans 'Action required: Update your payment method to restore your membership access.' %}
 {% endblock %}
 
 {% block content %}
-  {% with icon_name='notification.png' header_title='Payment Issue' header_subtitle='Action Required' header_bg='rgba(217, 119, 6, 0.1)' header_color='#d97706' header_border='rgba(217, 119, 6, 0.2)' %}
+  {% trans 'Payment Issue' as header_title_text %}
+  {% trans 'Action Required' as header_subtitle_text %}
+  {% with icon_name='notification.png' header_title=header_title_text header_subtitle=header_subtitle_text header_bg='rgba(217, 119, 6, 0.1)' header_color='#d97706' header_border='rgba(217, 119, 6, 0.2)' %}
     {% include 'emails/components/email_header.html' %}
   {% endwith %}
 
   <!-- Message -->
   <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
-    We encountered an issue processing your recent payment for your membership subscription. As a result, your access has been <strong>temporarily suspended</strong>.
+    {% blocktrans %}We encountered an issue processing your recent payment for your membership subscription. As a result, your access has been <strong>temporarily suspended</strong>.{% endblocktrans %}
   </p>
 
-  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">To restore access and continue using our trading strategies and automations, please update your payment method as soon as possible.</p>
+  <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans 'To restore access and continue using our trading strategies and automations, please update your payment method as soon as possible.' %}
+  </p>
 
   <!-- Steps card -->
   <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; border: 1px solid #e5e7eb; margin: 24px 0;">
-    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">How to restore access:</p>
+    <p style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #000000;">
+      {% trans 'How to restore access:' %}
+    </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> Log in to your IsAlgo account
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">1</span> {% trans 'Log in to your IsAlgo account' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> Go to your payment settings
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">2</span> {% trans 'Go to your payment settings' %}
         </td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-size: 14px; color: #333333; line-height: 1.5;">
-          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> Update your payment method and confirm
+          <span style="display: inline-block; width: 22px; height: 22px; border-radius: 50%; background-color: rgba(217, 119, 6, 0.1); color: #d97706; text-align: center; line-height: 22px; font-size: 12px; font-weight: 600; margin-right: 10px;">3</span> {% trans 'Update your payment method and confirm' %}
         </td>
       </tr>
     </table>
   </div>
 
-  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">If you need help or believe this is an error, please contact our support team — we're here to help.</p>
+  <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #333333;">
+    {% trans "If you need help or believe this is an error, please contact our support team — we're here to help." %}
+  </p>
 
   <!-- CTA Buttons -->
-  {% with primary_url=pricing_url primary_text='Update Payment' secondary_url='mailto:'|add:support_email|add:'?subject=Payment%20Issue' secondary_text='Contact Support' %}
+  {% trans 'Update Payment' as cta_primary_text %}
+  {% trans 'Contact Support' as cta_secondary_text %}
+  {% with primary_url=pricing_url primary_text=cta_primary_text secondary_url='mailto:'|add:support_email|add:'?subject=Payment%20Issue' secondary_text=cta_secondary_text %}
     {% include 'emails/components/cta_buttons.html' %}
   {% endwith %}
 {% endblock %}

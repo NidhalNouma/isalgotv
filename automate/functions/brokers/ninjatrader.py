@@ -63,7 +63,7 @@ class NinjatraderClient(BrokerClient):
 
         resp = self.s.post(url, headers=headers, data=json.dumps(payload))
         if resp.status_code != 200:
-            raise Exception(_("Login failed: HTTP %s - %s") % (resp.status_code, resp.text))
+            raise Exception(_("Login failed: HTTP %(status)s - %(text)s") % {'status': resp.status_code, 'text': resp.text})
         
         data = resp.json()
         print(data)

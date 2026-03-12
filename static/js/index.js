@@ -489,7 +489,12 @@ function mountStripeElement(id, to_add = false, callback, bg_color = null) {
 
       // console.log("Stripe client secret: " + clientSecret, appearance);
 
-      elements = stripe.elements({ clientSecret, appearance, loader: "auto" });
+      elements = stripe.elements({
+        clientSecret,
+        appearance,
+        loader: "auto",
+        locale: typeof site_locale !== "undefined" ? site_locale : "en",
+      });
 
       const paymentElementOptions = {
         layout: {

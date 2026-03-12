@@ -231,7 +231,7 @@ def add_broker(request, broker_type):
                         account.additional_info = valid.get('additional_info', {})
 
                     account.save()
-                    send_broker_account_added_task(request.user.email, account)
+                    send_broker_account_added_task(request.user.email, account, language=profile_user.language)
 
                     context = context_accounts_by_user(request)
 
@@ -443,7 +443,7 @@ def delete_broker(request, broker_type, pk):
         else:
             raise Exception(_("Invalid Broker Type"))
         
-        send_broker_account_deleted_task(request.user.email, obj)
+        send_broker_account_deleted_task(request.user.email, obj, language=user_profile.language)
 
         context = context_accounts_by_user(request)
         return render(request, 'include/accounts_list.html', context=context)

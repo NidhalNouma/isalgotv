@@ -52,6 +52,11 @@ class User_Profile(models.Model):
     amount_to_pay = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     country = models.CharField(max_length=2, blank=True, null=True, help_text="ISO 3166-1 alpha-2 country code")
+    language = models.CharField(max_length=10, blank=True, null=True, help_text="ISO 639-1 language code", default="en")
+
+    def set_language(self, language_code):
+        self.language = language_code
+        self.save(update_fields=["language"])
     
     def get_seller_account_id(self):
         if not self.seller_account_id:

@@ -174,7 +174,7 @@ class TradeLockerClient(BrokerClient):
 
             symbol_info = self.get_symbol_info(symbol)
             if symbol_info.get('error'):
-                return {'error': _("Failed to get symbol info for %s: %s") % (symbol, symbol_info.get('error'))}
+                return {'error': _("Failed to get symbol info for %(symbol)s: %(error)s") % {'symbol': symbol, 'error': symbol_info.get('error')}}
 
             lot_step = symbol_info.get("lotStep") if symbol_info else 0.01
             lot_step_decimals = str(lot_step)[::-1].find('.') if '.' in str(lot_step) else 0

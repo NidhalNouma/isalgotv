@@ -37,25 +37,27 @@ def notify_subscriber_milestone(sender, instance, created, **kwargs):
     if created:
         strategy = instance.strategy
         seller_email = strategy.created_by.email
+        seller_profile = strategy.created_by.user_profile
+        language = seller_profile.language if seller_profile else 'en'
 
         # Count active subscribers for the strategy
         active_subscribers_count = StrategySubscriber.objects.filter(strategy=strategy, subscription_id__isnull=False, active=True).count()
 
         if active_subscribers_count == 1:
             print(f"First subscriber for strategy '{strategy.name}' detected. Sending email to seller {seller_email} ...")
-            send_strategy_first_subscriber_email_task(seller_email, strategy.id)
+            send_strategy_first_subscriber_email_task(seller_email, strategy.id, language)
         elif active_subscribers_count == 10:
             print(f"10 subscribers for strategy '{strategy.name}' reached. Sending email to seller {seller_email} ...")
-            send_strategy_ten_subscribers_email_task(seller_email, strategy.id)
+            send_strategy_ten_subscribers_email_task(seller_email, strategy.id, language)
         elif active_subscribers_count == 100:
             print(f"100 subscribers for strategy '{strategy.name}' reached. Sending email to seller {seller_email} ...")
-            send_strategy_hundred_subscribers_email_task(seller_email, strategy.id)
+            send_strategy_hundred_subscribers_email_task(seller_email, strategy.id, language)
         elif active_subscribers_count == 100_000:
             print(f"100K subscribers for strategy '{strategy.name}' reached. Sending email to seller {seller_email} ...")
-            send_strategy_hundred_thousand_subscribers_email_task(seller_email, strategy.id)
+            send_strategy_hundred_thousand_subscribers_email_task(seller_email, strategy.id, language)
         elif active_subscribers_count == 1_000_000:
             print(f"1M subscribers for strategy '{strategy.name}' reached. Sending email to seller {seller_email} ...")
-            send_strategy_million_subscribers_email_task(seller_email, strategy.id)
+            send_strategy_million_subscribers_email_task(seller_email, strategy.id, language)
     
 
 
@@ -85,6 +87,7 @@ def notify_new_report(sender, instance, created, **kwargs):
             instance.time_frame_int,
             instance.time_frame,
             instance.broker,
+            language=instance.created_by.user_profile.language if instance.created_by.user_profile else 'en'
         )
     except Exception as e:
         print(f" Error sending new report email: {e}")
@@ -114,6 +117,7 @@ def notify_new_comment(sender, instance, created, **kwargs):
             strategy_url,
             author_name,
             comment_preview,
+            language=instance.created_by.user_profile.language if instance.created_by.user_profile else 'en'
         )
     except Exception as e:
         print(f" Error sending new comment email: {e}")
@@ -170,6 +174,7 @@ def notify_new_reply(sender, instance, created, **kwargs):
                     strategy_url,
                     author_name,
                     reply_preview,
+                    language=instance.created_by.user_profile.language if instance.created_by.user_profile else 'en'
                 )
         elif isinstance(root, StrategyComments):
             strategy = root.strategy
@@ -183,6 +188,7 @@ def notify_new_reply(sender, instance, created, **kwargs):
                     strategy_url,
                     author_name,
                     reply_preview,
+                    language=instance.created_by.user_profile.language if instance.created_by.user_profile else 'en'
                 )
     except Exception as e:
         print(f" Error sending new reply email: {e}")

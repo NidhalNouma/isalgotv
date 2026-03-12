@@ -74,7 +74,7 @@
     </p>
 
     <div class="flex justify-between items-center">
-      <span class="text-text/80">Copyright &copy; IsAlgo{% now 'Y' %}</span>
+      <span class="text-text/80">Copyright &copy; IsAlgo {% now 'Y' %}</span>
       <div class="gap-2 flex items-center">
         <div class="relative">
           {% get_current_language as LANGUAGE_CODE %}
@@ -90,25 +90,17 @@
             {% endfor %}
           </button>
 
-          <div class="py-2 z-10 absolute bottom-full left-0 mb-2 hidden nav-bg-backdrop rounded-md" id="lang-dropdown">
+          <div class="py-2 z-10 absolute bottom-full left-0 mb-2 hidden nav-bg-backdrop rounded-md max-h-[70vh] overflow-y-scroll no-scrollbar" id="lang-dropdown">
             {% for lang_code, lang_name in LANGUAGES %}
-              <form action="{% url 'set_language' %}" method="post">
+              <form action="{% url 'set_user_language' %}" method="post">
                 {% csrf_token %}
                 <input name="next" type="hidden" value="{{ redirect_to }}" />
                 <input name="language" type="hidden" value="{{ lang_code }}" />
                 <button type="submit"
-                  class="w-full text-left px-6 py-1.5 text-sm hover:bg-text/10 transition-colors {% if lang_code == LANGUAGE_CODE %}
-                    
-                    
-                    text-title font-semibold
-
-
+                  class="w-full text-left px-6 py-1.5 text-sm hover:text-title transition-colors {% if lang_code == LANGUAGE_CODE %}
+                     text-title font-semibold
                   {% else %}
-                    
-                    
-                    text-text
-
-
+                     text-text
                   {% endif %}">
                   {{ lang_name }}
                 </button>

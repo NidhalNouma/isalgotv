@@ -1,5 +1,7 @@
 from profile_user.models import User_Profile, Notification
 from profile_user.utils.stripe import subscription_object
+from django.utils.translation import activate, get_language
+from django.conf import settings as django_settings
 
 import datetime
 import requests
@@ -66,6 +68,12 @@ def check_user_and_stripe_middleware(get_response):
             # print("user profile", user_profile.stripe_obj)
 
             request.user_profile = user_profile
+
+            # Restore saved language preference for authenticated users
+            if user_profile.language:
+                current_lang = get_language()
+                if not current_lang or current_lang == django_settings.LANGUAGE_CODE:
+                    activate(user_profile.language)
 
             has_subscription = user_profile.has_subscription
 

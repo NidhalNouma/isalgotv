@@ -51,7 +51,7 @@ class ApexClient(CryptoBrokerClient):
             userRes = private_Client.get_user_v3()
 
             if 'code' in userRes:
-                raise Exception(_("Error %s: %s") % (userRes['code'], userRes.get('message', _("Unknown error"))))
+                raise Exception(_("Error %(code)s: %(message)s") % {'code': userRes['code'], 'message': userRes.get('message', _("Unknown error"))})
             return {'message': _("API credentials are valid."), "valid": True}
         except Exception as e:
             print(f"An error occurred during credential check: {e}")
@@ -105,7 +105,7 @@ class ApexClient(CryptoBrokerClient):
             end_exe = time.perf_counter()
 
             if 'code' in response:
-                raise Exception(_("Error %s: %s") % (response['code'], response.get('message', _("Unknown error"))))
+                raise Exception(_("Error %(code)s: %(message)s") % {'code': response['code'], 'message': response.get('message', _("Unknown error"))})
 
 
             order_id = response.get('orderId')
@@ -166,7 +166,7 @@ class ApexClient(CryptoBrokerClient):
 
 
             if 'code' in response:
-                raise Exception(_("Error %s: %s") % (response['code'], response.get('message', _("Unknown error"))))
+                raise Exception(_("Error %(code)s: %(message)s") % {'code': response['code'], 'message': response.get('message', _("Unknown error"))})
 
             orders = response.get('data', {}).get('orders', [])
 
