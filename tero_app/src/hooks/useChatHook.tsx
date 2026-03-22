@@ -26,7 +26,7 @@ export function useChatHook() {
 
   const chat: ChatSession | null =
     (chats as ChatSession[]).find(
-      (c) => String(c.id) === String(currentChat)
+      (c) => String(c.id) === String(currentChat),
     ) || null;
 
   let messages: ChatMessage[] = chat ? chat.messages || [] : [];
@@ -38,7 +38,7 @@ export function useChatHook() {
     msgs: ChatMessage[],
     error: string | null = null,
     limit = false,
-    isLoading = false
+    isLoading = false,
   ): void {
     const id = String(chatId) ?? "new-chat";
     setChats((prev) => {
@@ -60,7 +60,7 @@ export function useChatHook() {
   function setTypingMessage(
     chatId: string | number | null | undefined,
     messageId: string | number,
-    reply: string
+    reply: string,
   ) {
     const id = String(chatId) ?? "new-chat";
     setChats((prev) => {
@@ -75,7 +75,7 @@ export function useChatHook() {
                     content: reply,
                     isLoading: true,
                   }
-                : msg
+                : msg,
             ),
           } as ChatSession;
         }
@@ -141,54 +141,72 @@ export function useChatHook() {
     }
     window.addEventListener(
       "teroMessage",
-      handleDjangoMessage as EventListener
+      handleDjangoMessage as EventListener,
     );
     return () => {
       window.removeEventListener(
         "teroMessage",
-        handleDjangoMessage as EventListener
+        handleDjangoMessage as EventListener,
       );
     };
   }, [user]);
 
-  function parseChunks(input: string) {
-    // Markers look like: \n<|TAG|>:
-    const marker = /\n<\|([a-zA-Z]+)\|>:/g;
+  type Chunk = { tag: string; payload: string };
 
-    type Chunk = { tag: string; payload: string };
+  // Extracts all *complete* chunks from the buffer.
+  // Non-terminal tags (data) keep the last incomplete chunk in `remaining`
+  // so it can be combined with the next network read.
+  function extractCompleteChunks(buffer: string): {
+    chunks: Chunk[];
+    remaining: string;
+  } {
+    const MARKER_RE = /\n<\|([a-zA-Z]+)\|>:/g;
+    const TERMINAL = new Set(["done", "error", "limit"]);
 
-    const indices: { tag: string; start: number; endOfMarker: number }[] = [];
+    const indices: { tag: string; start: number; end: number }[] = [];
     let m: RegExpExecArray | null;
-
-    // Collect all marker positions and their tags
-    while ((m = marker.exec(input)) !== null) {
+    while ((m = MARKER_RE.exec(buffer)) !== null) {
       indices.push({
         tag: m[1].toLowerCase(),
         start: m.index,
-        endOfMarker: m.index + m[0].length,
+        end: m.index + m[0].length,
       });
     }
 
-    // Build results with payloads (what comes after each tag)
-    const result: Chunk[] = [];
+    if (indices.length === 0) {
+      // No complete marker yet — keep everything in the buffer
+      return { chunks: [], remaining: buffer };
+    }
+
+    const chunks: Chunk[] = [];
     for (let i = 0; i < indices.length; i++) {
       const cur = indices[i];
       const next = indices[i + 1];
-      const payloadStart = cur.endOfMarker;
-      const payloadEnd = next ? next.start : input.length;
-      // Preserve payload exactly as emitted (including spaces/newlines)
-      const payload = input.slice(payloadStart, payloadEnd);
 
-      result.push({ tag: cur.tag, payload });
+      if (next) {
+        // Payload is fully bounded by the next marker
+        chunks.push({
+          tag: cur.tag,
+          payload: buffer.slice(cur.end, next.start),
+        });
+      } else {
+        // Last marker: terminal tags are always complete (sent as a single yield)
+        if (TERMINAL.has(cur.tag)) {
+          chunks.push({ tag: cur.tag, payload: buffer.slice(cur.end) });
+          return { chunks, remaining: "" };
+        }
+        // Non-terminal (data): keep from this marker onward in case it's split
+        return { chunks, remaining: buffer.slice(cur.start) };
+      }
     }
 
-    return result;
+    return { chunks, remaining: "" };
   }
 
   const sendMessage = async (
     msg: string,
     files: File[] | null,
-    modelName: string
+    modelName: string,
   ) => {
     if (!msg?.trim()) return;
 
@@ -199,18 +217,22 @@ export function useChatHook() {
       const msgs = messages.filter((m) => m.content);
 
       let full_reply = "";
+      let rawBuffer = "";
+      const loadingMsgId = messages[messages.length - 1].id;
+
       const stream = (await getStreamAnswer(
         msg,
         msgs,
         files,
         modelName,
-        currentChat
+        currentChat,
       )) as AsyncIterable<string> | any;
 
-      for await (const chunk of stream as AsyncIterable<string>) {
-        const chunks = parseChunks(chunk);
+      for await (const rawChunk of stream as AsyncIterable<string>) {
+        rawBuffer += rawChunk;
 
-        console.log(chunks);
+        const { chunks, remaining } = extractCompleteChunks(rawBuffer);
+        rawBuffer = remaining;
 
         for (const ch of chunks) {
           const tag = ch.tag;
@@ -218,8 +240,9 @@ export function useChatHook() {
 
           switch (tag) {
             case "data": {
-              // Accumulate assistant text and update the typing message live
+              // Accumulate and stream each token directly to the UI
               full_reply += payload;
+              setTypingMessage(currentChatId!, loadingMsgId, full_reply);
               break;
             }
             case "limit": {
@@ -236,14 +259,14 @@ export function useChatHook() {
               throw new Error(payload || "Unknown error from stream");
             }
             case "done": {
-              // Optionally the payload after <|done|>: may be a JSON meta blob
+              // Parse the final metadata blob
               let meta: StreamResponseMeta | undefined;
               try {
                 meta = payload
                   ? (JSON.parse(payload) as StreamResponseMeta)
                   : undefined;
               } catch (_) {
-                // If it's not JSON, just finish without meta
+                // If it's not JSON, finish without meta
               }
               return meta;
             }
@@ -253,13 +276,6 @@ export function useChatHook() {
             }
           }
         }
-
-        console.log(full_reply);
-        setTypingMessage(
-          currentChatId!,
-          messages[messages.length - 1].id,
-          full_reply
-        );
       }
     } catch (err) {
       console.error("Error fetching response:", err);
@@ -271,7 +287,7 @@ export function useChatHook() {
       setChatMessages(
         currentChat as string | number,
         messages,
-        "Failed to get response"
+        "Failed to get response",
       );
 
       return null;
@@ -282,7 +298,7 @@ export function useChatHook() {
   const handleSendMessage = async (
     messageContent: string,
     files: File[] = [],
-    modelName: string
+    modelName: string,
   ) => {
     let content = messageContent;
     if ((chat?.error || chat?.limit) && messages?.length > 0 && !content) {
@@ -324,7 +340,7 @@ export function useChatHook() {
     const response = (await sendMessage(
       content,
       files,
-      modelName
+      modelName,
     )) as StreamResponseMeta;
 
     const newMessage = response ? response.answer : null;
@@ -346,14 +362,14 @@ export function useChatHook() {
           tempMsg.id,
           responseUserMessage,
           loadingMsg.id,
-          responseAiMessage
+          responseAiMessage,
         );
     }
   };
 
   const handleSubmit = async (
     e?: React.FormEvent | null,
-    message: string | null = null
+    message: string | null = null,
   ) => {
     e?.preventDefault();
 

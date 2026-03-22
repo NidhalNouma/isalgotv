@@ -70,7 +70,7 @@ export const ChatScrollContainer: React.FC<ChatScrollContainerProps> = ({
       // Store current position for next scroll event
       prevScrollTopRef.current = scrollTopAbs;
     },
-    [onScroll]
+    [onScroll],
   );
 
   const buttonStyle: CSSProperties = {
@@ -83,6 +83,7 @@ export const ChatScrollContainer: React.FC<ChatScrollContainerProps> = ({
     <div className="relative flex flex-col overflow-y-hidden h-full">
       <div
         className="relative flex flex-col-reverse space-y-4 space-y-reverse h-fit max-h-fit overflow-y-auto no-scrollbar"
+        style={{ overflowAnchor: "none" }}
         onScroll={handleScroll}
         ref={outerDiv}
       >

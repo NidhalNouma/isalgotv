@@ -33,7 +33,7 @@ export interface ChatsContextValue {
   newChatAdded: (
     newChat: ChatSession,
     userMessage: ChatMessage,
-    answer: ChatMessage
+    answer: ChatMessage,
   ) => void;
   retrieveChats: () => void;
   newMessagesAdded: (
@@ -41,7 +41,7 @@ export interface ChatsContextValue {
     userMsgTempId: number | string,
     userMessage: ChatMessage,
     responseMsgTempId: number | string,
-    responseMessage: ChatMessage
+    responseMessage: ChatMessage,
   ) => void;
   getOlderMessages: () => void;
   currentChat: number | string | null;
@@ -71,8 +71,8 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
       markChatSessionAsRead(chatId).then(() => {
         setChats((prev) =>
           prev.map((c) =>
-            String(c.id) === String(chatId) ? { ...c, read: true } : c
-          )
+            String(c.id) === String(chatId) ? { ...c, read: true } : c,
+          ),
         );
       });
     }
@@ -87,11 +87,11 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
             ? {
                 ...c,
                 messages: c.messages?.map((msg) =>
-                  msg.isLoading ? { ...msg, isLoading: false } : msg
+                  msg.isLoading ? { ...msg, isLoading: false } : msg,
                 ),
               }
-            : c
-        )
+            : c,
+        ),
       );
       // Select the new chat
       setCurrentChat(id);
@@ -122,7 +122,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
   function newChatAdded(
     newChat: ChatSession,
     userMessage: ChatMessage,
-    answer: ChatMessage
+    answer: ChatMessage,
   ) {
     newChat.messages = [userMessage, { ...answer, isLoading: true }];
     // setChats((prev) => [newChat, ...prev]);
@@ -140,12 +140,12 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
               last_updated: newChat.last_updated,
               messages: newChat.messages,
             }
-          : chat
-      )
+          : chat,
+      ),
     );
 
     setCurrentChat((prev) =>
-      prev === null || String(prev).includes("new") ? newChat.id : prev
+      prev === null || String(prev).includes("new") ? newChat.id : prev,
     );
   }
 
@@ -168,12 +168,14 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     if (!chatId || !user) return;
     const response: { chat_session: ChatSession } = await updateChatSession(
       chatId,
-      title
+      title,
     );
     setChats((prev) =>
       prev.map((c) =>
-        String(c.id) === String(chatId) ? { ...c, ...response.chat_session } : c
-      )
+        String(c.id) === String(chatId)
+          ? { ...c, ...response.chat_session }
+          : c,
+      ),
     );
   }
 
@@ -184,7 +186,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     userMsgTempId: number | string,
     userMessage: ChatMessage,
     responseMsgTempId: number | string,
-    responseMessage: ChatMessage
+    responseMessage: ChatMessage,
   ) {
     console.log("Adding new messages to chat:", chatId);
     setChats((prev) =>
@@ -202,14 +204,14 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
                     ...msg,
                     id: responseMessage.id,
                     content: responseMessage.content,
-                    // isLoading: false,
+                    isLoading: false,
                   };
 
                 return msg;
               }),
             }
-          : c
-      )
+          : c,
+      ),
     );
   }
 
@@ -244,7 +246,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
                     messages: newMessages,
                     read: true,
                   }
-                : c
+                : c,
             );
           else
             return [
@@ -273,7 +275,7 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
     setLoadingMessages(true);
     fetchChatMessages(
       currentChat as number | string,
-      chat.messages?.length || 0
+      chat.messages?.length || 0,
     ).then((raw) => {
       const data = raw as FetchMessagesResponse;
       const isLastPage = data.is_last_page;
@@ -289,8 +291,8 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
         prev.map((c) =>
           c.id === currentChat
             ? { ...session, isLastPage, start, messages: newMessages }
-            : c
-        )
+            : c,
+        ),
       );
       setLoadingMessages(false);
     });

@@ -20,7 +20,7 @@ def email_context():
         'tv': 'https://www.tradingview.com/u/IsAlgo//?aff_id=134591&aff_sub=134591&source=134591',
         'discord': 'https://discord.gg/wVsXdGSMFg',
         'youtube': 'https://www.youtube.com/channel/UCE-MRbybrU5KobUTH1NRxRA',
-        'instagram': 'https://www.instagram.com/isalgotrade/',
+        'instagram': 'https://www.instagram.com/isalgoofficial/',
     }
 
     return {

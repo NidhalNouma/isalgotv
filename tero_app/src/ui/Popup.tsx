@@ -397,6 +397,7 @@ export function SettingsPopup({ onClose, user }: SettingsPopupProps) {
                 </svg>
                 <a
                   href={HOST + "/my/settings"}
+                  target="blank"
                   className="btn-icon ml-0 pl-0 text-sm"
                 >
                   More settings

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useLayoutEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 
 import { ChatScrollContainer } from "../ui/ScrollableContainer";
@@ -23,7 +23,7 @@ interface ChatMessagesProps {
   limit?: boolean;
   handleSendMessage: (
     e: React.FormEvent,
-    message: string | null | undefined
+    message: string | null | undefined,
   ) => void | Promise<void>;
   Input: React.ReactNode;
 }
@@ -37,6 +37,7 @@ declare global {
 
 export default function ChatMessages({
   messages,
+  disable,
   error,
   limit,
   handleSendMessage,
@@ -46,11 +47,32 @@ export default function ChatMessages({
 
   const messagesRef = useRef<HTMLDivElement | null>(null);
   const { getOlderMessages } = useChat();
+
+  // Keep the bottom spacer alive after streaming ends; reset when user sends next message.
+  // Computed synchronously during render (no useEffect) to avoid a 1-frame flicker.
+  const prevDisableRef = useRef(disable);
+  const spacerActiveRef = useRef(false);
+  if (prevDisableRef.current === true && disable === false) {
+    spacerActiveRef.current = true;
+  }
+  prevDisableRef.current = disable;
+  if (messages[messages.length - 1]?.isLoading) {
+    spacerActiveRef.current = false;
+  }
   // Track scroll height when loading older messages
-  const prevScrollHeightRef = useRef<number>(0);
   const isFetchingOlderRef = useRef<boolean>(false);
-  // Track last message ID to only auto-scroll on new messages
-  const prevLastMessageId = useRef<string | number | null>(null);
+  // Scroll only once when the loading placeholder first appears (not on every streaming token)
+  const prevLastIsLoadingRef = useRef<boolean>(false);
+
+  // Capture scroll metrics BEFORE the DOM commits (render phase).
+  // messagesRef still points at the old DOM here.
+  const preRenderRef = useRef({ scrollHeight: 0, scrollTop: 0 });
+  if (messagesRef.current) {
+    preRenderRef.current = {
+      scrollHeight: messagesRef.current.scrollHeight,
+      scrollTop: messagesRef.current.scrollTop,
+    };
+  }
 
   // When scrolled near the bottom (since list is reversed), load older messages
   const handleScroll = () => {
@@ -62,30 +84,42 @@ export default function ChatMessages({
       Math.abs(el.scrollHeight) - Math.abs(el.scrollTop) <=
       (el.scrollHeight * 25) / 100
     ) {
-      // Remember current height before loading more
-      prevScrollHeightRef.current = el.scrollHeight;
       isFetchingOlderRef.current = true;
       (getOlderMessages as () => void)();
     }
   };
 
-  useEffect(() => {
+  // Runs AFTER DOM commit but BEFORE paint.
+  // Compensate for content height growth during streaming so the
+  // viewport stays still instead of chasing the growing message.
+  useLayoutEffect(() => {
     const el = messagesRef.current;
     if (!el || messages.length === 0) return;
 
     if (isFetchingOlderRef.current) {
-      // If restoring position were needed, we could compute delta here
       isFetchingOlderRef.current = false;
-    } else {
-      // Auto-scroll on new messages
-      const currLastMessage = messages[messages.length - 1];
-      const currLastId = currLastMessage?.id;
-      const prevLastId = prevLastMessageId.current;
+      return;
+    }
 
-      if (prevLastId === null || prevLastId !== currLastId) {
-        el.scrollTop = el.scrollHeight;
+    const lastMsg = messages[messages.length - 1];
+    const isLastLoading = Boolean(lastMsg?.isLoading);
+
+    // First time the loading placeholder appears → scroll to bottom
+    if (isLastLoading && !prevLastIsLoadingRef.current) {
+      el.scrollTop = 0; // 0 = visual bottom in flex-col-reverse
+      prevLastIsLoadingRef.current = isLastLoading;
+      return;
+    }
+    prevLastIsLoadingRef.current = isLastLoading;
+
+    // During streaming: freeze the viewport by offsetting scrollTop
+    // by however much the content grew.
+    if (isLastLoading) {
+      const { scrollHeight: prevH, scrollTop: prevT } = preRenderRef.current;
+      const delta = el.scrollHeight - prevH;
+      if (delta > 0) {
+        el.scrollTop = prevT - delta;
       }
-      prevLastMessageId.current = currLastId ?? null;
     }
   }, [messages]);
 
@@ -112,7 +146,7 @@ export default function ChatMessages({
                         onClick={(e) =>
                           handleSendMessage(
                             e,
-                            messages[messages.length - 1].content
+                            messages[messages.length - 1].content,
                           )
                         }
                       >
@@ -144,7 +178,7 @@ export default function ChatMessages({
                         onClick={(e) =>
                           handleSendMessage(
                             e,
-                            messages[messages.length - 1].content
+                            messages[messages.length - 1].content,
                           )
                         }
                       >
@@ -167,7 +201,7 @@ export default function ChatMessages({
                       onClick={(e) =>
                         handleSendMessage(
                           e,
-                          messages[messages.length - 1].content
+                          messages[messages.length - 1].content,
                         )
                       }
                     >
@@ -188,7 +222,8 @@ export default function ChatMessages({
               isUser={message.role === "user"}
               loading={message.isLoading}
               style={
-                message.isLoading && i === messages.length - 1
+                i === messages.length - 1 &&
+                (message.isLoading || spacerActiveRef.current)
                   ? {
                       minHeight: messagesRef.current
                         ? messagesRef.current.clientHeight - 90

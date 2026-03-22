@@ -1,4 +1,4 @@
-import React, { Fragment, useLayoutEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -17,22 +17,6 @@ export default function AiResponseMarkdown({
   isStreaming,
 }: AiResponseMarkdownProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
-  // Typing effect state
-  const [displayedMessage, setDisplayedMessage] = useState<string>("");
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  useLayoutEffect(() => {
-    if (isStreaming)
-      if (currentIndex < message.length) {
-        const timeout = setTimeout(() => {
-          setDisplayedMessage((prev) => prev + message[currentIndex]);
-          setCurrentIndex((prev) => prev + 1);
-        }, 0.4 + Math.random() * 5); // Varying speed for more natural effect
-
-        return () => clearTimeout(timeout);
-      }
-  }, [currentIndex]);
 
   const handleCopyCode = (code: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -235,7 +219,7 @@ export default function AiResponseMarkdown({
           remarkPlugins={[remarkGfm]}
           components={sharedComponents as Components}
         >
-          {isStreaming ? displayedMessage : message}
+          {isStreaming && message.length > 0 ? message + " ▍" : message}
         </ReactMarkdown>
       </div>
     </Fragment>
