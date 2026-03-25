@@ -1,6 +1,8 @@
 {% extends 'page.html' %} 
 {% load i18n %}
 
+{% load custom_tags %}
+
 {% block head_title %}
   <title>{% trans "IsAlgo | Account Settings | Manage Profile, Trading Connections & Membership" %}</title>
 {% endblock %}
@@ -35,9 +37,15 @@
       {% include 'include/settings/membership.html' %}
     </div>
     
-    {% comment %} <div id="setting-ai-tokens" >
+     <div id="setting-ai-tokens" >
       {% include 'include/settings/ai_tokens.html' %}
-    </div> {% endcomment %}
+    </div> 
+    {% with title='ai-tokens' %}
+      {% render_template 'include/ai_tokens_form.html' title=title as ai_tokens_form %}
+      {% with header_html="<h3 class='text-xl font-semibold text-title'>Add Tokens</h3>" %}
+        {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn'  body_class='px-2 mt-4' %}
+      {% endwith %}
+    {% endwith %}
       
     {% comment %} <div id="setting-emails-notifications" >
       {% include 'include/settings/emailsandnotifications.html' %}

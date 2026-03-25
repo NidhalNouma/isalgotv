@@ -1,7 +1,5 @@
 import { csrf_token } from "../constant"
 
-const BASE = "/trade" as const;
-
 
 async function fetchJSON<T = unknown>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, init);
@@ -27,7 +25,7 @@ function jsonHeaders(): HeadersInit {
 }
 
 export async function fetchAccounts<T = unknown>(): Promise<T> {
-  return fetchJSON<T>(`${BASE}/accounts/list/`, {
+  return fetchJSON<T>(`/trade/accounts/list/`, {
     method: "POST",
     headers: jsonHeaders(),
   });

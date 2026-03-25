@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface DropdownOption {
   label: string;
   description?: string;
+  active?: boolean;
   onClick: () => void;
 }
 
@@ -28,11 +29,11 @@ export function Dropdown({
 }: DropdownProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [label, setLabel] = useState<string>(
-    defaultLabel || "Select an option"
+    defaultLabel || "Select an option",
   );
   const [dropUp, setDropUp] = useState<boolean>(false);
   const [dropdownMaxHeight, setDropdownMaxHeight] = useState<number | null>(
-    null
+    null,
   );
   const containerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -103,11 +104,14 @@ export function Dropdown({
                 overflowY: "auto",
               }}
             >
-              <ul className="py-1 bg-text/20 backdrop-blur-3xl rounded-md">
+              <div className="py-1 bg-text/20 backdrop-blur-3xl rounded-md">
                 {options.map((option, index) => (
-                  <li
+                  <button
                     key={index}
-                    className="px-4 py-2 text-text text-xs hover:bg-text/10 cursor-pointer"
+                    className="px-4 py-2 text-text text-start w-full text-xs hover:bg-text/10 cursor-pointer truncate disabled:opacity-50"
+                    disabled={
+                      option.onClick === undefined || option?.active === false
+                    }
                     onClick={() => {
                       setLabel(option.label);
                       option.onClick();
@@ -123,9 +127,9 @@ export function Dropdown({
                         </p>
                       </Fragment>
                     )}
-                  </li>
+                  </button>
                 ))}
-              </ul>
+              </div>
             </motion.div>
           </Fragment>
         )}

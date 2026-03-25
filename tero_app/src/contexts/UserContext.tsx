@@ -8,11 +8,16 @@ import React, {
 
 import { type AIModel } from "../types/user";
 import type { User, Tokens } from "../types/user";
+import { fetchAccounts } from "../api/trade";
+
+import type { Account } from "../types/user";
 
 interface UserContextValue {
   user: User | null | undefined;
   tokens: Tokens;
   updateTokens: (free: number, availabel: number) => void;
+  getAccounts: () => void;
+  accounts: Account[];
 }
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
@@ -38,6 +43,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     availabel: 0,
     free: 0,
   });
+
+  const [accounts, setAccounts] = useState<Account[]>([]);
+
+  const getAccounts = () => {
+    fetchAccounts().then((data: any) => {
+      const accs = data?.accounts;
+      setAccounts(accs);
+    });
+  };
 
   const updateTokens = (free: number, availabel: number) => {
     setTokens({ availabel, free });
@@ -70,10 +84,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         free: parseInt(ctx.tokens.aiFreeTokens ?? "0", 10) || 0,
       });
     }
+
+    getAccounts();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, tokens, updateTokens }}>
+    <UserContext.Provider
+      value={{ user, tokens, updateTokens, getAccounts, accounts }}
+    >
       {children}
     </UserContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchAccounts } from "../api/trade";
+import { useUser } from "../contexts/UserContext";
 
 import type { Account } from "../types/user";
 
@@ -10,19 +10,10 @@ export function NewTaskHook(): {
   selectedAccount: Account | null;
   setSelectedAccount: React.Dispatch<React.SetStateAction<Account | null>>;
 } {
+  const { accounts, getAccounts } = useUser();
+
   const [step, setStep] = useState<number>(1);
-  const [accounts, setAccounts] = useState<Account[]>([]);
-
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
-
-  function getAccounts() {
-    fetchAccounts().then((data: any) => {
-      const cryptoAccounts = data?.crypto_accounts;
-      const forexAccounts = data?.forex_accounts;
-      console.log(cryptoAccounts, forexAccounts);
-      setAccounts([...cryptoAccounts, ...forexAccounts]);
-    });
-  }
 
   useEffect(() => {
     if (step === 1) getAccounts();

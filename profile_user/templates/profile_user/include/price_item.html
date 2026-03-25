@@ -1,20 +1,9 @@
 {% load custom_tags %}
 {% load i18n %}
+{% load hosts %}
 
 {% with price_key=title %}
-  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %}
-      
-       bg-gradient-to-t from-primary/30 to-text/5
-
-    {% elif title == 'LIFETIME' %}
-      
-       bg-gradient-to-t from-primary/30 to-success/30
-
-    {% else %}
-      
-       bg-text/5
-
-    {% endif %} backdrop-blur-3xl border-0 border-text relative">
+  <div class="text-start py-4 px-6 rounded-lg w-full {% if title == 'YEARLY' %} bg-gradient-to-t from-primary/30 to-text/5 {% elif title == 'LIFETIME' %}  bg-gradient-to-t from-primary/30 to-success/30  {% else %}  bg-text/5 {% endif %} backdrop-blur-3xl border-0 border-text relative">
     <h3 class="text-text text-2xl font-extrabold pt-4 rounded-xl">{{ title }}</h3>
     {% if save %}
       {% comment %} <div class="relative my-2">
@@ -99,14 +88,19 @@
               <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
             </svg>
           </span>
-          TERO Chat<span class="text-[0.6rem] -ml-1 -translate-y-0.5">&#8709;</span>
+          <a class="relative gap-1 flex items-center" href="{% host_url 'tero_index_chat' host 'tero' %}" target="_blank" rel="noopener noreferrer">
+            {% trans 'TERO Chat' %}<span class="text-[0.6rem] -translate-y-0.5">&#8709;</span>
+          </a>
         </li>
         <li class="gap-1.5 flex items-center truncate  {% if title != 'LIFETIME' %} opacity-20 {% endif %}">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
             <svg class="h-3.5 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
             </svg>
-          </span>TERO Trade<span class="text-[0.6rem] -ml-1 -translate-y-0.5">&#8709;</span>
+          </span>
+          <a class="relative gap-1 flex items-center" href="{% host_url 'tero_index_trade' host 'tero' %}" target="_blank" rel="noopener noreferrer">
+            {% trans 'TERO Trade' %}<span class="text-[0.6rem] -translate-y-0.5">&#8709;</span>
+          </a>
         </li> {% endcomment %}
         <li class="gap-1.5 flex items-center truncate">
           <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">
@@ -122,7 +116,7 @@
               <path d="M21 8C22.1046 8 23 8.89543 23 10V14C23 15.1046 22.1046 16 21 16H19.9381C19.446 19.9463 16.0796 23 12 23V21C15.3137 21 18 18.3137 18 15V9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V16H3C1.89543 16 1 15.1046 1 14V10C1 8.89543 1.89543 8 3 8H4.06189C4.55399 4.05369 7.92038 1 12 1C16.0796 1 19.446 4.05369 19.9381 8H21ZM7.75944 15.7849L8.81958 14.0887C9.74161 14.6662 10.8318 15 12 15C13.1682 15 14.2584 14.6662 15.1804 14.0887L16.2406 15.7849C15.0112 16.5549 13.5576 17 12 17C10.4424 17 8.98882 16.5549 7.75944 15.7849Z"></path>
             </svg>
           </span>{% trans 'Customer Support' %}
-        </li>
+        </li> 
         <li class="gap-1.5 flex items-center truncate">
           {% if title != 'LIFETIME' %}
             <span class="bg-text/10 backdrop-blur-3xl rounded-full p-1.5 flex items-center justify-center">

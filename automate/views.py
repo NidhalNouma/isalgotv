@@ -663,8 +663,8 @@ def export_broker_logs(request, broker_type, pk):
 def get_accounts_list_json(request):
     if request.method == "POST":
         if request.user.is_authenticated:
-            accounts = context_accounts_by_user(request)
-            crypto_accounts = [
+            data = context_accounts_by_user(request)
+            accounts = [
                 {
                     "id": acc.id,
                     "broker_type": acc.broker_type,
@@ -672,21 +672,10 @@ def get_accounts_list_json(request):
                     "name": acc.name,
                     "active": acc.active,
                 }
-                for acc in accounts.get('crypto_accounts', [])
+                for acc in data.get('accounts', [])
             ]
 
-            forex_accounts = [
-                {
-                    "id": acc.id,
-                    "broker_type": acc.broker_type,
-                    "type": acc.type,
-                    "name": acc.name,
-                    "active": acc.active,
-                }
-                for acc in accounts.get("forex_accounts", [])
-            ]
-
-            return JsonResponse({"success": True, "crypto_accounts": crypto_accounts, 'forex_accounts': forex_accounts})
+            return JsonResponse({"success": True, "accounts": accounts})
 
 @require_http_methods(["GET"])
 def get_broker_trades(request, broker_type, pk):
