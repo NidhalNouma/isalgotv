@@ -198,12 +198,19 @@ export const ChatsProvider: React.FC<{ children: ReactNode }> = ({
               read: false,
               messages: c.messages?.map((msg) => {
                 if (String(msg.id) === String(userMsgTempId))
-                  return { ...msg, id: userMessage.id };
+                  return {
+                    ...msg,
+                    id: userMessage.id,
+                    context: userMessage.context,
+                    parent_id: userMessage.parent_id,
+                  };
                 else if (String(msg.id) === String(responseMsgTempId))
                   return {
                     ...msg,
                     id: responseMessage.id,
                     content: responseMessage.content,
+                    context: responseMessage.context,
+                    parent_id: responseMessage.parent_id,
                     isLoading: false,
                   };
 

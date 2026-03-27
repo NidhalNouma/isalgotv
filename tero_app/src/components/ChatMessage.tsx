@@ -1,7 +1,7 @@
-import { Fragment } from "react";
-// import { UserCircle } from "lucide-react";
+import { Fragment, useState } from "react";
 import AiResponseMarkdown from "./AiResponseMarkdown";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Check, Copy, RefreshCw, ThumbsDown, ThumbsUp } from "lucide-react";
 
 import type { CSSProperties, Ref } from "react";
 
@@ -9,21 +9,92 @@ interface ChatMessageProps {
   className?: string;
   style?: CSSProperties;
   ref?: Ref<HTMLDivElement>;
+  messageId?: string | number;
   message: string;
   isUser: boolean;
   loading?: boolean;
+  liked?: boolean | null;
+  // Branch navigation
+  siblingCount?: number;
+  siblingIndex?: number;
+  siblings?: (string | number)[];
+  parentId?: string | null;
+  onStartEdit?: (messageId: string | number) => void;
+  isEditingMessage?: boolean;
+  onLike?: (messageId: string | number) => Promise<void>;
+  onDislike?: (messageId: string | number) => Promise<void>;
+  onRetry?: () => Promise<void>;
+  onSwitchBranch?: (
+    parentId: string | number,
+    targetSiblingId: string | number,
+  ) => Promise<void>;
+  isLoading?: boolean;
 }
 
 export default function ChatMessage({
   className,
   style,
   ref,
+  messageId,
   message,
   isUser,
   loading,
+  liked = null,
+  siblingCount = 0,
+  siblingIndex = -1,
+  siblings,
+  parentId,
+  onStartEdit,
+  isEditingMessage = false,
+  onLike,
+  onDislike,
+  onRetry,
+  onSwitchBranch,
+  isLoading: chatLoading,
 }: ChatMessageProps) {
+  const showBranchNav = siblingCount > 1 && siblingIndex >= 0;
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (typeof navigator === "undefined" || !navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(message);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      // no-op
+    }
+  };
+
+  const goToPrev = () => {
+    console.log("[goToPrev]", {
+      siblings,
+      parentId,
+      siblingIndex,
+      onSwitchBranch: !!onSwitchBranch,
+    });
+    if (!siblings || !parentId || !onSwitchBranch || siblingIndex <= 0) return;
+    onSwitchBranch(parentId, siblings[siblingIndex - 1]);
+  };
+  const goToNext = () => {
+    console.log("[goToNext]", {
+      siblings,
+      parentId,
+      siblingIndex,
+      onSwitchBranch: !!onSwitchBranch,
+    });
+    if (
+      !siblings ||
+      !parentId ||
+      !onSwitchBranch ||
+      siblingIndex >= siblings.length - 1
+    )
+      return;
+    onSwitchBranch(parentId, siblings[siblingIndex + 1]);
+  };
+
   return (
-    <div className={`${className || ""} h-fit`} ref={ref}>
+    <div className={`${className || ""} h-fit group`} ref={ref}>
       <div
         className={"max-w-3xl mx-auto flex gap-2 sm:px-4 px-1.5 h-fit"}
         style={style}
@@ -63,8 +134,68 @@ export default function ChatMessage({
           )}
         </div>
         {isUser ? (
-          <div className=" max-w-xl ml-auto bg-text/10 px-3 pt-2  rounded-lg text-text h-fit flex-1 ">
-            <AiResponseMarkdown message={message as string} />
+          <div className="max-w-xl ml-auto h-fit flex-1">
+            <div
+              className={`px-3 pt-2 pb-0.5 rounded-lg text-text relative transition-all ${
+                isEditingMessage
+                  ? "bg-text/20 brightness-110 ring-1 ring-text/20 shadow-sm"
+                  : "bg-text/10"
+              }${
+                onStartEdit && messageId && !chatLoading
+                  ? " cursor-pointer hover:bg-text/15 transition-colors"
+                  : ""
+              }`}
+              onClick={() => {
+                if (onStartEdit && messageId && !chatLoading)
+                  onStartEdit(messageId);
+              }}
+            >
+              <AiResponseMarkdown message={message as string} />
+            </div>
+            {/* Branch navigation */}
+            {showBranchNav && (
+              <div className="flex items-center justify-center gap-1 mt-1 mb-0.5 ">
+                <button
+                  className="ml-auto text-text/40 hover:text-text/70 disabled:opacity-30 p-0.5"
+                  disabled={siblingIndex <= 0}
+                  onClick={goToPrev}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-3 h-3"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <span className="text-[10px] text-text/50 tabular-nums">
+                  {siblingIndex + 1}/{siblingCount}
+                </span>
+                <button
+                  className="text-text/40 hover:text-text/70 disabled:opacity-30  p-0.5"
+                  disabled={siblingIndex >= siblingCount - 1}
+                  onClick={goToNext}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-3 h-3"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 1 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         ) : message.length > 0 ? (
           <div className="max-w-full w-full relative text-text flex-shrink h-fit p-1">
@@ -72,6 +203,51 @@ export default function ChatMessage({
               message={message as string}
               isStreaming={loading as boolean}
             />
+            {!loading && (
+              <div className="mt-2 flex items-center gap-1 text-text/50">
+                <button
+                  className={`rounded p-1 transition-colors hover:bg-text/10 hover:text-text ${
+                    liked === true ? "text-title" : ""
+                  }`}
+                  onClick={() => messageId != null && onLike?.(messageId)}
+                  title="Like response"
+                  type="button"
+                >
+                  <ThumbsUp className="h-4 w-4" />
+                </button>
+                <button
+                  className={`rounded p-1 transition-colors hover:bg-text/10 hover:text-text ${
+                    liked === false ? "text-title" : ""
+                  }`}
+                  onClick={() => messageId != null && onDislike?.(messageId)}
+                  title="Dislike response"
+                  type="button"
+                >
+                  <ThumbsDown className="h-4 w-4" />
+                </button>
+                <button
+                  className="rounded p-1 transition-colors hover:bg-text/10 hover:text-text"
+                  onClick={handleCopy}
+                  title="Copy response"
+                  type="button"
+                >
+                  {copied ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+                <button
+                  className="hidden rounded p-1 transition-colors hover:bg-text/10 hover:text-text disabled:opacity-40"
+                  onClick={() => onRetry?.()}
+                  title="Retry response"
+                  type="button"
+                  disabled={!onRetry || !!chatLoading}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="max-w-full w-fit text-text flex-shrink h-fit p-1 flex items-center justify-center">

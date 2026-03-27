@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Paperclip, Square } from "lucide-react";
+import { Paperclip, Square, X } from "lucide-react";
 import { AuthPopup } from "../ui/Popup";
 import { Dropdown } from "../ui/DropDown";
 
@@ -22,7 +22,13 @@ interface ChatInputProps {
   model: AIModel;
   setModel: React.Dispatch<React.SetStateAction<AIModel>>;
 
+  selectedAccount: any;
+  setSelectedAccount: React.Dispatch<React.SetStateAction<any>>;
+
   loading: Boolean;
+
+  isEditing?: boolean;
+  onCancelEdit?: () => void;
 }
 
 export default function ChatInput({
@@ -40,7 +46,13 @@ export default function ChatInput({
   model,
   setModel,
 
+  selectedAccount,
+  setSelectedAccount,
+
   loading,
+
+  isEditing,
+  onCancelEdit,
 }: ChatInputProps) {
   const [showAuthPopup, setShowAuthPopup] = useState<Boolean>(false);
 
@@ -102,8 +114,6 @@ export default function ChatInput({
     }
   };
 
-  const [selectedAccount, setSelectedAccount] = useState(null as any);
-
   return (
     <Fragment>
       {showAuthPopup && <AuthPopup onClose={() => setShowAuthPopup(false)} />}
@@ -140,18 +150,30 @@ export default function ChatInput({
               </div>
             )}
             <div className="flex flex-col items-start">
-              <textarea
-                name="message"
-                autoFocus={focus}
-                ref={textareaRef}
-                value={input}
-                onChange={handleInput}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask Tero"
-                rows={1}
-                className="w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide"
-                style={{ height: "auto", resize: "none" }}
-              />
+              <div className="relative w-full">
+                <textarea
+                  name="message"
+                  autoFocus={focus}
+                  ref={textareaRef}
+                  value={input}
+                  onChange={handleInput}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask Tero"
+                  rows={1}
+                  className={`w-full text-text placeholder:text-text/40 px-4 pt-4 pb-2 bg-transparent border-none border-0 rounded-xl focus:outline-none focus:ring-0 disabled:opacity-50 resize-none min-h-[56px] max-h-[200px] overflow-y-auto scrollbar-hide${isEditing ? " pr-9" : ""}`}
+                  style={{ height: "auto", resize: "none" }}
+                />
+                {isEditing && onCancelEdit && (
+                  <button
+                    type="button"
+                    onClick={onCancelEdit}
+                    className="absolute right-4 top-4 text-text/70 hover:text-text/60 transition-colors"
+                    title="Cancel editing"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
               <div className="flex items-center px-2 gap-2 w-full pb-1 ml-1">
                 <button
                   type="button"
@@ -199,12 +221,69 @@ export default function ChatInput({
                     </svg>
 
                     {selectedAccount && (
-                      <span className="ml-1.5 text-text/70 text-xs">
-                        {selectedAccount.name}
-                      </span>
+                      <Fragment>
+                        <span className="ml-1.5 text-text/70 text-xs">
+                          {selectedAccount.name}
+                        </span>
+                        <button
+                          className="p-0 m-0 text-text/70 hover:text-text/60"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedAccount(null);
+                          }}
+                        >
+                          <X className="h-3.5 aspect-square -mr-1" />
+                        </button>
+                      </Fragment>
                     )}
                   </Dropdown>
                 )}
+                {/* {user && (
+                  <Dropdown
+                    defaultLabel={
+                      (selectedAccount as any)?.name ?? String(selectedAccount)
+                    }
+                    btnClassName="btn-text rounded-3xl text-xs py-1 px-2.5 opacity-80 "
+                    options={accounts.map((v) => {
+                      return {
+                        label: `${v.name} (${v.broker_type})`,
+                        active: v.active,
+                        onClick: () => {
+                          setSelectedAccount(v);
+                        },
+                      };
+                    })}
+                  >
+                    <svg
+                      className="h-4 aspect-auto"
+                      stroke="currentColor"
+                      fill="currentColor"
+                      strokeWidth="0"
+                      viewBox="0 0 256 256"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path>
+                    </svg>
+
+                    {selectedAccount && (
+                      <Fragment>
+                        <span className="ml-1.5 text-text/70 text-xs">
+                          {selectedAccount.name}
+                        </span>
+                        <button
+                          className="p-0 m-0 text-text/70 hover:text-text/60"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedAccount(null);
+                          }}
+                        >
+                          <X className="h-3.5 aspect-square -mr-1" />
+                        </button>
+                      </Fragment>
+                    )}
+                  </Dropdown>
+                )} */}
 
                 <div className="!ml-auto"></div>
                 <input

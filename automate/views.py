@@ -668,6 +668,7 @@ def get_accounts_list_json(request):
                 {
                     "id": acc.id,
                     "broker_type": acc.broker_type,
+                    "broker": acc.broker,
                     "type": acc.type,
                     "name": acc.name,
                     "active": acc.active,

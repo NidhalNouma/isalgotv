@@ -417,7 +417,7 @@ const FullSideBar: React.FC<FullSideBarProps> = ({
   useEffect(() => {
     if (searchQuery.length > 0) {
       const fChats = (chats || []).filter((chat) =>
-        chat.title?.toLowerCase().includes(searchQuery.toLowerCase())
+        chat.title?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setFilteredChats(fChats);
     } else {
@@ -504,7 +504,7 @@ const FullSideBar: React.FC<FullSideBarProps> = ({
               strokeLinecap="round"
             />
           </svg>
-          <span className="truncate ">New Task</span>
+          <span className="truncate ">New Agent</span>
         </button>
       )}
       <section className="grow overflow-y-auto no-scrollbar">

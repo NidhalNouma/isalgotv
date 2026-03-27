@@ -14,10 +14,13 @@ interface Message {
   content?: string;
   isNew?: boolean;
   isLoading?: boolean;
+  parent_id?: number | null;
+  liked?: boolean | null;
 }
 
 interface ChatMessagesProps {
   messages: Message[];
+  siblingsMap?: Record<string, (string | number)[]>;
   disable?: boolean;
   error?: string | null;
   limit?: boolean;
@@ -25,6 +28,14 @@ interface ChatMessagesProps {
     e: React.FormEvent,
     message: string | null | undefined,
   ) => void | Promise<void>;
+  startEdit?: (messageId: string | number) => void;
+  editingMessageId?: string | number | null;
+  switchToBranch?: (
+    parentId: string | number,
+    targetSiblingId: string | number,
+  ) => Promise<void>;
+  likeMessage?: (messageId: string | number) => Promise<void>;
+  dislikeMessage?: (messageId: string | number) => Promise<void>;
   Input: React.ReactNode;
 }
 
@@ -37,10 +48,16 @@ declare global {
 
 export default function ChatMessages({
   messages,
+  siblingsMap,
   disable,
   error,
   limit,
   handleSendMessage,
+  startEdit,
+  editingMessageId,
+  switchToBranch,
+  likeMessage,
+  dislikeMessage,
   Input,
 }: ChatMessagesProps) {
   const { user } = useUser();
@@ -120,6 +137,15 @@ export default function ChatMessages({
       if (delta > 0) {
         el.scrollTop = prevT - delta;
       }
+      return;
+    }
+
+    // For branch switches and other non-streaming list reshapes, preserve the
+    // user's current viewport instead of jumping to the latest visible message.
+    const { scrollHeight: prevH, scrollTop: prevT } = preRenderRef.current;
+    const delta = el.scrollHeight - prevH;
+    if (delta !== 0) {
+      el.scrollTop = prevT - delta;
     }
   }, [messages]);
 
@@ -215,24 +241,60 @@ export default function ChatMessages({
         </div>
 
         {messages
-          .map((message, i) => (
-            <ChatMessage
-              key={String(i)}
-              message={message.content ?? ""}
-              isUser={message.role === "user"}
-              loading={message.isLoading}
-              style={
-                i === messages.length - 1 &&
-                (message.isLoading || spacerActiveRef.current)
-                  ? {
-                      minHeight: messagesRef.current
-                        ? messagesRef.current.clientHeight - 90
-                        : "fit-content",
-                    }
-                  : {}
-              }
-            />
-          ))
+          .map((message, i) => {
+            // Compute sibling info for branch navigation
+            const parentId =
+              message.parent_id != null ? String(message.parent_id) : null;
+            const siblings =
+              parentId && siblingsMap ? siblingsMap[parentId] : undefined;
+            const siblingCount = siblings?.length ?? 0;
+            const siblingIndex = siblings
+              ? siblings.findIndex((s) => String(s) === String(message.id))
+              : -1;
+
+            return (
+              <ChatMessage
+                key={String(message.id)}
+                messageId={message.id}
+                message={message.content ?? ""}
+                isUser={message.role === "user"}
+                loading={message.isLoading}
+                liked={message.liked}
+                siblingCount={siblingCount}
+                siblingIndex={siblingIndex}
+                siblings={siblings}
+                parentId={parentId}
+                onStartEdit={startEdit}
+                isEditingMessage={
+                  editingMessageId != null &&
+                  String(editingMessageId) === String(message.id)
+                }
+                onLike={likeMessage}
+                onDislike={dislikeMessage}
+                onRetry={
+                  i > 0 && messages[i - 1]?.role === "user"
+                    ? async () =>
+                        handleSendMessage(
+                          {} as React.FormEvent,
+                          messages[i - 1]?.content,
+                        )
+                    : undefined
+                }
+                onSwitchBranch={switchToBranch}
+                isLoading={disable}
+                style={
+                  i === messages.length - 1 &&
+                  (message.isLoading || spacerActiveRef.current)
+                    ? {
+                        minHeight: messagesRef.current
+                          ? messagesRef.current.clientHeight - 90
+                          : "fit-content",
+                      }
+                    : {}
+                }
+              />
+            );
+          })
           .reverse()}
 
         {/* Spacer for top margin */}

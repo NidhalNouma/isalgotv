@@ -93,13 +93,22 @@ export async function getStreamAnswer(
   messages: unknown,
   files: File[] | null,
   model: Model,
-  chatId: SessionId | null = null
+  chatId: SessionId | null = null,
+  context: Record<string, unknown> | null = null,
+  parentMessageId: number | string | null = null,
 ): Promise<StreamIterable> {
   files = files
   const res = await fetch(`${BASE}/stream_response/`, {
     method: "POST",
     headers: jsonHeaders(),
-    body: JSON.stringify({ userMessage: message, messages, chatId, model }),
+    body: JSON.stringify({
+      userMessage: message,
+      messages,
+      chatId,
+      model,
+      context,
+      parentMessageId,
+    }),
   });
 
   if (!res.body) {
@@ -154,6 +163,57 @@ export async function markChatSessionAsRead<T = unknown>(sessionId: SessionId): 
 
 export async function deleteChatSession<T = unknown>(sessionId: SessionId): Promise<T> {
   return fetchJSON<T>(`${BASE}/sessions/${sessionId}/delete/`, {
+    method: "POST",
+    headers: jsonHeaders(),
+  });
+}
+
+export async function branchStreamAnswer(
+  messageId: number | string,
+  newContent: string,
+  context: Record<string, unknown> | null = null,
+): Promise<StreamIterable> {
+  const res = await fetch(`${BASE}/messages/${messageId}/branch/`, {
+    method: "POST",
+    headers: jsonHeaders(),
+    body: JSON.stringify({ message: newContent, context }),
+  });
+  if (!res.body) throw new Error("Streaming response has no body");
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder("utf-8");
+
+  async function* iterator(): AsyncGenerator<string> {
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        yield decoder.decode(value, { stream: true });
+      }
+    } finally {
+      try { reader.releaseLock(); } catch {}
+    }
+  }
+
+  return { [Symbol.asyncIterator]: iterator } as StreamIterable;
+}
+
+export async function switchBranch<T = unknown>(messageId: number | string): Promise<T> {
+  return fetchJSON<T>(`${BASE}/messages/${messageId}/switch/`, {
+    method: "POST",
+    headers: jsonHeaders(),
+  });
+}
+
+export async function likeMessage<T = unknown>(messageId: number | string): Promise<T> {
+  return fetchJSON<T>(`${BASE}/messages/${messageId}/like/`, {
+    method: "POST",
+    headers: jsonHeaders(),
+  });
+}
+
+export async function dislikeMessage<T = unknown>(messageId: number | string): Promise<T> {
+  return fetchJSON<T>(`${BASE}/messages/${messageId}/dislike/`, {
     method: "POST",
     headers: jsonHeaders(),
   });

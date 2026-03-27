@@ -26,6 +26,7 @@ function Chat({}: ChatProps) {
   const {
     chat,
     messages,
+    siblingsMap,
     handleSubmit,
     input,
     setInput,
@@ -34,6 +35,15 @@ function Chat({}: ChatProps) {
     models,
     model,
     setModel,
+    selectedAccount,
+    setSelectedAccount,
+    startEdit,
+    isEditing,
+    editingMessageId,
+    cancelEdit,
+    switchToBranch,
+    likeMessage,
+    dislikeMessage,
     // loading,
   } = useChatHook();
 
@@ -48,7 +58,11 @@ function Chat({}: ChatProps) {
       models={models}
       model={model}
       setModel={setModel}
+      selectedAccount={selectedAccount}
+      setSelectedAccount={setSelectedAccount}
       loading={chat?.isLoading || false}
+      isEditing={isEditing}
+      onCancelEdit={cancelEdit}
     />
   );
 
@@ -63,10 +77,16 @@ function Chat({}: ChatProps) {
       ) : (
         <ChatMessages
           messages={messages}
+          siblingsMap={siblingsMap}
           disable={Boolean(chat?.isLoading)}
           error={chat?.error ?? null}
           limit={Boolean(chat?.limit)}
           handleSendMessage={handleSubmit}
+          startEdit={startEdit}
+          editingMessageId={editingMessageId}
+          switchToBranch={switchToBranch}
+          likeMessage={likeMessage}
+          dislikeMessage={dislikeMessage}
           Input={Input}
         />
       )}

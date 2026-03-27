@@ -109,6 +109,7 @@ export function Dropdown({
                   <button
                     key={index}
                     className="px-4 py-2 text-text text-start w-full text-xs hover:bg-text/10 cursor-pointer truncate disabled:opacity-50"
+                    type="button"
                     disabled={
                       option.onClick === undefined || option?.active === false
                     }
