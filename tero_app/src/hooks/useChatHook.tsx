@@ -302,7 +302,7 @@ export function useChatHook() {
     limit = false,
     isLoading = false,
   ): void {
-    const id = String(chatId) ?? "new-chat";
+    const id = chatId == null ? "new-chat" : String(chatId);
     setChats((prev) => {
       return prev.map((c) => {
         if (String(c.id) === id) {
@@ -323,8 +323,9 @@ export function useChatHook() {
     chatId: string | number | null | undefined,
     messageId: string | number,
     reply: string,
+    streamState: string | null = null,
   ) {
-    const id = String(chatId) ?? "new-chat";
+    const id = chatId == null ? "new-chat" : String(chatId);
     setChats((prev) => {
       return prev.map((c) => {
         if (String(c.id) === id) {
@@ -335,6 +336,34 @@ export function useChatHook() {
                 ? {
                     ...msg,
                     content: reply,
+                    isLoading: true,
+                    stream_state: streamState,
+                  }
+                : msg,
+            ),
+          } as ChatSession;
+        }
+        return c as ChatSession;
+      });
+    });
+  }
+
+  function setTypingState(
+    chatId: string | number | null | undefined,
+    messageId: string | number,
+    streamState: string | null,
+  ) {
+    const id = chatId == null ? "new-chat" : String(chatId);
+    setChats((prev) => {
+      return prev.map((c) => {
+        if (String(c.id) === id) {
+          return {
+            ...c,
+            messages: (c.messages || []).map((msg) =>
+              msg.id === messageId
+                ? {
+                    ...msg,
+                    stream_state: streamState,
                     isLoading: true,
                   }
                 : msg,
@@ -444,8 +473,8 @@ export function useChatHook() {
     chunks: Chunk[];
     remaining: string;
   } {
-    const MARKER_RE = /\n<\|([a-zA-Z]+)\|>:/g;
-    const TERMINAL = new Set(["done", "error", "limit"]);
+    const MARKER_RE = /\n<\|([a-zA-Z_]+)\|>:/g;
+    const TERMINAL = new Set(["done", "error", "limit", "state"]);
 
     const indices: { tag: string; start: number; end: number }[] = [];
     let m: RegExpExecArray | null;
@@ -542,7 +571,16 @@ export function useChatHook() {
             case "data": {
               // Accumulate and stream each token directly to the UI
               full_reply += payload;
-              setTypingMessage(currentChatId!, loadingMsgId, full_reply);
+              setTypingMessage(currentChatId!, loadingMsgId, full_reply, null);
+              break;
+            }
+            case "state": {
+              // Sync frontend indicator with backend agent state.
+              setTypingState(
+                currentChatId!,
+                loadingMsgId,
+                payload.trim() || null,
+              );
               break;
             }
             case "limit": {
@@ -805,7 +843,15 @@ export function useChatHook() {
           switch (ch.tag) {
             case "data": {
               full_reply += ch.payload;
-              setTypingMessage(currentChat!, tempLoading.id, full_reply);
+              setTypingMessage(currentChat!, tempLoading.id, full_reply, null);
+              break;
+            }
+            case "state": {
+              setTypingState(
+                currentChat!,
+                tempLoading.id,
+                ch.payload.trim() || null,
+              );
               break;
             }
             case "limit": {
@@ -851,6 +897,7 @@ export function useChatHook() {
                           content: realAi.content,
                           parent_id: realAi.parent_id,
                           context: realAi.context,
+                          stream_state: null,
                           isLoading: false,
                         };
                       return msg;

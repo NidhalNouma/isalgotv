@@ -13,6 +13,7 @@ interface ChatMessageProps {
   message: string;
   isUser: boolean;
   loading?: boolean;
+  streamState?: string | null;
   liked?: boolean | null;
   // Branch navigation
   siblingCount?: number;
@@ -39,6 +40,7 @@ export default function ChatMessage({
   message,
   isUser,
   loading,
+  streamState = null,
   liked = null,
   siblingCount = 0,
   siblingIndex = -1,
@@ -54,6 +56,16 @@ export default function ChatMessage({
 }: ChatMessageProps) {
   const showBranchNav = siblingCount > 1 && siblingIndex >= 0;
   const [copied, setCopied] = useState(false);
+
+  const getStateLabel = (state: string | null) => {
+    if (!state) return "Thinking...";
+    if (state === "thinking") return "Thinking...";
+    if (state === "processing_result") return "Processing results...";
+    return state
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+      .concat("...");
+  };
 
   const handleCopy = async () => {
     if (typeof navigator === "undefined" || !navigator.clipboard) return;
@@ -199,6 +211,11 @@ export default function ChatMessage({
           </div>
         ) : message.length > 0 ? (
           <div className="max-w-full w-full relative text-text flex-shrink h-fit p-1">
+            {loading && (
+              <p className="mb-1 text-xs text-text/60 animate-pulse">
+                {getStateLabel(streamState)}
+              </p>
+            )}
             <AiResponseMarkdown
               message={message as string}
               isStreaming={loading as boolean}
@@ -250,15 +267,15 @@ export default function ChatMessage({
             )}
           </div>
         ) : (
-          <div className="max-w-full w-fit text-text flex-shrink h-fit p-1 flex items-center justify-center">
+          <div className="max-w-full w-fit text-text flex-shrink h-fit p-1 flex items-center justify-center gap-2">
             <DotLottieReact
               className="h-6 aspect-auto -mx-3 "
               src="https://lottie.host/10d47088-1f8f-44da-9af5-9c884cb11553/jPRNwGHTNk.lottie"
               loop
               autoplay
             />
-            <span className="text-sm ml-1.5 text-text/70 animate-pulse filter drop-shadow-[0_0_8px_rgba(255,255,255,0.35)]">
-              Thinking...
+            <span className="text-sm text-text/70 animate-pulse">
+              {getStateLabel(streamState)}
             </span>
           </div>
         )}

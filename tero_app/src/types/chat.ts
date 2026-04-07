@@ -5,6 +5,7 @@ export interface ChatMessage {
   role: "user" | "assistant" | "system";
   content?: string;
   isLoading?: boolean;
+  stream_state?: string | null;
   context?: Record<string, any> | null;
   parent_id?: number | null;
   liked?: boolean | null;

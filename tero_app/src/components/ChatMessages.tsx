@@ -14,6 +14,7 @@ interface Message {
   content?: string;
   isNew?: boolean;
   isLoading?: boolean;
+  stream_state?: string | null;
   parent_id?: number | null;
   liked?: boolean | null;
 }
@@ -259,6 +260,7 @@ export default function ChatMessages({
                 message={message.content ?? ""}
                 isUser={message.role === "user"}
                 loading={message.isLoading}
+                streamState={message.stream_state ?? null}
                 liked={message.liked}
                 siblingCount={siblingCount}
                 siblingIndex={siblingIndex}
