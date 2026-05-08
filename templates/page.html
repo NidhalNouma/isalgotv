@@ -41,6 +41,11 @@
     <meta name="twitter:url" content="https://www.isalgo.com" />
     <meta name="twitter:image" content="{% static 'images/seo-meta-img.png' %}" />
 
+    <link rel="preload" href="{% static 'fonts/Assistant-VariableFont_wght.ttf' %}" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="{% static 'fonts/AzeretMono-VariableFont_wght.ttf' %}" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="{% static 'fonts/AzeretMono-Italic-VariableFont_wght.ttf' %}" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="{% static 'fonts/Commissioner-VariableFont_wght.ttf' %}" as="font" type="font/ttf" crossorigin />
+
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}

@@ -8,8 +8,8 @@
       font-style: normal;
       font-weight: 200 800;
       /* variable range */
-      font-display: swap;
-      src: url('../fonts/Assistant-VariableFont_wght.ttf') format('truetype');
+      font-display: fallback;
+      src: local('Assistant Variable'), local('Assistant'), url('../fonts/Assistant-VariableFont_wght.ttf') format('truetype');
     }
   
     @font-face {
@@ -17,8 +17,8 @@
       font-style: normal;
       font-weight: 100 900;
       /* variable range */
-      font-display: swap;
-      src: url('../fonts/AzeretMono-VariableFont_wght.ttf') format('truetype');
+      font-display: fallback;
+      src: local('Azeret Mono Variable'), local('Azeret Mono'), url('../fonts/AzeretMono-VariableFont_wght.ttf') format('truetype');
     }
   
     @font-face {
@@ -26,8 +26,8 @@
       font-style: italic;
       font-weight: 100 900;
       /* variable range */
-      font-display: swap;
-      src: url('../fonts/AzeretMono-Italic-VariableFont_wght.ttf') format('truetype');
+      font-display: fallback;
+      src: local('Azeret Mono Italic'), url('../fonts/AzeretMono-Italic-VariableFont_wght.ttf') format('truetype');
     }
   
     @font-face {
@@ -35,8 +35,8 @@
       font-style: normal;
       font-weight: 100 900;
       /* variable range */
-      font-display: swap;
-      src: url('../fonts/Commissioner-VariableFont_wght.ttf') format('truetype');
+      font-display: fallback;
+      src: local('Commissioner Variable'), local('Commissioner'), url('../fonts/Commissioner-VariableFont_wght.ttf') format('truetype');
     }
 
   :root {

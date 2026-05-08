@@ -85,12 +85,12 @@
     {% include 'include/add_broker.html' with broker_type='tastytrade' broker='forex' %}
   {% else %}
     <section class="w-full flex flex-col items-center justify-center min-h-[80vh]">
-      <h1 class="animate-fade-up animation-delay-150 mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">{% trans 'Automate Your Trading' %} <br /> <span class="bg-clip-text bg-gradient-to-tl to-primary from-accent text-transparent">{% trans 'with any broker' %}</span></h1>
+      <h1 class="mt-8 text-center text-3xl sm:text-6xl text-title font-extrabold">{% trans 'Automate Your Trading' %} <br /> <span class="bg-clip-text bg-gradient-to-tl to-primary from-accent text-transparent">{% trans 'with any broker' %}</span></h1>
 
       <div class="mt-6 mb-8 max-w-xl mx-auto px-4 space-y-6">
-        <h2 class="animate-fade-down animation-delay-300 text-center text-text/60 text-lg sm:text-xl font-medium">{% trans 'Connect TradingView alerts to multiple brokers and execute trades in' %} <span class="text-primary">{% trans 'milliseconds' %}</span></h2>
+        <h2 class="text-center text-text/60 text-lg sm:text-xl font-medium">{% trans 'Connect TradingView alerts to multiple brokers and execute trades in' %} <span class="text-primary">{% trans 'milliseconds' %}</span></h2>
 
-        <div class="animate-fade-up animation-delay-500">
+        <div class="">
           {% if user.is_authenticated %}
             <a href="{% url 'membership' %}" class="btn-primary-landing from-text/80 to-text sm:text-lg px-6 !flex !mx-auto w-fit">
               {% trans 'Start Automating Now' %}
@@ -184,12 +184,32 @@
           <div id="dynamic-line" class="absolute left-1/2 top-0 bottom-0 w-1.5 -z-40 rounded-md -translate-x-1/2 transition-all duration-300"></div>
         </div>
 
-        <div class="relative flex items-center p-2 py-16 rounded-xl border-0 border-secondary w-fit max-w-xl mx-auto">
-          <div class="text-center max-w-xs">
+        <div class="relative flex items-center p-2 py-16 rounded-xl border-0 border-secondary w-fit mx-auto">
+          <div class="text-center max-w-full">
             <h3 class="font-bold text-2xl text-title">{% trans 'All Set!' %}</h3>
-            <p class="font-medium text-base text-text/80 mt-2">
+            <p class="font-medium text-base text-text/80 mt-2 max-w-xs mx-auto">
               {% trans 'Everything is set—sit back and watch the trades execute automatically.' %}
             </p>
+
+            <div class="my-8 mt-4 flex items-center justify-around gap-2 w-full">
+              <svg class="w-8 aspect-auto text-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 9 12 17 20 9"></polyline>
+                <polyline points="4 15 12 23 20 15"></polyline>
+              </svg>
+            </div>
+
+            <div class="my-4 w-full border-4 rounded-md p-2 border-title dark:border-text/20">
+              <img class="w-full aspect-auto rounded-t-md object-cover" src="{% static 'images/landingPage/automate/automate-p1.png' %}" onclick="showModalImages(this)" />
+              <img class="w-full aspect-auto rounded-b-md object-cover" src="{% static 'images/landingPage/automate/automate-p2.png' %}" onclick="showModalImages(this)" />
+            </div>
+
+            <div class="flex items-center justify-around gap-2 w-full">
+              <svg class="w-8 aspect-auto text-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 9 12 17 20 9"></polyline>
+                <polyline points="4 15 12 23 20 15"></polyline>
+              </svg>
+            </div>
+
             <a href="{% url 'register' %}" class="btn-primary-landing !text-2xl from-text/80 to-text sm:text-lg mt-6 px-6 !flex !mx-auto w-fit">
               {% trans 'Try it Now' %}
               <svg class="h-5 w-5 ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
