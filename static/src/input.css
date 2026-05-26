@@ -8,7 +8,7 @@
       font-style: normal;
       font-weight: 200 800;
       /* variable range */
-      font-display: fallback;
+      font-display: block;
       src: local('Assistant Variable'), local('Assistant'), url('../fonts/Assistant-VariableFont_wght.ttf') format('truetype');
     }
   
@@ -17,7 +17,7 @@
       font-style: normal;
       font-weight: 100 900;
       /* variable range */
-      font-display: fallback;
+      font-display: block;
       src: local('Azeret Mono Variable'), local('Azeret Mono'), url('../fonts/AzeretMono-VariableFont_wght.ttf') format('truetype');
     }
   
@@ -26,7 +26,7 @@
       font-style: italic;
       font-weight: 100 900;
       /* variable range */
-      font-display: fallback;
+      font-display: block;
       src: local('Azeret Mono Italic'), url('../fonts/AzeretMono-Italic-VariableFont_wght.ttf') format('truetype');
     }
   
@@ -35,7 +35,7 @@
       font-style: normal;
       font-weight: 100 900;
       /* variable range */
-      font-display: fallback;
+      font-display: block;
       src: local('Commissioner Variable'), local('Commissioner'), url('../fonts/Commissioner-VariableFont_wght.ttf') format('truetype');
     }
 

@@ -1,8 +1,12 @@
 {% load i18n %}
+{% load hosts %}
 
 <div class="mx-auto w-full rounded-md bg-text/5 backdrop-blur-3xl overflow-hidden py-4 px-6 max-w-lg mb-6">
   <div class="flex items-center justify-between w-full mb-6">
-    <h5 class="text-title font-semibold">{% trans 'Tokens' %}</h5>
+    <h5 class="text-title font-semibold">
+      {% comment %} <a class="font-extrabold" target="_blank" href="{% host_url 'tero_index' host 'tero' %}">Tero</a> {% endcomment %}
+      {% trans 'Tokens' %}
+    </h5>
 
     <button onclick="openAITokensModalSettings()" class="rounded bg-title px-2 py-0.5 hover:bg-title/80">
       <svg xmlns="http://www.w3.org/2000/svg" class="fill-background w-4 h-4" viewBox="0 0 448 512">

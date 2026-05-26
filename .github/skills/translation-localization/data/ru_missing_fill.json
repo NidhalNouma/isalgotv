@@ -1,0 +1,12 @@
+{
+  "Sit back and watch your trades ": "Расслабьтесь и наблюдайте, как ваши сделки ",
+  "execute automatically": "выполняются автоматически",
+  " while ": " пока ",
+  "After submitting your username, please go to TradingView -> Products -> Supercharts. You will find the availble strategies under the 'Invite Only Scripts' section.": "После отправки вашего имени пользователя перейдите в TradingView -> Products -> Supercharts. Доступные стратегии вы найдете в разделе 'Invite Only Scripts'.",
+  "TradingView strategies with unlimited customization that work on every chart and every timeframe. ": "Стратегии TradingView с неограниченной кастомизацией, которые работают на любом графике и любом таймфрейме. ",
+  "Play audio preview": "Воспроизвести аудиопревью",
+  "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. ": "Автоматизируйте настройку, когда будете готовы, сразу для нескольких счетов и брокеров, от бирж до фондовых рынков, с помощью универсального решения. ",
+  "Pause audio preview": "Приостановить аудиопревью",
+  "Error retrieving client class for broker type '%s': %s": "Ошибка при получении клиентского класса для типа брокера '%s': %s",
+  "Error retrieving saved trade info for trade ID '%s': %s": "Ошибка при получении сохраненной информации о сделке для ID сделки '%s': %s"
+}

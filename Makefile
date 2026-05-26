@@ -6,6 +6,9 @@
 
 PYTHON ?= ./venv_etv/bin/python
 MANAGE = $(PYTHON) manage.py
+TRANSLATION_SKILL_DIR = .github/skills/translation-localization
+TRANSLATION_TOOL = $(TRANSLATION_SKILL_DIR)/manage_translations.py
+TRANSLATION_DATA_DIR = $(TRANSLATION_SKILL_DIR)/data
 
 # Languages matching settings.LANGUAGES (exclude 'en' — it's the source)
 LANGS = fr es de zh_Hans ja ar ru
@@ -130,22 +133,23 @@ validate:
 export-missing:
 	@if [ -z "$(lang)" ]; then \
 		echo "Usage: make export-missing lang=<lang>"; \
-		echo "  Exports untranslated msgids to locale/<lang>_missing.json"; \
+		echo "  Exports untranslated msgids to $(TRANSLATION_DATA_DIR)/<lang>_missing.json"; \
 		echo "  Available: $(LANGS)"; \
 		exit 1; \
 	fi
-	$(PYTHON) locale/manage_translations.py export $(lang)
+	$(PYTHON) $(TRANSLATION_TOOL) export $(lang)
 
 # ── Fill translations from a JSON file ──
-#    Usage: make fill lang=fr file=locale/fr_missing.json
+#    Usage: make fill lang=fr file=$(TRANSLATION_DATA_DIR)/fr_missing.json
 .PHONY: fill
 fill:
 	@if [ -z "$(lang)" ] || [ -z "$(file)" ]; then \
 		echo "Usage: make fill lang=<lang> file=<translations.json>"; \
+		echo "  Suggested file: $(TRANSLATION_DATA_DIR)/<lang>_missing.json"; \
 		echo "  JSON format: { \"source text\": \"translated text\", ... }"; \
 		exit 1; \
 	fi
-	$(PYTHON) locale/manage_translations.py fill $(lang) $(file)
+	$(PYTHON) $(TRANSLATION_TOOL) fill $(lang) $(file)
 
 # ── Export fuzzy entries to JSON ──
 #    Usage: make export-fuzzy lang=fr
@@ -153,22 +157,23 @@ fill:
 export-fuzzy:
 	@if [ -z "$(lang)" ]; then \
 		echo "Usage: make export-fuzzy lang=<lang>"; \
-		echo "  Exports fuzzy msgids (with current msgstr) to locale/<lang>_fuzzy.json"; \
+		echo "  Exports fuzzy msgids (with current msgstr) to $(TRANSLATION_DATA_DIR)/<lang>_fuzzy.json"; \
 		echo "  Available: $(LANGS)"; \
 		exit 1; \
 	fi
-	$(PYTHON) locale/manage_translations.py export-fuzzy $(lang)
+	$(PYTHON) $(TRANSLATION_TOOL) export-fuzzy $(lang)
 
 # ── Fix fuzzy entries from a JSON file ──
-#    Usage: make fix-fuzzy lang=fr file=locale/fr_fuzzy.json
+#    Usage: make fix-fuzzy lang=fr file=$(TRANSLATION_DATA_DIR)/fr_fuzzy.json
 .PHONY: fix-fuzzy
 fix-fuzzy:
 	@if [ -z "$(lang)" ] || [ -z "$(file)" ]; then \
 		echo "Usage: make fix-fuzzy lang=<lang> file=<translations.json>"; \
+		echo "  Suggested file: $(TRANSLATION_DATA_DIR)/<lang>_fuzzy.json"; \
 		echo "  JSON format: { \"source text\": \"corrected translation\", ... }"; \
 		exit 1; \
 	fi
-	$(PYTHON) locale/manage_translations.py fix-fuzzy $(lang) $(file)
+	$(PYTHON) $(TRANSLATION_TOOL) fix-fuzzy $(lang) $(file)
 
 # ── Full overview: stats + missing + fuzzy ──
 .PHONY: overview
@@ -192,8 +197,8 @@ help-translations:
 	@echo "  make fuzzy             — Show fuzzy entries that need review"
 	@echo "  make validate          — Validate PO file syntax with msgfmt"
 	@echo "  make overview          — Full report: stats + missing + fuzzy"
-	@echo "  make export-missing lang=<lang> — Export untranslated msgids to JSON"
+	@echo "  make export-missing lang=<lang> — Export untranslated msgids to $(TRANSLATION_DATA_DIR)"
 	@echo "  make fill lang=<lang> file=<json> — Fill translations from a JSON file"
-	@echo "  make export-fuzzy lang=<lang>     — Export fuzzy msgids to JSON"
+	@echo "  make export-fuzzy lang=<lang>     — Export fuzzy msgids to $(TRANSLATION_DATA_DIR)"
 	@echo "  make fix-fuzzy lang=<lang> file=<json> — Fix fuzzy entries from a JSON file"
 	@echo "  make help-translations — Show this help"

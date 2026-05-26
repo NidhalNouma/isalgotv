@@ -1,0 +1,12 @@
+{
+  "Sit back and watch your trades ": "轻松坐享，观看您的交易 ",
+  "execute automatically": "自动执行",
+  " while ": " 的同时 ",
+  "After submitting your username, please go to TradingView -> Products -> Supercharts. You will find the availble strategies under the 'Invite Only Scripts' section.": "提交您的用户名后，请前往 TradingView -> Products -> Supercharts。您可以在“Invite Only Scripts”部分找到可用策略。",
+  "TradingView strategies with unlimited customization that work on every chart and every timeframe. ": "可无限自定义的 TradingView 策略，适用于每一种图表和每一个时间周期。 ",
+  "Play audio preview": "播放音频预览",
+  "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. ": "当您准备就绪后，可通过一体化方案在多个账户和经纪商之间自动化您的设置，覆盖从交易所到股票市场。 ",
+  "Pause audio preview": "暂停音频预览",
+  "Error retrieving client class for broker type '%s': %s": "检索经纪商类型 '%s' 的客户端类时出错：%s",
+  "Error retrieving saved trade info for trade ID '%s': %s": "检索交易 ID '%s' 的已保存交易信息时出错：%s"
+}

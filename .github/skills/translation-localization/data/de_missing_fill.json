@@ -1,0 +1,12 @@
+{
+  "Sit back and watch your trades ": "Lehnen Sie sich zurück und beobachten Sie, wie Ihre Trades ",
+  "execute automatically": "automatisch ausgeführt werden",
+  " while ": " während ",
+  "After submitting your username, please go to TradingView -> Products -> Supercharts. You will find the availble strategies under the 'Invite Only Scripts' section.": "Nachdem Sie Ihren Benutzernamen übermittelt haben, gehen Sie bitte zu TradingView -> Products -> Supercharts. Sie finden die verfügbaren Strategien im Abschnitt 'Invite Only Scripts'.",
+  "TradingView strategies with unlimited customization that work on every chart and every timeframe. ": "TradingView-Strategien mit unbegrenzter Anpassung, die auf jedem Chart und in jedem Zeitrahmen funktionieren. ",
+  "Play audio preview": "Audio-Vorschau abspielen",
+  "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. ": "Automatisieren Sie Ihr Setup, sobald Sie bereit sind, über mehrere Konten und Broker hinweg, von Exchanges bis zu Aktienmärkten, mit einer All-in-One-Lösung. ",
+  "Pause audio preview": "Audio-Vorschau pausieren",
+  "Error retrieving client class for broker type '%s': %s": "Fehler beim Abrufen der Client-Klasse für den Broker-Typ '%s': %s",
+  "Error retrieving saved trade info for trade ID '%s': %s": "Fehler beim Abrufen der gespeicherten Trade-Informationen für die Trade-ID '%s': %s"
+}

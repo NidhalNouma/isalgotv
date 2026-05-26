@@ -1,0 +1,12 @@
+{
+  "Sit back and watch your trades ": "くつろいで、あなたの取引が ",
+  "execute automatically": "自動で実行されるのを見守り",
+  " while ": " ながら ",
+  "After submitting your username, please go to TradingView -> Products -> Supercharts. You will find the availble strategies under the 'Invite Only Scripts' section.": "ユーザー名を送信した後、TradingView -> Products -> Supercharts に移動してください。利用可能なストラテジーは「Invite Only Scripts」セクションに表示されます。",
+  "TradingView strategies with unlimited customization that work on every chart and every timeframe. ": "あらゆるチャートとすべての時間足で使える、無制限にカスタマイズ可能な TradingView ストラテジー。 ",
+  "Play audio preview": "音声プレビューを再生",
+  "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. ": "準備ができたら、取引所から株式市場まで、複数の口座とブローカーにまたがって、オールインワンのソリューションで設定を自動化できます。 ",
+  "Pause audio preview": "音声プレビューを一時停止",
+  "Error retrieving client class for broker type '%s': %s": "ブローカー種別 '%s' のクライアントクラス取得中にエラーが発生しました: %s",
+  "Error retrieving saved trade info for trade ID '%s': %s": "取引 ID '%s' の保存済み取引情報の取得中にエラーが発生しました: %s"
+}

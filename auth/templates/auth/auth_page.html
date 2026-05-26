@@ -7,9 +7,6 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" class="max-w-screen overflow-x-hidden">
   <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Commissioner:wght@100..900&display=swap" rel="stylesheet" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -43,7 +40,6 @@
     <meta name="twitter:description" content="Dive into trading strategies that work across any market and timeframe. Perfect for both beginners and advanced traders, our guide offers backtestable and automatable solutions to elevate your trading game." />
     <meta name="twitter:url" content="https://www.isalgo.com" />
     <meta name="twitter:image" content="{% static 'images/seo-meta-img.png' %}" />
-
 
     <link rel="preload" href="{% static 'fonts/Assistant-VariableFont_wght.ttf' %}" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="{% static 'fonts/AzeretMono-VariableFont_wght.ttf' %}" as="font" type="font/ttf" crossorigin />
@@ -114,7 +110,7 @@
 
     {% endblock %}
     {% comment %} {% include 'sidenav.html' %} {% endcomment %}
-    <main id="main-div" class="w-full px-4 mx-auto grow flex flex-col relative">
+    <main id="main-div" class="w-full mx-auto grow flex flex-col px-1 sm:px-2 lg:px-4 relative">
       <nav id="nav-bar" class="sticky w-full rounded-b mt-0 mx-auto z-40 top-0 px-2 pt-3 pb-2">
         <div class="absolute top-0 bottom-0 w-full scale-x-150 nav-bg -z-10"></div>
         <div class="relative flex flex-wrap items-center justify-between mx-auto py-1.5 sm:py-2">

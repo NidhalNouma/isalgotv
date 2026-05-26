@@ -223,7 +223,7 @@ export default function ChatMessage({
             {!loading && (
               <div className="mt-2 flex items-center gap-1 text-text/50">
                 <button
-                  className={`rounded p-1 transition-colors hover:bg-text/10 hover:text-text ${
+                  className={`rounded p-1 transition-colors hover:text-text ${
                     liked === true ? "text-title" : ""
                   }`}
                   onClick={() => messageId != null && onLike?.(messageId)}
@@ -233,7 +233,7 @@ export default function ChatMessage({
                   <ThumbsUp className="h-4 w-4" />
                 </button>
                 <button
-                  className={`rounded p-1 transition-colors hover:bg-text/10 hover:text-text ${
+                  className={`rounded p-1 transition-colors hover:text-text ${
                     liked === false ? "text-title" : ""
                   }`}
                   onClick={() => messageId != null && onDislike?.(messageId)}
@@ -243,7 +243,7 @@ export default function ChatMessage({
                   <ThumbsDown className="h-4 w-4" />
                 </button>
                 <button
-                  className="rounded p-1 transition-colors hover:bg-text/10 hover:text-text"
+                  className="rounded p-1 transition-colors hover:text-text"
                   onClick={handleCopy}
                   title="Copy response"
                   type="button"
@@ -255,7 +255,7 @@ export default function ChatMessage({
                   )}
                 </button>
                 <button
-                  className="hidden rounded p-1 transition-colors hover:bg-text/10 hover:text-text disabled:opacity-40"
+                  className="hidden rounded p-1 transition-colors hover:text-text disabled:opacity-40"
                   onClick={() => onRetry?.()}
                   title="Retry response"
                   type="button"

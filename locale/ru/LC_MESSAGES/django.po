@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-10 08:39-0500\n"
+"POT-Creation-Date: 2026-05-25 12:19-0500\n"
 "PO-Revision-Date: 2026-03-04 10:00-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: Russian\n"
@@ -197,7 +197,6 @@ msgid "Invalid volume expression: %s"
 msgstr "Недопустимое выражение объёма: %s"
 
 #, python-format
-#| msgid "Error parsing volume '%s': %s"
 msgid "Error parsing volume '%(value)s': %(error)s"
 msgstr "Ошибка при анализе объёма '%(value)s': %(error)s"
 
@@ -333,7 +332,6 @@ msgid "Invalid interval: %s"
 msgstr "Недопустимый интервал: %s"
 
 #, python-format
-#| msgid "Error %s: %s"
 msgid "Error %(code)s: %(message)s"
 msgstr "Ошибка %(code)s: %(message)s"
 
@@ -375,7 +373,6 @@ msgid "Invalid API key or secret."
 msgstr "Недопустимый ключ API или секрет."
 
 #, python-format
-#| msgid "Error getting exchange info for %s: %s"
 msgid "Error getting exchange info for %(symbol)s: %(error)s"
 msgstr "Ошибка при получении информации о бирже для %(symbol)s: %(error)s"
 
@@ -387,17 +384,14 @@ msgid "Symbol not found."
 msgstr "Символ не найден."
 
 #, python-format
-#| msgid "Error getting exchange price for %s: %s"
 msgid "Error getting exchange price for %(symbol)s: %(error)s"
 msgstr "Ошибка при получении цены биржи для %(symbol)s: %(error)s"
 
 #, python-format
-#| msgid "Error getting historical candles for %s: %s"
 msgid "Error getting historical candles for %(symbol)s: %(error)s"
 msgstr "Ошибка при получении исторических свечей для %(symbol)s: %(error)s"
 
 #, python-format
-#| msgid "Error getting order book for %s: %s"
 msgid "Error getting order book for %(symbol)s: %(error)s"
 msgstr "Ошибка при получении книги ордеров для %(symbol)s: %(error)s"
 
@@ -548,17 +542,14 @@ msgid "Currency information not found in account info."
 msgstr "Информация о валюте не найдена в данных аккаунта."
 
 #, python-format
-#| msgid "Login failed: HTTP %s - %s"
 msgid "Login failed: HTTP %(status)s - %(text)s"
 msgstr "Ошибка входа: HTTP %(status)s - %(text)s"
 
 #, python-format
-#| msgid "Open trade failed: HTTP %s - %s"
 msgid "Open trade failed: HTTP %(status)s - %(text)s"
 msgstr "Ошибка открытия сделки: HTTP %(status)s - %(text)s"
 
 #, python-format
-#| msgid "Failed to fetch account info: HTTP %s - %s"
 msgid "Failed to fetch account info: HTTP %(status)s - %(text)s"
 msgstr ""
 "Не удалось получить информацию об аккаунте: HTTP %(status)s - %(text)s"
@@ -675,7 +666,6 @@ msgid "Account ID not provided and could not be retrieved."
 msgstr "ID аккаунта не указан и не может быть получен."
 
 #, python-format
-#| msgid "HTTP Error %s: %s"
 msgid "HTTP Error %(status)s: %(error)s"
 msgstr "Ошибка HTTP %(status)s: %(error)s"
 
@@ -726,7 +716,6 @@ msgid "No trading route available for symbol %s."
 msgstr "Нет доступного торгового маршрута для символа %s."
 
 #, python-format
-#| msgid "Failed to get symbol info for %s: %s"
 msgid "Failed to get symbol info for %(symbol)s: %(error)s"
 msgstr "Не удалось получить информацию о символе для %(symbol)s: %(error)s"
 
@@ -870,16 +859,44 @@ msgstr "включить вебхук оповещений"
 msgid "to establish the connection."
 msgstr "чтобы установить соединение."
 
-msgid "All Set!"
+#| msgid "All Set!"
+msgid "All set!"
 msgstr "Все готово!"
 
-msgid "Everything is set—sit back and watch the trades execute automatically."
-msgstr ""
-"Все настроено — расслабьтесь и наблюдайте, как сделки исполняются "
-"автоматически."
+#| msgid "Margin is set to"
+msgid "Everything is set"
+msgstr "Все настроено"
 
-msgid "Try it Now"
-msgstr "Попробуйте сейчас"
+msgid "Sit back and watch your trades "
+msgstr "Расслабьтесь и наблюдайте, как ваши сделки "
+
+msgid "execute automatically"
+msgstr "выполняются автоматически"
+
+msgid " while "
+msgstr " пока "
+
+#| msgid "Trading Performance"
+msgid "monitoring performance"
+msgstr "мониторинга эффективности"
+
+#| msgid "Link your broker"
+msgid " in your dashboard."
+msgstr " в вашей панели управления."
+
+#| msgid "Automate"
+msgid "Ready to Automate?"
+msgstr "Готовы к автоматизации?"
+
+#| msgid "Set up your alerts and let automation handle the rest"
+msgid "Leave manual trading behind and let the automation handle your trades."
+msgstr ""
+"Оставьте ручную торговлю позади и позвольте автоматизации управлять вашими "
+"сделками."
+
+#| msgid "Start exploring"
+msgid "Start here"
+msgstr "Начните здесь"
 
 msgid "Ctrader Authentication code"
 msgstr "Код аутентификации Ctrader"
@@ -5000,6 +5017,15 @@ msgstr "Видео ниже демонстрирует, где вы можете
 msgid "Find the strategies"
 msgstr "Найдите стратегии"
 
+msgid ""
+"After submitting your username, please go to TradingView -> Products -> "
+"Supercharts. You will find the availble strategies under the 'Invite Only "
+"Scripts' section."
+msgstr ""
+"После отправки вашего имени пользователя перейдите в TradingView -> Products"
+" -> Supercharts. Доступные стратегии вы найдете в разделе 'Invite Only "
+"Scripts'."
+
 msgid "The video below demonstrates how to do that."
 msgstr "Видео ниже демонстрирует, как это сделать."
 
@@ -6684,15 +6710,12 @@ msgstr "Маркетинговое письмо"
 msgid "Access Removed - IsAlgo"
 msgstr "Доступ удалён - IsAlgo"
 
-#| msgid "Unlock access to this strategy and more"
 msgid "Your access to IsAlgo strategies has been removed."
 msgstr "Ваш доступ к стратегиям IsAlgo был удалён."
 
-#| msgid "Access granted"
 msgid "Access Removed"
 msgstr "Доступ удалён"
 
-#| msgid "Membership"
 msgid "Membership Canceled"
 msgstr "Членство отменено"
 
@@ -6714,15 +6737,12 @@ msgstr ""
 "Если вы считаете, что это ошибка, или у вас есть вопросы, не стесняйтесь "
 "обращаться — мы всегда готовы помочь."
 
-#| msgid "With Apex, you can trade"
 msgid "What you can do:"
 msgstr "Что вы можете сделать:"
 
-#| msgid "No payment method has been detected."
 msgid "Update your payment method if it was declined"
 msgstr "Обновите способ оплаты, если он был отклонён"
 
-#| msgid "What you need to do to get access to our strategies."
 msgid "Resubscribe to regain access to your strategies"
 msgstr "Повторно подпишитесь, чтобы восстановить доступ к вашим стратегиям"
 
@@ -6736,11 +6756,9 @@ msgstr ""
 "Мы ценим ваше членство и будем рады видеть вас снова. Надеемся, что наши "
 "стратегии были для вас полезны."
 
-#| msgid "Subscribe now"
 msgid "Resubscribe Now"
 msgstr "Подписаться снова"
 
-#| msgid "Contact us"
 msgid "Contact Support"
 msgstr "Связаться с поддержкой"
 
@@ -6751,7 +6769,6 @@ msgstr "Платёж получен - IsAlgo"
 msgid "Your payment of $%(amount)s has been received. Thank you!"
 msgstr "Ваш платёж в размере $%(amount)s получен. Спасибо!"
 
-#| msgid "Payment Method"
 msgid "Payment Received"
 msgstr "Платёж получен"
 
@@ -6780,11 +6797,9 @@ msgstr ""
 "У вас есть задолженность в размере $%(amount)s. Войдите в аккаунт, чтобы "
 "завершить оплату."
 
-#| msgid "remaining balance."
 msgid "Outstanding Balance"
 msgstr "Задолженность"
 
-#| msgid "Payment Issue"
 msgid "Payment Required"
 msgstr "Требуется оплата"
 
@@ -6798,18 +6813,15 @@ msgstr ""
 "<strong>$%(amount)s</strong>. Пожалуйста, войдите в аккаунт и следуйте "
 "инструкциям для завершения оплаты."
 
-#| msgid "How to use"
 msgid "How to pay:"
 msgstr "Как оплатить:"
 
-#| msgid "Log in to your Alpaca account"
 msgid "Log in to your IsAlgo account"
 msgstr "Войдите в свой аккаунт IsAlgo"
 
 msgid "Follow the payment prompt displayed on your dashboard"
 msgstr "Следуйте запросу на оплату, отображённому на вашей панели управления"
 
-#| msgid "Complete the Connection"
 msgid "Complete the payment"
 msgstr "Завершите оплату"
 
@@ -6820,7 +6832,6 @@ msgstr ""
 "Если вы считаете, что произошла ошибка, или вам нужна помощь с оплатой, "
 "пожалуйста, свяжитесь с нашей службой поддержки."
 
-#| msgid "Log in to your"
 msgid "Log In & Pay Now"
 msgstr "Войти и оплатить"
 
@@ -6831,7 +6842,6 @@ msgstr "Ошибка автоматизации - IsAlgo"
 msgid "An error occurred on your account %(account_name)s."
 msgstr "На вашем аккаунте %(account_name)s произошла ошибка."
 
-#| msgid "Automation"
 msgid "Automation Error"
 msgstr "Ошибка автоматизации"
 
@@ -6846,11 +6856,9 @@ msgstr ""
 "Мы обнаружили ошибку на вашем автоматизированном аккаунте "
 "<strong>%(account_name)s</strong>. Подробности:"
 
-#| msgid "Alerts"
 msgid "Alert:"
 msgstr "Оповещение:"
 
-#| msgid "Error!"
 msgid "Error:"
 msgstr "Ошибка:"
 
@@ -6861,7 +6869,6 @@ msgstr ""
 "Пожалуйста, проверьте настройки аккаунта и логи для решения этой проблемы. "
 "Если проблема сохраняется, свяжитесь с нашей службой поддержки."
 
-#| msgid "Edit Account"
 msgid "View Account"
 msgstr "Просмотр аккаунта"
 
@@ -6876,7 +6883,6 @@ msgstr ""
 "Ваш брокерский аккаунт %(account_name)s был приостановлен из-за проблемы с "
 "подпиской."
 
-#| msgid "Your account server"
 msgid "Broker Account Suspended"
 msgstr "Аккаунт у брокера приостановлен"
 
@@ -6897,7 +6903,6 @@ msgstr ""
 "К сожалению, мы не смогли обработать ваш платёж, в результате чего ваш "
 "брокерский аккаунт был временно приостановлен."
 
-#| msgid "Create your Account"
 msgid "To restore your account:"
 msgstr "Для восстановления аккаунта:"
 
@@ -6907,7 +6912,6 @@ msgstr "Войдите в свой аккаунт и проверьте подп
 msgid "Update your payment details if needed"
 msgstr "При необходимости обновите платёжные данные"
 
-#| msgid "Kraken Pro account"
 msgid "Renew your broker account subscription"
 msgstr "Обновите подписку аккаунта брокера"
 
@@ -6920,7 +6924,6 @@ msgstr ""
 "будет повторно активирован. Если вы считаете, что произошла ошибка, "
 "свяжитесь с нашей службой поддержки."
 
-#| msgid "Subscription"
 msgid "Renew Subscription"
 msgstr "Обновить подписку"
 
@@ -6931,7 +6934,6 @@ msgstr "Аккаунт подключён - IsAlgo"
 msgid "Your account %(account_name)s has been successfully connected."
 msgstr "Ваш аккаунт %(account_name)s успешно подключён."
 
-#| msgid "Account info not found"
 msgid "Account connected"
 msgstr "Аккаунт подключён"
 
@@ -6956,16 +6958,12 @@ msgstr ""
 msgid "Next steps:"
 msgstr "Дальнейшие шаги:"
 
-#| msgid "Select a trading account type that suits your trading needs."
 msgid "Find a strategy that fits your trading goals"
 msgstr "Найдите стратегию, соответствующую вашим торговым целям"
 
-#| msgid "Adding strategy to the chart"
 msgid "Add the strategy to your tradingview chart"
 msgstr "Добавьте стратегию на свой график TradingView"
 
-#| msgid ""
-#| "After setting up the alert message on the strategy you're using,"
 msgid "Get the correct alerts messages and add them to the strategy settings"
 msgstr ""
 "Получите правильные сообщения оповещений и добавьте их в настройки стратегии"
@@ -6984,11 +6982,9 @@ msgstr ""
 "Если вам нужна помощь в настройке автоматизации, ознакомьтесь с нашей "
 "документацией или свяжитесь с нашей службой поддержки."
 
-#| msgid "Automation"
 msgid "Set Up Automation"
 msgstr "Настроить автоматизацию"
 
-#| msgid "Documentation"
 msgid "Read Documentation"
 msgstr "Читать документацию"
 
@@ -6999,7 +6995,6 @@ msgstr "Брокерский аккаунт удалён - IsAlgo"
 msgid "Your broker account %(account_name)s has been deleted."
 msgstr "Ваш брокерский аккаунт %(account_name)s был удалён."
 
-#| msgid "Before You Delete"
 msgid "Broker Account Deleted"
 msgstr "Аккаунт у брокера удалён"
 
@@ -7039,11 +7034,9 @@ msgstr ""
 "Спасибо, что являетесь частью нашего сообщества. Мы надеемся продолжить "
 "поддерживать ваш торговый путь."
 
-#| msgid "Add Account"
 msgid "Add New Account"
 msgstr "Добавить новый аккаунт"
 
-#| msgid "Subscription failed. "
 msgid "Subscription Overdue - IsAlgo"
 msgstr "Просроченная подписка - IsAlgo"
 
@@ -7055,7 +7048,6 @@ msgstr ""
 "Подписка на брокерский аккаунт %(account_name)s просрочена. Требуется "
 "действие."
 
-#| msgid "Subscription Price"
 msgid "Subscription Overdue"
 msgstr "Просроченная подписка"
 
@@ -7079,14 +7071,12 @@ msgstr ""
 msgid "What happens if unpaid:"
 msgstr "Что произойдёт при неоплате:"
 
-#| msgid "Your account email/username"
 msgid "Your broker account will be temporarily suspended"
 msgstr "Ваш аккаунт у брокера будет временно приостановлен"
 
 msgid "All active automations will be paused"
 msgstr "Все активные автоматизации будут приостановлены"
 
-#| msgid "Close any open positions you want to manage manually."
 msgid "Open positions will not be managed automatically"
 msgstr "Открытые позиции не будут управляться автоматически"
 
@@ -7100,19 +7090,15 @@ msgstr ""
 msgid "Renew Now"
 msgstr "Обновить сейчас"
 
-#| msgid "Subscription failed. "
 msgid "Subscription Canceled - IsAlgo"
 msgstr "Подписка отменена - IsAlgo"
 
-#| msgid "Your subscription was canceled, end on"
 msgid "Your subscription has been canceled."
 msgstr "Ваша подписка была отменена."
 
-#| msgid "Subscription failed. "
 msgid "Subscription Canceled"
 msgstr "Подписка отменена"
 
-#| msgid "Cancel"
 msgid "Canceled"
 msgstr "Отменено"
 
@@ -7123,10 +7109,13 @@ msgstr "Ваша подписка успешно отменена. Нам жал
 msgid "Your Access Status"
 msgstr "Статус вашего доступа"
 
+#| msgid "Access continues until your billing period ends"
+msgid "Premium access will continue until the end of your billing cycle"
+msgstr "Премиум-доступ сохранится до конца вашего расчетного периода"
+
 msgid "No further charges will be made"
 msgstr "Дополнительные списания производиться не будут"
 
-#| msgid "Your account email/username"
 msgid "Your account remains active"
 msgstr "Ваш аккаунт остаётся активным"
 
@@ -7153,15 +7142,12 @@ msgid "We'd love to hear your feedback on how we can improve."
 msgstr ""
 "Мы будем рады узнать ваше мнение о том, как мы можем улучшить наш сервис."
 
-#| msgid ". Your thoughts help us improve and serve you better."
 msgid "Your input helps us serve you better."
 msgstr "Ваши отзывы помогают нам улучшать наш сервис."
 
-#| msgid "feedback"
 msgid "Share Feedback"
 msgstr "Оставить отзыв"
 
-#| msgid "Premium Strategies"
 msgid "Browse Strategies"
 msgstr "Просмотр стратегий"
 
@@ -7170,7 +7156,6 @@ msgid ""
 msgstr ""
 "Спасибо, что были частью нашего сообщества. Надеемся увидеть вас снова!"
 
-#| msgid "Delete Seller Account"
 msgid "Complete Your Seller Profile - IsAlgo"
 msgstr "Заполните профиль продавца - IsAlgo"
 
@@ -7181,7 +7166,6 @@ msgstr ""
 "Ваш аккаунт продавца почти готов — завершите настройку профиля, чтобы начать"
 " зарабатывать."
 
-#| msgid "Delete Seller Account"
 msgid "Complete Your Seller Profile"
 msgstr "Заполните профиль продавца"
 
@@ -7202,7 +7186,6 @@ msgstr ""
 "После завершения мы позаботимся о публикации вашей стратегии, и вы начнёте "
 "зарабатывать с подписчиков. Обычно это занимает всего несколько минут."
 
-#| msgid "What do I need to get started?"
 msgid "What you need to do:"
 msgstr "Что нужно сделать:"
 
@@ -7213,7 +7196,6 @@ msgstr ""
 "Войдите в свой аккаунт IsAlgo и следуйте инструкциям для завершения "
 "настройки профиля продавца"
 
-#| msgid "Complete 2FA and any other required verification."
 msgid "Complete the required identity verification"
 msgstr "Завершите необходимую верификацию личности"
 
@@ -7229,18 +7211,15 @@ msgstr ""
 "начнёте зарабатывать с каждого нового подписчика. Если вам понадобится "
 "помощь, не стесняйтесь обращаться."
 
-#| msgid "Delete Seller Account"
 msgid "Complete Seller Profile"
 msgstr "Заполнить профиль продавца"
 
-#| msgid "visit the Deriv website"
 msgid "Visit our website"
 msgstr "Посетите наш сайт"
 
 msgid "Pricing"
 msgstr "Цены"
 
-#| msgid "Follow us on"
 msgid "Follow Us"
 msgstr "Подписаться на нас"
 
@@ -7248,7 +7227,6 @@ msgstr "Подписаться на нас"
 msgid "© %(year)s IsAlgo. All rights reserved."
 msgstr "© %(year)s IsAlgo. Все права защищены."
 
-#| msgid "Total Subscribers"
 msgid "First Subscriber - IsAlgo"
 msgstr "Первый подписчик - IsAlgo"
 
@@ -7260,7 +7238,6 @@ msgstr ""
 "Поздравляем! Ваша стратегия %(strategy_name)s только что получила первого "
 "подписчика."
 
-#| msgid "Total Subscribers"
 msgid "Your First Subscriber!"
 msgstr "Ваш первый подписчик!"
 
@@ -7282,14 +7259,12 @@ msgstr ""
 "больше трейдеров будут открывать для себя вашу работу, количество "
 "подписчиков и доход будут расти."
 
-#| msgid "Subscription failed. "
 msgid "Subscription details:"
 msgstr "Детали подписки:"
 
 msgid "Strategy"
 msgstr "Стратегия"
 
-#| msgid "Open Price"
 msgid "Price"
 msgstr "Цена"
 
@@ -7316,7 +7291,6 @@ msgstr ""
 "Вы можете отслеживать доходы и подписчиков в любое время в своём профиле. "
 "Спасибо, что вы с IsAlgo — мы с нетерпением ждём роста вашей стратегии!"
 
-#| msgid "Earnings"
 msgid "View My Earnings"
 msgstr "Посмотреть мои доходы"
 
@@ -7328,7 +7302,6 @@ msgid "Incredible — your strategy %(strategy_name)s just hit 100 subscribers!"
 msgstr ""
 "Невероятно — ваша стратегия %(strategy_name)s достигла 100 подписчиков!"
 
-#| msgid "Total Subscribers"
 msgid "100 Subscribers!"
 msgstr "100 подписчиков!"
 
@@ -7352,7 +7325,6 @@ msgstr ""
 msgid "Milestone summary:"
 msgstr "Итоги достижения:"
 
-#| msgid "Subscribe"
 msgid "Subscribers"
 msgstr "Подписчики"
 
@@ -7376,7 +7348,6 @@ msgid ""
 msgstr ""
 "Невероятно — ваша стратегия %(strategy_name)s достигла 100 000 подписчиков!"
 
-#| msgid "Total Subscribers"
 msgid "100,000 Subscribers!"
 msgstr "100 000 подписчиков!"
 
@@ -7420,7 +7391,6 @@ msgstr ""
 "Легендарно — ваша стратегия %(strategy_name)s достигла 1 000 000 "
 "подписчиков!"
 
-#| msgid "Total Subscribers"
 msgid "1,000,000 Subscribers!"
 msgstr "1 000 000 подписчиков!"
 
@@ -7460,7 +7430,6 @@ msgstr "Новый комментарий - IsAlgo"
 msgid "A new comment has been added to your strategy %(strategy_name)s."
 msgstr "К вашей стратегии %(strategy_name)s добавлен новый комментарий."
 
-#| msgid "Comments"
 msgid "New Comment"
 msgstr "Новый комментарий"
 
@@ -7481,7 +7450,6 @@ msgstr ""
 "Перейдите на страницу вашей стратегии, чтобы прочитать полный комментарий и "
 "ответить."
 
-#| msgid "Comments"
 msgid "View Comment"
 msgstr "Посмотреть комментарий"
 
@@ -7493,11 +7461,9 @@ msgstr ""
 "Добро пожаловать в пожизненное членство IsAlgo! Теперь у вас постоянный "
 "доступ."
 
-#| msgid "Membership"
 msgid "Lifetime Membership"
 msgstr "Пожизненное членство"
 
-#| msgid "Life Time Access"
 msgid "Lifetime Access Granted"
 msgstr "Пожизненный доступ предоставлен"
 
@@ -7524,7 +7490,6 @@ msgstr ""
 msgid "Your Lifetime benefits:"
 msgstr "Ваши преимущества пожизненного членства:"
 
-#| msgid "Get access to unlock commenting and more features!"
 msgid "Permanent access to all current and future strategies"
 msgstr "Постоянный доступ ко всем текущим и будущим стратегиям"
 
@@ -7547,11 +7512,9 @@ msgstr "Добро пожаловать в IsAlgo"
 msgid "Welcome to our Family! Your membership is confirmed."
 msgstr "Добро пожаловать в нашу семью! Ваше членство подтверждено."
 
-#| msgid "Join our Discord Community!"
 msgid "Welcome to Our Family"
 msgstr "Добро пожаловать в нашу семью"
 
-#| msgid "Membership"
 msgid "Membership Confirmed"
 msgstr "Членство подтверждено"
 
@@ -7570,14 +7533,12 @@ msgstr ""
 "Это письмо подтверждает, что вы успешно приобрели одно из наших членств. Мы "
 "рады приветствовать вас и готовы поддержать вас на вашем торговом пути."
 
-#| msgid "Getting Started"
 msgid "Getting started:"
 msgstr "Начало работы:"
 
 msgid "Browse and add strategies to your TradingView chart"
 msgstr "Просматривайте и добавляйте стратегии на ваш график TradingView"
 
-#| msgid "Kraken Pro account"
 msgid "Set up automation with your broker account"
 msgstr "Настройте автоматизацию с вашим аккаунтом брокера"
 
@@ -7625,7 +7586,6 @@ msgstr "Новый ответ на жалобу - IsAlgo"
 msgid "%(author_name)s replied on a report for %(strategy_name)s."
 msgstr "%(author_name)s ответил(а) на жалобу к %(strategy_name)s."
 
-#| msgid "Real Trading Reports"
 msgid "New Reply on Report"
 msgstr "Новый ответ на отчёт"
 
@@ -7637,7 +7597,6 @@ msgstr ""
 "<strong>%(author_name)s</strong> ответил(а) на жалобу к "
 "<strong>%(strategy_name)s</strong>."
 
-#| msgid "Reports"
 msgid "View Report"
 msgstr "Просмотр отчёта"
 
@@ -7659,7 +7618,6 @@ msgstr ""
 "<strong>%(author_name)s</strong> только что добавил(а) новую жалобу к вашей "
 "стратегии <strong>%(strategy_name)s</strong>."
 
-#| msgid "Card details"
 msgid "Report details:"
 msgstr "Детали отчёта:"
 
@@ -7691,28 +7649,24 @@ msgstr ""
 "Представляем %(strategy_name)s — наша новейшая торговая стратегия уже "
 "доступна!"
 
-#| msgid "No strategy available yet."
 msgid "New Free Strategy Available"
 msgstr "Доступна новая бесплатная стратегия"
 
 msgid "Free"
 msgstr "Бесплатно"
 
-#| msgid "Exclusive strategy"
 msgid "New Exclusive Strategy Available"
 msgstr "Доступна новая эксклюзивная стратегия"
 
 msgid "Exclusive"
 msgstr "Эксклюзив"
 
-#| msgid "Elite Strategies"
 msgid "New Elite Strategy Available"
 msgstr "Доступна новая элитная стратегия"
 
 msgid "Elite"
 msgstr "Элитная"
 
-#| msgid "Premium Strategies"
 msgid "New Premium Strategy Available"
 msgstr "Доступна новая премиум-стратегия"
 
@@ -7736,7 +7690,6 @@ msgstr ""
 "Независимо от того, опытный вы трейдер или только начинаете, эта стратегия "
 "предлагает мощные инсайты для улучшения вашего торгового опыта."
 
-#| msgid "Available Tokens"
 msgid "Available on:"
 msgstr "Доступно на:"
 
@@ -7753,15 +7706,12 @@ msgstr ""
 "У нас в разработке ещё больше стратегий. Следите за обновлениями, и спасибо "
 "за то, что вы являетесь ценным членом нашего сообщества!"
 
-#| msgid "Try it Now"
 msgid "Try It Out"
 msgstr "Попробовать"
 
-#| msgid "Premium Strategies"
 msgid "Browse All Strategies"
 msgstr "Просмотреть все стратегии"
 
-#| msgid "Payment Issue"
 msgid "Payment Issue - IsAlgo"
 msgstr "Проблема с оплатой - IsAlgo"
 
@@ -7792,7 +7742,6 @@ msgstr ""
 msgid "How to restore access:"
 msgstr "Как восстановить доступ:"
 
-#| msgid "Get your client secret"
 msgid "Go to your payment settings"
 msgstr "Перейдите в настройки оплаты"
 
@@ -7818,7 +7767,6 @@ msgstr "Ваш профиль продавца завершён! Вот как �
 msgid "Seller Profile Complete!"
 msgstr "Профиль продавца завершён!"
 
-#| msgid "All Set!"
 msgid "All Set"
 msgstr "Всё готово"
 
@@ -7831,8 +7779,6 @@ msgstr ""
 "публикацией вашей стратегии на IsAlgo. Вы начнёте зарабатывать с каждого "
 "нового подписчика."
 
-#| msgid ""
-#| "To begin automating your trades, follow these essential steps:"
 msgid "To track your earnings at any time, follow these simple steps:"
 msgstr ""
 "Чтобы отслеживать свои доходы в любое время, выполните эти простые шаги:"
@@ -7840,7 +7786,6 @@ msgstr ""
 msgid "How to see your earnings:"
 msgstr "Как просмотреть ваши доходы:"
 
-#| msgid "Click on your profile icon in the top-right corner"
 msgid "Click on your profile icon in the top right corner"
 msgstr "Нажмите на значок вашего профиля в правом верхнем углу"
 
@@ -7855,12 +7800,10 @@ msgstr ""
 "Спасибо за сотрудничество. Если у вас есть вопросы о доходах или выплатах, "
 "свяжитесь с нами — мы всегда готовы помочь."
 
-#| msgid "Your subscription was canceled, end on"
 msgid "Strategy Subscription Canceled - IsAlgo"
 msgstr "Подписка на стратегию отменена - IsAlgo"
 
 #, python-format
-#| msgid "Your subscription was canceled, end on"
 msgid "Your subscription to %(strategy_name)s has been canceled."
 msgstr "Ваша подписка на %(strategy_name)s была отменена."
 
@@ -7897,7 +7840,6 @@ msgstr ""
 "Передумали? Вы можете подписаться заново в любой момент. Будем рады видеть "
 "вас снова."
 
-#| msgid "Subscribe"
 msgid "Resubscribe"
 msgstr "Подписаться снова"
 
@@ -7908,7 +7850,6 @@ msgstr "Доступ к стратегии предоставлен - IsAlgo"
 msgid "You now have full access to %(strategy_name)s. Let's get you started!"
 msgstr "Теперь у вас есть полный доступ к %(strategy_name)s. Давайте начнём!"
 
-#| msgid "Access granted"
 msgid "Strategy Access Granted"
 msgstr "Доступ к стратегии предоставлен"
 
@@ -7922,24 +7863,18 @@ msgstr ""
 "<strong>%(strategy_name)s</strong>. Ваша подписка успешно активирована, и вы"
 " готовы начать автоматическую торговлю."
 
-#| msgid "What's Apex?"
 msgid "What's next:"
 msgstr "Дальнейшие шаги:"
 
-#| msgid "Strategy Performance -"
 msgid "Review strategy performance and settings"
 msgstr "Ознакомьтесь с производительностью и настройками стратегии"
 
 msgid "Connect your account to receive trade signals"
 msgstr "Подключите ваш аккаунт для получения торговых сигналов"
 
-#| msgid "Configure your alerts."
 msgid "Configure your automation and go live"
 msgstr "Настройте автоматизацию и запустите"
 
-#| msgid ""
-#| "If you encounter any issues during the integration process, our support team"
-#| " is here to help. Contact us"
 msgid ""
 "If you have any questions or need assistance getting started, our support "
 "team is here to help."
@@ -7947,11 +7882,9 @@ msgstr ""
 "Если у вас есть вопросы или нужна помощь с начала работы, наша команда "
 "поддержки всегда готова помочь."
 
-#| msgid "Strategy"
 msgid "View Strategy"
 msgstr "Просмотр стратегии"
 
-#| msgid "Strategy Description"
 msgid "Strategy Subscription Overdue - IsAlgo"
 msgstr "Просроченная подписка на стратегию - IsAlgo"
 
@@ -8003,11 +7936,9 @@ msgid ""
 "Your access to %(strategy_name)s has been removed due to a payment issue."
 msgstr "Ваш доступ к %(strategy_name)s удалён из-за проблемы с оплатой."
 
-#| msgid "Strategies Reports"
 msgid "Strategy Access Removed"
 msgstr "Доступ к стратегии удалён"
 
-#| msgid "Access granted"
 msgid "Access Suspended"
 msgstr "Доступ приостановлен"
 
@@ -8033,7 +7964,6 @@ msgstr "Как восстановить ваш доступ:"
 msgid "Log in and review your subscription status"
 msgstr "Войдите в аккаунт и проверьте статус подписки"
 
-#| msgid "No payment method provided."
 msgid "Update your payment method if needed"
 msgstr "Обновите способ оплаты при необходимости"
 
@@ -8054,7 +7984,6 @@ msgstr "10 подписчиков — IsAlgo"
 msgid "Your strategy %(strategy_name)s just hit 10 subscribers!"
 msgstr "Ваша стратегия %(strategy_name)s достигла 10 подписчиков!"
 
-#| msgid "Total Subscribers"
 msgid "10 Subscribers!"
 msgstr "10 подписчиков!"
 
@@ -8109,7 +8038,6 @@ msgstr ""
 "Ваш аккаунт готов! Исследуйте автоматические торговые стратегии и начните "
 "наращивать свой портфель."
 
-#| msgid "Join our Discord Community!"
 msgid "Welcome to ISAlgo!"
 msgstr "Добро пожаловать в IsAlgo!"
 
@@ -8128,27 +8056,21 @@ msgstr ""
 msgid "What you can do now"
 msgstr "Что вы можете сделать сейчас"
 
-#| msgid "Trending Strategies"
 msgid "Browse Trading Strategies"
 msgstr "Просмотр торговых стратегий"
 
 msgid "Explore free, premium, and Exclusive strategies"
 msgstr "Изучайте бесплатные, премиум и эксклюзивные стратегии"
 
-#| msgid "Real Trading Reports"
 msgid "Browse Trading Reports"
 msgstr "Просмотр торговых отчётов"
 
-#| msgid "Complete trading performance report for"
 msgid "Explore detailed performance reports and analytics"
 msgstr "Изучите подробные отчёты о производительности и аналитику"
 
-#| msgid "Get your account ID"
 msgid "Connect Your account"
 msgstr "Подключите ваш аккаунт"
 
-#| msgid ""
-#| "Link the alerts to your trading account and start the automation."
 msgid "Link your trading account to automate trades"
 msgstr "Свяжите свой торговый аккаунт для автоматизации сделок"
 
@@ -8168,29 +8090,24 @@ msgstr ""
 "Новичок в автоматической торговле? Ознакомьтесь с нашим руководством для "
 "начинающих:"
 
-#| msgid "Have a trading strategy idea?"
 msgid "Understanding trading strategies"
 msgstr "Понимание торговых стратегий"
 
-#| msgid "Waiting for your first trading reports..."
 msgid "Setting up your first trading account connection"
 msgstr "Настройка первого подключения торгового аккаунта"
 
 msgid "Risk management best practices"
 msgstr "Лучшие практики управления рисками"
 
-#| msgid "Trading Performance"
 msgid "Reading performance metrics"
 msgstr "Чтение показателей эффективности"
 
-#| msgid "Elite Strategies"
 msgid "Explore Strategies →"
 msgstr "Обзор стратегий →"
 
 msgid "We're here to support you every step of the way."
 msgstr "Мы готовы поддержать вас на каждом шагу."
 
-#| msgid "start trading"
 msgid "Happy trading!"
 msgstr "Удачной торговли!"
 
@@ -8264,7 +8181,28 @@ msgstr "Начните бесплатно!"
 msgid "day free trial"
 msgstr "дней бесплатного пробного периода"
 
-msgid "Built by traders"
+msgid ""
+"TradingView strategies with unlimited customization that work on every chart"
+" and every timeframe. "
+msgstr ""
+"Стратегии TradingView с неограниченной кастомизацией, которые работают на "
+"любом графике и любом таймфрейме. "
+
+msgid "Play audio preview"
+msgstr "Воспроизвести аудиопревью"
+
+msgid ""
+"Automate your setup once you're ready across multiple accounts and brokers, "
+"from exchanges to stock markets, with an all-in-one solution. "
+msgstr ""
+"Автоматизируйте настройку, когда будете готовы, сразу для нескольких счетов "
+"и брокеров, от бирж до фондовых рынков, с помощью универсального решения. "
+
+msgid "Pause audio preview"
+msgstr "Приостановить аудиопревью"
+
+#| msgid "Built by traders"
+msgid "Built by Traders"
 msgstr "Создано трейдерами"
 
 msgid "For Traders"
@@ -8272,31 +8210,6 @@ msgstr "Для трейдеров"
 
 msgid "Master the market with our all‑in‑one solution"
 msgstr "Овладейте рынком с нашим комплексным решением"
-
-msgid ""
-"Browse our library of proven trading strategies, pick the one that fits your"
-" style, and get started in minutes."
-msgstr ""
-"Просмотрите нашу библиотеку проверенных торговых стратегий, выберите ту, "
-"которая соответствует вашему стилю, и начните работу за считанные минуты."
-
-msgid "Test"
-msgstr "Тест"
-
-msgid ""
-"Backtest your strategies on historical data, fine-tune the settings, and "
-"validate performance before going live."
-msgstr ""
-"Протестируйте свои стратегии на исторических данных, настройте параметры и "
-"проверьте эффективность перед запуском в эксплуатацию."
-
-msgid ""
-"Connect your broker, set your rules, and let automation execute your trades "
-"around the clock. No emotions, no missed entries."
-msgstr ""
-"Подключите своего брокера, установите свои правила и позвольте автоматизации"
-" совершать ваши сделки круглосуточно. Никаких эмоций, никаких пропущенных "
-"записей."
 
 msgid "Discover Strategies"
 msgstr "Открыть стратегии"
@@ -8484,9 +8397,6 @@ msgstr "Скидка 10%%"
 
 msgid "Apply"
 msgstr "Применять"
-
-msgid "Coupon Discount"
-msgstr "Купон Скидка"
 
 msgid "You have a remaining balance of"
 msgstr "У вас есть остаток в размере"
@@ -8772,8 +8682,9 @@ msgstr "Содержание системы ИИ"
 msgid "Copy"
 msgstr "Копировать"
 
-msgid "AI Tokens"
-msgstr "Токены ИИ"
+#| msgid "Token"
+msgid "Tokens"
+msgstr "Токены"
 
 msgid "Free Daily Tokens"
 msgstr "Бесплатные ежедневные жетоны"
@@ -9022,7 +8933,6 @@ msgstr "Настройки"
 msgid "Welcome to IsAlgo community!"
 msgstr "Добро пожаловать в сообщество IsAlgo!"
 
-#| msgid "Join our Discord Community!"
 msgid "Welcome to Our Community!"
 msgstr "Добро пожаловать в наше сообщество!"
 
@@ -9042,7 +8952,6 @@ msgstr ""
 msgid "Check this one out!"
 msgstr "Обратите внимание!"
 
-#| msgid "Kraken Pro account"
 msgid "your broker account"
 msgstr "ваш аккаунт у брокера"
 
@@ -9082,11 +8991,9 @@ msgstr "Просрочена подписка на стратегию: %(strateg
 msgid "Your access to %(strategy_name)s has been canceled"
 msgstr "Ваш доступ к %(strategy_name)s отменён"
 
-#| msgid "Delete Seller Account"
 msgid "Complete Your Seller Account Setup"
 msgstr "Завершите настройку аккаунта продавца"
 
-#| msgid "Your account server"
 msgid "Your Seller Account is Verified!"
 msgstr "Ваш аккаунт продавца подтверждён!"
 
@@ -9159,9 +9066,6 @@ msgstr ""
 "Произошла ошибка при предоставлении доступа. Свяжитесь с нами, чтобы мы "
 "могли оперативно помочь вам!"
 
-#| msgid ""
-#| "TradingView Or trading strategies OR forex trading strategies OR crypto "
-#| "trading strategies OR stock trading strategies"
 msgid ""
 "TradingView OR trading strategies OR forex trading strategies OR crypto "
 "trading strategies OR stock trading strategies"
@@ -10135,6 +10039,65 @@ msgstr "Открыть главное меню"
 msgid "Docs"
 msgstr "Документы"
 
+#, python-format
+msgid "Error retrieving client class for broker type '%s': %s"
+msgstr "Ошибка при получении клиентского класса для типа брокера '%s': %s"
+
+#, python-format
+msgid "Error retrieving saved trade info for trade ID '%s': %s"
+msgstr ""
+"Ошибка при получении сохраненной информации о сделке для ID сделки '%s': %s"
+
+#, python-format
+#| msgid "Error fetching account: %s"
+msgid "Error retrieving open trades for account '%s': %s"
+msgstr "Ошибка при получении открытых сделок для счета '%s': %s"
+
+#, python-format
+#| msgid "Error fetching account: %s"
+msgid "Error retrieving balance for account '%s': %s"
+msgstr "Ошибка при получении баланса для счета '%s': %s"
+
+#, python-format
+#| msgid "Error fetching order info: %s"
+msgid "Error retrieving symbol info for '%s': %s"
+msgstr "Ошибка при получении информации о символе '%s': %s"
+
+#, python-format
+#| msgid "Could not retrieve current price for symbol %s"
+msgid "Error retrieving current price for '%s': %s"
+msgstr "Ошибка при получении текущей цены для '%s': %s"
+
+#, python-format
+#| msgid "Error getting trading pairs: %s"
+msgid "Error retrieving available trading pairs for account '%s': %s"
+msgstr "Ошибка при получении доступных торговых пар для счета '%s': %s"
+
+#, python-format
+#| msgid "Error fetching order book: %s"
+msgid "Error retrieving order book for '%s': %s"
+msgstr "Ошибка при получении книги ордеров для '%s': %s"
+
+#, python-format
+#| msgid "Error getting historical candles for %(symbol)s: %(error)s"
+msgid "Error retrieving candles for '%s' on '%s': %s"
+msgstr "Ошибка при получении свечей для '%s' на '%s': %s"
+
+#, python-format
+#| msgid "Error opening trade: %s"
+msgid "Error opening trade for '%s': %s"
+msgstr "Ошибка при открытии сделки для '%s': %s"
+
+#, python-format
+#| msgid "Error opening trade: %s"
+msgid "Error closing trade for '%s': %s"
+msgstr "Ошибка при закрытии сделки для '%s': %s"
+
+#, python-format
+#| msgid "Error fetching order info: %s"
+msgid "Error retrieving order info for '%s' order '%s': %s"
+msgstr "Ошибка при получении информации об ордере '%s' для '%s': %s"
+
 msgid "Failed to retrieve chat sessions"
 msgstr "Не удалось получить сеансы чата."
 
@@ -10159,6 +10122,18 @@ msgstr "Требуется идентификатор сеанса."
 msgid "Chat session updated successfully"
 msgstr "Сеанс чата успешно обновлен"
 
+#| msgid "Page not found!"
+msgid "Message not found"
+msgstr "Сообщение не найдено"
+
+#| msgid "Failed to retrieve chat messages"
+msgid "Failed to like chat message"
+msgstr "Не удалось поставить лайк сообщению в чате"
+
+#| msgid "Failed to retrieve chat messages"
+msgid "Failed to dislike chat message"
+msgstr "Не удалось поставить дизлайк сообщению в чате"
+
 msgid "Chat session deleted successfully"
 msgstr "Сеанс чата успешно удален"
 
@@ -10182,6 +10157,45 @@ msgstr "Сумма токена не указана, попробуйте еще
 
 msgid "Minimum token amount is 500,000."
 msgstr "Минимальная сумма токена — 500 000."
+
+#~ msgid "Everything is set—sit back and watch the trades execute automatically."
+#~ msgstr ""
+#~ "Все настроено — расслабьтесь и наблюдайте, как сделки исполняются "
+#~ "автоматически."
+
+#~ msgid "Try it Now"
+#~ msgstr "Попробуйте сейчас"
+
+#~ msgid ""
+#~ "Browse our library of proven trading strategies, pick the one that fits your"
+#~ " style, and get started in minutes."
+#~ msgstr ""
+#~ "Просмотрите нашу библиотеку проверенных торговых стратегий, выберите ту, "
+#~ "которая соответствует вашему стилю, и начните работу за считанные минуты."
+
+#~ msgid "Test"
+#~ msgstr "Тест"
+
+#~ msgid ""
+#~ "Backtest your strategies on historical data, fine-tune the settings, and "
+#~ "validate performance before going live."
+#~ msgstr ""
+#~ "Протестируйте свои стратегии на исторических данных, настройте параметры и "
+#~ "проверьте эффективность перед запуском в эксплуатацию."
+
+#~ msgid ""
+#~ "Connect your broker, set your rules, and let automation execute your trades "
+#~ "around the clock. No emotions, no missed entries."
+#~ msgstr ""
+#~ "Подключите своего брокера, установите свои правила и позвольте автоматизации"
+#~ " совершать ваши сделки круглосуточно. Никаких эмоций, никаких пропущенных "
+#~ "записей."
+
+#~ msgid "Coupon Discount"
+#~ msgstr "Купон Скидка"
+
+#~ msgid "AI Tokens"
+#~ msgstr "Токены ИИ"
 
 #, python-format
 #~ msgid "/ %s %ss"

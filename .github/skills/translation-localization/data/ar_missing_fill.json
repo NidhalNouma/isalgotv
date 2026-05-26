@@ -1,0 +1,12 @@
+{
+  "Sit back and watch your trades ": "استرخِ وراقب صفقاتك ",
+  "execute automatically": "تُنفَّذ تلقائيًا",
+  " while ": " بينما ",
+  "After submitting your username, please go to TradingView -> Products -> Supercharts. You will find the availble strategies under the 'Invite Only Scripts' section.": "بعد إرسال اسم المستخدم الخاص بك، يُرجى الانتقال إلى TradingView -> Products -> Supercharts. ستجد الاستراتيجيات المتاحة ضمن قسم 'Invite Only Scripts'.",
+  "TradingView strategies with unlimited customization that work on every chart and every timeframe. ": "استراتيجيات TradingView مع تخصيص غير محدود تعمل على كل رسم بياني وكل إطار زمني. ",
+  "Play audio preview": "تشغيل معاينة الصوت",
+  "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. ": "قم بأتمتة إعداداتك عندما تصبح جاهزًا عبر حسابات ووسطاء متعددين، من منصات التداول إلى أسواق الأسهم، باستخدام حل شامل الكل في واحد. ",
+  "Pause audio preview": "إيقاف معاينة الصوت مؤقتًا",
+  "Error retrieving client class for broker type '%s': %s": "خطأ أثناء استرجاع فئة العميل لنوع الوسيط '%s': %s",
+  "Error retrieving saved trade info for trade ID '%s': %s": "خطأ أثناء استرجاع معلومات الصفقة المحفوظة لمعرّف الصفقة '%s': %s"
+}

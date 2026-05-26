@@ -37,7 +37,8 @@
       {% include 'include/settings/membership.html' %}
     </div>
     
-     <div id="setting-ai-tokens" >
+    {% if user_profile.is_lifetime %}
+    <div id="setting-ai-tokens" >
       {% include 'include/settings/ai_tokens.html' %}
     </div> 
     {% with title='ai-tokens' %}
@@ -46,6 +47,7 @@
         {% include 'include/modal.html' with modal_id='staticModal-'|add:title header=header_html body=ai_tokens_form stripe_element_id=title close_modal_btn_id='add-'|add:title|add:'-close-form-btn'  body_class='px-2 mt-4' %}
       {% endwith %}
     {% endwith %}
+    {% endif %}
       
     {% comment %} <div id="setting-emails-notifications" >
       {% include 'include/settings/emailsandnotifications.html' %}

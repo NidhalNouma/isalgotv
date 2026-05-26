@@ -3,16 +3,16 @@
 Manage translations: export/fill missing entries and export/fix fuzzy entries.
 
 Usage:
-    Export missing:  python locale/manage_translations.py export <lang>
-                     → writes locale/<lang>_missing.json
+    Export missing:  python .github/skills/translation-localization/manage_translations.py export <lang>
+                     → writes .github/skills/translation-localization/data/<lang>_missing.json
 
-    Fill from JSON:  python locale/manage_translations.py fill <lang> <translations.json>
+    Fill from JSON:  python .github/skills/translation-localization/manage_translations.py fill <lang> <translations.json>
                      → fills empty msgstr entries in the PO file
 
-    Export fuzzy:    python locale/manage_translations.py export-fuzzy <lang>
-                     → writes locale/<lang>_fuzzy.json  (msgid → current wrong msgstr)
+    Export fuzzy:    python .github/skills/translation-localization/manage_translations.py export-fuzzy <lang>
+                     → writes .github/skills/translation-localization/data/<lang>_fuzzy.json  (msgid → current wrong msgstr)
 
-    Fix fuzzy:       python locale/manage_translations.py fix-fuzzy <lang> <translations.json>
+    Fix fuzzy:       python .github/skills/translation-localization/manage_translations.py fix-fuzzy <lang> <translations.json>
                      → replaces msgstr for fuzzy entries and removes the fuzzy flag
 """
 import json
@@ -20,8 +20,10 @@ import os
 import re
 import sys
 
-LOCALE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_DIR = os.path.dirname(LOCALE_DIR)
+SKILL_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.abspath(os.path.join(SKILL_DIR, "..", "..", ".."))
+LOCALE_DIR = os.path.join(PROJECT_DIR, "locale")
+DATA_DIR = os.path.join(SKILL_DIR, "data")
 
 
 def po_path_for(lang):
@@ -60,7 +62,8 @@ def export_missing(lang):
         print(f"{lang}: all entries are translated — nothing to export.")
         return
 
-    out = os.path.join(LOCALE_DIR, f"{lang}_missing.json")
+    os.makedirs(DATA_DIR, exist_ok=True)
+    out = os.path.join(DATA_DIR, f"{lang}_missing.json")
     with open(out, "w", encoding="utf-8") as f:
         json.dump(missing, f, ensure_ascii=False, indent=2)
 
@@ -185,7 +188,8 @@ def export_fuzzy(lang):
         print(f"{lang}: no fuzzy entries — nothing to export.")
         return
 
-    out = os.path.join(LOCALE_DIR, f"{lang}_fuzzy.json")
+    os.makedirs(DATA_DIR, exist_ok=True)
+    out = os.path.join(DATA_DIR, f"{lang}_fuzzy.json")
     with open(out, "w", encoding="utf-8") as f:
         json.dump(fuzzy, f, ensure_ascii=False, indent=2)
 

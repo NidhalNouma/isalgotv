@@ -5,8 +5,8 @@
 <main class="mt-4 block justify-between mb-8">
   {% if not user.is_authenticated %}
     <section class="max-w-full relative pt-8 mb-8 flex flex-col min-h-[90vh] items-center">
-      {% comment %} <div class="absolute top-0 bottom-0 bg-gradient-to-b from-background via-accent/5 to-accent/5 w-screen rounded-b-[3rem]"></div> {% endcomment %}
-      <div class="relative flex flex-col items-center w-full text-center z-30 mb-16">
+      <div class="absolute top-0 bottom-0 bg-gradient-to-b from-background via-accent/5 to-accent/10 w-[99.5vw] -z-20 rounded-b-[2rem]"></div>
+      <div class="relative flex flex-col items-center w-full text-center z-30 mb-16 min-h-[70vh]">
         <span class="text-title text-5xl sm:text-6xl font-bold uppercase">{% trans 'Strategy In.' %}</span>
         <span class="text-5xl sm:text-6xl text-primary font-bold uppercase">{% trans 'Uncertainty Out.' %}</span>
 
@@ -21,7 +21,7 @@
         </div>
 
         {% if free_trial_days and free_trial_days|add:'0' > 0 %}
-          <h6 class="sm:hidden text-title/80 text-sm font-medium text-center mt-6 tracking-wider">
+          <h6 class="text-title/80 text-sm font-medium text-center mt-6 tracking-wider">
             <div class="relative font-semibold inline-block text-title tracking-wider pl-0.5 capitalize">
               {{ free_trial_days }} {% trans 'day free trial' %}
               <div class="absolute top-[90%] w-full">
@@ -38,47 +38,102 @@
             </a>
           </h6>
         {% endif %}
+
+        {# ── circular text flow ── #}
+        <style>
+          @keyframes homeStepsMarqueeLeft {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+          
+          .home-steps-marquee {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden;
+            pointer-events: none;
+          }
+          
+          .home-steps-marquee-track {
+            display: flex;
+            width: max-content;
+            animation: homeStepsMarqueeLeft 40s linear infinite;
+            will-change: transform;
+          }
+          
+          .home-steps-marquee-track-slow {
+            animation-duration: 60s;
+          }
+          
+          .home-steps-marquee-text {
+            white-space: nowrap;
+            padding-right: 3rem;
+            color: inherit;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1.6px currentColor;
+            text-fill-color: transparent;
+          }
+        </style>
+        <div class="relative w-full mt-14 mb-6 flex-1 self-stretch min-h-0">
+          <div class="flex flex-col justify-around">
+            <div class="home-steps-marquee">
+              <div class="home-steps-marquee-track uppercase px-4 text-text/20 text-8xl font-extrabold leading-none">
+                <span class="home-steps-marquee-text">{% trans 'TradingView strategies with unlimited customization that work on every chart and every timeframe. ' %}</span>
+                <span class="home-steps-marquee-text" aria-hidden="true">{% trans 'TradingView strategies with unlimited customization that work on every chart and every timeframe. ' %}</span>
+              </div>
+            </div>
+            <div class="hero-audio-wrap my-8 flex justify-center pointer-events-auto js-hero-audio" data-audio-src="https://isalgo.s3.us-east-1.amazonaws.com/videos/landing_page_audio.mp3" data-label-play="Play audio preview" data-label-pause="Pause audio preview">
+              <div class="inline-flex items-center gap-3.5 rounded-full bg-text/5 px-3 py-2 backdrop-blur-sm">
+                <button type="button" class="js-hero-audio-toggle inline-flex h-9 w-9 items-center justify-center rounded-full border border-primary/50 text-title transition-colors hover:border-primary/90" aria-label="Play audio preview" aria-pressed="false">
+                  <svg class="js-hero-audio-icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  <svg class="js-hero-audio-icon-pause hidden" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                  </svg>
+                </button>
+                <canvas class="js-hero-audio-wave block h-[34px] w-[180px]" width="180" height="34" aria-hidden="true"></canvas>
+              </div>
+            </div>
+            <div class="home-steps-marquee">
+              <div class="home-steps-marquee-track home-steps-marquee-track-slow uppercase px-4 text-text/20 text-8xl font-extrabold leading-none">
+                <span class="home-steps-marquee-text">{% trans "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. " %}</span>
+                <span class="home-steps-marquee-text" aria-hidden="true">{% trans "Automate your setup once you're ready across multiple accounts and brokers, from exchanges to stock markets, with an all-in-one solution. " %}</span>
+              </div>
+            </div>
+          </div>
+
+          <script src="{% static 'js/hero-audio.js' %}"></script>
+        </div>
       </div>
 
-      <div class="mx-auto w-full sm:w-10/12 aspect-video relative max-w-full my-auto">
-        <div class="absolute inset-0 border-4 border-profit rounded-lg rotate-2 -z-10"></div>
-        <div class="absolute inset-0 border-4 border-accent rounded-lg rotate-1 -z-10"></div>
-        <video autoplay muted loop playsinline class="mx-auto -rotate-1 aspect-auto w-full h-full rounded-lg object-cover border-4 border-primary">
-          <source src="https://isalgo.s3.us-east-1.amazonaws.com/videos/landing_page.mp4" type="video/mp4" />Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <section class="mx-auto w-full mt-20 mb-24 relative flex flex-col">
-        <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">{% trans 'Built by traders' %} <span class="bg-secondary dark:text-background text-title truncate">{% trans 'For Traders' %}</span></h2>
+      <section class="mx-auto w-full mt-12 mb-24 relative flex flex-col">
+        <h2 class="text-title text-5xl font-bold text-center mt-16 mb-2">{% trans 'Built by Traders' %} <span class="text-secondary truncate font-extrabold">{% trans 'For Traders' %}</span></h2>
         <h2 class="text-text text-3xl font-semibold text-center mt-2 mb-2">{% trans 'Master the market with our all‑in‑one solution' %}</h2>
 
-        <div class="grid md:grid-cols-3 gap-5 mt-12">
-          <div class="border-r-0 md:border-r-2 border-secondary">
-            <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-secondary">
-              <h5 class="text-primary text-xl font-bold mb-4 uppercase">{% trans 'Access' %}</h5>
-              <p class="text-text font-semibold">
-                {% trans 'Browse our library of proven trading strategies, pick the one that fits your style, and get started in minutes.' %}
-              </p>
-            </div>
-          </div>
-
-          <div class="border-r-0 md:border-r-2 border-accent">
-            <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-accent">
-              <h5 class="text-primary text-xl font-bold mb-4 uppercase">{% trans 'Test' %}</h5>
-              <p class="text-text font-semibold">
-                {% trans 'Backtest your strategies on historical data, fine-tune the settings, and validate performance before going live.' %}
-              </p>
-            </div>
-          </div>
-
-          <div class="">
-            <div class="max-w-xs mx-auto border-b-2 md:border-b-0 pb-4 border-title">
-              <h5 class="text-primary text-xl font-bold mb-4 uppercase">{% trans 'Automate' %}</h5>
-              <p class="text-text font-semibold">
-                {% trans 'Connect your broker, set your rules, and let automation execute your trades around the clock. No emotions, no missed entries.' %}
-              </p>
-            </div>
-          </div>
+        <div class="mx-auto mt-12 w-full sm:w-9/12 aspect-video relative max-w-full my-auto bg-black rounded-md">
+          <div class="absolute -inset-0 border-4 -rotate-[0.75deg] border-profit rounded-lg -z-10"></div>
+          <div class="absolute -inset-0 border-4 rotate-[0.75deg] border-primary rounded-lg -z-10"></div>
+          <video id="landingVideo" muted loop class="mx-auto aspect-auto w-full h-full rounded-lg object-cover border-4 border-[#2E2E2E]" preload="none">
+            <source src="https://isalgo.s3.us-east-1.amazonaws.com/videos/landing_page.mp4" type="video/mp4" />Your browser does not support the video tag.
+          </video>
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              const video = document.getElementById('landingVideo')
+              if (video) {
+                video.preload = 'auto'
+                video.load()
+                video.play().catch((error) => {
+                  console.error('Error playing landing video:', error)
+                })
+              }
+            })
+          </script>
         </div>
       </section>
     </section>
@@ -193,7 +248,7 @@
   {% endif %}
 
   <section class="">
-    <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+    <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">
       {% trans 'Trending Strategies' %}
       <svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path fill="none" d="M0 0h24v24H0V0z"></path>
@@ -201,7 +256,7 @@
       </svg>
     </a>
 
-    <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+    <div class="mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
       {% for strategy in most_viewed_strategies %}
         {% include 'include/quick_strategy_2.html' with strategy=strategy %}
       {% endfor %}
@@ -216,7 +271,7 @@
 
   {% if best_results|length >= 3 %}
     <section class="mt-8">
-      <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+      <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">
         {% trans 'Best Performing Reports' %}
         <svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path fill="none" d="M0 0h24v24H0V0z"></path>
@@ -224,7 +279,7 @@
         </svg>
       </a>
 
-      <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+      <div class="mt-4 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
         {% for result in best_results %}
           {% include 'include/quick_result.html' with result=result id=result.id %}
         {% endfor %}
@@ -279,10 +334,10 @@
 
   {% if quick_chart_symbols|length > 0 %}
     <section class="mt-8">
-      <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">Market at a Glance</h6>
+      <h6 class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">Market at a Glance</h6>
       <script src="https://s3.tradingview.com/tv.js"></script>
 
-      <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+      <div class="mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
         {% for symbol in quick_chart_symbols %}
           {% include 'include/tv_mini_symbol_overview.html' with symbol=symbol %}
         {% endfor %}
@@ -297,7 +352,7 @@
   {% endwith %}
 
   <section class="mt-8">
-    <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+    <a href="{% url 'strategies' %}" class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">
       {% trans 'Recently Added Strategies' %}
       <svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path fill="none" d="M0 0h24v24H0V0z"></path>
@@ -305,7 +360,7 @@
       </svg>
     </a>
 
-    <div class="mt-2 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+    <div class="mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
       {% for strategy in new_strategies %}
         {% include 'include/quick_strategy_2.html' with strategy=strategy %}
       {% endfor %}
@@ -314,7 +369,7 @@
 
   {% if comments|length >= 2 %}
     <section class="mt-8">
-      <h4 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">{% trans 'Join the Conversation' %}</h4>
+      <h4 class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">{% trans 'Join the Conversation' %}</h4>
 
       <div class="mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
         {% for comment in comments %}
@@ -366,7 +421,7 @@
 
   {% if new_results|length >= 2 %}
     <section class="mt-8">
-      <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">
+      <a href="{% url 'reports' %}" class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">
         {% trans 'Latest Reports' %}
         <svg class="fill-current stroke-current h-3.5 ml-1 translate-y-0.5 aspect-auto inline" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path fill="none" d="M0 0h24v24H0V0z"></path>
@@ -374,7 +429,7 @@
         </svg>
       </a>
 
-      <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+      <div class="mt-4 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
         {% for result in new_results %}
           {% include 'include/quick_result.html' with result=result %}
         {% endfor %}
@@ -384,9 +439,9 @@
 
   {% if recent_news|length >= 2 %}
     <section class="mt-8">
-      <h6 class="text-left text-title hover:text-title/80 transition-all text-lg font-bold flex items-baseline w-fit">{% trans 'Market Stories' %}</h6>
+      <h6 class="text-left text-title hover:text-title/80 transition-all text-xl font-bold flex items-baseline w-fit">{% trans 'Market Stories' %}</h6>
 
-      <div class="mt-2 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+      <div class="mt-4 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
         {% for article in recent_news|slice:':6' %}
           {% include 'include/news_card.html' with article=article %}
         {% endfor %}

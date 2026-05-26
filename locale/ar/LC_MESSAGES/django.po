@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IsAlgo 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-10 08:39-0500\n"
+"POT-Creation-Date: 2026-05-25 12:19-0500\n"
 "PO-Revision-Date: 2026-03-04 10:00-0600\n"
 "Last-Translator: IsAlgo Team\n"
 "Language-Team: Arabic\n"
@@ -194,7 +194,6 @@ msgid "Invalid volume expression: %s"
 msgstr "تعبير الحجم غير صالح: %s"
 
 #, python-format
-#| msgid "Error parsing volume '%s': %s"
 msgid "Error parsing volume '%(value)s': %(error)s"
 msgstr "خطأ في تحليل الحجم '%(value)s': %(error)s"
 
@@ -330,7 +329,6 @@ msgid "Invalid interval: %s"
 msgstr "فترة زمنية غير صالحة: %s"
 
 #, python-format
-#| msgid "Error %s: %s"
 msgid "Error %(code)s: %(message)s"
 msgstr "خطأ %(code)s: %(message)s"
 
@@ -369,7 +367,6 @@ msgid "Invalid API key or secret."
 msgstr "مفتاح API أو السر غير صالح."
 
 #, python-format
-#| msgid "Error getting exchange info for %s: %s"
 msgid "Error getting exchange info for %(symbol)s: %(error)s"
 msgstr "خطأ في الحصول على معلومات منصة التداول لـ %(symbol)s: %(error)s"
 
@@ -381,17 +378,14 @@ msgid "Symbol not found."
 msgstr "لم يتم العثور على الرمز."
 
 #, python-format
-#| msgid "Error getting exchange price for %s: %s"
 msgid "Error getting exchange price for %(symbol)s: %(error)s"
 msgstr "خطأ في الحصول على سعر منصة التداول لـ %(symbol)s: %(error)s"
 
 #, python-format
-#| msgid "Error getting historical candles for %s: %s"
 msgid "Error getting historical candles for %(symbol)s: %(error)s"
 msgstr "خطأ في الحصول على الشموع التاريخية لـ %(symbol)s: %(error)s"
 
 #, python-format
-#| msgid "Error getting order book for %s: %s"
 msgid "Error getting order book for %(symbol)s: %(error)s"
 msgstr "خطأ في الحصول على دفتر الأوامر لـ %(symbol)s: %(error)s"
 
@@ -540,17 +534,14 @@ msgid "Currency information not found in account info."
 msgstr "لم يتم العثور على معلومات العملة في معلومات الحساب."
 
 #, python-format
-#| msgid "Login failed: HTTP %s - %s"
 msgid "Login failed: HTTP %(status)s - %(text)s"
 msgstr "فشل تسجيل الدخول: HTTP %(status)s - %(text)s"
 
 #, python-format
-#| msgid "Open trade failed: HTTP %s - %s"
 msgid "Open trade failed: HTTP %(status)s - %(text)s"
 msgstr "فشل فتح الصفقة: HTTP %(status)s - %(text)s"
 
 #, python-format
-#| msgid "Failed to fetch account info: HTTP %s - %s"
 msgid "Failed to fetch account info: HTTP %(status)s - %(text)s"
 msgstr "فشل في جلب معلومات الحساب: HTTP %(status)s - %(text)s"
 
@@ -666,7 +657,6 @@ msgid "Account ID not provided and could not be retrieved."
 msgstr "لم يتم توفير معرف الحساب ولا يمكن استرداده."
 
 #, python-format
-#| msgid "HTTP Error %s: %s"
 msgid "HTTP Error %(status)s: %(error)s"
 msgstr "خطأ HTTP %(status)s: %(error)s"
 
@@ -717,7 +707,6 @@ msgid "No trading route available for symbol %s."
 msgstr "لا يوجد مسار تداول متاح للرمز %s."
 
 #, python-format
-#| msgid "Failed to get symbol info for %s: %s"
 msgid "Failed to get symbol info for %(symbol)s: %(error)s"
 msgstr "فشل في الحصول على معلومات الرمز لـ %(symbol)s: %(error)s"
 
@@ -861,14 +850,42 @@ msgstr "تمكين webhook التنبيه"
 msgid "to establish the connection."
 msgstr "لتأسيس الاتصال."
 
-msgid "All Set!"
-msgstr "كل شيء جاهز!"
+#| msgid "All Set!"
+msgid "All set!"
+msgstr "تم كل شيء!"
 
-msgid "Everything is set—sit back and watch the trades execute automatically."
-msgstr "تم ضبط كل شيء — استرخ وشاهد تنفيذ الصفقات تلقائيًا."
+#| msgid "Margin is set to"
+msgid "Everything is set"
+msgstr "تم إعداد كل شيء"
 
-msgid "Try it Now"
-msgstr "جربه الآن"
+msgid "Sit back and watch your trades "
+msgstr "استرخِ وراقب صفقاتك "
+
+msgid "execute automatically"
+msgstr "تُنفَّذ تلقائيًا"
+
+msgid " while "
+msgstr " بينما "
+
+#| msgid "Trading Performance"
+msgid "monitoring performance"
+msgstr "مراقبة الأداء"
+
+#| msgid "Link your broker"
+msgid " in your dashboard."
+msgstr " في لوحة التحكم الخاصة بك."
+
+#| msgid "Automate"
+msgid "Ready to Automate?"
+msgstr "جاهز للأتمتة؟"
+
+#| msgid "Set up your alerts and let automation handle the rest"
+msgid "Leave manual trading behind and let the automation handle your trades."
+msgstr "اترك التداول اليدوي ودع الأتمتة تتولى إدارة صفقاتك."
+
+#| msgid "Start exploring"
+msgid "Start here"
+msgstr "ابدأ من هنا"
 
 msgid "Ctrader Authentication code"
 msgstr "رمز المصادقة Ctrader"
@@ -4752,6 +4769,14 @@ msgstr "يوضح الفيديو أدناه المكان الذي يمكنك في
 msgid "Find the strategies"
 msgstr "العثور على الاستراتيجيات"
 
+msgid ""
+"After submitting your username, please go to TradingView -> Products -> "
+"Supercharts. You will find the availble strategies under the 'Invite Only "
+"Scripts' section."
+msgstr ""
+"بعد إرسال اسم المستخدم الخاص بك، يُرجى الانتقال إلى TradingView -> Products "
+"-> Supercharts. ستجد الاستراتيجيات المتاحة ضمن قسم 'Invite Only Scripts'."
+
 msgid "The video below demonstrates how to do that."
 msgstr "يوضح الفيديو أدناه كيفية القيام بذلك."
 
@@ -6346,15 +6371,12 @@ msgstr "بريد تسويقي"
 msgid "Access Removed - IsAlgo"
 msgstr "تم إزالة الوصول - IsAlgo"
 
-#| msgid "Unlock access to this strategy and more"
 msgid "Your access to IsAlgo strategies has been removed."
 msgstr "تمت إزالة وصولك إلى استراتيجيات IsAlgo."
 
-#| msgid "Access granted"
 msgid "Access Removed"
 msgstr "تمت إزالة الوصول"
 
-#| msgid "Membership"
 msgid "Membership Canceled"
 msgstr "تم إلغاء العضوية"
 
@@ -6375,15 +6397,12 @@ msgstr ""
 "إذا كنت تعتقد أن هذا تم عن طريق الخطأ أو لديك أي أسئلة، لا تتردد في التواصل "
 "معنا — نحن هنا للمساعدة."
 
-#| msgid "With Apex, you can trade"
 msgid "What you can do:"
 msgstr "ما يمكنك فعله:"
 
-#| msgid "No payment method has been detected."
 msgid "Update your payment method if it was declined"
 msgstr "قم بتحديث طريقة الدفع إذا تم رفضها"
 
-#| msgid "What you need to do to get access to our strategies."
 msgid "Resubscribe to regain access to your strategies"
 msgstr "أعد الاشتراك لاستعادة الوصول إلى استراتيجياتك"
 
@@ -6397,11 +6416,9 @@ msgstr ""
 "نقدّر عضويتك ويسعدنا الترحيب بعودتك. نأمل أنك وجدت قيمة في استراتيجياتنا "
 "خلال فترة وجودك معنا."
 
-#| msgid "Subscribe now"
 msgid "Resubscribe Now"
 msgstr "أعد الاشتراك الآن"
 
-#| msgid "Contact us"
 msgid "Contact Support"
 msgstr "اتصل بالدعم"
 
@@ -6412,7 +6429,6 @@ msgstr "تم استلام الدفع - IsAlgo"
 msgid "Your payment of $%(amount)s has been received. Thank you!"
 msgstr "تم استلام دفعتك بقيمة %(amount)s$. شكراً لك!"
 
-#| msgid "Payment Method"
 msgid "Payment Received"
 msgstr "تم استلام الدفع"
 
@@ -6439,11 +6455,9 @@ msgid ""
 "payment."
 msgstr "لديك رصيد مستحق بقيمة %(amount)s$. سجّل الدخول لإكمال الدفع."
 
-#| msgid "remaining balance."
 msgid "Outstanding Balance"
 msgstr "الرصيد المستحق"
 
-#| msgid "Payment Issue"
 msgid "Payment Required"
 msgstr "الدفع مطلوب"
 
@@ -6456,18 +6470,15 @@ msgstr ""
 "لديك رصيد مستحق بقيمة <strong>%(amount)s$</strong> على حسابك في IsAlgo. يرجى"
 " تسجيل الدخول واتباع الإرشادات لإكمال الدفع."
 
-#| msgid "How to use"
 msgid "How to pay:"
 msgstr "كيفية الدفع:"
 
-#| msgid "Log in to your Alpaca account"
 msgid "Log in to your IsAlgo account"
 msgstr "سجّل الدخول إلى حساب IsAlgo الخاص بك"
 
 msgid "Follow the payment prompt displayed on your dashboard"
 msgstr "اتبع إرشادات الدفع المعروضة على لوحة التحكم"
 
-#| msgid "Complete the Connection"
 msgid "Complete the payment"
 msgstr "أكمل الدفع"
 
@@ -6478,7 +6489,6 @@ msgstr ""
 "إذا كنت تعتقد أن هذا خطأ أو تحتاج مساعدة في الدفع، لا تتردد في التواصل مع "
 "فريق الدعم."
 
-#| msgid "Log in to your"
 msgid "Log In & Pay Now"
 msgstr "سجّل الدخول وادفع الآن"
 
@@ -6489,7 +6499,6 @@ msgstr "خطأ في الأتمتة - IsAlgo"
 msgid "An error occurred on your account %(account_name)s."
 msgstr "حدث خطأ في حسابك %(account_name)s."
 
-#| msgid "Automation"
 msgid "Automation Error"
 msgstr "خطأ في الأتمتة"
 
@@ -6504,11 +6513,9 @@ msgstr ""
 "اكتشفنا خطأً في حسابك الآلي <strong>%(account_name)s</strong>. إليك "
 "التفاصيل:"
 
-#| msgid "Alerts"
 msgid "Alert:"
 msgstr "تنبيه:"
 
-#| msgid "Error!"
 msgid "Error:"
 msgstr "خطأ:"
 
@@ -6519,7 +6526,6 @@ msgstr ""
 "يرجى مراجعة إعدادات حسابك وسجلاته لحل هذه المشكلة. إذا استمرت المشكلة، لا "
 "تتردد في التواصل مع فريق الدعم."
 
-#| msgid "Edit Account"
 msgid "View Account"
 msgstr "عرض الحساب"
 
@@ -6532,7 +6538,6 @@ msgid ""
 "subscription issue."
 msgstr "تم تعليق حساب الوسيط %(account_name)s بسبب مشكلة في الاشتراك."
 
-#| msgid "Your account server"
 msgid "Broker Account Suspended"
 msgstr "تم تعليق حساب الوسيط"
 
@@ -6552,7 +6557,6 @@ msgstr ""
 "للأسف، لم نتمكن من معالجة دفعتك، مما أدى إلى تعليق حساب الوسيط الخاص بك "
 "مؤقتاً."
 
-#| msgid "Create your Account"
 msgid "To restore your account:"
 msgstr "لاستعادة حسابك:"
 
@@ -6562,7 +6566,6 @@ msgstr "سجّل الدخول إلى حسابك وتحقق من اشتراك ح�
 msgid "Update your payment details if needed"
 msgstr "حدّث تفاصيل الدفع إذا لزم الأمر"
 
-#| msgid "Kraken Pro account"
 msgid "Renew your broker account subscription"
 msgstr "جدّد اشتراك حساب الوسيط الخاص بك"
 
@@ -6574,7 +6577,6 @@ msgstr ""
 "بمجرد معالجة الدفع بنجاح، سيتم إعادة تفعيل حساب الوسيط الآلي. إذا كنت تعتقد "
 "أن هذا خطأ، تواصل مع فريق الدعم."
 
-#| msgid "Subscription"
 msgid "Renew Subscription"
 msgstr "تجديد الاشتراك"
 
@@ -6585,7 +6587,6 @@ msgstr "تم ربط الحساب - IsAlgo"
 msgid "Your account %(account_name)s has been successfully connected."
 msgstr "تم ربط حسابك %(account_name)s بنجاح."
 
-#| msgid "Account info not found"
 msgid "Account connected"
 msgstr "تم ربط الحساب"
 
@@ -6609,16 +6610,12 @@ msgstr ""
 msgid "Next steps:"
 msgstr "الخطوات التالية:"
 
-#| msgid "Select a trading account type that suits your trading needs."
 msgid "Find a strategy that fits your trading goals"
 msgstr "ابحث عن استراتيجية تناسب أهدافك في التداول"
 
-#| msgid "Adding strategy to the chart"
 msgid "Add the strategy to your tradingview chart"
 msgstr "أضف الاستراتيجية إلى مخطط TradingView الخاص بك"
 
-#| msgid ""
-#| "After setting up the alert message on the strategy you're using,"
 msgid "Get the correct alerts messages and add them to the strategy settings"
 msgstr "احصل على رسائل التنبيه الصحيحة وأضفها إلى إعدادات الاستراتيجية"
 
@@ -6635,11 +6632,9 @@ msgstr ""
 "إذا كنت بحاجة إلى مساعدة في إعداد الأتمتة، اطّلع على وثائقنا أو تواصل مع "
 "فريق الدعم."
 
-#| msgid "Automation"
 msgid "Set Up Automation"
 msgstr "إعداد الأتمتة"
 
-#| msgid "Documentation"
 msgid "Read Documentation"
 msgstr "اقرأ الوثائق"
 
@@ -6650,7 +6645,6 @@ msgstr "تم حذف حساب الوسيط - IsAlgo"
 msgid "Your broker account %(account_name)s has been deleted."
 msgstr "تم حذف حساب الوسيط %(account_name)s."
 
-#| msgid "Before You Delete"
 msgid "Broker Account Deleted"
 msgstr "تم حذف حساب الوسيط"
 
@@ -6687,11 +6681,9 @@ msgid ""
 "your trading journey."
 msgstr "شكراً لكونك جزءاً من مجتمعنا. نأمل أن نستمر في دعم مسيرتك في التداول."
 
-#| msgid "Add Account"
 msgid "Add New Account"
 msgstr "إضافة حساب جديد"
 
-#| msgid "Subscription failed. "
 msgid "Subscription Overdue - IsAlgo"
 msgstr "اشتراك متأخر - IsAlgo"
 
@@ -6701,7 +6693,6 @@ msgid ""
 "required."
 msgstr "اشتراك حساب الوسيط %(account_name)s متأخر. إجراء مطلوب."
 
-#| msgid "Subscription Price"
 msgid "Subscription Overdue"
 msgstr "اشتراك متأخر"
 
@@ -6723,14 +6714,12 @@ msgstr ""
 msgid "What happens if unpaid:"
 msgstr "ما يحدث في حال عدم الدفع:"
 
-#| msgid "Your account email/username"
 msgid "Your broker account will be temporarily suspended"
 msgstr "سيتم تعليق حساب الوسيط مؤقتاً"
 
 msgid "All active automations will be paused"
 msgstr "سيتم إيقاف جميع الأتمتة النشطة مؤقتاً"
 
-#| msgid "Close any open positions you want to manage manually."
 msgid "Open positions will not be managed automatically"
 msgstr "لن يتم إدارة المراكز المفتوحة تلقائياً"
 
@@ -6744,19 +6733,15 @@ msgstr ""
 msgid "Renew Now"
 msgstr "جدّد الآن"
 
-#| msgid "Subscription failed. "
 msgid "Subscription Canceled - IsAlgo"
 msgstr "تم إلغاء الاشتراك - IsAlgo"
 
-#| msgid "Your subscription was canceled, end on"
 msgid "Your subscription has been canceled."
 msgstr "تم إلغاء اشتراكك."
 
-#| msgid "Subscription failed. "
 msgid "Subscription Canceled"
 msgstr "تم إلغاء الاشتراك"
 
-#| msgid "Cancel"
 msgid "Canceled"
 msgstr "ملغي"
 
@@ -6767,10 +6752,13 @@ msgstr "تم إلغاء اشتراكك بنجاح. نأسف لرحيلك."
 msgid "Your Access Status"
 msgstr "حالة وصولك"
 
+#| msgid "Access continues until your billing period ends"
+msgid "Premium access will continue until the end of your billing cycle"
+msgstr "سيستمر الوصول المميز حتى نهاية دورة الفوترة الخاصة بك"
+
 msgid "No further charges will be made"
 msgstr "لن يتم فرض أي رسوم إضافية"
 
-#| msgid "Your account email/username"
 msgid "Your account remains active"
 msgstr "حسابك لا يزال نشطاً"
 
@@ -6792,15 +6780,12 @@ msgstr "سهولة إعادة الاشتراك — عُد في أي وقت، إ�
 msgid "We'd love to hear your feedback on how we can improve."
 msgstr "نود سماع ملاحظاتك حول كيفية تحسين خدماتنا."
 
-#| msgid ". Your thoughts help us improve and serve you better."
 msgid "Your input helps us serve you better."
 msgstr "ملاحظاتك تساعدنا على خدمتك بشكل أفضل."
 
-#| msgid "feedback"
 msgid "Share Feedback"
 msgstr "شارك رأيك"
 
-#| msgid "Premium Strategies"
 msgid "Browse Strategies"
 msgstr "تصفح الاستراتيجيات"
 
@@ -6808,7 +6793,6 @@ msgid ""
 "Thank you for being part of our community. We hope to see you again soon!"
 msgstr "شكراً لكونك جزءاً من مجتمعنا. نأمل أن نراك مرة أخرى قريباً!"
 
-#| msgid "Delete Seller Account"
 msgid "Complete Your Seller Profile - IsAlgo"
 msgstr "أكمل ملف البائع الخاص بك - IsAlgo"
 
@@ -6817,7 +6801,6 @@ msgid ""
 "earning."
 msgstr "حساب البائع الخاص بك جاهز تقريباً — أكمل ملفك التعريفي لبدء الربح."
 
-#| msgid "Delete Seller Account"
 msgid "Complete Your Seller Profile"
 msgstr "أكمل ملف البائع الخاص بك"
 
@@ -6838,7 +6821,6 @@ msgstr ""
 "الانتهاء، سنتولى نشر استراتيجيتك وستبدأ في الربح من المشتركين. عادةً ما "
 "يستغرق ذلك بضع دقائق فقط."
 
-#| msgid "What do I need to get started?"
 msgid "What you need to do:"
 msgstr "ما تحتاج إلى فعله:"
 
@@ -6849,7 +6831,6 @@ msgstr ""
 "سجّل الدخول إلى حسابك على IsAlgo واتبع الإرشادات لإكمال إعداد ملفك التعريفي "
 "كبائع"
 
-#| msgid "Complete 2FA and any other required verification."
 msgid "Complete the required identity verification"
 msgstr "أكمل التحقق من الهوية المطلوب"
 
@@ -6864,18 +6845,15 @@ msgstr ""
 "بمجرد إكمال ملفك التعريفي، سننشر استراتيجيتك وستبدأ في الربح من كل مشترك "
 "جديد. إذا احتجت أي مساعدة، لا تتردد في التواصل معنا."
 
-#| msgid "Delete Seller Account"
 msgid "Complete Seller Profile"
 msgstr "إكمال ملف البائع"
 
-#| msgid "visit the Deriv website"
 msgid "Visit our website"
 msgstr "قم بزيارة موقعنا"
 
 msgid "Pricing"
 msgstr "التسعير"
 
-#| msgid "Follow us on"
 msgid "Follow Us"
 msgstr "تابعنا"
 
@@ -6883,7 +6861,6 @@ msgstr "تابعنا"
 msgid "© %(year)s IsAlgo. All rights reserved."
 msgstr "© %(year)s IsAlgo. جميع الحقوق محفوظة."
 
-#| msgid "Total Subscribers"
 msgid "First Subscriber - IsAlgo"
 msgstr "أول مشترك - IsAlgo"
 
@@ -6893,7 +6870,6 @@ msgid ""
 "subscriber."
 msgstr "تهانينا! استراتيجيتك %(strategy_name)s حصلت للتو على أول مشترك."
 
-#| msgid "Total Subscribers"
 msgid "Your First Subscriber!"
 msgstr "أول مشترك لديك!"
 
@@ -6914,14 +6890,12 @@ msgstr ""
 "أنت الآن تربح من استراتيجيتك على IsAlgo. مع اكتشاف المزيد من المتداولين "
 "لعملك، سيستمر عدد مشتركيك وإيراداتك في النمو."
 
-#| msgid "Subscription failed. "
 msgid "Subscription details:"
 msgstr "تفاصيل الاشتراك:"
 
 msgid "Strategy"
 msgstr "استراتيجية"
 
-#| msgid "Open Price"
 msgid "Price"
 msgstr "السعر"
 
@@ -6946,7 +6920,6 @@ msgstr ""
 "يمكنك تتبع أرباحك ومشتركيك في أي وقت من ملفك التعريفي. شكراً لكونك جزءاً من "
 "IsAlgo — نحن متحمسون لرؤية نمو استراتيجيتك!"
 
-#| msgid "Earnings"
 msgid "View My Earnings"
 msgstr "عرض أرباحي"
 
@@ -6957,7 +6930,6 @@ msgstr "إنجاز 100 مشترك - IsAlgo"
 msgid "Incredible — your strategy %(strategy_name)s just hit 100 subscribers!"
 msgstr "مذهل — استراتيجيتك %(strategy_name)s وصلت للتو إلى 100 مشترك!"
 
-#| msgid "Total Subscribers"
 msgid "100 Subscribers!"
 msgstr "100 مشترك!"
 
@@ -6981,7 +6953,6 @@ msgstr ""
 msgid "Milestone summary:"
 msgstr "ملخص الإنجاز:"
 
-#| msgid "Subscribe"
 msgid "Subscribers"
 msgstr "المشتركون"
 
@@ -7004,7 +6975,6 @@ msgid ""
 msgstr ""
 "لا يُصدّق — استراتيجيتك %(strategy_name)s وصلت للتو إلى 100,000 مشترك!"
 
-#| msgid "Total Subscribers"
 msgid "100,000 Subscribers!"
 msgstr "100,000 مشترك!"
 
@@ -7044,7 +7014,6 @@ msgid ""
 "Legendary — your strategy %(strategy_name)s just hit 1,000,000 subscribers!"
 msgstr "أسطوري — استراتيجيتك %(strategy_name)s وصلت للتو إلى 1,000,000 مشترك!"
 
-#| msgid "Total Subscribers"
 msgid "1,000,000 Subscribers!"
 msgstr "1,000,000 مشترك!"
 
@@ -7083,7 +7052,6 @@ msgstr "تعليق جديد - IsAlgo"
 msgid "A new comment has been added to your strategy %(strategy_name)s."
 msgstr "تمت إضافة تعليق جديد على استراتيجيتك %(strategy_name)s."
 
-#| msgid "Comments"
 msgid "New Comment"
 msgstr "تعليق جديد"
 
@@ -7102,7 +7070,6 @@ msgstr "%(author_name)s كتب:"
 msgid "Head over to your strategy page to read the full comment and respond."
 msgstr "توجّه إلى صفحة استراتيجيتك لقراءة التعليق الكامل والرد."
 
-#| msgid "Comments"
 msgid "View Comment"
 msgstr "عرض التعليق"
 
@@ -7112,11 +7079,9 @@ msgstr "عضوية مدى الحياة - IsAlgo"
 msgid "Welcome to IsAlgo Lifetime Membership! You now have permanent access."
 msgstr "مرحباً بك في عضوية IsAlgo مدى الحياة! لديك الآن وصول دائم."
 
-#| msgid "Membership"
 msgid "Lifetime Membership"
 msgstr "عضوية مدى الحياة"
 
-#| msgid "Life Time Access"
 msgid "Lifetime Access Granted"
 msgstr "تم منح الوصول مدى الحياة"
 
@@ -7141,7 +7106,6 @@ msgstr ""
 msgid "Your Lifetime benefits:"
 msgstr "مزايا عضويتك مدى الحياة:"
 
-#| msgid "Get access to unlock commenting and more features!"
 msgid "Permanent access to all current and future strategies"
 msgstr "وصول دائم إلى جميع الاستراتيجيات الحالية والمستقبلية"
 
@@ -7164,11 +7128,9 @@ msgstr "مرحباً بك في IsAlgo"
 msgid "Welcome to our Family! Your membership is confirmed."
 msgstr "مرحباً بك في عائلتنا! تم تأكيد عضويتك."
 
-#| msgid "Join our Discord Community!"
 msgid "Welcome to Our Family"
 msgstr "مرحباً بك في عائلتنا"
 
-#| msgid "Membership"
 msgid "Membership Confirmed"
 msgstr "تم تأكيد العضوية"
 
@@ -7187,14 +7149,12 @@ msgstr ""
 "يؤكد هذا البريد الإلكتروني أنك اشتريت بنجاح إحدى عضوياتنا. نحن متحمسون "
 "للترحيب بك ومتشوقون لدعمك في مسيرتك في التداول."
 
-#| msgid "Getting Started"
 msgid "Getting started:"
 msgstr "للبدء:"
 
 msgid "Browse and add strategies to your TradingView chart"
 msgstr "تصفّح وأضف الاستراتيجيات إلى مخطط TradingView الخاص بك"
 
-#| msgid "Kraken Pro account"
 msgid "Set up automation with your broker account"
 msgstr "قم بإعداد الأتمتة مع حساب الوسيط الخاص بك"
 
@@ -7239,7 +7199,6 @@ msgstr "رد جديد على بلاغ - IsAlgo"
 msgid "%(author_name)s replied on a report for %(strategy_name)s."
 msgstr "%(author_name)s ردّ على بلاغ حول %(strategy_name)s."
 
-#| msgid "Real Trading Reports"
 msgid "New Reply on Report"
 msgstr "رد جديد على التقرير"
 
@@ -7251,7 +7210,6 @@ msgstr ""
 "<strong>%(author_name)s</strong> ردّ على بلاغ حول "
 "<strong>%(strategy_name)s</strong>."
 
-#| msgid "Reports"
 msgid "View Report"
 msgstr "عرض التقرير"
 
@@ -7273,7 +7231,6 @@ msgstr ""
 "تمت إضافة بلاغ جديد على استراتيجيتك <strong>%(strategy_name)s</strong> "
 "بواسطة <strong>%(author_name)s</strong>."
 
-#| msgid "Card details"
 msgid "Report details:"
 msgstr "تفاصيل التقرير:"
 
@@ -7301,28 +7258,24 @@ msgid ""
 "available!"
 msgstr "نقدّم %(strategy_name)s — أحدث استراتيجيات التداول متاحة الآن!"
 
-#| msgid "No strategy available yet."
 msgid "New Free Strategy Available"
 msgstr "استراتيجية مجانية جديدة متاحة"
 
 msgid "Free"
 msgstr "مجاني"
 
-#| msgid "Exclusive strategy"
 msgid "New Exclusive Strategy Available"
 msgstr "استراتيجية حصرية جديدة متاحة"
 
 msgid "Exclusive"
 msgstr "حصري"
 
-#| msgid "Elite Strategies"
 msgid "New Elite Strategy Available"
 msgstr "استراتيجية نخبة جديدة متاحة"
 
 msgid "Elite"
 msgstr "نخبة"
 
-#| msgid "Premium Strategies"
 msgid "New Premium Strategy Available"
 msgstr "استراتيجية مميزة جديدة متاحة"
 
@@ -7345,7 +7298,6 @@ msgstr ""
 "سواء كنت متداولاً محترفاً أو مبتدئاً، تقدم هذه الاستراتيجية رؤى قوية لتعزيز "
 "تجربتك في التداول."
 
-#| msgid "Available Tokens"
 msgid "Available on:"
 msgstr "متاح على:"
 
@@ -7362,15 +7314,12 @@ msgstr ""
 "لدينا المزيد من الاستراتيجيات قيد التحضير. ترقّبوا التحديثات، وشكراً لكونك "
 "عضواً قيّماً في مجتمعنا!"
 
-#| msgid "Try it Now"
 msgid "Try It Out"
 msgstr "جرّبها"
 
-#| msgid "Premium Strategies"
 msgid "Browse All Strategies"
 msgstr "تصفح جميع الاستراتيجيات"
 
-#| msgid "Payment Issue"
 msgid "Payment Issue - IsAlgo"
 msgstr "مشكلة في الدفع - IsAlgo"
 
@@ -7397,7 +7346,6 @@ msgstr ""
 msgid "How to restore access:"
 msgstr "كيفية استعادة الوصول:"
 
-#| msgid "Get your client secret"
 msgid "Go to your payment settings"
 msgstr "انتقل إلى إعدادات الدفع"
 
@@ -7423,7 +7371,6 @@ msgstr "اكتمل ملفك التعريفي كبائع! إليك كيفية ت�
 msgid "Seller Profile Complete!"
 msgstr "اكتمل الملف التعريفي للبائع!"
 
-#| msgid "All Set!"
 msgid "All Set"
 msgstr "كل شيء جاهز"
 
@@ -7435,15 +7382,12 @@ msgstr ""
 "أخبار رائعة — تم إعداد ملفك التعريفي كبائع بالكامل! سنتولى الأمر من هنا "
 "وننشر استراتيجيتك على IsAlgo. ستبدأ في الربح من كل مشترك جديد."
 
-#| msgid ""
-#| "To begin automating your trades, follow these essential steps:"
 msgid "To track your earnings at any time, follow these simple steps:"
 msgstr "لتتبع أرباحك في أي وقت، اتبع هذه الخطوات البسيطة:"
 
 msgid "How to see your earnings:"
 msgstr "كيفية عرض أرباحك:"
 
-#| msgid "Click on your profile icon in the top-right corner"
 msgid "Click on your profile icon in the top right corner"
 msgstr "انقر على أيقونة ملفك الشخصي في الزاوية العلوية اليمنى"
 
@@ -7457,12 +7401,10 @@ msgstr ""
 "شكراً لشراكتك معنا. إذا كان لديك أي أسئلة حول أرباحك أو مدفوعاتك، لا تتردد "
 "في التواصل — نحن هنا للمساعدة."
 
-#| msgid "Your subscription was canceled, end on"
 msgid "Strategy Subscription Canceled - IsAlgo"
 msgstr "تم إلغاء اشتراك الاستراتيجية - IsAlgo"
 
 #, python-format
-#| msgid "Your subscription was canceled, end on"
 msgid "Your subscription to %(strategy_name)s has been canceled."
 msgstr "تم إلغاء اشتراكك في %(strategy_name)s."
 
@@ -7496,7 +7438,6 @@ msgid ""
 "back."
 msgstr "غيّرت رأيك؟ يمكنك إعادة الاشتراك في أي وقت. يسعدنا عودتك."
 
-#| msgid "Subscribe"
 msgid "Resubscribe"
 msgstr "إعادة الاشتراك"
 
@@ -7507,7 +7448,6 @@ msgstr "تم منح الوصول للاستراتيجية - IsAlgo"
 msgid "You now have full access to %(strategy_name)s. Let's get you started!"
 msgstr "لديك الآن وصول كامل إلى %(strategy_name)s. لنبدأ!"
 
-#| msgid "Access granted"
 msgid "Strategy Access Granted"
 msgstr "تم منح الوصول للاستراتيجية"
 
@@ -7520,24 +7460,18 @@ msgstr ""
 "تهانينا! لديك الآن وصول كامل إلى <strong>%(strategy_name)s</strong>. تم "
 "تفعيل اشتراكك بنجاح، وأنت جاهز لبدء رحلتك في التداول الآلي."
 
-#| msgid "What's Apex?"
 msgid "What's next:"
 msgstr "الخطوات التالية:"
 
-#| msgid "Strategy Performance -"
 msgid "Review strategy performance and settings"
 msgstr "راجع أداء الاستراتيجية وإعداداتها"
 
 msgid "Connect your account to receive trade signals"
 msgstr "اربط حسابك لتلقي إشارات التداول"
 
-#| msgid "Configure your alerts."
 msgid "Configure your automation and go live"
 msgstr "قم بتهيئة الأتمتة وابدأ التشغيل"
 
-#| msgid ""
-#| "If you encounter any issues during the integration process, our support team"
-#| " is here to help. Contact us"
 msgid ""
 "If you have any questions or need assistance getting started, our support "
 "team is here to help."
@@ -7545,11 +7479,9 @@ msgstr ""
 "إذا كانت لديك أي أسئلة أو تحتاج إلى مساعدة للبدء، فريق الدعم لدينا هنا "
 "لمساعدتك."
 
-#| msgid "Strategy"
 msgid "View Strategy"
 msgstr "عرض الاستراتيجية"
 
-#| msgid "Strategy Description"
 msgid "Strategy Subscription Overdue - IsAlgo"
 msgstr "اشتراك الاستراتيجية متأخر - IsAlgo"
 
@@ -7599,11 +7531,9 @@ msgid ""
 "Your access to %(strategy_name)s has been removed due to a payment issue."
 msgstr "تم إزالة وصولك إلى %(strategy_name)s بسبب مشكلة في الدفع."
 
-#| msgid "Strategies Reports"
 msgid "Strategy Access Removed"
 msgstr "تمت إزالة الوصول للاستراتيجية"
 
-#| msgid "Access granted"
 msgid "Access Suspended"
 msgstr "تم تعليق الوصول"
 
@@ -7627,7 +7557,6 @@ msgstr "كيفية استعادة وصولك:"
 msgid "Log in and review your subscription status"
 msgstr "سجّل الدخول وراجع حالة اشتراكك"
 
-#| msgid "No payment method provided."
 msgid "Update your payment method if needed"
 msgstr "قم بتحديث طريقة الدفع إذا لزم الأمر"
 
@@ -7648,7 +7577,6 @@ msgstr "إنجاز 10 مشتركين - IsAlgo"
 msgid "Your strategy %(strategy_name)s just hit 10 subscribers!"
 msgstr "استراتيجيتك %(strategy_name)s وصلت للتو إلى 10 مشتركين!"
 
-#| msgid "Total Subscribers"
 msgid "10 Subscribers!"
 msgstr "10 مشتركين!"
 
@@ -7696,7 +7624,6 @@ msgid ""
 "growing your portfolio."
 msgstr "حسابك جاهز! استكشف استراتيجيات التداول الآلية وابدأ في تنمية محفظتك."
 
-#| msgid "Join our Discord Community!"
 msgid "Welcome to ISAlgo!"
 msgstr "مرحباً بك في IsAlgo!"
 
@@ -7715,27 +7642,21 @@ msgstr ""
 msgid "What you can do now"
 msgstr "ما يمكنك فعله الآن"
 
-#| msgid "Trending Strategies"
 msgid "Browse Trading Strategies"
 msgstr "تصفح استراتيجيات التداول"
 
 msgid "Explore free, premium, and Exclusive strategies"
 msgstr "استكشف الاستراتيجيات المجانية والمميزة والحصرية"
 
-#| msgid "Real Trading Reports"
 msgid "Browse Trading Reports"
 msgstr "تصفح تقارير التداول"
 
-#| msgid "Complete trading performance report for"
 msgid "Explore detailed performance reports and analytics"
 msgstr "استكشف تقارير الأداء والتحليلات التفصيلية"
 
-#| msgid "Get your account ID"
 msgid "Connect Your account"
 msgstr "اربط حسابك"
 
-#| msgid ""
-#| "Link the alerts to your trading account and start the automation."
 msgid "Link your trading account to automate trades"
 msgstr "اربط حساب التداول الخاص بك لأتمتة الصفقات"
 
@@ -7753,29 +7674,24 @@ msgid ""
 " confidence:"
 msgstr "جديد في التداول الآلي؟ اطّلع على دليل المبتدئين للبدء بثقة:"
 
-#| msgid "Have a trading strategy idea?"
 msgid "Understanding trading strategies"
 msgstr "فهم استراتيجيات التداول"
 
-#| msgid "Waiting for your first trading reports..."
 msgid "Setting up your first trading account connection"
 msgstr "إعداد أول اتصال لحساب التداول"
 
 msgid "Risk management best practices"
 msgstr "أفضل ممارسات إدارة المخاطر"
 
-#| msgid "Trading Performance"
 msgid "Reading performance metrics"
 msgstr "قراءة مقاييس الأداء"
 
-#| msgid "Elite Strategies"
 msgid "Explore Strategies →"
 msgstr "استكشف الاستراتيجيات →"
 
 msgid "We're here to support you every step of the way."
 msgstr "نحن هنا لدعمك في كل خطوة."
 
-#| msgid "start trading"
 msgid "Happy trading!"
 msgstr "تداول سعيد!"
 
@@ -7848,38 +7764,35 @@ msgstr "ابدأ مجاناً!"
 msgid "day free trial"
 msgstr "يوم تجربة مجانية"
 
-msgid "Built by traders"
-msgstr "صُمم بواسطة المتداولين"
+msgid ""
+"TradingView strategies with unlimited customization that work on every chart"
+" and every timeframe. "
+msgstr ""
+"استراتيجيات TradingView مع تخصيص غير محدود تعمل على كل رسم بياني وكل إطار "
+"زمني. "
+
+msgid "Play audio preview"
+msgstr "تشغيل معاينة الصوت"
+
+msgid ""
+"Automate your setup once you're ready across multiple accounts and brokers, "
+"from exchanges to stock markets, with an all-in-one solution. "
+msgstr ""
+"قم بأتمتة إعداداتك عندما تصبح جاهزًا عبر حسابات ووسطاء متعددين، من منصات "
+"التداول إلى أسواق الأسهم، باستخدام حل شامل الكل في واحد. "
+
+msgid "Pause audio preview"
+msgstr "إيقاف معاينة الصوت مؤقتًا"
+
+#| msgid "Built by traders"
+msgid "Built by Traders"
+msgstr "صُمم بواسطة متداولين"
 
 msgid "For Traders"
 msgstr "للمتداولين"
 
 msgid "Master the market with our all‑in‑one solution"
 msgstr "أتقن السوق مع حلنا الشامل"
-
-msgid ""
-"Browse our library of proven trading strategies, pick the one that fits your"
-" style, and get started in minutes."
-msgstr ""
-"تصفح مكتبتنا التي تضم استراتيجيات التداول التي أثبتت جدواها، واختر "
-"الاستراتيجية التي تناسب أسلوبك، وابدأ في دقائق معدودة."
-
-msgid "Test"
-msgstr "اختبار"
-
-msgid ""
-"Backtest your strategies on historical data, fine-tune the settings, and "
-"validate performance before going live."
-msgstr ""
-"قم باختبار استراتيجياتك بناءً على البيانات التاريخية، وقم بضبط الإعدادات "
-"والتحقق من صحة الأداء قبل البدء في البث المباشر."
-
-msgid ""
-"Connect your broker, set your rules, and let automation execute your trades "
-"around the clock. No emotions, no missed entries."
-msgstr ""
-"قم بتوصيل الوسيط الخاص بك، وحدد القواعد الخاصة بك، ودع الأتمتة تنفذ صفقاتك "
-"على مدار الساعة. لا توجد عواطف، ولا إدخالات ضائعة."
 
 msgid "Discover Strategies"
 msgstr "اكتشف الاستراتيجيات"
@@ -8064,9 +7977,6 @@ msgstr "خصم 10%%"
 
 msgid "Apply"
 msgstr "يتقدم"
-
-msgid "Coupon Discount"
-msgstr "خصم القسيمة"
 
 msgid "You have a remaining balance of"
 msgstr "لديك رصيد متبقي من"
@@ -8343,8 +8253,9 @@ msgstr "محتوى نظام الذكاء الاصطناعي"
 msgid "Copy"
 msgstr "ينسخ"
 
-msgid "AI Tokens"
-msgstr "رموز الذكاء الاصطناعي"
+#| msgid "Token"
+msgid "Tokens"
+msgstr "الرموز"
 
 msgid "Free Daily Tokens"
 msgstr "الرموز اليومية المجانية"
@@ -8583,7 +8494,6 @@ msgstr "إعدادات"
 msgid "Welcome to IsAlgo community!"
 msgstr "مرحباً بك في مجتمع IsAlgo!"
 
-#| msgid "Join our Discord Community!"
 msgid "Welcome to Our Community!"
 msgstr "مرحباً بك في مجتمعنا!"
 
@@ -8602,7 +8512,6 @@ msgstr "إجراء مطلوب: قم بتحديث طريقة الدفع لاست�
 msgid "Check this one out!"
 msgstr "اكتشف هذه الاستراتيجية!"
 
-#| msgid "Kraken Pro account"
 msgid "your broker account"
 msgstr "حساب الوسيط الخاص بك"
 
@@ -8642,11 +8551,9 @@ msgstr "اشتراك الاستراتيجية متأخر: %(strategy_name)s"
 msgid "Your access to %(strategy_name)s has been canceled"
 msgstr "تم إلغاء وصولك إلى %(strategy_name)s"
 
-#| msgid "Delete Seller Account"
 msgid "Complete Your Seller Account Setup"
 msgstr "أكمل إعداد حساب البائع الخاص بك"
 
-#| msgid "Your account server"
 msgid "Your Seller Account is Verified!"
 msgstr "تم التحقق من حساب البائع الخاص بك!"
 
@@ -8713,9 +8620,6 @@ msgid ""
 msgstr ""
 "واجهنا خطأ أثناء منح الوصول. يرجى التواصل معنا حتى نتمكن من مساعدتك بسرعة!"
 
-#| msgid ""
-#| "TradingView Or trading strategies OR forex trading strategies OR crypto "
-#| "trading strategies OR stock trading strategies"
 msgid ""
 "TradingView OR trading strategies OR forex trading strategies OR crypto "
 "trading strategies OR stock trading strategies"
@@ -9655,6 +9559,64 @@ msgstr "فتح القائمة الرئيسية"
 msgid "Docs"
 msgstr "المستندات"
 
+#, python-format
+msgid "Error retrieving client class for broker type '%s': %s"
+msgstr "خطأ أثناء استرجاع فئة العميل لنوع الوسيط '%s': %s"
+
+#, python-format
+msgid "Error retrieving saved trade info for trade ID '%s': %s"
+msgstr "خطأ أثناء استرجاع معلومات الصفقة المحفوظة لمعرّف الصفقة '%s': %s"
+
+#, python-format
+#| msgid "Error fetching account: %s"
+msgid "Error retrieving open trades for account '%s': %s"
+msgstr "خطأ أثناء استرجاع الصفقات المفتوحة للحساب '%s': %s"
+
+#, python-format
+#| msgid "Error fetching account: %s"
+msgid "Error retrieving balance for account '%s': %s"
+msgstr "خطأ أثناء استرجاع الرصيد للحساب '%s': %s"
+
+#, python-format
+#| msgid "Error fetching order info: %s"
+msgid "Error retrieving symbol info for '%s': %s"
+msgstr "خطأ أثناء استرجاع معلومات الرمز '%s': %s"
+
+#, python-format
+#| msgid "Could not retrieve current price for symbol %s"
+msgid "Error retrieving current price for '%s': %s"
+msgstr "خطأ أثناء استرجاع السعر الحالي لـ '%s': %s"
+
+#, python-format
+#| msgid "Error getting trading pairs: %s"
+msgid "Error retrieving available trading pairs for account '%s': %s"
+msgstr "خطأ أثناء استرجاع أزواج التداول المتاحة للحساب '%s': %s"
+
+#, python-format
+#| msgid "Error fetching order book: %s"
+msgid "Error retrieving order book for '%s': %s"
+msgstr "خطأ أثناء استرجاع دفتر الأوامر لـ '%s': %s"
+
+#, python-format
+#| msgid "Error getting historical candles for %(symbol)s: %(error)s"
+msgid "Error retrieving candles for '%s' on '%s': %s"
+msgstr "خطأ أثناء استرجاع الشموع لـ '%s' على '%s': %s"
+
+#, python-format
+#| msgid "Error opening trade: %s"
+msgid "Error opening trade for '%s': %s"
+msgstr "خطأ أثناء فتح الصفقة لـ '%s': %s"
+
+#, python-format
+#| msgid "Error opening trade: %s"
+msgid "Error closing trade for '%s': %s"
+msgstr "خطأ أثناء إغلاق الصفقة لـ '%s': %s"
+
+#, python-format
+#| msgid "Error fetching order info: %s"
+msgid "Error retrieving order info for '%s' order '%s': %s"
+msgstr "خطأ أثناء استرجاع معلومات الأمر '%s' لـ '%s': %s"
+
 msgid "Failed to retrieve chat sessions"
 msgstr "فشل استرداد جلسات الدردشة"
 
@@ -9679,6 +9641,18 @@ msgstr "معرف الجلسة مطلوب"
 msgid "Chat session updated successfully"
 msgstr "تم تحديث جلسة الدردشة بنجاح"
 
+#| msgid "Page not found!"
+msgid "Message not found"
+msgstr "الرسالة غير موجودة"
+
+#| msgid "Failed to retrieve chat messages"
+msgid "Failed to like chat message"
+msgstr "فشل الإعجاب برسالة الدردشة"
+
+#| msgid "Failed to retrieve chat messages"
+msgid "Failed to dislike chat message"
+msgstr "فشل عدم الإعجاب برسالة الدردشة"
+
 msgid "Chat session deleted successfully"
 msgstr "تم حذف جلسة الدردشة بنجاح"
 
@@ -9702,6 +9676,42 @@ msgstr "لم يتم تحديد مبلغ مميز، يرجى المحاولة م�
 
 msgid "Minimum token amount is 500,000."
 msgstr "الحد الأدنى لمبلغ الرمز هو 500000."
+
+#~ msgid "Everything is set—sit back and watch the trades execute automatically."
+#~ msgstr "تم ضبط كل شيء — استرخ وشاهد تنفيذ الصفقات تلقائيًا."
+
+#~ msgid "Try it Now"
+#~ msgstr "جربه الآن"
+
+#~ msgid ""
+#~ "Browse our library of proven trading strategies, pick the one that fits your"
+#~ " style, and get started in minutes."
+#~ msgstr ""
+#~ "تصفح مكتبتنا التي تضم استراتيجيات التداول التي أثبتت جدواها، واختر "
+#~ "الاستراتيجية التي تناسب أسلوبك، وابدأ في دقائق معدودة."
+
+#~ msgid "Test"
+#~ msgstr "اختبار"
+
+#~ msgid ""
+#~ "Backtest your strategies on historical data, fine-tune the settings, and "
+#~ "validate performance before going live."
+#~ msgstr ""
+#~ "قم باختبار استراتيجياتك بناءً على البيانات التاريخية، وقم بضبط الإعدادات "
+#~ "والتحقق من صحة الأداء قبل البدء في البث المباشر."
+
+#~ msgid ""
+#~ "Connect your broker, set your rules, and let automation execute your trades "
+#~ "around the clock. No emotions, no missed entries."
+#~ msgstr ""
+#~ "قم بتوصيل الوسيط الخاص بك، وحدد القواعد الخاصة بك، ودع الأتمتة تنفذ صفقاتك "
+#~ "على مدار الساعة. لا توجد عواطف، ولا إدخالات ضائعة."
+
+#~ msgid "Coupon Discount"
+#~ msgstr "خصم القسيمة"
+
+#~ msgid "AI Tokens"
+#~ msgstr "رموز الذكاء الاصطناعي"
 
 #, python-format
 #~ msgid "/ %s %ss"
