@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="my-2 w-fit max-w-full mb-3 bg-background rounded-xl" id="comment-{{ comment.id }}">
+<div class="my-2 max-w-full mb-3 bg-background rounded-xl" id="comment-{{ comment.id }}">
   <div class="border-b-0 border-text/50 flex flex-col pb-2">
     <p class="text-text/80 text-sm break-all">{{ comment.description|linebreaksbr }}</p>
     {% include 'include/images.html' with images=comment.images.all %}

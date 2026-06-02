@@ -43,11 +43,21 @@ Use this skill when you need to:
 
 Optional inputs:
 
-- Audience level (`beginner`, `intermediate`, `advanced`)
-- Narration tone (`educational`, `confident`, `analytical`, `story-driven`)
+- Audience level (`beginner`, `intermediate`, `advanced`) with explicit behavior:
+- beginner: avoid Pine Script syntax in narration, define each technical term on first use, and allow the concept hook to run up to about 2 minutes
+- intermediate: reference indicator mechanics without full basic definitions, and show at most one Pine variable reference per major concept
+- advanced: allow concise code-level references and short snippets in on-screen cues, skip basic definitions, and keep the concept hook tighter (about 45-75 seconds)
+- Narration tone (`educational`, `confident`, `analytical`, `story-driven`) with explicit behavior:
+- educational: instructor voice, define terms, and use simple analogies
+- confident: direct declarative sentences, active voice, minimal hedging
+- analytical: precise condition language, if/then framing, minimal emotional language
+- story-driven: open with a realistic market-behavior scenario (not a success story), keep claims factual and non-promotional
+- all tones: remain clear, precise, and non-hype; do not imply guaranteed outcomes
 - Platform and time preference (YouTube long-form, tutorial chaptering)
 
-## Workflow
+## Processing Steps (Internal)
+
+These steps describe internal processing before writing the final script output.
 
 1. Read and summarize the strategy intent from the description.
 2. Parse Pine Script to extract:
@@ -64,7 +74,7 @@ Optional inputs:
 - Start with one core market behavior the strategy is built around
 - Explain how that behavior forms in raw price action before mentioning the strategy
 - Explain how traders can act on that behavior in practical terms
-- Do not mention the strategy name in the first intro beat
+- Do not mention the strategy name in Section 1 (Generic Market Context Hook)
 - Transition by introducing the strategy as a structured way to trade that market behavior
 
 5. Create a chaptered script outline for 10-15 minutes.
@@ -73,18 +83,23 @@ Optional inputs:
 
 ## Decision Rules
 
+- Constraint priority order: (1) technical accuracy to Pine Script, (2) full output structure coverage, (3) duration target, (4) tone/style refinement. If constraints compete, prefer this order.
+
 - If code and description disagree, prefer Pine Script as source of truth and explicitly note the mismatch.
 - If settings are incomplete, keep assumptions minimal and label them clearly.
 - If the strategy belongs to a familiar class (trend, breakout, mean reversion, range, momentum), teach the class behavior first before introducing the strategy itself.
-- If logic is complex, explain in three layers:
+- If any entry or exit condition contains more than two simultaneous conditions or depends on a derived value (for example ATR multiple, dynamic level, or multi-step filter), explain in three layers:
 - Intuition (why)
 - Rule (what)
 - Trigger condition (when)
 - If the opening starts sounding like a direct strategy pitch, rewrite it so it begins as a trading concept lesson instead.
 - If there is no explicit risk management in code, include a clear caution section.
 - If the strategy is repaint-prone or confirmation-dependent, include a dedicated disclaimer section.
+- If Pine Script logic is not fully parseable (obfuscated code, unresolved library calls, or missing source), state this clearly and base logic explanations only on the description/settings. Label affected parts as: [Based on description only - code not fully parseable].
 
-## Script Structure (Target 10-15 Minutes)
+## Output Structure (Target 10-15 Minutes)
+
+This section defines the final script format.
 
 Use this sequence and adjust depth by complexity.
 
@@ -129,9 +144,9 @@ Use this sequence and adjust depth by complexity.
 ## Output Requirements
 
 - Duration target: 10-15 minutes
-- Approximate word target: 1300-2000 words
+- Approximate word target: 1500-2000 words
 - Tone: clear, precise, non-hype
-- Must not invent settings or Pine variables not present in input files
+- Must not invent user-facing input parameters or strategy settings not present in the provided files. Built-in Pine functions that already appear in code may be referenced and briefly explained.
 - Include concise chapter headings and timestamps
 - Include optional on-screen cue notes in brackets
 

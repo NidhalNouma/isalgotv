@@ -32,11 +32,11 @@
   <td class="px-4 py-6 text-xs text-text truncate">{{ trade.symbol }}</td>
   <td onclick="toggleHiddenData('sub-trade','sub-trades-{{ broker_type }}-{{ id }}-{{ trade.id }}')" class="cursor-pointer px-4 py-3 text-xs truncate">
     {% if trade.side == 'B' %}
-      <span class="text-primary bg-primary/10 px-2 py-0.5 rounded-md gap-0.5 flex items-center">
+      <span class="text-primary bg-primary/10 px-2 w-fit py-0.5 rounded-md gap-0.5 flex items-center">
         ↑ {% trans "BUY" %}
       </span>
     {% elif trade.side == 'S' %}
-      <span class="text-accent/80 bg-accent/10 px-2 py-0.5 rounded-md gap-0.5 flex items-center">
+      <span class="text-accent/80 bg-accent/10 w-fit px-2 py-0.5 rounded-md gap-0.5 flex items-center">
         ↓ {% trans "SELL" %}
       </span>
     {% else %}

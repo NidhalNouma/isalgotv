@@ -722,17 +722,20 @@ def get_broker_trades(request, broker_type, pk):
             filter['symbol'] = pk
 
         elif broker_type == 'assetNstrategy':
-            if len(pr) == 4:                            
-                filter['symbol'] =  pr[1]
-                if pr[2] == 'cryptobrokeraccount':
+            if len(pr) >= 4:                            
+                filter['symbol'] =  '-'.join(list(pr[1:-2])) if len(pr) > 4 else pr[1]
+                b_type = pr[-2]
+
+                # print("Broker type:", b_type, filter['symbol'])
+                if b_type == 'cryptobrokeraccount':
                     account_model = CryptoBrokerAccount
-                elif pr[2] == 'forexbrokeraccount':
+                elif b_type == 'forexbrokeraccount':
                     account_model = ForexBrokerAccount
                 else:
                     raise ValueError("Invalid Broker Type")
 
                 filter['content_type'] = ContentType.objects.get_for_model(account_model)
-                filter['object_id'] = pr[3]
+                filter['object_id'] = pr[-1]
                 
             else:
                 raise ValueError("Invalid assetNstrategy parameter")
