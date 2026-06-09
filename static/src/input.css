@@ -193,7 +193,7 @@
   }
 
   .docs-container {
-    @apply max-w-3xl w-full mx-auto text-text;
+    @apply max-w-7xl w-full mx-auto text-text md:px-4;
   }
 
   .docs section aside {

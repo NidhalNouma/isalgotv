@@ -1,0 +1,49 @@
+<form id="add-{{ title }}-form" hx-post="{% url 'buy_ai_tokens' %}" hx-wait="swap">
+  {% csrf_token %}
+
+  <div class="mb-4">
+    {% include 'include/infos.html' with class='bg-transparent' info="Tokens are used to process AI-powered requests. Each request consumes a variable number of tokens depending on its complexity. <br/>The pricing is set at <span class='font-semibold text-title'>$1</span> per <span class='font-semibold text-title'>100,000</span> tokens. <br/>You can select a predefined amount or enter a custom value based on your needs." %}
+  </div>
+
+  <section class="mb-4 p-2 rounded border border-text/10 bg-text/5">
+    <div class="">
+      <h3 class="text-text mt-2 font-semibold">Select token amount</h3>
+      <div id="" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+        <button id="btn-{{ title }}-500K" onclick="AIamountBtnClick('btn-{{ title }}-500K', 500000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">500K</button>
+        <button id="btn-{{ title }}-1M" onclick="AIamountBtnClick('btn-{{ title }}-1M', 1000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">1M</button>
+        <button id="btn-{{ title }}-2M" onclick="AIamountBtnClick('btn-{{ title }}-2M', 2000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">2M</button>
+        <button id="btn-{{ title }}-5M" onclick="AIamountBtnClick('btn-{{ title }}-5M', 5000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">5M</button>
+        <button id="btn-{{ title }}-10M" onclick="AIamountBtnClick('btn-{{ title }}-10M', 10000000, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">10M</button>
+        <button id="btn-{{ title }}-other" onclick="AIamountBtnClick('btn-{{ title }}-other', 0, event)" type="button" class="py-1 px-6 bg-text/10 hover:bg-text/20 text-text rounded text-sm font-semibold transition-colors">Other</button>
+      </div>
+
+      <div id="div-amount-{{ title }}" class="hidden mt-4">
+        <label for="cardName" class="input-label">Type your amount</label>
+        <div class="relative mb-3">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg class="w-4 h-4 text-title/40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="6"></circle>
+              <path d="M18.09 10.37A6 6 0 1 1 10.34 18"></path>
+              <path d="M7 6h1v4"></path>
+              <path d="m16.71 13.88.7.71-2.82 2.82"></path>
+            </svg>
+          </div>
+          <input type="number" name="amount" id="amount-{{ title }}" class="block w-full pl-10 input-text" placeholder="4 000 000" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include 'include/broker_payment.html' with title=title hide_header=True %}
+
+  <div id="add-{{ title }}-form-errors" class="my-3"></div>
+
+  <div class="flex items-center justify-between gap-2 mt-2">
+    <button id="spinner-add-{{ title }}" disabled type="button" class="btn-title w-full hidden">Add Tokens{% include 'svg/spinner.html' with class='ml-1.5 h-4' %}</button>
+    <button id="btn-add-{{ title }}" onclick="submitStripeElementForm('{{ title }}', 'add-{{ title }}-form-errors', event)" type="submit" class="btn-title w-full">
+      Add Tokens<svg xmlns="http://www.w3.org/2000/svg" class="fill-current w-3.5 aspect-square ml-1" viewBox="0 0 448 512">
+        <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+      </svg>
+    </button>
+  </div>
+</form>

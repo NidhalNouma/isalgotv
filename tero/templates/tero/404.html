@@ -1,0 +1,15 @@
+{% extends 'tero_page.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+  <main class="relative py-8 flex h-screen grow flex-col justify-center items-center">
+    <div class="text-center">
+      <h1 class="text-text text-8xl font-semibold">404</h1>
+      <h1 class="text-text text-4xl">Page not found!</h1>
+      <a href="{% url 'tero_index' %}" class="mt-8 btn-accent text-md">Go Back!</a>
+    </div>
+  </main>
+{% endblock %}

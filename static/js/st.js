@@ -361,6 +361,7 @@ function loadTradesData(result_id) {
   const tradeIndex = header.indexOf("Trade #");
   const typeIndex = header.indexOf("Type");
   let dateIndex = header.indexOf("Date/time");
+  if (dateIndex === -1) dateIndex = header.indexOf("Date/Time");
   if (dateIndex === -1) {
     console.warn("Could not find 'Date/time' column, trying 'Date and time'");
     dateIndex = header.indexOf("Date and time");
