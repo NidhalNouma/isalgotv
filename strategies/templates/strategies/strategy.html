@@ -101,7 +101,7 @@
       <section class="w-full">
         {% if strategy.premium != 'VIP' %}
           {% if not user.is_authenticated or user.is_authenticated and not has_subscription and strategy.premium != 'Free' %}
-            <section class="group w-full pb-3 pt-6 nav-bg rounded sticky top-10 z-20 mb-2">
+            <section class="group w-full pb-3 pt-16 -mt-12 nav-bg rounded sticky top-0 z-20 mb-2">
               <div class="text-center py-2">
                 <h1 class="text-title/60 font-semibold text-xl mb-2">{% trans "Unlock access to this strategy and more" %}</h1>
                 <h1 class="text-title/60 font-semibold text-lg mb-2">{% trans "Gain access to some of the best and most powerful trading strategies in the market" %}</h1>

@@ -64,8 +64,9 @@
     </div>
   </div>
 
-  <div class="text-text text-start px-4 mb-4 w-full h-fit {{ body_class }}">
+  <div class="text-text text-start px-4 -mb-4 w-full overflow-y-auto {{ body_class }}">
     {{ body }}
     {% comment %} <div class="sticky bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none"></div> {% endcomment %}
   </div>
+  <div class="sticky bottom-0 left-0 right-0 z-10 h-8 w-full bg-gradient-to-t from-background pointer-events-none {{ bottom_effect_class }}"></div>
 </div>

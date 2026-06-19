@@ -31,6 +31,7 @@
       <button onclick="toggleGetStarted(false)" type="button" class="absolute -top-10 right-0 text-sm font-semibold text-text/60 hover:text-text/40 transition-colors">{% trans 'Skip for now' %}</button>
     {% endif %}
 
+    {% if not user_profile.tradingview_username or True %}
     <div class="mx-auto">
       <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0">
         <li class="flex items-center {% if step == 1 %}
@@ -93,6 +94,7 @@
         </li>
       </ol>
     </div>
+    {% endif %}
 
     {% if step == 1 %}
       <section class="mt-14 text-center">
@@ -109,7 +111,7 @@
             </div>
           </h2>
         {% else %}
-          <h4 class="text-text text-sm font-semibold text-center tracking-wider">{% trans 'Select one of our plans to get premium access.' %}</h4>
+          <h4 class="text-text text-sm font-semibold text-center tracking-wider">{% trans 'Select one of our plans to get started.' %}</h4>
         {% endif %}
 
         {% include 'include/pricing_list.html' with class='mt-8 -mb-10' get_started='true' %}

@@ -12,14 +12,11 @@
 {% endblock %}
 
 {% block page %}
-  <h1 class="main-title">{% trans "Strategies" %}</h1>
+  <h1 class="main-title -mb-12 z-20">{% trans "Strategies" %}</h1>
 
-  <main class="mt-1 mb-16">
-    <div class="sticky z-10 top-10 sm:top-12 mb-3">
-      <div class="hidden absolute top-0 -left-4 bottom-0 w-8 bg-gradient-to-r from-background pointer-events-none z-10"></div>
-      <div class="absolute bottom-0 top-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
-
-      <section class="flex items-center pt-4 py-4 px-1 pr-8 nav-bg cursor-pointer overflow-x-auto no-scrollbar">
+  <main class="mb-16">
+    <div class="sticky z-10 top-0 pt-8 sm:pt-10 mb-3 nav-bg rounded">
+      <section class="flex items-center pt-6 py-4 px-1 pr-8 nav-bg cursor-pointer overflow-x-auto no-scrollbar">
         {% if selected_type %}
           <a class="mr-2" href="{% url 'strategies' %}">
             <span class="bg-text/10 pr-2 py-0.5 rounded-lg text-sm font-semibold truncate whitespace-nowrap flex items-center transition-all">

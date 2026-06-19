@@ -46,7 +46,7 @@ def register(request):
                 next_url = request.POST.get('next', '')
                 if next_url and _is_safe_redirect(next_url):
                     return redirect(next_url)
-                return redirect('home')
+                return redirect('index')
             else:
                 messages.error(request, _("An error occurred while registering"))
 
@@ -88,7 +88,7 @@ def login_user(request):
             next_url = request.POST.get('next', '')
             if next_url and _is_safe_redirect(next_url):
                 return redirect(next_url)
-            return redirect('home')
+            return redirect('index')
         else:
             messages.error(request, _("Email or Password incorrect!"))
 

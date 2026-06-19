@@ -712,10 +712,16 @@ def subscription_stripeform(request):
             # Handle free-trial UI if requested
             from_get_started = request.GET.get('get_started', '')
             if from_get_started == "true":
-                context["step"] = 2
-                context["congrate"] = True
-                response = render(request, 'include/home_get_started.html', context)
-                return retarget(response, "#home-get-started")
+                if not user_profile.tradingview_username:
+                    context["step"] = 2
+                    context["congrate"] = True
+                    response = render(request, 'include/home_get_started.html', context)
+                    return retarget(response, "#home-get-started")
+                else:
+                    context["step"] = 2
+                    context["congrate"] = True
+                    response = render(request, 'include/home_get_started.html', context)
+                    return retarget(response, "#home-get-started")
 
             return HttpResponseClientRedirect(reverse('membership') + '?sub=True')
 

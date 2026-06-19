@@ -1,9 +1,9 @@
 {% load i18n %}
 
-<section id="trades-{{ broker_type }}-{{ id }}" class="overflow-x-hidden relative h-full w-full">
+<section id="trades-{{ broker_type }}-{{ id }}" class="relative h-full w-full">
   {% if trades is not None %}
     {% if trades %}
-      <div class="overflow-x-auto w-full no-scrollbar max-h-full h-full">
+      <div class="overflow-x-auto overflow-y-auto w-full no-scrollbar h-full">
         <table class="w-full relative h-auto" id="trades-table-{{ broker_type }}-{{ id }}">
           <thead class="sticky left-0 right-0 w-full top-0 z-10 {{ thead_class|default:'nav-bg' }}">
             <tr class="">
