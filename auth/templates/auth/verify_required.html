@@ -11,20 +11,20 @@
     <div class="text-title text-xl">
       <h3 class="text-center">{% trans 'Verify your email' %}</h3>
 
-      <p class="text-text text-sm text-center mt-4">
-        {% blocktrans %}We sent a confirmation link to <strong>{{ email }}</strong>. Click it to activate your account and start using IsAlgo.{% endblocktrans %}
-      </p>
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-text text-sm text-center mt-4">{{ message }}</p>
+        {% endfor %}
+      {% else %}
+        <p class="text-text text-sm text-center mt-4">
+          {% blocktrans %}We sent a confirmation link to <strong>{{ email }}</strong>. Click it to activate your account and start using IsAlgo.{% endblocktrans %}
+        </p>
 
-      <p class="text-text text-sm text-center mt-4">
-        {% trans "If you don't see the email, check your spam folder." %}
-      </p>
+        <p class="text-text text-sm text-center mt-4">
+          {% trans "If you don't see the email, check your spam folder." %}
+        </p>
+      {% endif %}
     </div>
-
-    {% comment %} {% if messages %}
-      {% for message in messages %}
-        <p class="text-text text-sm text-center mt-4">{{ message }}</p>
-      {% endfor %}
-    {% endif %} {% endcomment %}
 
     <div class="mt-4">
       <form method="post" action="{% url 'resend_verification' %}">
@@ -32,7 +32,9 @@
         <button type="submit" class="btn-primary mt-4 mb-2 w-full">{% trans 'Resend Email' %}</button>
       </form>
 
-      <p class="text-text text-xs text-center mb-2">{% trans 'Already confirmed? Reload this page.' %}</p>
+      <p class="text-text text-xs text-center mb-2">
+        {% trans 'Already confirmed?' %} <button type="button" onclick="location.reload();" class="text-text underline font-semibold">{% trans 'Reload this page' %}</button>.
+      </p>
 
       <a href="{% url 'logout' %}" class="text-secondary text-sm font-bold">{% trans 'Log out' %}</a>
     </div>

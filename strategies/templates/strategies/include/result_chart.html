@@ -1,7 +1,7 @@
 
 <div class="w-full h-full min-w-0 min-h-64">
   <p class="hidden" id="trades-data-{{ result.id }}{{id}}">{{ result.list_of_trades|json_script }}</p>
-  <div class="relative w-full h-full min-h-[14rem] sm:min-h-[16rem] overflow-hidden">
+  <div class="relative w-full h-full min-h-[14rem] sm:min-h-[16rem] max-h-[16rem] overflow-hidden">
     <canvas id="profitChart-{{ result.id }}{{id}}" class="absolute inset-0 w-full h-full bg-background backdrop-blur-3xl rounded-lg"></canvas>
   </div>
 </div>

@@ -3,7 +3,7 @@ from profile_user.views import *
 
 urlpatterns = [
     path('', home, name="home"),
-    path('membership/', membership, name="membership"),
+    # path('membership/', membership, name="membership"),
     path('membership/payment_method/create/', create_payment_method, name="payment_method-create"),
     path('membership/payment_method/delete/', delete_payment_method, name="payment_method-delete"),
     path('membership/payment_method/set_default/', setdefault_payment_method, name="payment_method-set-default"),

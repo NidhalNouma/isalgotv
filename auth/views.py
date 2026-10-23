@@ -60,7 +60,7 @@ def register(request):
                 User_Profile.objects.create(user = user, email_verified=False)
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 _send_verification(request, user)
-                messages.info(request, _("We sent a confirmation link to %(email)s. Please check your inbox.") % {'email': user.email})
+                messages.info(request, _("We sent a confirmation link to %(email)s. Please check your inbox. Please check your spam folder if you don't see it.") % {'email': user.email})
 
                 next_url = request.POST.get('next', '')
                 if next_url and _is_safe_redirect(next_url):

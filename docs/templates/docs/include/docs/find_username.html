@@ -6,8 +6,7 @@
       <h3>{% trans 'Adding username' %}</h3>
 
       <p>
-        {% trans 'After selecting your preferred' %}
-        <a href="{% url 'membership' %}">{% trans 'plan' %}</a>,{% trans "you'll need to provide us with your" %}
+        {% trans "The first step, you'll need to provide us with your" %}
         <a href="https://www.tradingview.com/?aff_id=134591&aff_sub=134591&source=134591" target="_blank">TradingView</a>
         {% trans 'username.' %}
         <br />{% trans 'The video below demonstrates where you can locate your username.' %}
@@ -38,7 +37,7 @@
 
       <p>
         {% trans 'We release new strategies every few months. To gain access to them, simply visit the strategy page and click' %}
-        <span>{% trans "'Get Access'" %}</span>.{% trans "If you're a member, you will receive access to the new strategies at no additional cost." %}
+        <span>{% trans "'Get Access'" %}</span>.
       </p>
     </aside>
   </section>
@@ -48,8 +47,8 @@
       <h3>{% trans 'Having a trouble' %}</h3>
 
       <p>
-        {% trans "If you've subscribed and encounter any issues with adding your TradingView username or accessing the strategies, please click" %}
-        <a href="{% url 'membership' %}">{% trans 'here' %}</a>
+        {% trans "If you've encounter any issues with adding your TradingView username or accessing the strategies, please click" %}
+        <a href="{% url 'docs_contactus' %}">{% trans 'here' %}</a>
         {% trans 'to contact us for assistance.' %}
       </p>
     </aside>
