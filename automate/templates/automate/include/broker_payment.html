@@ -4,7 +4,7 @@
     <section class="py-2 rounded">
       {% if not hide_header %}
         <p class="text-sm text-text/80">
-          {% trans 'By adding this account you will be charged with' %} <span class="text-text">${{ price }}</span>/Month.
+          {% trans 'By adding this account you will be charged with' %} <span class="text-text">${{ price }}</span>/{% trans '/Month. You can cancel or pause at any time' %}.
         </p>
       {% endif %}
 

@@ -201,8 +201,8 @@ class Strategy(models.Model):
 
     PREMIUM_CHOICES = [
         ('Free', 'Free'),
-        ('Premium', 'Premium'),
-        ('Elite', 'Elite'),
+        # ('Premium', 'Premium'),
+        # ('Elite', 'Elite'),
         ('VIP', 'VIP'),
     ]
      
@@ -244,8 +244,12 @@ class Strategy(models.Model):
         if self.settings:
             if self.is_live == False:
                 self.settings = update_names(self.settings)
-            
+
         super(Strategy, self).save(*args, **kwargs)
+
+        creator_profile = User_Profile.objects.filter(user=self.created_by).first()
+        if creator_profile and not creator_profile.strategies.filter(pk=self.pk).exists():
+            creator_profile.strategies.add(self)
     
     def settings_to_text(self):
         """Converts the settings JSON into a structured text format."""

@@ -3,8 +3,8 @@ from profile_user.utils.stripe import subscription_object
 from django.utils.translation import activate, get_language
 from django.conf import settings as django_settings
 
-import datetime
 import requests
+from django.urls import reverse
 
 import environ
 env = environ.Env()
@@ -37,10 +37,8 @@ def check_user_and_stripe_middleware(get_response):
         current_user = request.user
 
         user_profile = None
-        subscription = None
         payment_methods = None
         stripe_customer = None
-        has_subscription = False
         
         # notifications = None
 
@@ -65,7 +63,6 @@ def check_user_and_stripe_middleware(get_response):
                     setup_intent = None
 
             user_profile = user_profile.get_with_update_stripe_data(force=get_updated_user_profile)
-            # print("user profile", user_profile.stripe_obj)
 
             request.user_profile = user_profile
 
@@ -75,23 +72,12 @@ def check_user_and_stripe_middleware(get_response):
                 if not current_lang or current_lang == django_settings.LANGUAGE_CODE:
                     activate(user_profile.language)
 
-            has_subscription = user_profile.has_subscription
 
             stripe_customer = user_profile.stripe_obj.get('customer', None)
-            subscription = subscription_object(user_profile.stripe_obj.get('subscription', None))
             payment_methods = user_profile.stripe_obj.get('payment_methods', None)
 
-            if user_profile.is_lifetime:
-                has_subscription = True
-
-            elif user_profile.subscription_id and user_profile.is_lifetime == False:
-
-                subscription = subscription_object(user_profile.stripe_obj.get('subscription', None))
-        
         request.stripe_customer = stripe_customer
         request.user_profile = user_profile
-        request.subscription = subscription
-        request.has_subscription = has_subscription
 
         request.payment_methods = payment_methods
         # request.notifications = notifications
@@ -117,7 +103,36 @@ class MemberShipPricingMiddleware:
     def __call__(self, request):
         request.prices = PRICES
 
-        request.free_trial_days = env('FREE_TRIAL_DAYS')
-
         response = self.get_response(request)
         return response
+
+
+import re
+from django.shortcuts import redirect
+from django.http import HttpResponse
+
+# Paths reachable while the email is unverified (language prefix like /fr/ is stripped first)
+_UNVERIFIED_ALLOWED = re.compile(r'^/(?:auth/(?:verify-email|verify-required|resend-verification|logout)|accounts/|static/|media/|i18n/)')
+_LANG_PREFIX = re.compile(r'^/[a-z]{2}(?:[-_][A-Za-z]+)?(?=/)')
+
+class EmailVerifiedMiddleware:
+    """Blocks the site for logged-in users who haven't confirmed their email."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        user = request.user
+        profile = getattr(request, 'user_profile', None)
+
+        if user.is_authenticated and profile and not profile.email_verified:
+            path = request.path
+            if not _UNVERIFIED_ALLOWED.match(path) and not _UNVERIFIED_ALLOWED.match(_LANG_PREFIX.sub('', path, count=1)):
+                target = reverse('verify_required')
+                if getattr(request, 'htmx', False):
+                    response = HttpResponse(status=204)
+                    response['HX-Redirect'] = target
+                    return response
+                return redirect(target)
+
+        return self.get_response(request)

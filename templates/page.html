@@ -141,10 +141,10 @@
         {% endblock %}
       </div>
 
-      {% if user.is_authenticated and not has_subscription and not subscription %}
-        {% if request.resolver_match.view_name == 'home' or request.resolver_match.view_name == 'strategy' or request.resolver_match.view_name == 'settings' %}
+      {% if user.is_authenticated and not user_profile.tradingview_username %}
+        {% if request.resolver_match.view_name == 'strategy' or request.resolver_match.view_name == 'settings' %}
           <div class="min-h-[90vh] flex-col relative hidden" id="home-get-started" hide-backdrop>
-            {% include 'include/home_get_started.html' with step=1 %}
+            {% include 'include/home_get_started.html' with step=2 %}
           </div>
         {% endif %}
       {% endif %}
@@ -153,10 +153,6 @@
         {% include 'footer.html' %}
       {% endblock %}
     </main>
-
-    {% if user.is_authenticated and not has_subscription and not subscription and coupon.off %}
-      {% include 'include/infos.html' with close_id='coupon-code-off' class='bg-text/20 backdrop-blur-2xl !fixed bottom-10 mx-6 left-1/2 -translate-x-1/2 bg-accent' info='Use coupon code <span class="font-semibold tracking-wider">'|add:coupon.code|add:'</span> at checkout to get a <span class="font-semibold">'|add:coupon.off|add:'</span> discount.' %}
-    {% endif %}
 
     {% include 'include/modal_images_main.html' %}
   </body>

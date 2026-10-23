@@ -92,6 +92,20 @@ def send_marketing_email(recipients, subject, sections, preheader='', language='
         print(f"Error sending marketing emails: {e}")
 
 
+def send_verification_email(user_email, verify_url, language='en'):
+    with override(language):
+        subject = _('Confirm your email address')
+        html_content = render_to_string('emails/verify_email.html', context={'verify_url': verify_url, 'language': language, **email_context()})
+    email = EmailMessage(subject, html_content, from_email=f"IsAlgo <{settings.EMAIL_HOST_USER}>", to=[user_email])
+    email.content_subtype = 'html'
+
+    try:
+        email.send()
+        return True
+    except Exception as e:
+        print(f"Error sending verification email: {e}")
+        return False
+
 def send_welcome_email(user_email, username, language='en'):
     if username.find('@'):
         username = user_email.split("@")[0]

@@ -26,11 +26,9 @@
   <div id="tradingview_username_submit_error">
     {% if succes %}
       {% include 'include/succes.html' %}
-    {% elif has_subscription %}
+    {% else %}
       {% trans 'By changing your tradingview username, the previous username will no longer have access to our strategies.' as tv_change_warning %}
       {% include 'include/infos.html' with info=tv_change_warning %}
-    {% else %}
-      {% comment %} {% include 'include/infos.html' with info='Choose one of our plans to get started and gain access.' %} {% endcomment %}
     {% endif %}
   </div>
   <button type="submit" id="btn-tv" onclick="openLoader('', '-tv', 'flex');" class="btn-primary mt-4 mb-2 w-full">{% trans 'Save' %}</button>

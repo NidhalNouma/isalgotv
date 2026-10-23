@@ -27,6 +27,53 @@ admin.site.unregister(User)
 admin.site.unregister(Group)
 
 
+def _parse_recipient_tokens(raw_value):
+    if not raw_value:
+        return []
+    return [token.strip() for token in re.split(r'[\n,;]+', raw_value) if token.strip()]
+
+
+def _resolve_recipient_emails(recipient_type, specific_recipients_raw=''):
+    if recipient_type == 'all':
+        return list(
+            User.objects.exclude(email__isnull=True)
+            .exclude(email='')
+            .values_list('email', flat=True)
+        ), []
+
+    if recipient_type != 'specific':
+        return [], [f"Unsupported recipient type: {recipient_type}"]
+
+    tokens = _parse_recipient_tokens(specific_recipients_raw)
+    if not tokens:
+        return [], ['Please provide at least one user email or username.']
+
+    email_tokens = {t.lower() for t in tokens if '@' in t}
+    username_tokens = {t for t in tokens if '@' not in t}
+
+    resolved_emails = set()
+    resolved_emails.update(
+        User.objects.filter(email__in=email_tokens)
+        .exclude(email__isnull=True)
+        .exclude(email='')
+        .values_list('email', flat=True)
+    )
+
+    resolved_username_rows = User.objects.filter(username__in=username_tokens).values_list('username', 'email')
+    found_usernames = set()
+    for username, email in resolved_username_rows:
+        found_usernames.add(username)
+        if email:
+            resolved_emails.add(email)
+
+    resolved_email_lc = {email.lower() for email in resolved_emails}
+    missing_emails = sorted(email_tokens - resolved_email_lc)
+    missing_usernames = sorted(username_tokens - found_usernames)
+    unresolved = missing_emails + missing_usernames
+
+    return sorted(resolved_emails), unresolved
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ModelAdmin):
     # Forms loaded from `unfold.forms`
@@ -48,8 +95,8 @@ User_Profile._meta.verbose_name_plural = "Trader Profiles"
 @admin.register(User_Profile)
 class UserProfileAdmin(ModelAdmin):
 
-    list_display =  ('user_email', 'has_subscription', 'is_lifetime', 'seller_status', 'user_created_at')
-    search_fields = ['user__email', 'has_subscription', 'customer_id', 'is_lifetime'] 
+    list_display =  ('user_email', 'seller_status', 'email_verified', 'user_created_at')
+    search_fields = ['user__email', 'customer_id'] 
     actions = ['create_seller_account']
 
     # Custom method to display `user.email`
@@ -69,6 +116,10 @@ class UserProfileAdmin(ModelAdmin):
             return 'Pending'
         return '—'
     seller_status.short_description = 'Seller'
+
+    def email_verified(self, obj):
+        return obj.email_verified
+    email_verified.short_description = 'Email Verified'
 
     @admin.action(description='Create seller account')
     def create_seller_account(self, request, queryset):
@@ -102,6 +153,8 @@ def send_html_email(request):
         header = request.POST.get('header', '')
         subject = request.POST.get('subject', '')
         html = request.POST.get('html_content', '')
+        recipient_type = request.POST.get('recipient_type', 'all')
+        specific_recipients = request.POST.get('specific_recipients', '')
 
         if not subject.strip() or not html.strip():
             messages.error(request, "Both subject and HTML content are required.")
@@ -112,18 +165,18 @@ def send_html_email(request):
             messages.error(request, "HTML content must be at least 300 characters long.")
             return HttpResponseRedirect(request.path)
 
-        recipient_type = request.POST.get('recipient_type', 'all')
+        emails, unresolved = _resolve_recipient_emails(recipient_type, specific_recipients)
+        if unresolved:
+            messages.error(
+                request,
+                "Some users could not be resolved: " + ", ".join(unresolved[:15])
+                + ("..." if len(unresolved) > 15 else "")
+            )
+            return HttpResponseRedirect(request.path)
 
-        if recipient_type == 'lifetime':
-            emails = list(User_Profile.objects.filter(is_lifetime=True).values_list('user__email', flat=True))
-        elif recipient_type == 'non_lifetime':
-            emails = list(User_Profile.objects.filter(is_lifetime=False).values_list('user__email', flat=True))
-        elif recipient_type == 'subscribers':
-            emails = list(User_Profile.objects.filter(has_subscription=True).values_list('user__email', flat=True))
-        elif recipient_type == 'non_subscribers':
-            emails = list(User_Profile.objects.filter(has_subscription=False).values_list('user__email', flat=True))
-        else:
-            emails = list(User.objects.values_list('email', flat=True))
+        if not emails:
+            messages.warning(request, "No recipients found.")
+            return HttpResponseRedirect(request.path)
 
                 
         if header:
@@ -178,17 +231,19 @@ def send_strategy_html_email(request):
             return HttpResponseRedirect(request.path)
 
         recipient_type = request.POST.get('recipient_type', 'all')
+        specific_recipients = request.POST.get('specific_recipients', '')
+        emails, unresolved = _resolve_recipient_emails(recipient_type, specific_recipients)
+        if unresolved:
+            messages.error(
+                request,
+                "Some users could not be resolved: " + ", ".join(unresolved[:15])
+                + ("..." if len(unresolved) > 15 else "")
+            )
+            return HttpResponseRedirect(request.path)
 
-        if recipient_type == 'lifetime':
-            emails = list(User_Profile.objects.filter(is_lifetime=True).values_list('user__email', flat=True))
-        elif recipient_type == 'non_lifetime':
-            emails = list(User_Profile.objects.filter(is_lifetime=False).values_list('user__email', flat=True))
-        elif recipient_type == 'subscribers':
-            emails = list(User_Profile.objects.filter(has_subscription=True).values_list('user__email', flat=True))
-        elif recipient_type == 'non_subscribers':
-            emails = list(User_Profile.objects.filter(has_subscription=False).values_list('user__email', flat=True))
-        else:
-            emails = list(User.objects.values_list('email', flat=True))
+        if not emails:
+            messages.warning(request, "No recipients found.")
+            return HttpResponseRedirect(request.path)
 
         
         send_strategy_email_to_all_users(emails, strategy, header, subject, html)
@@ -244,6 +299,7 @@ def send_marketing_email_view(request):
         subject = request.POST.get('subject', '').strip()
         preheader = request.POST.get('preheader', '').strip()
         recipient_type = request.POST.get('recipient_type', 'all')
+        specific_recipients = request.POST.get('specific_recipients', '')
 
         # Parse sections from form fields like sections[0][title], sections[0][images][0][src], etc.
         sections = {}
@@ -313,17 +369,14 @@ def send_marketing_email_view(request):
             from django.http import HttpResponse
             return HttpResponse(html)
 
-        # Resolve recipients
-        if recipient_type == 'lifetime':
-            emails = list(User_Profile.objects.filter(is_lifetime=True).values_list('user__email', flat=True))
-        elif recipient_type == 'non_lifetime':
-            emails = list(User_Profile.objects.filter(is_lifetime=False).values_list('user__email', flat=True))
-        elif recipient_type == 'subscribers':
-            emails = list(User_Profile.objects.filter(has_subscription=True).values_list('user__email', flat=True))
-        elif recipient_type == 'non_subscribers':
-            emails = list(User_Profile.objects.filter(has_subscription=False).values_list('user__email', flat=True))
-        else:
-            emails = list(User.objects.values_list('email', flat=True))
+        emails, unresolved = _resolve_recipient_emails(recipient_type, specific_recipients)
+        if unresolved:
+            messages.error(
+                request,
+                'Some users could not be resolved: ' + ', '.join(unresolved[:15])
+                + ('...' if len(unresolved) > 15 else '')
+            )
+            return HttpResponseRedirect(request.path)
 
         if not emails:
             messages.warning(request, 'No recipients found for the selected group.')

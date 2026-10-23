@@ -46,9 +46,6 @@
           email: '{{ user_profile|escapejs }}',
           id: '{{ user_profile.id }}',
           tradingviewUsername: '{{ user_profile.tradingview_username|escapejs }}',
-          isLifetime: '{{ user_profile.is_lifetime }}',
-          hasSubscription: '{{ has_subscription }}',
-          subscriptionPlan: '{{ subscription.plan|escapejs }}'
         },
         tokens: {
           aiTokensAvailable: '{{ user_profile.ai_tokens_available }}',

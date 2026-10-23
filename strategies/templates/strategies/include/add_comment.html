@@ -9,13 +9,6 @@
     >
       {% trans "Share Your Thoughts" %}
     </button>
-    {% elif user.is_authenticated and not has_subscription and strategy.premium != 'VIP' %}
-    {% comment %} <button
-      class="btn-text text-sm font-semibold underlinei"
-      onclick="openModel('upgrade-modal', false);"
-    >
-      Share Your Thoughts
-    </button> {% endcomment %}
     {% endif %}
   {% endif %}
   <form

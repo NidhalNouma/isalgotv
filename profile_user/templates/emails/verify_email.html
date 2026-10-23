@@ -1,0 +1,27 @@
+{% extends 'emails/components/base_email.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% trans 'Confirm your email address' %}
+{% endblock %}
+
+{% block preheader %}
+  {% trans 'Confirm your email to activate your IsAlgo account.' %}
+{% endblock %}
+
+{% block content %}
+  <h1 style="text-align: center; margin-bottom: 16px; color: #000000;">{% trans 'Confirm your email' %}</h1>
+
+  <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.6; color: #374151; text-align: center;">
+    {% trans 'Thanks for signing up! Please confirm your email address by clicking the button below.' %}
+  </p>
+
+  {% trans 'Confirm email' as cta_primary_text %}
+  {% with primary_url=verify_url primary_text=cta_primary_text %}
+    {% include 'emails/components/cta_buttons.html' %}
+  {% endwith %}
+
+  <p style="margin: 24px 0 0; font-size: 13px; line-height: 1.6; color: #6b7280; text-align: center;">
+    {% trans 'This link expires in 3 days. If you did not create an account, you can ignore this email.' %}
+  </p>
+{% endblock %}

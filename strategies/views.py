@@ -25,7 +25,7 @@ from django.db.models import Q
 import urllib
 
 def get_strategies(request):
-    availble_types = ['Free', 'Premium', 'Elite', 'VIP']
+    availble_types = ['Free', 'VIP']
     types = availble_types.copy()
     type = request.GET.get('type', None)
 
@@ -441,7 +441,7 @@ def add_report_reply(request, id):
 
             # Trigger an HTMX update to fetch the new comment
             replies = result.replies.select_related('created_by').prefetch_related('images')
-            context = {'result': result, 'replies': replies}
+            context = {'result': result, 'replies': replies, 'strategy': result.strategy, 'user_profile': request.user.user_profile}
             return render(request, 'include/result_replies.html', context=context)
         else:
             context = {'errors': form.errors}
@@ -472,7 +472,7 @@ def result_vote(request, result_id, vote_type):
 
         send_notification(request.user.user_profile, result.created_by, html_text, f"/strategies/{result.strategy.slug}/?result={result.id}")
 
-    context = {'result': result}
+    context = {'result': result, 'strategy': result.strategy, 'user_profile': request.user.user_profile}
     return render(request, 'include/result_votes.html', context=context)
 
 def comment_like(request, comment_id, like_type):
@@ -503,7 +503,7 @@ def comment_like(request, comment_id, like_type):
 
                 send_notification(request.user.user_profile, comment.created_by, html_text, f"/strategies/{comment.strategy.slug}/?comment={comment.id}")
 
-    context = {'comment': comment}
+    context = {'comment': comment, 'strategy': comment.strategy, 'user_profile': request.user.user_profile}
     return render(request, 'include/comment_likes.html', context=context)
 
 @require_http_methods([ "POST"])

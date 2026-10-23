@@ -1,11 +1,14 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
-from auth.views import register, login_user, logout_user, update_user_password
+from auth.views import register, login_user, logout_user, update_user_password, verify_email, resend_verification_email, verify_required
 
 urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
+    path('verify-email/<str:token>/', verify_email, name='verify_email'),
+    path('verify-required/', verify_required, name='verify_required'),
+    path('resend-verification/', resend_verification_email, name='resend_verification'),
     path('logout/', logout_user, name='logout'),
     path('change-password/', update_user_password, name='change-password'),
     path('reset-password', auth_views.PasswordResetView.as_view(template_name="auth/reset_password.html"), name='reset_password'),

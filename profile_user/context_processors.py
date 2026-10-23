@@ -7,10 +7,6 @@ import environ
 env = environ.Env()
 
 def profile_context(request):
-    coupon = {
-        "code": env('COUPON_CODE'),
-        "off": env('COUPON_OFF'),
-    }
 
     user_profile = getattr(request, 'user_profile', None)
 
@@ -20,17 +16,10 @@ def profile_context(request):
     return {
         'stripe_customer': getattr(request, 'stripe_customer', None),
         'user_profile': user_profile,
-        'subscription': getattr(request, 'subscription', None),
-        'has_subscription': getattr(request, 'has_subscription', False),
-
         'payment_methods': getattr(request, 'payment_methods', None),
-
-
         'prices': getattr(request, 'prices', None),
-        'free_trial_days': getattr(request, 'free_trial_days', None),
 
         'notifications': getattr(request, 'notifications', False),
-        'coupon': coupon,
 
         'server_ip': server_ip,
 

@@ -168,7 +168,7 @@ function toggleDropdown(dropdownId) {
   }
 }
 
-function handleThreeSection(clickedButton, id1, id2, id3, btnClass) {
+function handleThreeSection(clickedButton, id1, id2, id3) {
   let section1 = document.getElementById("section-" + id1);
   let section2 = document.getElementById("section-" + id2);
   let section3 = document.getElementById("section-" + id3);
@@ -176,23 +176,38 @@ function handleThreeSection(clickedButton, id1, id2, id3, btnClass) {
   let btn1 = document.getElementById("btn-" + id1);
   let btn2 = document.getElementById("btn-" + id2);
   let btn3 = document.getElementById("btn-" + id3);
+  const buttons = [btn1, btn2, btn3];
+  const sections = [section1, section2, section3];
 
-  // Reset all buttons and sections
-  [btn1, btn2, btn3].forEach((btn) => btn.classList.remove(btnClass));
-  [section1, section2, section3].forEach((section) =>
-    section.classList.add("hidden"),
+  // Find the currently active button (data-active="true") to grab its classes
+  const activeBtn = buttons.find(
+    (btn) => btn && btn.dataset.active === "true",
+  );
+  const inactiveBtn = buttons.find(
+    (btn) => btn && btn.dataset.active !== "true",
   );
 
-  // Apply class to clicked button and related section
-  if (clickedButton === btn1) {
-    btn1.classList.add(btnClass);
-    section1.classList.remove("hidden");
-  } else if (clickedButton === btn2) {
-    btn2.classList.add(btnClass);
-    section2.classList.remove("hidden");
-  } else if (clickedButton === btn3) {
-    btn3.classList.add(btnClass);
-    section3.classList.remove("hidden");
+  // Capture active and inactive classes before changing anything
+  const activeClasses = activeBtn ? activeBtn.classList.toString() : "";
+  const inactiveClasses =
+    inactiveBtn && inactiveBtn !== activeBtn
+      ? inactiveBtn.classList.toString()
+      : "";
+
+  // Reset all sections and buttons
+  sections.forEach((section) => section && section.classList.add("hidden"));
+  buttons.forEach((btn) => {
+    if (!btn) return;
+    btn.dataset.active = "false";
+    btn.className = inactiveClasses;
+  });
+
+  // Apply active classes to the clicked button and show its section
+  const index = buttons.indexOf(clickedButton);
+  if (index !== -1) {
+    clickedButton.dataset.active = "true";
+    clickedButton.className = activeClasses;
+    sections[index].classList.remove("hidden");
   }
 }
 

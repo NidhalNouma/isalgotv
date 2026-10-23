@@ -33,9 +33,9 @@
 
     {% include 'include/settings/payment_methods.html' %}
     
-    <div id="setting-membership" >
+    {% comment %} <div id="setting-membership" >
       {% include 'include/settings/membership.html' %}
-    </div>
+    </div> {% endcomment %}
     
     {% if user_profile.is_lifetime %}
     <div id="setting-ai-tokens" >

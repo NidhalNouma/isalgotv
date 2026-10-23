@@ -95,10 +95,6 @@ quick_chart_symbols = [
     'KUCOIN:VETUSDT',
     'KUCOIN:AXSUSDT',
     'KUCOIN:THETAUSDT',
-    'BITMART:NEARUSDT',
-    'BITMART:MANAUSDT',
-    'BITMART:SANDUSDT',
-    'BITMART:CHZUSDT',
 ]
 
 def market_news(language='en'):
@@ -163,12 +159,12 @@ def random_strategies_results_context():
 
     strategy_filter = {
         'is_live': True,
-        'premium__in': ['Free', 'Elite', 'Premium'],
+        'premium__in': ['Free', 'VIP'],
     }
 
     result_strategy_filter = {
         'strategy__is_live': True,
-        'strategy__premium__in': ['Free', 'Elite', 'Premium'],
+        'strategy__premium__in': ['Free', 'VIP'],
     }
 
     new_strategies = list(Strategy.objects.filter(**strategy_filter).order_by('-created_at')[:8])
@@ -305,16 +301,6 @@ def edit_tradingview_username(request):
             'is_live': True,
             'premium__in': ['Free'],
         }
-        if request.has_subscription:
-            access_filter = {
-                'is_live': True,
-                'premium__in': ['Free', 'Premium'],
-            }
-        if profile_user.is_lifetime:
-            access_filter = {
-                'is_live': True,
-                'premium__in': ['Free', 'Elite', 'Premium'],
-            }
         strategies = Strategy.objects.filter(**access_filter)
 
         for strategy in strategies:
@@ -809,7 +795,7 @@ def preview_email(request):
     # Dummy data for template context
     from profile_user.utils.send_mails import email_context
     context = {'strategy_name': 'Test User', 'strategy_type': 'Elite', **email_context()}
-    return render(request, 'emails/new_strategy.html', context)
+    return render(request, 'emails/strategy_access_gained.html', context)
 
 def send_email(request):
     if request.method == 'POST':
@@ -978,19 +964,7 @@ def api_send_marketing_email(request):
                 images[i:i + per_row] for i in range(0, len(images), per_row)
             ]
 
-    # ── Resolve recipients ──
-    if explicit_recipients and isinstance(explicit_recipients, list):
-        emails = [e.strip() for e in explicit_recipients if isinstance(e, str) and e.strip()]
-    elif recipient_type == 'lifetime':
-        emails = list(User_Profile.objects.filter(is_lifetime=True).values_list('user__email', flat=True))
-    elif recipient_type == 'non_lifetime':
-        emails = list(User_Profile.objects.filter(is_lifetime=False).values_list('user__email', flat=True))
-    elif recipient_type == 'subscribers':
-        emails = list(User_Profile.objects.filter(has_subscription=True).values_list('user__email', flat=True))
-    elif recipient_type == 'non_subscribers':
-        emails = list(User_Profile.objects.filter(has_subscription=False).values_list('user__email', flat=True))
-    else:
-        emails = list(User.objects.values_list('email', flat=True))
+    emails = list(User.objects.values_list('email', flat=True))
 
     if not emails:
         return JsonResponse({"error": "No recipients found."}, status=404)

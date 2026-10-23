@@ -1,13 +1,12 @@
-<!-- TODO adding edit and delete -->
 {% load custom_filters %}
 {% load custom_tags %}
 {% load i18n %}
 
 <div id="result-{{ result.id }}" class="mb-2 py-2 flex flex-col w-full max-w-full">
-  <div class="flex flex-row justify-between items-center mb-3">
+  <div class="flex flex-col sm:flex-row justify-start items-start sm:items-center mb-3">
     <div class="mr-2.5 flex items-center gap-2">
       <a class="text-text/80 bg-text/10 hover:brightness-90 px-3 py-1 rounded-lg text-sm font-semibold shrink-0 transition-all" href="{% url 'reports' %}?pair={{ result.pair }}">{{ result.performance.pair }}</a>
-      <div class="inline-flex items-center gap-1 text-text/80">
+      <div class="inline-flex items-center justify-start gap-1 text-text/80">
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
           <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
@@ -19,7 +18,7 @@
         </svg>
         <span class="text-sm">{{ result.performance.broker }}</span>
       </div>
-      <div class="hidden sm:flex items-center gap-1 text-text/80">
+      <div class="flex items-center gap-1 text-text/80">
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
@@ -28,7 +27,7 @@
       </div>
     </div>
 
-    <div class="grow">
+    <div class="w-full sm:grow">
       <div class="w-full bg-text/20 rounded-md my-1">
         <div class="flex items-center justify-center truncate gap-1.5 bg-text/40 text-xs py-[0.1rem] font-semibold text-background text-center px-0.25 leading-none rounded-md" style="width: {{ result.test_start_at|map_months_to_number:result.test_end_at }}%">
           <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,16 +41,46 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-0">
-    <div class="mr-0 h-full">
+  <div class="lg:hidden grid grid-cols-2 sm:grid-cols-2 gap-2 mb-2">
+    <div class="flex items-center gap-2">
+      <svg class="w-4 h-4 text-profit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+        <polyline points="16 7 22 7 22 13" />
+      </svg>
+      <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
+        <span class="text-xl font-semibold text-profit whitespace-nowrap">{{ result.performance.net_profit_percentage|format_profit|safe }}%</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <svg class="w-4 h-4 text-loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
+        <polyline points="16 17 22 17 22 11" />
+      </svg>
+      <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2">
+        <span class="text-xl font-semibold text-loss whitespace-nowrap">{{ result.performance.max_drawdown_percentage|format_profit|safe }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-0">
+    <div class="mr-0 h-full min-w-0 lg:col-span-3 relative">
       {% if result.list_of_trades %}
         {% include 'include/result_chart.html' with result=result %}
+        <div class="lg:hidden block absolute bottom-2 right-2">
+          <button type="button" class="flex-1 btn-text border-none" onclick="loadTradesData('{{ result.id }}'); openDrawer('result-modal-{{ result.id }}', 'bottom')">
+            <span class="inline">{% trans 'Performance & Properties' %}</span><svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="8" height="6" x="5" y="4" rx="1" />
+              <rect width="8" height="6" x="11" y="14" rx="1" />
+            </svg>
+          </button>
+        </div>
       {% else %}
 
       {% endif %}
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="hidden lg:block lg:col-span-2">
       <div class="space-y-4">
         <div class="flex flex-col gap-4">
           <div class="p-4 rounded-lg bg-profit/5 w-full">
@@ -84,16 +113,16 @@
         </div>
 
         <div class="w-full">
-          <button id="result-perfermance-{{ result.id }}" onclick="openModel('result-modal-{{ result.id }}')" class="btn-primary dark:text-background w-full truncate">
-            <span class="inline md:hidden">{% trans 'P&P' %}</span><span class="hidden md:inline">{% trans 'Properties and Performance' %}</span><svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button onclick="loadTradesData('{{ result.id }}'); openDrawer('result-modal-{{ result.id }}', 'bottom')" class="btn-text border-none w-full truncate">
+            <span class="inline md:hidden">{% trans 'P&P' %}</span><span class="hidden md:inline">{% trans 'Performance and Properties' %}</span><svg class="w-4 h-4 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="8" height="6" x="5" y="4" rx="1" />
               <rect width="8" height="6" x="11" y="14" rx="1" />
             </svg>
           </button>
-          {% include 'include/result_and_settings_modal.html' %}
         </div>
       </div>
 
+      {% comment %}
       <div class="space-y-4">
         <div class="p-4 bg-primary/5 rounded-lg">
           <div class="flex items-center gap-2 mb-3">
@@ -122,10 +151,10 @@
               <span class="font-medium text-primary">{{ result.performance.profit_factor|format_profit|safe }}</span>
             </div>
           </div>
-        </div>
+        </div> {% endcomment %}
 
-        <div class="w-full">
-          <button onclick="loadTradesData('{{ result.id }}') ;openModel('result-trades-list-{{ result.id }}')" class="btn-text w-full">
+        {% comment %} <div class="w-full">
+          <button onclick="loadTradesData('{{ result.id }}') ;openDrawer('result-trades-list-{{ result.id }}', 'bottom')" class="btn-text w-full">
             <span class="inline md:hidden">{% trans 'Trades' %}</span><span class="hidden md:inline">{% trans 'List of trades' %}</span><svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list">
               <path d="M3 12h.01" />
               <path d="M3 18h.01" />
@@ -139,11 +168,12 @@
           {% with result_id_str=result.id|stringformat:'s' %}
             {% render_template 'include/result_trades_list.html' as list_of_trades %}
             {% with header_html="<h3 class='text-xl font-bold text-title capitalize'>List of Trades</h3>" %}
-              {% include 'include/modal.html' with header=header_html modal_id='result-trades-list-'|add:result_id_str body=list_of_trades class='!max-w-6xl' body_class='!max-w-full !mt-0' %}
+              {% include 'include/drawer_modal.html' with title=header_html drawer_id='result-trades-list-'|add:result_id_str body=list_of_trades side='bottom' class='h-[80vh]' body_class='!h-[calc(100%-90px)]' %}
             {% endwith %}
           {% endwith %}
         </div>
       </div>
+      {% endcomment %}
 
       {% comment %} <div class="p-4 bg-title/5 rounded-lg">
         <div class="flex items-center gap-2 mb-3">
@@ -177,6 +207,13 @@
         </div>
       </div> {% endcomment %}
     </div>
+
+    {% with result_id_str=result.id|stringformat:'s' %}
+      {% render_template 'include/result_and_settings.html' as result_and_settings %}
+      {% with header_html='<h3 class="text-xl font-bold text-title capitalize">'|add:result.performance.broker|add:':'|add:result.pair|add:'</h3>'|safe %}
+        {% include 'include/drawer_modal.html' with title=header_html drawer_id='result-modal-'|add:result_id_str body=result_and_settings side='bottom' class='h-[80vh]' body_class='!h-[calc(100%-90px)]' %}
+      {% endwith %}
+    {% endwith %}
   </div>
 
   {% if result.description %}
@@ -225,7 +262,7 @@
           const params = url.searchParams
       
           // Set 'result' query parameter to '3'
-          params.set('result', '{{ result.id }}')
+          params.set('report', '{{ result.id }}')
           url.search = params.toString()
       
           // Copy the URL to the clipboard

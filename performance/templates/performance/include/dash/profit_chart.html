@@ -16,7 +16,7 @@
                         data-chart-data='{{info.data|to_json}}' 
                         data-chart-structure-data='{{currency_info|to_json}}'
                         data-profit="{{info.cumulative.net_profit}}"
-                        class="currency-btn-{{cid}} flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-text/5 text-text/60 "
+                        class="currency-btn-{{cid}} btn-text rounded-full transition-all"
                     >
                         {{ currency }}
                         <span class="ml-1 {{info.cumulative.net_profit|profit_color}}">

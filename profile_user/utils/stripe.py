@@ -118,9 +118,7 @@ def get_price_by_id(price_id):
 
 def get_profile_data(user_profile, PRICE_LIST):
     data = {
-        "customer": None,
-        "subscription": None,
-        "has_subscription": False,
+        "customer": None
     }
 
     try:
@@ -134,29 +132,6 @@ def get_profile_data(user_profile, PRICE_LIST):
                 # print("stripe customer, " , stripe_customer)
             except Exception as e:
                 print("Error with getting stripe customer...", e)
-
-
-        if user_profile.is_lifetime:
-            data["has_subscription"] = True
-
-        # Retrieve subscription if exists
-        if user_profile.subscription_id and not user_profile.is_lifetime:
-            try:
-                subscription = stripe.Subscription.retrieve(user_profile.subscription_id)
-                data["subscription"] = subscription
-                
-                if subscription.status == 'active' and subscription.current_period_end > time.time():
-                    data["has_subscription"] = True
-                elif subscription.status == 'trialing' and subscription.current_period_end > time.time():
-                    data["has_subscription"] = True
-                elif subscription.status == 'past_due' and subscription.current_period_end > time.time():
-                    data["has_subscription"] = True
-                elif subscription.status == "incomplete":
-                    data["has_subscription"] = False
-
-            except Exception as e:
-                print("Error with getting stripe subscription...", e)
-
 
         if user_profile.customer_id:
             try:
@@ -458,6 +433,18 @@ def subscription_object(subscription=None, subscription_id=None):
         print("Error processing subscription object:", e)
         return None
 
+def get_user_subscriptions(user_profile):
+    try:
+        if not user_profile.customer_id_value:
+            return []
+
+        subscriptions = stripe.Subscription.list(customer=user_profile.customer_id_value) #, status="all")
+        active_subscriptions = [subscription_object(sub) for sub in subscriptions.auto_paging_iter() if subscription_object(sub)]
+        return active_subscriptions
+    except Exception as e:
+        print("Error retrieving user subscriptions:", e)
+        return []
+
 def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotion_code=None) -> (tuple):
     """
     Subscribe a user to a strategy using Stripe.
@@ -476,10 +463,6 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotio
         subscription_params = {
             "customer": customer_id,
             "items": [{"price": strategy_price.stripe_price_id}],
-            "application_fee_percent": 20.0,  # Platform takes 20% fee
-            "transfer_data": {
-                "destination": seller_account,
-            },
             "expand": ["latest_invoice.payment_intent"],
             "default_payment_method": payment_method,
             "payment_behavior": "error_if_incomplete",
@@ -492,6 +475,12 @@ def subscribe_to_strategy(user_profile, strategy_price, payment_method, promotio
             },
             "description": f"Subscription for {strategy_price.strategy.name}",
         }
+
+        if seller_account and seller_account not in ["", None, "None"]:
+            subscription_params["transfer_data"] = {
+                "destination": seller_account,
+            }
+            subscription_params["application_fee_percent"] = 20.0  # 20% platform fee
 
         if promotion_code:
             subscription_params["promotion_code"] = promotion_code

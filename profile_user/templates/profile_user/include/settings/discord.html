@@ -45,19 +45,17 @@
   <div id="discord-form-errors">
     {% if succes %}
     {% include 'include/succes.html' %}
-    {% elif has_subscription and not user_profile.discord_username %}
-    {% trans "Click here" as click_here_text %}
-    {% trans "to join our discord server before requesting a member access." as join_discord_text %}
-    {% include 'include/infos.html' with info='<a class="text-text font-semibold" href="https://discord.gg/wVsXdGSMFg" target="_blank">'|add:click_here_text|add:' <svg class="w-3 aspect-square inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-out-up-right"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></svg></a> '|add:join_discord_text %}
-    {% elif has_subscription and user_profile.discord_username %}
+    {% elif user_profile.discord_username %}
     {% trans "By changing your Discord username, the previous username will no longer have access to our private discord channels." as change_discord_warning %}
     {% include 'include/infos.html' with info=change_discord_warning %}
     {% else %}
-    {% trans "Choose one of our plans to get started and gain access." as choose_plan_text %}
-    {% include 'include/infos.html' with info=choose_plan_text %}
+    {% comment %} {% trans "Enter your Discord username to gain access to our private discord channels." as choose_plan_text %}
+    {% include 'include/infos.html' with info=choose_plan_text %} {% endcomment %}
+    {% trans "Click here" as click_here_text %}
+    {% trans "to join our discord server before entering your Discord username." as join_discord_text %}
+    {% include 'include/infos.html' with info='<a class="text-text font-semibold" href="https://discord.gg/wVsXdGSMFg" target="_blank">'|add:click_here_text|add:' <svg class="w-3 aspect-square inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-out-up-right"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></svg></a> '|add:join_discord_text %}
     {% endif %} 
   </div>
-{% if has_subscription %}
 <button
 type="submit"
 id="btn-discord"
@@ -65,17 +63,6 @@ onclick="openLoader('', '-discord', 'flex');"
 class="btn-primary mt-4 mb-2 w-full"
 >
 {% trans 'Save' %}
-</button>
-{% else %}
-  <button
-    type="button"
-    id="btn-discord"
-    onclick="toggleGetStarted()"
-    class="btn-primary mt-4 mb-2 w-full"
-  >
-    {% trans 'Choose a plan' %}
-  </button>
-  {% endif %}
   <button
     id="spinner-discord"
     disabled

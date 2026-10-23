@@ -1,71 +1,40 @@
 {% load custom_filters %}
-{% load i18n %}
-{% load i18n %}
+{% load custom_tags %}
 {% load i18n %}
 
-<div
-  id="result-modal-{{result.id}}"
-  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  h-[calc(100%-1rem)] max-h-full"
->
-  <div id="content-result-modal-{{result.id}}" class="relative w-full max-w-xl max-h-full overflow-y-scroll scrollbar-hide rounded-md">
-    <!-- Modal content -->
-    <div class="relative bg-background">
-      <!-- Modal header -->
-      <div
-        class="flex items-center justify-between p-4 rounded-t sticky top-0 nav-bg z-50"
-      >
-        <h3 class="text-lg sm:text-xl font-semibold text-text">{{result.performance.broker}}:{{result.pair}} 
-          <a href="https://www.tradingview.com/chart/?symbol={{result.performance.broker}}:{{result.pair}}&aff_id=134591" target="_blank" rel="noopener noreferrer" class="btn-text border-none">
-            {% trans "Launch Chart" %}<svg class="h-3.5 aspect-auto ml-1" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" x2="21" y1="14" y2="3"></line>
-            </svg>
-          </a>
-        </h3>
-        <button
-          type="button"
-          onclick="hideModel('result-modal-{{result.id}}')"
-          class="btn-icon"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <!-- Modal body -->
+<div class="w-full px-3">
 
-    <div class="w-full mx-auto px-2.5 max-w-sm mb-3 ">
-      <div class="w-full font-semibold grid grid-cols-2 gap-1 border rounded-md border-text/70 p-1">
+    <div class="w-full max-w-md mb-3 ">
+      <div class="w-full font-semibold grid grid-cols-3 gap-1 rounded-md ">
         <button
-          id="r-{{result.id}}-result-btn"
-          onclick='swapDivBtn("r-{{result.id}}-settings", "r-{{result.id}}-result")'
-          class="inline-block px-2 py-1 text-sm rounded-md text-background  bg-text transition-all"
+          id="btn-r-{{result.id}}-result"
+          data-active="true"
+          onclick='handleThreeSection(this, "r-{{result.id}}-settings", "r-{{result.id}}-result", "r-{{result.id}}-listoftrades")'
+          class="btn-text text-background bg-text border-none rounded-full p-1.5"
         >
           <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"><path d="M76,152a36,36,0,1,0,36,36A36,36,0,0,0,76,152Zm0,56a20,20,0,1,1,20-20A20,20,0,0,1,76,208ZM42.34,106.34,56.69,92,42.34,77.66A8,8,0,0,1,53.66,66.34L68,80.69,82.34,66.34A8,8,0,0,1,93.66,77.66L79.31,92l14.35,14.34a8,8,0,0,1-11.32,11.32L68,103.31,53.66,117.66a8,8,0,0,1-11.32-11.32Zm187.32,96a8,8,0,0,1-11.32,11.32L204,199.31l-14.34,14.35a8,8,0,0,1-11.32-11.32L192.69,188l-14.35-14.34a8,8,0,0,1,11.32-11.32L204,176.69l14.34-14.35a8,8,0,0,1,11.32,11.32L215.31,188Zm-45.19-89.51c-6.18,22.33-25.32,41.63-46.53,46.93A8.13,8.13,0,0,1,136,160a8,8,0,0,1-1.93-15.76c15.63-3.91,30.35-18.91,35-35.68,3.19-11.5,3.22-29-14.71-46.9L152,59.31V80a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8h40a8,8,0,0,1,0,16H163.31l2.35,2.34C183.9,68.59,190.58,90.78,184.47,112.83Z"></path></svg> -->
           {% trans "Performance" %}
         </button>
         <button
-          onclick='swapDivBtn("r-{{result.id}}-result", "r-{{result.id}}-settings")'
-          id="r-{{result.id}}-settings-btn"
-          class="inline-block px-2 py-1 text-sm rounded-md hover:text-background text-text bg-transparent hover:bg-text transition-all"
+          onclick='handleThreeSection(this, "r-{{result.id}}-settings", "r-{{result.id}}-result", "r-{{result.id}}-listoftrades")'
+          id="btn-r-{{result.id}}-settings"
+          class="btn-text rounded-full border-none p-1.5"
         >
         <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path></svg> -->
         {% trans "Properties" %}
         </button>
+        <button
+          onclick='handleThreeSection(this, "r-{{result.id}}-listoftrades", "r-{{result.id}}-result", "r-{{result.id}}-settings")'
+          id="btn-r-{{result.id}}-listoftrades"
+          class="btn-text rounded-full border-none p-1.5"
+        >
+        <!-- <svg class="h-5 aspect-square" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12H4V21H2V12ZM5 14H7V21H5V14ZM16 8H18V21H16V8ZM19 10H21V21H19V10ZM9 2H11V21H9V2ZM12 4H14V21H12V4Z"></path></svg> -->
+        {% trans "Trades" %}
+        </button>
       </div>
     </div>
       <!-- Profits -->
-      <div id="r-{{result.id}}-result" class="px-6 py-4 space-y-6">
+      <div id="section-r-{{result.id}}-result" class="py-4 space-y-6">
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
           <div class="flex items-center gap-2">
@@ -129,27 +98,36 @@
             </div>
           </div>
         </div>
+        
+        <div class="mr-0 w-full h-80">
+          {% if result.list_of_trades %}
+            {% include 'include/result_chart.html' with result=result id="-indrawer" %}
+          {% else %}
+
+          {% endif %}
+        </div>
 
 
-        <div class=" w-full max-w-xl mx-auto grid grid-cols-3 gap-1 border rounded-md border-text/30 p-1">
+        <div class=" w-full max-w-md grid grid-cols-3 gap-1">
           <button
             id="btn-result-all-{{result.id}}"
-            class="flex items-center justify-center gap-1.5 text-sm font-bold  text-text rounded-md bg-text/30 py-1.5 hover:bg-text/30  transition-all"
-            onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}', ['bg-text/30'])"
+            data-active="true"
+            class="btn-text text-background bg-text border-none rounded-full p-1.5"
+            onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}')"
           >
             {% trans "All" %}
           </button>
           <button
             id="btn-result-long-{{result.id}}"
-            class="flex items-center justify-center gap-1.5 text-sm font-bold text-title rounded-md py-1.5 hover:bg-text/30 transition-all"
-            onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}', ['bg-text/30'])"
+            class="btn-text border-none rounded-full p-1.5"
+            onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}')"
           >
             {% trans "Long" %}
           </button>
           <button
             id="btn-result-short-{{result.id}}"
-            class="flex items-center justify-center gap-1.5 text-sm font-bold text-title rounded-md py-1.5 hover:bg-text/30 transition-all" 
-            onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}', ['bg-text/30'])"
+            class="btn-text border-none rounded-full p-1.5"
+            onclick="handleThreeSection(this, 'result-all-{{result.id}}', 'result-long-{{result.id}}', 'result-short-{{result.id}}')"
           >
             {% trans "Short" %}
           </button>
@@ -477,7 +455,7 @@
 
       </div>
       <!-- Settings -->
-      <div id="r-{{result.id}}-settings" class="hidden p-6 space-y-3">
+      <div id="section-r-{{result.id}}-settings" class="hidden py-4 space-y-3">
         {% for item in result.settings %}
           {% with group_name=item.key group_value=item.value %}
                 <div class="mb-6">
@@ -512,6 +490,9 @@
               {% endwith %}
           {% endfor %}
       </div>
-    </div>
-  </div>
+
+      <!-- List of Trades -->
+      <div id="section-r-{{result.id}}-listoftrades" class="hidden py-4 space-y-3">
+        {% include 'include/result_trades_list.html' with result_id_str=result_id_str %}
+      </div>
 </div>

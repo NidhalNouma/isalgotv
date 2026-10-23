@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if not user_profile.tradingview_username and has_subscription %}
+{% if not user_profile.tradingview_username %}
   {% trans 'No tradingview username found. Share your tradingview username below to get access.' as no_tv_warning %}
   {% include 'include/warnings.html' with warning=no_tv_warning %}
 
@@ -19,9 +19,9 @@
       <nav class="flex gap-2 overflow-x-auto no-scrollbar" role="tablist">
         <button class="tab-button transition-all hover:opacity-80 active" data-tab="free" role="tab" onclick="switchTab('free')">{% include 'strategies/include/strategy_badge.html' with type='Free' %}</button>
 
-        <button class="tab-button transition-all hover:opacity-80" data-tab="premium" role="tab" onclick="switchTab('premium')">{% include 'strategies/include/strategy_badge.html' with type='Premium' %}</button>
+        {% comment %} <button class="tab-button transition-all hover:opacity-80" data-tab="premium" role="tab" onclick="switchTab('premium')">{% include 'strategies/include/strategy_badge.html' with type='Premium' %}</button>
 
-        <button class="tab-button transition-all hover:opacity-80" data-tab="elite" role="tab" onclick="switchTab('elite')">{% include 'strategies/include/strategy_badge.html' with type='Elite' %}</button>
+        <button class="tab-button transition-all hover:opacity-80" data-tab="elite" role="tab" onclick="switchTab('elite')">{% include 'strategies/include/strategy_badge.html' with type='Elite' %}</button> {% endcomment %}
 
         <button class="tab-button transition-all hover:opacity-80" data-tab="vip" role="tab" onclick="switchTab('vip')">{% include 'strategies/include/strategy_badge.html' with type='VIP' %}</button>
       </nav>

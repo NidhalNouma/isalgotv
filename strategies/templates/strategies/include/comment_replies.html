@@ -4,21 +4,13 @@
     {% include "include/comment_likes.html" with comment=comment %}
   </div>
 
-  {% if user.is_authenticated and has_subscription %}
+  {% if user.is_authenticated and strategy in user_profile.strategies.all %}
   <button
     id="add-reply-{{comment.id}}-comment"
     onclick='toggleForm("add-reply-{{comment.id}}-comment", "add-form-reply-{{comment.id}}-comment")'
     class=" text-text text-xs font-semibold cursor-pointer"
   >
     {% trans "Reply" %}
-  </button>
-  {% elif user.is_authenticated and not has_subscription %}
-  <button
-    class="text-text text-xs font-semibold cursor-pointer"
-    data-modal-target="upgrade-modal"
-    data-modal-toggle="upgrade-modal"
-  >
-  {% trans "Reply" %}
   </button>
   {% else %}
   {% comment %} <a

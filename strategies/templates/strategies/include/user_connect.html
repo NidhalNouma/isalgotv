@@ -46,7 +46,7 @@
 {% else %}
   <div class="text-text/80 text-sm space-x-1">
     &#10263;<span class="ml-1.5">{% trans 'Set your tradingview username' %}</span>
-    <a href="{% url 'settings' %}" class="btn-a font-semibold">{% trans 'here' %}</a>
-    <span class="">{% trans 'to get access to this strategy.' %}</span>
+    <button onclick="toggleGetStarted()" class="btn-a text-title/80 hover:text-title font-semibold">{% trans 'here' %}</button>
+    <span class="">{% trans 'to get access to this strategy and more.' %}</span>
   </div>
 {% endif %}
